@@ -266,6 +266,13 @@ sonra 16/16 doğrulandı.
 > `learn.chatgpt.com` config referansı eski). `D=3 ∧ R=3` olan Codex çıktıları
 > (d6, f1) yeniden koşuldu. `ultra` bir efor değeri değil, ürün modu.
 > Legacy id 1–22 hâlâ `format_outdated`.
+>
+> **iteration-10:** repo sahibi Codex Fast Mode "speed line"ını (üçüncü zorunlu
+> Çıktı formatı istisnası) ekledikten sonra tam taze re-run — **17/17**.
+> `⚡ Speed:` satırı beklenen yerde çıkıyor (gerçek Codex modeli + CLI, R=3
+> notunun üstünde, Claude yarısı yalnızca Opus 5/4.8'de) ve `grade_routing.py`
+> onu yok sayıyor. Not: "Codex CLI Fast Mode" resmi kaynakla doğrulanmadı —
+> `reference.md` §9.7'de "kullanıcı bildirimi" olarak işaretli.
 
 | # | Prompt | Beklenen | Sınadığı kural |
 |---|---|---|---|

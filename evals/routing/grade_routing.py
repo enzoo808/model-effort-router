@@ -174,7 +174,7 @@ def main():
     summary_path.write_text(json.dumps({
         "results": results,
         "summary": {"passed": passed, "failed": failed, "skipped": missing, "total": len(results)},
-    }, ensure_ascii=False, indent=2), encoding="utf-8")
+    }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(f"Details: {summary_path}")
 
     sys.exit(1 if failed > 0 else 0)

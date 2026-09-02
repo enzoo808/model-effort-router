@@ -1,6 +1,8 @@
-# model-secici — a model & effort router for Claude Code and Codex/ChatGPT
+# model-effort-router
 
 **Paste a task. Get told which model and effort level to run it on — for both Claude and Codex/ChatGPT, in two lines.** It does *not* run the task; it routes it.
+
+Installed as a Claude Code / claude.ai skill invoked with `/model-secici`.
 
 ```
 You:    /model-secici  Move the repo's auth flow to OAuth2
@@ -138,7 +140,7 @@ by `evals/routing/grade_routing.py` (pure regex, no LLM). The protocol: spin up
 **cold agents** that read `skill/SKILL.md` fresh and route each prompt; grade the
 raw output.
 
-Latest run (**iteration-9**, cold agents against the English `SKILL.md`):
+Latest run (**iteration-10**, cold agents against the current `SKILL.md`):
 **17/17 auto-graded pass**. Run history and the reasoning behind each rule change
 is in [`evals/README.md`](evals/README.md).
 

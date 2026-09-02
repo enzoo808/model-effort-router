@@ -1,0 +1,3 @@
+Claude: Sonnet 5 · effort: low
+Codex: Terra · effort: minimal
+⚡ Speed: Codex Fast Mode (1.5x) — burns quota faster.
