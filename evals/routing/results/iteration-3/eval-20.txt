@@ -1,0 +1,4 @@
+Model önerisi vermeden önce netleştirilmesi gerekenler:
+- "Aktif olmayan" tanımı ne? (örn. son X gündür giriş yapmamış / hiç giriş yapmamış / e-postası doğrulanmamış)
+- Silme kalıcı mı (hard delete) yoksa geri alınabilir mi (soft delete/arşivleme)?
+- Hangi tablo/sistem/ortam? (örn. `users` tablosu, prod mu staging mi)

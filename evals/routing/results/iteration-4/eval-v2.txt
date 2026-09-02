@@ -1,0 +1,57 @@
+eval id: v2
+prompt: "1000 destek talebini kategorilere ayır"
+(not: "Codex'te" veya başka bir ortam adı GEÇMİYOR)
+rule file read fresh from: skill/SKILL.md (no memory, no Skill tool)
+
+--- Adım 0 — Prompt kalite kapısı ---
+1. Örnekle anlatılan ama genellenmemiş kural var mı? Hayır — "kategorilere
+   ayır" görevi kendi içinde tutarlı, sayısal bir eşik/oran belirsizliği
+   içermiyor (SKILL.md'nin madde-1 uyarısındaki "1000 üretimin 500'ü aynı
+   güne yansır" tipi gizli-yüzde belirsizliği burada yok).
+2. Yanlış varsayım sessiz yanlış sonuç üretir mi? Görev doğası gereği
+   sınıflandırma/etiketleme — hata sessiz değil, sonuç doğrudan gözlemlenebilir
+   kategori etiketleri olarak çıkar.
+3. Hedef somut mu? "1000 destek talebi" somut bir veri kümesi; kategori
+   şeması verilmemiş olsa da bu, SKILL.md'nin kendisinde de sorgulanmadan
+   kullanılan bir örnek (Codex Kolu örnekleri notunda birebir bu prompt
+   referans alınıyor) — yüksek hacimli sınıflandırma görevleri için kapı
+   zaten Adım 1'de ayrıca ele alınıyor.
+4. İki makul ama farklı implementasyon çıkar mı? Hayır — "kategorilere ayır"
+   tek bir açık yönü ifade ediyor.
+Sonuç: Adım 0'dan geçti → skorlamaya devam.
+
+--- Ekosistem Seçimi ---
+1. Güvenlik kilitleri? Hayır.
+2. Prompt açıkça bir ortam adı veriyor mu? HAYIR — bu evalin tam amacı bu:
+   "Codex'te" ifadesi yok, dolayısıyla bu adım atlanamaz/otomatik karar
+   yok, sinyallere devam edilmeli.
+3. Gerçekten devasa, bağımsız-paralelleştirilebilir bir iş mi (3+ bağımsız
+   parça, Sol Ultra adayı)? SKILL.md bu tam senaryoyu doğrudan ele alıyor —
+   Çıktı formatı / Codex Kolu örnekleri bölümündeki not: "'1000 destek
+   talebini kategorilere ayır' gibi ortam belirtmeyen bir prompt
+   kullanmıyoruz; öyle bir prompt Ekosistem Seçimi madde 5'e göre Claude'a
+   düşer (Adım 1'in hacim kapısından Haiku 4.5 çıkar), Codex'e değil."
+   → Yani bu görev madde 3'ü tetiklemiyor (yüksek hacimli sınıflandırma,
+   "gerçek bağımsız-paralel devasa iş" kategorisine değil, Adım 1'in
+   "yüksek hacimli sınıflandırma/ayrıştırma" belirleyici kapısına giriyor).
+4. Çok-turlu iteratif oturum sinyali? Hayır, tek turluk bir sınıflandırma işi.
+5. Hiçbiri tetiklenmedi → **Claude ekosistemi (varsayılan)**, SKILL.md'nin
+   kendi notuyla birebir doğrulanıyor.
+
+--- Adım 1 — Sert kapılar (Claude Kolu) ---
+| Koşul: Saniye altı gecikme VEYA yüksek hacimli sınıflandırma/ayrıştırma |
+"1000 destek talebini kategorilere ayır" = yüksek hacimli sınıflandırma →
+Belirleyici kapı TETİKLENDİ.
+Sonuç: **Haiku 4.5. Efor yok. Dur, bitti** — Adım 2/3 skorlamasına hiç
+girilmiyor (belirleyici kapı, model kararını tek başına verir).
+(W/süre gibi efor-değiştirici ikinci kontrol burada uygulanmaz — o istisna
+yalnızca siber güvenlik kapısı için ayrıca belirtilmiş; hacim kapısı zaten
+"efor yok" diyerek konuyu kapatıyor.)
+
+--- Çıktı formatı uygulaması ---
+Haiku 4.5 seçildiğinde efor alanı yazılmaz: "<Ekosistem> · Haiku 4.5"
+R=3 değil (insan onayı notu yok), opusplan değil (mandatory ikinci istisna
+da yok).
+
+=== FINAL OUTPUT ===
+Claude Code · Haiku 4.5

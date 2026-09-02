@@ -1,0 +1,24 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+*~
+
+# Python (eval tooling)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Claude Code local state (never commit)
+.claude/
+CLAUDE.local.md
+
+# Build staging (the committed dist/model-secici.zip is intentional)
+*.tmp

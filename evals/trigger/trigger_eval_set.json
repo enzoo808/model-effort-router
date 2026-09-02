@@ -1,0 +1,22 @@
+[
+  {"query": "Şirketin 40 tane mikroservisini yeni bir auth middleware'e geçirmem lazım, bunun için Claude Code'da hangi modeli ve efor seviyesini kullanmalıyım?", "should_trigger": true},
+  {"query": "elimde bir prod'da race condition var, ara sıra düşüyor, bunu Claude Code'da hangi model ve effort ile araştırmalıyım", "should_trigger": true},
+  {"query": "bu promptu opus'la mı sonnet'le mi çalıştırsam daha iyi olur: '200 müşteri yorumunu olumlu/olumsuz etiketle'", "should_trigger": true},
+  {"query": "/model-secici 4000 dosyalık legacy monolitini modüllere ayır", "should_trigger": true},
+  {"query": "hangi efor seviyesini seçmeliyim, elimde 300 sayfalık bir sözleşme var, çelişen maddeleri bulmam lazım", "should_trigger": true},
+  {"query": "kotamı gereksiz harcamadan bu genomik pipeline'daki varyant çağırma mantığını hangi modelle denetleteyim", "should_trigger": true},
+  {"query": "Sürekli Opus max seçiyorum ama kotamı gereksiz yakıyor gibi hissediyorum, şu iş için ('React bileşenine dark mode ekle') hangi model+efor mantıklı olur", "should_trigger": true},
+  {"query": "model seç: Prod config'inde MAX_RETRIES'ı 3'ten 5'e çekeceğim, bunun için ağır bir model gerekir mi", "should_trigger": true},
+  {"query": "bu görev için opus mu fable mı kullanmalıyım, 180 API endpoint'ini auth bypass açığı için tarayacağım", "should_trigger": true},
+  {"query": "bu prompt için ne kullanayım (hangi model, hangi effort): '40 sayfalık sözleşmede tahkim maddesiyle çelişen hükümleri bul'", "should_trigger": true},
+  {"query": "Opus 5 ile Sonnet 5 arasındaki fiyat farkı ne kadar, promosyon ne zaman bitiyor?", "should_trigger": false},
+  {"query": "Claude Code'da /model komutu tam olarak nasıl çalışıyor, opusplan alias'ı ne yapıyor?", "should_trigger": false},
+  {"query": "şu React bileşenine dark mode ekle", "should_trigger": false},
+  {"query": "GPT-5.5 ile Claude Opus 5'i karşılaştır, hangisi kod yazmada daha iyi?", "should_trigger": false},
+  {"query": "Claude Code ayarlarında varsayılan modeli kalıcı olarak nasıl değiştiririm, settings.json'da hangi alanı düzenlemem lazım?", "should_trigger": false},
+  {"query": "bu 300 sayfalık PDF'i özetle", "should_trigger": false},
+  {"query": "neden Opus 5 benim organizasyonumda model listesinde görünmüyor?", "should_trigger": false},
+  {"query": "Fable 5'in biyoloji ve uzun ufuklu otonomi konularında ne kadar iyi olduğunu genel olarak anlatır mısın?", "should_trigger": false},
+  {"query": "bu kod tabanında hangi tasarım deseni kullanılmış, analiz eder misin?", "should_trigger": false},
+  {"query": "Claude API'de effort parametresini bir mesaj isteğine (messages.create) nasıl eklerim?", "should_trigger": false}
+]

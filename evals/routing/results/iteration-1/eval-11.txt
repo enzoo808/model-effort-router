@@ -1,0 +1,2 @@
+opusplan · plan: max · uygulama: medium
+⚠️ Efor otomatik geçmez. Opus 5 ve Sonnet 5'in ikisi de "hold"suz — plan modunda ayarladığın efor, yürütmeye geçince aynen kalır, otomatik düşmez. Yürütme moduna geçtiğinde /effort medium ile elle ayarlaman gerekiyor; atlarsan Sonnet 5 gereksiz yere pahalı efor koşar ve opusplan'ın kota tasarrufu amacı boşa çıkar.

@@ -1,0 +1,1 @@
+Bu her zaman sabit 500 mü, yoksa üretimin bir yüzdesi mi (örn. %50)? Yoksa üretim saatine göre mi belirleniyor (örn. 14:00 öncesi aynı gün)? Bu, hesaplama mantığını tamamen değiştirir — R/D skorunu da etkiler.

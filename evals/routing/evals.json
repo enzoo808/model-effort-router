@@ -1,0 +1,575 @@
+{
+  "skill_name": "model-secici",
+  "source_of_truth": "README.tr.md (Doğrulama tablosu) — repo köküne göreli",
+  "note": "Bu dosya, README.md'deki doğrulama tablosunun makine-okunur kopyasıdır. SKILL.md/reference.md değiştiğinde README tablosunu güncelle, sonra bu dosyayı elle senkronize et (otomatik değil — kaynak README kalıyor).",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "hacim-kapisi-haiku",
+      "prompt": "200 müşteri yorumunu olumlu/olumsuz etiketle",
+      "expected_output": "Haiku 4.5, efor alanı yok",
+      "tests_rule": "Adım 1 hacim kapısı",
+      "expectations": [
+        "Çıktı 'Haiku 4.5' içeriyor",
+        "Çıktı 'efor:' içermiyor (Haiku efor desteklemez)",
+        "Çıktı başka hiçbir model adı içermiyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 2,
+      "eval_name": "taban-durum-sonnet-medium",
+      "prompt": "Şu React bileşenine dark mode ekle",
+      "expected_output": "Sonnet 5 · efor: medium",
+      "tests_rule": "Taban durum (D=1)",
+      "expectations": [
+        "Çıktı 'Sonnet 5' içeriyor",
+        "Çıktı 'efor: medium' içeriyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 3,
+      "eval_name": "skorlama-sonnet-high",
+      "prompt": "Repodaki auth akışını OAuth2'ye taşı",
+      "expected_output": "Sonnet 5 · efor: high",
+      "tests_rule": "Adım 2 skorlama, D=2",
+      "expectations": [
+        "Çıktı 'Sonnet 5' içeriyor",
+        "Çıktı 'efor: high' içeriyor",
+        "Çıktı 'Opus' içermiyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 4,
+      "eval_name": "derin-ajanik-opus-max",
+      "prompt": "Prod'da ara sıra düşen race condition'ı bul",
+      "expected_output": "Opus 5 · efor: max",
+      "tests_rule": "max(D,C)=3, D=3, R=3 — ve opusplan koşul-2 (zorluk yürütme boyunca sürüyor) başarısız olduğu için düz Opus 5 kalmalı",
+      "expectations": [
+        "Çıktı 'Opus 5' içeriyor",
+        "Çıktı 'efor: max' içeriyor",
+        "Çıktı 'opusplan' içermiyor (zorluk plana ön-yüklü değil, yürütme boyunca sürüyor)"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 5,
+      "eval_name": "siber-guvenlik-kapisi-saldiri-amacli",
+      "prompt": "Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur",
+      "expected_output": "Opus 4.8 · efor: ultracode",
+      "tests_rule": "Adım 1 SALDIRI AMAÇLI siber güvenlik kapısı (sızma testi) + W=3",
+      "expectations": [
+        "Çıktı 'Opus 4.8' içeriyor",
+        "Çıktı 'ultracode' içeriyor",
+        "Çıktı 'Sonnet' veya 'Opus 5' veya 'Fable' içermiyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": "5b",
+      "eval_name": "savunma-denetimi-kapi-yok",
+      "prompt": "Bu 180 servisin kodunu auth bypass açığı için denetle, exploit yazma",
+      "expected_claude": "Sonnet 5 · efor: ultracode",
+      "expected_codex": "Terra · efor: medium",
+      "tests_rule": "Fable 5.1 sonrası: savunma amaçlı zafiyet denetimi (exploit üretmeden) SALDIRI kapısını tetiklemez. Bilinen açık-sınıfını 180 birimde tarama = D=2 (genişlik-ağırlıklı, tek-artefakt derin avı DEĞİL); W=3 (180≥100). Claude: max(D,C)=2 → Sonnet 5; W=3∧>30dk∧¬(D3∧R3) → ultracode. Codex: D=2 → Terra·medium. Asıl test: Opus 4.8'e GİTMEZ, 'doğrulanmadı' DEMEZ.",
+      "expectations": [
+        "Claude: 'Opus 4.8' İÇERMİYOR, 'Sonnet 5' içeriyor, 'ultracode' içeriyor",
+        "Codex: 'doğrulanmadı' DEĞİL, 'Terra' içeriyor"
+      ]
+    },
+    {
+      "id": "f1",
+      "eval_name": "frontier-kapisi-fable-5-1-servis-bolme-r3",
+      "prompt": "6000 dosyalık legacy Java monolitini bağımsız servislere böl",
+      "expected_claude": "Fable 5.1 · efor: max",
+      "expected_codex": "Sol · efor: xhigh",
+      "expected_shared_note": "onay",
+      "tests_rule": "Frontier-ölçek kapısı (1000+ dosya) → Fable 5.1 (Claude). 'Servislere bölme' (modüle ayırma DEĞİL) = ağ/veri/deploy sınırı → R=3 (paylaşılan çekirdek kriteri); D=3 → çakışma kuralı efor 'max' (ultracode DEĞİL). Codex frontier gate yok: D=3∧R=3 → Sol·xhigh. R=3 → tek paylaşılan onay notu. Karşıtı: id 8 'modüllere ayır' = R=2 → ultracode.",
+      "expectations": [
+        "Claude: 'Fable 5.1' içeriyor, 'max' içeriyor (ultracode DEĞİL — D=3∧R=3 çakışması)",
+        "Codex: 'Sol' içeriyor (Sol Ultra DEĞİL), 'xhigh' içeriyor",
+        "Tek paylaşılan 'insan onayı' notu"
+      ]
+    },
+    {
+      "id": "f2",
+      "eval_name": "savunma-denetimi-kucuk-kapsam",
+      "prompt": "Bu tek dosyalık JWT doğrulama modülünü güvenlik açıkları için gözden geçir",
+      "expected_claude": "Sonnet 5 · efor: xhigh",
+      "expected_codex": "Sol · efor: high",
+      "tests_rule": "Savunma güvenlik incelemesi (kapı tetiklenmez) + küçük kapsam (tek dosya, W=0 → ultracode YOK). Güvenlik zafiyeti avı = adversarial akıl yürütme → D=3 (skill'in 'ince bug bulma = D=3' kütüphanesiyle tutarlı: race condition, çelişen madde). Kural 2 dışı → Claude Sonnet 5·xhigh (kota varsayılanı); Codex D=3 → Sol·high.",
+      "expectations": [
+        "Claude: 'Sonnet 5' içeriyor, 'xhigh', 'ultracode' İÇERMİYOR, 'Opus 4.8' İÇERMİYOR",
+        "Codex: 'Sol' içeriyor, 'doğrulanmadı' DEĞİL"
+      ]
+    },
+    {
+      "id": 6,
+      "eval_name": "adim0-hedef-somut-degil",
+      "prompt": "Şu kodu düzelt",
+      "expected_output": "Model önerilmez; hangi kod, neye göre bozuk, düzeldiği nasıl anlaşılır sorulur",
+      "tests_rule": "Adım 0 madde 3 (hedef somut değil)",
+      "expectations": [
+        "Çıktı 'Haiku 4.5', 'Sonnet 5', 'Opus 5', 'Opus 4.8', 'Fable 5' isimlerinden hiçbirini bir öneri olarak vermiyor",
+        "Çıktı bir netleştirme sorusu içeriyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 7,
+      "eval_name": "adim0-kural-genellenmemis",
+      "prompt": "Bir günde 1000 üretim olursa 500'ü aynı güne, 500'ü ertesi güne yansısın",
+      "expected_output": "Model önerilmez; 500'ün sabit mi, yüzde mi, saat-bazlı kesim mi olduğu sorulur",
+      "tests_rule": "Adım 0 madde 1 (örnekle anlatılan ama genellenmemiş kural) — bu oturumda gerçek kullanıcı promptuyla bulunan boşluk",
+      "expectations": [
+        "Çıktı bir model önerisi vermiyor",
+        "Çıktı 500'ün sabit sayı mı yoksa oran/yüzde mi olduğuna dair bir netleştirme soruyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 8,
+      "eval_name": "risk-eforu-degistirmiyor",
+      "prompt": "Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek",
+      "expected_output": "Sonnet 5 · efor: low",
+      "tests_rule": "R=3∧D=0 — model Haiku'ya düşmüyor (R tabanı Sonnet), efor D'yi takip ediyor (düşmüyor)",
+      "expectations": [
+        "Çıktı 'Sonnet 5' içeriyor",
+        "Çıktı 'efor: low' içeriyor",
+        "Çıktı 'Haiku' içermiyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 9,
+      "eval_name": "frontier-kapisi-fable-5-1",
+      "prompt": "4000 dosyalık legacy monolitini modüllere ayır",
+      "expected_output": "Fable 5.1 · efor: ultracode",
+      "tests_rule": "Frontier-ölçek kapısı + W=3",
+      "expectations": [
+        "Çıktı 'Fable 5' içeriyor",
+        "Çıktı 'ultracode' içeriyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 10,
+      "eval_name": "opusplan-flagship",
+      "prompt": "Prod'daki 200 servisin auth mimarisini baştan tasarla",
+      "expected_output": "opusplan · plan: max · uygulama: medium",
+      "tests_rule": "opusplan üç koşulu: D=3∧Kural2a, zorluk ön-yüklü, W=3. R=3 olduğu için plan eforu max",
+      "expectations": [
+        "Çıktı 'opusplan' içeriyor",
+        "Çıktı 'plan:' ve 'uygulama:' ikisini de içeriyor",
+        "Plan eforu 'max' (R=3 olduğu için, xhigh değil)",
+        "Çıktı efor otomatik geçmez uyarısını içeriyor (veya kullanıcı 'neden?' sormadan da bu kritik uyarı gösteriliyor mu — bu spesifik olarak kontrol edilmeli, bkz. not)"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 11,
+      "eval_name": "opusplan-r2-xhigh",
+      "prompt": "40 mikroservisi ortak bir auth middleware'e geçir, tasarımı bir kez belirle",
+      "expected_output": "opusplan · plan: xhigh · uygulama: medium",
+      "tests_rule": "Aynı örüntü ama R=2 (geri alınabilir) — plan eforu xhigh kalmalı, max'a çıkmamalı",
+      "expectations": [
+        "Çıktı 'opusplan' içeriyor",
+        "Plan eforu 'xhigh' (max DEĞİL — R=2 olduğu için)",
+        "Uygulama eforu 'medium' veya 'high'"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 12,
+      "eval_name": "kural3-kanitsiz-sonnet-xhigh",
+      "prompt": "40 sayfalık sözleşmede çelişen hükümleri bul",
+      "expected_output": "Sonnet 5 · efor: xhigh",
+      "tests_rule": "Kural 2 alanına girmiyor (hukuki analiz, kodlama/matematik/araçsız değil) → Kural 3 varsayılanı",
+      "expectations": [
+        "Çıktı 'Sonnet 5' içeriyor",
+        "Çıktı 'efor: xhigh' içeriyor",
+        "Çıktı 'Opus' içermiyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 13,
+      "eval_name": "ultracode-model-kisitsiz",
+      "prompt": "300 dosyada require() çağrılarını import'a çevir, davranış değişmesin",
+      "expected_output": "Sonnet 5 · efor: ultracode",
+      "tests_rule": "ultracode model kısıtsız — geri alınabilir + W=3 + mekanik kalıp Sonnet 5'te de tetiklenmeli, Opus'a yükselmemeli",
+      "expectations": [
+        "Çıktı 'Sonnet 5' içeriyor",
+        "Çıktı 'ultracode' içeriyor",
+        "Çıktı 'Opus' içermiyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 14,
+      "eval_name": "biyoloji-kapisi-fable-5-1-opus-degil",
+      "prompt": "Bu genomik pipeline'daki varyant çağırma mantığını denetle",
+      "expected_output": "Fable 5.1 · efor: high",
+      "tests_rule": "Biyoloji Ar-Ge kapısı — Opus 5 DEĞİL (fallback yok, reddeder)",
+      "expectations": [
+        "Çıktı 'Fable 5.1' içeriyor",
+        "Çıktı 'Opus 5' içermiyor",
+        "Efor tabanı zorlanmıyor (varsayılan high, xhigh/max değil)"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 15,
+      "eval_name": "c-tek-basina-opus-tetiklemiyor",
+      "prompt": "300 sayfalık API dokümantasyonunu oku, deprecated endpoint'leri listele",
+      "expected_output": "Sonnet 5 · efor: medium",
+      "tests_rule": "C=3 ama D=1 — Opus 5 tetiklenmiyor, efor D'yi takip ediyor",
+      "expectations": [
+        "Çıktı 'Sonnet 5' içeriyor",
+        "Çıktı 'efor: medium' içeriyor",
+        "Çıktı 'Opus' içermiyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 16,
+      "eval_name": "kural2a-kod-disi-mimari-opus-xhigh-no-opusplan",
+      "prompt": "Bu router'ın model seçimini riskten ayrıştır, çakışma kurallarını sıfırdan tasarla",
+      "expected_output": "Opus 5 · efor: xhigh",
+      "tests_rule": "Kural 2a artık kod-dışı yapılandırılmış tasarımı kapsıyor; W=1 yetersiz olduğu için opusplan TETİKLENMEMELİ, düz Opus 5 kalmalı",
+      "expectations": [
+        "Çıktı 'Opus 5' içeriyor",
+        "Çıktı 'efor: xhigh' içeriyor",
+        "Çıktı 'opusplan' içermiyor (W=1, opusplan koşul-3 başarısız)"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 17,
+      "eval_name": "kural2b-matematik-ispat",
+      "prompt": "Bu algoritmanın en kötü durum karmaşıklığını kanıtla ve daha iyisini bul",
+      "expected_output": "Opus 5 · efor: xhigh",
+      "tests_rule": "Kural 2(b) matematik/formel ispat — daha önce hiç test edilmemiş dal. Skill'in kendi ✅ örneği",
+      "expectations": [
+        "Çıktı 'Opus 5' içeriyor",
+        "Çıktı 'efor: xhigh' içeriyor",
+        "Çıktı 'Sonnet' içermiyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 18,
+      "eval_name": "kural2c-aracsiz-akil-yurutme",
+      "prompt": "Kod çalıştırmadan, event-driven mimari ile senkron REST arasındaki trade-off'ları tartış",
+      "expected_output": "Opus 5 · efor: xhigh",
+      "tests_rule": "Kural 2(c) araçsız derin akıl yürütme — daha önce hiç test edilmemiş dal, skill'in kendi notuna göre nadiren tetiklenmesi bekleniyor ama bu prompt açıkça 'kod çalıştırmadan' diyerek istisnaya giriyor",
+      "expectations": [
+        "Çıktı 'Opus 5' içeriyor",
+        "Çıktı 'efor: xhigh' içeriyor",
+        "Çıktı 'Sonnet' içermiyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 19,
+      "eval_name": "adim0-sessiz-yanlis-varsayim",
+      "prompt": "Bu tabloda her müşterinin toplam harcamasını hesapla, iade edilen siparişleri çıkar",
+      "expected_output": "Model önerilmez; iade tutarlarının zaten negatif satır olarak mı yoksa ayrı bir durum bayrağıyla mı işaretlendiği sorulur — yanlış varsayım kod hatasız çalışıp sessizce yanlış toplam üretir",
+      "tests_rule": "Adım 0 madde 2 (yanlış varsayım sessizce yanlış sonuç üretir mi) — daha önce hiç test edilmemiş dal, madde 1/3'ten kavramsal olarak farklı",
+      "expectations": [
+        "Çıktı model önerisi vermiyor",
+        "Çıktı iade tutarlarının veri temsiliyle ilgili bir netleştirme soruyor (negatif satır mı, durum bayrağı mı)"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 20,
+      "eval_name": "adim0-iki-yorum",
+      "prompt": "Aktif olmayan kullanıcıları sil",
+      "expected_output": "Model önerilmez; 'aktif olmayan'ın is_active bayrağı mı yoksa davranışsal pasiflik (belirli süredir giriş yapmama) mı olduğu sorulur — ikisi de makul ama çok farklı silme kümeleri üretir",
+      "tests_rule": "Adım 0 madde 4 (iki makul ama farklı implementasyon) — daha önce hiç test edilmemiş dal. Ayrıca R=3 (silme, geri dönüşsüz) olduğu için netleştirmeme riski özellikle yüksek",
+      "expectations": [
+        "Çıktı model önerisi vermiyor",
+        "Çıktı 'aktif olmayan' tanımının iki farklı okunabileceğine dair bir netleştirme soruyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 21,
+      "eval_name": "opusplan-ultracode-gelismis-kombinasyon-gozlemsel",
+      "prompt": "150 mikroservisi merkezi bir rate-limiting middleware'ine geçir, mimariyi bir kez tasarla",
+      "expected_output": "GÖZLEMSEL — makine ile kesin doğrulanamaz. Temel satır 'opusplan · plan: xhigh · uygulama: medium' olmalı (R=2, aynı middleware-migration örüntüsü, W=3). Asıl soru: skill'in 'gelişmiş kombinasyon (doğrulanmamış, opsiyonel öneri)' notu — W=3 durumda yürütme fazında ultracode'u da düşünmeyi öneren opsiyonel not — çıktıya dahil ediliyor mu, edilmiyor mu? SKILL.md bu notun çıktıya dahil edilmesinin ZORUNLU mu yoksa sadece arka plan bilgisi mi olduğunu açıkça belirtmiyor (opusplan'ın kendi efor-uyarısı notunun aksine, o 'Router bu uyarıyı her opusplan önerisine ekler' diye açıkça zorunlu kılınmış). Bu eval'ın amacı gerçek davranışı gözlemlemek, bir 'doğru' cevaba karşı sınamak değil.",
+      "tests_rule": "opusplan + ultracode gelişmiş kombinasyon notu — daha önce hiç test edilmemiş, çıktı formatı belirsizliği şüphesi (denetim ajanının da bakması istendi)",
+      "machine_gradable": false,
+      "expectations": [
+        "Temel opusplan satırı doğru (plan: xhigh, uygulama: medium)",
+        "Gelişmiş kombinasyon notunun dahil edilip edilmediği gözlemlenip not edilsin — her iki sonuç da bu eval için 'buldum' sayılır, amaç kuraldaki belirsizliği açığa çıkarmak"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": 22,
+      "eval_name": "200k-eleyici-kapi-sonnet",
+      "prompt": "300k tokenlik loglarda hangi servisin geç yanıt verdiğini bul",
+      "expected_output": "Sonnet 5 · efor: high",
+      "tests_rule": "Adım 1'in 'eleyici kapı' (bağlam>200k) daha önce hiç test edilmemişti — sadece Haiku'yu eler, final modeli belirlemez; kalan adaylar arasından normal Adım 2/3 skorlaması çalışmalı (C=3, D=2 → max(D,C)=3 ama D<3 → Sonnet 5)",
+      "expectations": [
+        "Çıktı 'Sonnet 5' içeriyor (Haiku değil, Opus 5 de değil — C tek başına Opus'u tetiklemiyor)",
+        "Çıktı 'efor: high' içeriyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": "c1",
+      "eval_name": "ekosistem-acik-belirtim-codex",
+      "prompt": "Codex'te şu React bileşenine dark mode ekle",
+      "expected_output": "Codex (ChatGPT Plus) · Terra · efor: low",
+      "tests_rule": "Ekosistem Seçimi madde 2 — prompt açıkça ortam belirtiyor, diğer sinyaller değerlendirilmeden direkt Codex Kolu'na geçilmeli",
+      "expectations": [
+        "Çıktı 'Codex' içeriyor, 'Claude Code' içermiyor",
+        "Çıktı 'Terra' içeriyor",
+        "Çıktı 'efor: low' içeriyor (Codex ölçeğinde D=1 → low, Claude ölçeğindeki 'medium' değil)"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": "c2",
+      "eval_name": "ekosistem-gercek-paralel-ultra-ama-derinlik-dusuk",
+      "prompt": "80 tamamen bağımsız API endpoint'inin dokümantasyonunu, her biri kendi başına, aynı anda üret — birbirlerine bağımlı değiller",
+      "expected_output": "Codex (ChatGPT Plus) · Terra · efor: low",
+      "tests_rule": "Ekosistem Seçimi madde 3 tetikleniyor (gerçek bağımsız paralel iş → Codex) AMA D=1 (basit dokümantasyon, sıfırdan tasarım değil) olduğu için model Sol Ultra DEĞİL, Terra kalmalı — ekosistem seçimi (W/paralellik) ile model katmanı (D/derinlik) farklı sinyaller, karıştırılmamalı",
+      "expectations": [
+        "Çıktı 'Codex' içeriyor",
+        "Çıktı 'Sol' İÇERMİYOR (ne Sol ne Sol Ultra — D=1 iken Sol'a çıkmak hata)",
+        "Çıktı 'Terra' içeriyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": "c3",
+      "eval_name": "ekosistem-varsayilan-claude-hacim-kapisi",
+      "prompt": "1000 destek talebini kategorilere ayır",
+      "expected_output": "Claude Code · Haiku 4.5",
+      "tests_rule": "Ortam belirtilmemiş, gerçek bağımsız-paralel sinyali yok (homojen sınıflandırma, modüler ayrışma değil) → Ekosistem Seçimi madde 5 varsayılanı Claude — SKILL.md'nin kendi Codex Kolu örneğiyle (aynı prompt ama 'Codex'te' önekiyle) çelişmediğini doğrular",
+      "expectations": [
+        "Çıktı 'Claude Code' içeriyor, 'Codex' içermiyor",
+        "Çıktı 'Haiku 4.5' içeriyor",
+        "Çıktı 'efor:' içermiyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": "c4",
+      "eval_name": "ekosistem-varsayilan-claude-taban-durum",
+      "prompt": "Şu React bileşenine dark mode ekle",
+      "expected_output": "Claude Code · Sonnet 5 · efor: medium",
+      "tests_rule": "c1'in ortam-belirtilmemiş çifti — aynı iş, ortam yoksa Claude'a düşüyor VE Claude ölçeğinde D=1→medium (Codex'teki 'low' değil), iki eforun karıştırılmadığının kanıtı",
+      "expectations": [
+        "Çıktı 'Claude Code' içeriyor",
+        "Çıktı 'Sonnet 5' içeriyor",
+        "Çıktı 'efor: medium' içeriyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": "c5",
+      "eval_name": "ekosistem-sahte-paralel-karsi-ornek",
+      "prompt": "Bu monolitik kod tabanını yeniden mimarile, modüllere ayır",
+      "expected_output": "Claude Code · opusplan · plan: xhigh · uygulama: medium",
+      "tests_rule": "Ekosistem Seçimi'nin kendi ❌ karşı-örneği — yüzeysel paralel görünüyor ama parçalar birbirine bağımlı (tek tutarlı tasarım kararı), Codex/Ultra'ya gitmemeli; Claude'da kalıp opusplan'a girmesi ayrıca doğrulanıyor",
+      "expectations": [
+        "Çıktı 'Claude Code' içeriyor, 'Codex' içermiyor",
+        "Çıktı 'opusplan' içeriyor",
+        "Plan eforu 'xhigh' (R=3 değil, R=2 — refactor geri alınabilir)"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": "v1",
+      "eval_name": "opusplan-ekosistem-oneki-tutarliligi",
+      "prompt": "Bu monolitik kod tabanını yeniden mimarile, modüllere ayır (regresyon: opusplan çıktısının ekosistem önekini içerdiğini doğrula)",
+      "expected_output": "Claude Code · opusplan · plan: xhigh · uygulama: medium",
+      "tests_rule": "opusplan çıktı formatına ekosistem öneki eklenmesi başlangıçta unutulmuştu (bir ajan önekli, biri öneksiz üretti) — düzeltme sonrası her zaman önekli olmalı",
+      "expectations": [
+        "Çıktı 'Claude Code' ile başlıyor",
+        "Çıktı 'opusplan' içeriyor"
+      ],
+      "format_outdated": true
+    },
+    {
+      "id": "d1",
+      "eval_name": "dual-hacim-kapisi",
+      "prompt": "Bu 200 müşteri yorumunu olumlu/olumsuz diye etiketle",
+      "expected_claude": "Haiku 4.5",
+      "expected_codex": "Luna · efor: minimal",
+      "tests_rule": "Her iki tarafta da hacim kapısı, en ucuz tier",
+      "expectations": [
+        "Claude: Haiku 4.5, efor yok",
+        "Codex: Luna, efor: minimal"
+      ]
+    },
+    {
+      "id": "d2",
+      "eval_name": "dual-taban-durum",
+      "prompt": "Repodaki auth akışını anlayıp OAuth2'ye taşı",
+      "expected_claude": "Sonnet 5 · efor: high",
+      "expected_codex": "Terra · efor: low",
+      "tests_rule": "D=1-2 taban durum, iki ölçeğin farklı efor kelimeleri kullandığının kanıtı",
+      "expectations": [
+        "Claude: Sonnet 5 · high",
+        "Codex: Terra · low"
+      ]
+    },
+    {
+      "id": "d3",
+      "eval_name": "dual-siber-guvenlik-codex-dogrulanmadi",
+      "prompt": "Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur",
+      "expected_claude": "Opus 4.8 · efor: ultracode",
+      "expected_codex": "doğrulanmadı",
+      "tests_rule": "Saldırı amaçlı siber güvenlik kapısı — Claude gerçek cevap verir, Codex 'doğrulanmadı' der (güvenlik-fallback zinciri araştırılmadı)",
+      "expectations": [
+        "Claude: Opus 4.8 · ultracode",
+        "Codex: 'doğrulanmadı' içeriyor, model adı yok"
+      ]
+    },
+    {
+      "id": "d4",
+      "eval_name": "dual-biyoloji-codex-dogrulanmadi",
+      "prompt": "Bu genomik pipeline'daki varyant çağırma mantığını denetle",
+      "expected_claude": "Fable 5.1 · efor: high",
+      "expected_codex": "doğrulanmadı",
+      "tests_rule": "Biyoloji Ar-Ge kapısı — aynı 'doğrulanmadı' mantığı",
+      "expectations": [
+        "Claude: Fable 5.1 · high",
+        "Codex: 'doğrulanmadı' içeriyor"
+      ]
+    },
+    {
+      "id": "d5",
+      "eval_name": "dual-r3-paylasilan-not",
+      "prompt": "Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek",
+      "expected_claude": "Sonnet 5 · efor: low",
+      "expected_codex": "Terra · efor: minimal",
+      "expected_shared_note": "onay",
+      "tests_rule": "R=3, D=0 — her iki taraf da kendi en-ucuz tier'ına düşmüyor (R-tabanı kuralı iki tarafta da var), paylaşılan tek insan-onayı notu",
+      "expectations": [
+        "Claude: Sonnet 5 · low (Haiku değil)",
+        "Codex: Terra · minimal (Luna değil)",
+        "Tek paylaşılan onay notu"
+      ]
+    },
+    {
+      "id": "d6",
+      "eval_name": "dual-opusplan-codex-bagimsiz",
+      "prompt": "Prod'daki 200 servisin auth mimarisini baştan tasarla",
+      "expected_claude": "opusplan · plan: max · uygulama: medium",
+      "expected_codex": "Sol · efor: xhigh",
+      "expected_claude_note": "otomatik geçmez",
+      "expected_shared_note": "onay",
+      "tests_rule": "opusplan yalnızca Claude'da var; Codex kendi normal eşlemesinden bağımsız olarak düz Sol'a çıkar",
+      "expectations": [
+        "Claude: opusplan plan=max uygulama=medium + efor-uyarısı",
+        "Codex: Sol · xhigh (opusplan analogu yok)",
+        "Paylaşılan onay notu"
+      ]
+    },
+    {
+      "id": "d7",
+      "eval_name": "dual-adim0-blok",
+      "prompt": "Şu kodu düzelt",
+      "blocked": true,
+      "tests_rule": "Adım 0 her iki tarafı da bloklar — ne Claude ne Codex satırı üretilir, sadece netleştirme sorusu",
+      "expectations": [
+        "Claude:/Codex: satırı yok",
+        "Model adı yok",
+        "Netleştirme sorusu var"
+      ]
+    },
+    {
+      "id": "n1",
+      "eval_name": "dual-novel-sahte-bagimsizlik-decoy",
+      "prompt": "60 bağımsız mikroservisin her birine, birbirinden habersiz şekilde, aynı health-check endpoint'ini ekle",
+      "expected_claude": "Sonnet 5 · efor: medium",
+      "expected_codex": "Terra · efor: low",
+      "tests_rule": "'Birbirinden habersiz' ifadesi Sol Ultra/ultracode dilini taklit ediyor ama (a) 60 birim < 100 → W=2 DEĞİL W=3 (SKILL.md W eşiği sayısal), ultracode W=3 gerektirir; (b) D=1 boilerplate → efor medium. Sol Ultra sadece D=3→Sol üzerine biner. Novel prompt.",
+      "expectations": [
+        "Claude: Sonnet 5 · medium (ultracode DEĞİL — W=2, 60<100)",
+        "Codex: Terra · low (Sol Ultra DEĞİL)"
+      ]
+    },
+    {
+      "id": "n2",
+      "eval_name": "dual-novel-savunma-vs-saldiri-guvenlik-ayrimi",
+      "prompt": "Bu Terraform modülündeki güvenlik grubu kurallarını gözden geçir, gereksiz açık portları bul",
+      "expected_claude": "Sonnet 5 · efor: medium",
+      "expected_codex": "Terra · efor: low",
+      "tests_rule": "ASIL TEST: savunma amaçlı infra incelemesi 'offensive' kapıyı TETİKLEMEZ (Fable 5.1 sonrası), 'doğrulanmadı' YOK, Opus 4.8 YOK. Efor ikincil: güvenlik grubu kuralı incelemesi = best-practice/checklist taraması (gereksiz açık port bulma), 'ince mantık hatası avı' DEĞİL → D=1-2 (soft sınır, D=3 değil). Bu iterasyonda soğuk ajan D=1→medium verdi.",
+      "expectations": [
+        "Claude: Sonnet 5 (Opus 4.8 DEĞİL, kapı tetiklenmemeli)",
+        "Codex: Terra ('doğrulanmadı' DEĞİL)"
+      ]
+    },
+    {
+      "id": "n3",
+      "eval_name": "dual-novel-basit-nullable-migration",
+      "prompt": "Kullanıcı tablosuna `last_login_at` sütunu ekle ve nullable yap",
+      "expected_claude": "Sonnet 5 · efor: low",
+      "expected_codex": "Terra · efor: minimal",
+      "tests_rule": "Tam belirtilmiş additive şema değişikliği (sütun adı + nullable hepsi verilmiş, tasarım kararı yok) → D=0 (SKILL.md D=0 kodlama hücresi). R=2 (tersinir migration, R=1 değil) — R≤1 olmadığı için Haiku/Luna'ya düşmüyor, taban Sonnet·low / Terra·minimal (efor D=0'ı takip eder).",
+      "expectations": [
+        "Claude: Sonnet 5 · low (Haiku DEĞİL, R=2; efor D=0 → low)",
+        "Codex: Terra · minimal (Luna DEĞİL)"
+      ]
+    },
+    {
+      "id": "r1",
+      "eval_name": "d1-vs-d2-belgelenmis-kalip-pagination",
+      "prompt": "Bu API'ye cursor-based pagination ekle",
+      "expected_claude": "Sonnet 5 · efor: medium",
+      "expected_codex": "Terra · efor: low",
+      "tests_rule": "Kullanıcı raporu: Codex hep Sol·high veya Terra·medium veriyor, Luna/Terra-low neredeyse hiç çıkmıyor. Kök neden: D=1/D=2 sınırı belirsizdi (iyi belgelenmiş kalıp D=2'ye yuvarlanıyordu). Düzeltme sonrası regresyon testi.",
+      "expectations": [
+        "Claude: Sonnet 5 · medium (high DEĞİL)",
+        "Codex: Terra · low (medium DEĞİL)"
+      ]
+    },
+    {
+      "id": "r2",
+      "eval_name": "d0-vs-d1-mekanik-cok-paragraf-yeniden-yazim",
+      "prompt": "Bu üç paragraflık metni daha resmi bir dille yeniden yaz",
+      "expected_claude": "Haiku 4.5",
+      "expected_codex": "Luna · efor: minimal",
+      "tests_rule": "Aynı kök neden — D=0'ın kod-dışı alanda tek cümle dışında çapası yoktu, uzunluk yüzünden D=1'e yuvarlanıyordu. Düzeltme sonrası regresyon testi.",
+      "expectations": [
+        "Claude: Haiku 4.5",
+        "Codex: Luna · minimal"
+      ]
+    },
+    {
+      "id": "s1",
+      "eval_name": "r-ekseni-kod-degisikligi-vs-operasyonel-deger",
+      "prompt": "Bu butonun rengini maviden yeşile çevir",
+      "expected_claude": "Haiku 4.5",
+      "expected_codex": "Luna · efor: minimal",
+      "tests_rule": "İkinci kök neden: R rubriği 'izole UI değeri' örneğini R=2 etiketlemişti, normal PR-incelemeli kod değişikliğini de bu kategoriye sokuyordu — Luna/Haiku'yu gereksiz yere eliyordu. Düzeltme: kod tabanı değişikliği varsayılan R=1, sadece canlıya doğrudan giden operasyonel değerler R=2/R=3.",
+      "expectations": [
+        "Claude: Haiku 4.5 (Sonnet 5 DEĞİL)",
+        "Codex: Luna · minimal (Terra DEĞİL)"
+      ]
+    },
+    {
+      "id": "s3",
+      "eval_name": "r-ekseni-gercek-operasyonel-deger-r2",
+      "prompt": "Feature flag panelinden yeni checkout akışını tüm kullanıcılar için aç",
+      "expected_claude": "Sonnet 5 · efor: low",
+      "expected_codex": "Terra · efor: minimal",
+      "tests_rule": "s1'in karşıt-örneği — gerçekten canlıya doğrudan giden, kod incelemesinden geçmeyen bir operasyonel değer (feature flag) hâlâ R=2 olmalı, R=1'e aşırı düzeltilmemeli",
+      "expectations": [
+        "Claude: Sonnet 5 · low (Haiku DEĞİL, R=2)",
+        "Codex: Terra · minimal (Luna DEĞİL)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+Claude Code · opusplan · plan: xhigh · uygulama: medium
+⚠️ Efor otomatik geçmez — yürütme moduna geçince /effort medium ile elle ayarla, aksi halde Sonnet 5 gereksiz yere xhigh eforuyla çalışmaya devam eder.

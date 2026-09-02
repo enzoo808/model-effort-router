@@ -1,0 +1,2 @@
+opusplan · plan: max · uygulama: medium
+⚠️ Efor otomatik geçmez — yürütme moduna geçince /effort medium ile elle ayarla, yoksa Sonnet 5 gereksiz yere pahalı efor çalıştırır.

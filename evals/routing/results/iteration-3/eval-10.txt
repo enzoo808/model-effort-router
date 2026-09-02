@@ -1,0 +1,3 @@
+opusplan · plan: max · uygulama: medium
+İnsan onayı olmadan uygulanmasın.
+⚠️ Efor otomatik geçmez — yürütme moduna geçince /effort medium ile elle ayarla, yoksa gereksiz yere pahalı efor çalıştırır.

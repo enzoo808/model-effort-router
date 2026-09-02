@@ -1,0 +1,178 @@
+{
+  "results": [
+    {
+      "id": 1,
+      "eval_name": "hacim-kapisi-haiku",
+      "passed": true,
+      "evidence": "Haiku 4.5 doğru"
+    },
+    {
+      "id": 2,
+      "eval_name": "taban-durum-sonnet-medium",
+      "passed": null,
+      "evidence": "Çıktı dosyası bulunamadı: results\\iteration-4\\eval-2.txt"
+    },
+    {
+      "id": 3,
+      "eval_name": "skorlama-sonnet-high",
+      "passed": null,
+      "evidence": "Çıktı dosyası bulunamadı: results\\iteration-4\\eval-3.txt"
+    },
+    {
+      "id": 4,
+      "eval_name": "derin-ajanik-opus-max",
+      "passed": null,
+      "evidence": "Çıktı dosyası bulunamadı: results\\iteration-4\\eval-4.txt"
+    },
+    {
+      "id": 5,
+      "eval_name": "siber-guvenlik-kapisi",
+      "passed": true,
+      "evidence": "Opus 4.8 doğru, efor=ultracode"
+    },
+    {
+      "id": 6,
+      "eval_name": "adim0-hedef-somut-degil",
+      "passed": null,
+      "evidence": "Çıktı dosyası bulunamadı: results\\iteration-4\\eval-6.txt"
+    },
+    {
+      "id": 7,
+      "eval_name": "adim0-kural-genellenmemis",
+      "passed": null,
+      "evidence": "Çıktı dosyası bulunamadı: results\\iteration-4\\eval-7.txt"
+    },
+    {
+      "id": 8,
+      "eval_name": "risk-eforu-degistirmiyor",
+      "passed": true,
+      "evidence": "Sonnet 5 doğru, efor=low"
+    },
+    {
+      "id": 9,
+      "eval_name": "frontier-kapisi-fable",
+      "passed": null,
+      "evidence": "Çıktı dosyası bulunamadı: results\\iteration-4\\eval-9.txt"
+    },
+    {
+      "id": 10,
+      "eval_name": "opusplan-flagship",
+      "passed": true,
+      "evidence": "opusplan doğru: plan=max, uygulama=medium"
+    },
+    {
+      "id": 11,
+      "eval_name": "opusplan-r2-xhigh",
+      "passed": null,
+      "evidence": "Çıktı dosyası bulunamadı: results\\iteration-4\\eval-11.txt"
+    },
+    {
+      "id": 12,
+      "eval_name": "kural3-kanitsiz-sonnet-xhigh",
+      "passed": null,
+      "evidence": "Çıktı dosyası bulunamadı: results\\iteration-4\\eval-12.txt"
+    },
+    {
+      "id": 13,
+      "eval_name": "ultracode-model-kisitsiz",
+      "passed": null,
+      "evidence": "Çıktı dosyası bulunamadı: results\\iteration-4\\eval-13.txt"
+    },
+    {
+      "id": 14,
+      "eval_name": "biyoloji-kapisi-fable-opus-degil",
+      "passed": true,
+      "evidence": "Fable 5 doğru, efor=high"
+    },
+    {
+      "id": 15,
+      "eval_name": "c-tek-basina-opus-tetiklemiyor",
+      "passed": null,
+      "evidence": "Çıktı dosyası bulunamadı: results\\iteration-4\\eval-15.txt"
+    },
+    {
+      "id": 16,
+      "eval_name": "kural2a-kod-disi-mimari-opus-xhigh-no-opusplan",
+      "passed": true,
+      "evidence": "Opus 5 doğru, efor=xhigh"
+    },
+    {
+      "id": 17,
+      "eval_name": "kural2b-matematik-ispat",
+      "passed": null,
+      "evidence": "Çıktı dosyası bulunamadı: results\\iteration-4\\eval-17.txt"
+    },
+    {
+      "id": 18,
+      "eval_name": "kural2c-aracsiz-akil-yurutme",
+      "passed": null,
+      "evidence": "Çıktı dosyası bulunamadı: results\\iteration-4\\eval-18.txt"
+    },
+    {
+      "id": 19,
+      "eval_name": "adim0-sessiz-yanlis-varsayim",
+      "passed": null,
+      "evidence": "Çıktı dosyası bulunamadı: results\\iteration-4\\eval-19.txt"
+    },
+    {
+      "id": 20,
+      "eval_name": "adim0-iki-yorum",
+      "passed": null,
+      "evidence": "Çıktı dosyası bulunamadı: results\\iteration-4\\eval-20.txt"
+    },
+    {
+      "id": 21,
+      "eval_name": "opusplan-ultracode-gelismis-kombinasyon-gozlemsel",
+      "passed": "manual",
+      "evidence": "Bu eval öznel/gözlemsel — script ile kesin doğrulanamaz, elle incele"
+    },
+    {
+      "id": 22,
+      "eval_name": "200k-eleyici-kapi-sonnet",
+      "passed": null,
+      "evidence": "Çıktı dosyası bulunamadı: results\\iteration-4\\eval-22.txt"
+    },
+    {
+      "id": "c1",
+      "eval_name": "ekosistem-acik-belirtim-codex",
+      "passed": true,
+      "evidence": "Terra doğru, efor=low"
+    },
+    {
+      "id": "c2",
+      "eval_name": "ekosistem-gercek-paralel-ultra-ama-derinlik-dusuk",
+      "passed": true,
+      "evidence": "Terra doğru, efor=low"
+    },
+    {
+      "id": "c3",
+      "eval_name": "ekosistem-varsayilan-claude-hacim-kapisi",
+      "passed": true,
+      "evidence": "Haiku 4.5 doğru"
+    },
+    {
+      "id": "c4",
+      "eval_name": "ekosistem-varsayilan-claude-taban-durum",
+      "passed": true,
+      "evidence": "Sonnet 5 doğru, efor=medium"
+    },
+    {
+      "id": "c5",
+      "eval_name": "ekosistem-sahte-paralel-karsi-ornek",
+      "passed": true,
+      "evidence": "opusplan doğru: plan=xhigh, uygulama=medium"
+    },
+    {
+      "id": "v1",
+      "eval_name": "opusplan-ekosistem-oneki-tutarliligi",
+      "passed": true,
+      "evidence": "opusplan doğru: plan=xhigh, uygulama=medium"
+    }
+  ],
+  "summary": {
+    "passed": 12,
+    "failed": 0,
+    "skipped": 15,
+    "total": 28
+  }
+}

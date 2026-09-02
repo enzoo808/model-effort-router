@@ -1,0 +1,3 @@
+Claude Code · opusplan · plan: max · uygulama: medium
+İnsan onayı olmadan uygulanmasın.
+⚠️ Efor otomatik geçmez — yürütme moduna geçtiğinde `/effort medium` ile elle ayarla, yoksa Sonnet 5 gereksiz pahalı efor koşar.

@@ -1,0 +1,106 @@
+{
+  "results": [
+    {
+      "id": 1,
+      "eval_name": "hacim-kapisi-haiku",
+      "passed": true,
+      "evidence": "Haiku 4.5 doğru"
+    },
+    {
+      "id": 2,
+      "eval_name": "taban-durum-sonnet-medium",
+      "passed": true,
+      "evidence": "Sonnet 5 doğru, efor=medium"
+    },
+    {
+      "id": 3,
+      "eval_name": "skorlama-sonnet-high",
+      "passed": true,
+      "evidence": "Sonnet 5 doğru, efor=high"
+    },
+    {
+      "id": 4,
+      "eval_name": "derin-ajanik-opus-max",
+      "passed": true,
+      "evidence": "Opus 5 doğru, efor=max"
+    },
+    {
+      "id": 5,
+      "eval_name": "siber-guvenlik-kapisi",
+      "passed": true,
+      "evidence": "Opus 4.8 doğru, efor=ultracode"
+    },
+    {
+      "id": 6,
+      "eval_name": "adim0-hedef-somut-degil",
+      "passed": true,
+      "evidence": "Model önerilmedi, netleştirme sorusu var"
+    },
+    {
+      "id": 7,
+      "eval_name": "adim0-kural-genellenmemis",
+      "passed": true,
+      "evidence": "Model önerilmedi, netleştirme sorusu var"
+    },
+    {
+      "id": 8,
+      "eval_name": "risk-eforu-degistirmiyor",
+      "passed": true,
+      "evidence": "Sonnet 5 doğru, efor=low"
+    },
+    {
+      "id": 9,
+      "eval_name": "frontier-kapisi-fable",
+      "passed": false,
+      "evidence": "'Fable 5' çıktıda yok"
+    },
+    {
+      "id": 10,
+      "eval_name": "opusplan-flagship",
+      "passed": false,
+      "evidence": "'opusplan' çıktıda yok"
+    },
+    {
+      "id": 11,
+      "eval_name": "opusplan-r2-xhigh",
+      "passed": false,
+      "evidence": "Plan eforu 'max' bekleniyordu 'xhigh'"
+    },
+    {
+      "id": 12,
+      "eval_name": "kural3-kanitsiz-sonnet-xhigh",
+      "passed": true,
+      "evidence": "Sonnet 5 doğru, efor=xhigh"
+    },
+    {
+      "id": 13,
+      "eval_name": "ultracode-model-kisitsiz",
+      "passed": true,
+      "evidence": "Sonnet 5 doğru, efor=ultracode"
+    },
+    {
+      "id": 14,
+      "eval_name": "biyoloji-kapisi-fable-opus-degil",
+      "passed": true,
+      "evidence": "Fable 5 doğru, efor=high"
+    },
+    {
+      "id": 15,
+      "eval_name": "c-tek-basina-opus-tetiklemiyor",
+      "passed": true,
+      "evidence": "Sonnet 5 doğru, efor=medium"
+    },
+    {
+      "id": 16,
+      "eval_name": "kural2a-kod-disi-mimari-opus-xhigh-no-opusplan",
+      "passed": true,
+      "evidence": "Opus 5 doğru, efor=xhigh"
+    }
+  ],
+  "summary": {
+    "passed": 13,
+    "failed": 3,
+    "skipped": 0,
+    "total": 16
+  }
+}

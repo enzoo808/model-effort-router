@@ -1,0 +1,7 @@
+Model önermeden önce netleştirmem gerekiyor:
+
+1. Hangi tablo? "Bu tabloda" hangi dosyayı/sorguyu/veri kaynağını işaret ediyor belirtilmemiş.
+2. "İade edilen siparişleri çıkar" tam olarak ne demek: iade edilen siparişler toplamdan tamamen mi düşülüyor, yoksa yalnızca iade edilen tutar mı (kısmi iade dahil) netleniyor? İade durumu hangi alana/işarete göre belirleniyor?
+3. "Toplam harcama" neyi kapsıyor: vergi/kargo/indirim dahil brüt tutar mı, yoksa sadece ürün bedeli mi?
+
+Bu netleşmeden ilerlemek, yanlış bir varsayımla sessizce hatalı bir hesaplama üretme riski taşıyor.
