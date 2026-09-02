@@ -117,8 +117,8 @@ mkdir -p ~/.claude/skills/model-secici
 cp skill/SKILL.md skill/reference.md ~/.claude/skills/model-secici/
 ```
 
-`~/.claude/skills/model-secici/` altına kopyalar. Claude Code'u yeniden başlat
-(veya `/doctor` ile skill'leri tazele), sonra:
+`~/.claude/skills/model-secici/` altına kopyalar. Yeni bir Claude Code oturumu
+başlat, sonra:
 
 ```
 /model-secici Repodaki auth akışını OAuth2'ye taşı

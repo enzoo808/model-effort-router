@@ -77,7 +77,7 @@ mkdir -p ~/.claude/skills/model-secici
 cp skill/SKILL.md skill/reference.md ~/.claude/skills/model-secici/
 ```
 
-Restart Claude Code (or run `/doctor` to reload skills), then:
+Start a new Claude Code session, then:
 ```
 /model-secici  <your task>
 ```
