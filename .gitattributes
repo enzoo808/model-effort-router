@@ -1,0 +1,7 @@
+# Normalise all text to LF in the repo. Windows checkouts still get CRLF
+# locally via core.autocrlf if the user has it set.
+* text=auto eol=lf
+
+*.ps1 text eol=crlf
+*.png binary
+*.zip binary
