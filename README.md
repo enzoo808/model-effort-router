@@ -17,7 +17,7 @@ You:    /model-secici  Find the race condition that flakes in prod sometimes
 
 model-secici:
   Claude: Opus 5 · effort: max
-  Codex:  Sol · effort: xhigh
+  Codex:  Sol · effort: max
   Do not apply without human review.
 ```
 
@@ -108,7 +108,7 @@ second rule — convoluted, and it collapsed every prompt onto the same two mode
 | Luna | speed / volume, cheapest | Haiku 4.5 |
 | Terra | balanced daily driver | Sonnet 5 |
 | **Sol** | flagship — code / science / security | Opus 5 |
-| **Sol Ultra** | up to 64 collaborating sub-agents | stronger than Claude's `ultracode` |
+| **Sol Ultra** | a Codex *mode* on Sol (Plus+): ~4 collaborating agents in parallel | stronger than Claude's `ultracode` |
 
 Offensive-security and biology-R&D prompts always route to Claude — the Codex
 side has no verified safety-fallback chain, so it honestly says
@@ -125,7 +125,7 @@ side has no verified safety-fallback chain, so it honestly says
 | Add cursor-based pagination to this API | `Sonnet 5 · medium` | `Terra · low` |
 | Audit this genomics pipeline's variant-calling logic | `Fable 5.1 · high` | `unverified — use Claude` |
 | Pentest this 180-service environment, build auth-bypass chains | `Opus 4.8 · ultracode` | `unverified — use Claude` |
-| Split this 6000-file legacy monolith into services | `Fable 5.1 · max` + review note | `Sol · xhigh` + review note |
+| Split this 6000-file legacy monolith into services | `Fable 5.1 · max` + review note | `Sol · max` + review note |
 | Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5 · low` + review note | `Terra · minimal` + review note |
 | "Fix this code" | *(no model — asks: which code? broken how? done = ?)* | |
 

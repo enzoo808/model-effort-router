@@ -56,7 +56,7 @@ user asks "why?".
 | Luna | Speed/volume specialist, cheapest tier | Haiku 4.5 |
 | Terra | Daily work, balanced — **default starting point** | Sonnet 5 |
 | **Sol** | **Flagship** — code/science/security | Opus 5 |
-| **Sol Ultra** | Rides on top of Sol, real-time collaborative multi-sub-agent mode (up to 64) | No clean analogue — a stronger parallelism primitive than Claude's `ultracode` |
+| **Sol Ultra** | A Codex *mode* toggled on Sol (Plus plans+): ~4 collaborating agents in parallel (more in "multiagent v2"). Not a separate model | No clean analogue — a stronger parallelism primitive than Claude's `ultracode` |
 
 > Fable 5.1 (frontier scale + biology-adjacent) has **no** verified analogue on
 > the Codex side. For offensive-security and biology-R&D prompts the Codex line
@@ -658,7 +658,15 @@ criterion):
 verification angle) that can run unaware of each other and be merged at the end
 — or are the pieces interdependent, requiring a single coherent design
 decision?* If genuinely independent (and it already got to `D=3→Sol`) → **Sol
-Ultra**. Ultra is verified only on Sol, not on Terra/Luna.
+Ultra**.
+
+> **What "Sol Ultra" actually is.** Ultra is a **product mode**, not an effort
+> value — sending `reasoning: {effort: "ultra"}` returns HTTP 400. It's toggled
+> in Codex settings (Plus plans and up) and runs ~4 collaborating agents in
+> parallel. "Sol Ultra" = `gpt-5.6-sol` with that mode on, not a separate model
+> slug. It rides on top of a normal effort level — so `Sol Ultra · effort: high`
+> in the output means "Sol, ultra mode, high effort". Ultra is only meaningful
+> on Sol; there is no Terra/Luna Ultra.
 > ✅ "Run the security scan of 40 different microservices, each one independently,
 >    at the same time" — genuinely independent 40 pieces → Sol Ultra.
 > ❌ "Break this monolithic codebase into modules" — the pieces are
@@ -673,18 +681,22 @@ irreversible work to the weakest model. `R=3` also adds the human-review note to
 the output (below, the single/shared note in Output format).
 
 **Effort ← D**, same logic as the Claude arm: `0→minimal · 1→low · 2→medium ·
-3→high`. If `D=3 ∧ R=3` → **`xhigh`** (the ceiling verified in the Codex CLI
-`config.toml` — see the note below, think of it as "the equivalent of Claude's
-`max`").
+3→high`. If `D=3 ∧ R=3` → **`max`** (matches Claude's `max`).
 
-> ⚠️ **"max" and "mode: pro" could not be verified in the Codex CLI.** The
-> official API docs mention `max` in `reasoning.effort`, plus a separate
-> `reasoning.mode` (standard/pro) axis — but those were verified for the
-> "Responses API" (programmatic use). In the Codex CLI's own `config.toml`
-> (`model_reasoning_effort`) only `minimal|low|medium|high|xhigh` was verified;
-> neither `max` nor `mode` appears there. This router targets **Codex CLI use** —
-> use `xhigh` as the ceiling, mention `max`/`mode:pro` only if the user asks,
-> with the note "may exist in the API but unverified in the Codex CLI".
+> **`max` is real on Codex.** `openai.com/index/gpt-5-6/` and the GA note
+> confirm the GPT-5.6 effort ladder is `none, low, medium, high, xhigh, max`, and
+> that `max` "is available to all users with access to GPT-5.6 in ChatGPT Work
+> and Codex and can be toggled on in settings". The
+> `learn.chatgpt.com/docs/config-file/config-reference` page is stale (still
+> lists only up to `xhigh`) — a doc lag, not a real limit. Caveat: some
+> third-party gateways / CLI wrappers still block `max` and 400 on it (open
+> GitHub issues) — if the user reports a 400, tell them to check their tooling
+> or fall back to `xhigh`.
+>
+> **`mode: pro` — Responses-API only, still not in the Codex CLI.** `reasoning.mode:
+> "pro"` (a separate axis from effort, defaults to `medium` effort) is confirmed
+> for the Responses API. The Codex CLI config reference has no `model_reasoning_mode`
+> key. Mention it only if the user asks, as "API-only, not in the CLI config".
 
 ### Human-review note on Codex
 
@@ -695,14 +707,15 @@ Codex CLI, but Codex's own tool-schema/session-cost mechanics **were not
 verified** — I don't carry those two rules into the Codex arm, they apply only
 in the Claude arm.
 
-### `mode: pro` — unverified, optional suggestion (NOT added to output)
+### `mode: pro` — Responses-API only, optional suggestion (NOT added to output)
 
-If `max(D,C)=3, D=3` and it stayed on Terra (D<3 but the result is critical),
-`reasoning.mode: pro` can be tried — but because it's unverified in the Codex
-CLI it doesn't go in the default output; if the user asks "what else can I do?",
-suggest it with a "try it, fall back to standard mode if it doesn't work" note
-(same caution level as the Claude arm's `opusplan`+`ultracode` advanced-
-combination note).
+If `max(D,C)=3` stayed on Terra (D<3 but the result is critical),
+`reasoning.mode: "pro"` (Responses API) can be tried — it's a separate axis from
+effort and defaults to `medium` effort. It's not in the Codex CLI config
+reference, so it doesn't go in the default output; if the user asks "what else
+can I do?", suggest it as "API-only, try it, fall back to standard mode if it
+doesn't work" (same caution level as the Claude arm's `opusplan`+`ultracode`
+advanced-combination note).
 
 ---
 
@@ -763,13 +776,13 @@ Codex: Terra · effort: low
 ```
 (Same D=1 input, two different numeric effort words — the Claude scale `low→max`
 looks like it starts at `medium` for D=1 but here D=2 gives `high`; the Codex
-scale `minimal→xhigh` starts from a lower rung. The two scales don't convert to
+scale `minimal→max` starts from a lower rung. The two scales don't convert to
 each other, don't mix them.)
 
 Input: *"Find the race condition that flakes in prod sometimes"*
 ```
 Claude: Opus 5 · effort: max
-Codex: Sol · effort: xhigh
+Codex: Sol · effort: max
 Do not apply without human review.
 ```
 
@@ -807,11 +820,12 @@ Input: *"Redesign the auth architecture of 200 prod services from scratch"*
 ```
 Claude: opusplan · plan: max · execute: medium
 ⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.
-Codex: Sol · effort: xhigh
+Codex: Sol · effort: max
 Do not apply without human review.
 ```
 (`opusplan` is Claude-only; the Codex side comes out plain Sol from its own
-normal mapping, the two sides can use different mechanisms, that's normal.)
+normal mapping — D=3 ∧ R=3 → `max`. The two sides can use different mechanisms,
+that's normal.)
 
 Input: *"Run the security scan of 40 completely independent microservices at once, each on its own"*
 ```

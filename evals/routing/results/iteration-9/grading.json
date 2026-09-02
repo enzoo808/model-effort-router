@@ -40,7 +40,7 @@
       "id": "f1",
       "eval_name": "frontier-kapisi-fable-5-1-servis-bolme-r3",
       "passed": true,
-      "evidence": "Claude: Fable 5.1 correct, effort=max; Codex: Sol correct, effort=xhigh; notes ok (shared note)"
+      "evidence": "Claude: Fable 5.1 correct, effort=max; Codex: Sol correct, effort=max; notes ok (shared note)"
     },
     {
       "id": "f2",
@@ -220,7 +220,7 @@
       "id": "d6",
       "eval_name": "dual-opusplan-codex-bagimsiz",
       "passed": true,
-      "evidence": "Claude: opusplan correct (plan=max, execute=medium); Codex: Sol correct, effort=xhigh; notes ok (shared note, Claude note)"
+      "evidence": "Claude: opusplan correct (plan=max, execute=medium); Codex: Sol correct, effort=max; notes ok (shared note, Claude note)"
     },
     {
       "id": "d7",

@@ -590,12 +590,14 @@ Went to general availability on 9 July 2026. Sol is the flagship, Terra the
 balanced mid-tier, Luna the speed/cost-focused budget model — verified directly
 from the official launch page.
 
-**Sol Ultra:** introduced 26 June 2026, GA on 9 July. Instead of a single
-reasoning chain it decomposes the task and creates collaborating sub-agents that
-communicate in real time. 4 parallel agents by default; up to 64 in "multiagent
-v2" mode. Integrated into the Codex CLI client. Context window **43% larger** than
-GPT-5.5 (~1.5M tokens — single-source claim, couldn't be confirmed directly from
-the official page).
+**Sol Ultra:** introduced 26 June 2026, GA on 9 July. A **product mode** (not a
+model, not an effort value — `effort: "ultra"` returns HTTP 400), toggled in
+Codex settings on **Plus plans and up** (Pro/Enterprise in ChatGPT Work).
+Instead of a single reasoning chain it decomposes the task into ~4 collaborating
+agents that communicate in real time (more in "multiagent v2" mode). "Sol Ultra"
+= `gpt-5.6-sol` with the mode on. Context window **43% larger** than GPT-5.5
+(~1.5M tokens — single-source claim, couldn't be confirmed directly from the
+official page).
 
 ### 9.2. Pricing (per MTok) — after the 30 July 2026 price cut
 
@@ -609,37 +611,40 @@ the official page).
 the pre-30-July prices. On that date OpenAI cut Luna 80%, Terra 20%, Sol
 unchanged. Output price is **6x** input on all three models (fixed ratio).
 
-### 9.3. Effort / reasoning mechanics — the report's one-dimensional ladder is WRONG
+### 9.3. Effort / reasoning mechanics — three separate things
 
-The report describes a single linear ladder
-"Instant→Low→Medium→High→Extra High→Max→Ultra". The official docs show **two
-separate, independent axes**:
+The report described a single linear ladder
+"Instant→Low→Medium→High→Extra High→Max→Ultra". It's actually **three separate
+things**:
 
-1. **`reasoning.effort`** — in the API
-   (`developers.openai.com/api/docs/guides/reasoning`) the supported values are
-   `none, minimal, low, medium, high, xhigh, max` (varies by model). In the Codex
-   CLI `config.toml` (`model_reasoning_effort`) only **`minimal, low, medium,
-   high, xhigh`** was verified — `none` and `max` don't appear there. Default:
-   `medium`.
-2. **`reasoning.mode`** — `standard` (default) or `pro`. Official text:
-   *"Reasoning mode and reasoning effort are independent. Mode selects standard
-   or pro execution, while reasoning.effort controls how much reasoning the model
-   applies within that mode."* This was verified **only in the Responses API**
-   (programmatic use) — no `reasoning.mode`/`model_reasoning_mode` key was
-   **found** in the Codex CLI config reference.
-
-**Conclusion:** `max` and `mode: pro` are in the "may exist in the API but not
-officially in / not verified in the CLI" category, like Claude's `ultracode` —
-the router does not use them as a ceiling, it only presents them as an info note
-(if the user asks).
-
-**Ultra is not an effort level, it's a separate orchestration mode.** The Codex
-CLI's official config reference has an `agents` table with
-`agents.default_subagent_model`, `agents.default_subagent_reasoning_effort` and a
-sub-agent count limit — "Ultra" is a marketing/community term, the real mechanism
-under it is these config keys. This is symmetric with Claude's `ultracode` "a
-Claude Code setting, not an API parameter" status but a **stronger** mechanism: a
-genuine concurrent, collaborative multi-model instance.
+1. **`reasoning.effort`** — supported values `none, minimal, low, medium, high,
+   xhigh, max` (varies by model; `openai.com/index/gpt-5-6/` +
+   `developers.openai.com/api/docs/guides/reasoning`). Default `medium`.
+   **`max` is real on Codex** (updated 2 Sep 2026): the GPT-5.6 GA note says
+   `max` "is available to all users with access to GPT-5.6 in ChatGPT Work and
+   Codex and can be toggled on in settings". The
+   `learn.chatgpt.com/docs/config-file/config-reference` page still lists only up
+   to `xhigh` — it's **stale**, a doc lag, not a real limit. Known snag: some
+   third-party gateways / CLI wrappers still 400 on `effort: "max"` (open GitHub
+   issues) — a tooling gap, not a product one. → **The router uses `max` as the
+   Codex ceiling for `D=3 ∧ R=3`, matching Claude.**
+2. **`reasoning.mode`** — `standard` (default) or `pro`, a **separate axis** from
+   effort (defaults to `medium` effort). *"Mode selects standard or pro
+   execution, while reasoning.effort controls how much reasoning the model
+   applies within that mode."* Confirmed for the **Responses API only**; no
+   `model_reasoning_mode` key in the Codex CLI config reference. → Router mentions
+   it only if asked, as "API-only".
+3. **`ultra` — a product mode, not an effort value.** Sending
+   `reasoning: {effort: "ultra"}` returns **HTTP 400**. Ultra is toggled in Codex
+   settings (Plus plans and up) and runs ~4 collaborating agents in parallel
+   (more in "multiagent v2"). "Sol Ultra" = `gpt-5.6-sol` with that mode on — not
+   a separate model slug; it rides on top of a normal effort level. For API
+   builders the equivalent is OpenAI's "Multi-Agent orchestration" beta. The
+   Codex CLI's config reference exposes the underlying knobs as an `agents` table
+   (`agents.default_subagent_model`, `agents.default_subagent_reasoning_effort`,
+   `agents.max_concurrent_threads_per_session`, `agents.max_threads`). This is
+   symmetric with Claude's `ultracode` "a setting, not an API parameter" status
+   but a **stronger** mechanism: genuine concurrent collaborative model instances.
 
 ### 9.4. ChatGPT Plus quotas
 
@@ -689,15 +694,29 @@ agentic coding work.
   Opus 5/Sonnet 5 measured in the same release. Sol neck-and-neck on
   reasoning/math, weak on agentic coding (56.2). `livebench.ai` — read directly
   2 Sep 2026.
-- That `reasoning.effort` and `reasoning.mode` are two independent axes; that the
-  Codex CLI supports only effort (minimal–xhigh).
-- The existence of Sol Ultra, the sub-agent config keys (`agents.*`).
+- **`reasoning.effort` ladder is `none, minimal, low, medium, high, xhigh, max`**
+  and **`max` is a Codex setting toggle** for anyone with GPT-5.6 access
+  (`openai.com/index/gpt-5-6/` + GA note, re-verified 2 Sep 2026). The router
+  uses `max` as the Codex ceiling for `D=3 ∧ R=3`. The
+  `learn.chatgpt.com/docs/config-file/config-reference` page is stale (lists only
+  to `xhigh`).
+- **`ultra` is a product mode, not an effort value** — `effort: "ultra"` → HTTP
+  400. Codex Plus+ toggle, ~4 parallel agents. "Sol Ultra" = `gpt-5.6-sol` +
+  ultra mode. Sub-agent config keys: `agents.default_subagent_model`,
+  `agents.default_subagent_reasoning_effort`, `agents.max_concurrent_threads_per_session`,
+  `agents.max_threads`.
+- `reasoning.mode` (`standard`/`pro`) is a separate axis from effort — confirmed
+  for the Responses API only (no `model_reasoning_mode` key in the Codex CLI).
 - Codex CLI model selection: `--model`/`-m` flag, `model` key in `config.toml`.
 
 **❌ Debunked (the report was wrong):**
 - Terra/Luna's old prices ($2.50/$15, $1/$6).
-- The one-dimensional "Instant→...→Ultra" effort ladder — actually two
-  independent axes (effort × mode) + a separate orchestration mode (Ultra).
+- The one-dimensional "Instant→...→Ultra" ladder — actually effort (`none`…`max`)
+  + a separate `mode` axis (`standard`/`pro`, API-only) + a separate product mode
+  (`ultra`, not an effort value).
+- (Earlier version of this file) "`max` unverified in the Codex CLI, use `xhigh`
+  as the ceiling" — `max` was confirmed as a Codex toggle on 2 Sep 2026; the
+  ceiling is now `max`.
 
 **⚠️ Could not be verified / not researched — did not enter the router:**
 - Whether Codex/ChatGPT has a safety-classifier/fallback chain like Claude's for
@@ -708,5 +727,8 @@ agentic coding work.
 - Whether the ChatGPT Plus quota numbers carried to GPT-5.6 (§9.4).
 - Whether `reasoning.mode: pro` can be set via the Codex CLI in any way (not in
   the config reference, maybe possible via a `--config` override, not tried).
+- Independent benchmark numbers for **Sol Ultra specifically** — the only figure
+  seen is Terminal-Bench 2.1 91.9%, which is in the contradictory pile (§9.5).
+  LiveBench §2.1 has Sol/Terra/Luna at plain `max`, not Ultra.
 - The firm ranking of Terminal-Bench 2.1 and similar cross-provider benchmarks
   (§9.5) — contradictory, not used as a rule basis.

@@ -48,23 +48,25 @@ gösterme, kullanıcı "neden?" demedikçe.
 | Luna | Hız/hacim, en ucuz | Haiku 4.5 |
 | Terra | Günlük iş, dengeli — varsayılan | Sonnet 5 |
 | **Sol** | Amiral gemisi | Opus 5 |
-| **Sol Ultra** | Sol'un üzerine binen, 64'e kadar işbirlikçi alt-ajan modu | Net dengi yok |
+| **Sol Ultra** | Sol'da açılan ürün modu (Plus+): ~4 paralel işbirlikçi ajan. Efor değeri değil (`effort:"ultra"` → HTTP 400) | Net dengi yok |
 
 **Codex Kolu — özet (tam mantık `SKILL.md`'de, bu bir kısaltılmış özet):**
 1. **Saldırı amaçlı** siber güvenlik / biyoloji-bitişik Ar-Ge → Codex satırı
-   **"doğrulanmadı — Claude kullan"** yazar, model önermez (Codex'in eşdeğer
+   **"unverified — use Claude"** yazar, model önermez (Codex'in eşdeğer
    güvenlik-fallback zinciri doğrulanmadı). Savunma amaçlı güvenlik işi
    (kod/altyapı denetimi, açık port bulma) kapı **değil** — normal skorlamadan geçer.
 2. Diğer her promptta Codex kendi R/D/W/C eşlemesinden bağımsız bir cevap
    üretir: `D=0∧W=0∧C≤1∧R≤1→Luna` · `max(D,C)≤2→Terra` · `max(D,C)=3∧D<3→Terra`
    · `max(D,C)=3∧D=3→Sol` (gerçek bağımsız-paralel iş sinyali de varsa
    **Sol Ultra**). `R=3` ise Luna hiç seçilmez, taban Terra.
-3. Efor ← D: `0→minimal·1→low·2→medium·3→high`, `D=3∧R=3→xhigh` (Codex CLI'de
-   doğrulanan tavan — `max`/`mode:pro` API'de var ama CLI'de doğrulanmadı,
-   sadece sorulursa bahset).
+3. Efor ← D: `0→minimal·1→low·2→medium·3→high`, `D=3∧R=3→max` (2 Eyl 2026
+   doğrulandı — `max` Codex'te gerçek bir ayar; `learn.chatgpt.com` config
+   referansı eski, sadece xhigh'a kadar listeliyor). `mode: pro` yalnızca
+   Responses API'de, sorulursa bahset. `ultra` bir efor değeri değil, ürün
+   modudur (`effort: "ultra"` → HTTP 400) — Sol Ultra = Sol + ultra modu.
 
-**Çıktı iki satır:** `Claude: <Model> · efor: <seviye>` ve
-`Codex: <Model> · efor: <seviye>` — aşağıdaki Çıktı formatı bölümü buna göre
+**Çıktı iki satır:** `Claude: <Model> · effort: <seviye>` ve
+`Codex: <Model> · effort: <seviye>` — aşağıdaki Çıktı formatı bölümü buna göre
 okunmalı (Adım 0-4 sadece Claude satırını üretir, Codex satırı yukarıdaki
 özetten ayrı hesaplanır).
 
@@ -272,8 +274,8 @@ için prompt'a **`ultrathink`** yaz.
 yazılmaz.
 
 ```
-Claude: <Model> · efor: <seviye>
-Codex: <Model> · efor: <seviye>
+Claude: <Model> · effort: <seviye>
+Codex: <Model> · effort: <seviye>
 ```
 
 Haiku 4.5 için efor yazma; Codex tarafında (Luna dahil) her model efor alır.
@@ -281,7 +283,7 @@ Haiku 4.5 için efor yazma; Codex tarafında (Luna dahil) her model efor alır.
 Siber güvenlik/biyoloji-bitişik promptlarda:
 ```
 Claude: <gerçek öneri>
-Codex: doğrulanmadı — Claude kullan
+Codex: unverified — use Claude
 ```
 
 **Tek istisna:** `R=3` ise insan onayı notu — **tek satır, iki tarafı da
@@ -306,33 +308,33 @@ talimat setinde yok çünkü `opusplan` Claude.ai'da geçerli değil, bkz. yukar
 *"200 müşteri yorumunu olumlu/olumsuz etiketle"*
 ```
 Claude: Haiku 4.5
-Codex: Luna · efor: minimal
+Codex: Luna · effort: minimal
 ```
 
 *"Repodaki auth akışını OAuth2'ye taşı"*
 ```
-Claude: Sonnet 5 · efor: high
-Codex: Terra · efor: low
+Claude: Sonnet 5 · effort: high
+Codex: Terra · effort: low
 ```
 
 *"Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur"*
 ```
-Claude: Opus 4.8 · efor: ultracode
-Codex: doğrulanmadı — Claude kullan
+Claude: Opus 4.8 · effort: ultracode
+Codex: unverified — use Claude
 ```
 (Ama *"bu 180 servisin kodunu auth bypass açığı için denetle"* savunma işidir →
-kapı yok: `Claude: Sonnet 5 · efor: ultracode` / `Codex: Terra · efor: medium`.)
+kapı yok: `Claude: Sonnet 5 · effort: ultracode` / `Codex: Terra · effort: medium`.)
 
 *"Bu genomik pipeline'daki varyant çağırma mantığını denetle"*
 ```
-Claude: Fable 5.1 · efor: high
-Codex: doğrulanmadı — Claude kullan
+Claude: Fable 5.1 · effort: high
+Codex: unverified — use Claude
 ```
 
 *"Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek"*
 ```
-Claude: Sonnet 5 · efor: low
-Codex: Terra · efor: minimal
-İnsan onayı olmadan uygulanmasın.
+Claude: Sonnet 5 · effort: low
+Codex: Terra · effort: minimal
+Do not apply without human review.
 ```
 (R=3 ama D=0 — iki tarafta da model en-ucuz tier'a düşmez; tek paylaşılan onay notu)

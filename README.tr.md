@@ -55,7 +55,7 @@ Mythos 5.1.
 | Luna | Hız/hacim, en ucuz ($0.20/$1.20 MTok) | Haiku 4.5 |
 | Terra | Günlük iş, dengeli ($2/$12) — varsayılan | Sonnet 5 |
 | **Sol** | Amiral gemisi — kod/bilim/güvenlik ($5/$30) | Opus 5 |
-| **Sol Ultra** | Sol'un üzerine binen, 64'e kadar eşzamanlı işbirlikçi alt-ajan modu | Net dengi yok — `ultracode`'dan daha güçlü |
+| **Sol Ultra** | Sol'da açılan Codex ürün modu (Plus+): ~4 paralel işbirlikçi ajan. Efor değeri değil | Net dengi yok — `ultracode`'dan daha güçlü |
 
 Siber güvenlik ve biyoloji-bitişik iş **her zaman Claude'a** yönlendirilir —
 Codex tarafında bu kategoriler için doğrulanmış bir güvenlik-fallback zinciri
@@ -260,8 +260,12 @@ sonra 16/16 doğrulandı.
 > `İnsan onayı olmadan uygulanmasın.` → `Do not apply without human review.`;
 > grader + `evals.json` aynı turda güncellendi. Büyük savunma denetimi
 > (adversarial zafiyet avı) artık D=3 (§8 ile tutarlı) → `5b` beklenen çıktısı
-> `Sonnet 5 · ultracode` / `Sol Ultra · high`. Legacy id 1–22 hâlâ
-> `format_outdated` (dual-output'a backfill edilmedi).
+> `Sonnet 5 · ultracode` / `Sol Ultra · high`.
+> **Ardından (aynı iterasyon):** Codex efor tavanı `xhigh` → **`max`** olarak
+> düzeltildi — `max` Codex'te gerçek bir ayar (2 Eyl 2026 doğrulandı;
+> `learn.chatgpt.com` config referansı eski). `D=3 ∧ R=3` olan Codex çıktıları
+> (d6, f1) yeniden koşuldu. `ultra` bir efor değeri değil, ürün modu.
+> Legacy id 1–22 hâlâ `format_outdated`.
 
 | # | Prompt | Beklenen | Sınadığı kural |
 |---|---|---|---|

@@ -84,12 +84,12 @@
       "eval_name": "frontier-kapisi-fable-5-1-servis-bolme-r3",
       "prompt": "Split this 6000-file legacy Java monolith into independent services",
       "expected_claude": "Fable 5.1 · effort: max",
-      "expected_codex": "Sol · effort: xhigh",
+      "expected_codex": "Sol · effort: max",
       "expected_shared_note": "human review",
-      "tests_rule": "Frontier-ölçek kapısı (1000+ dosya) → Fable 5.1 (Claude). 'Servislere bölme' (modüle ayırma DEĞİL) = ağ/veri/deploy sınırı → R=3 (paylaşılan çekirdek kriteri); D=3 → çakışma kuralı efor 'max' (ultracode DEĞİL). Codex frontier gate yok: D=3∧R=3 → Sol·xhigh. R=3 → tek paylaşılan onay notu. Karşıtı: id 8 'modüllere ayır' = R=2 → ultracode.",
+      "tests_rule": "Frontier-ölçek kapısı (1000+ dosya) → Fable 5.1 (Claude). 'Servislere bölme' (modüle ayırma DEĞİL) = ağ/veri/deploy sınırı → R=3 (paylaşılan çekirdek kriteri); D=3 → çakışma kuralı efor 'max' (ultracode DEĞİL). Codex frontier gate yok: D=3∧R=3 → Sol·max. R=3 → tek paylaşılan onay notu. Karşıtı: id 8 'modüllere ayır' = R=2 → ultracode.",
       "expectations": [
         "Claude: 'Fable 5.1' içeriyor, 'max' içeriyor (ultracode DEĞİL — D=3∧R=3 çakışması)",
-        "Codex: 'Sol' içeriyor (Sol Ultra DEĞİL), 'xhigh' içeriyor",
+        "Codex: 'Sol' içeriyor (Sol Ultra DEĞİL), 'max' içeriyor (D=3∧R=3 → Codex ceiling artık max)",
         "Tek paylaşılan 'insan onayı' notu"
       ]
     },
@@ -465,7 +465,7 @@
       "eval_name": "dual-opusplan-codex-bagimsiz",
       "prompt": "Redesign the auth architecture of 200 prod services from scratch",
       "expected_claude": "opusplan · plan: max · execute: medium",
-      "expected_codex": "Sol · effort: xhigh",
+      "expected_codex": "Sol · effort: max",
       "expected_claude_note": "does not carry over",
       "expected_shared_note": "human review",
       "tests_rule": "opusplan yalnızca Claude'da var; Codex kendi normal eşlemesinden bağımsız olarak düz Sol'a çıkar",
