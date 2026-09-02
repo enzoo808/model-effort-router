@@ -383,7 +383,11 @@ the Fable 5 era. Batch: $5 / $25.
 is a rough proxy for how fast quota burns.
 
 **Fast Mode now covers Opus 5 too** (research preview): $10/$50, 2.5x faster
-output. Not on Opus 4.7, runs at standard speed/price on Opus 4.6.
+output. Toggled with `/fast` in Claude Code. Not on Opus 4.7, runs at standard
+speed/price on Opus 4.6. The Codex-side analogue is **Codex CLI Fast Mode (1.5x)**
+— see §9.7. The router appends a speed line to every CLI Codex output
+(`SKILL.md` → Codex arm → "Fast Mode (1.5x)"); the Claude `/fast` half is added
+only when the Claude line is Opus 5 / Opus 4.8.
 
 **Tokenizer inflation:** the Opus 4.7+ tokenizer produces ~30% more tokens for
 the same text (1.4x for English). Opus 5, Fable 5.1, Fable 5, Sonnet 5 all use
@@ -732,3 +736,60 @@ agentic coding work.
   LiveBench §2.1 has Sol/Terra/Luna at plain `max`, not Ultra.
 - The firm ranking of Terminal-Bench 2.1 and similar cross-provider benchmarks
   (§9.5) — contradictory, not used as a rule basis.
+- Whether "Codex CLI Fast Mode (1.5x)" exists by that name — user-reported 2 Sep
+  2026, no official page found (§9.7). It is carried in the **default output** as
+  a user-provided feature; a later pass should confirm or drop it.
+
+---
+
+## 9.7. Codex CLI Fast Mode (1.5x) — user-reported 2 Sep 2026, not independently verified
+
+> **Source:** the skill owner reported that Codex CLI exposes a "Fast Mode"
+> toggle. No `openai.com` / `developers.openai.com` page was found documenting it
+> by that name — it enters the router the way the 2 Sep `max` update did:
+> **"probably real, treat as user-provided"**, flagged here so a later pass can
+> confirm or drop it.
+
+**What it is:** a speed toggle **independent of the model and of
+`reasoning.effort`**. With it on, output streams ~**1.5x** faster and the
+subscription quota / API bill is consumed at that same 1.5x rate. Model choice,
+reasoning depth and answer quality are **unchanged** — it buys latency with
+quota, nothing else.
+
+**Claude-side analogue:** Claude Code `/fast` (Fast Mode) — 2.5x faster output,
+doubles the price ($10/$50), **Opus 5 / Opus 4.8 only** (§4). Both are
+CLI/desktop toggles; neither exists on the web UI.
+
+**How the router uses it — the speed line.** Unlike `mode: pro` (kept as an
+on-ask suggestion), Fast Mode goes in the **default output**: a line appended
+under the two model lines on **every CLI Codex output whose Codex line names a
+real model**:
+
+`⚡ Speed: Codex Fast Mode (1.5x)[ · Claude Fast Mode (2.5x)] — burns quota faster.`
+
+- Codex half: always present when the Codex line has a real model (Luna / Terra /
+  Sol / Sol Ultra), at any effort.
+- Claude half (`· Claude Fast Mode (2.5x)`): only when the Claude line is `Opus 5`
+  or `Opus 4.8`. Not for `opusplan` (execution drops to Sonnet), Haiku, Sonnet or
+  Fable 5.1.
+- **No speed line** when the Codex line is "unverified — use Claude" (the feature
+  is Codex-anchored), or when the user is explicitly on a web surface.
+- Ordering with the other exception lines: the `opusplan` warning stays directly
+  under the Claude line; the speed line sits just **above** the `R=3`
+  human-review note.
+
+**Why default output, not on-ask:** the skill owner asked for it to be surfaced
+every time — it's a cheap, always-relevant lever (every Codex CLI session can
+toggle it) and the quota trade-off is exactly the kind of thing this router
+exists to make visible. It is presented as an **option**, not a recommendation —
+the router does not decide latency-vs-quota for the user.
+
+**Combining with Sol Ultra:** technically independent toggles, so the line still
+appears on `Sol Ultra` outputs. The combination (≈4 parallel agents × 1.5x quota
+rate) is expensive — the "burns quota faster" wording is the whole warning; the
+user weighs it.
+
+**Eval impact:** the speed line is additive text that `grade_routing.py` ignores
+(it extracts only `Claude:` / `Codex:` lines and named notes). No existing eval
+breaks. If a future eval wants to assert the line, add an `expected` field for
+it.

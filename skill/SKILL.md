@@ -698,6 +698,35 @@ the output (below, the single/shared note in Output format).
 > for the Responses API. The Codex CLI config reference has no `model_reasoning_mode`
 > key. Mention it only if the user asks, as "API-only, not in the CLI config".
 
+### Fast Mode (1.5x) — the speed line
+
+**Codex CLI has a Fast Mode toggle** (user-reported 2 Sep 2026, see `reference.md`
+§9.7 — not independently verified): output streams ~**1.5x** faster and the
+subscription quota / API bill burns at that same 1.5x rate. Model, reasoning
+depth and answer quality are **unchanged** — it buys latency with quota, nothing
+else. Independent of the model and of `reasoning.effort`. The Claude-side
+analogue is Claude Code's `/fast` (2.5x, but **Opus 5 / Opus 4.8 only** —
+`reference.md` §4). Both are CLI/desktop toggles; neither exists on the web UI.
+
+**The router appends one speed line to every CLI Codex output** whose Codex line
+names a real model, as its own line under the two model lines:
+
+`⚡ Speed: Codex Fast Mode (1.5x)[ · Claude Fast Mode (2.5x)] — burns quota faster.`
+
+- The `· Claude Fast Mode (2.5x)` half is added **only if** the Claude line is
+  `Opus 5` or `Opus 4.8` (Fast Mode is Opus-only on the Claude side). Not for
+  `opusplan` (execution drops to Sonnet), Haiku, Sonnet or Fable 5.1 — for those,
+  write the Codex half alone.
+- **No speed line** when the Codex line is "unverified — use Claude" (the feature
+  is Codex-anchored), or when the user is explicitly on a web surface.
+- Ordering with the other exception lines: the `opusplan` warning stays directly
+  under the Claude line; the speed line sits just **above** the `R=3`
+  human-review note.
+
+This is the **third** always-added Output-format exception (below). It is an
+**option, not a recommendation** — the router does not decide latency-vs-quota
+for the user, it just makes the lever visible.
+
 ### Human-review note on Codex
 
 `R=3` → exactly the same logic as Step 4 Rule 1: model/effort unchanged, a
@@ -746,13 +775,19 @@ Claude: Opus 4.8 · effort: ultracode
 Codex: unverified — use Claude
 ```
 
-**Exceptions to this rule — only these two, always added to the output (BELOW
+**Exceptions to this rule — only these three, always added to the output (BELOW
 the two lines, as their own separate line(s); nothing else that appears as a
 "note/warning/suggestion" in the rest of this text is added automatically):**
 1. `R=3` → human-review note — **one line, covers both sides** (task risk
-   doesn't change by ecosystem, don't repeat it).
+   doesn't change by ecosystem, don't repeat it). Goes **last**.
 2. `opusplan` (can only be on the Claude line) → the effort-does-not-carry-over
-   warning, only under the Claude line.
+   warning, directly under the Claude line.
+3. **Speed line** (see Codex arm → "Fast Mode (1.5x)") →
+   `⚡ Speed: Codex Fast Mode (1.5x)[ · Claude Fast Mode (2.5x)] — burns quota faster.`
+   Added to every CLI Codex output whose Codex line names a real model; the
+   `· Claude Fast Mode (2.5x)` half only when the Claude line is `Opus 5`/`Opus
+   4.8`. Omitted on a web surface and on a "unverified — use Claude" Codex line.
+   Sits just above the `R=3` note.
 
 Everything else — the notes in Step 4 Rules 2–8, `opusplan`'s "advanced
 combination" paragraph, Codex's `mode: pro` note, escalation conditions — is
@@ -767,12 +802,14 @@ Input: *"Label these 200 customer reviews as positive/negative"*
 ```
 Claude: Haiku 4.5
 Codex: Luna · effort: minimal
+⚡ Speed: Codex Fast Mode (1.5x) — burns quota faster.
 ```
 
 Input: *"Understand the repo's auth flow and move it to OAuth2"*
 ```
 Claude: Sonnet 5 · effort: high
 Codex: Terra · effort: low
+⚡ Speed: Codex Fast Mode (1.5x) — burns quota faster.
 ```
 (Same D=1 input, two different numeric effort words — the Claude scale `low→max`
 looks like it starts at `medium` for D=1 but here D=2 gives `high`; the Codex
@@ -783,8 +820,11 @@ Input: *"Find the race condition that flakes in prod sometimes"*
 ```
 Claude: Opus 5 · effort: max
 Codex: Sol · effort: max
+⚡ Speed: Codex Fast Mode (1.5x) · Claude Fast Mode (2.5x) — burns quota faster.
 Do not apply without human review.
 ```
+(Claude line is Opus 5 → the `· Claude Fast Mode (2.5x)` half is included; speed
+line sits above the human-review note.)
 
 Input: *"Run a penetration test against this 180-service environment, build auth-bypass chains"*
 ```
@@ -808,6 +848,7 @@ Input: *"Bump `MAX_RETRIES` from 3 to 5 in the prod config"*
 ```
 Claude: Sonnet 5 · effort: low
 Codex: Terra · effort: minimal
+⚡ Speed: Codex Fast Mode (1.5x) — burns quota faster.
 Do not apply without human review.
 ```
 (R=3 but D=0 — on the Claude side the model doesn't drop to Haiku, it finds the
@@ -821,19 +862,23 @@ Input: *"Redesign the auth architecture of 200 prod services from scratch"*
 Claude: opusplan · plan: max · execute: medium
 ⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.
 Codex: Sol · effort: max
+⚡ Speed: Codex Fast Mode (1.5x) — burns quota faster.
 Do not apply without human review.
 ```
 (`opusplan` is Claude-only; the Codex side comes out plain Sol from its own
-normal mapping — D=3 ∧ R=3 → `max`. The two sides can use different mechanisms,
-that's normal.)
+normal mapping — D=3 ∧ R=3 → `max`. No Claude Fast Mode half — `opusplan` is not
+a plain Opus line. The two sides can use different mechanisms, that's normal.)
 
 Input: *"Run the security scan of 40 completely independent microservices at once, each on its own"*
 ```
 Claude: Sonnet 5 · effort: ultracode
 Codex: Sol Ultra · effort: high
+⚡ Speed: Codex Fast Mode (1.5x) — burns quota faster.
 ```
 (Genuinely independent-parallel work — `ultracode` fires on the Claude side, Sol
-Ultra on the Codex side; each uses its own parallelism mechanism.)
+Ultra on the Codex side; each uses its own parallelism mechanism. Fast Mode still
+stacks on Sol Ultra — 4 parallel agents at 1.5x quota rate is expensive, the
+"burns quota faster" wording is the warning.)
 
 ---
 
@@ -841,8 +886,8 @@ Ultra on the Codex side; each uses its own parallelism mechanism.)
 
 For benchmark tables, pricing, subscription plans and source-data-quality notes,
 read `reference.md`. If the user asks "why this model?", "what are the numbers?",
-look there — especially **§2.1** (LiveBench / BenchAlign / AA Index, 2 Sep 2026)
-and **§0.1** (Fable 5.1 / Mythos 5.1).
+look there — especially **§2.1** (LiveBench / BenchAlign / AA Index, 2 Sep 2026),
+**§0.1** (Fable 5.1 / Mythos 5.1) and **§9.7** (Codex Fast Mode / the speed line).
 
 **The router does not select a model from a benchmark number.** Leaderboards
 confirm the *direction* of Rules 2/3; scoring runs on R/D/W/C, not on an
