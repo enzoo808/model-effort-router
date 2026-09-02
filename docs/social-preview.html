@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 640px; overflow: hidden; }
+  body {
+    font-family: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    background: #0d1117;
+    background-image:
+      radial-gradient(900px 500px at 82% -10%, rgba(56,139,253,0.18), transparent 60%),
+      radial-gradient(700px 500px at 0% 115%, rgba(163,113,247,0.14), transparent 60%);
+    color: #e6edf3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 74px 84px;
+  }
+  .kicker {
+    font-size: 21px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #7d8590;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: 82px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+    color: #f0f6fc;
+  }
+  h1 .slash { color: #58a6ff; }
+  .tag {
+    margin-top: 22px;
+    font-size: 25px;
+    line-height: 1.5;
+    color: #adbac7;
+    max-width: 1000px;
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  }
+  .tag b { color: #e6edf3; font-weight: 600; }
+  .card {
+    margin-top: 44px;
+    background: #010409;
+    border: 1px solid #30363d;
+    border-radius: 14px;
+    padding: 26px 30px;
+    max-width: 900px;
+    box-shadow: 0 24px 60px -20px rgba(0,0,0,0.7);
+  }
+  .card .prompt { color: #7d8590; font-size: 22px; margin-bottom: 16px; }
+  .card .prompt .cmd { color: #58a6ff; }
+  .row { font-size: 27px; line-height: 1.62; white-space: pre; }
+  .lbl { color: #7d8590; }
+  .claude { color: #d2a8ff; }
+  .codex  { color: #7ee787; }
+  .dim { color: #6e7681; }
+  .foot {
+    position: absolute;
+    bottom: 46px;
+    left: 84px;
+    right: 84px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    color: #6e7681;
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  }
+  .foot .r { color: #7d8590; }
+</style>
+</head>
+<body>
+  <div class="kicker">Claude Code · claude.ai · Codex CLI skill</div>
+  <h1>model<span class="slash">-</span>effort<span class="slash">-</span>router</h1>
+  <div class="tag">
+    Paste a task &rarr; get the <b>cheapest model + effort that clears the bar</b>,
+    for Claude <b>and</b> Codex/ChatGPT, in two lines. It routes, it doesn't run.
+  </div>
+
+  <div class="card">
+    <div class="prompt"><span class="cmd">/model-secici</span>  move the repo's auth flow to OAuth2</div>
+    <div class="row"><span class="lbl">Claude:</span> <span class="claude">Sonnet 5</span> <span class="dim">·</span> effort: high</div>
+    <div class="row"><span class="lbl">Codex:</span>  <span class="codex">Terra</span> <span class="dim">·</span> effort: low</div>
+  </div>
+
+  <div class="foot">
+    <span>Protects your rate-limit windows &mdash; not your wallet.</span>
+    <span class="r">MIT · sourced from the docs · 17/17 regression evals</span>
+  </div>
+</body>
+</html>
