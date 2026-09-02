@@ -98,18 +98,34 @@ iddia etmiyor.
 
 ## Kurulum
 
-### Claude Code (birincil)
+Bu bir **Claude skill'i** — iki Markdown dosyası (`skill/SKILL.md` +
+`skill/reference.md`) bir `model-secici/` klasöründe. "Kurmak" = o klasörü
+Claude'un skill'lere baktığı yere koymak.
 
-```powershell
-.\install.ps1
+```bash
+git clone https://github.com/enzoo808/model-effort-router.git
+cd model-effort-router
 ```
 
-`skill/` klasörünü `~\.claude\skills\model-secici\` altına kopyalar. Claude Code'u
-yeniden başlat, sonra:
+### Claude Code (birincil)
+
+**macOS / Linux:** `./install.sh` · **Windows:** `.\install.ps1`
+
+**Ya da elle (her OS):**
+```bash
+mkdir -p ~/.claude/skills/model-secici
+cp skill/SKILL.md skill/reference.md ~/.claude/skills/model-secici/
+```
+
+`~/.claude/skills/model-secici/` altına kopyalar. Claude Code'u yeniden başlat
+(veya `/doctor` ile skill'leri tazele), sonra:
 
 ```
 /model-secici Repodaki auth akışını OAuth2'ye taşı
 ```
+
+Proje-kapsamlı istersen: `model-secici/` klasörünü repo içindeki
+`.claude/skills/` altına koy.
 
 **`/model opus` artık Opus 5'e çözülüyor** (Claude Code v2.1.219+). Eski
 sürümdeysen `claude update` çalıştır, yoksa alias Opus 4.8'e (veya daha eskiye)
@@ -121,13 +137,9 @@ düşebilir.
 Project'e bağlı değil, bir kez yüklenince **her sohbette** otomatik tetikleniyor.
 Gereksinim: Pro/Max/Team/Enterprise plan + Settings'te *code execution* açık.
 
-```powershell
-.\build-claude-ai-zip.ps1
-```
-
-`dist/model-secici.zip` üretir (aynı `skill/SKILL.md`+`reference.md`'den —
-ayrı, elle senkronize edilen bir kopya değil). Sonra: Claude.ai → **Settings →
-Features → Custom Skills → Upload** → `dist/model-secici.zip` seç.
+Repodaki **`dist/model-secici.zip`**'i indir (dosyayı aç → *Download raw file*).
+Düzenleme sonrası yeniden üretmek için: `.\build-claude-ai-zip.ps1` (Windows).
+Sonra: Claude.ai → **Settings → Features → Custom Skills → Upload** → zip'i seç.
 
 > **Sınırlama (resmî dokümandan):** claude.ai'a yüklenen skill Claude Code'daki
 > ile **otomatik senkronize olmaz** — SKILL.md değiştikçe `build-claude-ai-zip.ps1`'i
@@ -150,7 +162,7 @@ yapıştır. Dezavantajı: tek bir Project'e bağlı kalır (her sohbette değil
 skill/SKILL.md                  Router kuralları — tek kaynak
 skill/reference.md              Benchmark/fiyat/abonelik tabloları + veri kalitesi notları
 claude-ai/instructions.tr.md    Claude.ai fallback'i (code execution kapalıysa) — kendi kendine yeten türev
-install.ps1                     skill/ → ~/.claude/skills/model-secici/ (Claude Code)
+install.sh / install.ps1        skill/ → ~/.claude/skills/model-secici/ (Claude Code)
 build-claude-ai-zip.ps1         skill/ → dist/model-secici.zip (Claude.ai native Skill yüklemesi)
 evals/                          Regresyon eval seti (routing + trigger) + koşu geçmişi
 ```

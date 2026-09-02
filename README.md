@@ -49,28 +49,65 @@ re-run after the 2 Sep 2026 English port).
 
 ## Install
 
-### Claude Code
+It's a [Claude skill](https://docs.claude.com/en/docs/claude-code/skills) —
+two Markdown files (`skill/SKILL.md` + `skill/reference.md`) that live in a
+`model-secici/` folder. "Installing" is just putting that folder where Claude
+looks for skills.
 
-```powershell
-.\install.ps1        # copies skill/ -> ~/.claude/skills/model-secici/
+```bash
+git clone https://github.com/enzoo808/model-effort-router.git
+cd model-effort-router
 ```
 
-Restart Claude Code, then:
+### Claude Code
 
+**macOS / Linux:**
+```bash
+./install.sh
+```
+
+**Windows (PowerShell):**
+```powershell
+.\install.ps1
+```
+
+**Or by hand (any OS)** — the scripts just do this:
+```bash
+mkdir -p ~/.claude/skills/model-secici
+cp skill/SKILL.md skill/reference.md ~/.claude/skills/model-secici/
+```
+
+Restart Claude Code (or run `/doctor` to reload skills), then:
 ```
 /model-secici  <your task>
 ```
+It also triggers on its own when you ask things like "which model should I use
+for this?".
 
-### claude.ai (native custom skill)
+Prefer it project-scoped instead of user-scoped? Put the `model-secici/` folder
+under `.claude/skills/` in your repo.
 
-```powershell
-.\build-claude-ai-zip.ps1                 # -> dist/model-secici.zip
-```
+### claude.ai / Claude Desktop (native custom skill)
 
-Then **claude.ai → Settings → Features → Custom Skills → Upload** →
-`dist/model-secici.zip`. (Requires Pro/Max/Team/Enterprise + code execution.)
-A no-code fallback for when code execution is off lives in
-[`claude-ai/instructions.tr.md`](claude-ai/instructions.tr.md).
+Requires a Pro / Max / Team / Enterprise plan with **code execution** enabled.
+
+1. Download **[`dist/model-secici.zip`](dist/model-secici.zip)** from this repo
+   (open the file → *Download raw file*). Or rebuild it after edits:
+   `.\build-claude-ai-zip.ps1` (Windows).
+2. **claude.ai → Settings → Features → Custom Skills → Upload** → pick the zip.
+
+It then runs in every chat, no project needed.
+
+**No code execution?** Use the plain-text fallback in
+[`claude-ai/instructions.tr.md`](claude-ai/instructions.tr.md): paste the text
+below the line into a Project's *Custom instructions*. (Bound to that one
+Project, and it's the Turkish variant — an English port is welcome.)
+
+### Codex / ChatGPT
+
+There's no skill mechanism on the Codex side — the router just produces the
+`Codex:` line for you to act on. Run `model-secici` on the Claude side (or the
+claude.ai fallback) and read both lines.
 
 ---
 
