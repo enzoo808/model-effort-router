@@ -1,7 +1,11 @@
 # Claude & Codex Model / Ekosistem / Efor Seçici
 
 > 🇬🇧 **English:** [README.md](README.md) · Bu, Türkçe ayrıntılı sürümdür.
-> Skill'in kendisi (`skill/SKILL.md`) Türkçe çalışır.
+> **Not:** 2 Eyl 2026'da skill gövdesi (`skill/SKILL.md` + `reference.md`)
+> İngilizce'ye taşındı — çıktı artık `effort:` / `unverified — use Claude` /
+> `Do not apply without human review.` yazıyor. Bu Türkçe README karar
+> mantığının ayrıntılı anlatımı olarak korunuyor; kural değişiminde bununla
+> `SKILL.md` elle senkron tutulmalı.
 
 Bir promptu verdiğinde **hangi ekosistemle** (Claude Code veya Codex/ChatGPT
 Plus), hangi modelle (Haiku 4.5 / Sonnet 5 / **Opus 5** / Opus 4.8 / Fable 5.1 /
@@ -248,9 +252,16 @@ sonra 16/16 doğrulandı.
 > değişiklikler (offensive→Opus 4.8, biyoloji→Fable 5.1, savunma→kapı yok,
 > frontier→Fable 5.1) hepsi geçti. Sapmalar D/W/R sınır belirsizliğiydi.
 > **iteration-8** (aynı 17, rubrik netleştirmeleri sonrası, taze ajan re-run):
-> **17/17 otomatik geçti**. Yeni kalıcı evaller: `5b` (savunma denetimi,
-> W-ağırlıklı), `f1` (monolit→servis, R=3), `f2` (tek-dosya vuln avı, D=3).
-> Legacy id 1–22 hâlâ `format_outdated` (dual-output'a backfill edilmedi).
+> **17/17**. Yeni kalıcı evaller: `5b`, `f1` (monolit→servis, R=3), `f2`.
+>
+> **iteration-9** (2 Eyl 2026 — `SKILL.md` + `reference.md` İngilizce'ye
+> taşındıktan sonra, taze ajan re-run): **17/17**. Çıktı formatı `efor:` →
+> `effort:`, `doğrulanmadı` → `unverified — use Claude`,
+> `İnsan onayı olmadan uygulanmasın.` → `Do not apply without human review.`;
+> grader + `evals.json` aynı turda güncellendi. Büyük savunma denetimi
+> (adversarial zafiyet avı) artık D=3 (§8 ile tutarlı) → `5b` beklenen çıktısı
+> `Sonnet 5 · ultracode` / `Sol Ultra · high`. Legacy id 1–22 hâlâ
+> `format_outdated` (dual-output'a backfill edilmedi).
 
 | # | Prompt | Beklenen | Sınadığı kural |
 |---|---|---|---|
@@ -259,7 +270,7 @@ sonra 16/16 doğrulandı.
 | 3 | Repodaki auth akışını OAuth2'ye taşı | Sonnet 5 · **high** | Skorlama (D=2) |
 | 4 | Prod'da ara sıra düşen race condition'ı bul | **Opus 5** · **max** | max(D,C)=3, ajanik/derin — R sadece insan onayı ekler |
 | 5 | Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur | **Opus 4.8** · **ultracode** | Saldırı amaçlı siber güvenlik kapısı |
-| 5b | Bu 180 servisin kodunu auth bypass açığı için denetle | **Sonnet 5 · ultracode** | Savunma denetimi — kapı **tetiklenmez** (Fable 5.1 sonrası), normal skorlama |
+| 5b | Bu 180 servisin kodunu auth bypass açığı için denetle (exploit yazma) | **Claude: Sonnet 5 · ultracode** · **Codex: Sol Ultra · high** | Savunma denetimi — offensive kapı **tetiklenmez** (Fable 5.1 sonrası). Adversarial zafiyet avı = D=3, 180 birim bağımsız = W=3 + Sol Ultra |
 | 6 | Şu kodu düzelt | Model önerme, netleştir | Adım 0 (hedef somut değil) |
 | 6b | "Bir günde 1000 üretim olursa 500'ü aynı güne, 500'ü ertesi güne yansısın" | Model önerme, netleştir | Adım 0 (kural örnekle anlatılmış, genellenmemiş — canlı kullanıcı testi) |
 | 7 | Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek | **Sonnet 5 · low** + insan onayı notu | R=3∧D=0 — model/efor **değişmez** (D takip eder), sadece onay notu eklenir |
@@ -305,10 +316,10 @@ Opus 5 bu router'da **her zaman ve sadece** D=3 ile birlikte çıkar.
 
 | # | Prompt | Beklenen | Sınadığı kural |
 |---|---|---|---|
-| c1 | "Codex'te şu React bileşenine dark mode ekle" | **Codex (ChatGPT Plus) · Terra · efor: low** | Açık ortam belirtimi (madde 2), sinyal değerlendirmeye gerek yok |
-| c2 | "80 tamamen bağımsız endpoint dokümantasyonu, aynı anda" | **Codex (ChatGPT Plus) · Terra · efor: low** (Sol Ultra **değil**) | Ekosistem (paralellik/W) ile model katmanı (derinlik/D) farklı sinyaller — gerçek paralel iş ama D=1, Sol'a çıkmamalı |
+| c1 | "Codex'te şu React bileşenine dark mode ekle" | **Codex (ChatGPT Plus) · Terra · effort: low** | Açık ortam belirtimi (madde 2), sinyal değerlendirmeye gerek yok |
+| c2 | "80 tamamen bağımsız endpoint dokümantasyonu, aynı anda" | **Codex (ChatGPT Plus) · Terra · effort: low** (Sol Ultra **değil**) | Ekosistem (paralellik/W) ile model katmanı (derinlik/D) farklı sinyaller — gerçek paralel iş ama D=1, Sol'a çıkmamalı |
 | c3 | "1000 destek talebini kategorilere ayır" (ortam belirtilmemiş) | **Claude Code · Haiku 4.5** | Madde 5 varsayılanı — c1'in aynı-prompt-ortamsız çifti, Codex Kolu'nun kendi örneğiyle çelişmediğini doğrular |
-| c4 | "Şu React bileşenine dark mode ekle" (ortam belirtilmemiş) | **Claude Code · Sonnet 5 · efor: medium** | c1'in çifti — aynı D=1, Claude ölçeğinde `medium` (Codex'teki `low` değil) |
+| c4 | "Şu React bileşenine dark mode ekle" (ortam belirtilmemiş) | **Claude Code · Sonnet 5 · effort: medium** | c1'in çifti — aynı D=1, Claude ölçeğinde `medium` (Codex'teki `low` değil) |
 | c5 | "Bu monolitik kod tabanını modüllere ayır" | **Claude Code · opusplan · plan: xhigh · uygulama: medium** | Ekosistem Seçimi'nin kendi ❌ karşı-örneği — yüzeysel paralel ama parçalar bağımlı, Codex/Ultra'ya gitmemeli |
 
 **c1/c4 ve c2/c5 çiftleri** router'ın iki ayrı hatayı önlediğini kanıtlıyor:

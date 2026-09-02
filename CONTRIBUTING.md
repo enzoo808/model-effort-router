@@ -35,11 +35,13 @@ procedure.
 `evals/README.md` has the full run history and the reasoning behind past rule
 changes — read it before proposing one.
 
-## 3. English port of the skill
+## 3. Turkish parity
 
-The skill body (`skill/SKILL.md` + `skill/reference.md`) is Turkish. A faithful
-English port — same rules, same eval outcomes — is the largest open contribution.
-Coordinate on an issue first; it needs its own eval iteration.
+The skill body and README are English. `README.tr.md`, `claude-ai/instructions.tr.md`,
+`evals/history.tr.md` and the `tests_rule` notes in `evals/routing/evals.json` are
+Turkish (the project's original working language). When you change a rule, keep
+`README.tr.md` and `claude-ai/instructions.tr.md` in sync — or flag in the PR that
+they lag, so a Turkish speaker can follow up.
 
 ## Style
 

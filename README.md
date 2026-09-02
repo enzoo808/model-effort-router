@@ -6,8 +6,8 @@
 You:    /model-secici  Move the repo's auth flow to OAuth2
 
 model-secici:
-  Claude: Sonnet 5 · efort: high
-  Codex:  Terra · efort: low
+  Claude: Sonnet 5 · effort: high
+  Codex:  Terra · effort: low
 ```
 
 That's the whole idea. One more:
@@ -16,14 +16,14 @@ That's the whole idea. One more:
 You:    /model-secici  Find the race condition that flakes in prod sometimes
 
 model-secici:
-  Claude: Opus 5 · efort: max
-  Codex:  Sol · efort: xhigh
+  Claude: Opus 5 · effort: max
+  Codex:  Sol · effort: xhigh
   Do not apply without human review.
 ```
 
-> 🇹🇷 Türkçe ayrıntılı sürüm: **[README.tr.md](README.tr.md)**. The skill itself
-> (`skill/SKILL.md`) is written in Turkish and its output labels are Turkish
-> (`efor` = effort). It routes prompts in any language.
+> The skill body (`skill/SKILL.md` + `skill/reference.md`) and its output are
+> English. It routes prompts in any language. 🇹🇷 A longer Turkish walkthrough of
+> the decision logic is in **[README.tr.md](README.tr.md)**.
 
 ---
 
@@ -38,9 +38,10 @@ resource, not dollars.
 maps that to the *cheapest model that actually clears the bar*, on **both**
 ecosystems at once. When in doubt it rounds **down**.
 
-It's a ~600-line decision procedure, not a vibe. Every rule is sourced from
+It's a ~700-line decision procedure, not a vibe. Every rule is sourced from
 `platform.claude.com` / `openai.com` docs, every uncertain claim is labelled, and
-there's a deterministic regression eval suite (currently **17/17**).
+there's a deterministic regression eval suite (currently **17/17**, cold-agent
+re-run after the 2 Sep 2026 English port).
 
 ---
 
@@ -111,7 +112,7 @@ second rule — convoluted, and it collapsed every prompt onto the same two mode
 
 Offensive-security and biology-R&D prompts always route to Claude — the Codex
 side has no verified safety-fallback chain, so it honestly says
-`doğrulanmadı — Claude kullan` ("unverified — use Claude") instead of guessing.
+`unverified — use Claude` instead of guessing.
 
 ---
 
@@ -122,8 +123,8 @@ side has no verified safety-fallback chain, so it honestly says
 | Label 200 customer reviews positive/negative | `Haiku 4.5` | `Luna · minimal` |
 | Add dark mode to this React component | `Sonnet 5 · medium` | `Terra · low` |
 | Add cursor-based pagination to this API | `Sonnet 5 · medium` | `Terra · low` |
-| Audit this genomics pipeline's variant-calling logic | `Fable 5.1 · high` | `doğrulanmadı — Claude kullan` |
-| Pentest this 180-service environment, build auth-bypass chains | `Opus 4.8 · ultracode` | `doğrulanmadı — Claude kullan` |
+| Audit this genomics pipeline's variant-calling logic | `Fable 5.1 · high` | `unverified — use Claude` |
+| Pentest this 180-service environment, build auth-bypass chains | `Opus 4.8 · ultracode` | `unverified — use Claude` |
 | Split this 6000-file legacy monolith into services | `Fable 5.1 · max` + review note | `Sol · xhigh` + review note |
 | Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5 · low` + review note | `Terra · minimal` + review note |
 | "Fix this code" | *(no model — asks: which code? broken how? done = ?)* | |
@@ -137,9 +138,9 @@ by `evals/routing/grade_routing.py` (pure regex, no LLM). The protocol: spin up
 **cold agents** that read `skill/SKILL.md` fresh and route each prompt; grade the
 raw output.
 
-Latest run (**iteration-8**, after the Fable 5.1 update): **17/17 auto-graded
-pass**, model selection correct on every case. Run history and the reasoning
-behind each rule change is in [`evals/README.md`](evals/README.md).
+Latest run (**iteration-9**, cold agents against the English `SKILL.md`):
+**17/17 auto-graded pass**. Run history and the reasoning behind each rule change
+is in [`evals/README.md`](evals/README.md).
 
 ---
 
@@ -161,9 +162,6 @@ Corrections to model specs, prices, effort defaults, or safety-fallback behaviou
 are very welcome — cite the primary source. Rule changes must keep the eval suite
 green (`python evals/routing/grade_routing.py --results-dir <new iteration>`).
 See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-An English port of the skill body itself (`SKILL.md` + `reference.md`) is the
-biggest open item — see the issue tracker.
 
 ## License
 

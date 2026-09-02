@@ -1,404 +1,416 @@
 ---
 name: model-secici
 description: >-
-  Bir promptu okuyup HEM Claude (Haiku 4.5 / Sonnet 5 / Opus 5 / Opus 4.8 /
-  Fable 5.1) HEM Codex/ChatGPT (Luna / Terra / Sol / Sol Ultra) için ayrı ayrı
-  model + efor seviyesi önerir, ikisini birlikte tek kısa çıktıda verir.
-  "hangi model", "hangi efor", "model seç", "bu prompt için ne kullanayım"
-  dendiğinde veya /model-secici çağrıldığında kullan.
+  Reads a prompt and recommends, separately for Claude (Haiku 4.5 / Sonnet 5 /
+  Opus 5 / Opus 4.8 / Fable 5.1) AND Codex/ChatGPT (Luna / Terra / Sol / Sol
+  Ultra), which model + effort level to run it on — both in one short output.
+  Use when asked "which model", "which effort", "pick a model", "what should I
+  use for this prompt", or when /model-secici is invoked.
 ---
 
-# Claude & Codex Model / Efor Seçici
+# Claude & Codex model / effort router
 
-Kullanıcının verdiği promptu analiz et, **hem Claude hem Codex/ChatGPT için**
-ayrı ayrı hangi model ve hangi efor seviyesiyle çalıştırılması gerektiğini
-söyle — ikisi birlikte, tek çıktıda. Promptu **çalıştırma** — sadece
-yönlendir. Kullanıcı hangi öneriyi kullanacağına kendisi karar verir, bu
-router hiçbir şeyi otomatik başlatmaz.
+Analyse the user's prompt and say, **separately for Claude and for
+Codex/ChatGPT**, which model and which effort level to run it on — both
+together, in one output. Do **not** run the prompt — only route it. The user
+decides which recommendation to use; this router starts nothing automatically.
 
-**Kalibrasyon: iki ayrı abonelik kotası.** Korunan kaynak dolar değil —
-Claude'un 5 saatlik penceresi **ve** ChatGPT Plus'ın 3 saatlik ("Instant")
-+ haftalık ("Thinking") pencereleri. Asıl tehlike yetersiz model seçmek değil,
-*refleks olarak en pahalı modeli seçip kotayı yakmaktır*. Şüphede kalınca
-**aşağı** yuvarla.
+**Calibration: two separate subscription quotas.** The protected resource is not
+dollars — it's Claude's 5-hour window **and** ChatGPT Plus's 3-hour ("Instant")
++ weekly ("Thinking") windows. The real danger isn't picking a model that's too
+weak; it's *reflexively picking the most expensive model and burning the quota*.
+When in doubt, round **down**.
 
-**Token verimliliği — bunu oku.** Bu skill artık iki ayrı öneri üretiyor, bu
-doğal olarak biraz daha fazla iş demek — ama **iki katı değil**. R/D/W/C'yi
-**bir kez** hesapla, sonra iki ayrı (kısa) tabloya bak. Adım 0-3'ü zihinde
-sessizce çalıştır — her adımı ayrı ayrı yazıya dökme, sadece final iki satırı
-üret. Kullanıcı "neden?" demedikçe hiçbir ara adımı gösterme.
+**Token efficiency — read this.** This skill produces two recommendations, which
+is naturally a bit more work — but **not double**. Compute R/D/W/C **once**, then
+read two short tables. Run Steps 0–3 silently in your head — don't write each
+step out, just produce the final two lines. Show no intermediate step unless the
+user asks "why?".
 
-**Claude model kadrosu (1 Eylül 2026 itibarıyla):**
+**Claude model roster (as of 1 September 2026):**
 
-| Model | Rol |
+| Model | Role |
 |---|---|
-| Haiku 4.5 | Hız/hacim uzmanı. Efor desteklemez |
-| Sonnet 5 | Günlük iş — hız+zeka dengesi. **Varsayılan başlangıç noktası** |
-| **Opus 5** | **Amiral gemisi.** Karmaşık ajanik kod ve kurumsal iş için. Opus 4.8'in yerini aldı |
-| Opus 4.8 | Legacy — **yalnızca saldırı amaçlı (offensive) siber güvenlik kapısı için** kalıcı bir rolü var |
-| **Fable 5.1** | Frontier ölçek: uzun ufuklu otonomi, aşırı genişlik, **biyoloji-bitişik iş**. Fable 5'in yerini aldı (1 Eyl 2026) — aynı **$10/$50** fiyat, ama cache okuması **¼'ü** ($0.25/MTok); bilgi kesimi Haz 2026 |
-| Mythos 5.1 | Fable 5.1 ile **aynı model**, izinli safeguard'lar — **yalnızca Project Glasswing daveti** (doğrulanmış siber-savunmacı / yaşam bilimci; ABD öncelikli). Router yalnızca kullanıcı bu erişimi açıkça belirtirse önerir |
+| Haiku 4.5 | Speed/volume specialist. No effort parameter |
+| Sonnet 5 | Daily work — speed+intelligence balance. **Default starting point** |
+| **Opus 5** | **Flagship.** Complex agentic code and enterprise work. Replaced Opus 4.8 |
+| Opus 4.8 | Legacy — the **only** lasting role is the offensive-security gate |
+| **Fable 5.1** | Frontier scale: long-horizon autonomy, extreme breadth, **biology-adjacent R&D**. Replaced Fable 5 (1 Sep 2026) — same **$10/$50** price, but cache reads are **¼** ($0.25/MTok); knowledge cutoff Jun 2026 |
+| Mythos 5.1 | **Same model** as Fable 5.1 with permissive safeguards — **Project Glasswing invite only** (verified cyber-defender / life scientist; US-first). The router recommends it only if the user explicitly states they have this access |
 
-> Opus 4.8 hâlâ "legacy" — Anthropic genel işte Opus 5'e geçmeyi öneriyor.
-> Tek kalıcı görevi: **saldırı amaçlı** siber güvenlik isteği işaretlendiğinde
-> Fable 5.1'in izinli fallback hedeflerinden biri olması (diğeri Opus 5).
-> Router bu yönlendirmeyi atlayıp doğrudan Opus 4.8'i öneriyor.
+> Opus 4.8 is still "legacy" — Anthropic recommends moving to Opus 5 for general
+> work. Its one lasting job: when an **offensive** security request is flagged,
+> it is one of Fable 5.1's permitted fallback targets (the other is Opus 5). The
+> router skips that redirect and recommends Opus 4.8 directly.
 >
-> **Fable 5.1 vs Opus 5 — Anthropic'in çerçevesi:** "Çoğu iş için Opus 5'le
-> başla; Opus 5'i `xhigh`/`max` eforda denedin ve zorlu akıl yürütme veya
-> uzun-ufuklu ajanik işte hâlâ yetersizse Fable 5.1'e geç." Bu router zaten
-> Fable 5.1'i yalnızca frontier-ölçek ve biyoloji kapılarında öneriyor —
-> çerçeveyle uyumlu, ek bir kural gerekmiyor.
+> **Fable 5.1 vs Opus 5 — Anthropic's framing:** "Start with Opus 5 for most
+> work; if you've tried Opus 5 at `xhigh`/`max` effort and it still falls short
+> on demanding reasoning or long-horizon agentic work, move to Fable 5.1." This
+> router already recommends Fable 5.1 only at the frontier-scale and biology
+> gates — consistent with that framing, no extra rule needed.
 
-**Codex/ChatGPT model kadrosu (GPT-5.6 ailesi, 9 Temmuz 2026 itibarıyla):**
+**Codex/ChatGPT model roster (GPT-5.6 family, as of 9 July 2026):**
 
-| Model | Rol | Claude dengi (kaba benzerlik, eşit performans iddiası değil) |
+| Model | Role | Claude analogue (rough, not an equal-performance claim) |
 |---|---|---|
-| Luna | Hız/hacim uzmanı, en ucuz tier | Haiku 4.5 |
-| Terra | Günlük iş, dengeli — **varsayılan başlangıç noktası** | Sonnet 5 |
-| **Sol** | **Amiral gemisi** — kod/bilim/güvenlik | Opus 5 |
-| **Sol Ultra** | Sol'un üzerine binen, gerçek zamanlı işbirlikçi çoklu-alt-ajan modu (64'e kadar) | Net dengi yok — Claude'un `ultracode`'undan daha güçlü bir paralellik primitive'i |
+| Luna | Speed/volume specialist, cheapest tier | Haiku 4.5 |
+| Terra | Daily work, balanced — **default starting point** | Sonnet 5 |
+| **Sol** | **Flagship** — code/science/security | Opus 5 |
+| **Sol Ultra** | Rides on top of Sol, real-time collaborative multi-sub-agent mode (up to 64) | No clean analogue — a stronger parallelism primitive than Claude's `ultracode` |
 
-> Fable 5.1'in (frontier ölçek + biyoloji-bitişik) Codex tarafında doğrulanmış
-> bir dengi **yok**. Saldırı amaçlı siber güvenlik ve biyoloji Ar-Ge
-> promptlarında Codex satırı "doğrulanmadı" der, model önermez (bkz. Codex Kolu
-> sert kapıları).
+> Fable 5.1 (frontier scale + biology-adjacent) has **no** verified analogue on
+> the Codex side. For offensive-security and biology-R&D prompts the Codex line
+> says "unverified", recommends no model (see Codex arm hard gates).
 
-> **Kaynak notu:** Bu tablo `openai.com/index/gpt-5-6/`,
+> **Source note:** this table was verified directly against
+> `openai.com/index/gpt-5-6/`,
 > `developers.openai.com/api/docs/guides/reasoning`,
-> `learn.chatgpt.com/docs/config-file/config-reference` ile doğrudan doğrulandı
-> (5 Ağustos 2026). Kullanıcının verdiği ikincil rapordaki fiyat rakamları
-> **eski/yanlıştı** (30 Temmuz'daki indirimi yansıtmıyordu) — bkz.
-> `reference.md` §9 "Veri durumu".
+> `learn.chatgpt.com/docs/config-file/config-reference` (5 August 2026). The
+> price figures in the secondary report the user provided were **stale/wrong**
+> (they didn't reflect the 30 July price cut) — see `reference.md` §9 "Data
+> status".
 
 ---
 
-## Efor seviyeleri (Claude Code `/effort` menüsü)
+## Effort levels (Claude Code `/effort` menu)
 
-| Seviye | Ne yapar |
+| Level | What it does |
 |---|---|
-| `low` | Kısa, kapsamı belli, zeka gerektirmeyen işler |
-| `medium` | Maliyet duyarlı iş; bir miktar zekadan ödün |
-| `high` | **Varsayılan** (efor destekleyen her model) |
-| `xhigh` | Daha derin akıl yürütme. 30 dk+ ajanik/kodlama işleri |
-| `max` | En derin muhakeme. Azalan getiri riski, aşırı düşünme eğilimi. Oturumluk |
-| `ultracode` | `xhigh` + her önemli görev için **dinamik workflow orkestrasyonu**. Oturumluk |
+| `low` | Short, well-scoped work that needs no intelligence |
+| `medium` | Cost-sensitive work; gives up some intelligence |
+| `high` | **Default** (every model that supports effort) |
+| `xhigh` | Deeper reasoning. 30 min+ agentic/coding work |
+| `max` | Deepest reasoning. Diminishing-returns risk, over-thinking tendency. Per-session |
+| `ultracode` | `xhigh` + **dynamic workflow orchestration** for every substantive task. Per-session |
 
-Dört şeyi bil:
+Know four things:
 
-1. **`ultracode` bir model efor seviyesi değil, Claude Code ayarıdır.** Modele
-   `xhigh` gönderir, üstüne dinamik workflow orkestrasyonu ekler. `/effort
-   ultracode` veya `claude --effort ultracode`. Ayar dosyasına yazılamaz.
-   **Model kısıtı yok** — `xhigh` destekleyen her modelde çalışır: Fable 5.1,
-   Sonnet 5, **Opus 5**, Opus 4.8, Opus 4.7.
-2. **Haiku 4.5 efor parametresini desteklemez.** Haiku önerirken efor yazma.
-3. **Opus 5'e özel (genel bilgi, bkz. Adım 4 Kural 4):** Anthropic düşük/orta
-   eforu "eval'in tuttuğu her yerde normal bir maliyet kontrolü" olarak
-   öneriyor — önceki Opus nesillerinde (4.7/4.8) düşük efor gölgede kalan bir
-   seçenekti. Bu router Opus 5'i yalnızca `D=3` durumunda önerdiği için kendi
-   çıktısında bu hep `xhigh`/`max` demek; ama kullanıcı Opus 5'i elle
-   çalıştırırken low/medium'dan çekinmemeli.
-4. Efor ölçeği **modele göre kalibre**. Aynı isim farklı modelde farklı değer.
+1. **`ultracode` is not a model effort level, it's a Claude Code setting.** It
+   sends `xhigh` to the model and adds dynamic workflow orchestration on top.
+   `/effort ultracode` or `claude --effort ultracode`. Can't be written to a
+   config file. **No model restriction** — it works on every model that supports
+   `xhigh`: Fable 5.1, Sonnet 5, **Opus 5**, Opus 4.8, Opus 4.7.
+2. **Haiku 4.5 does not support the effort parameter.** When recommending Haiku,
+   write no effort.
+3. **Opus 5 specific (general knowledge, see Step 4 Rule 4):** Anthropic
+   recommends low/medium effort "as a normal cost control wherever your eval
+   holds up" — on earlier Opus generations (4.7/4.8) low effort was a shadowed
+   option. Because this router recommends Opus 5 only when `D=3`, its own output
+   always means `xhigh`/`max`; but the user should not hesitate to run Opus 5 at
+   low/medium manually.
+4. The effort scale is **calibrated per model**. The same name means a different
+   value on a different model.
 
-Efor bir token bütçesi değil, davranışsal sinyaldir. "low = 1.024 token" gibi
-rakamlar uydurmadır; kullanma.
-
----
-
-## Adım 0 — Prompt kalite kapısı
-
-**Bu adımı atlama.** Skorlamaya geçmeden önce şu dört kontrolü sırayla çalıştır.
-"Başarı kriteri/kapsam var mı" diye tek bir soru sormak yetmez — çoğu gerçek
-prompt kapsam içerir ama içinde fark edilmeyen bir belirsizlik taşır.
-Herhangi biri "evet" ise **model önerme**, önce netleştir.
-
-1. **Örnekle anlatılan ama genellenmemiş bir kural var mı?** Prompt "mesela
-   şöyle olursa böyle olur" diyor ama genel formülü/yüzdeyi/eşiği söylemiyor mu?
-   > "1000 üretimin 500'ü aynı güne yansır" — bu %50 mi, sabit 500 mü, üretim
-   > saatine göre bir kesim mi? **Örnek, genel kuralın yerine geçmez.**
-2. **Yanlış varsayım sessizce yanlış sonuç üretir mi?** Kod hatasız çalışır
-   ama gerçek veride sistematik olarak yanlış hesaplar mı? (Çökme değil, sessiz
-   yanlışlık — fark edilmesi en uzun süren ve en tehlikeli tür.)
-3. **Hedef somut mu?** "Sistemde şöyle yapacağız" demek *hangi sorgu/servis/
-   tablo/dosya* olduğunu söylemiyor. Kapsam varmış gibi görünür ama değildir.
-4. **Aynı prompttan iki makul ama farklı implementasyon çıkar mı?** Çıkıyorsa
-   hangisinin istendiği belirsizdir — sen (router) hangisini seçtiğini fark
-   etmeden bir varsayım yapıyor olabilirsin.
-
-Netleştirirken **"belirsiz" deyip geçme** — tam olarak neyin eksik olduğunu
-somut biçimde sor:
-
-> "Şu kodu düzelt" → *Hangi kod? Neye göre bozuk? Nasıl anlarız düzeldiğini?*
-> "1000 üretimin 500'ü aynı güne yansısın" → *Bu her zaman sabit 500 mü, yoksa
-> üretimin bir yüzdesi mi (örn. %50)? Yoksa üretim saatine göre mi belirleniyor
-> (örn. 14:00 öncesi aynı gün)? Bu, hesaplama mantığını tamamen değiştirir —
-> R/D skorunu da etkiler.*
-
-Belirsiz promptu en pahalı modele göndermek saf kota israfıdır — model bağlamı
-tahmin etmeye çalışır, yanlış tahmin eder, iş baştan yapılır. Daha kötüsü: (2)
-maddesindeki gibi sessizce yanlış çalışan bir kod üretilirse, hatanın fark
-edilmesi haftalar sürebilir.
+Effort is not a token budget, it's a behavioural signal. Figures like
+"low = 1,024 tokens" are made up; don't use them.
 
 ---
 
-## Adım 1 — Sert kapılar (Claude tarafı)
+## Step 0 — Prompt quality gate
 
-Sırayla kontrol et. İki tür kapı var — karıştırma:
+**Do not skip this step.** Before scoring, run these four checks in order.
+Asking a single "is there a success criterion/scope?" question is not enough —
+most real prompts contain scope but carry an unnoticed ambiguity inside them.
+If any of these is "yes", **recommend no model**, clarify first.
 
-- **Belirleyici kapı** (satır 1-3, 5): **hangi model** olduğunu tek başına
-  karara bağlar, Adım 2/3'ün model-seçim mantığını **atlatır**. Ama bu, W/süre
-  gibi efor-değiştirici sinyalleri (ör. `ultracode` uygunluğu) değerlendirmeyi
-  atlatmaz — onlar model seçiminden ayrı, gate sonrası da kontrol edilir (bkz.
-  "Neden siber güvenlik" altındaki not).
-- **Eleyici kapı** (satır 4, bağlam>200k): sadece bir adayı **listeden çıkarır**
-  (Haiku), hangi model olacağına karar vermez — Adım 2/3 skorlaması kalan
-  adaylar (Sonnet 5/Opus 5/Fable 5.1) arasından normal şekilde çalışır.
+1. **Is there a rule stated by example but not generalised?** The prompt says
+   "for instance, if X then Y" but doesn't state the general formula/percentage/
+   threshold?
+   > "500 of 1000 units land on the same day" — is that 50%, a fixed 500, or a
+   > cutoff by production hour? **An example does not stand in for the general
+   > rule.**
+2. **Would a wrong assumption silently produce a wrong result?** The code runs
+   without error but systematically miscalculates on real data? (Not a crash,
+   a silent wrongness — the kind that takes longest to notice and is most
+   dangerous.)
+3. **Is the target concrete?** "We'll do it like this in the system" doesn't say
+   *which query/service/table/file*. It looks like it has scope but doesn't.
+4. **Do two plausible but different implementations come out of the same
+   prompt?** If so it's unclear which was wanted — you (the router) may be
+   making an assumption without noticing which one you chose.
 
-| Koşul | Tür | Sonuç |
+When clarifying, **don't just say "it's unclear"** — ask concretely what exactly
+is missing:
+
+> "Fix this code" → *Which code? Broken how? How do we know it's fixed?*
+> "500 of 1000 units should land on the same day" → *Is that always a fixed 500,
+> or a percentage of production (e.g. 50%)? Or is it determined by production
+> hour (e.g. same day if before 14:00)? This completely changes the calculation
+> logic — and the R/D score.*
+
+Sending an unclear prompt to the most expensive model is pure quota waste — the
+model guesses the context, guesses wrong, the work is redone. Worse: if it
+produces silently-wrong code as in (2), the error can take weeks to surface.
+
+---
+
+## Step 1 — Hard gates (Claude side)
+
+Check in order. There are two kinds of gate — don't confuse them:
+
+- **Deciding gate** (rows 1–3, 5): decides **which model** on its own, **bypasses**
+  Step 2/3's model-selection logic. But it does not bypass evaluating
+  effort-modifier signals like W/duration (e.g. `ultracode` eligibility) — those
+  are separate from model selection and are still checked after the gate (see
+  the note under "Why offensive security").
+- **Eliminating gate** (row 4, context >200k): only **removes one candidate**
+  from the list (Haiku), does not decide which model — Step 2/3 scoring runs
+  normally among the remaining candidates (Sonnet 5 / Opus 5 / Fable 5.1).
+
+| Condition | Kind | Result |
 |---|---|---|
-| Saniye altı gecikme **veya** yüksek hacimli sınıflandırma/ayrıştırma | Belirleyici | **Haiku 4.5.** Efor yok. Dur, bitti |
-| **Saldırı amaçlı siber güvenlik:** exploit üretimi, sızma testi, ikili (binary) tabanlı zafiyet taraması | Belirleyici | **Opus 4.8**, **efor tabanı `xhigh`** (W/süre sinyalleri hâlâ değerlendirilir → `ultracode`'a çıkabilir, bkz. altındaki not) — Glasswing erişimi varsa **Mythos 5.1** |
-| **Biyoloji-bitişik Ar-Ge:** genomik, protein/kimya ağırlıklı pipeline, biyo-CTF | Belirleyici | **Fable 5.1** (bkz. not aşağıda) |
-| Bağlam 200k token'ı aşıyor | **Eleyici** | **Haiku 4.5 elenir**, Adım 2/3 kalan adaylarla normal çalışır |
-| **1000+ dosya / tüm kod tabanı ölçeğinde** (frontier ölçek) | Belirleyici | **Fable 5.1** |
+| Sub-second latency **or** high-volume classification/parsing | Deciding | **Haiku 4.5.** No effort. Stop, done |
+| **Offensive security:** exploit generation, penetration testing, binary-based vulnerability scanning | Deciding | **Opus 4.8**, **effort floor `xhigh`** (W/duration signals are still evaluated → can rise to `ultracode`, see the note below) — with Glasswing access, **Mythos 5.1** |
+| **Biology-adjacent R&D:** genomics, protein/chemistry-heavy pipeline, bio-CTF | Deciding | **Fable 5.1** (see the note below) |
+| Context exceeds 200k tokens | **Eliminating** | **Haiku 4.5 removed**, Step 2/3 runs normally with the rest |
+| **1000+ files / whole-codebase scale** (frontier scale) | Deciding | **Fable 5.1** |
 
-> **Savunma amaçlı güvenlik işi bu kapıyı tetiklemez.** "Bu kodu/altyapıyı
-> zafiyet için denetle", "açık portları bul", "güvenlik grubu kurallarını
-> gözden geçir" — exploit üretmeyen savunma işidir. Fable 5.1 bunu 1 Eyl
-> 2026'dan beri **kendisi yapabiliyor** (Fable 5'te bloktu); normal skorlamaya
-> girer (genelde Sonnet 5 · `xhigh` veya Opus 5). Yalnızca yukarıdaki üç
-> saldırı-amaçlı kategori kapıyı tetikler.
+> **Defensive security work does not trigger this gate.** "Audit this code/infra
+> for vulnerabilities", "find open ports", "review the security-group rules" —
+> that's defensive work that doesn't generate exploits. Fable 5.1 can **do this
+> itself** as of 1 Sep 2026 (it was blocked on Fable 5); it goes to normal
+> scoring (usually Sonnet 5 · `xhigh` or Opus 5). Only the three offensive
+> categories above trigger the gate.
 
-> **Frontier-ölçek kapısı — tek sinyal yeterli.** Bu kapı "binlerce dosya **VE**
-> eşzamanlı 1M bağlam doldurma **VE** kalıcı bellek" gibi üç ayrı şart aramaz —
-> **sadece dosya/kapsam sayısı** (1000+) yeterli tetikleyicidir. Bu ölçekte bir
-> işi anlamak zaten eşzamanlı 1M bağlam doldurmayı ve çok-oturumlu kalıcı
-> belleği **gerektirir**; prompt bunu ayrıca belirtmez, belirtmesi beklenmez.
-> ✅ "4000 dosyalık legacy monolitini modüllere ayır" — sadece dosya sayısı
-> (4000) yazıyor, "eşzamanlı bağlam" veya "kalıcı bellek" hiç geçmiyor, yine de
-> kapı tetiklenir → **Fable 5.1**.
-> **Adım 2'nin `W=3` eşiğiyle (100+ dosya) karışma:** 100-999 dosya bu kapıyı
-> tetiklemez, normal skorlamaya girer (`W=3`, model Adım 3'e göre — genelde
-> Opus 5 veya `opusplan`). Bu kapı yalnızca gerçekten binler mertebesinde
-> (1000+) tetiklenir.
+> **Frontier-scale gate — one signal is enough.** This gate does not look for
+> three separate conditions like "thousands of files **AND** filling 1M context
+> at once **AND** persistent memory" — **just the file/scope count** (1000+) is a
+> sufficient trigger. Understanding work at that scale **already requires**
+> filling 1M context at once and multi-session persistent memory; the prompt
+> doesn't state that separately and isn't expected to.
+> ✅ "Break up this 4000-file legacy monolith into modules" — only the file count
+> (4000) is written, "concurrent context" or "persistent memory" never appears,
+> the gate still fires → **Fable 5.1**.
+> **Don't confuse it with Step 2's `W=3` threshold (100+ files):** 100–999 files
+> does not trigger this gate, it goes to normal scoring (`W=3`, model per Step 3
+> — usually Opus 5 or `opusplan`). This gate fires only at genuinely thousands
+> (1000+).
 
-### Neden saldırı amaçlı siber güvenlik → doğrudan Opus 4.8
+### Why offensive security → straight to Opus 4.8
 
-Fable 5.1, Opus 5, Sonnet 5'in **kendi** güvenlik sınıflandırıcıları var.
-Saldırı amaçlı (exploit üretimi, sızma testi, ikili-tabanlı zafiyet taraması)
-bir istek işaretlenince Fable 5.1'in izinli fallback hedefleri **Opus 4.8 ve
-Opus 5**. Router bu dolambacı atlar, doğrudan **Opus 4.8**'i önerir (cyber
-duruşu en izinli genel model; Opus 5 de geçerli hedef). Sonnet 5'i önerme —
-exploit üretiminden bilinçli yalıtılmış (Firefox 147'de çalışan exploit oranı %0).
+Fable 5.1, Opus 5, and Sonnet 5 each have **their own** safety classifiers. When
+an offensive request (exploit generation, penetration testing, binary-based
+vulnerability scanning) is flagged, Fable 5.1's permitted fallback targets are
+**Opus 4.8 and Opus 5**. The router skips that redirect and recommends **Opus
+4.8** directly (the most permissive general model on cyber posture; Opus 5 is
+also a valid target). Do not recommend Sonnet 5 — it is deliberately isolated
+from exploit generation (0% working-exploit rate on the Firefox 147 evaluation).
 
-Fable 5.1 ile Fable 5'e göre değişen: (a) savunma amaçlı zafiyet keşfi artık
-**bloklanmıyor** — Fable 5.1 kendisi yapıyor (yukarıdaki kapı notu), (b) selim
-isteklerde cyber müdahaleleri oturum başına **~%60 azaldı**.
+What changed with Fable 5.1 vs Fable 5: (a) defensive vulnerability discovery is
+no longer **blocked** — Fable 5.1 does it itself (the gate note above), (b) on
+benign requests, cyber interventions dropped **~60%** per session.
 
-> **Doğrulanmış savunmacılar için Mythos 5.1.** Cyber Verification Program /
-> Project Glasswing'e kabul edilmiş savunma güvenliği ekipleri izinli
-> safeguard'larla **Mythos 5.1** (`claude-mythos-5-1`) kullanabilir — ama
-> **yalnızca davet**, ABD öncelikli. Kullanıcı bu erişimi belirtmezse router'ın
-> önerisi **Opus 4.8** kalır; belirtirse `Claude: Mythos 5.1 · efor: xhigh` öner.
+> **Mythos 5.1 for verified defenders.** Defensive security teams admitted to
+> the Cyber Verification Program / Project Glasswing can use **Mythos 5.1**
+> (`claude-mythos-5-1`) with permissive safeguards — but it's **invite only**,
+> US-first. If the user doesn't state this access, the router's recommendation
+> stays **Opus 4.8**; if they do, recommend `Claude: Mythos 5.1 · effort: xhigh`.
 
-**Efor tabanı `xhigh`'ın üzerine `ultracode` hâlâ çıkabilir.** Bu kapı
-"belirleyici" olsa da sadece **modeli** karara bağlıyor — Adım 2/3'ün W/süre
-sinyallerini değerlendirmesini atlatmıyor. Kapı ateşlendikten **sonra** normal
-şekilde `W=3 ∧ süre>30dk ∧ ¬(D=3∧R=3)` kontrol et; sağlanıyorsa efor `xhigh`
-değil **`ultracode`** olur (bkz. Çıktı formatı'ndaki "180 servislik sızma testi" örneği).
+**`ultracode` can still rise above the `xhigh` effort floor.** Even though this
+gate is "deciding", it only fixes the **model** — it doesn't bypass Step 2/3
+evaluating the W/duration signals. **After** the gate fires, check
+`W=3 ∧ duration>30min ∧ ¬(D=3 ∧ R=3)` normally; if it holds, effort is not
+`xhigh` but **`ultracode`** (see the "180-service penetration test" example in
+Output format).
 
-### Neden biyoloji-bitişik → Fable 5.1 (Opus 5 değil)
+### Why biology-adjacent → Fable 5.1 (not Opus 5)
 
-Selim/eğitim amaçlı biyoloji-tıp sorularında safeguard'lar artık **%85 daha az**
-tetikleniyor — bunlar kapı değil, normal skorlamaya girer. Kapı yalnızca
-**Ar-Ge yoğun** biyoloji-bitişik iş için:
-- **Fable 5.1** → Ar-Ge-işaretli kısımlar otomatik **Opus modellerine** yönlenir
-  (beklenen davranış, hata değil)
-- **Opus 5** → biyoloji Ar-Ge'de **hiç fallback yok, doğrudan reddeder**
+On benign/educational biology-medical questions, safeguards now fire **~85%
+less** — those are not a gate, they go to normal scoring. The gate is only for
+**R&D-heavy** biology-adjacent work:
+- **Fable 5.1** → R&D-flagged parts are automatically redirected to **Opus
+  models** (expected behaviour, not an error)
+- **Opus 5** → biology R&D has **no fallback at all, it refuses directly**
 
-Yani Opus 5'i doğrudan önerirsen kullanıcı düz bir refuse mesajıyla karşılaşabilir.
-Fable 5.1'i öner. Life Sciences Verification Program'a kabul edilmiş
-araştırmacılar profesyonel Ar-Ge için **Mythos 5.1** kullanır (yalnızca davet,
-ABD öncelikli) — kullanıcı bu erişimi belirtirse Mythos 5.1 öner.
+So if you recommend Opus 5 directly the user may hit a flat refusal message.
+Recommend Fable 5.1. Researchers admitted to the Life Sciences Verification
+Program use **Mythos 5.1** for professional R&D (invite only, US-first) — if the
+user states that access, recommend Mythos 5.1.
 
-**Fable 5.1'e efor tabanı koyma.** Varsayılanı `high`; Fable 5'e göre kazanç en
-çok yüksek eforda ama düşük eforda da güçlü. Not: Fable 5.1 `low` eforda
-arama/getirme araçlarını daha seyrek çağırır — taze bilgi gereken işte eforu
-yükselt.
+**Do not put an effort floor on Fable 5.1.** Its default is `high`; the gain
+over Fable 5 is widest at high effort but it's strong at low effort too. Note:
+Fable 5.1 calls search/retrieval tools less often at `low` effort — for work
+that needs fresh information, raise the effort.
 
 ---
 
-## Adım 2 — Dört eksende 0–3 puanla
+## Step 2 — Score on four axes, 0–3
 
-Tek satırlık sıfat ("karmaşık", "çok adımlı") kararsız kalır. Her eksen için
-**önce teşhis sorusunu sor**, sonra seviyeye bak. Kararsızsan `reference.md`
-§8'deki örnek kütüphanesinden en yakın analojiyi bul.
+A one-word adjective ("complex", "multi-step") stays wobbly. For each axis
+**ask the diagnostic question first**, then look at the level. If unsure, find
+the closest analogue in the example library in `reference.md` §8.
 
-### R — Risk / geri dönülemezlik
+### R — Risk / irreversibility
 
-*Teşhis: Çıktı yanlışsa düzeltmek dakikalar mı sürer, günler mi? Otomatik geri
-alma var mı (git revert, feature flag, rollback)? Kaç kullanıcı/sistem etkilenir?
-Para/sağlık/hukuk/itibar riski var mı?*
+*Diagnostic: if the output is wrong, does fixing it take minutes or days? Is
+there automatic rollback (git revert, feature flag, rollback)? How many
+users/systems are affected? Is there money/health/legal/reputation risk?*
 
-`0` Atılabilir taslak — hiç kullanılmasa da kayıp yok (fikir, alternatif, keşif)
-`1` Kullanılacak ama bir insan gözden geçirip onaylayacak (PR, taslak e-posta)
-`2` Doğrudan gerçek sisteme gidecek ama geri alınabilir (izole tek satır config, feature-flag'li deploy, tersinir migration) — **mimari/çok-servisli olması tek başına R=3 yapmaz**, ama **sistem-geneli davranışı yöneten tek satır da otomatik R=2 sayılmaz**, bkz. notlar
-`3` Geri dönüşü yok/çok maliyetli — veri kaybı riski, tersinmez migration, dışarı giden mesaj/ödeme, geri alınamaz/orantısız maliyetli mimari karar, tıbbi/hukuki/finansal tavsiye, canlı kullanıcı verisine dokunma
+`0` Throwaway draft — no loss even if never used (idea, alternative, exploration)
+`1` Will be used but a human reviews and approves it (PR, draft email)
+`2` Goes straight to a real system but is reversible (isolated one-line config, feature-flagged deploy, reversible migration) — **being architectural/multi-service does not on its own make it R=3**, but **a one-line change that governs system-wide behaviour is not automatically R=2 either**, see the notes
+`3` No way back / very costly — data-loss risk, irreversible migration, outbound message/payment, an irreversible or disproportionately costly architectural decision, medical/legal/financial advice, touching live user data
 
-> **"Mimari karar" etiketi tek başına R=3 yapmaz.** Asıl soru geri
-> alınabilirlik: yeni bileşen servis-servis / feature-flag'li / kademeli
-> olarak devreye alınabiliyor ve sorun çıkarsa durdurulup geri sarılabiliyorsa,
-> **mimari olsa bile R=2**'dir. R=3 iki durumda geçerli: (a) gerçek bir
-> rollback mekanizması yok (canlı veri şeması migrasyonu, tersinmez veri
-> dönüşümü), **veya** (b) tasarlanan şey tüm sistemin bağımlı olduğu **merkezi/
-> paylaşılan** bir çekirdek (kimlik/auth altyapısı, veri modeli, trust
-> boundary) — burada geri dönüş "hangi bileşeni kapatayım" sorusu değil, onlarca
-> servisin çoktan bağımlı hale geldiği paylaşılan bir kararı sökme sorunudur.
-> ✅ R=2: "40 mikroservisi ortak bir auth middleware'e geçir" — her servis
-> kendi middleware'ini **bağımsız** kullanır, servis-servis aşamalı geçiş ve
-> rollback mümkün; mimari ama tersinir.
-> ❌ R=3: "Prod'daki 200 servisin auth mimarisini baştan tasarla" — burada
+> **The "architectural decision" label does not on its own make it R=3.** The
+> real question is reversibility: if the new component can be rolled out
+> service-by-service / feature-flagged / gradually and stopped and rewound when
+> something breaks, then **even if it's architectural it's R=2**. R=3 applies in
+> two cases: (a) there is no real rollback mechanism (live data-schema
+> migration, irreversible data transformation), **or** (b) what's being designed
+> is a **central/shared** core the whole system depends on (identity/auth
+> infrastructure, data model, trust boundary) — here rolling back is not "which
+> component do I switch off?" but unpicking a shared decision dozens of services
+> have already become dependent on.
+> ✅ R=2: "Migrate 40 microservices to a shared auth middleware" — each service
+> uses its own middleware **independently**, service-by-service phased migration
+> and rollback are possible; architectural but reversible.
+> ❌ R=3: "Redesign the auth architecture of 200 prod services from scratch" —
+> what's designed here is a single, central identity/authorization core (token
+> schema, trust boundary) that all 200 services **jointly depend on**;
+> service-by-service phased rollout doesn't make it reversible, because the
+> design decision itself is shared and gets disproportionately expensive to
+> unpick as services become dependent on it — genuine R=3.
+
+> **Large decomposition — module or service?** "Break the monolith into
+> **modules**" = internal refactor, reversible via a gradual/strangler-fig
+> approach → **R=2** (see validation id 8, `Fable 5.1 · ultracode`). "Split into
+> separate **services / processes**" = introduces network + data-ownership +
+> deploy-topology boundaries; once the services become interdependent,
+> re-merging them is disproportionately expensive → **R=3** (criterion b: shared
+> core). The frontier gate fixes the model (Fable 5.1) in both cases, but the
+> effort changes: R=2 → `ultracode`, R=3∧D=3 → `max`.
+
+> **First separate this: is it a change in the codebase, or a live/operational
+> value?** A normal codebase change (component colour, text, CSS, any source-code
+> line) is **R=1 by default** — the normal engineering flow is to review it via
+> PR and deploy it that way (that's the definition of R=1 itself). **R=2/R=3
+> only kick in if the prompt explicitly points at a value that goes straight to
+> a live system without code review** — a prod config file, a live admin panel,
+> a feature-flag toggle, a setting stored in the database. A vague phrasing like
+> "change the settings page's default theme" is **assumed to be a codebase
+> change** → R=1, absent a signal to the contrary.
 >
-> **Büyük ayrıştırma — modül mü, servis mi:** "monoliti **modüllere** ayır"
-> = iç refactor, kademeli/strangler-fig ile tersinir → **R=2** (bkz. doğrulama
-> id 8, `Fable 5.1 · ultracode`). "Ayrı **servislere / süreçlere** böl" = ağ +
-> veri sahipliği + deploy topolojisi sınırı getirir; bir kez servisler
-> birbirine bağımlı hale geldiğinde geri birleştirmek orantısız pahalı → **R=3**
-> (kriter b: paylaşılan çekirdek). Frontier kapısı model'i (Fable 5.1) her iki
-> durumda da belirler, ama efor değişir: R=2 → `ultracode`, R=3∧D=3 → `max`.
-> tasarlanan şey 200 servisin **ortak bağımlı olduğu tek, merkezi** bir kimlik/
-> yetkilendirme altyapısı (token şeması, trust boundary); servis-servis
-> aşamalı devreye alma bunu tersinir yapmaz, çünkü tasarım kararının kendisi
-> paylaşılan ve servisler ona bağımlı hale geldikçe sökülmesi orantısız
-> pahalılaşan bir şey — gerçek R=3.
+> For a directly-operational value too, **"one-line config" does not on its own
+> make it R=2.** The real question is not the **line's length but its blast
+> radius**: even if rolling it back is technically instant, in the **window
+> between deploy and being noticed** how many systems/users are affected? If
+> you're changing an isolated operational value (one feature-flag default), R=2.
+> But if the line governs **system-wide behaviour** (retry count, timeout, rate
+> limit, connection-pool size) and a wrong value can cause a **gradual outage**
+> (retry storm, connection exhaustion) before a human notices, it's R=3 even as
+> one line.
+> ✅ R=3 example: "Bump `MAX_RETRIES` from 3 to 5 in the prod config" — "in the
+> prod config" explicitly points at a live/operational value, it doesn't go
+> through code review; retry count governs system-wide load/resilience
+> behaviour → genuine R=3.
+> ❌ R=1 comparison: "Change the settings page's default theme colour (in the
+> component code)" — a normal code change, goes through a PR; no signal it goes
+> straight to live → R=1, no barrier for Haiku/Luna.
 
-> **Önce şunu ayır: kod tabanında bir değişiklik mi, yoksa canlı/operasyonel
-> bir değer mi?** Normal kod tabanı değişikliği (bileşen rengi, metin, CSS,
-> herhangi bir kaynak kod satırı) **varsayılan olarak R=1**'dir — mühendislik
-> akışının normali PR ile gözden geçirilip öyle deploy edilmesidir (R=1'in
-> kendi tanımı zaten bu). **R=2/R=3 sadece prompt açıkça canlı sisteme
-> doğrudan, kod-incelemesi olmadan giden bir değeri işaret ediyorsa** devreye
-> girer — prod config dosyası, canlı bir yönetim paneli, feature-flag
-> anahtarı, veritabanında saklanan bir ayar. "Ayarlar sayfasının varsayılan
-> temasını değiştir" gibi belirsiz bir ifade **kod tabanı değişikliği
-> varsayılır** → R=1, aksini belirten bir sinyal yoksa.
->
-> Doğrudan-operasyonel bir değer için de **"tek satır config" tek başına
-> R=2 yapmaz.** Asıl soru satırın **kod uzunluğu değil, etki genişliği**:
-> geri almak teknik olarak anlık olsa bile, **deploy ile fark edilme
-> arasındaki pencerede** kaç sistem/kullanıcı etkileniyor? İzole bir
-> operasyonel değeri değiştiriyorsan (tek bir feature-flag varsayılanı) R=2.
-> Ama satır **sistem-geneli davranışı** yönetiyorsa (retry sayısı, timeout,
-> rate limit, connection pool boyutu) ve yanlış değer insan fark etmeden
-> **kademeli bir kesintiye** (retry storm, bağlantı tükenmesi) yol
-> açabiliyorsa, tek satır olsa bile R=3.
-> ✅ R=3 örneği: "Prod config'inde `MAX_RETRIES`'ı 3'ten 5'e çek" — "prod
-> config'inde" açıkça canlı/operasyonel bir değeri işaret ediyor, kod
-> incelemesinden geçmiyor; retry sayısı sistem-geneli yük/dayanıklılık
-> davranışını yönetiyor → gerçek R=3.
-> ❌ R=1 karşılaştırma: "Ayarlar sayfasındaki varsayılan tema rengini
-> (bileşen kodunda) değiştir" — normal bir kod değişikliği, PR'dan geçer;
-> canlıya doğrudan gitme sinyali yok → R=1, Haiku/Luna için engel değil.
+### D — Depth
 
-### D — Derinlik
+*Diagnostic: is there a known/standard solution pattern, or does it have to be
+thought out from scratch? How many different approaches is a choice being made
+between? Is it solved by trial-and-error or by getting the design right in one
+pass?*
 
-*Teşhis: Bunun bilinen/standart bir çözüm kalıbı var mı, yoksa sıfırdan mı
-düşünülmeli? Kaç farklı yaklaşım arasında seçim yapılıyor? Deneme-hatayla mı
-yoksa tek seferde doğru tasarımla mı çözülüyor?*
+The field means different things — look at it **by the kind of work**, not just
+by coding:
 
-Alan farklı anlama gelir — kodlamaya göre değil, **işin türüne göre** bak:
-
-| Seviye | Kodlama | Yazı/analiz | Araştırma | Veri |
+| Level | Coding | Writing/analysis | Research | Data |
 |---|---|---|---|---|
-| `0` | Örüntü eşleştirme, bilinen sabiti hatırlama; **tam belirtilmiş additive şema değişikliği** (sütun adı + tip + nullable hepsi verilmiş — tasarım kararı yok) | Tek cümlelik yanıt **veya** içerik değişmeden salt biçim/ton değişikliği (uzunluk önemsiz — 3 paragraf da olsa, hiçbir seçim/kısaltma/sentez yoksa D=0) | Tek kaynak arama | Tek sayıyı okuma |
-| `1` | Standart kalıp (CRUD, bilinen bug deseni); şema değişikliği ama bir seçim var (index tipi, geriye-dolum stratejisi, kısıt) | Basit özet/taslak | Tek kaynak özeti | Basit filtre/agregasyon |
-| `2` | Çok adımlı ama iyi belgelenmiş özellik | Çok kaynaklı senteze dayalı rapor | Çoklu kaynak sentezi | İstatistiksel çıkarım |
-| `3` | Sıfırdan tasarım, eşzamanlılık, algoritmik karmaşıklık, çelişen kısıtları dengeleme | Orijinal argüman kurma, çelişen kaynakları uzlaştırma | Yeni hipotez/çerçeve üretme | Modelleme, nedensel çıkarım |
+| `0` | Pattern matching, recalling a known constant; **a fully-specified additive schema change** (column name + type + nullable all given — no design decision) | One-sentence answer **or** pure form/tone change with no content change (length irrelevant — even 3 paragraphs, if there's no choice/trimming/synthesis it's D=0) | Single-source lookup | Reading a single number |
+| `1` | Standard pattern (CRUD, known bug shape); a schema change but there's a choice (index type, backfill strategy, constraint) | Simple summary/draft | Single-source summary | Simple filter/aggregation |
+| `2` | Multi-step but well-documented feature | Report based on multi-source synthesis | Multi-source synthesis | Statistical inference |
+| `3` | Design from scratch, concurrency, algorithmic complexity, balancing conflicting constraints; **adversarial security-vulnerability hunting** (finding subtle logic errors) | Building an original argument, reconciling conflicting sources | Producing a new hypothesis/framework | Modelling, causal inference |
 
-> **D=1 / D=2 sınırı — "iyi belgelenmiş" tek başına D=2 yapmaz.** Asıl soru:
-> kaç **bağımsız tasarım kararı** sende (uygulayanda) kalıyor? Tarif/kütüphane/
-> tutorial takip ediliyorsa ve tek bir makul yaklaşım varsa → D=1, kalıp
-> "standart" olması onu D=2'ye taşımaz. Birden fazla makul yaklaşım arasında
-> seçim yapman gerekiyorsa (ve seçim sonucu etkiliyorsa) → D=2.
-> ✅ D=1: "Bu API'ye cursor-based pagination ekle" — yaygın, iyi belgelenmiş
->    tek bir kalıp; kütüphane/tutorial takip edilir, tasarım kararı yok.
-> ❌ D=2: "Bu API'ye hem cursor hem offset pagination'ı geriye-uyumlu şekilde
->    ekle, hangisinin ne zaman kullanılacağına karar ver" — gerçek bir seçim
->    var (iki yaklaşım + geriye-uyumluluk kısıtı).
+> **The D=1 / D=2 boundary — "well-documented" does not on its own make it D=2.**
+> The real question: how many **independent design decisions** are left to you
+> (the implementer)? If a recipe/library/tutorial is being followed and there's
+> a single reasonable approach → D=1; the pattern being "standard" doesn't move
+> it to D=2. If you have to choose between more than one reasonable approach
+> (and the choice affects the outcome) → D=2.
+> ✅ D=1: "Add cursor-based pagination to this API" — a common, well-documented
+>    single pattern; a library/tutorial is followed, no design decision.
+> ❌ D=2: "Add both cursor and offset pagination to this API in a
+>    backward-compatible way, decide when each is used" — there's a real choice
+>    (two approaches + a backward-compatibility constraint).
 >
-> **Şüphede kalınca D=1'de kal, D=2'ye zorlama** — "bu bir liner'dan fazla"
-> hissi D=2 için yeterli gerekçe değil, kota-bilinçli varsayılan aşağı
-> yuvarlamaktır (bkz. kalibrasyon notu).
+> **When in doubt stay at D=1, don't force D=2** — a "this is more than a
+> one-liner" feeling is not sufficient grounds for D=2; the quota-aware default
+> is to round down (see the calibration note).
 
-### W — Genişlik
+### W — Width
 
-*Teşhis: Kaç dosya/belge okunacak veya değişecek? İşin parçaları birbirinden
-bağımsız (paralelleştirilebilir) mi, yoksa sıralı mı?*
+*Diagnostic: how many files/documents get read or changed? Are the pieces of the
+work independent (parallelisable) or sequential?*
 
-`0` Tek dosya/belge
-`1` 2–5 dosya, tek modül içinde
-`2` **6–99 dosya/birim** (bir alt-sistem geneli, birçok servise tekrarlanan aynı küçük değişiklik dahil) **veya** 2–3 farklı doğrulama açısı (örn. doğruluk + performans)
-`3` **100+ dosya** / tüm kod tabanı **veya** 3+ bağımsız, paralelleştirilebilir doğrulama açısı (örn. güvenlik + performans + stil + test-coverage birlikte)
+`0` Single file/document
+`1` 2–5 files, within one module
+`2` **6–99 files/units** (across a subsystem, including the same small change repeated across many services) **or** 2–3 different verification angles (e.g. correctness + performance)
+`3` **100+ files** / whole codebase **or** 3+ independent, parallelisable verification angles (e.g. security + performance + style + test-coverage together)
 
-> **W=2 / W=3 eşiği sayısaldır — 100.** "60 mikroservise aynı endpoint'i ekle"
-> kulağa büyük gelir ama 60 < 100 → **W=2**, W=3 değil. `ultracode` W=3
-> gerektirir, dolayısıyla 20–99 birimlik tekrarlı mekanik iş `ultracode`'a
-> **çıkmaz** (efor D'yi takip eder). Gerçekten 100+ dosya veya 3+ bağımsız
-> doğrulama açısı varsa W=3.
+> **The W=2 / W=3 threshold is numeric — 100.** "Add the same endpoint to 60
+> microservices" sounds big but 60 < 100 → **W=2**, not W=3. `ultracode`
+> requires W=3, so repetitive mechanical work over 20–99 units **does not** rise
+> to `ultracode` (effort follows D). If there are genuinely 100+ files or 3+
+> independent verification angles, W=3.
 
-### C — Bağlam sentezi
+### C — Context synthesis
 
-*Teşhis: Model kendi bilgisiyle mi yeterli, yoksa dışarıdan (dosya, doküman,
-sohbet geçmişi) ne kadar okuması gerekiyor?*
+*Diagnostic: is the model fine with its own knowledge, or how much does it have
+to read from outside (files, docs, chat history)?*
 
-`0` Kendi kendine yeter, ekstra referans gerekmiyor
-`1` Birkaç küçük dosya/doküman
-`2` Orta ölçekli kod tabanı/dokümantasyon (birkaç bin satır, bir README + birkaç modül)
-`3` Büyük külliyat (yüzlerce sayfa doküman, devasa kod tabanı, uzun sohbet geçmişi) sentezi
+`0` Self-sufficient, no extra reference needed
+`1` A few small files/documents
+`2` A medium-sized codebase/documentation (a few thousand lines, one README + a few modules)
+`3` Synthesis of a large corpus (hundreds of pages of docs, a huge codebase, a long chat history)
 
 ---
 
-## Adım 3 — Eşleme
+## Step 3 — Mapping
 
-Model seçimi **zeka ihtiyacına** (D, C) dayanır — risk (R) modeli değil,
-insan gözetimini yükseltir. Bu ayrım önemli: eski tasarımda R doğrudan modeli
-Opus'a zorluyor, sonra ayrı bir kuralla geri indiriliyordu. Artık R modeli
-etkilemiyor, sadece "insan onayı" notu ve efor tabanını etkiliyor.
+Model selection is based on the **intelligence need** (D, C) — risk (R) does not
+raise the model, it raises human oversight. This distinction matters: in the old
+design R forced the model straight to Opus, then a separate rule walked it back.
+Now R does not affect the model, only the "human review" note and the effort
+floor.
 
-**Model** ← `max(D, C)`. Önemli: **Opus 5 yalnızca `D=3` ise** aday olur —
-`C=3` tek başına (D düşükken büyük bağlam sentezi) Opus 5'i tetiklemez, Sonnet
-5'te kalır. Sebep: Opus 5'in gerekçesi derin akıl yürütme ihtiyacı; büyük ama
-sığ bir sentez işi Sonnet 5'in 1M bağlam penceresiyle zaten çözülür.
+**Model** ← `max(D, C)`. Important: **Opus 5 is a candidate only when `D=3`** —
+`C=3` on its own (large context synthesis while D is low) does not trigger Opus
+5, it stays on Sonnet 5. Reason: Opus 5's justification is a deep-reasoning need;
+a large but shallow synthesis job is already handled by Sonnet 5's 1M context
+window.
 
-| Koşul | Model |
+| Condition | Model |
 |---|---|
 | `D = 0` **∧** `W=0` **∧** `C≤1` **∧** `R≤1` | **Haiku 4.5** |
-| Yukarıdaki koşul sağlanmıyor ve `max(D,C) ≤ 1` | Sonnet 5 |
+| Above not met and `max(D,C) ≤ 1` | Sonnet 5 |
 | `max(D,C) = 2` | Sonnet 5 |
-| `max(D,C) = 3`, ama `D<3` (yani `C=3` tetikledi) | **Sonnet 5** — büyük bağlam, sığ akıl yürütme |
-| `max(D,C) = 3`, `D=3` | **Opus 5** — eğer görev ajanik çok adımlı kod / matematik-ispat / araçsız derin akıl yürütmeyse (Kural 2). **Değilse Sonnet 5** (kota-bilinçli varsayılan — bkz. Kural 3) |
+| `max(D,C) = 3`, but `D<3` (i.e. `C=3` triggered it) | **Sonnet 5** — large context, shallow reasoning |
+| `max(D,C) = 3`, `D=3` | **Opus 5** — if the task is agentic multi-step code / math-proof / tool-less deep reasoning (Rule 2). **Otherwise Sonnet 5** (quota-aware default — see Rule 3) |
 
-**Haiku neden sadece D=0'da:** D=1 "bilinen kalıp" demek — N+1 sorgu düzeltmesi,
-standart input validasyonu, bilinen bug deseni. Bunlar örüntü eşleştirme değil,
-gerçek yargı gerektiriyor. `max(D,C)≤1` iken D=1 ise taban Sonnet 5'tir, Haiku
-değil. Haiku sadece D=0 (gerçekten trivial — typo, tek satır ifade değişikliği,
-bilinen bir sabiti hatırlama) durumunda uygun.
+**Why Haiku only at D=0:** D=1 means "known pattern" — an N+1 query fix, standard
+input validation, a known bug shape. Those aren't pattern matching, they need
+real judgement. When `max(D,C)≤1` and D=1, the floor is Sonnet 5, not Haiku.
+Haiku fits only at D=0 (genuinely trivial — typo, one-line expression change,
+recalling a known constant).
 
-**R eşiği neden 1, 3 değil:** `R=2` demek "prod'a gidecek ama geri alınabilir" —
-bu hâlâ gerçek bir prod değişikliği, Haiku'nun hız/hacim profiline bırakılacak
-kadar önemsiz değil. Haiku'yu sadece atılabilir taslak/gözden geçirilecek
-işlere (`R≤1`) ayır; `R=2` en az Sonnet 5 ister.
+**Why the R threshold is 1, not 3:** `R=2` means "goes to prod but reversible" —
+that's still a real prod change, not trivial enough to leave to Haiku's
+speed/volume profile. Reserve Haiku for throwaway drafts / to-be-reviewed work
+(`R≤1`); `R=2` wants at least Sonnet 5.
 
-**R tabanı (genel):** `R = 3` ise Haiku hiçbir zaman seçilmez, taban Sonnet 5'tir —
-basit ama geri alınamaz işi en zayıf modele bırakma. Ayrıca `R=3` her zaman
-çıktıya insan onayı notu ekletir (Adım 4, Kural 1).
+**R floor (general):** if `R = 3`, Haiku is never selected, the floor is Sonnet
+5 — don't leave simple-but-irreversible work to the weakest model. `R=3` also
+always adds a human-review note to the output (Step 4, Rule 1).
 
-**Efor** ← `D` — **modelden bağımsız, her zaman bu tabloyla.** Hangi model
-seçildiyse seçilsin (Opus 5 dahil), efor D'yi takip eder. Model tablosundaki
-"xhigh" gibi ifadeler efor tablosunun D=3 satırıyla **çakışmaz**, sadece D=3
-durumunda ne olacağını hatırlatır.
+**Effort** ← `D` — **independent of the model, always by this table.** Whatever
+model is selected (including Opus 5), effort follows D. Phrasings like "xhigh" in
+the model table do **not** conflict with the D=3 row of the effort table, they
+just remind you what happens at D=3.
 
-| D | Efor |
+| D | Effort |
 |---|---|
 | 0 | `low` |
 | 1 | `medium` |
@@ -406,392 +418,418 @@ durumunda ne olacağını hatırlatır.
 | 3 | `xhigh` |
 | 3 ∧ R=3 | `max` |
 
-Haiku 4.5 seçildiyse efor alanını boş bırak — model bu parametreyi desteklemiyor.
+If Haiku 4.5 is selected, leave the effort field blank — the model doesn't
+support the parameter.
 
-**Sonuç:** Opus 5 bu router'da **her zaman D=3 ile birlikte çıkar** (`xhigh`
-veya `max`) — asla `low`/`medium` ile önerilmez, çünkü Opus 5 zaten sadece D=3
-durumunda seçiliyor. Bu, Adım 0'daki "Opus 5'te low/medium'u gölgede tutma"
-notuyla çelişmiyor: o not router'ın **kendi önerisi** için değil, kullanıcının
-Opus 5'i **elle** çalıştırırken (`/effort` ile) bilmesi gereken genel bilgi.
-Router zaten D=3 olmayan hiçbir işte Opus 5 önermiyor.
+**Consequence:** in this router Opus 5 **always appears together with D=3**
+(`xhigh` or `max`) — it is never recommended with `low`/`medium`, because Opus 5
+is only selected at D=3 in the first place. This doesn't contradict Step 0's
+"don't shadow low/medium on Opus 5" note: that note is not about the router's
+**own recommendation**, it's general knowledge the user needs when running Opus
+5 **manually** (via `/effort`). The router simply never recommends Opus 5 for
+any non-D=3 work.
 
-**`ultracode`** ⇔ üçü birden doğruysa:
-`W = 3` **∧** tahmini süre > 30 dk **∧** `¬(D=3 ∧ R=3)`
+**`ultracode`** ⇔ all three true:
+`W = 3` **∧** estimated duration > 30 min **∧** `¬(D=3 ∧ R=3)`
 
-`ultracode` modele `xhigh` gönderir. Efor alanına `xhigh` değil, **`ultracode`**
-yaz. Model kısıtı yok — Haiku hariç her modelde çalışır (Sonnet 5, Opus 5,
-Opus 4.8, Fable 5.1 dahil); model **ne şekilde belirlendiyse** (Adım 3 skorlaması
-**veya** Adım 1'in belirleyici kapısı — ör. siber güvenlik → Opus 4.8) onun
-üzerinde çalışır. `ultracode` model seçiminin bir parçası değil, seçilmiş
-modelin üzerine binen bağımsız bir efor-değiştirici — bu yüzden Adım 1 kapısı
-"skorlamayı ezse" bile W/süre kontrolü ayrıca yapılır.
+`ultracode` sends `xhigh` to the model. In the effort field write **`ultracode`**,
+not `xhigh`. No model restriction — it works on every model except Haiku
+(including Sonnet 5, Opus 5, Opus 4.8, Fable 5.1); it runs on whichever model
+was chosen (**by Step 3 scoring or by a Step 1 deciding gate** — e.g. offensive
+security → Opus 4.8). `ultracode` is not part of model selection, it's an
+independent effort-modifier that rides on top of the chosen model — which is why
+even when a Step 1 gate "overrides scoring", the W/duration check still runs.
 
-> **Çakışma çözümü.** `D=3 ∧ R=3` ise efor `max`, `ultracode` **hayır**.
-> `ultracode` yalnızca `xhigh` gönderir; `max`'ın derinliğini kaybedersin.
-> Üstelik geri alınamaz bir işi paralel workflow'lara dağıtmak denetimi
-> zorlaştırır. Derinlik → `max`. Genişlik → `ultracode`.
+> **Conflict resolution.** If `D=3 ∧ R=3`, effort is `max`, `ultracode` **no**.
+> `ultracode` only sends `xhigh`; you'd lose `max`'s depth. Also, spreading
+> irreversible work across parallel workflows makes oversight harder. Depth →
+> `max`. Width → `ultracode`.
 
-### `opusplan` — plan/yürütme model ayrımı
+### `opusplan` — plan/execute model split
 
-**Sadece Claude Code'da var, Claude.ai'da yok.** `/model opusplan`: plan modunda
-`opus` (→ Opus 5), yürütme modunda otomatik `sonnet`'e (→ Sonnet 5) geçer.
-Amaç: mimari kararı pahalı modelle ver, hacimli mekanik uygulamayı ucuz modelle
-yap — tek modeli baştan sona koşturmaktan daha az token.
+**Only in Claude Code, not on Claude.ai.** `/model opusplan`: in plan mode it
+uses `opus` (→ Opus 5), in execution mode it automatically switches to `sonnet`
+(→ Sonnet 5). Purpose: make the architectural decision with the expensive model,
+do the bulky mechanical implementation with the cheap one — fewer tokens than
+running one model start to finish.
 
-**`opusplan`** ⇔ üçü birden doğruysa (Adım 3'ün `Opus 5` dalını **geçersiz kılar**):
+**`opusplan`** ⇔ all three true (**overrides** the `Opus 5` branch of Step 3):
 
-1. `max(D,C)=3 ∧ D=3` **∧** görev Kural 2(a) alanına giriyor (yapılandırılmış
-   tasarım/mimari)
-2. **Zorluk plana ön-yükleniyor.** Teşhis: *plan tamamlandıktan sonra, yürütme
-   adımlarının çoğu birbirine benzeyen/tekrar eden bir kalıbı mı takip
-   ediyor?* Evetse ön-yüklü. Karşıt durum — zorluk yürütme boyunca sürüyor:
-   debug (gerçek neden koda bakmadan bilinmez), formel ispat (ispatın kendisi
-   hem plan hem yürütme, ayrılamaz), yeni algoritma tasarımı (tasarım=yürütme).
-   Bu durumda `opusplan` **önerme**, düz Opus 5 kalır.
+1. `max(D,C)=3 ∧ D=3` **∧** the task is in Rule 2(a) territory (structured
+   design/architecture)
+2. **Difficulty is front-loaded into the plan.** Diagnostic: *once the plan is
+   done, do most of the execution steps follow a similar/repeating pattern?* If
+   yes, it's front-loaded. The opposite case — difficulty persists throughout
+   execution: debugging (the real cause isn't known without looking at the
+   code), formal proof (the proof itself is both plan and execution,
+   inseparable), new algorithm design (design = execution). In that case do
+   **not** recommend `opusplan`, plain Opus 5 stays.
 
-   > **Yürütüm fiili yazılı olmayabilir — hedef kapsam sayısı yeterli sinyal.**
-   > Prompt "uygula/geçir/yay" gibi bir yürütüm fiili içermese bile, tasarımın
-   > **hedef kapsamı sayıyla somutlaşmışsa** ("200 servisin X'ini tasarla",
-   > "40 mikroservisin Y'sini belirle"), bu sayı yürütüm fazının zaten var
-   > olduğunu ima eder — bir tasarımın "kaç sisteme uygulanacağı" belirtiliyorsa,
-   > uygulanmayacak olması anlamsız olurdu. Sadece "tasarla" kelimesi tek
-   > başına ön-yükleme sinyalini geçersiz kılmaz.
-   > ✅ "Prod'daki 200 servisin auth mimarisini baştan tasarla" — fiil sadece
-   > "tasarla", ama hedef "200 servis" diye somut; yürütüm (200 servise
-   > uygulama) ima ediliyor → ön-yüklü, `opusplan` adayı.
-3. `W ≥ 2` — yeterli uygulama hacmi var ki mod değişimi karşılığını versin.
-   `W≤1`'lik küçük bir karar için mod değişimi sadece ek yük, düz Opus 5 yeterli.
+   > **The execution verb may not be written — the target-scope count is enough
+   > of a signal.** Even if the prompt contains no execution verb like
+   > "apply/migrate/roll out", if the design's **target scope is made concrete
+   > with a number** ("design X for 200 services", "define Y for 40
+   > microservices"), that number implies the execution phase already exists —
+   > if a design specifies "how many systems it will be applied to", it would be
+   > meaningless for it not to be applied. The word "design" alone does not
+   > override the front-loading signal.
+   > ✅ "Redesign the auth architecture of 200 prod services from scratch" — the
+   > verb is only "design", but the target is concrete as "200 services";
+   > execution (applying to 200 services) is implied → front-loaded, `opusplan`
+   > candidate.
+3. `W ≥ 2` — there's enough implementation volume to make the mode switch pay
+   off. For a small `W≤1` decision the mode switch is just overhead, plain Opus 5
+   is enough.
 
-> ✅ "40 mikroservisi yeni bir auth middleware'e geçir; tasarımı bir kez
->    belirle, her serviste aynı kalıbı uygula" — middleware tasarımı ön-yüklü,
->    40 servise tekrarlanan kalıp = mekanik yürütme, W=3.
-> ❌ "Prod'da ara sıra düşen race condition'ı bul" — zorluk yürütme boyunca
->    sürüyor (kod okumadan neden bilinmez), düz Opus 5 · max kalır.
-> ❌ "Bu router'ın model seçimini riskten ayrıştır" — W=1, hacim yetersiz;
->    üstelik yürütme de yargı gerektiriyordu (bu oturumda canlı test edildi,
->    plan tek seferde mekanikleşmedi), düz Opus 5 kalır.
+> ✅ "Migrate 40 microservices to a new auth middleware; define the design once,
+>    apply the same pattern to each service" — the middleware design is
+>    front-loaded, the pattern repeated across 40 services = mechanical
+>    execution, W=3.
+> ❌ "Find the race condition that flakes in prod sometimes" — difficulty
+>    persists throughout execution (the cause isn't known without reading the
+>    code), plain Opus 5 · max stays.
+> ❌ "Decouple this router's model selection from risk" — W=1, insufficient
+>    volume; and execution needed judgement too (tested live in this session,
+>    the plan didn't become mechanical in one pass), plain Opus 5 stays.
 
-**Çıktı formatı (`Claude:` etiketinin altında, uyarı ayrı satır olarak
-eklenir — Codex satırı bundan etkilenmez, kendi normal eşlemesinden gelir):**
+**Output format (added under the `Claude:` label, the warning as its own line —
+the Codex line is unaffected, it comes from its own normal mapping):**
 ```
-Claude: opusplan · plan: <efor> · uygulama: <efor>
+Claude: opusplan · plan: <effort> · execute: <effort>
 ```
-Plan eforu = Kural 2(a)'nın normal sonucu (`xhigh`, `R=3` ise `max`).
-Uygulama eforu = plan-sonrası tahmini D'ye göre (genelde `medium`, nadiren `high`).
+Plan effort = Rule 2(a)'s normal result (`xhigh`, or `max` if `R=3`).
+Execute effort = per the post-plan estimated D (usually `medium`, rarely `high`).
 
-> ⚠️ **Efor otomatik geçmez.** Opus 5 ve Sonnet 5'in ikisi de "hold"suz —
-> plan modunda ayarladığın efor, yürütmeye geçince **aynen kalır**, otomatik
-> düşmez. Yürütme moduna geçtiğinde `/effort <uygulama eforu>` ile elle
-> ayarlaman gerekiyor; atlarsan Sonnet 5 gereksiz yere pahalı efor koşar ve
-> `opusplan`'ın kota tasarrufu amacı boşa çıkar.
+> ⚠️ **Effort does not carry over.** Opus 5 and Sonnet 5 are both "hold"-free —
+> the effort you set in plan mode **stays as is** when you switch to execution,
+> it does not drop automatically. When you switch to execution mode you have to
+> set it manually with `/effort <execute effort>`; if you skip that, Sonnet 5
+> runs at a needlessly expensive effort and `opusplan`'s quota-saving purpose is
+> defeated.
 
-Bu uyarı **her `opusplan` çıktısına** ikinci satır olarak eklenir — Çıktı
-formatı bölümündeki iki mandatory istisnadan biri budur, "sadece sorulunca
-açıkla" kuralının dışındadır.
+This warning is added **to every `opusplan` output** as a second line — it is one
+of the two mandatory exceptions in the Output format section, outside the
+"explain only when asked" rule.
 
-**Gelişmiş kombinasyon (doğrulanmamış, opsiyonel öneri — çıktıya EKLENMEZ).**
-`W=3` ise, yürütme fazında Sonnet 5 üzerinde `ultracode` da düşünülebilir
-(devasa migration'ı paralel uygula). Bu kombinasyon resmî dokümanda test
-edilmemiş; mandatory-istisna listesinde değil, yani varsayılan çıktıya
-girmez — kullanıcı "başka ne yapabilirim/neden?" diye sorarsa, "dene, işe
-yaramazsa düz `high`'a dön" notuyla öner, kesin tavsiye olarak sunma.
+**Advanced combination (unverified, optional suggestion — NOT added to output).**
+If `W=3`, `ultracode` on Sonnet 5 during the execution phase can also be
+considered (apply the huge migration in parallel). This combination is untested
+in the official docs; it is not on the mandatory-exception list, so it doesn't
+go in the default output — if the user asks "what else can I do / why?", suggest
+it with a "try it, fall back to plain `high` if it doesn't help" note, don't
+present it as firm advice.
 
 ---
 
-## Adım 4 — Kota koruma ve doğruluk kuralları
+## Step 4 — Quota-protection and accuracy rules
 
-**1. R=3 → insan onayı notu.**
-İş geri alınamazsa (prod migration, mimari karar, tıbbi/hukuki/finansal),
-model/efor Adım 3'ten geldiği gibi kalır ama çıktıya "insan onayı olmadan
-uygulama" notu eklenir. Basit-ama-riskli işlerde (D≤1) bu tek başına yeterli
-uyarı; modeli yükseltmeye gerek yok.
+**1. R=3 → human-review note.**
+If the work is irreversible (prod migration, architectural decision,
+medical/legal/financial), the model/effort stay as they came from Step 3 but a
+"do not apply without human review" note is added to the output. For
+simple-but-risky work (D≤1) this is sufficient warning on its own; no need to
+raise the model.
 
-**2. Şu üç alanda Opus 5'i tercih et (Kural 2 alanları).**
-Bu üçü Opus 4.8 döneminden kalan, kısmen doğrulanmış bir örüntü — Opus 5'in
-kendi granüler sayıları (SWE-bench Pro / Terminal-Bench / HLE) ayrı
-yayınlanmadı, ama Opus 5'in Opus 4.8'e göre genel sıçraması (Frontier-Bench'te
-2 katından fazla, GDPval-AA/OSWorld'de liderlik) bu üç alanda da en az aynı
-yönde bir avantaj olduğunu güçlü şekilde işaret ediyor:
-**a) Ajanik çok adımlı yapılandırılmış iş** — çoklu dosya, sıfırdan mimari
-tasarım, büyük refactor/migration; D=3 gerektiren gerçek bir tasarım kararı
-var. **Programlama diliyle sınırlı değil** — kural motoru/karar ağacı tasarımı,
-sistem/prompt mimarisi, çakışan kısıtları dengeleyen herhangi bir yapılandırılmış
-sistem de girer (örn. bir skill'in kendi karar mantığını sıfırdan tasarlamak).
-> ✅ "Bu servisi event-driven mimariye taşı, mesaj sırası ve idempotency dahil"
-> ✅ "Bu router'ın model seçimini riskten ayrıştır, çakışma kurallarını tasarla"
-> ❌ "Bu tek dosyadaki bug'ı düzelt" — dosya sayısı önemli değil, D genelde 1-2'dir
+**2. Prefer Opus 5 in these three areas (Rule 2 areas).**
+These three are a partly-verified pattern carried over from the Opus 4.8 era —
+Opus 5's own granular numbers (SWE-bench Pro / Terminal-Bench / HLE) weren't
+published separately, but Opus 5's overall jump over Opus 4.8 (more than 2x on
+Frontier-Bench, leading on GDPval-AA/OSWorld) strongly indicates at least the
+same-direction advantage in these three areas:
+**a) Agentic multi-step structured work** — multiple files, architecture design
+from scratch, large refactor/migration; there's a real design decision requiring
+D=3. **Not limited to a programming language** — rule-engine/decision-tree
+design, system/prompt architecture, any structured system balancing conflicting
+constraints also counts (e.g. designing a skill's own decision logic from
+scratch).
+> ✅ "Move this service to an event-driven architecture, including message
+> ordering and idempotency"
+> ✅ "Decouple this router's model selection from risk, design the conflict rules"
+> ❌ "Fix the bug in this one file" — file count doesn't matter, D is usually 1–2
 
-**b) Matematik / formel ispat** — algoritmik karmaşıklık analizi, correctness
-kanıtı, sayısal optimizasyon.
-> ✅ "Bu algoritmanın en kötü durum karmaşıklığını kanıtla ve daha iyisini bul"
-> ❌ "Şu ortalamayı/yüzdeyi hesapla" — aritmetik D=0-1'dir, matematik D=3 değil
+**b) Mathematics / formal proof** — algorithmic-complexity analysis, correctness
+proof, numerical optimisation.
+> ✅ "Prove this algorithm's worst-case complexity and find a better one"
+> ❌ "Compute this average/percentage" — arithmetic is D=0–1, math is not D=3
 
-**c) Araçsız derin akıl yürütme** — model **hiçbir araç çağırmadan** (dosya
-okuma, kod çalıştırma, arama yok), sadece promptun içeriğiyle derin bir
-analiz/karar üretmesi gerekiyor.
-> ✅ "Kod çalıştırmadan, şu iki mimari yaklaşımın trade-off'larını tartış"
-> ❌ Claude Code içinde çalışan herhangi bir görev — dosya okuma/test çalıştırma
->    zaten "araçlı" sayılır, bu istisnaya girmez (aşağıdaki not bunu açıklıyor)
+**c) Tool-less deep reasoning** — the model has to produce a deep analysis/
+decision from the prompt content alone, **calling no tools** (no file reading,
+code execution, search).
+> ✅ "Without running code, discuss the trade-offs of these two architectural
+> approaches"
+> ❌ Any task running inside Claude Code — file reading / running tests already
+>    counts as "tooled", it doesn't hit this exception (the note below explains)
 
-> **Araç erişimi kararı çevirir.** Sonnet 5'in ham zeka açığı araç
-> orkestrasyonuyla kapanma eğiliminde (Opus 4.8 dönemi verisi: araçsız HLE'de
-> Opus +6.6 önde, araç verilince parite). Görev Claude Code / web araması /
-> kod çalıştırma içeriyorsa Sonnet 5 genelde yeter. Saf bağlamdan ispat/analiz
-> isteniyorsa Opus 5'e çık. **Pratik sonuç:** Claude Code oturumunda çalışan
-> işlerin büyük çoğunluğu zaten "araçlı" — bu yüzden (c) alt-kuralı nadiren
-> tetiklenir; asıl sık tetiklenen (a) ve (b)'dir.
+> **Tool access flips the decision.** Sonnet 5's raw-intelligence gap tends to
+> close with tool orchestration (Opus 4.8-era data: on tool-less HLE Opus is
+> +6.6 ahead, with tools it's parity). If the task involves Claude Code / web
+> search / code execution, Sonnet 5 is usually enough. If pure-context
+> proof/analysis is asked, go up to Opus 5. **Practical upshot:** the vast
+> majority of work running in a Claude Code session is already "tooled" — which
+> is why sub-rule (c) rarely triggers; the frequently-triggered ones are (a) and
+> (b).
 
-**3. D=3 ama Kural 2'ye girmiyorsa → varsayılan Sonnet 5 · xhigh (kota gerekçesi).**
-Anthropic'in kendi eşit-efor kıyası hâlâ yok, ama **LiveBench 2026-06-25**
-(bağımsız, kontaminasyon-serbest) Opus 5'i Sonnet 5'in üstünde gösteriyor:
-agentic coding +5.8, language +13.7, reasoning +2.5, math +2.8 (bkz. `reference.md`
-§2.1). Router yine de kota gerekçesiyle ucuz tarafı (Sonnet 5) varsayılan tutuyor
-— Opus 5'in $/başarılı-görev'i LiveBench'te Sonnet 5'inkinin ~1.4×'i, fark her
-işi haklı çıkarmıyor. Ama:
+**3. D=3 but not in Rule 2 → default Sonnet 5 · xhigh (quota reason).**
+Anthropic's own equal-effort comparison still doesn't exist, but **LiveBench
+2026-06-25** (independent, contamination-free) shows Opus 5 above Sonnet 5:
+agentic coding +5.8, language +13.7, reasoning +2.5, math +2.8 (see
+`reference.md` §2.1). The router still keeps the cheap side (Sonnet 5) as the
+default for quota reasons — Opus 5's cost-per-successful-task on LiveBench is
+~1.4x Sonnet 5's, and the difference doesn't justify every job. But:
 
-> ⚠️ Yükselt: sonuç yetersizse veya iş kritikse → Opus 5 · xhigh. Artık kanıtsız
->   değil — LiveBench'te Opus 5 bu eksende Sonnet 5'in belirgin önünde, özellikle
->   language/muhakeme ağırlıklı D=3 işlerde.
+> ⚠️ Escalate: if the result is insufficient or the work is critical → Opus 5 ·
+>   xhigh. No longer unproven — on LiveBench Opus 5 is clearly ahead of Sonnet 5
+>   on this axis, especially on language/reasoning-heavy D=3 work.
 
-**4. Kullanıcı bilgisi (router çıktısını değiştirmez): Opus 5'te low/medium
-"israf" değildir.** Anthropic'in Opus 5'e özel tavsiyesi: `high`'dan
-(varsayılan) başla, kodlama/ajanik işte `xhigh`'a çık, **ve eval'in tuttuğu
-her yerde low/medium'u maliyet kontrolü için serbestçe kullan.** Bu, Opus
-4.7/4.8'in "düşük eforda israf" çerçevesinden kasıtlı bir sapma.
+**4. User knowledge (does not change the router's output): low/medium on Opus 5
+is not "waste".** Anthropic's Opus 5-specific advice: start from `high`
+(default), go to `xhigh` for coding/agentic work, **and use low/medium freely as
+a cost control wherever your eval holds up.** This is a deliberate departure from
+the Opus 4.7/4.8 "waste at low effort" framing.
 
-Bu router Opus 5'i zaten sadece `D=3` durumunda öneriyor (→ efor `xhigh`/`max`),
-yani kendi çıktısında Opus 5'i hiç `low`/`medium` ile önermeyecek — o kombinasyon
-mantıken oluşmuyor. Bu not, kullanıcı router'ın önerisinin **üzerine** kendi
-kararıyla Opus 5'i düşük eforla çalıştırmak isterse "bu israf değil" bilgisini
-vermek için var, router'ın kendi kararı için değil.
+This router already recommends Opus 5 only at `D=3` (→ effort `xhigh`/`max`), so
+it will never recommend Opus 5 with `low`/`medium` in its own output — that
+combination logically doesn't arise. This note exists to tell the user "it's not
+waste" if they choose, **on top of** the router's recommendation, to run Opus 5
+at low effort — not for the router's own decision.
 
-**5. 30 dakikanın altındaki işte `ultracode` önerme.**
-Her önemli görev için workflow planlar; gündelik işte gecikme ve kota ekler,
-kalite eklemez. Tek seferlik derin düşünme istiyorsan **prompt içine `ultrathink`
-yaz** — efor seviyesini değiştirmeden o tur için derinlik ekler.
+**5. Do not recommend `ultracode` for work under 30 minutes.**
+It plans a workflow for every substantive task; on everyday work it adds latency
+and quota, not quality. If you want one-off deep thinking, **write `ultrathink`
+into the prompt** — it adds depth for that turn without changing the effort
+level.
 
-**6. Uzun oturum uyarısı.** MCP sunucuları bağlıysa hatırlat: her sunucu araç
-şemalarını her mesaja enjekte eder. Yük sunucu başına sabit değil, **araç
-sayısıyla orantılı** (GitHub MCP: 27 araç ≈ 18k token; Playwright: 21 araç
-≈ 13.6k). Kullanılmayanları kapat.
+**6. Long-session warning.** If MCP servers are connected, remind: each server
+injects tool schemas into every message. The load is not fixed per server, it's
+**proportional to the tool count** (GitHub MCP: 27 tools ≈ 18k tokens;
+Playwright: 21 tools ≈ 13.6k). Turn off the ones you're not using.
 
-**7. Auto-accept uyarısı.** R≥2 ise auto-accept'i kapatmayı öner — zincirleme
-düzenlemeler hem kotayı geometrik yakar hem geri dönüşü zorlaştırır.
+**7. Auto-accept warning.** If R≥2, suggest turning auto-accept off — chained
+edits both burn quota geometrically and make rollback harder.
 
-**8. Alias güvenliği.** Kullanıcı `/model opus` yazdığında Claude Code
-v2.1.219+ ise bu **Opus 5**'e çözülür; daha eski sürümde Opus 4.8'e düşebilir.
-Router "Opus 5" önerdiğinde ve kullanıcı hâlâ Opus 4.8 görüyorsa, `claude
-update` çalıştırmasını veya `/model claude-opus-5` ile açıkça pinlemesini öner.
+**8. Alias safety.** When the user types `/model opus`, on Claude Code v2.1.219+
+it resolves to **Opus 5**; on an older version it may fall to Opus 4.8. When the
+router recommends "Opus 5" and the user still sees Opus 4.8, suggest they run
+`claude update` or pin it explicitly with `/model claude-opus-5`.
 
 ---
 
-## Codex Kolu
+## Codex arm
 
-Claude Kolu ile **paralel, aynı anda** hesapla — ekosistem seçimi yok, ikisi
-de her zaman üretilir. R/D/W/C skorlaması **Adım 2'deki tanımlarla birebir
-aynı**, bir kez hesapla, iki tabloya (Adım 3 ve buradaki) bak. Sadece eşleme
-tablosu ve model kadrosu değişiyor.
+Compute this **in parallel, at the same time** as the Claude arm — there is no
+ecosystem selection, both are always produced. The R/D/W/C scoring is **exactly
+the same as the definitions in Step 2**, compute it once, read two tables (Step 3
+and the one here). Only the mapping table and model roster change.
 
-### Codex sert kapıları
+### Codex hard gates
 
-| Koşul | Sonuç |
+| Condition | Result |
 |---|---|
-| Saniye altı gecikme / yüksek hacimli sınıflandırma | **Luna**, efor `minimal` |
-| **Siber güvenlik / biyoloji-bitişik** (Adım 1'deki aynı tanımlar) | Codex satırı: **"doğrulanmadı — Claude kullan"**, model önerilmez. Codex'te bu kategoriler için Claude'unkine benzer bir güvenlik-sınıflandırıcı/fallback davranışı **araştırılmadı** — bilmediğim bir şeyi uydurmak yerine dürüstçe boş bırakıyorum. |
-| Çok büyük bağlam | ⚠️ Model başına context pencereleri **doğrulanamadı** (sadece Sol Ultra için ~1.5M tek-kaynaklı bir iddia var). Eşik koymuyorum — C skoruna göre normal eşlemeye bırak. |
+| Sub-second latency / high-volume classification | **Luna**, effort `minimal` |
+| **Offensive security / biology-adjacent R&D** (same definitions as Step 1) | Codex line: **"unverified — use Claude"**, no model recommended. Whether Codex has a safety-classifier/fallback behaviour like Claude's for these categories **was not researched** — rather than make up something I don't know, I honestly leave it blank. |
+| Very large context | ⚠️ Per-model context windows **could not be verified** (only a single-source ~1.5M claim for Sol Ultra). I set no threshold — leave it to normal mapping by C score. |
 
-### Codex eşleme (R/D/W/C → Model, Adım 3 ile paralel mantık)
+### Codex mapping (R/D/W/C → Model, parallel logic to Step 3)
 
-| Koşul | Model |
+| Condition | Model |
 |---|---|
 | `D=0 ∧ W=0 ∧ C≤1 ∧ R≤1` | **Luna** |
-| Yukarıdaki dışında `max(D,C)≤1` | Terra (`D=1` → `efor: low`) |
-| `max(D,C)=2` | Terra (`efor: medium`) |
-| `max(D,C)=3`, `D<3` (C tetikledi) | Terra — büyük bağlam/sığ akıl yürütme mantığı Claude'dan taşındı, Codex'te ayrıca doğrulanmadı ama aynı ilke uygulanıyor |
-| `max(D,C)=3`, `D=3` | **Sol** — *aşağıdaki koşul sağlanıyorsa* **Sol Ultra** |
+| Otherwise `max(D,C)≤1` | Terra (`D=1` → `effort: low`) |
+| `max(D,C)=2` | Terra (`effort: medium`) |
+| `max(D,C)=3`, `D<3` (C triggered it) | Terra — the large-context/shallow-reasoning logic carried over from Claude, not separately verified on Codex but the same principle applies |
+| `max(D,C)=3`, `D=3` | **Sol** — *if the condition below holds*, **Sol Ultra** |
 
-> **Luna ve `Terra · low` gerçek, sık çıkması gereken sonuçlar — "her zaman
-> Sol high ya da Terra medium" çıkıyorsa bu bir hata.** Canlı kullanımda
-> bulunan bir sorun: D=1 işler (yaygın kalıp) belirsizlikte D=2'ye
-> yuvarlanıyor, D=0 işler (gerçekten mekanik) belirsizlikte D=1'e
-> yuvarlanıyor — yukarıdaki D=1/D=2 sınır notuna bak, kota-bilinçli varsayılan
-> **aşağı** yuvarlamaktır.
-> ✅ Luna: "Bu değişkenin adını `usr` yerine `user` yap" (D=0, mekanik) ·
->    "Bu üç paragrafı daha resmi bir dille yeniden yaz" (D=0, içerik değişmiyor)
-> ✅ `Terra · low`: "Bu formda email validasyonu ekle" (D=1, standart kalıp) ·
->    "Bu API'ye cursor-based pagination ekle" (D=1, iyi belgelenmiş tek kalıp)
+> **Luna and `Terra · low` are real results that should come up often — if
+> you're always getting "Sol high or Terra medium" that's a bug.** A problem
+> found in live use: D=1 work (common pattern) rounds up to D=2 under
+> uncertainty, D=0 work (genuinely mechanical) rounds up to D=1 — see the D=1/D=2
+> boundary note above, the quota-aware default is to round **down**.
+> ✅ Luna: "Rename this variable from `usr` to `user`" (D=0, mechanical) ·
+>    "Rewrite these three paragraphs in a more formal tone" (D=0, content
+>    unchanged)
+> ✅ `Terra · low`: "Add email validation to this form" (D=1, standard pattern) ·
+>    "Add cursor-based pagination to this API" (D=1, well-documented single
+>    pattern)
 
-**Sol → Sol Ultra teşhisi** (`ultracode`'un Codex dengi, ama Adım 3'ün
-`ultracode` şartından biraz farklı — burada "bağımsızlık" asıl kriter):
-*İş, birbirinden habersiz çalışabilecek 3+ ayrı parçaya (farklı modül/servis/
-doğrulama açısı) ayrılıyor ve sonunda birleştirilebilir mi — yoksa parçalar
-birbirine bağımlı, tek bir tutarlı tasarım kararı mı gerektiriyor?* Gerçekten
-bağımsızsa (ve zaten `D=3→Sol`'a çıkmışsa) → **Sol Ultra**. Ultra yalnızca
-Sol üzerinde doğrulandı, Terra/Luna'da yok.
-> ✅ "40 farklı mikroservisin güvenlik taramasını, her biri bağımsız olarak
->    aynı anda yap" — gerçekten bağımsız 40 parça → Sol Ultra.
-> ❌ "Bu monolitik kod tabanını modüllere ayır" — parçalar birbirine bağımlı,
->    tek tutarlı bir tasarım kararı gerekiyor → düz **Sol** (Claude tarafında
->    da bu örnek `opusplan`'a giriyor, bkz. Adım 3 — aynı görevin Codex'teki
->    dengi "Sol, düz" olması tutarlı: paralelleştirme her iki tarafta da
->    yanıltıcı).
+**Sol → Sol Ultra diagnostic** (the Codex analogue of `ultracode`, but slightly
+different from Step 3's `ultracode` condition — here "independence" is the key
+criterion):
+*Does the work split into 3+ separate pieces (different module/service/
+verification angle) that can run unaware of each other and be merged at the end
+— or are the pieces interdependent, requiring a single coherent design
+decision?* If genuinely independent (and it already got to `D=3→Sol`) → **Sol
+Ultra**. Ultra is verified only on Sol, not on Terra/Luna.
+> ✅ "Run the security scan of 40 different microservices, each one independently,
+>    at the same time" — genuinely independent 40 pieces → Sol Ultra.
+> ❌ "Break this monolithic codebase into modules" — the pieces are
+>    interdependent, a single coherent design decision is needed → plain **Sol**
+>    (on the Claude side this example also goes to `opusplan`, see Step 3 — the
+>    Codex analogue being "Sol, plain" is consistent: parallelisation is
+>    misleading on both sides).
 
-**R tabanı (Claude Kolu'ndaki "R tabanı (genel)" ile aynı ilke):** `R=3` ise
-**Luna hiçbir zaman seçilmez**, taban Terra'dır — basit ama geri alınamaz işi
-en zayıf modele bırakma. `R=3` ayrıca çıktıya insan onayı notu ekletir (aşağıda,
-Çıktı formatı'ndaki tek/paylaşılan not).
+**R floor (same principle as the Claude arm's "R floor (general)"):** if `R=3`,
+**Luna is never selected**, the floor is Terra — don't leave simple-but-
+irreversible work to the weakest model. `R=3` also adds the human-review note to
+the output (below, the single/shared note in Output format).
 
-**Efor ← D**, Claude Kolu ile aynı mantık: `0→minimal · 1→low · 2→medium · 3→high`.
-`D=3 ∧ R=3` ise **`xhigh`** (Codex CLI `config.toml`'da doğrulanan tavan —
-bkz. aşağıdaki not, bu "Claude'daki `max`'ın karşılığı" gibi düşünülmeli).
+**Effort ← D**, same logic as the Claude arm: `0→minimal · 1→low · 2→medium ·
+3→high`. If `D=3 ∧ R=3` → **`xhigh`** (the ceiling verified in the Codex CLI
+`config.toml` — see the note below, think of it as "the equivalent of Claude's
+`max`").
 
-> ⚠️ **"max" ve "mode: pro" Codex CLI'de doğrulanamadı.** Resmî API dokümanı
-> `reasoning.effort`'ta `max`'tan, ayrıca ondan bağımsız bir `reasoning.mode`
-> (standard/pro) ekseninden bahsediyor — ama bunlar "Responses API" (programatik
-> kullanım) için doğrulandı. Codex CLI'nin kendi `config.toml`'unda
-> (`model_reasoning_effort`) sadece `minimal|low|medium|high|xhigh` doğrulandı;
-> ne `max` ne `mode` orada geçiyor. Bu router **Codex CLI kullanımını**
-> hedefliyor — `xhigh`'ı tavan olarak kullan, `max`/`mode:pro`'yu "API'de var
-> olabilir ama Codex CLI'de doğrulanmadı" notuyla ancak kullanıcı sorarsa bahset.
+> ⚠️ **"max" and "mode: pro" could not be verified in the Codex CLI.** The
+> official API docs mention `max` in `reasoning.effort`, plus a separate
+> `reasoning.mode` (standard/pro) axis — but those were verified for the
+> "Responses API" (programmatic use). In the Codex CLI's own `config.toml`
+> (`model_reasoning_effort`) only `minimal|low|medium|high|xhigh` was verified;
+> neither `max` nor `mode` appears there. This router targets **Codex CLI use** —
+> use `xhigh` as the ceiling, mention `max`/`mode:pro` only if the user asks,
+> with the note "may exist in the API but unverified in the Codex CLI".
 
-### Codex'te insan onayı notu
+### Human-review note on Codex
 
-`R=3` → Adım 4 Kural 1 ile birebir aynı mantık: model/efor değişmez, çıktıya
-insan onayı notu eklenir (mandatory istisna, bkz. Çıktı formatı). MCP/
-auto-accept uyarıları (Adım 4 Kural 6/7) Codex CLI'de de geçerli olabilir ama
-Codex'in kendi araç-şeması/oturum maliyeti mekaniği **doğrulanmadı** — bu iki
-kuralı Codex koluna taşımıyorum, yalnızca Claude Kolu'nda geçerliler.
+`R=3` → exactly the same logic as Step 4 Rule 1: model/effort unchanged, a
+human-review note is added to the output (mandatory exception, see Output
+format). The MCP/auto-accept warnings (Step 4 Rule 6/7) may also apply to the
+Codex CLI, but Codex's own tool-schema/session-cost mechanics **were not
+verified** — I don't carry those two rules into the Codex arm, they apply only
+in the Claude arm.
 
-### `mode: pro` — doğrulanmamış, opsiyonel öneri (çıktıya EKLENMEZ)
+### `mode: pro` — unverified, optional suggestion (NOT added to output)
 
-`max(D,C)=3, D=3` ve Terra'da kalınmışsa (D<3 ama sonuç kritikse), `reasoning.mode: pro`
-denenebilir — ama Codex CLI'de doğrulanmadığı için varsayılan çıktıya girmez,
-kullanıcı "başka ne yapabilirim?" diye sorarsa "dene, çalışmazsa standart
-moda dön" notuyla öner (Claude Kolu'nun `opusplan`+`ultracode` gelişmiş
-kombinasyon notuyla aynı ihtiyat seviyesi).
-
----
-
-## Çıktı formatı
-
-**İki satır, her zaman ikisi birden — Claude ve Codex.** Gerekçe, skor,
-yükseltme notu — hiçbiri yazılmaz. R/D/W/C'yi bir kez hesapla (zihinde,
-yazıya dökmeden), iki tabloya bak, sonuçları yaz:
-
-```
-Claude: <Model> · efor: <seviye>
-Codex: <Model> · efor: <seviye>
-```
-
-Haiku 4.5 için efor yazma; Codex tarafında **her model efor alır** (Luna
-dahil — Luna'nın efor desteğini dışlayan doğrulanmış bir bilgi yok):
-
-```
-Claude: Haiku 4.5
-Codex: Luna · efor: minimal
-```
-
-**Siber güvenlik / biyoloji-bitişik promptlarda Codex satırı model önermez:**
-
-```
-Claude: Opus 4.8 · efor: ultracode
-Codex: doğrulanmadı — Claude kullan
-```
-
-**Bu kuralın istisnaları — sadece şu ikisi, çıktıya her zaman eklenir (iki
-satırın ALTINA, ayrı satır(lar) olarak; metnin kalanında "not/uyarı/öner" diye
-geçen başka hiçbir şey otomatik eklenmez):**
-1. `R=3` → insan onayı notu — **tek satır, iki tarafı da kapsar** (görev
-   riski ekosisteme göre değişmez, tekrar yazma).
-2. `opusplan` (yalnızca Claude satırında olabilir) → efor-otomatik-geçmez
-   uyarısı, sadece Claude satırının altına.
-
-Bunların dışında kalan her şey — Adım 4 Kural 2-8'deki notlar, `opusplan`'ın
-"gelişmiş kombinasyon" paragrafı, Codex'in `mode: pro` notu, yükseltme
-koşulları — **sadece kullanıcı sorduğunda** açıklanır, varsayılan çıktıya
-eklenmez.
-
-Kullanıcı gerekçe sorarsa (*"neden?"*, *"niye bu?"*) o zaman açıkla — ama
-istenmeden ekleme, ve o zaman bile kısa tut.
-
-### Örnekler
-
-Girdi: *"Bu 200 müşteri yorumunu olumlu/olumsuz diye etiketle"*
-```
-Claude: Haiku 4.5
-Codex: Luna · efor: minimal
-```
-
-Girdi: *"Repodaki auth akışını anlayıp OAuth2'ye taşı"*
-```
-Claude: Sonnet 5 · efor: high
-Codex: Terra · efor: low
-```
-(Aynı D=1 girdi, iki farklı sayısal efor kelimesi — Claude ölçeği `low→max`
-D=1'de `medium`'dan başlıyor gibi görünse de burada D=2 sonucu `high`; Codex
-ölçeği `minimal→xhigh` daha alt basamaktan başlıyor. İki ölçek birbirine
-çevrilmez, karıştırma.)
-
-Girdi: *"Prod'da ara sıra düşen şu race condition'ı bul"*
-```
-Claude: Opus 5 · efor: max
-Codex: Sol · efor: xhigh
-İnsan onayı olmadan uygulanmasın.
-```
-
-Girdi: *"Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur"*
-```
-Claude: Opus 4.8 · efor: ultracode
-Codex: doğrulanmadı — Claude kullan
-```
-(Sızma testi = saldırı amaçlı sert kapı. Ama **"bu 180 servisin kodunu auth
-bypass açığı için denetle"** savunma işidir — kapı tetiklenmez, normal
-skorlamaya girer: `Claude: Sonnet 5 · efor: ultracode` / `Codex: Terra · efor: medium`.)
-
-Girdi: *"Bu genomik pipeline'daki varyant çağırma mantığını denetle"*
-```
-Claude: Fable 5.1 · efor: high
-Codex: doğrulanmadı — Claude kullan
-```
-
-Girdi: *"Prod config'inde `MAX_RETRIES`'ı 3'ten 5'e çek"*
-```
-Claude: Sonnet 5 · efor: low
-Codex: Terra · efor: minimal
-İnsan onayı olmadan uygulanmasın.
-```
-(R=3 ama D=0 — Claude tarafında model Haiku'ya düşmüyor, Sonnet'te taban
-buluyor; Codex tarafında böyle bir taban kuralı yok çünkü Luna zaten efor
-alıyor, D=0 direkt Luna'ya düşer... ama R=3 nedeniyle Codex tarafında da
-Luna yerine Terra'da kalınır, aynı "R=3 en zayıf modele bırakılmaz" ilkesi.)
-
-Girdi: *"Prod'daki 200 servisin auth mimarisini baştan tasarla"*
-```
-Claude: opusplan · plan: max · uygulama: medium
-⚠️ Efor otomatik geçmez — yürütme moduna geçince /effort medium ile elle ayarla.
-Codex: Sol · efor: xhigh
-İnsan onayı olmadan uygulanmasın.
-```
-(`opusplan` yalnızca Claude'da var; Codex tarafı kendi normal eşlemesinden
-düz Sol çıkar, iki taraf farklı mekanizma kullanabilir, bu normal.)
-
-Girdi: *"40 tamamen bağımsız mikroservisin güvenlik açığı taramasını aynı anda yap, her biri kendi başına"*
-```
-Claude: Sonnet 5 · efor: ultracode
-Codex: Sol Ultra · efor: high
-```
-(Gerçek bağımsız-paralel iş — Claude tarafında `ultracode`, Codex tarafında
-Sol Ultra tetikleniyor; iki taraf da kendi paralellik mekanizmasını kullanıyor.)
+If `max(D,C)=3, D=3` and it stayed on Terra (D<3 but the result is critical),
+`reasoning.mode: pro` can be tried — but because it's unverified in the Codex
+CLI it doesn't go in the default output; if the user asks "what else can I do?",
+suggest it with a "try it, fall back to standard mode if it doesn't work" note
+(same caution level as the Claude arm's `opusplan`+`ultracode` advanced-
+combination note).
 
 ---
 
-## Detay gerekirse
+## Output format
 
-Benchmark tabloları, fiyatlandırma, abonelik planları ve kaynak veri kalitesi
-notları için `reference.md` dosyasını oku. Kullanıcı "neden bu model?",
-"rakamlar ne?" diye sorarsa oraya bak — özellikle **§2.1** (LiveBench /
-BenchAlign / AA Index, 2 Eyl 2026) ve **§0.1** (Fable 5.1 / Mythos 5.1).
+**Two lines, always both — Claude and Codex.** Rationale, score, escalation note
+— none are written. Compute R/D/W/C once (in your head, without writing it out),
+read two tables, write the results:
 
-**Router benchmark rakamıyla model seçmez.** Leaderboard'lar Kural 2/3'ün
-*yönünü* doğruluyor; skorlama R/D/W/C üzerinden yürür, aggregate skor üzerinden
-değil (BenchAlign Sonnet 5'i kapsama artefaktıyla düşük gösteriyor — bkz. §2.1).
+```
+Claude: <Model> · effort: <level>
+Codex: <Model> · effort: <level>
+```
+
+Write no effort for Haiku 4.5; on the Codex side **every model takes an effort**
+(including Luna — there's no verified info excluding Luna's effort support):
+
+```
+Claude: Haiku 4.5
+Codex: Luna · effort: minimal
+```
+
+**On offensive-security / biology-adjacent prompts the Codex line recommends no
+model:**
+
+```
+Claude: Opus 4.8 · effort: ultracode
+Codex: unverified — use Claude
+```
+
+**Exceptions to this rule — only these two, always added to the output (BELOW
+the two lines, as their own separate line(s); nothing else that appears as a
+"note/warning/suggestion" in the rest of this text is added automatically):**
+1. `R=3` → human-review note — **one line, covers both sides** (task risk
+   doesn't change by ecosystem, don't repeat it).
+2. `opusplan` (can only be on the Claude line) → the effort-does-not-carry-over
+   warning, only under the Claude line.
+
+Everything else — the notes in Step 4 Rules 2–8, `opusplan`'s "advanced
+combination" paragraph, Codex's `mode: pro` note, escalation conditions — is
+explained **only when the user asks**, not added to the default output.
+
+If the user asks for the rationale (*"why?"*, *"why this?"*) then explain — but
+don't add it unprompted, and even then keep it short.
+
+### Examples
+
+Input: *"Label these 200 customer reviews as positive/negative"*
+```
+Claude: Haiku 4.5
+Codex: Luna · effort: minimal
+```
+
+Input: *"Understand the repo's auth flow and move it to OAuth2"*
+```
+Claude: Sonnet 5 · effort: high
+Codex: Terra · effort: low
+```
+(Same D=1 input, two different numeric effort words — the Claude scale `low→max`
+looks like it starts at `medium` for D=1 but here D=2 gives `high`; the Codex
+scale `minimal→xhigh` starts from a lower rung. The two scales don't convert to
+each other, don't mix them.)
+
+Input: *"Find the race condition that flakes in prod sometimes"*
+```
+Claude: Opus 5 · effort: max
+Codex: Sol · effort: xhigh
+Do not apply without human review.
+```
+
+Input: *"Run a penetration test against this 180-service environment, build auth-bypass chains"*
+```
+Claude: Opus 4.8 · effort: ultracode
+Codex: unverified — use Claude
+```
+(A penetration test = offensive hard gate. But **"audit these 180 services'
+code for auth-bypass vulnerabilities"** is defensive work — the gate does not
+fire, it goes to normal scoring: adversarial vuln hunting = D=3, 180 services
+= W=3 and independent, R=1 → `Claude: Sonnet 5 · effort: ultracode` /
+`Codex: Sol Ultra · effort: high`. Shrink the scope to one service and it's
+`Claude: Sonnet 5 · effort: xhigh` / `Codex: Sol · effort: high`.)
+
+Input: *"Audit this genomics pipeline's variant-calling logic"*
+```
+Claude: Fable 5.1 · effort: high
+Codex: unverified — use Claude
+```
+
+Input: *"Bump `MAX_RETRIES` from 3 to 5 in the prod config"*
+```
+Claude: Sonnet 5 · effort: low
+Codex: Terra · effort: minimal
+Do not apply without human review.
+```
+(R=3 but D=0 — on the Claude side the model doesn't drop to Haiku, it finds the
+floor at Sonnet; on the Codex side there's no such floor rule because Luna
+already takes an effort, D=0 drops straight to Luna... but because of R=3 the
+Codex side also stays on Terra instead of Luna, the same "R=3 is not left to the
+weakest model" principle.)
+
+Input: *"Redesign the auth architecture of 200 prod services from scratch"*
+```
+Claude: opusplan · plan: max · execute: medium
+⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.
+Codex: Sol · effort: xhigh
+Do not apply without human review.
+```
+(`opusplan` is Claude-only; the Codex side comes out plain Sol from its own
+normal mapping, the two sides can use different mechanisms, that's normal.)
+
+Input: *"Run the security scan of 40 completely independent microservices at once, each on its own"*
+```
+Claude: Sonnet 5 · effort: ultracode
+Codex: Sol Ultra · effort: high
+```
+(Genuinely independent-parallel work — `ultracode` fires on the Claude side, Sol
+Ultra on the Codex side; each uses its own parallelism mechanism.)
+
+---
+
+## If detail is needed
+
+For benchmark tables, pricing, subscription plans and source-data-quality notes,
+read `reference.md`. If the user asks "why this model?", "what are the numbers?",
+look there — especially **§2.1** (LiveBench / BenchAlign / AA Index, 2 Sep 2026)
+and **§0.1** (Fable 5.1 / Mythos 5.1).
+
+**The router does not select a model from a benchmark number.** Leaderboards
+confirm the *direction* of Rules 2/3; scoring runs on R/D/W/C, not on an
+aggregate score (BenchAlign shows Sonnet 5 low as a coverage artefact — see §2.1).

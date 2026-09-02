@@ -6,10 +6,11 @@ thousands" is top-0.1% territory for an individual dev tool; a good outcome for 
 well-executed launch is hundreds to low thousands. Don't buy stars or run
 mutual-star rings — it gets the repo flagged and kills its credibility.
 
-The biggest lever you haven't pulled: **the skill body is still Turkish.** An
-English README on a Turkish skill caps reach hard. If you can port
-`SKILL.md` + `reference.md` to English (same rules, re-run the eval iteration),
-do that *before* launch — it roughly changes the addressable audience by 20x.
+The skill body and README are now English (ported 2 Sep 2026, eval re-run as
+iteration-9). The remaining Turkish surface (`README.tr.md`,
+`claude-ai/instructions.tr.md`, `evals/history.tr.md`, the `tests_rule` notes in
+`evals.json`) is fine to leave — it reads as "originally built in Turkish, now
+bilingual", which is a small credibility signal, not a barrier.
 
 ---
 
@@ -64,9 +65,6 @@ buried.
 > there's a deterministic regression eval (cold agents read the rules fresh and
 > route a fixed prompt set; a regex grader checks the output). Currently 17/17.
 >
-> Caveat: the rule file is currently written in Turkish (my working language);
-> the README is English and an English port is the top open issue.
->
 > Repo: <link>
 
 Then a first comment from you with the concrete "here's what it does" example and
@@ -91,8 +89,7 @@ life, Codex safety-fallback behaviour is unverified so it punts to Claude).
 > Install is one PowerShell line for Claude Code, or a zip upload for claude.ai.
 > MIT, sourced from the official docs, has a regression eval suite.
 >
-> The rule file is Turkish right now (working on an English port). README is
-> English. Feedback and data corrections very welcome.
+> Feedback and data corrections very welcome — model prices/specs age fast.
 >
 > <link>
 

@@ -33,20 +33,20 @@
     {
       "id": "5b",
       "eval_name": "savunma-denetimi-kapi-yok",
-      "passed": false,
-      "evidence": "Claude: expected 'effort: ultracode' but there is no effort field"
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=ultracode; Codex: Sol Ultra correct, effort=high"
     },
     {
       "id": "f1",
       "eval_name": "frontier-kapisi-fable-5-1-servis-bolme-r3",
-      "passed": false,
-      "evidence": "Claude: expected 'effort: max' but there is no effort field"
+      "passed": true,
+      "evidence": "Claude: Fable 5.1 correct, effort=max; Codex: Sol correct, effort=xhigh; notes ok (shared note)"
     },
     {
       "id": "f2",
       "eval_name": "savunma-denetimi-kucuk-kapsam",
-      "passed": false,
-      "evidence": "Claude: expected 'effort: xhigh' but there is no effort field"
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=xhigh; Codex: Sol correct, effort=high"
     },
     {
       "id": 6,
@@ -189,38 +189,38 @@
     {
       "id": "d1",
       "eval_name": "dual-hacim-kapisi",
-      "passed": false,
-      "evidence": "Codex: expected 'effort: minimal' but there is no effort field"
+      "passed": true,
+      "evidence": "Claude: Haiku 4.5 correct; Codex: Luna correct, effort=minimal"
     },
     {
       "id": "d2",
       "eval_name": "dual-taban-durum",
-      "passed": false,
-      "evidence": "Claude: expected 'effort: high' but there is no effort field"
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=high; Codex: Terra correct, effort=low"
     },
     {
       "id": "d3",
       "eval_name": "dual-siber-guvenlik-codex-dogrulanmadi",
-      "passed": false,
-      "evidence": "Claude: expected 'effort: ultracode' but there is no effort field"
+      "passed": true,
+      "evidence": "Claude: Opus 4.8 correct, effort=ultracode; Codex: unverified (correct)"
     },
     {
       "id": "d4",
       "eval_name": "dual-biyoloji-codex-dogrulanmadi",
-      "passed": false,
-      "evidence": "Claude: expected 'effort: high' but there is no effort field"
+      "passed": true,
+      "evidence": "Claude: Fable 5.1 correct, effort=high; Codex: unverified (correct)"
     },
     {
       "id": "d5",
       "eval_name": "dual-r3-paylasilan-not",
-      "passed": false,
-      "evidence": "Claude: expected 'effort: low' but there is no effort field"
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=low; Codex: Terra correct, effort=minimal; notes ok (shared note)"
     },
     {
       "id": "d6",
       "eval_name": "dual-opusplan-codex-bagimsiz",
-      "passed": false,
-      "evidence": "Claude: output has no 'plan: X . execute: Y' pattern"
+      "passed": true,
+      "evidence": "Claude: opusplan correct (plan=max, execute=medium); Codex: Sol correct, effort=xhigh; notes ok (shared note, Claude note)"
     },
     {
       "id": "d7",
@@ -231,49 +231,49 @@
     {
       "id": "n1",
       "eval_name": "dual-novel-sahte-bagimsizlik-decoy",
-      "passed": false,
-      "evidence": "Claude: expected 'effort: medium' but there is no effort field"
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=medium; Codex: Terra correct, effort=low"
     },
     {
       "id": "n2",
       "eval_name": "dual-novel-savunma-vs-saldiri-guvenlik-ayrimi",
-      "passed": false,
-      "evidence": "Claude: expected 'effort: medium' but there is no effort field"
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=medium; Codex: Terra correct, effort=low"
     },
     {
       "id": "n3",
       "eval_name": "dual-novel-basit-nullable-migration",
-      "passed": false,
-      "evidence": "Claude: expected 'effort: low' but there is no effort field"
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=low; Codex: Terra correct, effort=minimal"
     },
     {
       "id": "r1",
       "eval_name": "d1-vs-d2-belgelenmis-kalip-pagination",
-      "passed": false,
-      "evidence": "Claude: expected 'effort: medium' but there is no effort field"
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=medium; Codex: Terra correct, effort=low"
     },
     {
       "id": "r2",
       "eval_name": "d0-vs-d1-mekanik-cok-paragraf-yeniden-yazim",
-      "passed": false,
-      "evidence": "Codex: expected 'effort: minimal' but there is no effort field"
+      "passed": true,
+      "evidence": "Claude: Haiku 4.5 correct; Codex: Luna correct, effort=minimal"
     },
     {
       "id": "s1",
       "eval_name": "r-ekseni-kod-degisikligi-vs-operasyonel-deger",
-      "passed": false,
-      "evidence": "Codex: expected 'effort: minimal' but there is no effort field"
+      "passed": true,
+      "evidence": "Claude: Haiku 4.5 correct; Codex: Luna correct, effort=minimal"
     },
     {
       "id": "s3",
       "eval_name": "r-ekseni-gercek-operasyonel-deger-r2",
-      "passed": false,
-      "evidence": "Claude: expected 'effort: low' but there is no effort field"
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=low; Codex: Terra correct, effort=minimal"
     }
   ],
   "summary": {
-    "passed": 1,
-    "failed": 16,
+    "passed": 17,
+    "failed": 0,
     "skipped": 0,
     "total": 45
   }

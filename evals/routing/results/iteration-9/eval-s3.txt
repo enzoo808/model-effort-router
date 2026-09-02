@@ -1,0 +1,3 @@
+Claude: Sonnet 5 · effort: low
+Codex: Terra · effort: minimal
+Do not apply without human review.
