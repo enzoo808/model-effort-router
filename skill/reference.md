@@ -757,21 +757,30 @@ reasoning depth and answer quality are **unchanged** — it buys latency with
 quota, nothing else.
 
 **Claude-side analogue:** Claude Code `/fast` (Fast Mode) — 2.5x faster output,
-doubles the price ($10/$50), **Opus 5 / Opus 4.8 only** (§4). Both are
+**doubles the price** ($10/$50), **Opus 5 / Opus 4.8 only** (§4). Both are
 CLI/desktop toggles; neither exists on the web UI.
 
 **How the router uses it — the speed line.** Unlike `mode: pro` (kept as an
 on-ask suggestion), Fast Mode goes in the **default output**: a line appended
 under the two model lines on **every CLI Codex output whose Codex line names a
-real model**:
+real model**. It has **two forms, and the first word says which** — so the reader
+can tell a nudge from an FYI:
 
-`⚡ Speed: Codex Fast Mode (1.5x)[ · Claude Fast Mode (2.5x)] — burns quota faster.`
+| Form | When | Line |
+|---|---|---|
+| **`recommended`** | `R ≤ 1` **∧** (`D ≤ 1` ∨ Step-1 volume/latency gate ∨ user explicitly asked for speed) | `⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.` |
+| **`available`** | everything else | `⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota)[ · Claude /fast (2.5x faster, 2× price)].` |
 
-- Codex half: always present when the Codex line has a real model (Luna / Terra /
-  Sol / Sol Ultra), at any effort.
-- Claude half (`· Claude Fast Mode (2.5x)`): only when the Claude line is `Opus 5`
-  or `Opus 4.8`. Not for `opusplan` (execution drops to Sonnet), Haiku, Sonnet or
-  Fable 5.1.
+- **Why `recommended` is gated on `R≤1 ∧ (D≤1 ∨ …)`:** on short mechanical /
+  low-stakes work the 1.5x quota cost is tiny in absolute terms and the user
+  isn't going to pore over the output — pure upside. On `D≥2` / `R≥2` the output
+  is something you read carefully and 1.5x of a large token count is a real hit,
+  so it drops to `available` (stated, not pushed).
+- **Claude half** (`· Claude /fast (2.5x faster, 2× price)`): appended **only to
+  the `available` form**, and only when the Claude line is `Opus 5` / `Opus 4.8`.
+  Never on `recommended` (that requires `D≤1`; the Claude line is Opus only at
+  `D=3`) and never a nudge (`/fast` doubles the price). Not for `opusplan`
+  (execution drops to Sonnet), Haiku, Sonnet, Fable 5.1.
 - **No speed line** when the Codex line is "unverified — use Claude" (the feature
   is Codex-anchored), or when the user is explicitly on a web surface.
 - Ordering with the other exception lines: the `opusplan` warning stays directly
@@ -781,8 +790,8 @@ real model**:
 **Why default output, not on-ask:** the skill owner asked for it to be surfaced
 every time — it's a cheap, always-relevant lever (every Codex CLI session can
 toggle it) and the quota trade-off is exactly the kind of thing this router
-exists to make visible. It is presented as an **option**, not a recommendation —
-the router does not decide latency-vs-quota for the user.
+exists to make visible. Even the `recommended` form is a suggestion the user can
+ignore — the router never toggles anything itself.
 
 **Combining with Sol Ultra:** technically independent toggles, so the line still
 appears on `Sol Ultra` outputs. The combination (≈4 parallel agents × 1.5x quota

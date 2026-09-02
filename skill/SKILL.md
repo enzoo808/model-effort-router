@@ -705,27 +705,44 @@ the output (below, the single/shared note in Output format).
 subscription quota / API bill burns at that same 1.5x rate. Model, reasoning
 depth and answer quality are **unchanged** — it buys latency with quota, nothing
 else. Independent of the model and of `reasoning.effort`. The Claude-side
-analogue is Claude Code's `/fast` (2.5x, but **Opus 5 / Opus 4.8 only** —
-`reference.md` §4). Both are CLI/desktop toggles; neither exists on the web UI.
+analogue is Claude Code's `/fast` — 2.5x faster output, but it **doubles the
+price** and is **Opus 5 / Opus 4.8 only** (`reference.md` §4). Both are
+CLI/desktop toggles; neither exists on the web UI.
 
 **The router appends one speed line to every CLI Codex output** whose Codex line
-names a real model, as its own line under the two model lines:
+names a real model. It comes in **two forms — the first word says which**, so the
+reader can tell a nudge from an FYI:
 
-`⚡ Speed: Codex Fast Mode (1.5x)[ · Claude Fast Mode (2.5x)] — burns quota faster.`
+**1. `recommended`** — when `R ≤ 1` **and** any of: `D ≤ 1` · the Step-1
+volume/latency gate fired · the user explicitly asked for speed / said they're in
+a hurry. (Short, mechanical or low-stakes work — the 1.5x quota cost is tiny in
+absolute terms and you're not going to be poring over the output anyway.)
+```
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.
+```
 
-- The `· Claude Fast Mode (2.5x)` half is added **only if** the Claude line is
-  `Opus 5` or `Opus 4.8` (Fast Mode is Opus-only on the Claude side). Not for
-  `opusplan` (execution drops to Sonnet), Haiku, Sonnet or Fable 5.1 — for those,
-  write the Codex half alone.
+**2. `available`** — every other case (`D ≥ 2`, `R ≥ 2`, deep reasoning you'll
+want to read carefully, or big token counts where 1.5x is a real quota hit).
+```
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+```
+If the Claude line is `Opus 5` or `Opus 4.8`, append the Claude half — **only to
+the `available` form**, never `recommended` (`/fast` doubles the price, so it's
+never a nudge):
+```
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
+```
+(The `recommended` form never needs a Claude half: it requires `D ≤ 1`, and the
+Claude line is only Opus at `D = 3`.)
+
 - **No speed line** when the Codex line is "unverified — use Claude" (the feature
   is Codex-anchored), or when the user is explicitly on a web surface.
-- Ordering with the other exception lines: the `opusplan` warning stays directly
-  under the Claude line; the speed line sits just **above** the `R=3`
-  human-review note.
+- Ordering: the `opusplan` warning stays directly under the Claude line; the
+  speed line sits just **above** the `R=3` human-review note.
 
-This is the **third** always-added Output-format exception (below). It is an
-**option, not a recommendation** — the router does not decide latency-vs-quota
-for the user, it just makes the lever visible.
+This is the **third** always-added Output-format exception (below). Even the
+`recommended` form is a suggestion the user can ignore — the router never toggles
+anything itself.
 
 ### Human-review note on Codex
 
@@ -782,12 +799,15 @@ the two lines, as their own separate line(s); nothing else that appears as a
    doesn't change by ecosystem, don't repeat it). Goes **last**.
 2. `opusplan` (can only be on the Claude line) → the effort-does-not-carry-over
    warning, directly under the Claude line.
-3. **Speed line** (see Codex arm → "Fast Mode (1.5x)") →
-   `⚡ Speed: Codex Fast Mode (1.5x)[ · Claude Fast Mode (2.5x)] — burns quota faster.`
-   Added to every CLI Codex output whose Codex line names a real model; the
-   `· Claude Fast Mode (2.5x)` half only when the Claude line is `Opus 5`/`Opus
-   4.8`. Omitted on a web surface and on a "unverified — use Claude" Codex line.
-   Sits just above the `R=3` note.
+3. **Speed line** (see Codex arm → "Fast Mode (1.5x)") — one of:
+   - `⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.`
+     when `R≤1` ∧ (`D≤1` ∨ Step-1 volume gate ∨ explicit hurry).
+   - `⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota)[ · Claude /fast (2.5x faster, 2× price)].`
+     otherwise; the Claude half only when the Claude line is `Opus 5`/`Opus 4.8`.
+
+   Added to every CLI Codex output whose Codex line names a real model. Omitted on
+   a web surface and on a "unverified — use Claude" Codex line. Sits just above the
+   `R=3` note.
 
 Everything else — the notes in Step 4 Rules 2–8, `opusplan`'s "advanced
 combination" paragraph, Codex's `mode: pro` note, escalation conditions — is
@@ -802,15 +822,17 @@ Input: *"Label these 200 customer reviews as positive/negative"*
 ```
 Claude: Haiku 4.5
 Codex: Luna · effort: minimal
-⚡ Speed: Codex Fast Mode (1.5x) — burns quota faster.
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.
 ```
+(Volume gate fired ∧ R≤1 → `recommended`.)
 
 Input: *"Understand the repo's auth flow and move it to OAuth2"*
 ```
 Claude: Sonnet 5 · effort: high
 Codex: Terra · effort: low
-⚡ Speed: Codex Fast Mode (1.5x) — burns quota faster.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
 ```
+(D=2 → `available`, not a nudge — you'll want to read this output.)
 (Same D=1 input, two different numeric effort words — the Claude scale `low→max`
 looks like it starts at `medium` for D=1 but here D=2 gives `high`; the Codex
 scale `minimal→max` starts from a lower rung. The two scales don't convert to
@@ -820,11 +842,11 @@ Input: *"Find the race condition that flakes in prod sometimes"*
 ```
 Claude: Opus 5 · effort: max
 Codex: Sol · effort: max
-⚡ Speed: Codex Fast Mode (1.5x) · Claude Fast Mode (2.5x) — burns quota faster.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
 Do not apply without human review.
 ```
-(Claude line is Opus 5 → the `· Claude Fast Mode (2.5x)` half is included; speed
-line sits above the human-review note.)
+(R=3 → `available`, not `recommended`. Claude line is Opus 5 → the Claude half is
+included; speed line sits above the human-review note.)
 
 Input: *"Run a penetration test against this 180-service environment, build auth-bypass chains"*
 ```
@@ -848,9 +870,11 @@ Input: *"Bump `MAX_RETRIES` from 3 to 5 in the prod config"*
 ```
 Claude: Sonnet 5 · effort: low
 Codex: Terra · effort: minimal
-⚡ Speed: Codex Fast Mode (1.5x) — burns quota faster.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
 Do not apply without human review.
 ```
+(D=0 but R=3 → `available`, not `recommended` — don't nudge speed on an
+irreversible prod change.)
 (R=3 but D=0 — on the Claude side the model doesn't drop to Haiku, it finds the
 floor at Sonnet; on the Codex side there's no such floor rule because Luna
 already takes an effort, D=0 drops straight to Luna... but because of R=3 the
@@ -862,23 +886,24 @@ Input: *"Redesign the auth architecture of 200 prod services from scratch"*
 Claude: opusplan · plan: max · execute: medium
 ⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.
 Codex: Sol · effort: max
-⚡ Speed: Codex Fast Mode (1.5x) — burns quota faster.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
 Do not apply without human review.
 ```
 (`opusplan` is Claude-only; the Codex side comes out plain Sol from its own
-normal mapping — D=3 ∧ R=3 → `max`. No Claude Fast Mode half — `opusplan` is not
-a plain Opus line. The two sides can use different mechanisms, that's normal.)
+normal mapping — D=3 ∧ R=3 → `max`. `available` (R=3); no Claude half — `opusplan`
+is not a plain Opus line. The two sides can use different mechanisms, that's
+normal.)
 
 Input: *"Run the security scan of 40 completely independent microservices at once, each on its own"*
 ```
 Claude: Sonnet 5 · effort: ultracode
 Codex: Sol Ultra · effort: high
-⚡ Speed: Codex Fast Mode (1.5x) — burns quota faster.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
 ```
 (Genuinely independent-parallel work — `ultracode` fires on the Claude side, Sol
-Ultra on the Codex side; each uses its own parallelism mechanism. Fast Mode still
-stacks on Sol Ultra — 4 parallel agents at 1.5x quota rate is expensive, the
-"burns quota faster" wording is the warning.)
+Ultra on the Codex side; each uses its own parallelism mechanism. D=3 → `available`,
+not `recommended`; and on Sol Ultra the "1.5x quota" is 1.5x of ~4 parallel
+agents — expensive, so definitely the user's call.)
 
 ---
 
