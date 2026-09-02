@@ -9,7 +9,7 @@ You:    /model-secici  Move the repo's auth flow to OAuth2
 
 model-secici:
   Claude: Sonnet 5 · effort: high
-  Codex:  Terra · effort: low
+  Codex:  Terra · effort: medium
 ```
 
 That's the whole idea. One more:

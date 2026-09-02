@@ -311,11 +311,12 @@ Claude: Haiku 4.5
 Codex: Luna · effort: minimal
 ```
 
-*"Repodaki auth akışını OAuth2'ye taşı"*
+*"Repodaki auth akışını OAuth2'ye taşı"*  (D=2)
 ```
 Claude: Sonnet 5 · effort: high
-Codex: Terra · effort: low
+Codex: Terra · effort: medium
 ```
+(Aynı D, bir kademe farklı efor kelimesi: Claude `2→high`, Codex `2→medium`.)
 
 *"Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur"*
 ```
@@ -323,7 +324,8 @@ Claude: Opus 4.8 · effort: ultracode
 Codex: unverified — use Claude
 ```
 (Ama *"bu 180 servisin kodunu auth bypass açığı için denetle"* savunma işidir →
-kapı yok: `Claude: Sonnet 5 · effort: ultracode` / `Codex: Terra · effort: medium`.)
+kapı yok; adversarial zafiyet avı = D=3, 180 birim bağımsız = W=3 →
+`Claude: Sonnet 5 · effort: ultracode` / `Codex: Sol Ultra · effort: high`.)
 
 *"Bu genomik pipeline'daki varyant çağırma mantığını denetle"*
 ```

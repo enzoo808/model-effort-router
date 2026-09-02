@@ -285,6 +285,19 @@ sonra 16/16 doğrulandı.
 > notunun üstünde, Claude yarısı yalnızca Opus 5/4.8'de) ve `grade_routing.py`
 > onu yok sayıyor. Not: "Codex CLI Fast Mode" resmi kaynakla doğrulanmadı —
 > `reference.md` §9.7'de "kullanıcı bildirimi" olarak işaretli.
+>
+> **iteration-11:** `SKILL.md` yapısal trim'i (919→527 satır / 51KB→26KB) —
+> cold-route gecikmesi ~2 dk idi çünkü dosya ~12k token iç içe `>` edge-case
+> notuna büyümüştü ve taze ajan her R/D/W/C puanını tekrar okuyup sorguluyordu.
+> Karar omurgası + eksende tek satırlık sinyal kaldı; tüm worked ✅/❌ örnek +
+> gerekçe **`reference.md` §10**'a taşındı (6 alt bölüm) + §8'e 8 kalibrasyon
+> satırı; başa "fast path" notu. **Hiçbir yönlendirme kuralı değişmedi.** Tam
+> taze re-run (4 paralel ajan) — **17/17**; erken iterasyonların notları hangi
+> edge-case için eklendiyse hepsi kısa dosyadan da doğru çıkıyor. Ayrıca `d2`
+> beklentisindeki iç tutarsızlık düzeltildi: `expected_claude` `high` (D=2) ile
+> `expected_codex` `low` (D=1) çelişiyordu → Codex `medium` (D=2). Aynı D için
+> iki ölçek bir kademe farklı efor kelimesi kullanır (Claude 2→high, Codex
+> 2→medium).
 
 | # | Prompt | Beklenen | Sınadığı kural |
 |---|---|---|---|

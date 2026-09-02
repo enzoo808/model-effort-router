@@ -503,7 +503,11 @@ resembles one on this list, use that example's score as a starting point.
 | "Split the monolith into 12 microservices, including data consistency" | 3,3,3,3 | Opus 5 · max, `ultracode` **no** *(D=3∧R=3 conflict)* |
 | "Migrate 500 files from the old logging library to the new one" | 1,1,3,1 | Sonnet 5 · **ultracode** *(when ultracode fires, the effort field says "ultracode", not D's value)* |
 | "Get this SQL query out of N+1" | 1,1,0,0 | Sonnet 5 · medium *(D=1 "known bug shape" → not Haiku)* |
+| "Add cursor-based pagination to this API" | 1,1,0,0 | Sonnet 5 · medium *(well-documented single pattern → D=1, not D=2)* |
+| "Add a `last_login_at` column and make it nullable" | 2,0,0,0 | Sonnet 5 · low *(fully-specified additive schema → D=0; R=2 reversible migration → not Haiku)* |
+| "Change this button's colour from blue to green" | 1,0,0,0 | Haiku 4.5 *(source-code change → R=1 by default, PR-reviewed)* |
 | "Design a new rate-limiter algorithm, consistent in a distributed system" | 2,3,1,1 | Opus 5 · xhigh *(algorithmic depth)* |
+| "Review this single-file JWT validation module for security vulnerabilities" | 1,3,0,1 | Sonnet 5 · xhigh *(adversarial vuln hunt → D=3; W=0 → not ultracode; outside Rule 2 → Sonnet)* |
 
 ### Structured system design (not code but hits Rule 2a)
 
@@ -522,6 +526,7 @@ Sonnet. This category shows Rule 2(a) also covers non-code.
 | Prompt | R,D,W,C | → |
 |---|---|---|
 | "Rewrite this email in a more polite tone" | 1,0,0,0 | Haiku 4.5 |
+| "Rewrite these three paragraphs in a more formal tone" | 1,0,0,0 | Haiku 4.5 *(tone only, no content change → D=0 regardless of length)* |
 | "Summarise these meeting notes into 5 bullets" | 1,1,0,1 | Sonnet 5 · medium |
 | "Write a report comparing the pricing of 3 competitors" | 1,2,1,2 | Sonnet 5 · high |
 | "Find the clauses in this 40-page contract that conflict with the arbitration clause" | 2,3,1,2 | Sonnet 5 · xhigh *(outside Rule 2 → cheap default)* |
@@ -543,6 +548,8 @@ Sonnet. This category shows Rule 2(a) also covers non-code.
 | Prompt | R,D,W,C | → |
 |---|---|---|
 | "Find the flaky test in the CI pipeline" | 1,1,1,0 | Sonnet 5 · medium |
+| "Add the same health-check endpoint to 60 independent microservices" | 1,1,2,0 | Sonnet 5 · medium *(60 < 100 → W=2, not W=3 → no ultracode; effort follows D=1)* |
+| "List which security-group rules allow 0.0.0.0/0 on ports other than 80/443" | 1,1,1,1 | Sonnet 5 · medium *(mechanical enumeration → D=1, not the D=3 adversarial case; defensive → no gate)* |
 | "Profile 180 services for performance regression" | 2,2,3,2 | Sonnet 5 · **ultracode** *(W=3 triggered; the effort field says "ultracode", not D's `high`)* |
 | "Find the deploy that caused the prod CPU spike, don't roll back yet" | 2,2,1,2 | Sonnet 5 · high |
 | "Migrate the Kubernetes cluster to multi-region HA from scratch" | 3,3,2,2 | Opus 5 · max |
@@ -802,3 +809,243 @@ user weighs it.
 (it extracts only `Claude:` / `Codex:` lines and named notes). No existing eval
 breaks. If a future eval wants to assert the line, add an `expected` field for
 it.
+
+---
+
+## 10. Routing rubric — edge cases & rationale
+
+> **Why this section exists:** `SKILL.md` used to carry every one of these notes
+> inline. It grew to ~920 lines / ~12k tokens of nested blockquotes, and a cold
+> agent re-reading all of it before every route was spending ~2 min second-
+> guessing each score. The decision spine stays in `SKILL.md`; the accumulated
+> rulings (10 eval iterations' worth) live here and are consulted **only when a
+> specific score is genuinely ambiguous**. Nothing here changes routing
+> behaviour vs. the pre-trim `SKILL.md` — it is the same content, relocated.
+> (Trim done 2 Sep 2026, verified by routing eval iteration-11.)
+
+### 10.1. Step 1 hard-gate rationale
+
+**Why offensive security → straight to Opus 4.8.** Fable 5.1, Opus 5 and Sonnet
+5 each have their own safety classifiers. When an offensive request (exploit
+generation, penetration testing, binary-based vulnerability scanning) is
+flagged, Fable 5.1's permitted fallback targets are **Opus 4.8 and Opus 5**. The
+router skips the redirect and recommends **Opus 4.8** directly (most permissive
+general model on cyber posture). Do **not** recommend Sonnet 5 — it is
+deliberately isolated from exploit generation (0% working-exploit rate on the
+Firefox 147 evaluation). With Glasswing access → **Mythos 5.1 · xhigh**.
+
+What changed with Fable 5.1 vs Fable 5: (a) defensive vulnerability discovery is
+no longer blocked — Fable 5.1 does it itself; (b) on benign requests, cyber
+interventions dropped ~60% per session.
+
+**`ultracode` can still rise above the `xhigh` floor.** The offensive gate is
+"deciding" but only fixes the **model**. After it fires, check
+`W=3 ∧ duration>30min ∧ ¬(D=3 ∧ R=3)` normally — if it holds, effort is
+`ultracode`, not `xhigh` (the "180-service penetration test" example).
+
+**Why biology-adjacent → Fable 5.1, not Opus 5.** On benign/educational
+biology-medical questions safeguards fire ~85% less — not a gate, normal
+scoring. The gate is only for **R&D-heavy** work:
+- **Fable 5.1** → R&D-flagged parts auto-redirect to **Opus models** (expected).
+- **Opus 5** → biology R&D has **no fallback, it refuses directly.** So
+  recommending Opus 5 here can hit the user with a flat refusal.
+
+Life Sciences Verification Program researchers use **Mythos 5.1** (invite only).
+**Do not put an effort floor on Fable 5.1** — default `high`; it calls
+search/retrieval less at `low`, so raise effort for work needing fresh info.
+
+**Frontier-scale gate — one signal is enough.** Not "thousands of files AND 1M
+context AND persistent memory" — just the file/scope count (1000+). Work at that
+scale already requires the rest; the prompt isn't expected to state it.
+✅ "Break up this 4000-file legacy monolith into modules" — only the file count
+is written, the gate still fires → Fable 5.1. Don't confuse with Step 2's `W=3`
+threshold (100+ files): 100–999 files → normal scoring, not this gate.
+
+### 10.2. R axis — worked pairs
+
+> **Architectural decision label ≠ R=3.** The real question is reversibility.
+> ✅ R=2: "Migrate 40 microservices to a shared auth middleware" — each service
+>    uses its own middleware independently; service-by-service phased migration
+>    and rollback are possible; architectural but reversible.
+> ❌ R=3: "Redesign the auth architecture of 200 prod services from scratch" —
+>    a single central identity/authorization core (token schema, trust boundary)
+>    all 200 services jointly depend on; phased rollout doesn't make it
+>    reversible because the design decision itself is shared.
+
+> **Large decomposition — module or service?**
+> "Break the monolith into **modules**" = internal refactor, reversible via a
+> strangler-fig approach → **R=2** (validation id 8 → `Fable 5.1 · ultracode`).
+> "Split into separate **services / processes**" = network + data-ownership +
+> deploy-topology boundaries; once interdependent, re-merging is
+> disproportionately expensive → **R=3** (id f1 → `Fable 5.1 · max`). The
+> frontier gate fixes the model (Fable 5.1) either way; the effort differs
+> (R=2 → `ultracode`, R=3∧D=3 → `max`).
+
+> **Codebase change vs. operational value.** A normal source-code change
+> (component colour, text, CSS, any source line) is **R=1 by default** — the
+> normal flow is PR review + deploy (that's the definition of R=1). R=2/R=3 only
+> when the prompt explicitly points at a value that goes live **without** code
+> review — a prod config file, a live admin panel, a feature-flag toggle, a DB
+> setting. "Change the settings page's default theme" is assumed to be a
+> codebase change → R=1.
+> ✅ R=1: "Change this button's colour from blue to green" (id s1 → Haiku 4.5).
+> ✅ R=2: "Turn on the new checkout flow for all users from the feature-flag
+>    panel" (id s3 → Sonnet 5 · low — live operational value, not left to Haiku).
+
+> **"One-line config" ≠ R=2 automatically.** Blast radius, not line length.
+> Isolated operational value (one feature-flag default) → R=2. A line governing
+> **system-wide** behaviour (retry count, timeout, rate limit, connection-pool
+> size) where a wrong value causes a gradual outage (retry storm, connection
+> exhaustion) before a human notices → **R=3** even as one line.
+> ✅ R=3: "Bump `MAX_RETRIES` from 3 to 5 in the prod config" (id d5 → Sonnet 5 ·
+>    low + human-review note).
+
+### 10.3. D axis — worked pairs
+
+> **D=1 / D=2 boundary — "well-documented" ≠ D=2.** How many independent design
+> decisions are left to the implementer? One reasonable approach following a
+> recipe/library → D=1. A real choice between >1 approach affecting the outcome
+> → D=2.
+> ✅ D=1: "Add cursor-based pagination to this API" (id r1 → Sonnet 5 · medium).
+> ❌ D=2: "Add both cursor and offset pagination in a backward-compatible way,
+>    decide when each is used" — two approaches + a constraint.
+> When in doubt stay at D=1 — a "more than a one-liner" feeling is not grounds
+> for D=2.
+
+> **D=0 in non-coding.** Pure form/tone change with no content change is D=0
+> regardless of length — even 3 paragraphs, if there's no choice/trimming/
+> synthesis. ✅ "Rewrite these three paragraphs in a more formal tone" (id r2 →
+> Haiku 4.5).
+
+> **Fully-specified additive schema change = D=0.** Column name + type + nullable
+> all given, no design decision. ✅ "Add a `last_login_at` column and make it
+> nullable" (id n3 → Sonnet 5 · low — D=0 effort, but R=2 keeps it off Haiku).
+> A schema change *with a choice* (index type, backfill strategy, constraint) is
+> D=1.
+
+> **Adversarial vulnerability hunting = D=3** (finding subtle logic errors —
+> same family as a race-condition hunt or reconciling conflicting contract
+> clauses). Holds even for a large defensive audit (still D=3 on depth, though
+> it doesn't gate).
+> ✅ D=3: "Review this single-file JWT validation module for security
+>    vulnerabilities" (id f2 → Sonnet 5 · xhigh — W=0 so no ultracode).
+> **Mechanical enumeration = D=1**, not D=3: "list which security-group rules
+> allow 0.0.0.0/0 on ports other than 80/443" is a fixed-condition scan (id n2 →
+> Sonnet 5 · medium). An open-ended "review this for security holes" is the D=3
+> case — the phrasing decides.
+
+### 10.4. opusplan — diagnostic & advanced combination
+
+| Kind of difficulty | Example | opusplan? |
+|---|---|---|
+| Front-loaded: once the plan is done, execution repeats a pattern | "Migrate 40 services to a shared middleware, define the design once" | ✅ |
+| Persistent: each execution step needs its own discovery | Race-condition hunt — cause unknown without reading the code | ❌ plain Opus 5 · max |
+| Persistent: plan and execution inseparable | Formal correctness proof | ❌ |
+| Insufficient volume (W≤1) | A small architectural decision, single-file impact | ❌ — mode switch is overhead |
+
+**Execution verb may be unstated — the target-scope count is the signal.** "Design
+X for 200 services", "define Y for 40 microservices" — the number implies the
+execution phase exists. "Design" alone doesn't override front-loading.
+✅ "Redesign the auth architecture of 200 prod services from scratch" (id d6/10 →
+`opusplan · plan: max · execute: medium`).
+❌ "Decouple this router's model selection from risk" (id 16 → plain Opus 5 ·
+xhigh — W=1, and execution needed judgement too; live-tested in this project).
+
+**opusplan output** adds two lines under `Claude:`:
+```
+Claude: opusplan · plan: <effort> · execute: <effort>
+⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort <execute effort>.
+```
+Plan effort = Rule 2(a)'s result (`xhigh`, or `max` if `R=3`). Execute effort =
+post-plan estimated D (usually `medium`, rarely `high`). Opus 5 and Sonnet 5 are
+both "hold"-free — the plan-mode effort **stays** on the switch to execution, it
+doesn't drop automatically, hence the mandatory warning.
+
+**Advanced combination (unverified, on-ask only — NOT auto-added).** If `W=3`,
+`ultracode` on Sonnet 5 during the execution phase can be considered (apply the
+migration in parallel). Untested in the official docs; suggest only if the user
+asks "what else can I do?", with a "try it, fall back to plain `high`" note.
+
+**opusplan is Claude Code only** — no equivalent on Claude.ai (the
+`instructions.tr.md` derivative drops it entirely). Context-window detail: the
+plan phase uses the `opus` setting's window; `opusplan[1m]` forces both phases
+to 1M.
+
+### 10.5. Step 4 rules — rationale
+
+**Rule 1 (R=3 → human-review note).** Model/effort stay as Step 3 produced them;
+a "Do not apply without human review." line is added. For simple-but-risky work
+(D≤1) this is sufficient warning on its own — no need to raise the model.
+
+**Rule 2 (prefer Opus 5 in three areas).** A partly-verified pattern from the
+Opus 4.8 era. Opus 5's granular numbers (SWE-bench Pro / Terminal-Bench / HLE)
+weren't published separately, but its overall jump over Opus 4.8 (>2x
+Frontier-Bench, leading GDPval-AA/OSWorld) plus LiveBench 2026-06-25 (agentic
+coding Opus 5 65.2 vs Sonnet 5 59.4) indicate the same-direction advantage.
+(a) covers non-code structured design too (rule-engine, decision-tree,
+system/prompt architecture). (c) tool-less: Sonnet 5's raw-intelligence gap
+closes with tools (Opus 4.8-era: tool-less HLE Opus +6.6, tooled parity) — most
+Claude Code work is "tooled", so (c) rarely fires.
+
+**Rule 3 (D=3 outside Rule 2 → Sonnet 5 · xhigh default).** LiveBench 2026-06-25
+shows Opus 5 above Sonnet 5 (agentic +5.8, language +13.7, reasoning +2.5, math
++2.8) — but Opus 5's cost-per-successful-task is ~1.4x Sonnet 5's, and the
+difference doesn't justify every job. Escalate to Opus 5 · xhigh if the result
+is insufficient or the work is critical (especially language/reasoning-heavy).
+Do not route from an aggregate score — BenchAlign shows Sonnet 5 at #39 via a
+coverage artefact (§2.1); LiveBench's full coverage keeps it at 76.0.
+
+**Rule 4 (user knowledge).** Anthropic's Opus 5 advice: start `high`, `xhigh`
+for coding/agentic, and use low/medium freely as a cost control "wherever your
+eval holds up" — a departure from the Opus 4.7/4.8 "waste at low effort"
+framing. The router still never emits Opus 5 below `xhigh` (it only picks Opus 5
+at D=3); this note is for the user running Opus 5 manually.
+
+**Rule 5 (`ultracode` ≥ 30 min).** It plans a workflow for every substantive
+task; on everyday work that's latency + quota, not quality. One-off depth →
+`ultrathink` in the prompt.
+
+**Rules 6–8** (MCP tool-schema load, auto-accept geometric cost, `/model opus`
+alias resolution) — see the one-liners in `SKILL.md` Step 4; full figures in §6
+and §0.
+
+### 10.6. Codex arm — notes
+
+**What "Sol Ultra" actually is.** Ultra is a **product mode**, not an effort
+value — `reasoning: {effort: "ultra"}` returns HTTP 400. Toggled in Codex
+settings (Plus plans and up), runs ~4 collaborating agents in parallel. "Sol
+Ultra" = `gpt-5.6-sol` with that mode on — not a separate model slug. It rides
+on top of a normal effort level, so `Sol Ultra · effort: high` means "Sol, ultra
+mode, high effort". Ultra is only meaningful on Sol — no Terra/Luna Ultra.
+✅ "Run the security scan of 40 independent microservices at once, each on its
+   own" — genuinely independent → Sol Ultra.
+❌ "Break this monolith into modules" — pieces interdependent, one coherent
+   design decision → plain Sol (Claude side goes to `opusplan` here — consistent:
+   parallelisation is misleading on both sides).
+
+**Sol → Sol Ultra diagnostic** (Codex analogue of `ultracode`; "independence" is
+the key criterion). *Does the work split into 3+ separate pieces
+(module/service/verification angle) that run unaware of each other and merge at
+the end — or are the pieces interdependent, requiring one coherent design
+decision?* If genuinely independent (and it already reached `D=3 → Sol`) → Sol
+Ultra.
+
+**`max` on Codex is real** (verified 2 Sep 2026). `openai.com/index/gpt-5-6/` +
+the GA note: the GPT-5.6 effort ladder is `none, low, medium, high, xhigh, max`,
+and `max` "is available to all users with access to GPT-5.6 in ChatGPT Work and
+Codex and can be toggled on in settings". The
+`learn.chatgpt.com/docs/config-file/config-reference` page is stale (lists only
+to `xhigh`) — a doc lag. Caveat: some third-party gateways / CLI wrappers still
+400 on `max` — if the user reports a 400, tell them to check tooling or fall
+back to `xhigh`.
+
+**`mode: pro` — Responses-API only, on-ask only (NOT auto-added).** `reasoning.mode:
+"pro"` is a separate axis from effort (defaults to `medium` effort), confirmed
+for the Responses API; no `model_reasoning_mode` key in the Codex CLI config
+reference. If `max(D,C)=3` stayed on Terra (D<3 but the result is critical),
+suggest it — "API-only, try it, fall back to standard mode" — only if the user
+asks "what else can I do?".
+
+**Codex human-review note:** `R=3` → same as Step 4 Rule 1, one shared note.
+The MCP/auto-accept warnings (Rules 6/7) are **not** carried into the Codex arm —
+Codex's tool-schema/session-cost mechanics were not verified.

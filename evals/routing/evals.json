@@ -415,11 +415,11 @@
       "eval_name": "dual-taban-durum",
       "prompt": "Understand the repo's auth flow and move it to OAuth2",
       "expected_claude": "Sonnet 5 · effort: high",
-      "expected_codex": "Terra · effort: low",
-      "tests_rule": "D=1-2 taban durum, iki ölçeğin farklı efor kelimeleri kullandığının kanıtı",
+      "expected_codex": "Terra · effort: medium",
+      "tests_rule": "D=2 taban durum (repo'yu anla + çok adımlı ama iyi belgelenmiş migration; README.tr.md id 3 = 'Skorlama (D=2)'). max(D,C)=2 → Claude Sonnet 5·high / Codex Terra·medium. İki ölçek aynı D için bir kademe farklı efor kelimesi kullanır (Claude 2→high, Codex 2→medium) — bu bir uyuşmazlık değil. (Önce expected_codex 'low' idi = D=1 varsayımı; Claude 'high' D=2 ile çelişiyordu — iteration-11 trim'inde düzeltildi.)",
       "expectations": [
         "Claude: Sonnet 5 · high",
-        "Codex: Terra · low"
+        "Codex: Terra · medium"
       ]
     },
     {
