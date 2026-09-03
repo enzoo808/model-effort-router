@@ -9,8 +9,12 @@ You:    /model-secici  Move the repo's auth flow to OAuth2
 
 model-secici:
   Claude: Sonnet 5 · effort: high
-  Codex:  Terra · effort: high
+  Codex:  Terra · effort: xhigh
 ```
+
+(Codex runs a notch hotter here: it's multi-step code restructuring, and
+independent benchmarks put the GPT-5.6 line behind Claude on agentic coding
+specifically — so the router compensates with effort.)
 
 That's the whole idea. One more:
 
@@ -177,7 +181,7 @@ by `evals/routing/grade_routing.py` (pure regex, no LLM). The protocol: spin up
 **cold agents** that read `skill/SKILL.md` fresh and route each prompt; grade the
 raw output.
 
-Latest run (**iteration-12**, cold agents against the current `SKILL.md`):
+Latest run (**iteration-13**, cold agents against the current `SKILL.md`):
 **17/17 auto-graded pass**. Run history and the reasoning behind each rule change
 is in [`evals/README.md`](evals/README.md).
 

@@ -228,9 +228,13 @@ supports that direction.
    D=3 work outside Rule 2, Sonnet 5 stays the quota default, but if the result
    is critical there's a concrete reason to move to Opus 5 (not just "unproven").
 4. **GPT-5.6 Sol:** neck-and-neck with Opus 5 on reasoning/math but **weak on
-   agentic coding** (56.2 < Sonnet 5). The Codex arm's D=3→Sol mapping is
-   correct; but note (if the user asks) that Sol is comparatively weaker than
-   the Claude side on long agentic coding work.
+   agentic coding** (Sol 56.2 < Sonnet 5 59.4 < Opus 5 65.2). The Codex arm's
+   D=3→Sol mapping is correct (it's the whole tier that trails, not just Sol) →
+   this is the basis of the Codex **+1 effort notch for agentic multi-step
+   coding** (iteration-13). It's the *only* axis where the GPT-5.6 line is behind
+   Claude — overall LiveBench Terra (max) 77.9 ≈ Sonnet 5 (xhigh) 76.0, and Sol
+   ties Opus on reasoning/math — so the two arms' effort columns are otherwise
+   identical.
 
 > **Sources:** `livebench.ai` (2026-06-25 release), `artificialanalysis.ai/models`,
 > `benchlm.ai` — all read directly on 2 Sep 2026. All three agree on the top
@@ -493,6 +497,14 @@ resembles one on this list, use that example's score as a starting point.
 
 ### Coding
 
+The `→` column is the **Claude** answer. Codex model per §Codex-mapping; Codex
+effort = the same D-table **+1 notch when the row is agentic multi-step coding**
+(§10.6): "Merge 3 services onto a shared auth middleware" → Codex `xhigh` (not
+`high`); "Find and fix the race condition" and "Design a new rate-limiter
+algorithm" → already `xhigh` on the table, +1 → Codex `max`; "Split the monolith
+into 12 microservices" → `D=3∧R=3` caps both at `max`. "Review this JWT module"
+is *analysis* → no +1, Codex stays `xhigh`.
+
 | Prompt | R,D,W,C | → |
 |---|---|---|
 | "Fix the typo in this function" | 1,0,0,0 | Haiku 4.5 *(D=0, genuinely trivial)* |
@@ -638,8 +650,18 @@ things**:
      for latency-sensitive workloads."* `medium` is the **coding/development
      default**; `low` is for *"quick, well-scoped tasks"* / *"narrow tasks with
      clear requirements and limited impact"*; `none` = no reasoning. → This maps
-     rung-for-rung onto the D scale, so **the router uses one `D → effort` table
-     for both arms**: `0→low · 1→medium · 2→high · 3→xhigh`, `D=3 ∧ R=3 → max`.
+     rung-for-rung onto the D scale, so **both arms start from one `D → effort`
+     table**: `0→low · 1→medium · 2→high · 3→xhigh`, `D=3 ∧ R=3 → max`.
+   - **Codex modifier — +1 notch for agentic multi-step coding** (iteration-13).
+     LiveBench §2.1 puts the whole GPT-5.6 line behind Claude on agentic coding
+     (Sol 56.2 < Sonnet 5 59.4 < Opus 5 65.2) and *nowhere else*. So when the
+     task is writing/restructuring code across multiple dependent steps
+     (multi-file feature, refactor, migration, architecture implementation,
+     codebase-spanning debug-and-fix), the Codex effort is bumped one rung above
+     the table (capped at `max`); Claude is unaffected. Not for code review /
+     vuln analysis / reading-to-answer, non-code design, or mechanical
+     cross-file repetition. In practice this bites at D=2–3 coding-build tasks
+     (e.g. d2 auth→OAuth2: Claude `high` / Codex `xhigh`).
    - **UI name drift:** the Codex app / ChatGPT Work / IDE label `low` as
      **"Light"**; the CLI and API say `low`. Same rung.
    - **`max`** is available on every GPT-5.6 tier (not Sol-only — one aggregator
@@ -726,9 +748,10 @@ agentic coding work.
   `minimal` — re-verified 3 Sep 2026, `developers.openai.com/api/docs/guides/latest-model`
   + `learn.chatgpt.com/docs/models`). `medium` = coding default, `low` =
   quick/well-scoped/latency-sensitive only, `none` = no reasoning. `max` on every
-  GPT-5.6 tier. The router maps `D → effort` with **one shared table** (both
-  arms): `0→low · 1→medium · 2→high · 3→xhigh`, `D=3 ∧ R=3 → max`. See §9.3 for
-  why the Codex ladder was shifted up one rung in iteration-12.
+  GPT-5.6 tier. Both arms start from **one `D → effort` table**: `0→low ·
+  1→medium · 2→high · 3→xhigh`, `D=3 ∧ R=3 → max`. Codex then adds **+1 notch for
+  agentic multi-step coding** (iteration-13, capped at `max` — the one axis
+  LiveBench §2.1 shows the GPT-5.6 line behind Claude). See §9.3 for both.
 - **`ultra` is a product mode, not an effort value** — `effort: "ultra"` → HTTP
   400. Codex Plus+ toggle, ~4 parallel agents. "Sol Ultra" = `gpt-5.6-sol` +
   ultra mode. Sub-agent config keys: `agents.default_subagent_model`,
@@ -1048,6 +1071,29 @@ all: Luna is "for volume, not depth"; its long-context recall drops to ~41% vs
 Sol ~91%, unsafe for D≥1 codebase work). `Terra · low` now appears only for D=0
 work (rename, tone-only rewrite, fully-specified schema change) and the volume
 gate (`Luna · low`).
+
+**+1 notch for agentic multi-step coding (iteration-13).** After iteration-12 the
+two effort columns were byte-identical on every eval row, which raised the fair
+question of what the dual arm is *for* if not the effort. The honest answer:
+model-tier selection and the gate divergence (offensive → Opus 4.8 vs
+"unverified"; biology / frontier → Fable 5.1 vs normal scoring; `opusplan` /
+`ultracode` vs `Sol Ultra`) were always the substance — the effort convergence
+removed a *false* distinction (the old ladder was mis-derived, not deliberately
+different). But there **is** one real, cited asymmetry: LiveBench §2.1 puts the
+whole GPT-5.6 line behind Claude on agentic coding (Sol 56.2 < Sonnet 5 59.4 <
+Opus 5 65.2) and nowhere else. So the router adds **+1 Codex effort notch when
+the task is agentic multi-step coding** — writing/restructuring code across
+dependent steps (multi-file feature, refactor, migration, architecture
+implementation, codebase-spanning debug-and-fix). Capped at `max`; Claude
+untouched. **Excludes** code review / vuln analysis / reading-to-answer (that's
+analysis — `f2`, `5b` stay level), non-code design, and mechanical cross-file
+repetition (width, not depth). In the current eval set only **d2** moves
+(Claude `high` / Codex `xhigh`); `§8` rows "Merge 3 services onto a shared auth
+middleware", "Find and fix the race condition", "Design a new rate-limiter
+algorithm" would also take the bump on the Codex side. This is a deliberate
+product choice (the skill owner asked for the effort column to carry a
+distinction); it is loosely — not strongly — benchmark-backed, and it is the
+*only* effort difference between the arms.
 
 **What "Sol Ultra" actually is.** Ultra is a **product mode**, not an effort
 value — `reasoning: {effort: "ultra"}` returns HTTP 400. Toggled in Codex

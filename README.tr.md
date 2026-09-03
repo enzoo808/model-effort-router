@@ -311,12 +311,24 @@ sonra 16/16 doğrulandı.
 > n1/n2/r1 Terra·low→medium, d2 Terra→high, 5b Sol Ultra·high→xhigh,
 > f2 Sol·high→xhigh. d3/d4/d6/d7/f1 değişmedi. Tam taze re-run (4 paralel ajan)
 > — **17/17**.
+>
+> **iteration-13:** iteration-12 sonrası iki efor sütunu her satırda birebir
+> aynıydı — kullanıcı efor sütununun da bir ayrım taşımasını istedi. Tek
+> **atıflı asimetri** kural haline getirildi: **agentic çok-adımlı kodlamada
+> Codex +1 efor kademesi** (birbirine bağımlı adımlarda kod yazma/yeniden
+> yapılandırma — çok-dosyalı özellik, refactor, migration, mimari uygulama,
+> kod-tabanına yayılan debug-and-fix; `max`'ta kapanır; Claude dokunulmaz).
+> LiveBench §2.1 tüm GPT-5.6 hattını agentic kodlamada Claude'un gerisinde
+> gösteriyor (Sol 56.2 < Sonnet 5 59.4 < Opus 5 65.2), başka hiçbir eksende
+> değil. Kod *incelemesi* / zafiyet *analizi* (f2, 5b seviyede kalır), kod-dışı
+> tasarım, mekanik çok-dosya tekrarı hariç. Değişen tek golden cevap: **d2**
+> Terra·high→xhigh. Cold re-run — **17/17**.
 
 | # | Prompt | Beklenen | Sınadığı kural |
 |---|---|---|---|
 | 1 | 200 müşteri yorumunu olumlu/olumsuz etiketle | **Haiku 4.5, efor yok** | Hacim kapısı |
 | 2 | Şu React bileşenine dark mode ekle | Sonnet 5 · medium | Taban durum |
-| 3 | Repodaki auth akışını OAuth2'ye taşı | Sonnet 5 · **high** | Skorlama (D=2) |
+| 3 | Repodaki auth akışını OAuth2'ye taşı | **Claude: Sonnet 5 · high** · **Codex: Terra · xhigh** | Skorlama (D=2). Migration = agentic çok-adımlı kodlama → Codex +1 kademe (it-13). İki arm'ın efor sütunundaki tek fark. |
 | 4 | Prod'da ara sıra düşen race condition'ı bul | **Opus 5** · **max** | max(D,C)=3, ajanik/derin — R sadece insan onayı ekler |
 | 5 | Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur | **Opus 4.8** · **ultracode** | Saldırı amaçlı siber güvenlik kapısı |
 | 5b | Bu 180 servisin kodunu auth bypass açığı için denetle (exploit yazma) | **Claude: Sonnet 5 · ultracode** · **Codex: Sol Ultra · xhigh** | Savunma denetimi — offensive kapı **tetiklenmez** (Fable 5.1 sonrası). Adversarial zafiyet avı = D=3, 180 birim bağımsız = W=3 + Sol Ultra; efor D=3 → xhigh |

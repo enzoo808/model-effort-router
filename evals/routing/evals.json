@@ -415,11 +415,11 @@
       "eval_name": "dual-taban-durum",
       "prompt": "Understand the repo's auth flow and move it to OAuth2",
       "expected_claude": "Sonnet 5 · effort: high",
-      "expected_codex": "Terra · effort: high",
-      "tests_rule": "D=2 taban durum (repo'yu anla + çok adımlı ama iyi belgelenmiş migration; README.tr.md id 3 = 'Skorlama (D=2)'). max(D,C)=2 → Claude Sonnet 5·high / Codex Terra·high. iteration-12'den beri iki arm ortak D→efor merdivenini kullanıyor (0→low,1→medium,2→high,3→xhigh,3∧R3→max), efor kelimeleri artık aynı. (Tarihçe: expected_codex önce 'low' [D=1 varsayımı, Claude 'high' ile çelişik], iteration-11'de 'medium'a, sonra merdiven kaymasıyla 'high'a.)",
+      "expected_codex": "Terra · effort: xhigh",
+      "tests_rule": "D=2 taban durum (repo'yu anla + çok adımlı migration; README.tr.md id 3 = 'Skorlama (D=2)'). Ortak D→efor tablosu D=2 → her iki arm 'high'. AMA OAuth2'ye taşıma = agentic çok-adımlı kodlama (birbirine bağımlı adımlarda kod yeniden yapılandırma) → Codex +1 kademe (iteration-13, LiveBench §2.1: GPT-5.6 hattı agentic kodlamada Claude'un gerisinde) → Codex 'xhigh'. Claude tabloda kalır ('high'). Bu, iki arm'ın efor sütunundaki TEK farkı gösteren eval. (Tarihçe: expected_codex 'low'→'medium' [it-11]→'high' [it-12 merdiven kayması]→'xhigh' [it-13 agentic-kodlama +1].)",
       "expectations": [
-        "Claude: Sonnet 5 · high",
-        "Codex: Terra · high"
+        "Claude: Sonnet 5 · high (tabloda kalır)",
+        "Codex: Terra · xhigh (agentic çok-adımlı kodlama → +1 kademe)"
       ]
     },
     {

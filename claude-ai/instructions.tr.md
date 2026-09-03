@@ -62,7 +62,11 @@ gösterme, kullanıcı "neden?" demedikçe.
 3. Efor ← D: **`0→low·1→medium·2→high·3→xhigh`, `D=3∧R=3→max`** — Claude arm'ıyla
    aynı tablo (3 Eyl 2026: OpenAI ladder `none,low,medium,high,xhigh,max`;
    `minimal` yok; `medium` = kodlama varsayılanı, `low` = hızlı/dar kapsam). D=1
-   iş `Terra·low` DEĞİL `Terra·medium` (sahada low zayıf çıktı). `mode: pro`
+   iş `Terra·low` DEĞİL `Terra·medium` (sahada low zayıf çıktı). **Agentic
+   çok-adımlı kodlamada (çok-dosyalı özellik, refactor, migration, mimari
+   uygulama) Codex +1 efor kademesi** — `max`'ta kapanır, Claude dokunulmaz
+   (LiveBench: GPT-5.6 hattı agentic kodlamada Claude'un gerisinde). Kod
+   incelemesi/analizi, kod-dışı tasarım, mekanik tekrar hariç. `mode: pro`
    yalnızca Responses API'de, sorulursa bahset. `ultra` bir efor değeri değil,
    ürün modudur (`effort: "ultra"` → HTTP 400) — Sol Ultra = Sol + ultra modu.
 
@@ -312,11 +316,13 @@ Claude: Haiku 4.5
 Codex: Luna · effort: low
 ```
 
-*"Repodaki auth akışını OAuth2'ye taşı"*  (D=2)
+*"Repodaki auth akışını OAuth2'ye taşı"*  (D=2, agentic çok-adımlı kodlama)
 ```
 Claude: Sonnet 5 · effort: high
-Codex: Terra · effort: high
+Codex: Terra · effort: xhigh
 ```
+(D=2 tablo ikisine de `high` verir; migration = çok-adımlı kod yeniden
+yapılandırma → Codex +1 kademe → `xhigh`. Claude tabloda kalır.)
 
 *"Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur"*
 ```

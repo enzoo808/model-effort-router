@@ -88,12 +88,16 @@ two lines. Show intermediate reasoning only if the user asks "why?".
    no effort.
 3. Effort is a behavioural signal, not a token budget. "low = 1,024 tokens"
    figures are made up.
-4. **Both arms use the same `D → effort` table** (Step 3). Codex's ladder is
-   `none, low, medium, high, xhigh, max` (no `minimal` any more); OpenAI's own
-   guidance puts `medium` as the coding default and `low` as "quick,
-   well-scoped, latency-sensitive" only — which lines up rung-for-rung with the
-   Claude scale. The only arm-specific effort-field values are `ultracode`
-   (Claude) and `Sol Ultra` (Codex).
+4. **Both arms start from the same `D → effort` table** (Step 3), then each
+   applies its own modifier. Codex's ladder is `none, low, medium, high, xhigh,
+   max` (no `minimal` any more); OpenAI's own guidance puts `medium` as the
+   coding default and `low` as "quick, well-scoped, latency-sensitive" only —
+   which lines up rung-for-rung with the Claude scale.
+   - **Claude modifiers:** `ultracode` (W=3 ∧ >30min), `opusplan` (front-loaded
+     architecture).
+   - **Codex modifier:** **+1 effort notch for agentic multi-step coding** (see
+     Codex arm) — capped at `max`. `Sol Ultra` rides on top of the resulting
+     level.
 
 ---
 
@@ -377,21 +381,29 @@ scoring is **exactly** Step 2; compute once, read this table.
 | Otherwise `max(D,C)≤1` | Terra |
 | `max(D,C)=2` | Terra |
 | `max(D,C)=3`, `D<3` (C triggered it) | Terra |
-| `max(D,C)=3`, `D=3` | **Sol** — or **Sol Ultra** if the work splits into **3+ genuinely independent** pieces (module/service/verification angle) that run unaware of each other and merge at the end |
+| `max(D,C)=3`, `D=3` | **Sol** — or **Sol Ultra** only if the work is **3+ already-independent targets** scanned/processed side by side (40 separate services audited at once), each unaware of the others. **Splitting one codebase into modules/services is plain Sol** — it's a single coherent boundary-design decision, the pieces are interdependent *during the work* even if the end state is "independent" (f1 decoy). "Independent" describing the end state ≠ parallelisable work. |
 
-- **Effort ← D — the same table as Step 3:** `0→low · 1→medium · 2→high ·
-  3→xhigh`; `D=3 ∧ R=3 → max`. This is OpenAI's own guidance (`medium` = coding
-  default, `low` = quick/well-scoped/latency-sensitive only), not a parallel to
-  the Claude scale — but it now matches it rung-for-rung. `Terra · low` is a
-  **D=0** answer only (rename, tone-only rewrite, fully-specified schema change).
-  Real D=1 dev work ("add email validation", "add cursor-based pagination") is
-  `Terra · medium`.
+- **Effort ← D — Step 3's table:** `0→low · 1→medium · 2→high · 3→xhigh`;
+  `D=3 ∧ R=3 → max`. OpenAI's own guidance (`medium` = coding default, `low` =
+  quick/well-scoped/latency-sensitive only). `Terra · low` is a **D=0** answer
+  only (rename, tone-only rewrite, fully-specified schema change). Real D=1 dev
+  work ("add email validation", "add cursor-based pagination") is `Terra · medium`.
+- **+1 notch for agentic multi-step coding.** When the task is **writing or
+  restructuring code across multiple dependent steps** — a multi-file feature, a
+  refactor, a migration, implementing an architecture, a debug-and-fix that spans
+  the codebase — bump the Codex effort **one rung above the table** (`low→medium`,
+  `medium→high`, `high→xhigh`, `xhigh→max`; `max` stays). This is the one axis
+  where LiveBench puts the GPT-5.6 line behind Claude (agentic coding: Sol 56.2 <
+  Sonnet 5 59.4 < Opus 5 65.2 — `reference.md` §2.1). **The Claude effort is not
+  touched** — it stays on the table.
+  - **Does NOT apply to:** code *review* / vulnerability *analysis* / reading
+    code to answer ("review this module for vulns" — analysis, not building);
+    non-code design; mechanical repetition across files (that's width).
+  - `Sol Ultra` still rides on top of the bumped level.
 - **Don't round D up.** If you're always landing on `Sol · xhigh` / `Terra ·
-  high`, that's the D=1→D=2 / D=0→D=1 bug — the quota-aware default is to round
-  **down** a level, not up.
+  high`, that's the D=1→D=2 / D=0→D=1 bug — round **down**, not up.
 - **R floor:** `R=3` → Luna never selected, floor Terra. Adds the human-review note.
-- `max` is a real Codex setting toggle on every GPT-5.6 tier (re-verified 3 Sep
-  2026).
+- `max` is a real Codex setting toggle on every GPT-5.6 tier (re-verified 3 Sep 2026).
 
 > "What Sol Ultra actually is", `mode: pro` (Responses-API-only, on-ask), and the
 > Codex-side notes: `reference.md` §10.6.
@@ -480,12 +492,14 @@ Codex: Luna · effort: low
 ⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.
 ```
 
-*"Understand the repo's auth flow and move it to OAuth2"*  (D=2)
+*"Understand the repo's auth flow and move it to OAuth2"*  (D=2, agentic multi-step coding → Codex +1)
 ```
 Claude: Sonnet 5 · effort: high
-Codex: Terra · effort: high
+Codex: Terra · effort: xhigh
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
 ```
+(D=2 → table gives both `high`; the migration is multi-step code restructuring,
+so the Codex side takes the +1 notch → `xhigh`. Claude stays on the table.)
 
 *"Find the race condition that flakes in prod sometimes"*  (D=3, R=3, difficulty persists → plain Opus 5)
 ```
@@ -503,8 +517,8 @@ Codex: unverified — use Claude
 > But *"audit these 180 services' code for auth-bypass vulnerabilities (no
 > exploits)"* is **defensive** — no gate, normal scoring: D=3 (adversarial),
 > W=3 + independent, R=1 → `Claude: Sonnet 5 · effort: ultracode` /
-> `Codex: Sol Ultra · effort: xhigh`. One service → `Sonnet 5 · xhigh` /
-> `Sol · xhigh`.
+> `Codex: Sol Ultra · effort: xhigh` (audit = analysis, **no** agentic-coding
+> +1). One service → `Sonnet 5 · xhigh` / `Sol · xhigh`.
 
 *"Redesign the auth architecture of 200 prod services from scratch"*  (opusplan)
 ```
