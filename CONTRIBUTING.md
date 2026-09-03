@@ -29,11 +29,19 @@ procedure.
 4. `python evals/routing/grade_routing.py --results-dir evals/routing/results/iteration-<N>`
    must be green.
 5. Mirror the change into `claude-ai/instructions.tr.md` (the no-code-execution
-   fallback), except `opusplan`-specific parts, which don't apply on claude.ai.
+   fallback), except the Claude Code-only parts (`opusplan`, the `⚡ Fast Mode`
+   speed line, the `/model opus` alias rule) — that file has a footer listing its
+   deliberate differences.
 6. Re-run `.\build-claude-ai-zip.ps1`.
 
 `evals/README.md` has the full run history and the reasoning behind past rule
 changes — read it before proposing one.
+
+**Trigger eval** (`evals/trigger/`) is separate: it only tests whether the
+`description:` frontmatter fires at the right times, so re-run it *only* when
+that line changes — `python evals/trigger/run_trigger.py --skill-path skill
+--out evals/trigger/results/<label>.json` (a quota cost: one `claude -p` per
+query).
 
 ## 3. Turkish parity
 

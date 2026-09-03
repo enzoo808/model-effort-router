@@ -2,7 +2,7 @@
   {"query": "Şirketin 40 tane mikroservisini yeni bir auth middleware'e geçirmem lazım, bunun için Claude Code'da hangi modeli ve efor seviyesini kullanmalıyım?", "should_trigger": true},
   {"query": "elimde bir prod'da race condition var, ara sıra düşüyor, bunu Claude Code'da hangi model ve effort ile araştırmalıyım", "should_trigger": true},
   {"query": "bu promptu opus'la mı sonnet'le mi çalıştırsam daha iyi olur: '200 müşteri yorumunu olumlu/olumsuz etiketle'", "should_trigger": true},
-  {"query": "/model-secici 4000 dosyalık legacy monolitini modüllere ayır", "should_trigger": true},
+  {"query": "/model-secici 4000 dosyalık legacy monolitini modüllere ayır", "should_trigger": true, "note": "explicit slash invocation — a real interactive session always routes this to the Skill; `claude -p` print mode does not expand the leading slash, so run_trigger.py reports it as 'no tool_use' (expect 19/20, not 20/20)"},
   {"query": "hangi efor seviyesini seçmeliyim, elimde 300 sayfalık bir sözleşme var, çelişen maddeleri bulmam lazım", "should_trigger": true},
   {"query": "kotamı gereksiz harcamadan bu genomik pipeline'daki varyant çağırma mantığını hangi modelle denetleteyim", "should_trigger": true},
   {"query": "Sürekli Opus max seçiyorum ama kotamı gereksiz yakıyor gibi hissediyorum, şu iş için ('React bileşenine dark mode ekle') hangi model+efor mantıklı olur", "should_trigger": true},
