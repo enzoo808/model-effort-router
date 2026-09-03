@@ -30,6 +30,10 @@ kotayı yakmaktır. Şüphede kalınca AŞAĞI yuvarla.
 dökmeden), iki ayrı kısa tabloya bak, sadece final iki satırı üret. Ara adımları
 gösterme, kullanıcı "neden?" demedikçe.
 
+**Hızlı yol:** Adım 0 hiçbir şey açığa çıkarmıyorsa **ve** hiçbir Adım 1 kapısı
+tetiklenmiyorsa — dört ekseni tek geçişte puanla ve yaz, tekrar türetme /
+kendini sorgulama. Çoğu prompt bu durumdadır.
+
 **Claude model kadrosu (1 Eylül 2026 itibarıyla):**
 
 | Model | Rol |
@@ -57,8 +61,12 @@ gösterme, kullanıcı "neden?" demedikçe.
    (kod/altyapı denetimi, açık port bulma) kapı **değil** — normal skorlamadan geçer.
 2. Diğer her promptta Codex kendi R/D/W/C eşlemesinden bağımsız bir cevap
    üretir: `D=0∧W=0∧C≤1∧R≤1→Luna` · `max(D,C)≤2→Terra` · `max(D,C)=3∧D<3→Terra`
-   · `max(D,C)=3∧D=3→Sol` (gerçek bağımsız-paralel iş sinyali de varsa
-   **Sol Ultra**). `R=3` ise Luna hiç seçilmez, taban Terra.
+   · `max(D,C)=3∧D=3→Sol` — **veya Sol Ultra** yalnızca iş **3+ zaten-bağımsız
+   hedefi** yan yana tarıyorsa (40 ayrı servisi aynı anda denetle), her biri
+   diğerinden habersiz. **Bir kod tabanını modül/servise bölmek düz Sol'dur** —
+   tek tutarlı sınır-tasarım kararı, parçalar iş sırasında birbirine bağımlı
+   ("bağımsız servisler" son durumu tarif eder, paralel işi değil). `R=3` ise
+   Luna hiç seçilmez, taban Terra.
 3. Efor ← D: **`0→low·1→medium·2→high·3→xhigh`, `D=3∧R=3→max`** — Claude arm'ıyla
    aynı tablo (3 Eyl 2026: OpenAI ladder `none,low,medium,high,xhigh,max`;
    `minimal` yok; `medium` = kodlama varsayılanı, `low` = hızlı/dar kapsam). D=1
@@ -89,16 +97,23 @@ okunmalı (Adım 0-4 sadece Claude satırını üretir, Codex satırı yukarıda
 Dört şeyi bil:
 1. **`ultracode` bir model efor seviyesi değil, Claude Code ayarıdır.** Model
    kısıtı yok — `xhigh` destekleyen her modelde çalışır: Fable 5.1, Sonnet 5,
-   **Opus 5**, Opus 4.8, Opus 4.7.
-2. **Haiku 4.5 efor parametresini desteklemez.**
-3. **Opus 5'e özel (genel bilgi):** Anthropic düşük/orta eforu "eval tuttuğu
-   her yerde normal maliyet kontrolü" olarak öneriyor — önceki Opus
-   nesillerinden farklı. Bu router Opus 5'i yalnızca D=3'te önerdiği için
-   kendi çıktısı hep xhigh/max olur; ama Opus 5'i elle çalıştırırken
-   low/medium'dan çekinme.
-4. Efor ölçeği modele göre kalibre.
+   **Opus 5**, Opus 4.8. Haiku'da değil.
+2. **Haiku 4.5 efor parametresini desteklemez.** Haiku önerdiysen efor yazma.
+3. Efor bir token bütçesi değil, davranışsal sinyaldir; "low = 1024 token" gibi
+   rakamlar uydurma.
+4. **İki arm da aynı `D→efor` tablosundan başlar** (Adım 3), sonra her biri
+   kendi düzenleyicisini uygular:
+   - **Claude:** `ultracode` (W=3 ∧ >30dk), `opusplan` (yalnızca Claude Code —
+     bu talimatta geçerli değil).
+   - **Codex:** **agentic çok-adımlı kodlamada +1 efor kademesi** (`max`'ta
+     kapanır). Codex ladder'ı `none, low, medium, high, xhigh, max` — `minimal`
+     yok; `medium` = OpenAI'nin kodlama varsayılanı, `low` = yalnızca hızlı /
+     dar kapsam / gecikmeye duyarlı iş.
 
-Efor bir token bütçesi değil, davranışsal sinyaldir.
+**Opus 5'te low/medium (genel bilgi, router çıktısını değiştirmez):** Anthropic
+bunu "eval tuttuğu her yerde normal maliyet kontrolü" olarak öneriyor. Router
+Opus 5'i yalnızca D=3'te önerdiği için kendi çıktısı hep xhigh/max olur; ama
+kullanıcı Opus 5'i elle çalıştırırken low/medium'dan çekinmesin.
 
 ## Adım 0 — Kalite kapısı
 
@@ -137,10 +152,12 @@ listeden çıkarır, final model kararını Adım 2/3 verir).
   belirtilmesi gerekmez, bu ölçekte zaten var sayılır. (100-999 dosya bu
   kapıyı tetiklemez, normal skorlamaya girer — W=3.)
 
-**Savunma amaçlı güvenlik işi kapı DEĞİL.** "Kodu/altyapıyı zafiyet için denetle",
-"açık portları bul", "güvenlik grubu kurallarını gözden geçir" — Fable 5.1 bunu
-kendisi yapabiliyor (1 Eyl 2026'dan beri). Normal skorlamaya girer (genelde
-Sonnet 5 · `xhigh` veya Opus 5).
+**Savunma amaçlı güvenlik işi kapı DEĞİL — ölçekten bağımsız.** "Kodu/altyapıyı
+zafiyet için denetle", "açık portları bul", "güvenlik grubu kurallarını gözden
+geçir", "180 servisi auth-bypass için denetle (exploit yok)" — savunma işi,
+normal skorlamaya girer. Fable 5.1 bunu kendisi yapabiliyor (1 Eyl 2026'dan
+beri). Yalnızca üç saldırı-amaçlı kategori (exploit üretimi, sızma testi,
+binary tabanlı zafiyet taraması) kapı tetikler.
 
 **Neden saldırı amaçlı siber → Opus 4.8:** Fable 5.1 ve Opus 5'in kendi güvenlik
 sınıflandırıcıları var; saldırı amaçlı istek işaretlenince Fable 5.1'in izinli
@@ -154,8 +171,9 @@ Ar-Ge-işaretli kısımları Opus modellerine yönlendirir (beklenen); ama **Opu
 kendisinde biyoloji Ar-Ge için hiç fallback yok** — doğrudan reddeder. Fable 5.1'i
 öner. Life Sciences Verification Program araştırmacısı ise **Mythos 5.1**.
 
-**Fable 5.1'e efor tabanı koyma.** Varsayılanı `high` (claude.ai'de `medium`);
-`low` eforda arama aracını daha seyrek çağırır — taze bilgi gereken işte yükselt.
+**Fable 5.1'e efor tabanı koyma.** Biyoloji kapısı çıktısı `Fable 5.1 · high`
+(kapının kendi varsayılanı, D-tablosunu uygulamaz). `low` eforda arama aracını
+daha seyrek çağırır — taze bilgi gereken işte yükselt.
 
 ## Adım 2 — Dört eksende 0–3 puanla
 
@@ -178,14 +196,17 @@ kendisinde biyoloji Ar-Ge için hiç fallback yok** — doğrudan reddeder. Fabl
   davranışı yöneten bir satır (retry sayısı, timeout, rate limit) yanlış
   olduğunda insan fark etmeden kademeli hasar biriktirebiliyorsa R=3'tür
   (ör. "prod config'inde `MAX_RETRIES`'ı 3'ten 5'e çek").
-- **D (Derinlik):** 0 tek arama/mekanik değişiklik (içerik değişmeden biçim
-  değişikliği dahil; **tam belirtilmiş additive şema değişikliği** — sütun+tip+
-  nullable hepsi verilmiş) · 1 birkaç adım/standart kalıp (**"iyi belgelenmiş"
-  tek başına bunu 2 yapmaz** — asıl soru kaç bağımsız tasarım kararı sende
-  kalıyor; tarif/kütüphane takip ediliyorsa D=1, örn. "cursor-based pagination
-  ekle") · 2 çok adımlı planlama, gerçek bir seçim var · 3 karmaşık algoritma,
-  eşzamanlılık, ispat, **adversarial güvenlik-zafiyeti avı** (ince mantık
-  hatası bulma). Şüphede kalınca bir alt seviyede kal.
+- **D (Derinlik):** 0 tek arama/mekanik değişiklik (içerik değişmeden biçim/ton
+  değişikliği dahil — uzunluk fark etmez; **tam belirtilmiş additive şema
+  değişikliği** — sütun+tip+nullable hepsi verilmiş) · 1 birkaç adım/standart
+  kalıp (**"iyi belgelenmiş" tek başına bunu 2 yapmaz** — asıl soru kaç bağımsız
+  tasarım kararı sende kalıyor; tarif/kütüphane takip ediliyorsa D=1, örn.
+  "cursor-based pagination ekle"; **mekanik sayım/enumerasyon = D=1** — "0.0.0.0/0
+  izin veren güvenlik grubu kurallarını listele" sabit-koşullu tarama) · 2 çok
+  adımlı planlama, gerçek bir seçim var · 3 karmaşık algoritma, eşzamanlılık,
+  ispat, **adversarial güvenlik-zafiyeti avı** (ince mantık hatası bulma — açık
+  uçlu "güvenlik için incele" bu; büyük savunma denetimi de derinlikte D=3).
+  Şüphede kalınca bir alt seviyede kal.
 - **W (Genişlik):** 0 tek dosya · 1 birkaç dosya (2–5) · 2 **6–99 dosya/birim**
   (birçok servise tekrarlanan aynı küçük değişiklik dahil) · 3 **100+ dosya**
   veya 3+ bağımsız doğrulama açısı. Eşik sayısal — "60 mikroservis" = W=2,
@@ -271,7 +292,15 @@ low/medium'u "eval'in tuttuğu her yerde" normal maliyet kontrolü olarak
 **5. 30 dakikanın altındaki işte `ultracode` önerme.** Tek seferlik derinlik
 için prompt'a **`ultrathink`** yaz.
 
-**6.** R≥2 ise auto-accept'i kapatmayı öner.
+**6. Uzun oturum / MCP uyarısı.** Bağlı MCP/connector varsa hatırlat: her sunucu
+her mesaja araç şeması enjekte eder, yük araç sayısıyla orantılı (GitHub MCP 27
+araç ≈ 18k token). Kullanılmayanları kapat.
+
+**7.** R≥2 ise auto-accept'i kapatmayı öner — zincirleme düzenlemeler kotayı
+geometrik yakar ve geri almayı zorlaştırır.
+
+(SKILL.md Kural 8 — `/model opus` alias çözümü — yalnızca Claude Code'a ait,
+burada geçerli değil.)
 
 ## Çıktı formatı
 
@@ -294,8 +323,12 @@ Codex: unverified — use Claude
 **Tek istisna:** `R=3` ise insan onayı notu — **tek satır, iki tarafı da
 kapsar** (görev riski ekosisteme göre değişmez, tekrar yazma), iki satırın
 altına eklenir. Bunun dışında kalan hiçbir not/uyarı otomatik eklenmez —
-sadece kullanıcı gerekçe sorarsa açıklanır. (`opusplan`'ın efor-uyarısı bu
-talimat setinde yok çünkü `opusplan` Claude.ai'da geçerli değil, bkz. yukarıdaki not.)
+sadece kullanıcı gerekçe sorarsa açıklanır.
+
+SKILL.md'nin diğer iki otomatik-eklenen istisnası burada yok:
+- **`opusplan` efor-uyarısı** — `opusplan` Claude.ai'da geçerli değil.
+- **`⚡ Fast Mode` speed line** — yalnızca CLI Codex çıktısında eklenir; bu web
+  yüzeyinde eklenmez.
 
 ## Referans: model kısıtları
 
@@ -339,6 +372,14 @@ Claude: Fable 5.1 · effort: high
 Codex: unverified — use Claude
 ```
 
+*"Prod'da ara sıra düşen race condition'ı bul"*  (D=3, R=3 — zorluk yürütme
+boyunca sürüyor, opusplan değil)
+```
+Claude: Opus 5 · effort: max
+Codex: Sol · effort: max
+Do not apply without human review.
+```
+
 *"Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek"*
 ```
 Claude: Sonnet 5 · effort: low
@@ -346,3 +387,9 @@ Codex: Terra · effort: low
 Do not apply without human review.
 ```
 (R=3 ama D=0 — iki tarafta da model en-ucuz tier'a düşmez; tek paylaşılan onay notu)
+
+---
+
+*Senkron: `skill/SKILL.md` iteration-13 (3 Eyl 2026). Bilerek korunan farklar:
+Türkçe · kendi kendine yeterli (reference.md yok) · `opusplan` ve Fast Mode
+speed line yok (Claude.ai yüzeyi) · Codex Kolu kısaltılmış özet.*
