@@ -49,14 +49,31 @@ the same pass.
 should not, including near-miss cases: a price question, a settings question, a
 bare task request that could be confused with model-secici but isn't).
 
-**How to run:** use skill-creator's `scripts/run_eval.py`:
+**How to run:**
 ```
-python -m scripts.run_eval --eval-set trigger/trigger_eval_set.json \
-  --skill-path <installed skill path> --runs-per-query 1 --verbose
+python evals/trigger/run_trigger.py --skill-path skill \
+  --out evals/trigger/results/<label>.json
 ```
-This spawns a real `claude -p` subprocess per query (default 3 runs × 20 queries
-= 60 real calls) — **a quota cost**, which is in direct tension with the router's
-own philosophy. Run it rarely, only when the description changes.
+`run_trigger.py` is standalone and Windows-safe. (skill-creator's own
+`scripts/run_eval.py` uses `select.select()` on a subprocess pipe — `WinError
+10038` on Windows.) One real `claude -p` subprocess per query — **a quota cost**,
+in direct tension with the router's own philosophy. Run it rarely, only when the
+`description` frontmatter changes. A query counts as triggered when the first
+tool call is `Skill`/`Read` on model-secici (installed skill or the temp probe
+command).
+
+**Latest: `results/2026-09-03.json` — 19/20** (`description` unchanged since the
+initial release; run against the iteration-13 skill).
+- **Natural-language triggers: 9/9.** "hangi model / efor / bu prompt için ne
+  kullanayım / opus mu sonnet mi" phrasings all pull in the skill.
+- **Near-miss rejection: 10/10.** Price, settings, `/model` explainer, model
+  comparison, "summarise this PDF", "which design pattern is used here",
+  API-effort question — none trigger (several correctly reach for `claude-api`
+  instead).
+- **1 miss:** the literal `/model-secici 4000 dosyalık…` line returns no tool
+  call under `claude -p` print mode — a harness artifact (print mode doesn't
+  expand the leading slash-command; in a real session `/model-secici` invokes
+  the skill directly). Not a description problem.
 
 ## Run history (short)
 
