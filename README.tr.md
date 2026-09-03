@@ -295,9 +295,22 @@ sonra 16/16 doğrulandı.
 > taze re-run (4 paralel ajan) — **17/17**; erken iterasyonların notları hangi
 > edge-case için eklendiyse hepsi kısa dosyadan da doğru çıkıyor. Ayrıca `d2`
 > beklentisindeki iç tutarsızlık düzeltildi: `expected_claude` `high` (D=2) ile
-> `expected_codex` `low` (D=1) çelişiyordu → Codex `medium` (D=2). Aynı D için
-> iki ölçek bir kademe farklı efor kelimesi kullanır (Claude 2→high, Codex
-> 2→medium).
+> `expected_codex` `low` (D=1) çelişiyordu → Codex `medium` (D=2).
+>
+> **iteration-12:** Codex efor merdiveni yeniden kalibre edildi. Kullanıcı
+> sahada `Terra · low`'un `Sonnet 5 · medium` ile eşdeğer olmadığını, D=1 işte
+> hatalı işlemler yaptığını bildirdi. İnternet araştırması (OpenAI resmi
+> `latest-model` + `learn.chatgpt.com/models`, Vellum, layer3labs) doğruladı:
+> `medium` = kodlama varsayılanı, `low` = "hızlı / dar kapsam / gecikmeye
+> duyarlı" işler için; `minimal` seviyesi artık yok. Luna "hacim için, derinlik
+> için değil" (uzun bağlam hatırlama ~%41 vs Sol ~%91) → `Luna · high` seçeneği
+> elendi. Codex `D→efor` merdiveni bir kademe yukarı: **`0→low · 1→medium ·
+> 2→high · 3→xhigh`, `D=3∧R=3→max`** — artık Claude arm'ıyla **birebir aynı
+> tablo**. "İki ölçek farklı, karıştırma" uyarısı kalktı. Değişen golden
+> cevaplar: d1/r2/s1 Luna·minimal→low, d5/n3/s3 Terra·minimal→low,
+> n1/n2/r1 Terra·low→medium, d2 Terra→high, 5b Sol Ultra·high→xhigh,
+> f2 Sol·high→xhigh. d3/d4/d6/d7/f1 değişmedi. Tam taze re-run (4 paralel ajan)
+> — **17/17**.
 
 | # | Prompt | Beklenen | Sınadığı kural |
 |---|---|---|---|
@@ -306,7 +319,7 @@ sonra 16/16 doğrulandı.
 | 3 | Repodaki auth akışını OAuth2'ye taşı | Sonnet 5 · **high** | Skorlama (D=2) |
 | 4 | Prod'da ara sıra düşen race condition'ı bul | **Opus 5** · **max** | max(D,C)=3, ajanik/derin — R sadece insan onayı ekler |
 | 5 | Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur | **Opus 4.8** · **ultracode** | Saldırı amaçlı siber güvenlik kapısı |
-| 5b | Bu 180 servisin kodunu auth bypass açığı için denetle (exploit yazma) | **Claude: Sonnet 5 · ultracode** · **Codex: Sol Ultra · high** | Savunma denetimi — offensive kapı **tetiklenmez** (Fable 5.1 sonrası). Adversarial zafiyet avı = D=3, 180 birim bağımsız = W=3 + Sol Ultra |
+| 5b | Bu 180 servisin kodunu auth bypass açığı için denetle (exploit yazma) | **Claude: Sonnet 5 · ultracode** · **Codex: Sol Ultra · xhigh** | Savunma denetimi — offensive kapı **tetiklenmez** (Fable 5.1 sonrası). Adversarial zafiyet avı = D=3, 180 birim bağımsız = W=3 + Sol Ultra; efor D=3 → xhigh |
 | 6 | Şu kodu düzelt | Model önerme, netleştir | Adım 0 (hedef somut değil) |
 | 6b | "Bir günde 1000 üretim olursa 500'ü aynı güne, 500'ü ertesi güne yansısın" | Model önerme, netleştir | Adım 0 (kural örnekle anlatılmış, genellenmemiş — canlı kullanıcı testi) |
 | 7 | Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek | **Sonnet 5 · low** + insan onayı notu | R=3∧D=0 — model/efor **değişmez** (D takip eder), sadece onay notu eklenir |
@@ -352,10 +365,10 @@ Opus 5 bu router'da **her zaman ve sadece** D=3 ile birlikte çıkar.
 
 | # | Prompt | Beklenen | Sınadığı kural |
 |---|---|---|---|
-| c1 | "Codex'te şu React bileşenine dark mode ekle" | **Codex (ChatGPT Plus) · Terra · effort: low** | Açık ortam belirtimi (madde 2), sinyal değerlendirmeye gerek yok |
-| c2 | "80 tamamen bağımsız endpoint dokümantasyonu, aynı anda" | **Codex (ChatGPT Plus) · Terra · effort: low** (Sol Ultra **değil**) | Ekosistem (paralellik/W) ile model katmanı (derinlik/D) farklı sinyaller — gerçek paralel iş ama D=1, Sol'a çıkmamalı |
+| c1 | "Codex'te şu React bileşenine dark mode ekle" | **Codex (ChatGPT Plus) · Terra · effort: medium** | Açık ortam belirtimi (madde 2), sinyal değerlendirmeye gerek yok; D=1 → medium |
+| c2 | "80 tamamen bağımsız endpoint dokümantasyonu, aynı anda" | **Codex (ChatGPT Plus) · Terra · effort: medium** (Sol Ultra **değil**) | Ekosistem (paralellik/W) ile model katmanı (derinlik/D) farklı sinyaller — gerçek paralel iş ama D=1, Sol'a çıkmamalı |
 | c3 | "1000 destek talebini kategorilere ayır" (ortam belirtilmemiş) | **Claude Code · Haiku 4.5** | Madde 5 varsayılanı — c1'in aynı-prompt-ortamsız çifti, Codex Kolu'nun kendi örneğiyle çelişmediğini doğrular |
-| c4 | "Şu React bileşenine dark mode ekle" (ortam belirtilmemiş) | **Claude Code · Sonnet 5 · effort: medium** | c1'in çifti — aynı D=1, Claude ölçeğinde `medium` (Codex'teki `low` değil) |
+| c4 | "Şu React bileşenine dark mode ekle" (ortam belirtilmemiş) | **Claude Code · Sonnet 5 · effort: medium** | c1'in çifti — aynı D=1; iteration-12'den beri iki arm da `medium` (ortak D→efor merdiveni) |
 | c5 | "Bu monolitik kod tabanını modüllere ayır" | **Claude Code · opusplan · plan: xhigh · uygulama: medium** | Ekosistem Seçimi'nin kendi ❌ karşı-örneği — yüzeysel paralel ama parçalar bağımlı, Codex/Ultra'ya gitmemeli |
 
 **c1/c4 ve c2/c5 çiftleri** router'ın iki ayrı hatayı önlediğini kanıtlıyor:

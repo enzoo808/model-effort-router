@@ -9,7 +9,7 @@ You:    /model-secici  Move the repo's auth flow to OAuth2
 
 model-secici:
   Claude: Sonnet 5 · effort: high
-  Codex:  Terra · effort: medium
+  Codex:  Terra · effort: high
 ```
 
 That's the whole idea. One more:
@@ -159,13 +159,13 @@ side has no verified safety-fallback chain, so it honestly says
 
 | Task | Claude | Codex |
 |---|---|---|
-| Label 200 customer reviews positive/negative | `Haiku 4.5` | `Luna · minimal` |
-| Add dark mode to this React component | `Sonnet 5 · medium` | `Terra · low` |
-| Add cursor-based pagination to this API | `Sonnet 5 · medium` | `Terra · low` |
+| Label 200 customer reviews positive/negative | `Haiku 4.5` | `Luna · low` |
+| Add dark mode to this React component | `Sonnet 5 · medium` | `Terra · medium` |
+| Add cursor-based pagination to this API | `Sonnet 5 · medium` | `Terra · medium` |
 | Audit this genomics pipeline's variant-calling logic | `Fable 5.1 · high` | `unverified — use Claude` |
 | Pentest this 180-service environment, build auth-bypass chains | `Opus 4.8 · ultracode` | `unverified — use Claude` |
 | Split this 6000-file legacy monolith into services | `Fable 5.1 · max` + review note | `Sol · max` + review note |
-| Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5 · low` + review note | `Terra · minimal` + review note |
+| Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5 · low` + review note | `Terra · low` + review note |
 | "Fix this code" | *(no model — asks: which code? broken how? done = ?)* | |
 
 ---
@@ -177,7 +177,7 @@ by `evals/routing/grade_routing.py` (pure regex, no LLM). The protocol: spin up
 **cold agents** that read `skill/SKILL.md` fresh and route each prompt; grade the
 raw output.
 
-Latest run (**iteration-10**, cold agents against the current `SKILL.md`):
+Latest run (**iteration-12**, cold agents against the current `SKILL.md`):
 **17/17 auto-graded pass**. Run history and the reasoning behind each rule change
 is in [`evals/README.md`](evals/README.md).
 

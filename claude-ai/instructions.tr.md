@@ -59,11 +59,12 @@ gösterme, kullanıcı "neden?" demedikçe.
    üretir: `D=0∧W=0∧C≤1∧R≤1→Luna` · `max(D,C)≤2→Terra` · `max(D,C)=3∧D<3→Terra`
    · `max(D,C)=3∧D=3→Sol` (gerçek bağımsız-paralel iş sinyali de varsa
    **Sol Ultra**). `R=3` ise Luna hiç seçilmez, taban Terra.
-3. Efor ← D: `0→minimal·1→low·2→medium·3→high`, `D=3∧R=3→max` (2 Eyl 2026
-   doğrulandı — `max` Codex'te gerçek bir ayar; `learn.chatgpt.com` config
-   referansı eski, sadece xhigh'a kadar listeliyor). `mode: pro` yalnızca
-   Responses API'de, sorulursa bahset. `ultra` bir efor değeri değil, ürün
-   modudur (`effort: "ultra"` → HTTP 400) — Sol Ultra = Sol + ultra modu.
+3. Efor ← D: **`0→low·1→medium·2→high·3→xhigh`, `D=3∧R=3→max`** — Claude arm'ıyla
+   aynı tablo (3 Eyl 2026: OpenAI ladder `none,low,medium,high,xhigh,max`;
+   `minimal` yok; `medium` = kodlama varsayılanı, `low` = hızlı/dar kapsam). D=1
+   iş `Terra·low` DEĞİL `Terra·medium` (sahada low zayıf çıktı). `mode: pro`
+   yalnızca Responses API'de, sorulursa bahset. `ultra` bir efor değeri değil,
+   ürün modudur (`effort: "ultra"` → HTTP 400) — Sol Ultra = Sol + ultra modu.
 
 **Çıktı iki satır:** `Claude: <Model> · effort: <seviye>` ve
 `Codex: <Model> · effort: <seviye>` — aşağıdaki Çıktı formatı bölümü buna göre
@@ -308,15 +309,14 @@ talimat setinde yok çünkü `opusplan` Claude.ai'da geçerli değil, bkz. yukar
 *"200 müşteri yorumunu olumlu/olumsuz etiketle"*
 ```
 Claude: Haiku 4.5
-Codex: Luna · effort: minimal
+Codex: Luna · effort: low
 ```
 
 *"Repodaki auth akışını OAuth2'ye taşı"*  (D=2)
 ```
 Claude: Sonnet 5 · effort: high
-Codex: Terra · effort: medium
+Codex: Terra · effort: high
 ```
-(Aynı D, bir kademe farklı efor kelimesi: Claude `2→high`, Codex `2→medium`.)
 
 *"Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur"*
 ```
@@ -325,7 +325,7 @@ Codex: unverified — use Claude
 ```
 (Ama *"bu 180 servisin kodunu auth bypass açığı için denetle"* savunma işidir →
 kapı yok; adversarial zafiyet avı = D=3, 180 birim bağımsız = W=3 →
-`Claude: Sonnet 5 · effort: ultracode` / `Codex: Sol Ultra · effort: high`.)
+`Claude: Sonnet 5 · effort: ultracode` / `Codex: Sol Ultra · effort: xhigh`.)
 
 *"Bu genomik pipeline'daki varyant çağırma mantığını denetle"*
 ```
@@ -336,7 +336,7 @@ Codex: unverified — use Claude
 *"Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek"*
 ```
 Claude: Sonnet 5 · effort: low
-Codex: Terra · effort: minimal
+Codex: Terra · effort: low
 Do not apply without human review.
 ```
 (R=3 ama D=0 — iki tarafta da model en-ucuz tier'a düşmez; tek paylaşılan onay notu)

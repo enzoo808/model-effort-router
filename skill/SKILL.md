@@ -61,8 +61,11 @@ two lines. Show intermediate reasoning only if the user asks "why?".
 > analogue. For offensive-security and biology-R&D prompts the Codex line says
 > "unverified — use Claude" and recommends no model.
 >
-> Source note: roster + effort ladder verified against `openai.com/index/gpt-5-6/`,
-> `developers.openai.com/api/docs/guides/reasoning` (see `reference.md` §9).
+> Source note: roster + effort ladder re-verified against
+> `developers.openai.com/api/docs/guides/latest-model` + `learn.chatgpt.com/docs/models`
+> (3 Sep 2026): ladder is `none, low, medium, high, xhigh, max`; `medium` is the
+> coding default, `low` is for quick/well-scoped/latency-sensitive work only.
+> Full notes + benchmark direction in `reference.md` §9.
 
 ---
 
@@ -83,11 +86,14 @@ two lines. Show intermediate reasoning only if the user asks "why?".
    4.8). Not Haiku.
 2. **Haiku 4.5 does not support the effort parameter.** Recommend Haiku → write
    no effort.
-3. The effort scale is **calibrated per model** — the same name means a
-   different value on a different model. The two scales (Claude `low→max`, Codex
-   `minimal→max`) don't convert to each other.
-4. Effort is a behavioural signal, not a token budget. "low = 1,024 tokens"
+3. Effort is a behavioural signal, not a token budget. "low = 1,024 tokens"
    figures are made up.
+4. **Both arms use the same `D → effort` table** (Step 3). Codex's ladder is
+   `none, low, medium, high, xhigh, max` (no `minimal` any more); OpenAI's own
+   guidance puts `medium` as the coding default and `low` as "quick,
+   well-scoped, latency-sensitive" only — which lines up rung-for-rung with the
+   Claude scale. The only arm-specific effort-field values are `ultracode`
+   (Claude) and `Sol Ultra` (Codex).
 
 ---
 
@@ -359,7 +365,7 @@ scoring is **exactly** Step 2; compute once, read this table.
 
 | Condition | Result |
 |---|---|
-| Sub-second latency / high-volume classification | **Luna**, effort `minimal` |
+| Sub-second latency / high-volume classification | **Luna**, effort `low` |
 | **Offensive security / biology-adjacent R&D** (same definitions as Step 1) | **"unverified — use Claude"**, no model. (Codex's safety-classifier/fallback behaviour here was not researched — left blank rather than guessed.) |
 | Very large context | No threshold — per-model context windows unverified. Normal mapping by C. |
 
@@ -368,19 +374,24 @@ scoring is **exactly** Step 2; compute once, read this table.
 | Condition | Model |
 |---|---|
 | `D=0 ∧ W=0 ∧ C≤1 ∧ R≤1` | **Luna** |
-| Otherwise `max(D,C)≤1` | Terra (`D=1` → `effort: low`) |
-| `max(D,C)=2` | Terra (`effort: medium`) |
+| Otherwise `max(D,C)≤1` | Terra |
+| `max(D,C)=2` | Terra |
 | `max(D,C)=3`, `D<3` (C triggered it) | Terra |
 | `max(D,C)=3`, `D=3` | **Sol** — or **Sol Ultra** if the work splits into **3+ genuinely independent** pieces (module/service/verification angle) that run unaware of each other and merge at the end |
 
-- **Luna and `Terra · low` should come up often** — if you're always landing on
-  "Sol high or Terra medium", that's the D=1→D=2 / D=0→D=1 round-up bug. Round
-  down. ✅ Luna: "rename `usr`→`user`", "rewrite 3 paragraphs in a formal tone".
-  ✅ `Terra · low`: "add email validation", "add cursor-based pagination".
+- **Effort ← D — the same table as Step 3:** `0→low · 1→medium · 2→high ·
+  3→xhigh`; `D=3 ∧ R=3 → max`. This is OpenAI's own guidance (`medium` = coding
+  default, `low` = quick/well-scoped/latency-sensitive only), not a parallel to
+  the Claude scale — but it now matches it rung-for-rung. `Terra · low` is a
+  **D=0** answer only (rename, tone-only rewrite, fully-specified schema change).
+  Real D=1 dev work ("add email validation", "add cursor-based pagination") is
+  `Terra · medium`.
+- **Don't round D up.** If you're always landing on `Sol · xhigh` / `Terra ·
+  high`, that's the D=1→D=2 / D=0→D=1 bug — the quota-aware default is to round
+  **down** a level, not up.
 - **R floor:** `R=3` → Luna never selected, floor Terra. Adds the human-review note.
-- **Effort ← D:** `0→minimal · 1→low · 2→medium · 3→high`; `D=3 ∧ R=3 → max`
-  (`max` is a real Codex setting toggle — verified 2 Sep 2026; the
-  `learn.chatgpt.com` config-reference page is stale).
+- `max` is a real Codex setting toggle on every GPT-5.6 tier (re-verified 3 Sep
+  2026).
 
 > "What Sol Ultra actually is", `mode: pro` (Responses-API-only, on-ask), and the
 > Codex-side notes: `reference.md` §10.6.
@@ -437,7 +448,7 @@ included):
 
 ```
 Claude: Haiku 4.5
-Codex: Luna · effort: minimal
+Codex: Luna · effort: low
 ```
 
 Offensive-security / biology-adjacent → Codex recommends no model:
@@ -465,18 +476,16 @@ If the user asks "why?", explain briefly — but never add it unprompted.
 *"Label these 200 customer reviews as positive/negative"*
 ```
 Claude: Haiku 4.5
-Codex: Luna · effort: minimal
+Codex: Luna · effort: low
 ⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.
 ```
 
 *"Understand the repo's auth flow and move it to OAuth2"*  (D=2)
 ```
 Claude: Sonnet 5 · effort: high
-Codex: Terra · effort: medium
+Codex: Terra · effort: high
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
 ```
-(Same D, one rung apart: Claude `2→high`, Codex `2→medium`. The two scales don't
-convert to each other.)
 
 *"Find the race condition that flakes in prod sometimes"*  (D=3, R=3, difficulty persists → plain Opus 5)
 ```
@@ -494,8 +503,8 @@ Codex: unverified — use Claude
 > But *"audit these 180 services' code for auth-bypass vulnerabilities (no
 > exploits)"* is **defensive** — no gate, normal scoring: D=3 (adversarial),
 > W=3 + independent, R=1 → `Claude: Sonnet 5 · effort: ultracode` /
-> `Codex: Sol Ultra · effort: high`. One service → `Sonnet 5 · xhigh` /
-> `Sol · high`.
+> `Codex: Sol Ultra · effort: xhigh`. One service → `Sonnet 5 · xhigh` /
+> `Sol · xhigh`.
 
 *"Redesign the auth architecture of 200 prod services from scratch"*  (opusplan)
 ```
@@ -509,7 +518,7 @@ Do not apply without human review.
 *"Bump `MAX_RETRIES` from 3 to 5 in the prod config"*  (D=0 but R=3 → not `recommended`)
 ```
 Claude: Sonnet 5 · effort: low
-Codex: Terra · effort: minimal
+Codex: Terra · effort: low
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
 Do not apply without human review.
 ```

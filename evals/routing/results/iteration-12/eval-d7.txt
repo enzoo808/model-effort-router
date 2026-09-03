@@ -1,0 +1,4 @@
+Need clarification before routing:
+- Which code needs fixing? No file, path, or snippet was provided.
+- What is actually wrong — the error message, the failing test, or the difference between expected and actual behaviour?
+- How is the problem reproduced (command, input, environment)?

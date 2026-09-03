@@ -628,17 +628,34 @@ The report described a single linear ladder
 "Instant→Low→Medium→High→Extra High→Max→Ultra". It's actually **three separate
 things**:
 
-1. **`reasoning.effort`** — supported values `none, minimal, low, medium, high,
-   xhigh, max` (varies by model; `openai.com/index/gpt-5-6/` +
-   `developers.openai.com/api/docs/guides/reasoning`). Default `medium`.
-   **`max` is real on Codex** (updated 2 Sep 2026): the GPT-5.6 GA note says
-   `max` "is available to all users with access to GPT-5.6 in ChatGPT Work and
-   Codex and can be toggled on in settings". The
-   `learn.chatgpt.com/docs/config-file/config-reference` page still lists only up
-   to `xhigh` — it's **stale**, a doc lag, not a real limit. Known snag: some
-   third-party gateways / CLI wrappers still 400 on `effort: "max"` (open GitHub
-   issues) — a tooling gap, not a product one. → **The router uses `max` as the
-   Codex ceiling for `D=3 ∧ R=3`, matching Claude.**
+1. **`reasoning.effort`** — supported values **`none, low, medium, high, xhigh,
+   max`** (re-verified 3 Sep 2026 against
+   `developers.openai.com/api/docs/guides/latest-model` +
+   `learn.chatgpt.com/docs/models`). **`minimal` is gone** — earlier docs / this
+   file listed `none, minimal, low, …`; the current ladder has no `minimal` rung
+   (the router dropped it in iteration-12; ex-`minimal` cases → `low`).
+   - **Official guidance:** *"Use `medium` as a balanced starting point and `low`
+     for latency-sensitive workloads."* `medium` is the **coding/development
+     default**; `low` is for *"quick, well-scoped tasks"* / *"narrow tasks with
+     clear requirements and limited impact"*; `none` = no reasoning. → This maps
+     rung-for-rung onto the D scale, so **the router uses one `D → effort` table
+     for both arms**: `0→low · 1→medium · 2→high · 3→xhigh`, `D=3 ∧ R=3 → max`.
+   - **UI name drift:** the Codex app / ChatGPT Work / IDE label `low` as
+     **"Light"**; the CLI and API say `low`. Same rung.
+   - **`max`** is available on every GPT-5.6 tier (not Sol-only — one aggregator
+     claimed Sol-only; the official model-guidance page lists the full ladder for
+     all three). Some third-party gateways still 400 on `effort: "max"` — a
+     tooling gap. Router uses `max` as the ceiling for `D=3 ∧ R=3`, matching
+     Claude.
+   - **Why the ladder was shifted up one rung (iteration-12):** the skill owner
+     reported from field use that `Terra · low` is materially weaker than
+     `Sonnet 5 · medium` (the Claude D=1 pick) — "hatalı işlemler", not an
+     equivalent. OpenAI's own guidance agrees: `low` is not for normal dev work.
+     Options weighed: (A) raise Terra's effort, (B) `Luna · high` instead of
+     `Terra · low`. Chose **A** — Vellum / layer3labs / official all say Luna is
+     "for volume, not depth" (long-context recall collapses to ~41% vs Sol ~91%),
+     so `Luna · high` is unsafe for exactly the D≥1 codebase work where
+     `Terra · low` was failing.
 2. **`reasoning.mode`** — `standard` (default) or `pro`, a **separate axis** from
    effort (defaults to `medium` effort). *"Mode selects standard or pro
    execution, while reasoning.effort controls how much reasoning the model
@@ -705,12 +722,13 @@ agentic coding work.
   Opus 5/Sonnet 5 measured in the same release. Sol neck-and-neck on
   reasoning/math, weak on agentic coding (56.2). `livebench.ai` — read directly
   2 Sep 2026.
-- **`reasoning.effort` ladder is `none, minimal, low, medium, high, xhigh, max`**
-  and **`max` is a Codex setting toggle** for anyone with GPT-5.6 access
-  (`openai.com/index/gpt-5-6/` + GA note, re-verified 2 Sep 2026). The router
-  uses `max` as the Codex ceiling for `D=3 ∧ R=3`. The
-  `learn.chatgpt.com/docs/config-file/config-reference` page is stale (lists only
-  to `xhigh`).
+- **`reasoning.effort` ladder is `none, low, medium, high, xhigh, max`** (no
+  `minimal` — re-verified 3 Sep 2026, `developers.openai.com/api/docs/guides/latest-model`
+  + `learn.chatgpt.com/docs/models`). `medium` = coding default, `low` =
+  quick/well-scoped/latency-sensitive only, `none` = no reasoning. `max` on every
+  GPT-5.6 tier. The router maps `D → effort` with **one shared table** (both
+  arms): `0→low · 1→medium · 2→high · 3→xhigh`, `D=3 ∧ R=3 → max`. See §9.3 for
+  why the Codex ladder was shifted up one rung in iteration-12.
 - **`ultra` is a product mode, not an effort value** — `effort: "ultra"` → HTTP
   400. Codex Plus+ toggle, ~4 parallel agents. "Sol Ultra" = `gpt-5.6-sol` +
   ultra mode. Sub-agent config keys: `agents.default_subagent_model`,
@@ -728,6 +746,11 @@ agentic coding work.
 - (Earlier version of this file) "`max` unverified in the Codex CLI, use `xhigh`
   as the ceiling" — `max` was confirmed as a Codex toggle on 2 Sep 2026; the
   ceiling is now `max`.
+- (Earlier version) the `none, minimal, low, …` ladder and the `D → effort` map
+  `0→minimal · 1→low · 2→medium · 3→high` — `minimal` does not exist in the
+  current ladder, and `1→low` put real dev work below OpenAI's own `low`
+  threshold. Corrected in iteration-12 to the shared table `0→low · 1→medium ·
+  2→high · 3→xhigh` (see §9.3).
 
 **⚠️ Could not be verified / not researched — did not enter the router:**
 - Whether Codex/ChatGPT has a safety-classifier/fallback chain like Claude's for
@@ -1011,12 +1034,27 @@ and §0.
 
 ### 10.6. Codex arm — notes
 
+**Effort ladder (iteration-12).** The Codex `D → effort` map was
+`0→minimal · 1→low · 2→medium · 3→high`. Field report from the skill owner:
+`Terra · low` is materially worse than `Sonnet 5 · medium` on real D=1 dev work
+("hatalı işlemler", not equivalent). OpenAI's own guidance
+(`developers.openai.com/api/docs/guides/latest-model`,
+`learn.chatgpt.com/docs/models`) backs this: `medium` is the coding default,
+`low` is for *"quick, well-scoped, latency-sensitive"* work only, and `minimal`
+is no longer a rung. So the ladder shifted up one: **`0→low · 1→medium ·
+2→high · 3→xhigh`, `D=3 ∧ R=3 → max`** — now identical to the Claude arm's table.
+`Luna · high` was rejected as the alternative fix (Vellum / layer3labs / official
+all: Luna is "for volume, not depth"; its long-context recall drops to ~41% vs
+Sol ~91%, unsafe for D≥1 codebase work). `Terra · low` now appears only for D=0
+work (rename, tone-only rewrite, fully-specified schema change) and the volume
+gate (`Luna · low`).
+
 **What "Sol Ultra" actually is.** Ultra is a **product mode**, not an effort
 value — `reasoning: {effort: "ultra"}` returns HTTP 400. Toggled in Codex
 settings (Plus plans and up), runs ~4 collaborating agents in parallel. "Sol
 Ultra" = `gpt-5.6-sol` with that mode on — not a separate model slug. It rides
-on top of a normal effort level, so `Sol Ultra · effort: high` means "Sol, ultra
-mode, high effort". Ultra is only meaningful on Sol — no Terra/Luna Ultra.
+on top of a normal effort level, so `Sol Ultra · effort: xhigh` means "Sol, ultra
+mode, xhigh effort". Ultra is only meaningful on Sol — no Terra/Luna Ultra.
 ✅ "Run the security scan of 40 independent microservices at once, each on its
    own" — genuinely independent → Sol Ultra.
 ❌ "Break this monolith into modules" — pieces interdependent, one coherent

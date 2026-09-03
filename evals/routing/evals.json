@@ -72,11 +72,11 @@
       "eval_name": "savunma-denetimi-kapi-yok",
       "prompt": "Audit these 180 services' code for auth-bypass vulnerabilities, don't write exploits",
       "expected_claude": "Sonnet 5 · effort: ultracode",
-      "expected_codex": "Sol Ultra · effort: high",
+      "expected_codex": "Sol Ultra · effort: xhigh",
       "tests_rule": "Post-Fable 5.1: defensive vuln audit (no exploits) does NOT trigger the OFFENSIVE gate. Adversarial auth-bypass hunting = D=3 (consistent with reference §8 'race condition hunt' / 'audit API code' = D=3). W=3 (180≥100), and 180 services audited independently = 3+ independent parallel pieces. R=1. Claude: D=3 outside Rule 2 → Sonnet 5; W=3∧>30min∧¬(D3∧R3) → ultracode. Codex: D=3 → Sol, independent-parallel → Sol Ultra, effort D=3 → high. PRIMARY TEST: does NOT go to Opus 4.8, does NOT say 'unverified'.",
       "expectations": [
         "Claude: NOT 'Opus 4.8', has 'Sonnet 5', has 'ultracode'",
-        "Codex: NOT 'unverified', has 'Sol Ultra'"
+        "Codex: NOT 'unverified', has 'Sol Ultra', effort xhigh (D=3 on the shared ladder)"
       ]
     },
     {
@@ -98,8 +98,8 @@
       "eval_name": "savunma-denetimi-kucuk-kapsam",
       "prompt": "Review this single-file JWT validation module for security vulnerabilities",
       "expected_claude": "Sonnet 5 · effort: xhigh",
-      "expected_codex": "Sol · effort: high",
-      "tests_rule": "Savunma güvenlik incelemesi (kapı tetiklenmez) + küçük kapsam (tek dosya, W=0 → ultracode YOK). Güvenlik zafiyeti avı = adversarial akıl yürütme → D=3 (skill'in 'ince bug bulma = D=3' kütüphanesiyle tutarlı: race condition, çelişen madde). Kural 2 dışı → Claude Sonnet 5·xhigh (kota varsayılanı); Codex D=3 → Sol·high.",
+      "expected_codex": "Sol · effort: xhigh",
+      "tests_rule": "Savunma güvenlik incelemesi (kapı tetiklenmez) + küçük kapsam (tek dosya, W=0 → ultracode YOK). Güvenlik zafiyeti avı = adversarial akıl yürütme → D=3 (skill'in 'ince bug bulma = D=3' kütüphanesiyle tutarlı: race condition, çelişen madde). Kural 2 dışı → Claude Sonnet 5·xhigh (kota varsayılanı); Codex D=3 → Sol·xhigh (ortak efor merdiveni: 3→xhigh).",
       "expectations": [
         "Claude: 'Sonnet 5' içeriyor, 'xhigh', 'ultracode' İÇERMİYOR, 'Opus 4.8' İÇERMİYOR",
         "Codex: 'Sol' içeriyor, 'doğrulanmadı' DEĞİL"
@@ -325,12 +325,12 @@
       "id": "c1",
       "eval_name": "ekosistem-acik-belirtim-codex",
       "prompt": "Codex'te şu React bileşenine dark mode ekle",
-      "expected_output": "Codex (ChatGPT Plus) · Terra · effort: low",
-      "tests_rule": "Ekosistem Seçimi madde 2 — prompt açıkça ortam belirtiyor, diğer sinyaller değerlendirilmeden direkt Codex Kolu'na geçilmeli",
+      "expected_output": "Codex (ChatGPT Plus) · Terra · effort: medium",
+      "tests_rule": "Ekosistem Seçimi madde 2 — prompt açıkça ortam belirtiyor, diğer sinyaller değerlendirilmeden direkt Codex Kolu'na geçilmeli. (D=1 → efor medium, iteration-12 ortak merdiveni.)",
       "expectations": [
         "Çıktı 'Codex' içeriyor, 'Claude Code' içermiyor",
         "Çıktı 'Terra' içeriyor",
-        "Çıktı 'efor: low' içeriyor (Codex ölçeğinde D=1 → low, Claude ölçeğindeki 'medium' değil)"
+        "Çıktı 'efor: medium' içeriyor (D=1 → medium)"
       ],
       "format_outdated": true
     },
@@ -338,7 +338,7 @@
       "id": "c2",
       "eval_name": "ekosistem-gercek-paralel-ultra-ama-derinlik-dusuk",
       "prompt": "80 tamamen bağımsız API endpoint'inin dokümantasyonunu, her biri kendi başına, aynı anda üret — birbirlerine bağımlı değiller",
-      "expected_output": "Codex (ChatGPT Plus) · Terra · effort: low",
+      "expected_output": "Codex (ChatGPT Plus) · Terra · effort: medium",
       "tests_rule": "Ekosistem Seçimi madde 3 tetikleniyor (gerçek bağımsız paralel iş → Codex) AMA D=1 (basit dokümantasyon, sıfırdan tasarım değil) olduğu için model Sol Ultra DEĞİL, Terra kalmalı — ekosistem seçimi (W/paralellik) ile model katmanı (D/derinlik) farklı sinyaller, karıştırılmamalı",
       "expectations": [
         "Çıktı 'Codex' içeriyor",
@@ -403,11 +403,11 @@
       "eval_name": "dual-hacim-kapisi",
       "prompt": "Label these 200 customer reviews as positive/negative",
       "expected_claude": "Haiku 4.5",
-      "expected_codex": "Luna · effort: minimal",
-      "tests_rule": "Her iki tarafta da hacim kapısı, en ucuz tier",
+      "expected_codex": "Luna · effort: low",
+      "tests_rule": "Her iki tarafta da hacim kapısı, en ucuz tier. Codex efor: hacim kapısı → 'low' (eski 'minimal' seviyesi kaldırıldı — resmi ladder none/low/medium/high/xhigh/max).",
       "expectations": [
         "Claude: Haiku 4.5, efor yok",
-        "Codex: Luna, efor: minimal"
+        "Codex: Luna, efor: low"
       ]
     },
     {
@@ -415,11 +415,11 @@
       "eval_name": "dual-taban-durum",
       "prompt": "Understand the repo's auth flow and move it to OAuth2",
       "expected_claude": "Sonnet 5 · effort: high",
-      "expected_codex": "Terra · effort: medium",
-      "tests_rule": "D=2 taban durum (repo'yu anla + çok adımlı ama iyi belgelenmiş migration; README.tr.md id 3 = 'Skorlama (D=2)'). max(D,C)=2 → Claude Sonnet 5·high / Codex Terra·medium. İki ölçek aynı D için bir kademe farklı efor kelimesi kullanır (Claude 2→high, Codex 2→medium) — bu bir uyuşmazlık değil. (Önce expected_codex 'low' idi = D=1 varsayımı; Claude 'high' D=2 ile çelişiyordu — iteration-11 trim'inde düzeltildi.)",
+      "expected_codex": "Terra · effort: high",
+      "tests_rule": "D=2 taban durum (repo'yu anla + çok adımlı ama iyi belgelenmiş migration; README.tr.md id 3 = 'Skorlama (D=2)'). max(D,C)=2 → Claude Sonnet 5·high / Codex Terra·high. iteration-12'den beri iki arm ortak D→efor merdivenini kullanıyor (0→low,1→medium,2→high,3→xhigh,3∧R3→max), efor kelimeleri artık aynı. (Tarihçe: expected_codex önce 'low' [D=1 varsayımı, Claude 'high' ile çelişik], iteration-11'de 'medium'a, sonra merdiven kaymasıyla 'high'a.)",
       "expectations": [
         "Claude: Sonnet 5 · high",
-        "Codex: Terra · medium"
+        "Codex: Terra · high"
       ]
     },
     {
@@ -451,12 +451,12 @@
       "eval_name": "dual-r3-paylasilan-not",
       "prompt": "Bump MAX_RETRIES from 3 to 5 in the prod config",
       "expected_claude": "Sonnet 5 · effort: low",
-      "expected_codex": "Terra · effort: minimal",
+      "expected_codex": "Terra · effort: low",
       "expected_shared_note": "human review",
-      "tests_rule": "R=3, D=0 — her iki taraf da kendi en-ucuz tier'ına düşmüyor (R-tabanı kuralı iki tarafta da var), paylaşılan tek insan-onayı notu",
+      "tests_rule": "R=3, D=0 — her iki taraf da kendi en-ucuz tier'ına düşmüyor (R-tabanı kuralı iki tarafta da var), paylaşılan tek insan-onayı notu. Efor D=0 → low (ortak merdiven; eski Codex 'minimal' kaldırıldı).",
       "expectations": [
         "Claude: Sonnet 5 · low (Haiku değil)",
-        "Codex: Terra · minimal (Luna değil)",
+        "Codex: Terra · low (Luna değil)",
         "Tek paylaşılan onay notu"
       ]
     },
@@ -471,7 +471,7 @@
       "tests_rule": "opusplan yalnızca Claude'da var; Codex kendi normal eşlemesinden bağımsız olarak düz Sol'a çıkar",
       "expectations": [
         "Claude: opusplan plan=max uygulama=medium + efor-uyarısı",
-        "Codex: Sol · xhigh (opusplan analogu yok)",
+        "Codex: Sol · max (D=3∧R=3; opusplan analogu yok)",
         "Paylaşılan onay notu"
       ]
     },
@@ -492,11 +492,11 @@
       "eval_name": "dual-novel-sahte-bagimsizlik-decoy",
       "prompt": "Add the same health-check endpoint to each of 60 independent microservices, each unaware of the others",
       "expected_claude": "Sonnet 5 · effort: medium",
-      "expected_codex": "Terra · effort: low",
-      "tests_rule": "'Birbirinden habersiz' ifadesi Sol Ultra/ultracode dilini taklit ediyor ama (a) 60 birim < 100 → W=2 DEĞİL W=3 (SKILL.md W eşiği sayısal), ultracode W=3 gerektirir; (b) D=1 boilerplate → efor medium. Sol Ultra sadece D=3→Sol üzerine biner. Novel prompt.",
+      "expected_codex": "Terra · effort: medium",
+      "tests_rule": "'Birbirinden habersiz' ifadesi Sol Ultra/ultracode dilini taklit ediyor ama (a) 60 birim < 100 → W=2 DEĞİL W=3 (SKILL.md W eşiği sayısal), ultracode W=3 gerektirir; (b) D=1 boilerplate → efor medium (ortak merdiven: Claude 1→medium, Codex 1→medium). Sol Ultra sadece D=3→Sol üzerine biner. Novel prompt.",
       "expectations": [
         "Claude: Sonnet 5 · medium (ultracode DEĞİL — W=2, 60<100)",
-        "Codex: Terra · low (Sol Ultra DEĞİL)"
+        "Codex: Terra · medium (Sol Ultra DEĞİL; D=1 → medium, low DEĞİL)"
       ]
     },
     {
@@ -504,11 +504,11 @@
       "eval_name": "dual-novel-savunma-vs-saldiri-guvenlik-ayrimi",
       "prompt": "List which security-group rules in this Terraform module allow 0.0.0.0/0 on ports other than 80 and 443",
       "expected_claude": "Sonnet 5 · effort: medium",
-      "expected_codex": "Terra · effort: low",
-      "tests_rule": "PRIMARY TEST: defensive infra review does NOT trigger the 'offensive' gate (post-Fable 5.1) — no 'unverified', no Opus 4.8. Prompt deliberately phrased as a mechanical enumeration (list rules matching a fixed condition), not 'review/find vulnerabilities', so D=1 is unambiguous → Sonnet 5 · medium / Terra · low. (An open-ended 'review this for security holes' phrasing splits agents D=1 vs D=3 — see f2 for the deliberate D=3 case.)",
+      "expected_codex": "Terra · effort: medium",
+      "tests_rule": "PRIMARY TEST: defensive infra review does NOT trigger the 'offensive' gate (post-Fable 5.1) — no 'unverified', no Opus 4.8. Prompt deliberately phrased as a mechanical enumeration (list rules matching a fixed condition), not 'review/find vulnerabilities', so D=1 is unambiguous → Sonnet 5 · medium / Terra · medium (shared D→effort ladder: 1→medium both arms). (An open-ended 'review this for security holes' phrasing splits agents D=1 vs D=3 — see f2 for the deliberate D=3 case.)",
       "expectations": [
         "Claude: Sonnet 5 (NOT Opus 4.8, gate must not fire), effort medium",
-        "Codex: Terra (NOT 'unverified'), effort low"
+        "Codex: Terra (NOT 'unverified'), effort medium (D=1 → medium, not low)"
       ]
     },
     {
@@ -516,11 +516,11 @@
       "eval_name": "dual-novel-basit-nullable-migration",
       "prompt": "Add a `last_login_at` column to the users table and make it nullable",
       "expected_claude": "Sonnet 5 · effort: low",
-      "expected_codex": "Terra · effort: minimal",
-      "tests_rule": "Tam belirtilmiş additive şema değişikliği (sütun adı + nullable hepsi verilmiş, tasarım kararı yok) → D=0 (SKILL.md D=0 kodlama hücresi). R=2 (tersinir migration, R=1 değil) — R≤1 olmadığı için Haiku/Luna'ya düşmüyor, taban Sonnet·low / Terra·minimal (efor D=0'ı takip eder).",
+      "expected_codex": "Terra · effort: low",
+      "tests_rule": "Tam belirtilmiş additive şema değişikliği (sütun adı + nullable hepsi verilmiş, tasarım kararı yok) → D=0 (SKILL.md D=0 kodlama hücresi). R=2 (tersinir migration, R=1 değil) — R≤1 olmadığı için Haiku/Luna'ya düşmüyor, taban Sonnet·low / Terra·low (efor D=0 → low, ortak merdiven; eski Codex 'minimal' kaldırıldı).",
       "expectations": [
         "Claude: Sonnet 5 · low (Haiku DEĞİL, R=2; efor D=0 → low)",
-        "Codex: Terra · minimal (Luna DEĞİL)"
+        "Codex: Terra · low (Luna DEĞİL)"
       ]
     },
     {
@@ -528,11 +528,11 @@
       "eval_name": "d1-vs-d2-belgelenmis-kalip-pagination",
       "prompt": "Add cursor-based pagination to this API",
       "expected_claude": "Sonnet 5 · effort: medium",
-      "expected_codex": "Terra · effort: low",
-      "tests_rule": "Kullanıcı raporu: Codex hep Sol·high veya Terra·medium veriyor, Luna/Terra-low neredeyse hiç çıkmıyor. Kök neden: D=1/D=2 sınırı belirsizdi (iyi belgelenmiş kalıp D=2'ye yuvarlanıyordu). Düzeltme sonrası regresyon testi.",
+      "expected_codex": "Terra · effort: medium",
+      "tests_rule": "D=1/D=2 sınırı: iyi belgelenmiş tek kalıp → D=1, D=2'ye yuvarlanmamalı. Ortak D→efor merdiveninde D=1 → her iki arm 'medium'. (Not: iteration-12 öncesi Codex D=1 → 'low' idi; kullanıcı sahada Terra·low'un Sonnet·medium ile eşdeğer olmadığını, hatalı işlem yaptığını bildirdi → OpenAI'nin kendi kılavuzuyla ('medium' = kodlama varsayılanı, 'low' = hızlı/dar kapsam) merdiven bir kademe yukarı kaydırıldı.)",
       "expectations": [
-        "Claude: Sonnet 5 · medium (high DEĞİL)",
-        "Codex: Terra · low (medium DEĞİL)"
+        "Claude: Sonnet 5 · medium (high DEĞİL — D=1, D=2 değil)",
+        "Codex: Terra · medium (D=1 → medium; 'low' D=0 içindir, 'high' D=2 içindir)"
       ]
     },
     {
@@ -540,11 +540,11 @@
       "eval_name": "d0-vs-d1-mekanik-cok-paragraf-yeniden-yazim",
       "prompt": "Rewrite these three paragraphs in a more formal tone",
       "expected_claude": "Haiku 4.5",
-      "expected_codex": "Luna · effort: minimal",
-      "tests_rule": "Aynı kök neden — D=0'ın kod-dışı alanda tek cümle dışında çapası yoktu, uzunluk yüzünden D=1'e yuvarlanıyordu. Düzeltme sonrası regresyon testi.",
+      "expected_codex": "Luna · effort: low",
+      "tests_rule": "D=0'ın kod-dışı alanda çapası: saf ton/biçim değişikliği (içerik değişmiyor) → D=0, uzunluk yüzünden D=1'e yuvarlanmamalı. Codex efor D=0 → low (eski 'minimal' kaldırıldı).",
       "expectations": [
         "Claude: Haiku 4.5",
-        "Codex: Luna · minimal"
+        "Codex: Luna · low"
       ]
     },
     {
@@ -552,11 +552,11 @@
       "eval_name": "r-ekseni-kod-degisikligi-vs-operasyonel-deger",
       "prompt": "Change this button's colour from blue to green",
       "expected_claude": "Haiku 4.5",
-      "expected_codex": "Luna · effort: minimal",
-      "tests_rule": "İkinci kök neden: R rubriği 'izole UI değeri' örneğini R=2 etiketlemişti, normal PR-incelemeli kod değişikliğini de bu kategoriye sokuyordu — Luna/Haiku'yu gereksiz yere eliyordu. Düzeltme: kod tabanı değişikliği varsayılan R=1, sadece canlıya doğrudan giden operasyonel değerler R=2/R=3.",
+      "expected_codex": "Luna · effort: low",
+      "tests_rule": "R rubriği: kod tabanı değişikliği varsayılan R=1 (normal PR-incelemeli akış), sadece canlıya doğrudan giden operasyonel değerler R=2/R=3 — 'izole UI değeri' Luna/Haiku'yu elememelı. Codex efor D=0 → low (eski 'minimal' kaldırıldı).",
       "expectations": [
         "Claude: Haiku 4.5 (Sonnet 5 DEĞİL)",
-        "Codex: Luna · minimal (Terra DEĞİL)"
+        "Codex: Luna · low (Terra DEĞİL)"
       ]
     },
     {
@@ -564,11 +564,11 @@
       "eval_name": "r-ekseni-gercek-operasyonel-deger-r2",
       "prompt": "Turn on the new checkout flow for all users from the feature-flag panel",
       "expected_claude": "Sonnet 5 · effort: low",
-      "expected_codex": "Terra · effort: minimal",
-      "tests_rule": "s1'in karşıt-örneği — canlıya doğrudan giden, kod incelemesinden geçmeyen bir operasyonel değer (feature flag) R=2/R=3 arası (yargı; checkout hızlı fark edilir → R=2 daha doğru ama grader'ı etkilemez, D=0'da ikisi de Sonnet·low/Terra·minimal). Asıl test: R≥2 olduğu için Haiku/Luna'ya DÜŞMEZ.",
+      "expected_codex": "Terra · effort: low",
+      "tests_rule": "s1'in karşıt-örneği — canlıya doğrudan giden, kod incelemesinden geçmeyen bir operasyonel değer (feature flag) R=2/R=3 arası (yargı; checkout hızlı fark edilir → R=2 daha doğru ama grader'ı etkilemez, D=0'da ikisi de Sonnet·low/Terra·low). Asıl test: R≥2 olduğu için Haiku/Luna'ya DÜŞMEZ.",
       "expectations": [
         "Claude: Sonnet 5 · low (Haiku DEĞİL, R=2)",
-        "Codex: Terra · minimal (Luna DEĞİL)"
+        "Codex: Terra · low (Luna DEĞİL)"
       ]
     }
   ]
