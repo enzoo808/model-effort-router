@@ -206,9 +206,27 @@ tetiklemez, Sonnet 5'te kalır:
 - 3, `D<3` (C tetikledi) → **Sonnet 5**
 - 3, `D=3` → **Opus 5** (ajanik kod/matematik/araçsız akıl yürütme) / **Sonnet 5** (diğer her şey, kota-bilinçli)
 
-`R=3` → Haiku hiç seçilmez + insan onayı notu. **Efor ← D, modelden bağımsız,
-her zaman.** `ultracode` ⇔ `W=3 ∧ >30dk ∧ ¬(D=3∧R=3)` — model kısıtsız (Haiku
-hariç); tetiklenirse efor alanı **`ultracode`** olur, D'nin eforuyla birleşmez.
+`R=3` → Haiku hiç seçilmez + insan onayı notu.
+
+**Efor ← D — iki arm da aynı tablodan başlar** (iteration-12): `0→low · 1→medium ·
+2→high · 3→xhigh`, `D=3∧R=3→max`. Sonra her arm kendi düzenleyicisini uygular:
+
+- **Claude:** `ultracode` ⇔ `W=3 ∧ >30dk ∧ ¬(D=3∧R=3)` (model kısıtsız, Haiku
+  hariç; efor alanı `xhigh` yerine `ultracode` yazılır) · `opusplan` (aşağıda).
+- **Codex:** ladder'ı `none, low, medium, high, xhigh, max` — **`minimal` yok**
+  (OpenAI'nin kendi kılavuzu: `medium` = kodlama varsayılanı, `low` = yalnızca
+  hızlı/dar kapsam). **Agentic çok-adımlı kodlamada +1 efor kademesi**
+  (iteration-13) — çok-dosyalı özellik, refactor, migration, mimari uygulama,
+  kod-tabanına yayılan debug-fix; `max`'ta kapanır, Claude dokunulmaz. Kod
+  incelemesi/zafiyet analizi, kod-dışı tasarım, mekanik tekrar hariç. Gerekçe:
+  LiveBench §2.1 GPT-5.6 hattını **yalnızca** agentic kodlamada Claude'un
+  gerisinde gösteriyor (Sol 56.2 < Sonnet 5 59.4 < Opus 5 65.2). Bu, iki arm'ın
+  efor sütunundaki tek fark — başka her satırda aynı.
+  - **Codex model seçimi:** `max(D,C)=3 ∧ D=3 → Sol`; iş **3+ zaten-bağımsız
+    hedefi** yan yana tarıyorsa (40 ayrı servis, her biri diğerinden habersiz) →
+    **Sol Ultra**. Bir kod tabanını modül/servise bölmek düz Sol'dur (tek
+    tutarlı sınır-tasarım kararı; "bağımsız servisler" son durumu tarif eder,
+    paralel işi değil).
 
 **Sonuç:** Opus 5 bu router'da hep `D=3` ile çıkar (`xhigh`/`max`) — hiçbir
 zaman `low`/`medium` ile önerilmez, çünkü D=3 olmadan zaten seçilmiyor.
@@ -244,12 +262,10 @@ Kurulumdan sonra bu senaryolarla sına. Router artık beş modelin de gerçekten
 makine-okunur, tekrar koşturulabilir kopyası `evals/routing/evals.json`
 — `SKILL.md` her değiştiğinde elle iz sürmek yerine oradaki `grade_routing.py`
 ile regresyon kontrolü yap (bkz. `evals/README.md`). **Taze/soğuk
-ajanlarla** (README'nin kendi bağlamını bilmeyen) koşturmak önemli — bu oturumda
-tam da bu yöntemle 3 gerçek belirsizlik bulundu ve `SKILL.md`'ye düzeltildi:
-frontier-ölçek kapısının "üç şart AND" okunması, `opusplan`'ın flagship
-örneğinde yürütüm fiilinin yazılı olmaması, ve "mimari karar" etiketinin R=2/R=3
-ayrımını bulanıklaştırması. Aşağıdaki tablonun beklenen çıktıları bu düzeltmelerden
-sonra 16/16 doğrulandı.
+ajanlarla** (README'nin kendi bağlamını bilmeyen) koşturmak önemli — kural her
+değiştiğinde 4 paralel cold agent 17 canlı eval'i yeniden koşturuyor.
+**Son koşu: iteration-13 — 17/17.** Tüm iterasyonların gerekçesi
+`evals/README.md`'de.
 
 > **1–2 Eyl 2026 — Fable 5.1 / Mythos 5.1 güncellemesi + taze-ajan eval koşusu:**
 > model kadrosu, siber güvenlik kapısı (savunma/saldırı ayrımı), fiyat/efor

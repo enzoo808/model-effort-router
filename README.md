@@ -44,10 +44,11 @@ resource, not dollars.
 maps that to the *cheapest model that actually clears the bar*, on **both**
 ecosystems at once. When in doubt it rounds **down**.
 
-It's a ~700-line decision procedure, not a vibe. Every rule is sourced from
+It's a ~550-line decision procedure, not a vibe. Every rule is sourced from
 `platform.claude.com` / `openai.com` docs, every uncertain claim is labelled, and
-there's a deterministic regression eval suite (currently **17/17**, cold-agent
-re-run after the 2 Sep 2026 English port).
+there's a deterministic regression eval suite (**17/17**, cold-agent re-run —
+iteration-13, after the Codex effort ladder was recalibrated against OpenAI's own
+guidance and given a `+1` notch for agentic multi-step coding).
 
 ---
 
@@ -122,7 +123,7 @@ claude.ai fallback) and read both lines.
 | **0 · Quality gate** | Four mechanical checks (rule stated by example but not generalised? silent-wrong-result risk? concrete target? two plausible readings?). If any fires → **no model, ask a clarifying question.** |
 | **1 · Hard gates** | Sub-second / high-volume → **Haiku**. Offensive security (exploit, pentest, binary scanning) → **Opus 4.8 · xhigh**. Biology R&D → **Fable 5.1**. >200k context → drops Haiku. 1000+ files → **Fable 5.1**. |
 | **2 · Score** | **R**isk, **D**epth, **W**idth, **C**ontext — each 0–3, each with a diagnostic question and a worked-example library. |
-| **3 · Map** | Model ← `max(D, C)` — **not** risk. Opus 5 only when `D=3`. Effort ← `D`. `ultracode` when `W=3 ∧ >30 min ∧ ¬(D=3 ∧ R=3)`. |
+| **3 · Map** | Model ← `max(D, C)` — **not** risk. Opus 5 only when `D=3`. Effort ← `D` (one shared table for both arms: `0→low · 1→medium · 2→high · 3→xhigh`, `D=3∧R=3→max`). Claude modifiers: `ultracode` (`W=3 ∧ >30 min ∧ ¬(D=3∧R=3)`), `opusplan`. Codex modifier: **`+1` effort notch for agentic multi-step coding** (the one axis LiveBench puts the GPT-5.6 line behind Claude). |
 | **4 · Quota guards** | `R=3` adds a human-review note (never changes the model). MCP-server bloat, auto-accept, alias drift warnings. |
 
 Key design choice: **risk raises human oversight, not model tier.** The old
