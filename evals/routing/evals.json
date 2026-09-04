@@ -98,11 +98,25 @@
       "eval_name": "savunma-denetimi-kucuk-kapsam",
       "prompt": "Review this single-file JWT validation module for security vulnerabilities",
       "expected_claude": "Sonnet 5 · effort: xhigh",
-      "expected_codex": "Sol · effort: xhigh",
-      "tests_rule": "Savunma güvenlik incelemesi (kapı tetiklenmez) + küçük kapsam (tek dosya, W=0 → ultracode YOK). Güvenlik zafiyeti avı = adversarial akıl yürütme → D=3 (skill'in 'ince bug bulma = D=3' kütüphanesiyle tutarlı: race condition, çelişen madde). Kural 2 dışı → Claude Sonnet 5·xhigh (kota varsayılanı); Codex D=3 → Sol·xhigh (ortak efor merdiveni: 3→xhigh).",
+      "expected_codex": "Terra · effort: xhigh",
+      "tests_rule": "Savunma güvenlik incelemesi (kapı tetiklenmez) + küçük kapsam (tek dosya, W=0 → ultracode YOK). Güvenlik zafiyeti avı = adversarial akıl yürütme → D=3. Kural 2 dışı + sıralı (3+ bağımsız paralel değil) → Claude Sonnet 5·xhigh / Codex path (c) Terra·xhigh (iteration-14: Codex'e Rule 3 aynalandı — D=3 analitik/inceleme → Terra, Sol değil; Terra reasoning 90.6 ≈ Sol). Analiz → agentic-kodlama +1 YOK.",
       "expectations": [
         "Claude: 'Sonnet 5' içeriyor, 'xhigh', 'ultracode' İÇERMİYOR, 'Opus 4.8' İÇERMİYOR",
-        "Codex: 'Sol' içeriyor, 'doğrulanmadı' DEĞİL"
+        "Codex: 'Terra' içeriyor (Sol DEĞİL — iteration-14 Rule 3 mirror), 'xhigh', 'doğrulanmadı' DEĞİL"
+      ]
+    },
+    {
+      "id": "m1",
+      "eval_name": "d3-r3-kural2-disi-orta-katman-xhigh",
+      "prompt": "These production DB migration scripts run tonight with no further review — check them for anything that silently loses or corrupts data",
+      "expected_claude": "Sonnet 5 · effort: xhigh",
+      "expected_codex": "Terra · effort: xhigh",
+      "expected_shared_note": "human review",
+      "tests_rule": "iteration-14: D=3 (kuplajlı sistemde adversarial doğruluk avı — race condition / çelişen madde ailesi) ∧ R=3 (bu gece çalışıyor, geri dönüşsüz veri kaybı) ∧ Kural 2 DIŞI (inceleme/analiz, kod yazma/tasarım değil). Model: her iki tarafta orta katman — Claude Sonnet 5 (Rule 3), Codex Terra (Rule 3 mirror, path c). Efor: D=3∧R=3 normalde 'max' ama 'max' yalnızca amiral gemisinde → orta katman 'xhigh'da kapanır, R=3 notu riski taşır. İki golden cevap da 'max' İÇERMEZ. Ayrıca 5b/f2 ile birlikte: bu router'ın 'Sonnet 5 · max' / 'Terra · max' üretemeyeceğini kanıtlar.",
+      "expectations": [
+        "Claude: 'Sonnet 5' içeriyor, 'xhigh' (max DEĞİL, Opus DEĞİL)",
+        "Codex: 'Terra' içeriyor, 'xhigh' (max DEĞİL, Sol DEĞİL)",
+        "Tek paylaşılan insan-onayı notu"
       ]
     },
     {

@@ -1,0 +1,2 @@
+Claude: Fable 5.1 · effort: high
+Codex: unverified — use Claude

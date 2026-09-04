@@ -60,20 +60,24 @@ kendini sorgulama. Çoğu prompt bu durumdadır.
    güvenlik-fallback zinciri doğrulanmadı). Savunma amaçlı güvenlik işi
    (kod/altyapı denetimi, açık port bulma) kapı **değil** — normal skorlamadan geçer.
 2. Diğer her promptta Codex kendi R/D/W/C eşlemesinden bağımsız bir cevap
-   üretir: `D=0∧W=0∧C≤1∧R≤1→Luna` · `max(D,C)≤2→Terra` · `max(D,C)=3∧D<3→Terra`
-   · `max(D,C)=3∧D=3→Sol` — **veya Sol Ultra** yalnızca iş **3+ zaten-bağımsız
-   hedefi** yan yana tarıyorsa (40 ayrı servisi aynı anda denetle), her biri
-   diğerinden habersiz. **Bir kod tabanını modül/servise bölmek düz Sol'dur** —
-   tek tutarlı sınır-tasarım kararı, parçalar iş sırasında birbirine bağımlı
-   ("bağımsız servisler" son durumu tarif eder, paralel işi değil). `R=3` ise
-   Luna hiç seçilmez, taban Terra.
-3. Efor ← D: **`0→low·1→medium·2→high·3→xhigh`, `D=3∧R=3→max`** — Claude arm'ıyla
-   aynı tablo (3 Eyl 2026: OpenAI ladder `none,low,medium,high,xhigh,max`;
-   `minimal` yok; `medium` = kodlama varsayılanı, `low` = hızlı/dar kapsam). D=1
-   iş `Terra·low` DEĞİL `Terra·medium` (sahada low zayıf çıktı). **Agentic
-   çok-adımlı kodlamada (çok-dosyalı özellik, refactor, migration, mimari
-   uygulama) Codex +1 efor kademesi** — `max`'ta kapanır, Claude dokunulmaz
-   (LiveBench: GPT-5.6 hattı agentic kodlamada Claude'un gerisinde). Kod
+   üretir: `D=0∧W=0∧C≤1∧R≤1→Luna` · `max(D,C)≤2→Terra` · `max(D,C)=3∧D<3→Terra`.
+   **`max(D,C)=3 ∧ D=3` — sırayla:** (a) **3+ zaten-bağımsız hedef** yan yana
+   taranıyorsa (40 ayrı servisi aynı anda denetle, her biri habersiz) →
+   **Sol Ultra** · (b) **Kural 2 bölgesi** (agentic çok-adımlı yapılandırılmış
+   iş / matematik / araçsız akıl yürütme) → **Sol** · (c) **yoksa** (D=3 analitik/
+   araştırma/inceleme — çelişen madde avı, regresyon, tek-artefakt zafiyet
+   incelemesi) → **Terra** (Claude'daki Rule 3'ün aynası; Terra reasoning 90.6 ≈
+   Sol; kritikse Sol'a yükselt). **Bir kod tabanını modül/servise bölmek (b) →
+   düz Sol** (tek tutarlı sınır kararı; "bağımsız servisler" son durum, paralel
+   iş değil). `R=3` ise Luna hiç seçilmez, taban Terra.
+3. Efor ← D: **`0→low·1→medium·2→high·3→xhigh`**; `D=3∧R=3→max` **yalnızca Sol'da**
+   (amiral gemisi). **Terra'da D=3∧R=3 → `xhigh`'da kalır** — orta katman modeli
+   `max`'a zorlamak aşırı-düşünme riski, güvenlik katmaz; R=3 notu riski taşır.
+   Claude tarafı da aynı: `Sonnet 5 · max` çıkmaz. (3 Eyl 2026: OpenAI ladder
+   `none,low,medium,high,xhigh,max`; `minimal` yok; `medium` = kodlama
+   varsayılanı, `low` = hızlı/dar kapsam.) D=1 iş `Terra·low` DEĞİL
+   `Terra·medium`. **Agentic çok-adımlı kodlamada (çok-dosyalı özellik, refactor,
+   migration, mimari uygulama) Codex +1 efor kademesi** — Claude dokunulmaz; kod
    incelemesi/analizi, kod-dışı tasarım, mekanik tekrar hariç. `mode: pro`
    yalnızca Responses API'de, sorulursa bahset. `ultra` bir efor değeri değil,
    ürün modudur (`effort: "ultra"` → HTTP 400) — Sol Ultra = Sol + ultra modu.
@@ -238,14 +242,18 @@ Haiku'nun hız/hacim profiline bırakılacak kadar önemsiz değil.
 **R tabanı (genel):** `R=3` ise Haiku hiç seçilmez, taban Sonnet 5'tir; ayrıca
 çıktıya insan onayı notu eklenir.
 
-**Efor ← D, her zaman — modelden bağımsız.** Hangi model seçildiyse seçilsin
-(Opus 5 dahil), efor D'yi takip eder: `0→low` · `1→medium` · `2→high` ·
-`3→xhigh` · `3 ∧ R=3 → max`.
+**Efor ← D.** `0→low` · `1→medium` · `2→high` · `3→xhigh` · **`3 ∧ R=3 → max`
+yalnızca amiral gemisinde** (Opus 5 / Opus 4.8 / Fable 5.1 / Sol). Orta katman
+modelde (Sonnet 5 / Terra) `D=3 ∧ R=3 → xhigh`'da kapanır — model zaten "orta
+zeka ihtiyacı" (D=3 ama Kural 2 dışı) diye seçildi; `max` ile eşlemek tutarsız
+ve aşırı-düşünme riski, güvenlik katmaz. R=3 insan-onayı notu riski taşır;
+gerçekten maksimum akıl yürütme gerekiyorsa amiral gemisine yükselt.
 
 Haiku 4.5 seçildiyse efor alanını boş bırak.
 
 **Sonuç:** Opus 5 bu router'da her zaman D=3 ile çıkar (`xhigh`/`max`) —
-D=3 dışında hiç seçilmiyor, dolayısıyla `low`/`medium` ile önerilmez.
+D=3 dışında hiç seçilmiyor, dolayısıyla `low`/`medium` ile önerilmez. Router
+`Sonnet 5 · max` / `Terra · max` **hiç üretmez** (orta katman `xhigh`'da kapanır).
 
 `ultracode` ⇔ `W=3` **∧** tahmini süre > 30 dk **∧** `¬(D=3 ∧ R=3)`
 Efor alanına `xhigh` değil **`ultracode`** yaz. Model kısıtı yok (Haiku hariç).
@@ -275,19 +283,23 @@ agentic coding: Opus 5 65.2 ≈ Fable 5.1 66.1, ikisi de Sonnet 5'in 59.4'ünün
 > **Araç erişimi kararı çevirir.** Görev Claude Code / arama / kod çalıştırma
 > içeriyorsa Sonnet 5 genelde yeter. Saf bağlamdan ispat isteniyorsa Opus 5.
 
-**3. D=3 ama Kural 2'ye girmiyorsa → varsayılan Sonnet 5 · xhigh (kota gerekçesi).**
-LiveBench 2026-06-25 (bağımsız, kontaminasyon-serbest) Opus 5'i Sonnet 5'in
-üstünde gösteriyor: agentic coding +5.8, language +13.7, reasoning +2.5. Router
-yine kota gerekçesiyle Sonnet 5'i varsayılan tutuyor ama **sonuç kritikse veya
-language/muhakeme ağırlıklıysa → Opus 5 · xhigh'a çıkmanın somut gerekçesi var**
-(artık "kanıtsız" değil). Aggregate leaderboard skoruyla model **seçme** —
-BenchAlign Sonnet 5'i kapsama artefaktıyla düşük (#39) gösteriyor, gerçekte
-LiveBench'te 76.0 ile güçlü bir günlük sürücü.
+**3. D=3 ama Kural 2'ye girmiyorsa → orta katman · xhigh (kota gerekçesi) —
+İKİ TARAFTA.** Claude: Sonnet 5 · xhigh. Codex: **Terra · xhigh** (Rule 3 artık
+Codex koluna da aynalandı — Terra reasoning 90.6 ≈ Sol; eski hâlinde her D=3
+Sol'a gidiyordu). LiveBench 2026-06-25 Opus 5'i Sonnet 5'in üstünde gösteriyor
+(agentic coding +5.8, language +13.7) ama router kota gerekçesiyle orta katmanı
+varsayılan tutuyor. **Sonuç kritikse veya language/muhakeme ağırlıklıysa →
+amiral gemisine (Opus 5 / Sol) · xhigh (R=3 ise `max`) çıkmanın somut gerekçesi
+var.** Aggregate leaderboard skoruyla model **seçme** — BenchAlign Sonnet 5'i
+kapsama artefaktıyla düşük (#39) gösteriyor, gerçekte LiveBench'te 76.0.
 
-**4. Kullanıcı bilgisi (router çıktısını değiştirmez):** Anthropic Opus 5'te
+**4. Kullanıcı bilgisi (router çıktısını değiştirmez):** (a) Anthropic Opus 5'te
 low/medium'u "eval'in tuttuğu her yerde" normal maliyet kontrolü olarak
-öneriyor. Router bunu kendi çıktısında hiç göstermeyecek (Opus 5 hep D=3 ile
-çıkar) ama kullanıcı Opus 5'i elle çalıştırırken bu bilgiyi bilmeli.
+öneriyor; router bunu kendi çıktısında göstermez (Opus 5 hep D=3'te çıkar) ama
+kullanıcı elle çalıştırırken bilmeli. (b) Router orta katman modelde `max`
+üretmez (`D=3∧R=3` orada `xhigh`'da kapanır); belirli bir geri-dönüşsüz iş
+gerçekten maksimum akıl yürütme hak ediyorsa kullanıcı elle `max` yapabilir ya
+da amiral gemisine yükseltir.
 
 **5. 30 dakikanın altındaki işte `ultracode` önerme.** Tek seferlik derinlik
 için prompt'a **`ultrathink`** yaz.
@@ -364,7 +376,9 @@ Codex: unverified — use Claude
 ```
 (Ama *"bu 180 servisin kodunu auth bypass açığı için denetle"* savunma işidir →
 kapı yok; adversarial zafiyet avı = D=3, 180 birim bağımsız = W=3 →
-`Claude: Sonnet 5 · effort: ultracode` / `Codex: Sol Ultra · effort: xhigh`.)
+`Claude: Sonnet 5 · effort: ultracode` / `Codex: Sol Ultra · effort: xhigh`
+[path a: 180 zaten-bağımsız hedef]. Tek servise indir → sıralı D=3 inceleme,
+Kural 2 dışı → `Sonnet 5 · xhigh` / `Terra · xhigh` [path c].)
 
 *"Bu genomik pipeline'daki varyant çağırma mantığını denetle"*
 ```
@@ -372,13 +386,22 @@ Claude: Fable 5.1 · effort: high
 Codex: unverified — use Claude
 ```
 
-*"Prod'da ara sıra düşen race condition'ı bul"*  (D=3, R=3 — zorluk yürütme
-boyunca sürüyor, opusplan değil)
+*"Prod'da ara sıra düşen race condition'ı bul"*  (D=3, R=3, agentic kod / Kural 2 → amiral gemisi)
 ```
 Claude: Opus 5 · effort: max
 Codex: Sol · effort: max
 Do not apply without human review.
 ```
+
+*"Bu prod migration script'leri bu gece incelemesiz çalışacak — sessiz veri kaybı var mı bak"*  (D=3 adversarial inceleme, R=3, **Kural 2 dışı**)
+```
+Claude: Sonnet 5 · effort: xhigh
+Codex: Terra · effort: xhigh
+Do not apply without human review.
+```
+(D=3 ama Kural 2 değil → iki tarafta da orta katman. R=3 normalde `max` ama
+`max` yalnızca amiral gemisinde → ikisi de `xhigh`'da kalır; onay notu riski
+taşır. Yeterli gelmezse Opus 5 / Sol'a elle yükselt.)
 
 *"Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek"*
 ```
@@ -390,6 +413,6 @@ Do not apply without human review.
 
 ---
 
-*Senkron: `skill/SKILL.md` iteration-13 (3 Eyl 2026). Bilerek korunan farklar:
+*Senkron: `skill/SKILL.md` iteration-14 (4 Eyl 2026). Bilerek korunan farklar:
 Türkçe · kendi kendine yeterli (reference.md yok) · `opusplan` ve Fast Mode
 speed line yok (Claude.ai yüzeyi) · Codex Kolu kısaltılmış özet.*

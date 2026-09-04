@@ -209,24 +209,30 @@ tetiklemez, Sonnet 5'te kalır:
 `R=3` → Haiku hiç seçilmez + insan onayı notu.
 
 **Efor ← D — iki arm da aynı tablodan başlar** (iteration-12): `0→low · 1→medium ·
-2→high · 3→xhigh`, `D=3∧R=3→max`. Sonra her arm kendi düzenleyicisini uygular:
+2→high · 3→xhigh`. `D=3∧R=3→max` **yalnızca amiral gemisinde** (Opus 5 / Opus 4.8
+/ Fable 5.1 / Sol) — orta katman modelde (Sonnet 5 / Terra) `xhigh`'da kapanır,
+R=3 onay notu riski taşır (iteration-14: `max` ile orta katman modeli eşlemek
+tutarsız, aşırı-düşünme riski). Router **`Sonnet 5 · max` / `Terra · max` hiç
+üretmez.** Sonra her arm kendi düzenleyicisini uygular:
 
 - **Claude:** `ultracode` ⇔ `W=3 ∧ >30dk ∧ ¬(D=3∧R=3)` (model kısıtsız, Haiku
   hariç; efor alanı `xhigh` yerine `ultracode` yazılır) · `opusplan` (aşağıda).
 - **Codex:** ladder'ı `none, low, medium, high, xhigh, max` — **`minimal` yok**
-  (OpenAI'nin kendi kılavuzu: `medium` = kodlama varsayılanı, `low` = yalnızca
-  hızlı/dar kapsam). **Agentic çok-adımlı kodlamada +1 efor kademesi**
-  (iteration-13) — çok-dosyalı özellik, refactor, migration, mimari uygulama,
-  kod-tabanına yayılan debug-fix; `max`'ta kapanır, Claude dokunulmaz. Kod
-  incelemesi/zafiyet analizi, kod-dışı tasarım, mekanik tekrar hariç. Gerekçe:
-  LiveBench §2.1 GPT-5.6 hattını **yalnızca** agentic kodlamada Claude'un
-  gerisinde gösteriyor (Sol 56.2 < Sonnet 5 59.4 < Opus 5 65.2). Bu, iki arm'ın
-  efor sütunundaki tek fark — başka her satırda aynı.
-  - **Codex model seçimi:** `max(D,C)=3 ∧ D=3 → Sol`; iş **3+ zaten-bağımsız
-    hedefi** yan yana tarıyorsa (40 ayrı servis, her biri diğerinden habersiz) →
-    **Sol Ultra**. Bir kod tabanını modül/servise bölmek düz Sol'dur (tek
-    tutarlı sınır-tasarım kararı; "bağımsız servisler" son durumu tarif eder,
-    paralel işi değil).
+  (OpenAI kılavuzu: `medium` = kodlama varsayılanı, `low` = yalnızca hızlı/dar
+  kapsam). **Agentic çok-adımlı kodlamada +1 efor kademesi** (iteration-13) —
+  çok-dosyalı özellik, refactor, migration, mimari uygulama, kod-tabanına yayılan
+  debug-fix; `max`'ta kapanır, Claude dokunulmaz. Kod incelemesi/analizi,
+  kod-dışı tasarım, mekanik tekrar hariç. Gerekçe: LiveBench §2.1 GPT-5.6 hattını
+  **yalnızca** agentic kodlamada Claude'un gerisinde gösteriyor (Sol 56.2 <
+  Sonnet 5 59.4 < Opus 5 65.2).
+  - **Codex model seçimi, `max(D,C)=3 ∧ D=3` — sırayla:** (a) **3+ zaten-bağımsız
+    hedef** yan yana taranıyorsa (40 ayrı servis, her biri habersiz) → **Sol
+    Ultra** · (b) **Kural 2 bölgesi** (agentic kod / matematik / araçsız) →
+    **Sol** · (c) **yoksa** (D=3 analitik/araştırma/inceleme) → **Terra**
+    (iteration-14: Claude'daki Rule 3'ün aynası — Terra reasoning 90.6 ≈ Sol;
+    eski hâlinde her D=3 Sol'a gidiyordu; kritikse Sol'a yükselt). Bir kod
+    tabanını modül/servise bölmek (b) → düz Sol ("bağımsız servisler" son durum,
+    paralel iş değil).
 
 **Sonuç:** Opus 5 bu router'da hep `D=3` ile çıkar (`xhigh`/`max`) — hiçbir
 zaman `low`/`medium` ile önerilmez, çünkü D=3 olmadan zaten seçilmiyor.
@@ -240,12 +246,14 @@ modunda `xhigh` yürütmeye de taşınır, elle indirilmezse Sonnet 5 gereksiz
 pahalı çalışır ve amaç ters teper. Router bu uyarıyı her `opusplan`
 önerisine ekler.
 
-**Adım 4 — Kota koruma.** D=3 ama Kural 2'ye girmiyorsa Sonnet 5 (efor `xhigh`)
-varsayılan — kota gerekçesi. Yükseltme notu artık **kanıtsız değil**: LiveBench
-2026-06-25 (bağımsız, kontaminasyon-serbest) Opus 5'i Sonnet 5'in üstünde
-gösteriyor (agentic coding +5.8, language +13.7 — bkz. `reference.md` §2.1).
-(Opus 5'te low/medium'un "israf" olmadığı bilgisi router'ın kendi çıktısını
-değiştirmez — Opus 5 zaten hep D=3'te çıkıyor.)
+**Adım 4 — Kota koruma.** D=3 ama Kural 2'ye girmiyorsa **iki tarafta da orta
+katman, efor `xhigh`** — Claude Sonnet 5, Codex **Terra** (iteration-14: Rule 3
+Codex koluna aynalandı; eski hâlinde her D=3 Sol'a gidiyordu). Terra reasoning
+90.6 ≈ Sol, Sonnet 5 xhigh'ın üstünde — orta katman bu analitik işi iki tarafta
+da kaldırır. Yükseltme notu **kanıtsız değil**: LiveBench 2026-06-25 Opus 5'i
+Sonnet 5'in üstünde gösteriyor (agentic coding +5.8, language +13.7 — bkz.
+`reference.md` §2.1); sonuç kritikse amiral gemisine (Opus 5 / Sol) yükselt.
+(Opus 5'te low/medium'un "israf" olmadığı bilgisi router çıktısını değiştirmez.)
 
 **Benchmark politikası.** Router benchmark rakamıyla model **seçmez** —
 leaderboard'lar (LiveBench / BenchAlign / AA Index, `reference.md` §2.1)
@@ -264,7 +272,7 @@ makine-okunur, tekrar koşturulabilir kopyası `evals/routing/evals.json`
 ile regresyon kontrolü yap (bkz. `evals/README.md`). **Taze/soğuk
 ajanlarla** (README'nin kendi bağlamını bilmeyen) koşturmak önemli — kural her
 değiştiğinde 4 paralel cold agent 17 canlı eval'i yeniden koşturuyor.
-**Son koşu: iteration-13 — 17/17.** Tüm iterasyonların gerekçesi
+**Son koşu: iteration-14 — 18/18.** Tüm iterasyonların gerekçesi
 `evals/README.md`'de.
 
 > **1–2 Eyl 2026 — Fable 5.1 / Mythos 5.1 güncellemesi + taze-ajan eval koşusu:**
@@ -339,13 +347,26 @@ değiştiğinde 4 paralel cold agent 17 canlı eval'i yeniden koşturuyor.
 > değil. Kod *incelemesi* / zafiyet *analizi* (f2, 5b seviyede kalır), kod-dışı
 > tasarım, mekanik çok-dosya tekrarı hariç. Değişen tek golden cevap: **d2**
 > Terra·high→xhigh. Cold re-run — **17/17**.
+>
+> **iteration-14:** gerçek bir çıktı (`Claude: Sonnet 5 · max` / `Codex: Sol ·
+> max`, D=3∧R=3 inceleme işi) iki tutarsızlık gösterdi. **(1)** Codex kolunda
+> Claude'un Rule 3'ünün karşılığı yoktu — her D=3 Sol'a gidiyordu. Düzeltildi:
+> `D=3` satırı sıralı kontrol — (a) 3+ zaten-bağımsız paralel hedef → Sol Ultra ·
+> (b) Kural 2 bölgesi → Sol · (c) yoksa (analitik/araştırma/inceleme) → **Terra**
+> (Terra reasoning 90.6 ≈ Sol). Eval'de yalnızca `f2` değişti (`Sol·xhigh` →
+> `Terra·xhigh`); yeni eval `m1` D=3∧R=3-Kural2-dışı vakayı kilitliyor. **(2)**
+> `Sonnet 5 · max` / `Terra · max` kural-geçerliydi ama iki vendor'ın orta-katman
+> kılavuzunda yok. Düzeltildi: `max` **amiral-gemisi-özel** — orta katman
+> `D=3∧R=3`'te `xhigh`'da kapanır, R=3 notu riski taşır. Router artık bu ikisini
+> üretmiyor. Cold re-run (4 paralel ajan, 18 eval) — **18/18**.
 
 | # | Prompt | Beklenen | Sınadığı kural |
 |---|---|---|---|
 | 1 | 200 müşteri yorumunu olumlu/olumsuz etiketle | **Haiku 4.5, efor yok** | Hacim kapısı |
 | 2 | Şu React bileşenine dark mode ekle | Sonnet 5 · medium | Taban durum |
 | 3 | Repodaki auth akışını OAuth2'ye taşı | **Claude: Sonnet 5 · high** · **Codex: Terra · xhigh** | Skorlama (D=2). Migration = agentic çok-adımlı kodlama → Codex +1 kademe (it-13). İki arm'ın efor sütunundaki tek fark. |
-| 4 | Prod'da ara sıra düşen race condition'ı bul | **Opus 5** · **max** | max(D,C)=3, ajanik/derin — R sadece insan onayı ekler |
+| 4 | Prod'da ara sıra düşen race condition'ı bul | **Opus 5 · max** · **Codex: Sol · max** | D=3∧R=3, Kural 2 (agentic kod) → amiral gemisi → `max` geçerli |
+| m1 | Bu prod migration script'leri bu gece incelemesiz çalışacak — sessiz veri kaybı var mı bak | **Claude: Sonnet 5 · xhigh** · **Codex: Terra · xhigh** + onay notu | D=3∧R=3 ama **Kural 2 dışı** (inceleme) → iki tarafta orta katman; `max` amiral-gemisi-özel → `xhigh`'da kapanır (it-14) |
 | 5 | Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur | **Opus 4.8** · **ultracode** | Saldırı amaçlı siber güvenlik kapısı |
 | 5b | Bu 180 servisin kodunu auth bypass açığı için denetle (exploit yazma) | **Claude: Sonnet 5 · ultracode** · **Codex: Sol Ultra · xhigh** | Savunma denetimi — offensive kapı **tetiklenmez** (Fable 5.1 sonrası). Adversarial zafiyet avı = D=3, 180 birim bağımsız = W=3 + Sol Ultra; efor D=3 → xhigh |
 | 6 | Şu kodu düzelt | Model önerme, netleştir | Adım 0 (hedef somut değil) |

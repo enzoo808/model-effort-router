@@ -233,8 +233,13 @@ supports that direction.
    this is the basis of the Codex **+1 effort notch for agentic multi-step
    coding** (iteration-13). It's the *only* axis where the GPT-5.6 line is behind
    Claude — overall LiveBench Terra (max) 77.9 ≈ Sonnet 5 (xhigh) 76.0, and Sol
-   ties Opus on reasoning/math — so the two arms' effort columns are otherwise
-   identical.
+   ties Opus on reasoning/math.
+5. **Terra (max) reasoning 90.6 / math 94.9 ≈ Sol (91.7 / 96.2)** and above
+   Sonnet 5 (xhigh) (88.7 / 92.9). → **Rule 3 now mirrors onto the Codex arm**
+   (iteration-14): D=3 *outside* Rule 2 (analytical / research / review) →
+   **Terra**, not Sol, matching Claude's "stay on Sonnet 5" — the mid tier
+   handles that work on both sides. Sol / Opus 5 stay the Rule-2 (agentic-coding
+   / math / tool-less) pick and the "escalate if critical" target.
 
 > **Sources:** `livebench.ai` (2026-06-25 release), `artificialanalysis.ai/models`,
 > `benchlm.ai` — all read directly on 2 Sep 2026. All three agree on the top
@@ -264,6 +269,16 @@ model's **entire** token spend — text, tool calls, thinking.
 If `xhigh` is requested but unsupported, it falls to the nearest supported level
 below (e.g. `xhigh` → `high` on Opus 4.6).
 
+> **`max` is a supported *setting* on every tier, but the router only *emits* it
+> on a flagship** (Opus 5 / Opus 4.8 / Fable 5.1 / Sol) — iteration-14. The
+> `D=3 ∧ R=3 → max` rule fires there; on a mid-tier model (Sonnet 5 / Terra) it
+> stays `xhigh`. Rationale: the router picks the mid tier only when the reasoning
+> need is *moderate* (D=3 outside Rule 2), so pairing it with `max` is
+> incoherent and risks over-thinking (Anthropic's Sonnet 5 advice tops out at
+> `xhigh`; OpenAI frames `max` as "high cost of failure" but the mid tier's
+> practical ceiling is still `xhigh`). The `R=3` human-review note carries the
+> stakes; if maximum reasoning is genuinely needed, escalate to the flagship.
+
 ### Advice per model (Anthropic's own text)
 
 - **Opus 5:** start from `high` (default). Go to `xhigh` for coding/agentic work,
@@ -271,7 +286,8 @@ below (e.g. `xhigh` → `high` on Opus 4.6).
   cost/speed control wherever your eval holds up."** — a deliberate tone shift
   from earlier Opus generations; low/medium is no longer a "restricted mode",
   it's a normal dial.
-- **Sonnet 5:** `high` default. `xhigh` for the hardest coding/agentic work.
+- **Sonnet 5:** `high` default. `xhigh` for the hardest coding/agentic work
+  (Anthropic's advice stops here — no `max` guidance for Sonnet 5).
   `medium` ≈ "Sonnet 4.6's `high`".
 - **Opus 4.8/4.7:** start from `xhigh` for coding/agentic work; drop to
   `low`/`medium` only after measuring with an eval (more conservative advice than
@@ -497,13 +513,17 @@ resembles one on this list, use that example's score as a starting point.
 
 ### Coding
 
-The `→` column is the **Claude** answer. Codex model per §Codex-mapping; Codex
-effort = the same D-table **+1 notch when the row is agentic multi-step coding**
-(§10.6): "Merge 3 services onto a shared auth middleware" → Codex `xhigh` (not
-`high`); "Find and fix the race condition" and "Design a new rate-limiter
-algorithm" → already `xhigh` on the table, +1 → Codex `max`; "Split the monolith
-into 12 microservices" → `D=3∧R=3` caps both at `max`. "Review this JWT module"
-is *analysis* → no +1, Codex stays `xhigh`.
+The `→` column is the **Claude** answer. Codex model per §Codex-mapping, Codex
+effort per Step 3 + the **+1 notch for agentic multi-step coding** (§10.6):
+- "Merge 3 services onto a shared auth middleware" → Codex `Terra · xhigh`
+  (D=2 → `high`, +1 for the migration).
+- "Find and fix the race condition", "Design a new rate-limiter algorithm" →
+  Rule 2 (agentic code / algorithmic) → Codex **Sol**; `xhigh` on the table, +1
+  → `Sol · max` (Sol is a flagship, so `max` is allowed).
+- "Split the monolith into 12 microservices" → Rule 2a, `D=3∧R=3` → Opus 5 · max
+  / Sol · max (both flagships).
+- "Review this JWT module" → D=3 **outside Rule 2**, sequential → Codex path (c)
+  → **Terra**; analysis, no +1 → `Terra · xhigh` (mirrors `Sonnet 5 · xhigh`).
 
 | Prompt | R,D,W,C | → |
 |---|---|---|
@@ -519,7 +539,8 @@ is *analysis* → no +1, Codex stays `xhigh`.
 | "Add a `last_login_at` column and make it nullable" | 2,0,0,0 | Sonnet 5 · low *(fully-specified additive schema → D=0; R=2 reversible migration → not Haiku)* |
 | "Change this button's colour from blue to green" | 1,0,0,0 | Haiku 4.5 *(source-code change → R=1 by default, PR-reviewed)* |
 | "Design a new rate-limiter algorithm, consistent in a distributed system" | 2,3,1,1 | Opus 5 · xhigh *(algorithmic depth)* |
-| "Review this single-file JWT validation module for security vulnerabilities" | 1,3,0,1 | Sonnet 5 · xhigh *(adversarial vuln hunt → D=3; W=0 → not ultracode; outside Rule 2 → Sonnet)* |
+| "Review this single-file JWT validation module for security vulnerabilities" | 1,3,0,1 | Sonnet 5 · xhigh *(adversarial vuln hunt → D=3; W=0 → not ultracode; outside Rule 2, sequential → Sonnet 5 / **Codex Terra**, both `xhigh`)* |
+| "These prod migration scripts run tonight with no review — check for silent data loss" | 3,3,1,2 | Sonnet 5 · xhigh / **Terra · xhigh** *(D=3 ∧ R=3 outside Rule 2 → mid-tier both sides; `max` is flagship-only → stays `xhigh`; + human-review note)* |
 
 ### Structured system design (not code but hits Rule 2a)
 
@@ -1033,13 +1054,31 @@ system/prompt architecture). (c) tool-less: Sonnet 5's raw-intelligence gap
 closes with tools (Opus 4.8-era: tool-less HLE Opus +6.6, tooled parity) — most
 Claude Code work is "tooled", so (c) rarely fires.
 
-**Rule 3 (D=3 outside Rule 2 → Sonnet 5 · xhigh default).** LiveBench 2026-06-25
-shows Opus 5 above Sonnet 5 (agentic +5.8, language +13.7, reasoning +2.5, math
-+2.8) — but Opus 5's cost-per-successful-task is ~1.4x Sonnet 5's, and the
-difference doesn't justify every job. Escalate to Opus 5 · xhigh if the result
-is insufficient or the work is critical (especially language/reasoning-heavy).
-Do not route from an aggregate score — BenchAlign shows Sonnet 5 at #39 via a
-coverage artefact (§2.1); LiveBench's full coverage keeps it at 76.0.
+**Rule 3 (D=3 outside Rule 2 → mid-tier · xhigh default — both arms).** LiveBench
+2026-06-25 shows Opus 5 above Sonnet 5 (agentic +5.8, language +13.7, reasoning
++2.5, math +2.8) — but Opus 5's cost-per-successful-task is ~1.4x Sonnet 5's, and
+the difference doesn't justify every job. **iteration-14 mirrors this onto the
+Codex arm:** the old Codex mapping sent *every* D=3 to Sol; now D=3 outside Rule
+2 (analytical / research / single-artefact review) → **Terra** — Terra (max)
+reasoning 90.6 / math 94.9 ≈ Sol (91.7 / 96.2) and above Sonnet 5 xhigh, so the
+mid tier is the right call on both sides. Sol stays the Rule-2 pick (agentic
+coding — where the GPT-5.6 line *does* trail — plus math / tool-less) and the
+"escalate if the result is insufficient or the work is critical" target
+(· `xhigh`, or `max` at R=3 since Sol/Opus 5 are flagships). Do not route from an
+aggregate score — BenchAlign shows Sonnet 5 at #39 via a coverage artefact
+(§2.1); LiveBench's full coverage keeps it at 76.0.
+
+**`max` (from `D=3 ∧ R=3`) is flagship-only (iteration-14).** The rule means
+"irreversible + hard → deepest reasoning", but the router picks the *mid* tier
+(Sonnet 5 / Terra) only when the reasoning need was assessed as *moderate* (D=3
+outside Rule 2) — so `Sonnet 5 · max` / `Terra · max` is an incoherent pairing
+and courts over-thinking without adding safety. Both vendors' mid-tier tuning
+advice tops out at `xhigh` (Anthropic explicitly; OpenAI frames `max` as "high
+cost of failure" but that's the escalate-to-flagship signal). So at `D=3 ∧ R=3`:
+flagship model → `max`; mid-tier model → `xhigh` + the R=3 review note. The user
+can still set `max` by hand. Before iteration-14 the router could emit
+`Sonnet 5 · max` / `Terra · max` (rule-valid but untested and unwanted); it no
+longer does.
 
 **Rule 4 (user knowledge).** Anthropic's Opus 5 advice: start `high`, `xhigh`
 for coding/agentic, and use low/medium freely as a cost control "wherever your
@@ -1065,7 +1104,8 @@ and §0.
 `learn.chatgpt.com/docs/models`) backs this: `medium` is the coding default,
 `low` is for *"quick, well-scoped, latency-sensitive"* work only, and `minimal`
 is no longer a rung. So the ladder shifted up one: **`0→low · 1→medium ·
-2→high · 3→xhigh`, `D=3 ∧ R=3 → max`** — now identical to the Claude arm's table.
+2→high · 3→xhigh`, `D=3 ∧ R=3 → max` (Sol only — iteration-14)** — otherwise
+identical to the Claude arm's table.
 `Luna · high` was rejected as the alternative fix (Vellum / layer3labs / official
 all: Luna is "for volume, not depth"; its long-context recall drops to ~41% vs
 Sol ~91%, unsafe for D≥1 codebase work). `Terra · low` now appears only for D=0
@@ -1094,6 +1134,24 @@ algorithm" would also take the bump on the Codex side. This is a deliberate
 product choice (the skill owner asked for the effort column to carry a
 distinction); it is loosely — not strongly — benchmark-backed, and it is the
 *only* effort difference between the arms.
+
+**Codex model mapping at D=3 — Rule 3 mirror + `max` cap (iteration-14).** Two
+inconsistencies surfaced by a real output (`Claude: Sonnet 5 · max` /
+`Codex: Sol · max` for a D=3 ∧ R=3 review task):
+1. The old Codex mapping sent **every** D=3 to Sol — no equivalent of the Claude
+   arm's Rule 3 ("D=3 outside Rule 2 → stay on Sonnet 5, quota default"). So the
+   Claude arm protected quota while the Codex arm jumped to the flagship for the
+   same analytical work. Fixed: the D=3 row is now an ordered check —
+   **(a)** 3+ already-independent parallel targets → Sol Ultra; **(b)** Rule 2
+   territory (agentic coding / math / tool-less) → Sol; **(c)** otherwise
+   (analytical / research / single-artefact review) → **Terra** (LiveBench
+   reasoning 90.6 / math 94.9 ≈ Sol; escalate to Sol · `xhigh` if critical).
+   Only `f2` moved in the eval set (`Sol · xhigh` → `Terra · xhigh`); a new eval
+   `m1` locks in the D=3 ∧ R=3-outside-Rule-2 case.
+2. `Sonnet 5 · max` / `Terra · max` were rule-valid (the `D=3 ∧ R=3 → max` rung
+   applied to any model) but in neither vendor's mid-tier tuning advice. Fixed:
+   `max` is flagship-only (see §10.5 and §3). `Terra · max` and `Sonnet 5 · max`
+   are no longer producible by the router.
 
 **What "Sol Ultra" actually is.** Ultra is a **product mode**, not an effort
 value — `reasoning: {effort: "ultra"}` returns HTTP 400. Toggled in Codex

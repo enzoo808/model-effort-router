@@ -93,6 +93,8 @@ two lines. Show intermediate reasoning only if the user asks "why?".
    max` (no `minimal` any more); OpenAI's own guidance puts `medium` as the
    coding default and `low` as "quick, well-scoped, latency-sensitive" only —
    which lines up rung-for-rung with the Claude scale.
+   - **`max` (from `D=3 ∧ R=3`) is flagship-only** — Opus 5 / Opus 4.8 / Fable
+     5.1 / Sol. On a mid-tier model (Sonnet 5 / Terra) it stays `xhigh`.
    - **Claude modifiers:** `ultracode` (W=3 ∧ >30min), `opusplan` (front-loaded
      architecture).
    - **Codex modifier:** **+1 effort notch for agentic multi-step coding** (see
@@ -277,7 +279,7 @@ model, it raises human oversight (a review note + the effort floor).
 - **R floor:** `R=3` → Haiku never selected, floor Sonnet 5; also adds a
   human-review note (Step 4 Rule 1).
 
-**Effort** ← `D`, **independent of the model** — always by this table:
+**Effort** ← `D` — always by this table:
 
 | D | Effort |
 |---|---|
@@ -285,9 +287,18 @@ model, it raises human oversight (a review note + the effort floor).
 | 1 | `medium` |
 | 2 | `high` |
 | 3 | `xhigh` |
-| 3 ∧ R=3 | `max` |
+| 3 ∧ R=3 | `max` — **flagship only** (Opus 5 / Opus 4.8 / Fable 5.1 / Sol). On a mid-tier model (Sonnet 5 / Terra) stay **`xhigh`** |
 
 Haiku 4.5 selected → leave the effort field blank.
+
+> **Why `max` is flagship-only.** `D=3 ∧ R=3 → max` means "irreversible + hard →
+> think as deep as possible." But a mid-tier model was picked precisely because
+> the reasoning need was *moderate* (D=3 outside Rule 2); `max` on Sonnet 5 /
+> Terra risks over-thinking (both vendors' tuning advice tops out at `xhigh` for
+> the mid tier) without adding real safety — the R=3 human-review note carries
+> the stakes. If the irreversibility genuinely warrants maximum reasoning, that's
+> a signal to **escalate to the flagship** (Step 4 Rule 3), not to crank the
+> mid-tier model. The user may still set `max` manually.
 
 **`ultracode`** ⇔ all three: `W = 3` **∧** estimated duration > 30 min **∧**
 `¬(D=3 ∧ R=3)`. Write `ultracode` in the effort field (not `xhigh`). No model
@@ -318,9 +329,10 @@ Output (under the `Claude:` label; Codex line unaffected — its own mapping):
 Claude: opusplan · plan: <effort> · execute: <effort>
 ⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort <execute effort>.
 ```
-Plan effort = Rule 2(a)'s result (`xhigh`, or `max` if `R=3`). Execute effort =
-the post-plan estimated D (usually `medium`). **The ⚠️ warning is mandatory on
-every `opusplan` output** (one of the three always-added exceptions).
+Plan effort = Rule 2(a)'s result (`xhigh`, or `max` if `R=3` — the plan phase
+runs on Opus 5, a flagship). Execute effort = the post-plan estimated D (usually
+`medium`). **The ⚠️ warning is mandatory on every `opusplan` output** (one of the
+three always-added exceptions).
 
 > opusplan diagnostic table + the "advanced combination" (ultracode on the
 > execution phase, on-ask only): `reference.md` §10.4.
@@ -341,13 +353,19 @@ to output — the rest is explained **only if the user asks**.
    reasoning (deep analysis from prompt content alone, **no** tool calls). Tool
    access flips (c) toward Sonnet 5 — most Claude Code work is "tooled", so (c)
    rarely fires; (a) and (b) are the frequent ones.
-3. **D=3 outside Rule 2 → default Sonnet 5 · xhigh** (quota). LiveBench
-   2026-06-25 has Opus 5 ahead (agentic +5.8, language +13.7, reasoning +2.5) —
-   so **escalate to Opus 5 · xhigh if the result is insufficient or the work is
-   critical**, especially language/reasoning-heavy D=3.
-4. **User knowledge (not a router output change):** low/medium on Opus 5 is not
-   "waste" — Anthropic's Opus 5 advice treats it as a normal cost dial. The
-   router still never emits Opus 5 below `xhigh` (it only picks Opus 5 at D=3).
+3. **D=3 outside Rule 2 → mid-tier default: Sonnet 5 (Claude) / Terra (Codex),
+   effort `xhigh`** (quota). LiveBench 2026-06-25: Opus 5 ahead of Sonnet 5
+   (agentic +5.8, language +13.7, reasoning +2.5); Terra (max) reasoning 90.6 /
+   math 94.9 ≈ Sol — the mid tier handles analytical/research/review D=3 on both
+   sides. **Escalate to the flagship (Opus 5 / Sol) · `xhigh` — or `max` if R=3 —
+   if the result is insufficient or the work is critical**, especially
+   language/reasoning-heavy D=3.
+4. **User knowledge (not a router output change):** (a) low/medium on Opus 5 is
+   not "waste" — Anthropic treats it as a normal cost dial; the router still
+   never emits Opus 5 below `xhigh` (it only picks Opus 5 at D=3). (b) The router
+   never emits `max` on a mid-tier model (Sonnet 5 / Terra); at `D=3 ∧ R=3` it
+   caps them at `xhigh`. If a specific irreversible task genuinely warrants
+   maximum reasoning, set `max` manually — or escalate to the flagship (Rule 3).
 5. **No `ultracode` for work under 30 min.** For one-off depth, write
    `ultrathink` into the prompt instead (doesn't change the effort level).
 6. **Long-session / MCP warning:** each MCP server injects tool schemas into
@@ -381,11 +399,18 @@ scoring is **exactly** Step 2; compute once, read this table.
 | Otherwise `max(D,C)≤1` | Terra |
 | `max(D,C)=2` | Terra |
 | `max(D,C)=3`, `D<3` (C triggered it) | Terra |
-| `max(D,C)=3`, `D=3` | **Sol** — or **Sol Ultra** only if the work is **3+ already-independent targets** scanned/processed side by side (40 separate services audited at once), each unaware of the others. **Splitting one codebase into modules/services is plain Sol** — it's a single coherent boundary-design decision, the pieces are interdependent *during the work* even if the end state is "independent" (f1 decoy). "Independent" describing the end state ≠ parallelisable work. |
+| `max(D,C)=3`, `D=3` | Check in order: **(a) 3+ already-independent targets** scanned/processed side by side (40 separate services audited at once), each unaware of the others → **Sol Ultra**. **(b) Rule 2 territory** (agentic multi-step structured work / math-proof / tool-less deep reasoning) → **Sol**. **(c) otherwise** (D=3 analytical / research / review — contract-conflict hunt, regression modelling, single-artefact vuln review) → **Terra** — quota default, mirrors the Claude arm's Rule 3; Terra's LiveBench reasoning (90.6) / math (94.9) ≈ Sol. Escalate to Sol · `xhigh` if the result is insufficient or the work is critical. |
+
+> **(a) vs "split one codebase into modules/services".** Splitting a monolith is
+> plain **Sol** (path b — a single coherent boundary-design decision; the pieces
+> are interdependent *during the work* even if the end state is "independent" —
+> f1 decoy). "Independent" describing the end state ≠ parallelisable work.
 
 - **Effort ← D — Step 3's table:** `0→low · 1→medium · 2→high · 3→xhigh`;
-  `D=3 ∧ R=3 → max`. OpenAI's own guidance (`medium` = coding default, `low` =
-  quick/well-scoped/latency-sensitive only). `Terra · low` is a **D=0** answer
+  `D=3 ∧ R=3 → max` **only on Sol** (flagship). On **Terra** at `D=3 ∧ R=3`, stay
+  `xhigh` — same reasoning as the Claude arm (Step 3, "Why `max` is flagship-only").
+  OpenAI's own guidance: `medium` = coding default, `low` =
+  quick/well-scoped/latency-sensitive only. `Terra · low` is a **D=0** answer
   only (rename, tone-only rewrite, fully-specified schema change). Real D=1 dev
   work ("add email validation", "add cursor-based pagination") is `Terra · medium`.
 - **+1 notch for agentic multi-step coding.** When the task is **writing or
@@ -403,7 +428,8 @@ scoring is **exactly** Step 2; compute once, read this table.
 - **Don't round D up.** If you're always landing on `Sol · xhigh` / `Terra ·
   high`, that's the D=1→D=2 / D=0→D=1 bug — round **down**, not up.
 - **R floor:** `R=3` → Luna never selected, floor Terra. Adds the human-review note.
-- `max` is a real Codex setting toggle on every GPT-5.6 tier (re-verified 3 Sep 2026).
+- `max` is a real Codex setting on every GPT-5.6 tier (re-verified 3 Sep 2026),
+  but the router only *emits* it on **Sol** — see the effort note above.
 
 > "What Sol Ultra actually is", `mode: pro` (Responses-API-only, on-ask), and the
 > Codex-side notes: `reference.md` §10.6.
@@ -501,13 +527,24 @@ Codex: Terra · effort: xhigh
 (D=2 → table gives both `high`; the migration is multi-step code restructuring,
 so the Codex side takes the +1 notch → `xhigh`. Claude stays on the table.)
 
-*"Find the race condition that flakes in prod sometimes"*  (D=3, R=3, difficulty persists → plain Opus 5)
+*"Find the race condition that flakes in prod sometimes"*  (D=3, R=3, agentic code domain / Rule 2 → flagship both sides)
 ```
 Claude: Opus 5 · effort: max
 Codex: Sol · effort: max
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
 Do not apply without human review.
 ```
+
+*"These prod migration scripts run tonight with no further review — check them for anything that silently loses or corrupts data"*  (D=3 adversarial review, R=3, **outside Rule 2** — analysis, not building)
+```
+Claude: Sonnet 5 · effort: xhigh
+Codex: Terra · effort: xhigh
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.
+```
+(D=3 but not Rule 2 → mid-tier both sides (Sonnet 5 / Terra). R=3 → the effort
+would be `max`, but `max` is flagship-only → both stay `xhigh`; the review note
+carries the stakes. Escalate to Opus 5 / Sol manually if that's not enough.)
 
 *"Run a penetration test against this 180-service environment, build auth-bypass chains"*  (offensive gate; W=3 → ultracode)
 ```
@@ -517,8 +554,10 @@ Codex: unverified — use Claude
 > But *"audit these 180 services' code for auth-bypass vulnerabilities (no
 > exploits)"* is **defensive** — no gate, normal scoring: D=3 (adversarial),
 > W=3 + independent, R=1 → `Claude: Sonnet 5 · effort: ultracode` /
-> `Codex: Sol Ultra · effort: xhigh` (audit = analysis, **no** agentic-coding
-> +1). One service → `Sonnet 5 · xhigh` / `Sol · xhigh`.
+> `Codex: Sol Ultra · effort: xhigh` (Codex path (a): 180 already-independent
+> targets → Sol Ultra; audit = analysis, no agentic-coding +1). Shrink to **one**
+> service and it's a sequential D=3 review, outside Rule 2 → `Sonnet 5 · xhigh` /
+> `Terra · xhigh` (Codex path (c)).
 
 *"Redesign the auth architecture of 200 prod services from scratch"*  (opusplan)
 ```

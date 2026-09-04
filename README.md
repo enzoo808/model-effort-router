@@ -46,9 +46,9 @@ ecosystems at once. When in doubt it rounds **down**.
 
 It's a ~550-line decision procedure, not a vibe. Every rule is sourced from
 `platform.claude.com` / `openai.com` docs, every uncertain claim is labelled, and
-there's a deterministic regression eval suite (**17/17**, cold-agent re-run —
-iteration-13, after the Codex effort ladder was recalibrated against OpenAI's own
-guidance and given a `+1` notch for agentic multi-step coding).
+there's a deterministic regression eval suite (**18/18**, cold-agent re-run —
+iteration-14; the Codex arm now mirrors the Claude quota carve-outs at `D=3`, and
+`max` effort is flagship-only).
 
 ---
 
@@ -123,7 +123,7 @@ claude.ai fallback) and read both lines.
 | **0 · Quality gate** | Four mechanical checks (rule stated by example but not generalised? silent-wrong-result risk? concrete target? two plausible readings?). If any fires → **no model, ask a clarifying question.** |
 | **1 · Hard gates** | Sub-second / high-volume → **Haiku**. Offensive security (exploit, pentest, binary scanning) → **Opus 4.8 · xhigh**. Biology R&D → **Fable 5.1**. >200k context → drops Haiku. 1000+ files → **Fable 5.1**. |
 | **2 · Score** | **R**isk, **D**epth, **W**idth, **C**ontext — each 0–3, each with a diagnostic question and a worked-example library. |
-| **3 · Map** | Model ← `max(D, C)` — **not** risk. Opus 5 only when `D=3`. Effort ← `D` (one shared table for both arms: `0→low · 1→medium · 2→high · 3→xhigh`, `D=3∧R=3→max`). Claude modifiers: `ultracode` (`W=3 ∧ >30 min ∧ ¬(D=3∧R=3)`), `opusplan`. Codex modifier: **`+1` effort notch for agentic multi-step coding** (the one axis LiveBench puts the GPT-5.6 line behind Claude). |
+| **3 · Map** | Model ← `max(D, C)` — **not** risk. At `D=3`: flagship (Opus 5 / Sol) only for Rule-2 work (agentic code / math / tool-less); analytical/research/review D=3 stays mid-tier (Sonnet 5 / Terra). Effort ← `D` (`0→low · 1→medium · 2→high · 3→xhigh`); `D=3∧R=3→max` **flagship-only** — mid-tier caps at `xhigh` and the review note carries the stakes. Claude modifiers: `ultracode` (`W=3 ∧ >30 min ∧ ¬(D=3∧R=3)`), `opusplan`. Codex modifier: **`+1` effort notch for agentic multi-step coding** (the one axis LiveBench puts the GPT-5.6 line behind Claude). |
 | **4 · Quota guards** | `R=3` adds a human-review note (never changes the model). MCP-server bloat, auto-accept, alias drift warnings. |
 
 Key design choice: **risk raises human oversight, not model tier.** The old
@@ -182,8 +182,8 @@ by `evals/routing/grade_routing.py` (pure regex, no LLM). The protocol: spin up
 **cold agents** that read `skill/SKILL.md` fresh and route each prompt; grade the
 raw output.
 
-Latest run (**iteration-13**, cold agents against the current `SKILL.md`):
-**17/17 auto-graded pass**. Run history and the reasoning behind each rule change
+Latest run (**iteration-14**, cold agents against the current `SKILL.md`):
+**18/18 auto-graded pass**. Run history and the reasoning behind each rule change
 is in [`evals/README.md`](evals/README.md).
 
 ---

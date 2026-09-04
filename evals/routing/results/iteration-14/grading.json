@@ -1,0 +1,286 @@
+{
+  "results": [
+    {
+      "id": 1,
+      "eval_name": "hacim-kapisi-haiku",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 2,
+      "eval_name": "taban-durum-sonnet-medium",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 3,
+      "eval_name": "skorlama-sonnet-high",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 4,
+      "eval_name": "derin-ajanik-opus-max",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 5,
+      "eval_name": "siber-guvenlik-kapisi-saldiri-amacli",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "5b",
+      "eval_name": "savunma-denetimi-kapi-yok",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=ultracode; Codex: Sol Ultra correct, effort=xhigh"
+    },
+    {
+      "id": "f1",
+      "eval_name": "frontier-kapisi-fable-5-1-servis-bolme-r3",
+      "passed": true,
+      "evidence": "Claude: Fable 5.1 correct, effort=max; Codex: Sol correct, effort=max; notes ok (shared note)"
+    },
+    {
+      "id": "f2",
+      "eval_name": "savunma-denetimi-kucuk-kapsam",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=xhigh; Codex: Terra correct, effort=xhigh"
+    },
+    {
+      "id": "m1",
+      "eval_name": "d3-r3-kural2-disi-orta-katman-xhigh",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=xhigh; Codex: Terra correct, effort=xhigh; notes ok (shared note)"
+    },
+    {
+      "id": 6,
+      "eval_name": "adim0-hedef-somut-degil",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 7,
+      "eval_name": "adim0-kural-genellenmemis",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 8,
+      "eval_name": "risk-eforu-degistirmiyor",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 9,
+      "eval_name": "frontier-kapisi-fable-5-1",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 10,
+      "eval_name": "opusplan-flagship",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 11,
+      "eval_name": "opusplan-r2-xhigh",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 12,
+      "eval_name": "kural3-kanitsiz-sonnet-xhigh",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 13,
+      "eval_name": "ultracode-model-kisitsiz",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 14,
+      "eval_name": "biyoloji-kapisi-fable-5-1-opus-degil",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 15,
+      "eval_name": "c-tek-basina-opus-tetiklemiyor",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 16,
+      "eval_name": "kural2a-kod-disi-mimari-opus-xhigh-no-opusplan",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 17,
+      "eval_name": "kural2b-matematik-ispat",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 18,
+      "eval_name": "kural2c-aracsiz-akil-yurutme",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 19,
+      "eval_name": "adim0-sessiz-yanlis-varsayim",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 20,
+      "eval_name": "adim0-iki-yorum",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 21,
+      "eval_name": "opusplan-ultracode-gelismis-kombinasyon-gozlemsel",
+      "passed": "manual",
+      "evidence": "subjective/observational eval -- can't be checked deterministically, review by hand"
+    },
+    {
+      "id": 22,
+      "eval_name": "200k-eleyici-kapi-sonnet",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "c1",
+      "eval_name": "ekosistem-acik-belirtim-codex",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "c2",
+      "eval_name": "ekosistem-gercek-paralel-ultra-ama-derinlik-dusuk",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "c3",
+      "eval_name": "ekosistem-varsayilan-claude-hacim-kapisi",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "c4",
+      "eval_name": "ekosistem-varsayilan-claude-taban-durum",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "c5",
+      "eval_name": "ekosistem-sahte-paralel-karsi-ornek",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "v1",
+      "eval_name": "opusplan-ekosistem-oneki-tutarliligi",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "d1",
+      "eval_name": "dual-hacim-kapisi",
+      "passed": true,
+      "evidence": "Claude: Haiku 4.5 correct; Codex: Luna correct, effort=low"
+    },
+    {
+      "id": "d2",
+      "eval_name": "dual-taban-durum",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=high; Codex: Terra correct, effort=xhigh"
+    },
+    {
+      "id": "d3",
+      "eval_name": "dual-siber-guvenlik-codex-dogrulanmadi",
+      "passed": true,
+      "evidence": "Claude: Opus 4.8 correct, effort=ultracode; Codex: unverified (correct)"
+    },
+    {
+      "id": "d4",
+      "eval_name": "dual-biyoloji-codex-dogrulanmadi",
+      "passed": true,
+      "evidence": "Claude: Fable 5.1 correct, effort=high; Codex: unverified (correct)"
+    },
+    {
+      "id": "d5",
+      "eval_name": "dual-r3-paylasilan-not",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=low; Codex: Terra correct, effort=low; notes ok (shared note)"
+    },
+    {
+      "id": "d6",
+      "eval_name": "dual-opusplan-codex-bagimsiz",
+      "passed": true,
+      "evidence": "Claude: opusplan correct (plan=max, execute=medium); Codex: Sol correct, effort=max; notes ok (shared note, Claude note)"
+    },
+    {
+      "id": "d7",
+      "eval_name": "dual-adim0-blok",
+      "passed": true,
+      "evidence": "no model recommended, clarifying question present"
+    },
+    {
+      "id": "n1",
+      "eval_name": "dual-novel-sahte-bagimsizlik-decoy",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=medium; Codex: Terra correct, effort=medium"
+    },
+    {
+      "id": "n2",
+      "eval_name": "dual-novel-savunma-vs-saldiri-guvenlik-ayrimi",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=medium; Codex: Terra correct, effort=medium"
+    },
+    {
+      "id": "n3",
+      "eval_name": "dual-novel-basit-nullable-migration",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=low; Codex: Terra correct, effort=low"
+    },
+    {
+      "id": "r1",
+      "eval_name": "d1-vs-d2-belgelenmis-kalip-pagination",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=medium; Codex: Terra correct, effort=medium"
+    },
+    {
+      "id": "r2",
+      "eval_name": "d0-vs-d1-mekanik-cok-paragraf-yeniden-yazim",
+      "passed": true,
+      "evidence": "Claude: Haiku 4.5 correct; Codex: Luna correct, effort=low"
+    },
+    {
+      "id": "s1",
+      "eval_name": "r-ekseni-kod-degisikligi-vs-operasyonel-deger",
+      "passed": true,
+      "evidence": "Claude: Haiku 4.5 correct; Codex: Luna correct, effort=low"
+    },
+    {
+      "id": "s3",
+      "eval_name": "r-ekseni-gercek-operasyonel-deger-r2",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5 correct, effort=low; Codex: Terra correct, effort=low"
+    }
+  ],
+  "summary": {
+    "passed": 18,
+    "failed": 0,
+    "skipped": 0,
+    "total": 46
+  }
+}
