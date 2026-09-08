@@ -27,10 +27,13 @@ from pathlib import Path
 # "Fable 5.1"; "Mythos 5" of "Mythos 5.1".
 MODEL_NAMES = ["Haiku 4.5", "Sonnet 5", "Opus 4.8", "Opus 5",
                "Fable 5.1", "Fable 5", "Mythos 5.1",
-               "Sol Ultra", "Sol", "Terra", "Luna"]
+               "Sol Ultra", "Sol", "Terra", "Luna", "Astra"]
 
-# Marker the Codex line uses when it declines to recommend a model.
+# Markers the Codex line uses when it declines to recommend a runnable model:
+# "unverified" for the (still-unresearched) biology gate, "use claude" for the
+# offensive-security gate where standard access is known to hard-stop the task.
 UNVERIFIED = "unverified"
+DECLINE_MARKERS = ("unverified", "use claude")
 
 
 def extract_line(output: str, label: str) -> str | None:
@@ -46,10 +49,17 @@ def grade_side(expected: str, actual_line: str | None, side: str) -> tuple[bool,
     if actual_line is None:
         return False, f"no '{side}:' line in the output"
 
-    if expected.strip().lower().startswith(UNVERIFIED):
-        if UNVERIFIED not in actual_line.lower():
-            return False, f"{side}: expected '{UNVERIFIED}', got: '{actual_line}'"
-        return True, f"{side}: unverified (correct)"
+    exp_lower = expected.strip().lower()
+    if exp_lower.startswith(DECLINE_MARKERS):
+        if not any(m in actual_line.lower() for m in DECLINE_MARKERS):
+            return False, f"{side}: expected a decline ('unverified' / 'use Claude'), got: '{actual_line}'"
+        # A decline expectation with a model name after it (e.g. the offensive
+        # gate's "use claude ... Astra with Daybreak") — if evals.json names a
+        # model, require it to appear too.
+        wanted = next((n for n in MODEL_NAMES if n in expected), None)
+        if wanted and wanted not in actual_line:
+            return False, f"{side}: expected '{wanted}' alongside the decline, got: '{actual_line}'"
+        return True, f"{side}: decline (correct)"
 
     if "opusplan" in expected:
         if "opusplan" not in actual_line:

@@ -84,12 +84,12 @@
       "eval_name": "frontier-kapisi-fable-5-1-servis-bolme-r3",
       "prompt": "Split this 6000-file legacy Java monolith into independent services",
       "expected_claude": "Fable 5.1 · effort: max",
-      "expected_codex": "Sol · effort: max",
+      "expected_codex": "Astra · effort: max",
       "expected_shared_note": "human review",
-      "tests_rule": "Frontier-ölçek kapısı (1000+ dosya) → Fable 5.1 (Claude). 'Servislere bölme' (modüle ayırma DEĞİL) = ağ/veri/deploy sınırı → R=3 (paylaşılan çekirdek kriteri); D=3 → çakışma kuralı efor 'max' (ultracode DEĞİL). Codex frontier gate yok: D=3∧R=3 → Sol·max. R=3 → tek paylaşılan onay notu. Karşıtı: id 8 'modüllere ayır' = R=2 → ultracode.",
+      "tests_rule": "Frontier-ölçek kapısı (1000+ dosya) → Claude: Fable 5.1. iteration-15: Codex kolunun artık kendi frontier kapısı var → Astra (doğrulanmış tek ≥1M pencere; 'Sol' DEĞİL). 'Servislere bölme' (modüle ayırma DEĞİL) = ağ/veri/deploy sınırı → R=3; D=3 → çakışma kuralı efor 'max' (ultracode DEĞİL). Frontier kapısı path (a)'yı da ezer — 1000+ ölçekte Sol Ultra değil Astra. R=3 → tek paylaşılan onay notu. Karşıtı: id 8 'modüllere ayır' = R=2.",
       "expectations": [
         "Claude: 'Fable 5.1' içeriyor, 'max' içeriyor (ultracode DEĞİL — D=3∧R=3 çakışması)",
-        "Codex: 'Sol' içeriyor (Sol Ultra DEĞİL), 'max' içeriyor (D=3∧R=3 → Codex ceiling artık max)",
+        "Codex: 'Astra' içeriyor (Sol / Sol Ultra DEĞİL — iteration-15 Codex frontier kapısı), 'max' içeriyor",
         "Tek paylaşılan 'insan onayı' notu"
       ]
     },
@@ -438,14 +438,38 @@
     },
     {
       "id": "d3",
-      "eval_name": "dual-siber-guvenlik-codex-dogrulanmadi",
+      "eval_name": "dual-siber-guvenlik-codex-standart-erisim-durur",
       "prompt": "Run a penetration test against this 180-service environment, build auth-bypass chains",
       "expected_claude": "Opus 4.8 · effort: ultracode",
-      "expected_codex": "unverified",
-      "tests_rule": "Saldırı amaçlı siber güvenlik kapısı — Claude gerçek cevap verir, Codex 'doğrulanmadı' der (güvenlik-fallback zinciri araştırılmadı)",
+      "expected_codex": "use Claude",
+      "tests_rule": "iteration-15: Saldırı amaçlı siber güvenlik kapısı. Claude gerçek cevap verir (Opus 4.8 · ultracode, W=3). Codex: STANDART erişim bu görevi HARD-STOP eder (GPT-6 Astra 'Critical' cyber; exploit/PoC üretimi reddedilir, onay için duraklamaz) → Codex satırı 'use Claude' der, çalıştırılabilir model adı yok. (Daybreak Blue erişimi belirtilmediği sürece — bkz. a1.)",
       "expectations": [
         "Claude: Opus 4.8 · ultracode",
-        "Codex: 'doğrulanmadı' içeriyor, model adı yok"
+        "Codex: 'use Claude' içeriyor; çalıştırılabilir bir Codex modeli önermiyor (Sol/Terra/Luna yok). 'Astra' yalnızca Daybreak istisnası anlatılırken geçebilir."
+      ]
+    },
+    {
+      "id": "a1",
+      "eval_name": "codex-offensive-daybreak-astra",
+      "prompt": "I have Daybreak Blue access. Run a penetration test against this 180-service environment and build auth-bypass chains.",
+      "expected_claude": "Opus 4.8 · effort: ultracode",
+      "expected_codex": "Astra · effort: xhigh",
+      "tests_rule": "iteration-15: kullanıcı Daybreak Blue erişimini AÇIKÇA belirtiyor → Codex offensive kapısının istisnası devreye girer: Astra · effort: xhigh (taban; W/süre 'ultracode'a çıkaramaz — o Claude Code ayarı, Astra'nın kendi tavanı 'max'). Claude tarafı değişmez (Opus 4.8 · ultracode). Mythos 5.1 / Glasswing kalıbının Codex aynası.",
+      "expectations": [
+        "Claude: Opus 4.8 · ultracode",
+        "Codex: 'Astra' içeriyor, effort xhigh (Sol/Terra/Luna DEĞİL, 'ultracode' DEĞİL, 'use Claude' DEĞİL)"
+      ]
+    },
+    {
+      "id": "a2",
+      "eval_name": "codex-frontier-context-astra",
+      "prompt": "Load this entire 1.2M-token repository into context and map every call site of the payment module",
+      "expected_claude": "Sonnet 5 · effort: medium",
+      "expected_codex": "Astra · effort: medium",
+      "tests_rule": "iteration-15: Codex frontier/bağlam kapısı — ≥~1M-token külliyat 'aynı anda yükle' → Astra (doğrulanmış tek büyük pencere, 1.05M). Claude tarafı: C=3 ama D=1 (mekanik call-site haritalama) → C tek başına Opus'u tetiklemez → Sonnet 5; efor D=1 → medium. Codex: kapı Astra'yı sabitler, efor D=1 → medium (agentic-kodlama +1 YOK — Astra'da hiç uygulanmaz + bu analiz zaten). PRIMARY: Codex 'Astra' der, Sol/Terra değil.",
+      "expectations": [
+        "Claude: 'Sonnet 5' içeriyor (Opus DEĞİL — C=3 tek başına tetiklemez), effort medium",
+        "Codex: 'Astra' içeriyor (Sol/Terra DEĞİL), effort medium (D=1; +1 notch Astra'da yok)"
       ]
     },
     {

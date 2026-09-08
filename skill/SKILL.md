@@ -3,9 +3,9 @@ name: model-secici
 description: >-
   Reads a prompt and recommends, separately for Claude (Haiku 4.5 / Sonnet 5 /
   Opus 5 / Opus 4.8 / Fable 5.1) AND Codex/ChatGPT (Luna / Terra / Sol / Sol
-  Ultra), which model + effort level to run it on — both in one short output.
-  Use when asked "which model", "which effort", "pick a model", "what should I
-  use for this prompt", or when /model-secici is invoked.
+  Ultra / GPT-6 Astra), which model + effort level to run it on — both in one
+  short output. Use when asked "which model", "which effort", "pick a model",
+  "what should I use for this prompt", or when /model-secici is invoked.
 ---
 
 # Claude & Codex model / effort router
@@ -48,24 +48,34 @@ two lines. Show intermediate reasoning only if the user asks "why?".
 > Fable 5.1 only at the frontier-scale and biology gates — consistent, no extra
 > rule needed.
 
-**Codex/ChatGPT roster (GPT-5.6 family, as of 9 July 2026):**
+**Codex/ChatGPT roster (GPT-5.6 family + GPT-6 Astra, as of 8 September 2026):**
 
 | Model | Role | Claude analogue (rough) |
 |---|---|---|
-| Luna | Speed/volume specialist, cheapest tier | Haiku 4.5 |
+| Luna | Speed/volume specialist, cheapest tier. Current Codex CLI default | Haiku 4.5 |
 | Terra | Daily work, balanced — **default starting point** | Sonnet 5 |
-| **Sol** | **Flagship** — code/science/security | Opus 5 |
+| **Sol** | **GPT-5.6 flagship** — code/science/security; the **D=3 default** | Opus 5 |
 | **Sol Ultra** | A Codex *mode* toggled on Sol (Plus+): ~4 collaborating agents in parallel. Not a separate model; `effort:"ultra"` → HTTP 400 | stronger parallelism primitive than `ultracode` |
+| **Astra** | **GPT-6 flagship** (`gpt-6-astra`, 3 Sep 2026). New top tier. **Narrow pick only** — the four Codex gates below (offensive-sec *with Daybreak*, 1000+ files, ≥~1M-token corpus, computer-use). ~2.5× Sol's price; not clearly ahead of Claude's flagships. Codex CLI v0.153.0+ | Opus 5 / Fable 5.1 (frontier) |
 
-> Fable 5.1 (frontier scale + biology-adjacent) has **no** verified Codex
-> analogue. For offensive-security and biology-R&D prompts the Codex line says
-> "unverified — use Claude" and recommends no model.
+> Astra is **not** the new default. On intelligence and coding indices it lands
+> ≈ Opus 5 / Sol and **behind Fable 5.1** (Coding Agent Index 67 vs 70; AA Index
+> ≈ Sol); it clearly leads only on **computer use** (OSWorld 72.6 vs Sol 65.7).
+> Per-token it is much cheaper than it looks (~⅓ of Sol's tokens at `max`), but
+> the headline price and quota burn are higher — so Sol stays the D=3 pick and
+> Astra is reserved for the gates. Vaughan's guidance, quoted: "Use Sol unless
+> you have Astra access and face complex tasks with long sessions."
+>
+> Fable 5.1's biology-adjacent role still has **no** Codex analogue — Astra's
+> system card covers cyber only (re-checked 8 Sep 2026). Biology-R&D prompts →
+> the Codex line still says "unverified — use Claude".
 >
 > Source note: roster + effort ladder re-verified against
 > `developers.openai.com/api/docs/guides/latest-model` + `learn.chatgpt.com/docs/models`
-> (3 Sep 2026): ladder is `none, low, medium, high, xhigh, max`; `medium` is the
-> coding default, `low` is for quick/well-scoped/latency-sensitive work only.
-> Full notes + benchmark direction in `reference.md` §9.
+> + `developers.openai.com/api/docs/models/gpt-6-astra` (8 Sep 2026): ladder is
+> `none, low, medium, high, xhigh, max`; `medium` is the coding default, `low` is
+> for quick/well-scoped/latency-sensitive work only. Astra drops `none`. Full
+> notes + benchmark direction in `reference.md` §9 (§9.8 = Astra).
 
 ---
 
@@ -90,16 +100,19 @@ two lines. Show intermediate reasoning only if the user asks "why?".
    figures are made up.
 4. **Both arms start from the same `D → effort` table** (Step 3), then each
    applies its own modifier. Codex's ladder is `none, low, medium, high, xhigh,
-   max` (no `minimal` any more); OpenAI's own guidance puts `medium` as the
-   coding default and `low` as "quick, well-scoped, latency-sensitive" only —
-   which lines up rung-for-rung with the Claude scale.
+   max` (no `minimal` any more; Astra also drops `none`); OpenAI's own guidance
+   puts `medium` as the coding default and `low` as "quick, well-scoped,
+   latency-sensitive" only — which lines up rung-for-rung with the Claude scale.
    - **`max` (from `D=3 ∧ R=3`) is flagship-only** — Opus 5 / Opus 4.8 / Fable
-     5.1 / Sol. On a mid-tier model (Sonnet 5 / Terra) it stays `xhigh`.
+     5.1 / Sol / **Astra**. On a mid-tier model (Sonnet 5 / Terra) it stays
+     `xhigh`. (Astra's `max` is generally available; a few Codex surfaces still
+     cap it at `xhigh` — same caveat as Sol, `reference.md` §10.6.)
    - **Claude modifiers:** `ultracode` (W=3 ∧ >30min), `opusplan` (front-loaded
      architecture).
    - **Codex modifier:** **+1 effort notch for agentic multi-step coding** (see
-     Codex arm) — capped at `max`. `Sol Ultra` rides on top of the resulting
-     level.
+     Codex arm) — capped at `max`, **Terra/Sol only, never on Astra** (Astra's
+     agentic-coding scores match Opus 5, so the gap the notch compensates for is
+     gone at that tier). `Sol Ultra` rides on top of the resulting level.
 
 ---
 
@@ -287,7 +300,7 @@ model, it raises human oversight (a review note + the effort floor).
 | 1 | `medium` |
 | 2 | `high` |
 | 3 | `xhigh` |
-| 3 ∧ R=3 | `max` — **flagship only** (Opus 5 / Opus 4.8 / Fable 5.1 / Sol). On a mid-tier model (Sonnet 5 / Terra) stay **`xhigh`** |
+| 3 ∧ R=3 | `max` — **flagship only** (Opus 5 / Opus 4.8 / Fable 5.1 / Sol / Astra). On a mid-tier model (Sonnet 5 / Terra) stay **`xhigh`** |
 
 Haiku 4.5 selected → leave the effort field blank.
 
@@ -385,11 +398,22 @@ scoring is **exactly** Step 2; compute once, read this table.
 
 ### Codex hard gates
 
-| Condition | Result |
-|---|---|
-| Sub-second latency / high-volume classification | **Luna**, effort `low` |
-| **Offensive security / biology-adjacent R&D** (same definitions as Step 1) | **"unverified — use Claude"**, no model. (Codex's safety-classifier/fallback behaviour here was not researched — left blank rather than guessed.) |
-| Very large context | No threshold — per-model context windows unverified. Normal mapping by C. |
+| Condition | Kind | Result |
+|---|---|---|
+| Sub-second latency / high-volume classification | Deciding | **Luna**, effort `low` |
+| **Offensive security** (exploit/PoC generation, penetration testing, binary vuln scanning — same definitions as Step 1) | Deciding | **"use Claude"** — standard Codex/ChatGPT access **hard-stops** these tasks (a cyber safety check ends the run, it does not pause for approval). **Exception:** if the user states **Daybreak Blue** access → **Astra · effort `xhigh`** floor (mirrors the Claude arm's Mythos 5.1 / Glasswing pattern). |
+| **Biology-adjacent R&D** (same definitions as Step 1) | Deciding | **"unverified — use Claude"**, no model. Re-checked 8 Sep 2026: GPT-6 Astra's system card is cyber-only, no bio threshold — Codex behaviour here is still unverified, not guessed. |
+| **1000+ files / whole-codebase scale** (Codex analogue of the Claude frontier gate) | Deciding | **Astra** — built for "hardest end-to-end work", only Codex model with a verified ≥1M window (1.05M). Effort per `D`; `max` allowed (flagship). Wins over the D=3 mapping below, including path (a) — at 1000+ scale you get Astra, not `Sol Ultra` (Ultra is Sol-only). 100–999 files does **not** gate. |
+| **≥ ~1M-token corpus / "load the whole repo at once"** on the Codex side | Deciding | **Astra** (only verified large window). Effort per `D` (no +1 notch on Astra). Mind the **2× price** surcharge above 272k input tokens. |
+| Otherwise: very large but sub-1M context | — | No hard threshold — normal mapping by `C`. |
+
+> **Defensive** security work never triggers the offensive gate on either arm —
+> "audit this code for auth-bypass bugs (no exploits)", "find open ports", "review
+> the security-group rules" go to normal scoring. Astra performs defensive
+> vulnerability *discovery* by default (~67% task completion); only exploit / PoC
+> *generation* is refused without Daybreak. Non-trusted users may also see
+> occasional pauses on unrelated work while Astra's misalignment monitor runs —
+> worth a mention if the user picks Astra. Rationale: `reference.md` §10.1.
 
 ### Codex mapping (R/D/W/C → Model)
 
@@ -399,7 +423,7 @@ scoring is **exactly** Step 2; compute once, read this table.
 | Otherwise `max(D,C)≤1` | Terra |
 | `max(D,C)=2` | Terra |
 | `max(D,C)=3`, `D<3` (C triggered it) | Terra |
-| `max(D,C)=3`, `D=3` | Check in order: **(a) 3+ already-independent targets** scanned/processed side by side (40 separate services audited at once), each unaware of the others → **Sol Ultra**. **(b) Rule 2 territory** (agentic multi-step structured work / math-proof / tool-less deep reasoning) → **Sol**. **(c) otherwise** (D=3 analytical / research / review — contract-conflict hunt, regression modelling, single-artefact vuln review) → **Terra** — quota default, mirrors the Claude arm's Rule 3; Terra's LiveBench reasoning (90.6) / math (94.9) ≈ Sol. Escalate to Sol · `xhigh` if the result is insufficient or the work is critical. |
+| `max(D,C)=3`, `D=3` | Check in order: **(a) 3+ already-independent targets** scanned/processed side by side (40 separate services audited at once), each unaware of the others → **Sol Ultra**. **(b) Rule 2 territory** (agentic multi-step structured work / math-proof / tool-less deep reasoning) → **Sol**. **(c) otherwise** (D=3 analytical / research / review — contract-conflict hunt, regression modelling, single-artefact vuln review) → **Terra** — quota default, mirrors the Claude arm's Rule 3; Terra's LiveBench reasoning (90.6) / math (94.9) ≈ Sol. Escalate to Sol · `xhigh` if the result is insufficient or the work is critical; **Astra** is the ceiling above Sol, but only for genuinely long-session complex work where the user has Astra access — not a reflex. |
 
 > **(a) vs "split one codebase into modules/services".** Splitting a monolith is
 > plain **Sol** (path b — a single coherent boundary-design decision; the pieces
@@ -407,20 +431,24 @@ scoring is **exactly** Step 2; compute once, read this table.
 > f1 decoy). "Independent" describing the end state ≠ parallelisable work.
 
 - **Effort ← D — Step 3's table:** `0→low · 1→medium · 2→high · 3→xhigh`;
-  `D=3 ∧ R=3 → max` **only on Sol** (flagship). On **Terra** at `D=3 ∧ R=3`, stay
-  `xhigh` — same reasoning as the Claude arm (Step 3, "Why `max` is flagship-only").
-  OpenAI's own guidance: `medium` = coding default, `low` =
-  quick/well-scoped/latency-sensitive only. `Terra · low` is a **D=0** answer
-  only (rename, tone-only rewrite, fully-specified schema change). Real D=1 dev
-  work ("add email validation", "add cursor-based pagination") is `Terra · medium`.
-- **+1 notch for agentic multi-step coding.** When the task is **writing or
-  restructuring code across multiple dependent steps** — a multi-file feature, a
-  refactor, a migration, implementing an architecture, a debug-and-fix that spans
-  the codebase — bump the Codex effort **one rung above the table** (`low→medium`,
-  `medium→high`, `high→xhigh`, `xhigh→max`; `max` stays). This is the one axis
-  where LiveBench puts the GPT-5.6 line behind Claude (agentic coding: Sol 56.2 <
-  Sonnet 5 59.4 < Opus 5 65.2 — `reference.md` §2.1). **The Claude effort is not
-  touched** — it stays on the table.
+  `D=3 ∧ R=3 → max` **only on a flagship** (Sol / Astra). On **Terra** at
+  `D=3 ∧ R=3`, stay `xhigh` — same reasoning as the Claude arm (Step 3, "Why
+  `max` is flagship-only"). OpenAI's own guidance: `medium` = coding default,
+  `low` = quick/well-scoped/latency-sensitive only. `Terra · low` is a **D=0**
+  answer only (rename, tone-only rewrite, fully-specified schema change). Real
+  D=1 dev work ("add email validation", "add cursor-based pagination") is
+  `Terra · medium`.
+- **+1 notch for agentic multi-step coding — Terra/Sol only.** When the task is
+  **writing or restructuring code across multiple dependent steps** — a
+  multi-file feature, a refactor, a migration, implementing an architecture, a
+  debug-and-fix that spans the codebase — bump the Codex effort **one rung above
+  the table** (`low→medium`, `medium→high`, `high→xhigh`, `xhigh→max`; `max`
+  stays). This is the one axis where LiveBench puts the GPT-5.6 line behind Claude
+  (agentic coding: Sol 56.2 < Sonnet 5 59.4 < Opus 5 65.2 — `reference.md` §2.1).
+  **The Claude effort is not touched** — it stays on the table. **Not applied
+  when the model is Astra** — its agentic-coding scores match Opus 5 (DeepSWE
+  74.1 ≈ Opus 5 73.7; Coding Agent Index 67 = Opus 5), so the gap is gone at that
+  tier.
   - **Does NOT apply to:** code *review* / vulnerability *analysis* / reading
     code to answer ("review this module for vulns" — analysis, not building);
     non-code design; mechanical repetition across files (that's width).
@@ -428,8 +456,9 @@ scoring is **exactly** Step 2; compute once, read this table.
 - **Don't round D up.** If you're always landing on `Sol · xhigh` / `Terra ·
   high`, that's the D=1→D=2 / D=0→D=1 bug — round **down**, not up.
 - **R floor:** `R=3` → Luna never selected, floor Terra. Adds the human-review note.
-- `max` is a real Codex setting on every GPT-5.6 tier (re-verified 3 Sep 2026),
-  but the router only *emits* it on **Sol** — see the effort note above.
+- `max` is a real Codex setting on every GPT-5.6 tier and on Astra (re-verified
+  8 Sep 2026), but the router only *emits* it on a flagship (**Sol / Astra**) —
+  see the effort note above.
 
 > "What Sol Ultra actually is", `mode: pro` (Responses-API-only, on-ask), and the
 > Codex-side notes: `reference.md` §10.6.
@@ -459,9 +488,11 @@ model.** Two forms — the first word says which:
   ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
   ```
 
-**No speed line** when the Codex line is "unverified — use Claude", or on a web
-surface. Ordering: `opusplan` warning directly under the Claude line; speed line
-just **above** the `R=3` human-review note.
+**No speed line** when the Codex line names no runnable model ("unverified — use
+Claude", or the offensive-gate "use Claude — standard access hard-stops…"), or on
+a web surface. It **does** appear when the offensive gate resolves to
+`Astra · xhigh` via stated Daybreak access. Ordering: `opusplan` warning directly
+under the Claude line; speed line just **above** the `R=3` human-review note.
 
 ### Human-review note on Codex
 
@@ -489,11 +520,12 @@ Claude: Haiku 4.5
 Codex: Luna · effort: low
 ```
 
-Offensive-security / biology-adjacent → Codex recommends no model:
+Offensive-security → Codex declines (standard access hard-stops; Daybreak Blue
+access → `Astra · effort: xhigh`). Biology-adjacent → `unverified — use Claude`:
 
 ```
 Claude: Opus 4.8 · effort: ultracode
-Codex: unverified — use Claude
+Codex: use Claude — standard access hard-stops offensive-cyber work (with Daybreak Blue access: Astra · effort: xhigh)
 ```
 
 **The only three things auto-added to output** (below the two lines, each on its
@@ -549,8 +581,12 @@ carries the stakes. Escalate to Opus 5 / Sol manually if that's not enough.)
 *"Run a penetration test against this 180-service environment, build auth-bypass chains"*  (offensive gate; W=3 → ultracode)
 ```
 Claude: Opus 4.8 · effort: ultracode
-Codex: unverified — use Claude
+Codex: use Claude — standard access hard-stops offensive-cyber work (with Daybreak Blue access: Astra · effort: xhigh)
 ```
+> With **Daybreak Blue** access stated, the Codex line becomes
+> `Codex: Astra · effort: xhigh` (W=3 → still no `ultracode` on the Codex side —
+> that's a Claude Code setting; Astra's own ceiling is `max`).
+>
 > But *"audit these 180 services' code for auth-bypass vulnerabilities (no
 > exploits)"* is **defensive** — no gate, normal scoring: D=3 (adversarial),
 > W=3 + independent, R=1 → `Claude: Sonnet 5 · effort: ultracode` /
@@ -558,6 +594,18 @@ Codex: unverified — use Claude
 > targets → Sol Ultra; audit = analysis, no agentic-coding +1). Shrink to **one**
 > service and it's a sequential D=3 review, outside Rule 2 → `Sonnet 5 · xhigh` /
 > `Terra · xhigh` (Codex path (c)).
+
+*"Break this 6000-file legacy Java monolith into independent services"*  (frontier gate both arms; "services" → R=3; D=3∧R=3 → max)
+```
+Claude: Fable 5.1 · effort: max
+Codex: Astra · effort: max
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.
+```
+(1000+ files fires the frontier gate on **both** arms now — Claude → Fable 5.1,
+Codex → Astra, the only Codex model with a verified ≥1M window. "Split into
+services" is a shared-boundary R=3; `ultracode` loses to `max` on the
+`D=3 ∧ R=3` conflict.)
 
 *"Redesign the auth architecture of 200 prod services from scratch"*  (opusplan)
 ```
@@ -583,7 +631,8 @@ Do not apply without human review.
 `reference.md`: **§10** routing rubric edge-cases & rationale (the material moved
 out of this file) · **§8** example library (score by analogy) · **§2.1**
 LiveBench / BenchAlign / AA Index · **§0.1** Fable 5.1 / Mythos 5.1 · **§9.7**
-Codex Fast Mode.
+Codex Fast Mode · **§9.8** GPT-6 Astra (specs, "Critical" cyber + Daybreak,
+benchmarks, when the router picks it).
 
 **The router never selects a model from a benchmark number.** Leaderboards
 confirm the *direction* of Rules 2/3; scoring runs on R/D/W/C.

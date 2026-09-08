@@ -9,8 +9,8 @@
 
 Bir promptu verdiğinde **hangi ekosistemle** (Claude Code veya Codex/ChatGPT
 Plus), hangi modelle (Haiku 4.5 / Sonnet 5 / **Opus 5** / Opus 4.8 / Fable 5.1 /
-Mythos 5.1 / Luna / Terra / Sol / Sol Ultra) ve hangi efor seviyesiyle çalıştırman
-gerektiğini söyleyen router.
+Mythos 5.1 / Luna / Terra / Sol / Sol Ultra / **Astra**) ve hangi efor
+seviyesiyle çalıştırman gerektiğini söyleyen router.
 
 **Kalibrasyon: iki ayrı abonelik kotası (Pro/Max + ChatGPT Plus).** Korunan
 kaynak dolar değil — Claude'un 5 saatlik penceresi **ve** ChatGPT Plus'ın
@@ -48,18 +48,21 @@ için **hiç fallback yok** — direkt reddediyor. Bu yüzden router Fable 5.1
 öneriyor, Opus 5 değil. Life Sciences Verification Program araştırmacısı →
 Mythos 5.1.
 
-### Codex/ChatGPT kadrosu (GPT-5.6 ailesi, 9 Temmuz 2026)
+### Codex/ChatGPT kadrosu (GPT-5.6 ailesi + GPT-6 Astra, 8 Eylül 2026)
 
 | Model | Rol | Claude dengi (kaba) |
 |---|---|---|
-| Luna | Hız/hacim, en ucuz ($0.20/$1.20 MTok) | Haiku 4.5 |
+| Luna | Hız/hacim, en ucuz ($0.20/$1.20 MTok). Codex CLI varsayılanı | Haiku 4.5 |
 | Terra | Günlük iş, dengeli ($2/$12) — varsayılan | Sonnet 5 |
-| **Sol** | Amiral gemisi — kod/bilim/güvenlik ($5/$30) | Opus 5 |
+| **Sol** | GPT-5.6 amiral gemisi — kod/bilim/güvenlik ($5/$30); D=3 seçimi | Opus 5 |
 | **Sol Ultra** | Sol'da açılan Codex ürün modu (Plus+): ~4 paralel işbirlikçi ajan. Efor değeri değil | Net dengi yok — `ultracode`'dan daha güçlü |
+| **Astra** | GPT-6 amiral gemisi (`gpt-6-astra`, 3 Eyl 2026, $10/$50). Yeni üst katman — **yalnızca kapıyla seçilir**: saldırı-amaçlı siber *Daybreak erişimiyle*, 1000+ dosya, ≥1M-token bağlam. İndekslerde ≈ Opus 5 / Sol, Fable 5.1'in gerisinde; yalnızca bilgisayar kullanımında açık ara önde. Codex CLI v0.153.0+ | Opus 5 / Fable 5.1 (frontier) |
 
-Siber güvenlik ve biyoloji-bitişik iş **her zaman Claude'a** yönlendirilir —
-Codex tarafında bu kategoriler için doğrulanmış bir güvenlik-fallback zinciri
-yok (araştırılmadı, uydurulmadı).
+**Biyoloji-bitişik** iş hâlâ **Claude'a** yönlendirilir (`unverified — use Claude`)
+— Astra'nın kartı yalnızca siber. **Saldırı-amaçlı siber güvenlikte** standart
+Codex erişimi görevi hard-stop eder → router `use Claude` der; **Daybreak Blue**
+erişimi belirtilirse `Astra · xhigh` (Claude'daki Mythos 5.1 / Glasswing kalıbının
+aynası). Savunma amaçlı iş kapı değil — normal skorlamaya girer.
 
 ---
 
@@ -187,10 +190,10 @@ içerir ama içine gömülü bir belirsizlik taşır (bkz. `reference.md` §8,
 
 **Adım 1 — Sert kapılar.**
 - Yüksek hacim/gecikme → Haiku, dur.
-- **Saldırı amaçlı** siber güvenlik (exploit, sızma testi, binary tarama) → **Opus 4.8**, efor tabanı `xhigh` (Glasswing erişimi varsa Mythos 5.1). Savunma amaçlı denetim kapı **değil** — Fable 5.1 kendisi yapar.
-- Biyoloji-bitişik Ar-Ge → **Fable 5.1** (Opus 5'te fallback yok, direkt reddeder). Life Sciences Verification Program → Mythos 5.1.
-- Bağlam >200k → Haiku elenir.
-- Frontier ölçek (binlerce dosya) → Fable 5.1.
+- **Saldırı amaçlı** siber güvenlik (exploit, sızma testi, binary tarama) → Claude: **Opus 4.8**, efor tabanı `xhigh` (Glasswing erişimi varsa Mythos 5.1). Codex: standart erişim hard-stop eder → **`use Claude`**; Daybreak Blue erişimi belirtilirse **`Astra · xhigh`**. Savunma amaçlı denetim kapı **değil**.
+- Biyoloji-bitişik Ar-Ge → **Fable 5.1** (Opus 5'te fallback yok, direkt reddeder) / Codex `unverified — use Claude` (Astra'nın kartı yalnızca siber). Life Sciences Verification Program → Mythos 5.1.
+- Bağlam >200k → Claude'da Haiku elenir.
+- Frontier ölçek (1000+ dosya) → Claude: Fable 5.1 / **Codex: Astra** (iteration-15 — Codex kolunun artık kendi frontier kapısı var; doğrulanmış tek ≥1M pencere). ≥~1M-token külliyat "aynı anda yükle" → Codex: Astra.
 
 **Adım 2 — Skorlama.** R, D, W, C — her biri 0–3. Her eksenin artık teşhis
 sorusu ve alan-bazlı çapası var (kodlama/yazı/araştırma/veri için "derinlik"
@@ -210,7 +213,7 @@ tetiklemez, Sonnet 5'te kalır:
 
 **Efor ← D — iki arm da aynı tablodan başlar** (iteration-12): `0→low · 1→medium ·
 2→high · 3→xhigh`. `D=3∧R=3→max` **yalnızca amiral gemisinde** (Opus 5 / Opus 4.8
-/ Fable 5.1 / Sol) — orta katman modelde (Sonnet 5 / Terra) `xhigh`'da kapanır,
+/ Fable 5.1 / Sol / Astra) — orta katman modelde (Sonnet 5 / Terra) `xhigh`'da kapanır,
 R=3 onay notu riski taşır (iteration-14: `max` ile orta katman modeli eşlemek
 tutarsız, aşırı-düşünme riski). Router **`Sonnet 5 · max` / `Terra · max` hiç
 üretmez.** Sonra her arm kendi düzenleyicisini uygular:
@@ -225,14 +228,18 @@ tutarsız, aşırı-düşünme riski). Router **`Sonnet 5 · max` / `Terra · ma
   kod-dışı tasarım, mekanik tekrar hariç. Gerekçe: LiveBench §2.1 GPT-5.6 hattını
   **yalnızca** agentic kodlamada Claude'un gerisinde gösteriyor (Sol 56.2 <
   Sonnet 5 59.4 < Opus 5 65.2).
+  - **Agentic-kodlama +1 kademesi yalnızca Terra/Sol'da — Astra'da ASLA** (Astra
+    kodlamada Opus 5 ile eşit: DeepSWE 74.1 ≈ Opus 5 73.7).
   - **Codex model seçimi, `max(D,C)=3 ∧ D=3` — sırayla:** (a) **3+ zaten-bağımsız
     hedef** yan yana taranıyorsa (40 ayrı servis, her biri habersiz) → **Sol
     Ultra** · (b) **Kural 2 bölgesi** (agentic kod / matematik / araçsız) →
     **Sol** · (c) **yoksa** (D=3 analitik/araştırma/inceleme) → **Terra**
     (iteration-14: Claude'daki Rule 3'ün aynası — Terra reasoning 90.6 ≈ Sol;
-    eski hâlinde her D=3 Sol'a gidiyordu; kritikse Sol'a yükselt). Bir kod
-    tabanını modül/servise bölmek (b) → düz Sol ("bağımsız servisler" son durum,
-    paralel iş değil).
+    eski hâlinde her D=3 Sol'a gidiyordu; kritikse Sol'a, gerçekten uzun-oturum/
+    karmaşık ve erişim varsa Astra'ya yükselt). Bir kod tabanını modül/servise
+    bölmek (b) → düz Sol ("bağımsız servisler" son durum, paralel iş değil).
+    **1000+ dosya / ≥1M külliyat → Codex frontier kapısı Astra'yı sabitler
+    (iteration-15), bu sıralamayı ezer.**
 
 **Sonuç:** Opus 5 bu router'da hep `D=3` ile çıkar (`xhigh`/`max`) — hiçbir
 zaman `low`/`medium` ile önerilmez, çünkü D=3 olmadan zaten seçilmiyor.
@@ -271,8 +278,8 @@ makine-okunur, tekrar koşturulabilir kopyası `evals/routing/evals.json`
 — `SKILL.md` her değiştiğinde elle iz sürmek yerine oradaki `grade_routing.py`
 ile regresyon kontrolü yap (bkz. `evals/README.md`). **Taze/soğuk
 ajanlarla** (README'nin kendi bağlamını bilmeyen) koşturmak önemli — kural her
-değiştiğinde 4 paralel cold agent 17 canlı eval'i yeniden koşturuyor.
-**Son koşu: iteration-14 — 18/18.** Tüm iterasyonların gerekçesi
+değiştiğinde paralel cold agent'lar canlı eval'leri yeniden koşturuyor.
+**Son koşu: iteration-15 — 20/20.** Tüm iterasyonların gerekçesi
 `evals/README.md`'de.
 
 > **1–2 Eyl 2026 — Fable 5.1 / Mythos 5.1 güncellemesi + taze-ajan eval koşusu:**
@@ -348,6 +355,24 @@ değiştiğinde 4 paralel cold agent 17 canlı eval'i yeniden koşturuyor.
 > tasarım, mekanik çok-dosya tekrarı hariç. Değişen tek golden cevap: **d2**
 > Terra·high→xhigh. Cold re-run — **17/17**.
 >
+> **iteration-15 (8 Eyl 2026 — GPT-6 Astra):** OpenAI 3 Eyl'de `gpt-6-astra`'yı
+> çıkardı (Sol'un üstünde yeni amiral gemisi; Sol/Terra/Luna kalıyor). Araştırma:
+> zeka/kodlama indekslerinde ≈ Opus 5 / Sol, Fable 5.1'in gerisinde; yalnızca
+> bilgisayar kullanımında (OSWorld 72.6 vs Sol 65.7) açık ara önde; ~2.5× Sol
+> fiyatı ama ~⅓ token. **"Critical" siber seviye** — standart erişim exploit/PoC
+> üretimini reddeder (hard-stop), savunma zafiyet keşfini yapar; **Daybreak
+> Blue** = yükseltilmiş erişim. **Muhafazakâr entegrasyon** (kullanıcı seçimi):
+> Astra yalnızca kapıyla seçilir — (1) saldırı-amaçlı siber *Daybreak erişimiyle*
+> → `Astra · xhigh` (eskiden blanket "unverified"), (2) yeni **Codex frontier
+> kapısı** 1000+ dosya → Astra (Claude Fable 5.1 kapısının aynası), (3)
+> ≥~1M-token bağlam → Astra, (4) D=3 yollarında Sol üstü tavan. `max` amiral-
+> gemisi listesine Astra eklendi. **Agentic-kodlama +1 kademesi Astra'da
+> uygulanmaz** (kodlamada Opus 5 ile eşit). Biyoloji → hâlâ "unverified".
+> Değişen golden: `d3` ("unverified" → "use Claude"), `f1` (Codex `Sol·max` →
+> `Astra·max`). Yeni eval: `a1` (Daybreak → `Astra·xhigh`), `a2` (Codex
+> frontier-bağlam → `Astra`). Canlı regresyon seti 18 → **20**. Cold re-run —
+> **20/20**.
+>
 > **iteration-14:** gerçek bir çıktı (`Claude: Sonnet 5 · max` / `Codex: Sol ·
 > max`, D=3∧R=3 inceleme işi) iki tutarsızlık gösterdi. **(1)** Codex kolunda
 > Claude'un Rule 3'ünün karşılığı yoktu — her D=3 Sol'a gidiyordu. Düzeltildi:
@@ -367,7 +392,10 @@ değiştiğinde 4 paralel cold agent 17 canlı eval'i yeniden koşturuyor.
 | 3 | Repodaki auth akışını OAuth2'ye taşı | **Claude: Sonnet 5 · high** · **Codex: Terra · xhigh** | Skorlama (D=2). Migration = agentic çok-adımlı kodlama → Codex +1 kademe (it-13). İki arm'ın efor sütunundaki tek fark. |
 | 4 | Prod'da ara sıra düşen race condition'ı bul | **Opus 5 · max** · **Codex: Sol · max** | D=3∧R=3, Kural 2 (agentic kod) → amiral gemisi → `max` geçerli |
 | m1 | Bu prod migration script'leri bu gece incelemesiz çalışacak — sessiz veri kaybı var mı bak | **Claude: Sonnet 5 · xhigh** · **Codex: Terra · xhigh** + onay notu | D=3∧R=3 ama **Kural 2 dışı** (inceleme) → iki tarafta orta katman; `max` amiral-gemisi-özel → `xhigh`'da kapanır (it-14) |
-| 5 | Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur | **Opus 4.8** · **ultracode** | Saldırı amaçlı siber güvenlik kapısı |
+| 5 | Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur | **Claude: Opus 4.8 · ultracode** · **Codex: `use Claude`** (standart erişim hard-stop) | Saldırı amaçlı siber güvenlik kapısı |
+| a1 | (Daybreak Blue erişimim var) 180 servislik ortama sızma testi yap | **Claude: Opus 4.8 · ultracode** · **Codex: Astra · xhigh** | iteration-15 — Daybreak istisnası; Mythos/Glasswing kalıbının Codex aynası |
+| a2 | Bu 1.2M-token repoyu tümüyle bağlama yükle, payment modülünün tüm call-site'larını haritala | **Claude: Sonnet 5 · medium** · **Codex: Astra · medium** | iteration-15 — Codex ≥1M bağlam kapısı → Astra; Claude'da C=3∧D=1 → Sonnet (id 13 analoğu) |
+| f1 | Bu 6000 dosyalık legacy Java monolitini bağımsız servislere böl | **Claude: Fable 5.1 · max** · **Codex: Astra · max** + onay notu | Frontier kapısı iki arm'da; "servislere böl" → R=3; D=3∧R=3 → max |
 | 5b | Bu 180 servisin kodunu auth bypass açığı için denetle (exploit yazma) | **Claude: Sonnet 5 · ultracode** · **Codex: Sol Ultra · xhigh** | Savunma denetimi — offensive kapı **tetiklenmez** (Fable 5.1 sonrası). Adversarial zafiyet avı = D=3, 180 birim bağımsız = W=3 + Sol Ultra; efor D=3 → xhigh |
 | 6 | Şu kodu düzelt | Model önerme, netleştir | Adım 0 (hedef somut değil) |
 | 6b | "Bir günde 1000 üretim olursa 500'ü aynı güne, 500'ü ertesi güne yansısın" | Model önerme, netleştir | Adım 0 (kural örnekle anlatılmış, genellenmemiş — canlı kullanıcı testi) |
@@ -454,6 +482,13 @@ Rapor Terra/Luna için **eski fiyat** veriyordu (30 Temmuz indirimini
 yansıtmıyordu) ve efor mekaniğini **tek boyutlu, yanlış** bir merdiven olarak
 tanımlıyordu (gerçekte `reasoning.effort` ve `reasoning.mode` birbirinden
 bağımsız iki eksen). Detay: `skill/reference.md` §9.
+
+**GPT-6 Astra (3 Eyl 2026)** — 8 Eyl 2026'da doğrulandı:
+`developers.openai.com/api/docs/models/gpt-6-astra` (slug, 1.05M bağlam, Nis 2026
+kesim, $10/$50, efor merdiveni `none` hariç, Codex CLI v0.153.0+),
+`deploymentsafety.openai.com/gpt-6-astra` (siber "Critical" seviye + Daybreak),
+Artificial Analysis + Codex Knowledge Base (benchmark yönü, entegrasyon). Detay:
+`skill/reference.md` §9.8.
 
 **En önemli metodolojik kural: eski model verisini yeni modele miras bırakma.**
 Opus 4.8'in Terminal-Bench/SWE-bench-Pro/HLE/USAMO sayıları **Opus 5'e ait

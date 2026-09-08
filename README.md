@@ -44,11 +44,12 @@ resource, not dollars.
 maps that to the *cheapest model that actually clears the bar*, on **both**
 ecosystems at once. When in doubt it rounds **down**.
 
-It's a ~550-line decision procedure, not a vibe. Every rule is sourced from
+It's a ~640-line decision procedure, not a vibe. Every rule is sourced from
 `platform.claude.com` / `openai.com` docs, every uncertain claim is labelled, and
-there's a deterministic regression eval suite (**18/18**, cold-agent re-run —
-iteration-14; the Codex arm now mirrors the Claude quota carve-outs at `D=3`, and
-`max` effort is flagship-only).
+there's a deterministic regression eval suite (**20/20**, cold-agent re-run —
+iteration-15: adds **GPT-6 Astra** to the Codex arm as a narrow gated pick — the
+"Critical"-cyber offensive gate with Daybreak access, a new 1000+-file / ≥1M-token
+Codex frontier gate, and the flagship `max` list — without making it the default).
 
 ---
 
@@ -121,9 +122,9 @@ claude.ai fallback) and read both lines.
 | Step | What happens |
 |---|---|
 | **0 · Quality gate** | Four mechanical checks (rule stated by example but not generalised? silent-wrong-result risk? concrete target? two plausible readings?). If any fires → **no model, ask a clarifying question.** |
-| **1 · Hard gates** | Sub-second / high-volume → **Haiku**. Offensive security (exploit, pentest, binary scanning) → **Opus 4.8 · xhigh**. Biology R&D → **Fable 5.1**. >200k context → drops Haiku. 1000+ files → **Fable 5.1**. |
+| **1 · Hard gates** | Sub-second / high-volume → **Haiku**. Offensive security (exploit, pentest, binary scanning) → **Opus 4.8 · xhigh** / Codex `use Claude` (or `Astra` w/ Daybreak). Biology R&D → **Fable 5.1** / Codex `unverified`. >200k context → drops Haiku. 1000+ files → **Fable 5.1** / Codex **Astra**. ≥1M-token Codex context → **Astra**. |
 | **2 · Score** | **R**isk, **D**epth, **W**idth, **C**ontext — each 0–3, each with a diagnostic question and a worked-example library. |
-| **3 · Map** | Model ← `max(D, C)` — **not** risk. At `D=3`: flagship (Opus 5 / Sol) only for Rule-2 work (agentic code / math / tool-less); analytical/research/review D=3 stays mid-tier (Sonnet 5 / Terra). Effort ← `D` (`0→low · 1→medium · 2→high · 3→xhigh`); `D=3∧R=3→max` **flagship-only** — mid-tier caps at `xhigh` and the review note carries the stakes. Claude modifiers: `ultracode` (`W=3 ∧ >30 min ∧ ¬(D=3∧R=3)`), `opusplan`. Codex modifier: **`+1` effort notch for agentic multi-step coding** (the one axis LiveBench puts the GPT-5.6 line behind Claude). |
+| **3 · Map** | Model ← `max(D, C)` — **not** risk. At `D=3`: flagship (Opus 5 / Sol) only for Rule-2 work (agentic code / math / tool-less); analytical/research/review D=3 stays mid-tier (Sonnet 5 / Terra). Effort ← `D` (`0→low · 1→medium · 2→high · 3→xhigh`); `D=3∧R=3→max` **flagship-only** (Opus 5 / Opus 4.8 / Fable 5.1 / Sol / Astra) — mid-tier caps at `xhigh` and the review note carries the stakes. Claude modifiers: `ultracode` (`W=3 ∧ >30 min ∧ ¬(D=3∧R=3)`), `opusplan`. Codex modifier: **`+1` effort notch for agentic multi-step coding** (the one axis LiveBench puts the GPT-5.6 line behind Claude — Terra/Sol only, never Astra). |
 | **4 · Quota guards** | `R=3` adds a human-review note (never changes the model). MCP-server bloat, auto-accept, alias drift warnings. |
 
 Key design choice: **risk raises human oversight, not model tier.** The old
@@ -145,18 +146,20 @@ second rule — convoluted, and it collapsed every prompt onto the same two mode
 | **Fable 5.1** | frontier scale, long-horizon autonomy, biology-adjacent R&D | $10 / $50 (cache reads ¼: $0.25) |
 | Mythos 5.1 | = Fable 5.1 with permissive safeguards, **Project Glasswing invite only** | — |
 
-**Codex / ChatGPT (GPT-5.6 family):**
+**Codex / ChatGPT (GPT-5.6 family + GPT-6 Astra):**
 
 | Model | Role | rough Claude analogue |
 |---|---|---|
-| Luna | speed / volume, cheapest | Haiku 4.5 |
+| Luna | speed / volume, cheapest. Codex CLI default | Haiku 4.5 |
 | Terra | balanced daily driver | Sonnet 5 |
-| **Sol** | flagship — code / science / security | Opus 5 |
+| **Sol** | GPT-5.6 flagship — code / science / security; the D=3 pick | Opus 5 |
 | **Sol Ultra** | a Codex *mode* on Sol (Plus+): ~4 collaborating agents in parallel | stronger than Claude's `ultracode` |
+| **Astra** | GPT-6 flagship (`gpt-6-astra`). New top tier — **gated pick only**: offensive-sec *with Daybreak access*, 1000+ files, ≥1M-token context. ≈ Opus 5 / Sol on the indices, behind Fable 5.1 | Opus 5 / Fable 5.1 (frontier) |
 
-Offensive-security and biology-R&D prompts always route to Claude — the Codex
-side has no verified safety-fallback chain, so it honestly says
-`unverified — use Claude` instead of guessing.
+Biology-R&D prompts still route to Claude (`unverified — use Claude`) — Astra's
+system card is cyber-only. For **offensive security**, standard Codex access
+hard-stops the task, so the router says `use Claude`; with **Daybreak Blue**
+access it routes to `Astra · xhigh` (mirrors Claude's Mythos 5.1 / Glasswing).
 
 ---
 
@@ -168,8 +171,8 @@ side has no verified safety-fallback chain, so it honestly says
 | Add dark mode to this React component | `Sonnet 5 · medium` | `Terra · medium` |
 | Add cursor-based pagination to this API | `Sonnet 5 · medium` | `Terra · medium` |
 | Audit this genomics pipeline's variant-calling logic | `Fable 5.1 · high` | `unverified — use Claude` |
-| Pentest this 180-service environment, build auth-bypass chains | `Opus 4.8 · ultracode` | `unverified — use Claude` |
-| Split this 6000-file legacy monolith into services | `Fable 5.1 · max` + review note | `Sol · max` + review note |
+| Pentest this 180-service environment, build auth-bypass chains | `Opus 4.8 · ultracode` | `use Claude` (standard) · `Astra · xhigh` (Daybreak) |
+| Split this 6000-file legacy monolith into services | `Fable 5.1 · max` + review note | `Astra · max` + review note |
 | Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5 · low` + review note | `Terra · low` + review note |
 | "Fix this code" | *(no model — asks: which code? broken how? done = ?)* | |
 
@@ -182,9 +185,10 @@ by `evals/routing/grade_routing.py` (pure regex, no LLM). The protocol: spin up
 **cold agents** that read `skill/SKILL.md` fresh and route each prompt; grade the
 raw output.
 
-Latest run (**iteration-14**, cold agents against the current `SKILL.md`):
-**18/18 auto-graded pass**. Run history and the reasoning behind each rule change
-is in [`evals/README.md`](evals/README.md).
+Latest run (**iteration-15**, cold agents against the current `SKILL.md`):
+**20/20 auto-graded pass** (adds `a1` Daybreak→Astra, `a2` Codex frontier-context
+→Astra; `d3`/`f1` updated for the GPT-6 Astra gates). Run history and the
+reasoning behind each rule change is in [`evals/README.md`](evals/README.md).
 
 ---
 

@@ -45,21 +45,31 @@ kendini sorgulama. Çoğu prompt bu durumdadır.
 | **Fable 5.1** | Frontier ölçek + **biyoloji-bitişik Ar-Ge**. Fable 5'in yerini aldı (1 Eyl 2026); aynı $10/$50, cache okuması ¼'ü |
 | Mythos 5.1 | Fable 5.1 ile aynı model, izinli safeguard'lar — **yalnızca Project Glasswing daveti** (doğrulanmış siber-savunmacı / yaşam bilimci). Kullanıcı bu erişimi belirtmedikçe önerme |
 
-**Codex/ChatGPT model kadrosu (GPT-5.6, 9 Temmuz 2026):**
+**Codex/ChatGPT model kadrosu (GPT-5.6 + GPT-6 Astra, 8 Eylül 2026):**
 
 | Model | Rol | Claude dengi (kaba) |
 |---|---|---|
-| Luna | Hız/hacim, en ucuz | Haiku 4.5 |
+| Luna | Hız/hacim, en ucuz. Codex CLI varsayılanı | Haiku 4.5 |
 | Terra | Günlük iş, dengeli — varsayılan | Sonnet 5 |
-| **Sol** | Amiral gemisi | Opus 5 |
+| **Sol** | GPT-5.6 amiral gemisi — **D=3 varsayılanı** | Opus 5 |
 | **Sol Ultra** | Sol'da açılan ürün modu (Plus+): ~4 paralel işbirlikçi ajan. Efor değeri değil (`effort:"ultra"` → HTTP 400) | Net dengi yok |
+| **Astra** | GPT-6 amiral gemisi (`gpt-6-astra`, 3 Eyl 2026). Yeni üst katman. **Yalnızca dar seçim** — aşağıdaki Codex kapıları. ~2.5× Sol fiyatı; Claude amiral gemilerinin net önünde değil (kodlama/zeka indekslerinde ≈ Opus 5 / Sol, Fable 5.1'in gerisinde; yalnızca bilgisayar kullanımında açık ara önde). Codex CLI v0.153.0+ | Opus 5 / Fable 5.1 (frontier) |
 
 **Codex Kolu — özet (tam mantık `SKILL.md`'de, bu bir kısaltılmış özet):**
-1. **Saldırı amaçlı** siber güvenlik / biyoloji-bitişik Ar-Ge → Codex satırı
-   **"unverified — use Claude"** yazar, model önermez (Codex'in eşdeğer
-   güvenlik-fallback zinciri doğrulanmadı). Savunma amaçlı güvenlik işi
-   (kod/altyapı denetimi, açık port bulma) kapı **değil** — normal skorlamadan geçer.
-2. Diğer her promptta Codex kendi R/D/W/C eşlemesinden bağımsız bir cevap
+1. **Saldırı amaçlı siber güvenlik:** GPT-6 Astra "Critical" siber seviyede —
+   **standart erişim bu görevi HARD-STOP eder** (exploit/PoC üretimi reddedilir,
+   onay için duraklamaz). Codex satırı **"use Claude"** der. **İstisna:** kullanıcı
+   **Daybreak Blue** erişimini belirtirse → **Astra · effort `xhigh`** tabanı
+   (Claude tarafındaki Mythos 5.1 / Glasswing kalıbının aynası). **Biyoloji-bitişik
+   Ar-Ge** → hâlâ **"unverified — use Claude"** (Astra'nın kartı yalnızca siber,
+   8 Eyl 2026 yeniden kontrol edildi). **Savunma** güvenlik işi (kod/altyapı
+   denetimi, açık port bulma) kapı **değil** — normal skorlamadan geçer (Astra da
+   savunma zafiyet keşfini varsayılan yapar).
+2. **Codex frontier kapısı (iteration-15):** **1000+ dosya / tüm kod tabanı**
+   ölçeği veya **≥~1M-token külliyat "aynı anda yükle"** → **Astra** (doğrulanmış
+   tek ≥1M pencere, 1.05M; 272k üstünde 2× fiyat). Belirleyici — aşağıdaki D=3
+   eşlemesini, path (a) dahil, ezer.
+3. Diğer her promptta Codex kendi R/D/W/C eşlemesinden bağımsız bir cevap
    üretir: `D=0∧W=0∧C≤1∧R≤1→Luna` · `max(D,C)≤2→Terra` · `max(D,C)=3∧D<3→Terra`.
    **`max(D,C)=3 ∧ D=3` — sırayla:** (a) **3+ zaten-bağımsız hedef** yan yana
    taranıyorsa (40 ayrı servisi aynı anda denetle, her biri habersiz) →
@@ -67,20 +77,24 @@ kendini sorgulama. Çoğu prompt bu durumdadır.
    iş / matematik / araçsız akıl yürütme) → **Sol** · (c) **yoksa** (D=3 analitik/
    araştırma/inceleme — çelişen madde avı, regresyon, tek-artefakt zafiyet
    incelemesi) → **Terra** (Claude'daki Rule 3'ün aynası; Terra reasoning 90.6 ≈
-   Sol; kritikse Sol'a yükselt). **Bir kod tabanını modül/servise bölmek (b) →
-   düz Sol** (tek tutarlı sınır kararı; "bağımsız servisler" son durum, paralel
-   iş değil). `R=3` ise Luna hiç seçilmez, taban Terra.
-3. Efor ← D: **`0→low·1→medium·2→high·3→xhigh`**; `D=3∧R=3→max` **yalnızca Sol'da**
-   (amiral gemisi). **Terra'da D=3∧R=3 → `xhigh`'da kalır** — orta katman modeli
-   `max`'a zorlamak aşırı-düşünme riski, güvenlik katmaz; R=3 notu riski taşır.
-   Claude tarafı da aynı: `Sonnet 5 · max` çıkmaz. (3 Eyl 2026: OpenAI ladder
-   `none,low,medium,high,xhigh,max`; `minimal` yok; `medium` = kodlama
-   varsayılanı, `low` = hızlı/dar kapsam.) D=1 iş `Terra·low` DEĞİL
-   `Terra·medium`. **Agentic çok-adımlı kodlamada (çok-dosyalı özellik, refactor,
-   migration, mimari uygulama) Codex +1 efor kademesi** — Claude dokunulmaz; kod
-   incelemesi/analizi, kod-dışı tasarım, mekanik tekrar hariç. `mode: pro`
-   yalnızca Responses API'de, sorulursa bahset. `ultra` bir efor değeri değil,
-   ürün modudur (`effort: "ultra"` → HTTP 400) — Sol Ultra = Sol + ultra modu.
+   Sol; kritikse Sol'a, gerçekten uzun-oturum/karmaşık ve erişim varsa Astra'ya
+   yükselt). **Bir kod tabanını modül/servise bölmek (b) → düz Sol** (tek tutarlı
+   sınır kararı; "bağımsız servisler" son durum, paralel iş değil). `R=3` ise
+   Luna hiç seçilmez, taban Terra.
+4. Efor ← D: **`0→low·1→medium·2→high·3→xhigh`**; `D=3∧R=3→max` **yalnızca amiral
+   gemisinde** (Sol / Astra). **Terra'da D=3∧R=3 → `xhigh`'da kalır** — orta
+   katman modeli `max`'a zorlamak aşırı-düşünme riski, güvenlik katmaz; R=3 notu
+   riski taşır. Claude tarafı da aynı: `Sonnet 5 · max` çıkmaz. (OpenAI ladder
+   `none,low,medium,high,xhigh,max`; `minimal` yok; Astra `none`'ı da düşürür;
+   `medium` = kodlama varsayılanı, `low` = hızlı/dar kapsam.) D=1 iş `Terra·low`
+   DEĞİL `Terra·medium`. **Agentic çok-adımlı kodlamada (çok-dosyalı özellik,
+   refactor, migration, mimari uygulama) Codex +1 efor kademesi — yalnızca
+   Terra/Sol'da, Astra'da ASLA** (Astra kodlamada Opus 5 ile eşit, telafi
+   edilecek fark yok). Claude dokunulmaz; kod incelemesi/analizi, kod-dışı
+   tasarım, mekanik tekrar hariç. `mode: pro` yalnızca Responses API'de,
+   sorulursa bahset. `ultra` bir efor değeri değil, ürün modudur (`effort:
+   "ultra"` → HTTP 400) — Sol Ultra = Sol + ultra modu (Astra'da Ultra
+   doğrulanmadı).
 
 **Çıktı iki satır:** `Claude: <Model> · effort: <seviye>` ve
 `Codex: <Model> · effort: <seviye>` — aşağıdaki Çıktı formatı bölümü buna göre
@@ -110,9 +124,10 @@ Dört şeyi bil:
    - **Claude:** `ultracode` (W=3 ∧ >30dk), `opusplan` (yalnızca Claude Code —
      bu talimatta geçerli değil).
    - **Codex:** **agentic çok-adımlı kodlamada +1 efor kademesi** (`max`'ta
-     kapanır). Codex ladder'ı `none, low, medium, high, xhigh, max` — `minimal`
-     yok; `medium` = OpenAI'nin kodlama varsayılanı, `low` = yalnızca hızlı /
-     dar kapsam / gecikmeye duyarlı iş.
+     kapanır; **yalnızca Terra/Sol — Astra'da asla**). Codex ladder'ı `none, low,
+     medium, high, xhigh, max` — `minimal` yok (Astra `none`'ı da düşürür);
+     `medium` = OpenAI'nin kodlama varsayılanı, `low` = yalnızca hızlı / dar
+     kapsam / gecikmeye duyarlı iş.
 
 **Opus 5'te low/medium (genel bilgi, router çıktısını değiştirmez):** Anthropic
 bunu "eval tuttuğu her yerde normal maliyet kontrolü" olarak öneriyor. Router
@@ -243,8 +258,8 @@ Haiku'nun hız/hacim profiline bırakılacak kadar önemsiz değil.
 çıktıya insan onayı notu eklenir.
 
 **Efor ← D.** `0→low` · `1→medium` · `2→high` · `3→xhigh` · **`3 ∧ R=3 → max`
-yalnızca amiral gemisinde** (Opus 5 / Opus 4.8 / Fable 5.1 / Sol). Orta katman
-modelde (Sonnet 5 / Terra) `D=3 ∧ R=3 → xhigh`'da kapanır — model zaten "orta
+yalnızca amiral gemisinde** (Opus 5 / Opus 4.8 / Fable 5.1 / Sol / Astra). Orta
+katman modelde (Sonnet 5 / Terra) `D=3 ∧ R=3 → xhigh`'da kapanır — model zaten "orta
 zeka ihtiyacı" (D=3 ama Kural 2 dışı) diye seçildi; `max` ile eşlemek tutarsız
 ve aşırı-düşünme riski, güvenlik katmaz. R=3 insan-onayı notu riski taşır;
 gerçekten maksimum akıl yürütme gerekiyorsa amiral gemisine yükselt.
@@ -326,10 +341,11 @@ Codex: <Model> · effort: <seviye>
 
 Haiku 4.5 için efor yazma; Codex tarafında (Luna dahil) her model efor alır.
 
-Siber güvenlik/biyoloji-bitişik promptlarda:
+Saldırı amaçlı siber güvenlik: Codex standart erişimde reddeder; Daybreak Blue
+erişimi belirtilirse `Astra · effort: xhigh`. Biyoloji-bitişik: `unverified — use Claude`.
 ```
 Claude: <gerçek öneri>
-Codex: unverified — use Claude
+Codex: use Claude — standart erişim saldırı-amaçlı siber işi hard-stop eder (Daybreak Blue erişimiyle: Astra · effort: xhigh)
 ```
 
 **Tek istisna:** `R=3` ise insan onayı notu — **tek satır, iki tarafı da
@@ -372,9 +388,10 @@ yapılandırma → Codex +1 kademe → `xhigh`. Claude tabloda kalır.)
 *"Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur"*
 ```
 Claude: Opus 4.8 · effort: ultracode
-Codex: unverified — use Claude
+Codex: use Claude — standart erişim saldırı-amaçlı siber işi hard-stop eder (Daybreak Blue erişimiyle: Astra · effort: xhigh)
 ```
-(Ama *"bu 180 servisin kodunu auth bypass açığı için denetle"* savunma işidir →
+(Kullanıcı Daybreak Blue erişimini açıkça belirtirse Codex satırı
+`Codex: Astra · effort: xhigh` olur. Ama *"bu 180 servisin kodunu auth bypass açığı için denetle"* savunma işidir →
 kapı yok; adversarial zafiyet avı = D=3, 180 birim bağımsız = W=3 →
 `Claude: Sonnet 5 · effort: ultracode` / `Codex: Sol Ultra · effort: xhigh`
 [path a: 180 zaten-bağımsız hedef]. Tek servise indir → sıralı D=3 inceleme,
@@ -385,6 +402,16 @@ Kural 2 dışı → `Sonnet 5 · xhigh` / `Terra · xhigh` [path c].)
 Claude: Fable 5.1 · effort: high
 Codex: unverified — use Claude
 ```
+
+*"Bu 6000 dosyalık legacy Java monolitini bağımsız servislere böl"*  (frontier kapısı — iki arm)
+```
+Claude: Fable 5.1 · effort: max
+Codex: Astra · effort: max
+Do not apply without human review.
+```
+(1000+ dosya iki tarafta da frontier kapısını tetikler — Claude → Fable 5.1,
+Codex → Astra [doğrulanmış tek ≥1M pencere]. "Servislere böl" paylaşılan sınır →
+R=3; D=3∧R=3 çakışması → `max`.)
 
 *"Prod'da ara sıra düşen race condition'ı bul"*  (D=3, R=3, agentic kod / Kural 2 → amiral gemisi)
 ```
@@ -413,6 +440,6 @@ Do not apply without human review.
 
 ---
 
-*Senkron: `skill/SKILL.md` iteration-14 (4 Eyl 2026). Bilerek korunan farklar:
-Türkçe · kendi kendine yeterli (reference.md yok) · `opusplan` ve Fast Mode
-speed line yok (Claude.ai yüzeyi) · Codex Kolu kısaltılmış özet.*
+*Senkron: `skill/SKILL.md` iteration-15 (8 Eyl 2026 — GPT-6 Astra). Bilerek
+korunan farklar: Türkçe · kendi kendine yeterli (reference.md yok) · `opusplan`
+ve Fast Mode speed line yok (Claude.ai yüzeyi) · Codex Kolu kısaltılmış özet.*

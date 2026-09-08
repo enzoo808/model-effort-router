@@ -36,9 +36,9 @@ the same pass.
 
 ### Eval id conventions
 
-- `d1`–`d7`, `n1`–`n3`, `r1`, `r2`, `s1`, `s3`, `5b`, `f1`, `f2`, `m1` —
-  dual-format, auto-graded. This is the live regression set (18 as of
-  iteration-14).
+- `d1`–`d7`, `n1`–`n3`, `r1`, `r2`, `s1`, `s3`, `5b`, `f1`, `f2`, `m1`, `a1`,
+  `a2` — dual-format, auto-graded. This is the live regression set (20 as of
+  iteration-15).
 - `1`–`22`, `c1`–`c5`, `v1` — legacy single-ecosystem format, marked
   `format_outdated: true`, skipped by the grader. Backfilling them to
   dual-output is the remaining eval-debt.
@@ -63,8 +63,13 @@ in direct tension with the router's own philosophy. Run it rarely, only when the
 tool call is `Skill`/`Read` on model-secici (installed skill or the temp probe
 command).
 
-**Latest: `results/2026-09-03.json` — 19/20** (`description` unchanged since the
-initial release; run against the iteration-13 skill).
+**Latest: `results/2026-09-08.json` — 19/20** — re-run for iteration-15 because
+the `description` frontmatter changed (Codex roster list gained `GPT-6 Astra`).
+Natural-language triggers 9/9, near-miss rejection 10/10; the 1 miss is the same
+harness artifact as before (the literal `/model-secici …` line isn't expanded
+under `claude -p` print mode).
+
+**Prior: `results/2026-09-03.json` — 19/20** (run against the iteration-13 skill).
 - **Natural-language triggers: 9/9.** "hangi model / efor / bu prompt için ne
   kullanayım / opus mu sonnet mi" phrasings all pull in the skill.
 - **Near-miss rejection: 10/10.** Price, settings, `/model` explainer, model
@@ -91,3 +96,4 @@ initial release; run against the iteration-13 skill).
 | 12 | **Codex effort ladder recalibrated** from a field report: `Terra · low` performs materially worse than `Sonnet 5 · medium` on real D=1 dev work. Web research (OpenAI `latest-model` + `learn.chatgpt.com/models`, Vellum, layer3labs) confirmed: `medium` is OpenAI's coding default, `low` is "quick / well-scoped / latency-sensitive" only, and `minimal` is no longer a rung. `Luna · high` rejected as the alternative (Luna is "volume not depth" — long-context recall ~41% vs Sol ~91%). Codex `D→effort` shifted up one rung to **`0→low · 1→medium · 2→high · 3→xhigh`, `D=3∧R=3→max`** — now identical to the Claude arm's table (one shared `D→effort` table; the "two scales differ" caveat is gone). Golden answers updated: d1/r2/s1 `Luna minimal→low`, d5/n3/s3 `Terra minimal→low`, n1/n2/r1 `Terra low→medium`, d2 `Terra medium→high`, 5b `Sol Ultra high→xhigh`, f2 `Sol high→xhigh`; d3/d4/d6/d7/f1 unchanged. Full cold re-run (4 parallel agents). | **17/17** |
 | 13 | After iteration-12 the two effort columns were byte-identical on every row — the skill owner asked for the effort column to still carry a distinction. Added the **one cited asymmetry** as a rule: **Codex +1 effort notch for agentic multi-step coding** (writing/restructuring code across dependent steps — multi-file feature, refactor, migration, architecture implementation, codebase-spanning debug-and-fix; capped at `max`; Claude untouched). LiveBench §2.1 puts the whole GPT-5.6 line behind Claude on agentic coding (Sol 56.2 < Sonnet 5 59.4 < Opus 5 65.2) and nowhere else. Excludes code review / vuln analysis (f2, 5b stay level), non-code design, mechanical cross-file repetition. Only golden answer that moves: **d2** `Terra high→xhigh`. Cold re-run. First pass: one cold agent read "split monolith into **independent** services" (f1) as Sol Ultra — the iteration-11 trim had moved the "monolith decomposition = plain Sol, not Sol Ultra" counter-example out of `SKILL.md`. Restored it inline in the Codex mapping row; f1 re-run → plain Sol. | **17/17** |
 | 14 | A real output (`Claude: Sonnet 5 · max` / `Codex: Sol · max` for a D=3 ∧ R=3 review task) exposed two inconsistencies. **(1) Codex had no Rule-3 equivalent** — every D=3 went to Sol, so the Claude arm protected quota (stayed on Sonnet 5) while the Codex arm jumped to the flagship for the same analytical work. Fixed: the Codex D=3 row is now an ordered check — (a) 3+ already-independent parallel targets → Sol Ultra; (b) Rule 2 territory (agentic code / math / tool-less) → Sol; (c) otherwise (analytical / research / single-artefact review) → **Terra** (LiveBench reasoning 90.6 ≈ Sol; escalate to Sol if critical). **(2) `Sonnet 5 · max` / `Terra · max`** were rule-valid but in neither vendor's mid-tier tuning advice. Fixed: `max` (from `D=3 ∧ R=3`) is **flagship-only** — mid-tier caps at `xhigh`, the R=3 review note carries the stakes. Golden answers: **f2** `Sol · xhigh → Terra · xhigh`; new eval **m1** locks the D=3 ∧ R=3-outside-Rule-2 case (`Sonnet 5 · xhigh` / `Terra · xhigh`, no `max`). Live set now 18. Cold re-run (4 parallel agents). | **18/18** |
+| 15 | **GPT-6 Astra** (`gpt-6-astra`, 3 Sep 2026) added to the Codex arm — conservatively (user choice). Research: ≈ Opus 5 / Sol on intelligence + agentic-coding indices, behind Fable 5.1; clear lead only on computer use; ~2.5× Sol's headline price; **"Critical" cyber level** (standard access hard-stops exploit/PoC generation, does defensive discovery; **Daybreak Blue** = elevated). Changes: (1) Codex offensive gate `unverified — use Claude` → `use Claude` for standard access, **`Astra · xhigh`** with stated Daybreak access (mirrors Mythos 5.1 / Glasswing); (2) new **Codex frontier gate** — 1000+ files / ≥1M-token corpus → Astra (mirrors the Claude Fable 5.1 gate; wins over path (a)); (3) Astra joins the flagship `max` list; (4) **+1 agentic-coding notch never applies on Astra** (parity with Opus 5). Biology stays `unverified` (Astra's card is cyber-only). Golden answers: **d3** `unverified → use Claude`; **f1** Codex `Sol · max → Astra · max`. New evals: **a1** (Daybreak → `Astra · xhigh`), **a2** (Codex ≥1M-context gate → `Astra`). Live set now 20. Cold re-run (4 parallel agents) + trigger eval re-run (`description` gained `GPT-6 Astra`). | **20/20** routing · **19/20** trigger (same harness artifact) |

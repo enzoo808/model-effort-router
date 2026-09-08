@@ -240,6 +240,17 @@ supports that direction.
    **Terra**, not Sol, matching Claude's "stay on Sonnet 5" — the mid tier
    handles that work on both sides. Sol / Opus 5 stay the Rule-2 (agentic-coding
    / math / tool-less) pick and the "escalate if critical" target.
+6. **GPT-6 Astra (3 Sep 2026) does not change any of the above** (iteration-15).
+   Astra is not on the LiveBench 2026-06-25 board; the numbers that exist put it
+   ≈ Opus 5 / Sol on intelligence (AA Index ≈ Sol, ~2–5 behind Fable 5.1) and
+   **at parity on agentic coding** (DeepSWE 74.1 ≈ Opus 5 73.7; Codex Coding
+   Agent Index 67 = Opus 5, behind Fable 5.1's 70). It leads clearly only on
+   **computer use** (OSWorld V2 72.6 vs Sol 65.7; Mind2Web 1.9× faster). → Astra
+   stays a **gated pick** (offensive-sec with Daybreak, 1000+ files, ≥1M corpus,
+   computer-use), never the D=3 default — same discipline that keeps Fable 5.1
+   gated on the Claude side. The one concrete effect: the Codex **+1 agentic-
+   coding notch is Terra/Sol only, not Astra** — the gap it compensates for
+   closes at Astra's tier. Full Astra writeup: §9.8.
 
 > **Sources:** `livebench.ai` (2026-06-25 release), `artificialanalysis.ai/models`,
 > `benchlm.ai` — all read directly on 2 Sep 2026. All three agree on the top
@@ -521,9 +532,13 @@ effort per Step 3 + the **+1 notch for agentic multi-step coding** (§10.6):
   Rule 2 (agentic code / algorithmic) → Codex **Sol**; `xhigh` on the table, +1
   → `Sol · max` (Sol is a flagship, so `max` is allowed).
 - "Split the monolith into 12 microservices" → Rule 2a, `D=3∧R=3` → Opus 5 · max
-  / Sol · max (both flagships).
+  / Sol · max (both flagships). But **state a 1000+ file count** ("split this
+  6000-file monolith…") and the frontier gate fires on **both** arms → Fable 5.1
+  / **Astra**, effort still `max`.
 - "Review this JWT module" → D=3 **outside Rule 2**, sequential → Codex path (c)
   → **Terra**; analysis, no +1 → `Terra · xhigh` (mirrors `Sonnet 5 · xhigh`).
+- The **+1 agentic-coding notch is Terra/Sol only** — if a gate puts the Codex
+  model on **Astra**, no notch (Astra ties Opus 5 on coding, §9.8).
 
 | Prompt | R,D,W,C | → |
 |---|---|---|
@@ -607,13 +622,15 @@ rule is complete, one interpretation, concrete scope. Go straight to scoring.
 
 ### Hard-gate examples (scoring disabled)
 
-| Prompt | Gate | → |
+| Prompt | Gate | → (Claude / Codex) |
 |---|---|---|
-| "Categorise 1000 support tickets" | Volume | Haiku 4.5 |
-| "Run a penetration test against this environment, build an exploit chain" | Offensive security | Opus 4.8 · xhigh |
-| "Audit this API code for auth-bypass vulnerabilities" | **NO gate** (defensive) → normal scoring | Sonnet 5 · xhigh (Fable 5.1 can do it too) |
-| "Optimise this protein-folding simulation code" | Biology-adjacent R&D | Fable 5.1 · high |
-| "Analyse an 800k-token log history" | Context >200k | Haiku removed → Sonnet 5/Opus 5 |
+| "Categorise 1000 support tickets" | Volume | Haiku 4.5 / Luna · low |
+| "Run a penetration test against this environment, build an exploit chain" | Offensive security | Opus 4.8 · xhigh / `use Claude` (standard) — `Astra · xhigh` with Daybreak Blue |
+| "Audit this API code for auth-bypass vulnerabilities" | **NO gate** (defensive) → normal scoring | Sonnet 5 · xhigh / Terra · xhigh (Fable 5.1 & Astra can do it too) |
+| "Optimise this protein-folding simulation code" | Biology-adjacent R&D | Fable 5.1 · high / `unverified — use Claude` |
+| "Analyse an 800k-token log history" | Context >200k (Claude, eliminates Haiku); <1M so no Codex gate | Sonnet 5 / Terra, by C |
+| "Split this 6000-file monolith into services" | Frontier scale (1000+ files) — both arms | Fable 5.1 · max / **Astra · max** + review note |
+| "Load this whole 1.2M-token repo and map every call site" | ≥1M corpus (Codex) | Sonnet 5 (by C) / **Astra** |
 
 ---
 
@@ -628,11 +645,17 @@ rule is complete, one interpretation, concrete scope. Go straight to scoring.
 > `developers.openai.com/api/docs/guides/latest-model`,
 > `learn.chatgpt.com/docs/config-file/config-reference`.
 
-### 9.1. Model family — GPT-5.6 (Sol, Terra, Luna)
+### 9.1. Model family — GPT-5.6 (Sol, Terra, Luna) + GPT-6 Astra
 
-Went to general availability on 9 July 2026. Sol is the flagship, Terra the
-balanced mid-tier, Luna the speed/cost-focused budget model — verified directly
-from the official launch page.
+GPT-5.6 went to general availability on 9 July 2026. Sol is the GPT-5.6 flagship,
+Terra the balanced mid-tier, Luna the speed/cost-focused budget model — verified
+directly from the official launch page.
+
+**GPT-6 Astra** (`gpt-6-astra`, 3 Sep 2026) sits above Sol as OpenAI's new
+flagship. Sol / Terra / Luna all remain — the Codex model picker now shows four
+tiers, and the Codex CLI default is **Luna** (not Astra). Astra is a **narrow
+router pick** — see §9.8 for the full writeup and §2.1 item 6 for why it does not
+become the D=3 default.
 
 **Sol Ultra:** introduced 26 June 2026, GA on 9 July. A **product mode** (not a
 model, not an effort value — `effort: "ultra"` returns HTTP 400), toggled in
@@ -645,11 +668,21 @@ official page).
 
 ### 9.2. Pricing (per MTok) — after the 30 July 2026 price cut
 
-| Model | Input | Output |
-|---|---|---|
-| Sol | $5.00 | $30.00 |
-| Terra | $2.00 | $12.00 |
-| Luna | $0.20 | $1.20 |
+| Model | Input | Output | Cache read |
+|---|---|---|---|
+| **Astra** (GPT-6, 3 Sep 2026) | $10.00 | $50.00 | $1.00 |
+| Sol | $5.00 | $30.00 | — |
+| Terra | $2.00 | $12.00 | — |
+| Luna | $0.20 | $1.20 | — |
+
+**Astra:** ~2.5× Sol's headline rate, cache write $12.50. **2× all rates above
+272k input tokens** (whole request). Batch / Flex 50% off; Fast Mode 2×. But
+Astra is **~70% more token-efficient** than Sol — roughly ⅓ of Sol's tokens at
+`max` in the Codex harness, ~⅕ of Opus 5's at `xhigh` — so on a coding task
+Artificial Analysis puts its cost-per-task ≈ Sol (max), and ~$2.6 vs Fable 5's
+~$6. The router still treats it as the quota-heavier option (higher headline
+rate, and long-context work blows past the 272k 2× line) → gated pick, not
+default.
 
 **The user's report was stale:** it said Terra $2.50/$15, Luna $1/$6 — those are
 the pre-30-July prices. On that date OpenAI cut Luna 80%, Terra 20%, Sol
@@ -690,6 +723,15 @@ things**:
      all three). Some third-party gateways still 400 on `effort: "max"` — a
      tooling gap. Router uses `max` as the ceiling for `D=3 ∧ R=3`, matching
      Claude.
+   - **GPT-6 Astra effort:** same ladder **minus `none`** (`none` is rejected at
+     the API layer). Codex CLI config default `model_reasoning_effort = "high"`;
+     OpenAI / community guidance is "start at `medium`" for agentic coding and
+     research, `high` for complex debugging, `xhigh` / `max` only for hard
+     architecture or difficult debugging loops — same shape as the shared table.
+     `max` is generally available across paid plans; one source reports Chat
+     Completions capping at `xhigh` with `max` on the Responses API — treat as
+     the same "if a surface 400s, fall back to `xhigh`" caveat as Sol. `temperature`,
+     `top_p`, `logprobs` unsupported. Needs Codex CLI **v0.153.0+**.
    - **Why the ladder was shifted up one rung (iteration-12):** the skill owner
      reported from field use that `Terra · low` is materially weaker than
      `Sonnet 5 · medium` (the Claude D=1 pick) — "hatalı işlemler", not an
@@ -781,6 +823,17 @@ agentic coding work.
 - `reasoning.mode` (`standard`/`pro`) is a separate axis from effort — confirmed
   for the Responses API only (no `model_reasoning_mode` key in the Codex CLI).
 - Codex CLI model selection: `--model`/`-m` flag, `model` key in `config.toml`.
+- **GPT-6 Astra** (`gpt-6-astra`, 3 Sep 2026) — §9.8. Slug, 1.05M context, Apr
+  2026 cutoff, $10/$50, effort ladder minus `none`, Codex CLI v0.153.0+, four-tier
+  picker with Luna as CLI default — all official (`developers.openai.com/api/docs/models/gpt-6-astra`).
+- **Codex cyber behaviour is now partly known** (was fully "not researched").
+  GPT-6 Astra is at OpenAI's **"Critical"** cyber Preparedness level: standard
+  access does defensive vuln *discovery* but **hard-stops** exploit / PoC
+  generation (the task ends, no approval prompt); the **Daybreak (Blue)**
+  programme (API-key-level, application-gated) lifts that for authorised
+  researchers. → the Codex offensive-security gate now says `use Claude` for
+  standard access and routes to **`Astra · xhigh`** when the user states Daybreak
+  access. (`deploymentsafety.openai.com/gpt-6-astra`, Codex KB integration guides.)
 
 **❌ Debunked (the report was wrong):**
 - Terra/Luna's old prices ($2.50/$15, $1/$6).
@@ -798,8 +851,11 @@ agentic coding work.
 
 **⚠️ Could not be verified / not researched — did not enter the router:**
 - Whether Codex/ChatGPT has a safety-classifier/fallback chain like Claude's for
-  security or biology-adjacent content. Because of this uncertainty the Codex arm
-  recommends no model in these two categories, it says "unverified — use Claude".
+  **biology-adjacent** content. Astra's system card is cyber-only (re-checked
+  8 Sep 2026) — so the Codex arm still says "unverified — use Claude" for
+  biology-R&D. (The cyber side is now partly known — see the ✅ list.)
+- Whether Ultra mode / parallel subagents run on `gpt-6-astra` (undocumented
+  either way — no "Astra Ultra" asserted).
 - Per-model context window for Luna/Terra/Sol-base (only a single-source ~1.5M
   claim for Sol Ultra).
 - Whether the ChatGPT Plus quota numbers carried to GPT-5.6 (§9.4).
@@ -879,6 +935,98 @@ it.
 
 ---
 
+## 9.8. GPT-6 Astra — 3 September 2026 (iteration-15)
+
+> **Source status:** researched 8 Sep 2026 via `developers.openai.com/api/docs/models/gpt-6-astra`,
+> `deploymentsafety.openai.com/gpt-6-astra` (system card), `openai.com/index/gpt-6-astra/`,
+> Artificial Analysis, and the Codex Knowledge Base integration guides. Same
+> discipline as every other entry: benchmark numbers confirm *direction* only,
+> the router never selects Astra from a score.
+
+**Identity.** `gpt-6-astra`. OpenAI's new flagship, above GPT-5.6 Sol. Sol /
+Terra / Luna all remain (four-tier Codex picker). "Our most capable model, built
+for the hardest end-to-end work." One snapshot, **no mini/nano sub-tiers**.
+
+**Specs.**
+- Context **1,050,000 tokens** (≈922k input / 128k output). Knowledge cutoff
+  **30 April 2026**.
+- Effort `low, medium, high, xhigh, max` — **`none` rejected at the API**. Codex
+  CLI default `high`; "start at `medium`" is the common guidance. `max` generally
+  available on paid plans (one source: Responses-API-only, Chat Completions caps
+  at `xhigh`).
+- Price $10 / $50 MTok, cached-in $1, cache-write $12.50. **2× all rates above
+  272k input tokens.** Batch / Flex 50% off; Fast Mode 2×.
+- **~70% more token-efficient than Sol** (~⅓ of Sol's tokens at `max` in the
+  Codex harness, ~⅕ of Opus 5's at `xhigh`) — so per-task cost is far closer to
+  Sol than the headline suggests (AA: coding cost-per-task ≈ Sol max; ~$2.6 vs
+  Fable 5 ~$6).
+- Codex CLI **v0.153.0+**. Not in the in-session model picker by default (manual
+  config / staged rollout). ChatGPT: **Plus, Pro, Business, Enterprise** (not
+  Free); picker label "GPT-6 Pro". Also on the API, Azure, Bedrock.
+
+**Benchmarks (direction only).**
+| Axis | Astra | Comparators | Read |
+|---|---|---|---|
+| Computer use — OSWorld V2 | **72.6%** | Sol 65.7 | Clear Astra win; task time 75→40 min; Mind2Web 1.9× faster |
+| Terminal-Bench 4.0 | 57.7% | Fable 5.1 55.8 | Marginal |
+| DeepSWE v1.1 (SWE-bench-like) | 74.1% | Sol 72.7 · Opus 5 73.7 · Gemini Flash 73.8 | Inside the pack — parity |
+| Codex Coding Agent Index | 67 | Opus 5 67 · **Fable 5.1 (Claude Code) 70** | Ties Opus 5, behind Fable 5.1 |
+| AA Intelligence Index | ≈ Sol | ~2–5 behind Fable 5.1 | Two index versions, same direction |
+| AA-Omniscience hallucination | 92% → **51%** | — | Big improvement |
+| GDPval-AA v2 | **~80 Elo regression** | — | Worse — consistent with §2's "GDPval not used" |
+
+→ Astra is a **flagship that is not clearly ahead of Claude's flagships.** It
+wins on computer use and is at parity elsewhere. This is exactly the profile
+that keeps a model **gated** rather than default (cf. Fable 5.1 vs Opus 5).
+
+**Cyber — "Critical" (first model OpenAI has placed at this Preparedness level).**
+- The model "can locate previously unknown vulnerabilities and develop working
+  exploits across hardened systems without per-step human guidance" (found two
+  zero-day V8 bugs, built browser/OS exploits during evals).
+- **Default access:** defensive vulnerability *discovery* works (~66.7% task
+  completion — like Fable 5.1's carve-out); exploit / PoC *generation* is
+  **refused** (~2.4%), and a cyber safety check **ends the task outright** rather
+  than pausing for approval. Misalignment monitoring runs across all tool-using
+  inference — non-trusted users report occasional pauses/blocks, sometimes on
+  unrelated work.
+- **Elevated access:** the **Daybreak (Blue)** programme — "reduced cybersecurity
+  refusals for authorised security researchers", granted at the **API-key
+  level**, application-gated. **Trusted Access** = the staged-rollout enrolment.
+- **No bio / CBRN threshold** crossed or documented — the card is cyber-only.
+
+**Router treatment (conservative — iteration-15).**
+1. **Offensive-security gate (Codex arm):** was a blanket "unverified — use
+   Claude". Now: standard access **hard-stops** → `use Claude`; **Daybreak Blue
+   access stated → Astra · `xhigh` floor** (mirrors Mythos 5.1 / Glasswing on the
+   Claude side). Defensive work is unchanged — normal scoring, no gate.
+2. **New Codex frontier gate:** 1000+ files / whole-codebase → **Astra** (mirror
+   of the Claude Fable 5.1 gate; Astra has the only verified ≥1M Codex window).
+   Wins over the D=3 mapping incl. path (a) — no `Sol Ultra` at that scale.
+3. **≥ ~1M-token corpus on the Codex side → Astra** (only verified large window;
+   mind the 272k 2× surcharge).
+4. **Escalation ceiling** above Sol in the D=3 paths (b)/(c) — but only for
+   genuinely long-session complex work with stated Astra access, not a reflex.
+5. **`max` flagship list** gains Astra (Opus 5 / Opus 4.8 / Fable 5.1 / Sol /
+   Astra).
+6. **+1 agentic-coding notch does NOT apply on Astra** — parity with Opus 5 on
+   DeepSWE / Coding Agent Index means the gap the notch compensates for is gone.
+7. **Biology-adjacent → still "unverified — use Claude"** — Astra's card is
+   cyber-only, re-checked 8 Sep 2026.
+
+**Codex product changes shipped with Astra (context, not routing):**
+context-notes architecture replaces compaction — running notes kept across
+context windows, earlier windows stay searchable, long agent runs stop losing
+failure detail (behind a `config.toml` flag, becoming default). Async "ask" —
+Astra continues work that doesn't depend on your reply, waits only on
+consequential decisions.
+
+**Not verified / left out:** whether Ultra mode / parallel subagents run on
+`gpt-6-astra` (not documented either way — "Sol Ultra" language unchanged, no
+"Astra Ultra" asserted); exact LiveBench rows for Astra (not on the 2026-06-25
+board); which ChatGPT-plan users hit the cyber monitor hardest.
+
+---
+
 ## 10. Routing rubric — edge cases & rationale
 
 > **Why this section exists:** `SKILL.md` used to carry every one of these notes
@@ -905,6 +1053,20 @@ What changed with Fable 5.1 vs Fable 5: (a) defensive vulnerability discovery is
 no longer blocked — Fable 5.1 does it itself; (b) on benign requests, cyber
 interventions dropped ~60% per session.
 
+**Why the Codex offensive gate is "use Claude", now with a Daybreak exception
+(iteration-15).** Before GPT-6 Astra, the Codex side had no researched safety
+behaviour here, so it declined ("unverified — use Claude"). Astra's system card
+resolves it: standard Codex / ChatGPT access does defensive vuln *discovery* but
+**hard-stops** exploit / PoC generation — the cyber safety check ends the run, it
+does not pause for approval, so pointing a standard user at Astra for pen-test
+work just wastes the turn. The **Daybreak (Blue)** programme (API-key-level,
+application-gated, "reduced cybersecurity refusals for authorised security
+researchers") is the elevated tier — structurally the same as Claude's
+Glasswing / Mythos 5.1. So: **standard → `use Claude`; stated Daybreak access →
+`Astra · xhigh`** (floor, W/duration can't raise it — `ultracode` is Claude
+Code-only, Astra's own ceiling is `max`). Defensive work never gates on either
+arm.
+
 **`ultracode` can still rise above the `xhigh` floor.** The offensive gate is
 "deciding" but only fixes the **model**. After it fires, check
 `W=3 ∧ duration>30min ∧ ¬(D=3 ∧ R=3)` normally — if it holds, effort is
@@ -927,6 +1089,18 @@ scale already requires the rest; the prompt isn't expected to state it.
 ✅ "Break up this 4000-file legacy monolith into modules" — only the file count
 is written, the gate still fires → Fable 5.1. Don't confuse with Step 2's `W=3`
 threshold (100+ files): 100–999 files → normal scoring, not this gate.
+
+**The Codex arm now has a frontier gate too (iteration-15).** Before GPT-6 Astra
+there was no Codex model with a verified large window, so the Codex side had no
+analogue — a 6000-file monolith split routed to `Sol · max` with no
+acknowledgement of scale. Astra has a **verified 1.05M context** and is pitched
+at "the hardest end-to-end work", so 1000+ files / whole-codebase / "load the
+whole repo at once" / ≥~1M-token corpus → **Astra** on the Codex side, matching
+the Claude Fable 5.1 gate. It's a *deciding* gate: it wins over the D=3 mapping,
+including path (a), because Ultra mode is Sol-only — at 1000+ scale you take
+Astra and lose the parallel-agents primitive. Mind the **272k 2× price line** —
+frontier work sails past it. 100–999 files → normal Codex scoring (W=3), same as
+Claude.
 
 ### 10.2. R axis — worked pairs
 
@@ -1078,7 +1252,8 @@ cost of failure" but that's the escalate-to-flagship signal). So at `D=3 ∧ R=3
 flagship model → `max`; mid-tier model → `xhigh` + the R=3 review note. The user
 can still set `max` by hand. Before iteration-14 the router could emit
 `Sonnet 5 · max` / `Terra · max` (rule-valid but untested and unwanted); it no
-longer does.
+longer does. The flagship list that may carry `max` is Opus 5 / Opus 4.8 /
+Fable 5.1 / Sol / **Astra** (Astra added iteration-15).
 
 **Rule 4 (user knowledge).** Anthropic's Opus 5 advice: start `high`, `xhigh`
 for coding/agentic, and use low/medium freely as a cost control "wherever your
@@ -1172,14 +1347,17 @@ the end — or are the pieces interdependent, requiring one coherent design
 decision?* If genuinely independent (and it already reached `D=3 → Sol`) → Sol
 Ultra.
 
-**`max` on Codex is real** (verified 2 Sep 2026). `openai.com/index/gpt-5-6/` +
-the GA note: the GPT-5.6 effort ladder is `none, low, medium, high, xhigh, max`,
-and `max` "is available to all users with access to GPT-5.6 in ChatGPT Work and
-Codex and can be toggled on in settings". The
+**`max` on Codex is real** (verified 2 Sep 2026; re-confirmed for Astra 8 Sep).
+`openai.com/index/gpt-5-6/` + the GA note: the GPT-5.6 effort ladder is
+`none, low, medium, high, xhigh, max`, and `max` "is available to all users with
+access to GPT-5.6 in ChatGPT Work and Codex and can be toggled on in settings".
+GPT-6 Astra keeps the ladder minus `none`. The
 `learn.chatgpt.com/docs/config-file/config-reference` page is stale (lists only
 to `xhigh`) — a doc lag. Caveat: some third-party gateways / CLI wrappers still
-400 on `max` — if the user reports a 400, tell them to check tooling or fall
-back to `xhigh`.
+400 on `max`, and one source has Astra's `max` as Responses-API-only — if the
+user reports a 400, tell them to check tooling or fall back to `xhigh`. The
+router only *emits* `max` on a flagship (Opus 5 / Opus 4.8 / Fable 5.1 / Sol /
+Astra); mid-tier caps at `xhigh`.
 
 **`mode: pro` — Responses-API only, on-ask only (NOT auto-added).** `reasoning.mode:
 "pro"` is a separate axis from effort (defaults to `medium` effort), confirmed
@@ -1191,3 +1369,31 @@ asks "what else can I do?".
 **Codex human-review note:** `R=3` → same as Step 4 Rule 1, one shared note.
 The MCP/auto-accept warnings (Rules 6/7) are **not** carried into the Codex arm —
 Codex's tool-schema/session-cost mechanics were not verified.
+
+**GPT-6 Astra — when the router picks it, and when it doesn't (iteration-15).**
+Full specs / benchmarks / cyber-tier detail in §9.8. Routing summary:
+- **Picked** only via a gate: (1) offensive-security *with stated Daybreak Blue
+  access* → `Astra · xhigh`; (2) 1000+ files / whole-codebase → `Astra` (new
+  Codex frontier gate, mirrors Fable 5.1); (3) ≥~1M-token corpus / "whole repo
+  at once" → `Astra`; (4) as the escalation ceiling above Sol in D=3 paths
+  (b)/(c), but only for genuinely long-session complex work with stated access.
+- **Not picked** as the D=3 default (that's still Sol / Terra per the mapping),
+  and never *just because the task is hard* — Astra's intelligence and coding
+  indices sit ≈ Opus 5 / Sol and behind Fable 5.1 (§9.8 table); it leads only on
+  computer use. Same discipline that keeps Fable 5.1 gated on the Claude side.
+- **`max` list:** Astra joins Opus 5 / Opus 4.8 / Fable 5.1 / Sol as a flagship
+  the router may emit `max` on. Caveat: a source reports `max` as Responses-API-
+  only for Astra (Chat Completions caps at `xhigh`) — treat like the Sol `max`
+  400 caveat, fall back to `xhigh` if a surface rejects it.
+- **+1 agentic-coding notch: never on Astra.** DeepSWE 74.1 ≈ Opus 5 73.7 and
+  Coding Agent Index 67 = Opus 5 — the GPT-5.6-line gap the notch compensates for
+  (Sol 56.2 < Sonnet 5 59.4) is closed at Astra's tier. The notch stays for
+  Terra / Sol.
+- **Defensive vuln discovery** works on Astra by default (~67% task completion,
+  like Fable 5.1's carve-out) — only exploit / PoC generation is refused without
+  Daybreak. If the user picks Astra, mention that the misalignment monitor can
+  pause unrelated work for non-trusted accounts.
+- **Biology-adjacent → still `unverified — use Claude`** — Astra's card is
+  cyber-only (re-checked 8 Sep 2026).
+- **Ultra + Astra:** undocumented — no "Astra Ultra" asserted; `Sol Ultra`
+  language unchanged.

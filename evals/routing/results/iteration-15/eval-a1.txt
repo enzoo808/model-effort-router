@@ -1,0 +1,3 @@
+Claude: Opus 4.8 · effort: ultracode
+Codex: Astra · effort: xhigh
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).

@@ -1,0 +1,4 @@
+Claude: Sonnet 5 · effort: xhigh
+Codex: Terra · effort: xhigh
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.
