@@ -10,8 +10,13 @@ Very welcome. Requirements:
   official changelog — not an aggregator/SEO blog. If only a secondary source
   exists, say so and it will be labelled "unverified" in `skill/reference.md`,
   the same as the existing hedged claims.
-- Update the number in **both** `skill/reference.md` and anywhere `skill/SKILL.md`
-  restates it.
+- Update the number in **all** of `skill/benchmarks.json` (the machine-readable
+  record), `skill/reference.md`, and anywhere `skill/SKILL.md` restates it.
+- **Benchmark records need methodology, not just a score.** A row in
+  `skill/benchmarks.json` without `harness`, `effort` and `date` cannot be
+  compared with anything, so it cannot inform a rule. Leave a field `null` when
+  it isn't published — never guess it, and never interpolate a score between
+  effort levels.
 - If it's a Turkish/English README-visible fact, update `README.md` and
   `README.tr.md`.
 
@@ -22,7 +27,8 @@ procedure.
 
 1. State the rule change and the real prompt(s) that motivated it.
 2. Add or update the relevant eval in `evals/routing/evals.json` (dual-format:
-   `expected_claude` / `expected_codex`, or `blocked: true`).
+   `expected_claude` / `expected_codex` / `expected_recommended`, plus
+   `expected_low_confidence` where the rules require a hedge, or `blocked: true`).
 3. Run it with **fresh/cold agents** (a subagent or a new conversation that
    reads `skill/SKILL.md` directly — *not* the `Skill` tool, which caches) and
    save the raw outputs under `evals/routing/results/iteration-<N>/`.
@@ -53,7 +59,10 @@ they lag, so a Turkish speaker can follow up.
 
 ## Style
 
-- `SKILL.md` stays short; tables and sourcing live in `reference.md`.
+- `SKILL.md` stays short: classification, the routing algorithm, the compact
+  benchmark-derived rules and the recommended-AI logic. Raw tables, source URLs,
+  methodology notes, conflicts and historical results live in `reference.md`;
+  the per-benchmark records live in `benchmarks.json`.
 - Every effort-level or model claim needs either a citation or an explicit
   "unverified" label. No confident numbers without a source.
 - When in doubt about a routing call, the project rounds **down** (quota-aware).

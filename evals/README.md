@@ -24,9 +24,27 @@ table; sync this file to it by hand.
 3. Run `python routing/grade_routing.py --results-dir routing/results/iteration-<N>`
    — regex-based, deterministic, no LLM.
 
-**Why a script grader, not an LLM grader:** the output format is a single
-fixed-shape line (`Model · effort: X` or
-`opusplan · plan: X · execute: Y`) — verifying it is mechanical, not subjective.
+**Why a script grader, not an LLM grader:** the output format is a
+fixed-shape line (`Model · effort: X` or `opusplan · plan: X · execute: Y`) —
+verifying it is mechanical, not subjective.
+
+**What the grader checks** (iteration-16): Claude model · Claude effort · Codex
+model · Codex effort · **which side carries the `✅ RECOMMENDED AI` badge**
+(`expected_recommended: "claude" | "codex"`) · that exactly one badge exists ·
+that an `Evidence:` line is present and not a stub. It deliberately does **not**
+compare the Evidence wording — that line is free-form by design and an
+exact-string assertion would be brittle. Where the rules say a recommendation
+must be hedged, `expected_low_confidence: true` requires the line to contain
+"low-confidence" / "low confidence" and nothing more specific than that.
+
+⚠️ **Known limitation of the routing eval.** Several long-standing eval prompts
+(`d1`, `d5`, `f1`, `m1`, `d6`) appear near-verbatim as worked examples inside
+`SKILL.md`'s own "Output format → Examples" section, so a cold agent is partly
+recalling rather than deriving them. They still catch regressions (if a rule
+changes, the example and the golden disagree) but they are weak evidence that
+the *procedure* works. The iteration-16 additions (`b1`, `t1`, `p1`, `e1`, `g1`,
+`h1`, `i1`, `j1`, `k1`, `q1`) appear nowhere in `SKILL.md` and are genuine cold
+derivations.
 
 The output format switched from Turkish (`efor:`, `doğrulanmadı`,
 `İnsan onayı olmadan uygulanmasın.`) to English (`effort:`, `unverified — use
@@ -37,8 +55,11 @@ the same pass.
 ### Eval id conventions
 
 - `d1`–`d7`, `n1`–`n3`, `r1`, `r2`, `s1`, `s3`, `5b`, `f1`, `f2`, `m1`, `a1`,
-  `a2` — dual-format, auto-graded. This is the live regression set (20 as of
-  iteration-15).
+  `a2` — dual-format, auto-graded. Carried from iteration-15.
+- `b1`, `t1`, `p1`, `e1`, `g1`, `h1`, `i1`, `j1`, `k1`, `q1` — added in
+  iteration-16 for the capability profile, the equivalence/efficiency layer and
+  the `✅ RECOMMENDED AI` badge. One per capability class the brief named.
+- Live regression set: **30** as of iteration-16.
 - `1`–`22`, `c1`–`c5`, `v1` — legacy single-ecosystem format, marked
   `format_outdated: true`, skipped by the grader. Backfilling them to
   dual-output is the remaining eval-debt.
@@ -63,7 +84,22 @@ in direct tension with the router's own philosophy. Run it rarely, only when the
 tool call is `Skill`/`Read` on model-secici (installed skill or the temp probe
 command).
 
-**Latest: `results/2026-09-08.json` — 19/20** — re-run for iteration-15 because
+**Latest: `results/2026-09-10.json` — 19/20** (iteration-16). Re-run because the
+`description` frontmatter changed: it now says the router "marks which of the two
+is the better fit" and adds the "which AI should I use" phrasing.
+Natural-language triggers **9/9**, near-miss rejection **10/10**; the 1 miss is
+the same print-mode harness artifact as every previous run.
+
+> **`run_trigger.py` detector fix, same run.** The first pass scored 17/20 with
+> two *false positives* that had nothing to do with the description: the detector
+> counted any `Read` whose path contained the string `model-secici` as a trigger,
+> and on a developer machine that includes Claude Code's own auto-memory file
+> (`.../memory/model-secici-project.md`). A real trigger reads a file inside a
+> skill or command directory, so `_is_skill_file()` now requires that and
+> excludes anything under `memory/`. This makes the eval reproducible on machines
+> other than the author's; it does not change what the `description` does.
+
+**Prior: `results/2026-09-08.json` — 19/20** — re-run for iteration-15 because
 the `description` frontmatter changed (Codex roster list gained `GPT-6 Astra`).
 Natural-language triggers 9/9, near-miss rejection 10/10; the 1 miss is the same
 harness artifact as before (the literal `/model-secici …` line isn't expanded
@@ -96,4 +132,5 @@ under `claude -p` print mode).
 | 12 | **Codex effort ladder recalibrated** from a field report: `Terra · low` performs materially worse than `Sonnet 5 · medium` on real D=1 dev work. Web research (OpenAI `latest-model` + `learn.chatgpt.com/models`, Vellum, layer3labs) confirmed: `medium` is OpenAI's coding default, `low` is "quick / well-scoped / latency-sensitive" only, and `minimal` is no longer a rung. `Luna · high` rejected as the alternative (Luna is "volume not depth" — long-context recall ~41% vs Sol ~91%). Codex `D→effort` shifted up one rung to **`0→low · 1→medium · 2→high · 3→xhigh`, `D=3∧R=3→max`** — now identical to the Claude arm's table (one shared `D→effort` table; the "two scales differ" caveat is gone). Golden answers updated: d1/r2/s1 `Luna minimal→low`, d5/n3/s3 `Terra minimal→low`, n1/n2/r1 `Terra low→medium`, d2 `Terra medium→high`, 5b `Sol Ultra high→xhigh`, f2 `Sol high→xhigh`; d3/d4/d6/d7/f1 unchanged. Full cold re-run (4 parallel agents). | **17/17** |
 | 13 | After iteration-12 the two effort columns were byte-identical on every row — the skill owner asked for the effort column to still carry a distinction. Added the **one cited asymmetry** as a rule: **Codex +1 effort notch for agentic multi-step coding** (writing/restructuring code across dependent steps — multi-file feature, refactor, migration, architecture implementation, codebase-spanning debug-and-fix; capped at `max`; Claude untouched). LiveBench §2.1 puts the whole GPT-5.6 line behind Claude on agentic coding (Sol 56.2 < Sonnet 5 59.4 < Opus 5 65.2) and nowhere else. Excludes code review / vuln analysis (f2, 5b stay level), non-code design, mechanical cross-file repetition. Only golden answer that moves: **d2** `Terra high→xhigh`. Cold re-run. First pass: one cold agent read "split monolith into **independent** services" (f1) as Sol Ultra — the iteration-11 trim had moved the "monolith decomposition = plain Sol, not Sol Ultra" counter-example out of `SKILL.md`. Restored it inline in the Codex mapping row; f1 re-run → plain Sol. | **17/17** |
 | 14 | A real output (`Claude: Sonnet 5 · max` / `Codex: Sol · max` for a D=3 ∧ R=3 review task) exposed two inconsistencies. **(1) Codex had no Rule-3 equivalent** — every D=3 went to Sol, so the Claude arm protected quota (stayed on Sonnet 5) while the Codex arm jumped to the flagship for the same analytical work. Fixed: the Codex D=3 row is now an ordered check — (a) 3+ already-independent parallel targets → Sol Ultra; (b) Rule 2 territory (agentic code / math / tool-less) → Sol; (c) otherwise (analytical / research / single-artefact review) → **Terra** (LiveBench reasoning 90.6 ≈ Sol; escalate to Sol if critical). **(2) `Sonnet 5 · max` / `Terra · max`** were rule-valid but in neither vendor's mid-tier tuning advice. Fixed: `max` (from `D=3 ∧ R=3`) is **flagship-only** — mid-tier caps at `xhigh`, the R=3 review note carries the stakes. Golden answers: **f2** `Sol · xhigh → Terra · xhigh`; new eval **m1** locks the D=3 ∧ R=3-outside-Rule-2 case (`Sonnet 5 · xhigh` / `Terra · xhigh`, no `max`). Live set now 18. Cold re-run (4 parallel agents). | **18/18** |
+| 16 | **Benchmark-aware routing engine.** The router no longer picks a model from R/D/W/C alone. New pipeline: quality gate → hard gates → **task capability profile** → R/D/W/C → candidate model x effort → **benchmark evidence, comparability, equivalence, dominance** → **token/quota efficiency** → **cross-ecosystem `✅ RECOMMENDED AI` + one Evidence line**. R/D/W/C is kept in full and demoted from *the* input to *an* input. Research pass (10 Sep 2026, `docs/research-provenance.tr.md`) re-verified every hard gate and produced `skill/benchmarks.json` — 61 records with harness, effort, dispersion, cost/task, date, source tier and comparability group. Corrections: **Sonnet 5 is $2/$10, not $3/$15** (the rise was cancelled — Opus/Sonnet ratio 1.67x → 2.5x); Sonnet 5 *does* have published `max` guidance (the old citation was wrong); `max` on Codex is **Astra/Sol only**; the AA Index figures the repo carried are from an incomparable index version; the "Codex Coding Agent Index" could not be traced and was demoted. New rules that change output: **E1** `Sonnet 5 · max` is dominated by `Opus 5 · xhigh` on both quality and cost, so escalation is a **model** change not an effort change; **E2** the Codex mirror (`Sol · high` dominates `Terra · max`, which is unavailable anyway); **E3** `max` buys ~nothing over `xhigh`, so it now needs `D=3 ∧ R=3` **and** an indivisible novel-design decision; plus a **Codex computer-use gate** (named in the roster notes since iteration-15, never actually in the gate table). Golden answers changed: **t1** (new) `Sol · max → Sol · xhigh`. Prompts sharpened: **i1**, **j1** (cold agents scored them a depth lower than intended, which bypassed the very rule each was written to test — same fix pattern as `n2` in iteration-9). Five cold-agent rounds; five internal inconsistencies in the first draft were found *by* the evals and fixed in `SKILL.md`: the flagship capability list wrongly swept in code *review*, the +1 notch lost its "multi-step" scope, the schema-migration `R=2` ruling was dropped in the rewrite, `opusplan` was not excluded from the Claude `/fast` half, and the analysis carve-out wrongly suppressed Codex path (a). | **30/30** routing |
 | 15 | **GPT-6 Astra** (`gpt-6-astra`, 3 Sep 2026) added to the Codex arm — conservatively (user choice). Research: ≈ Opus 5 / Sol on intelligence + agentic-coding indices, behind Fable 5.1; clear lead only on computer use; ~2.5× Sol's headline price; **"Critical" cyber level** (standard access hard-stops exploit/PoC generation, does defensive discovery; **Daybreak Blue** = elevated). Changes: (1) Codex offensive gate `unverified — use Claude` → `use Claude` for standard access, **`Astra · xhigh`** with stated Daybreak access (mirrors Mythos 5.1 / Glasswing); (2) new **Codex frontier gate** — 1000+ files / ≥1M-token corpus → Astra (mirrors the Claude Fable 5.1 gate; wins over path (a)); (3) Astra joins the flagship `max` list; (4) **+1 agentic-coding notch never applies on Astra** (parity with Opus 5). Biology stays `unverified` (Astra's card is cyber-only). Golden answers: **d3** `unverified → use Claude`; **f1** Codex `Sol · max → Astra · max`. New evals: **a1** (Daybreak → `Astra · xhigh`), **a2** (Codex ≥1M-context gate → `Astra`). Live set now 20. Cold re-run (4 parallel agents) + trigger eval re-run (`description` gained `GPT-6 Astra`). | **20/20** routing · **19/20** trigger (same harness artifact) |

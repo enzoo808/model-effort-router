@@ -9,11 +9,14 @@ containing exactly what the skill printed for that eval's prompt (nothing
 else -- don't include your own commentary in the file).
 
 Since 5 August 2026 the skill outputs BOTH a "Claude: ..." line and a
-"Codex: ..." line for every (non-blocked) prompt. This script grades each
-side independently against evals.json's "expected_claude"/"expected_codex"
-fields, plus optional shared/claude-only note checks. Pure string/regex
-matching, no LLM involved, deterministic and free to re-run after every
-SKILL.md/reference.md edit.
+"Codex: ..." line for every (non-blocked) prompt. Since iteration-16 it also
+marks exactly one of them with a "RECOMMENDED AI" badge and adds one
+"Evidence:" line. This script grades each side independently against
+evals.json's "expected_claude"/"expected_codex" fields, checks which side
+carries the badge against "expected_recommended", and checks that an Evidence
+line is present and non-trivial -- deliberately WITHOUT comparing its wording,
+which is free-form by design. Pure string/regex matching, no LLM involved,
+deterministic and free to re-run after every SKILL.md/reference.md edit.
 """
 
 import argparse
@@ -34,6 +37,13 @@ MODEL_NAMES = ["Haiku 4.5", "Sonnet 5", "Opus 4.8", "Opus 5",
 # offensive-security gate where standard access is known to hard-stop the task.
 UNVERIFIED = "unverified"
 DECLINE_MARKERS = ("unverified", "use claude")
+
+# The badge's canonical form is "✅ RECOMMENDED AI", placed immediately after
+# the ecosystem label. The emoji is not required to match -- a terminal or an
+# editor may strip it -- but the words must be on the Claude:/Codex: line itself,
+# which is what pins the placement standard.
+BADGE_TEXT = "recommended ai"
+MIN_EVIDENCE_CHARS = 20
 
 
 def extract_line(output: str, label: str) -> str | None:
@@ -100,6 +110,30 @@ def grade_side(expected: str, actual_line: str | None, side: str) -> tuple[bool,
     return True, f"{side}: {expected_model} correct" + (f", effort={em.group(1)}" if em else "")
 
 
+def badge_sides(output: str) -> list[str]:
+    """Which of the two recommendation lines carries the RECOMMENDED AI badge."""
+    found = []
+    for label in ("Claude", "Codex"):
+        line = extract_line(output, label)
+        if line and BADGE_TEXT in line.lower():
+            found.append(label.lower())
+    return found
+
+
+def grade_evidence(output: str, want_low_confidence: bool) -> tuple[bool, str]:
+    """Evidence line must exist and say something. Its wording is never matched."""
+    line = extract_line(output, "Evidence")
+    if line is None:
+        return False, "no 'Evidence:' line in the output"
+    if len(line) < MIN_EVIDENCE_CHARS:
+        return False, f"'Evidence:' line is too short to be a real justification: '{line}'"
+    if want_low_confidence:
+        normalised = line.lower().replace("-", " ")
+        if "low confidence" not in normalised:
+            return False, f"expected the Evidence line to flag low confidence, got: '{line}'"
+    return True, "evidence line present"
+
+
 def grade_blocked(output: str) -> tuple[bool, str]:
     for name in MODEL_NAMES:
         if name in output:
@@ -108,7 +142,9 @@ def grade_blocked(output: str) -> tuple[bool, str]:
         return False, "Step 0 should block but Claude:/Codex: lines were produced"
     if "?" not in output:
         return False, "expected a clarifying question but no '?' found"
-    return True, "no model recommended, clarifying question present"
+    if BADGE_TEXT in output.lower():
+        return False, "Step 0 should block but a RECOMMENDED AI badge was produced"
+    return True, "no model recommended, no badge, clarifying question present"
 
 
 def grade_one(item: dict, output: str) -> tuple[bool, str]:
@@ -124,6 +160,26 @@ def grade_one(item: dict, output: str) -> tuple[bool, str]:
     if not ok_x:
         return False, msg_x
 
+    # --- RECOMMENDED AI badge -------------------------------------------------
+    sides = badge_sides(output)
+    if len(sides) > 1:
+        return False, f"more than one RECOMMENDED AI badge ({', '.join(sides)}) -- exactly one is allowed"
+    expected_rec = item.get("expected_recommended")
+    badge_msg = ""
+    if expected_rec is not None:
+        want = expected_rec.strip().lower()
+        if want not in ("claude", "codex"):
+            return False, f"expected_recommended must be 'claude' or 'codex' (got '{expected_rec}')"
+        if not sides:
+            return False, f"no RECOMMENDED AI badge found; expected it on the {want} line"
+        if sides[0] != want:
+            return False, f"badge is on '{sides[0]}', expected '{want}'"
+        badge_msg = f"; recommended={sides[0]} (correct)"
+        ok_e, msg_e = grade_evidence(output, bool(item.get("expected_low_confidence")))
+        if not ok_e:
+            return False, msg_e
+        badge_msg += "; evidence ok"
+
     notes_ok = []
     for note_key, label in (("expected_shared_note", "shared note"), ("expected_claude_note", "Claude note")):
         needle = item.get(note_key)
@@ -132,7 +188,7 @@ def grade_one(item: dict, output: str) -> tuple[bool, str]:
         if needle:
             notes_ok.append(label)
 
-    evidence = f"{msg_c}; {msg_x}"
+    evidence = f"{msg_c}; {msg_x}{badge_msg}"
     if notes_ok:
         evidence += f"; notes ok ({', '.join(notes_ok)})"
     return True, evidence

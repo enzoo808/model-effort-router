@@ -7,10 +7,28 @@
 > mantığının ayrıntılı anlatımı olarak korunuyor; kural değişiminde bununla
 > `SKILL.md` elle senkron tutulmalı.
 
-Bir promptu verdiğinde **hangi ekosistemle** (Claude Code veya Codex/ChatGPT
-Plus), hangi modelle (Haiku 4.5 / Sonnet 5 / **Opus 5** / Opus 4.8 / Fable 5.1 /
-Mythos 5.1 / Luna / Terra / Sol / Sol Ultra / **Astra**) ve hangi efor
-seviyesiyle çalıştırman gerektiğini söyleyen router.
+Bir promptu verdiğinde hangi modelle (Haiku 4.5 / Sonnet 5 / **Opus 5** /
+Opus 4.8 / Fable 5.1 / Mythos 5.1 / Luna / Terra / Sol / Sol Ultra / **Astra**)
+ve hangi efor seviyesiyle çalıştırman gerektiğini **her iki ekosistem için ayrı
+ayrı** söyleyen, sonra **bu görev için hangisinin daha uygun olduğunu**
+işaretleyen router.
+
+```
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Codex: Terra · effort: xhigh
+Evidence: Agentic çok-dosyalı kodlama Claude'un en geniş yayımlanmış farkı
+          (Terminal-Bench 4.0: Opus 5 52.3 vs Sol 37.3); Codex +1 kademeyle
+          telafi ediyor.
+```
+
+Rozet **hesaplanır, alışkanlık değildir** — görev değişince yer değiştirir:
+
+```
+Claude: Haiku 4.5
+Codex: ✅ RECOMMENDED AI · Luna · effort: low
+Evidence: İkisi de mekanik sınıflandırma barını aşıyor; Luna token başına
+          ~%30 daha hızlı ve görev başına biraz daha ucuz.
+```
 
 **Kalibrasyon: iki ayrı abonelik kotası (Pro/Max + ChatGPT Plus).** Korunan
 kaynak dolar değil — Claude'un 5 saatlik penceresi **ve** ChatGPT Plus'ın
@@ -56,7 +74,13 @@ Mythos 5.1.
 | Terra | Günlük iş, dengeli ($2/$12) — varsayılan | Sonnet 5 |
 | **Sol** | GPT-5.6 amiral gemisi — kod/bilim/güvenlik ($5/$30); D=3 seçimi | Opus 5 |
 | **Sol Ultra** | Sol'da açılan Codex ürün modu (Plus+): ~4 paralel işbirlikçi ajan. Efor değeri değil | Net dengi yok — `ultracode`'dan daha güçlü |
-| **Astra** | GPT-6 amiral gemisi (`gpt-6-astra`, 3 Eyl 2026, $10/$50). Yeni üst katman — **yalnızca kapıyla seçilir**: saldırı-amaçlı siber *Daybreak erişimiyle*, 1000+ dosya, ≥1M-token bağlam. İndekslerde ≈ Opus 5 / Sol, Fable 5.1'in gerisinde; yalnızca bilgisayar kullanımında açık ara önde. Codex CLI v0.153.0+ | Opus 5 / Fable 5.1 (frontier) |
+| **Astra** | GPT-6 amiral gemisi (`gpt-6-astra`, $10/$50, 1.05M bağlam). **Yalnızca kapıyla seçilir**: saldırı-amaçlı siber *Daybreak erişimiyle*, 1000+ dosya, ≥1M-token bağlam, **GUI/bilgisayar kullanımı görevin kendisiyse**. Codex CLI v0.153.0+ | Opus 5 / Fable 5.1 (frontier) |
+| *Codex Spark 5.3* | Yalnızca-metin araştırma önizlemesi, anlık kodlama iterasyonu için. **Router bunu seçmez** — araştırma önizlemesi, yalnızca metin, benchmark kaydı yok | — |
+
+> **`max` Codex'te yalnızca Astra/Sol'da** (`learn.chatgpt.com/docs/models`,
+> 10 Eyl 2026). Terra ve Luna'da bu bir **capability limiti**, tercih değil —
+> router bir kural istese bile `Terra · max` üretemez. Çelişen tek kaynak için
+> `reference.md` §12.3.
 
 **Biyoloji-bitişik** iş hâlâ **Claude'a** yönlendirilir (`unverified — use Claude`)
 — Astra'nın kartı yalnızca siber. **Saldırı-amaçlı siber güvenlikte** standart
@@ -178,6 +202,51 @@ evals/                          Regresyon eval seti (routing + trigger) + koşu 
 
 ---
 
+## Ne değişti — iteration-16 (10 Eylül 2026)
+
+iteration-15'e kadar router bir promptun **R/D/W/C**'sini okuyup doğrudan model
+ve efora eşliyordu. R/D/W/C *kapsamı ve riski* çok iyi tarif eder ve **işin ne tür
+bir yetenek gerektirdiği hakkında hiçbir şey söylemez** — "derinlik 3" bir race
+condition avı için de, bir topoloji ispatı için de, bir sözleşme-çelişkisi
+incelemesi için de doğrudur, ama üçü farklı model ister.
+
+R/D/W/C duruyor ve işini yapıyor. Artık dört girdiden **biri**:
+
+```
+prompt
+  → kalite kapısı                        (Adım 0, değişmedi)
+  → sert kapılar: capability/güvenlik/erişilebilirlik  (Adım 1)
+  → task capability profile              (Adım 2, YENİ)
+  → R/D/W/C + kapsam                     (Adım 3)
+  → aday model × efor, her arm için      (Adım 4)
+  → benchmark kanıtı · karşılaştırılabilirlik · eşdeğerlik · dominance (Adım 5, YENİ)
+  → token & kota verimliliği             (Adım 5c/5d, YENİ)
+  → ekosistemler arası karşılaştırma → ✅ RECOMMENDED AI + Evidence (Adım 6, YENİ)
+  → kota korumaları                      (Adım 7)
+```
+
+Üç yeni kural **gerçek çıktıyı değiştiriyor** ve her biri eval setinde iddia
+ediliyor:
+
+- **`Sonnet 5 · max` domine edilmiş.** Artificial Analysis v4.3 (tek harness,
+  bütün kademeler karşılaştırılabilir): Sonnet 5 `max` **38, görev başına $5.09**;
+  Opus 5 `xhigh` **50, $4.88**. Hem güçlü hem ucuz. Bu yüzden yükseltme artık bir
+  **model** değişimi, efor değişimi değil — `Sonnet 5 → Opus 5`, aynı kademede.
+  Codex aynası: `Sol · high` (42, $0.81) `Terra · max`'ı (42, $1.40) domine eder,
+  üstelik Terra'da `max` zaten yok.
+- **`max`, `xhigh`'ın üstüne neredeyse hiçbir şey katmıyor.** Fable 5.1 iki
+  kademede de 53 ($7.63 → $5.98); Astra iki kademede de 53 ($3.26 → $2.31);
+  Opus 5 51'e 50. `max` artık `D=3 ∧ R=3` **artı** tek parçalı, bölünemez, özgün
+  bir tasarım/ispat kararı istiyor — sadece "zor ve geri dönüşsüz" yetmiyor.
+- **Codex kolunda computer-use kapısı.** Astra'nın Sol'a karşı yayımlanmış tek
+  net üstünlüğü. Roster notlarında anılıyordu ama kapı tablosunda satırı yoktu.
+
+Ayrıca **`✅ RECOMMENDED AI`** rozeti: capability'ye koşullu, tek ekosisteme
+çökmüyor (canlı eval setinde ikisi de kazanıyor), kanıt zayıfsa Evidence
+satırında `low-confidence` işareti taşıyor.
+
+---
+
 ## Karar mantığı
 
 **Adım 0 — Kalite kapısı.** Dört mekanik kontrol: (1) örnekle anlatılan ama
@@ -194,6 +263,11 @@ içerir ama içine gömülü bir belirsizlik taşır (bkz. `reference.md` §8,
 - Biyoloji-bitişik Ar-Ge → **Fable 5.1** (Opus 5'te fallback yok, direkt reddeder) / Codex `unverified — use Claude` (Astra'nın kartı yalnızca siber). Life Sciences Verification Program → Mythos 5.1.
 - Bağlam >200k → Claude'da Haiku elenir.
 - Frontier ölçek (1000+ dosya) → Claude: Fable 5.1 / **Codex: Astra** (iteration-15 — Codex kolunun artık kendi frontier kapısı var; doğrulanmış tek ≥1M pencere). ≥~1M-token külliyat "aynı anda yükle" → Codex: Astra.
+- **Bilgisayar kullanımı / GUI görevin kendisiyse** (tarayıcıyı ya da masaüstü uygulamasını uçtan uca sürmek) → **Codex: Astra** (iteration-16). Astra'nın Sol'a karşı yayımlanmış tek net üstünlüğü. "Tarayıcıya değen kod" için değil.
+
+**Sert kapılar weighted score'a çevrilmedi.** Capability limiti, güvenlik
+davranışı ve erişilebilirlik tercih değildir; verimlilikle takas edilmez.
+10 Eylül 2026'da hepsi yeniden doğrulandı ve hepsi korundu.
 
 **Adım 2 — Skorlama.** R, D, W, C — her biri 0–3. Her eksenin artık teşhis
 sorusu ve alan-bazlı çapası var (kodlama/yazı/araştırma/veri için "derinlik"
@@ -262,11 +336,38 @@ Sonnet 5'in üstünde gösteriyor (agentic coding +5.8, language +13.7 — bkz.
 `reference.md` §2.1); sonuç kritikse amiral gemisine (Opus 5 / Sol) yükselt.
 (Opus 5'te low/medium'un "israf" olmadığı bilgisi router çıktısını değiştirmez.)
 
-**Benchmark politikası.** Router benchmark rakamıyla model **seçmez** —
-leaderboard'lar (LiveBench / BenchAlign / AA Index, `reference.md` §2.1)
-yalnızca Kural 2/3'ün *yönünü* doğrular. Aggregate skorlar yanıltıcı olabilir:
-BenchAlign Sonnet 5'i kapsama artefaktıyla #39 gösteriyor, LiveBench tam
-kapsamda 76.0 (güçlü günlük sürücü).
+**Benchmark politikası (iteration-16'da değişti).** Eski kural
+*"router benchmark rakamıyla model seçmez"* idi. Doğru sezgi, yanlış mekanizma:
+kötü sayıları dışarıda tutmak için bütün sayıları dışarıda tutuyordu. Yerine:
+
+> **Kanıt yönü ve eşdeğerlik bandını belirler; capability profili hangi kanıtın
+> geçerli olduğunu belirler; verimlilik capability'nin açık bıraktığı berabereleri
+> bozar. Leaderboard sırası tek başına hiçbir şeye karar vermez.**
+
+Pratikte:
+- **Benchmark'lar capability'ye bağlı.** Saf matematik promptunda Terminal-Bench,
+  CursorBench ve SWE-bench ağırlığı **sıfır**. Aggregate zeka indeksi yalnızca üç
+  iş için kabul edilir (tek model içinde efor-kademesi karşılaştırması, token-yükü
+  karşılaştırması, hiç göreve-özgü satır yoksa `low-confidence` işaretli son çare)
+  ve göreve özgü bir benchmark'ı asla ezmez.
+- **Karşılaştırılabilirlik önce kontrol edilir.** İki rakam ancak benchmark,
+  sürüm, harness, araç erişimi, scaffold **ve** efor eşleşiyorsa karşılaştırılır.
+  Kayıttaki gerçek tuzaklar: OSWorld 2.0'ın partial/strict skorlaması aynı modelde
+  ~36 puan fark ediyor; AA index sürümleri birbiriyle karşılaştırılamaz;
+  "agentic coding" Sol'u Terminal-Bench 4.0'da 15, CursorBench'te 2.8, DeepSWE'de
+  1 puan geride gösteriyor.
+- **Efor kademeleri arasında asla interpolasyon yok.** Sonnet 5 `high` ve Sol
+  `xhigh` yayımlanmamış; tahmin değil, **bilinmiyor** olarak kaydedildi.
+- **Vendor benchmark'ları kullanılır ama iskonto edilir.** Anthropic'in lansman
+  notu GPT-5.6 Sol'u Anthropic'in kendi harness'ında ölçüyor — bu yön, kesin
+  sıralama değil; veride `vendor_run: true` etiketli.
+- **Çelişkiler ortalanmaz, yazılır.** Beş açık çelişki ve on bir "doğrulanamadı"
+  maddesi `skill/reference.md` §12.3–§12.4'te — 10 Eylül araştırma pass'i boyunca
+  WebSearch'ün kullanılamadığı ve bu yüzden Terminal-Bench / LiveBench / OSWorld /
+  SWE-bench **sahiplerinin** leaderboard'larının okunamadığı dahil.
+
+Bütün kayıtlar **[`skill/benchmarks.json`](skill/benchmarks.json)** içinde — 61
+satır, yayımlanmamış her alan `null`.
 
 ---
 
@@ -279,8 +380,19 @@ makine-okunur, tekrar koşturulabilir kopyası `evals/routing/evals.json`
 ile regresyon kontrolü yap (bkz. `evals/README.md`). **Taze/soğuk
 ajanlarla** (README'nin kendi bağlamını bilmeyen) koşturmak önemli — kural her
 değiştiğinde paralel cold agent'lar canlı eval'leri yeniden koşturuyor.
-**Son koşu: iteration-15 — 20/20.** Tüm iterasyonların gerekçesi
-`evals/README.md`'de.
+**Son koşu: iteration-16 — 30/30.** Grader artık Claude modeli · Claude eforu ·
+Codex modeli · Codex eforu · **rozetin hangi tarafta olduğu**
+(`expected_recommended`) · tam olarak bir rozet olduğu · `Evidence:` satırının
+var ve dolu olduğunu kontrol ediyor. Evidence **metni** kasıtlı olarak
+karşılaştırılmıyor (kırılgan olurdu); yalnız kuralın hedge istediği yerlerde
+`expected_low_confidence: true` ile "low-confidence" ifadesi aranıyor.
+Tüm iterasyonların gerekçesi `evals/README.md`'de.
+
+> ⚠️ **iteration-16'nın kendi eval'inin bilinen zayıflığı:** eski prompt'ların
+> bir kısmı (`d1`, `d5`, `f1`, `m1`, `d6`) `SKILL.md`'nin kendi örnek
+> bölümünde neredeyse birebir geçiyor, yani soğuk ajan kısmen hatırlıyor.
+> iteration-16'da eklenen 10 eval (`b1`, `t1`, `p1`, `e1`, `g1`, `h1`, `i1`,
+> `j1`, `k1`, `q1`) `SKILL.md`'de hiç geçmiyor — bunlar gerçek soğuk türetme.
 
 > **1–2 Eyl 2026 — Fable 5.1 / Mythos 5.1 güncellemesi + taze-ajan eval koşusu:**
 > model kadrosu, siber güvenlik kapısı (savunma/saldırı ayrımı), fiyat/efor
@@ -397,6 +509,16 @@ değiştiğinde paralel cold agent'lar canlı eval'leri yeniden koşturuyor.
 | a2 | Bu 1.2M-token repoyu tümüyle bağlama yükle, payment modülünün tüm call-site'larını haritala | **Claude: Sonnet 5 · medium** · **Codex: Astra · medium** | iteration-15 — Codex ≥1M bağlam kapısı → Astra; Claude'da C=3∧D=1 → Sonnet (id 13 analoğu) |
 | f1 | Bu 6000 dosyalık legacy Java monolitini bağımsız servislere böl | **Claude: Fable 5.1 · max** · **Codex: Astra · max** + onay notu | Frontier kapısı iki arm'da; "servislere böl" → R=3; D=3∧R=3 → max |
 | 5b | Bu 180 servisin kodunu auth bypass açığı için denetle (exploit yazma) | **Claude: Sonnet 5 · ultracode** · **Codex: Sol Ultra · xhigh** | Savunma denetimi — offensive kapı **tetiklenmez** (Fable 5.1 sonrası). Adversarial zafiyet avı = D=3, 180 birim bağımsız = W=3 + Sol Ultra; efor D=3 → xhigh |
+| b1 | 40 dosyada payment modülünü yeni idempotency-key API'sine taşı, çağıranları güncelle, testleri geçir | **Claude: Sonnet 5 · high · ✅** · **Codex: Terra · xhigh** | it-16 — baskın capability `agentic-code`; rozet agregat indeksten değil Terminal-Bench 4.0'dan geliyor |
+| t1 | Container build yalnız release CI runner'da patlıyor; container içinde tekrarla, kök nedeni bul, Dockerfile + CI workflow'u düzelt | **Claude: Opus 5 · xhigh · ✅** · **Codex: Sol · xhigh** | it-16 — `terminal-tool`; +1 kademe YOK: zor kısım teşhis, düzeltme lokal |
+| p1 | Bu greedy scheduling sezgiselinin worst-case makespan'ının 4/3 içinde olduğunu ispatla ya da karşı örnek ver; kod yazma | **Claude: Opus 5 · xhigh · ✅** · **Codex: Sol · xhigh** | it-16 — `deep-reasoning`; **kodlama benchmark'larının ağırlığı sıfır**; +1 kademe yok |
+| e1 | 900 sayfa regülasyon dosyasını oku, 2023–2026 açıklama yükümlülüğü değişimini tek memo'ya yaz | **Claude: Sonnet 5 · high · ✅** · **Codex: Terra · high** | it-16 — `long-context` + `knowledge-work`; C=3 modeli yükseltmez, GDPval rozeti belirler |
+| g1 | Tedarikçinin masaüstü ERP istemcisini staging'de 14 adımlık ay-sonu kapanışında sür, doğrulama hatalarını çöz, mizanı dışa aktar | **Claude: Sonnet 5 · high** · **Codex: Astra · high · ✅** | it-16 — **Codex computer-use kapısı**; rozet Codex'te ve Evidence `low-confidence` demeli (OSWorld sürüm/skorlama uyuşmazlığı) |
+| h1 | Ödeme defterimizin çok-bölgeli failover ve veri tutarlılığı modelini sıfırdan tasarla; gelecek çeyrek canlıya çıkıyor, geri dönüşü yok | **Claude: Opus 5 · max · ✅** · **Codex: Sol · max** + onay notu | it-16 — token tasarrufu kaliteyi **ezmemeli**; E3 burada `max`'ı kısmıyor (tek parçalı özgün tasarım) |
+| i1 | 120 ilgisiz tedarikçinin sub-processor şartlarını DPA'mızla uzlaştır, ihlal var mı karar ver; hukuk her flag'i inceliyor | **Claude: Sonnet 5 · ultracode** · **Codex: Sol Ultra · xhigh · ✅** | it-16 — `parallel-independent`; Claude'un kanıtlanmış üstünlüğü olmadığı yerde Ultra mekanizması rozeti alır |
+| j1 | 60 taranmış faturayı defter dökümüyle uzlaştır; kalemler farklı yazılmış, bazıları birden çok kayda bölünmüş | **Claude: Sonnet 5 · high · ✅** · **Codex: Terra · high** | it-16 — **kanıt fakiri**; sahte üstünlük iddia edilmemeli, Evidence `low-confidence` demeli |
+| k1 | Bu CLI komutuna, yapacağını yapmak yerine yazdıran bir `--dry-run` bayrağı ekle | **Claude: Sonnet 5 · medium · ✅** · **Codex: Terra · medium** | it-16 — en pahalı model refleksi yok; D=1 → capability satırları atlanır, verimlilik karar verir |
+| q1 | **Kritik, eksik kaynakla yapılmasın:** bu prod migration script'leri bu gece incelemesiz çalışacak — sessiz veri kaybı var mı bak | **Claude: Opus 5 · xhigh · ✅** · **Codex: Sol · xhigh** + onay notu | it-16 — m1 ile aynı profil + açık yükseltme talebi. **Yükseltme MODEL değişimi, efor değişimi değil**; `max` yine çıkmaz (E3) |
 | 6 | Şu kodu düzelt | Model önerme, netleştir | Adım 0 (hedef somut değil) |
 | 6b | "Bir günde 1000 üretim olursa 500'ü aynı güne, 500'ü ertesi güne yansısın" | Model önerme, netleştir | Adım 0 (kural örnekle anlatılmış, genellenmemiş — canlı kullanıcı testi) |
 | 7 | Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek | **Sonnet 5 · low** + insan onayı notu | R=3∧D=0 — model/efor **değişmez** (D takip eder), sadece onay notu eklenir |
@@ -503,8 +625,23 @@ Router bunu §2/§7'de (`reference.md`) açıkça işaretliyor ve rakamları sad
 - Her MCP sunucusu sabit 18k token — araç sayısıyla orantılı.
 - GDPval'de "Sonnet 5 Opus'u geçti" — 3 Elo anlamlı değil.
 
-Sonnet 5 promosyonu **31 Ağustos 2026**'da bitti ($2/$10 → $3/$15); Opus/Sonnet
-kota oranı 1.67×.
+⚠️ **10 Eyl 2026 düzeltmesi.** Sonnet 5 **$2/$10** ve öyle kalıyor — 1 Eylül'de
+$3/$15'e çıkması planlanan zam **iptal edildi**, $2/$10 artık standart fiyat
+(`platform.claude.com/.../pricing`). Bu repo'nun önceki sürümleri $3/$15 yazıyordu;
+yanlıştı. Opus/Sonnet kota oranı **1.67× değil 2.5×**, bu da bariyeri aşan her
+işte Sonnet 5'te kalmanın gerekçesini güçlendiriyor.
+
+**Diğer 10 Eylül düzeltmeleri** (ayrıntı: `reference.md` §12.2):
+- "Anthropic Sonnet 5 için `max` tavsiyesi yayımlamıyor" — **yayımlıyor**.
+  `Sonnet 5 · max` yasağı duruyor ama gerekçesi artık ölçülmüş dominance.
+- `ultracode` yalnızca oturum-içi değil; settings anahtarı ve
+  `CLAUDE_CODE_EFFORT_LEVEL` var.
+- Codex `max` her katmanda değil, **Astra/Sol'a özel**.
+- Astra'da Ultra modu **belgeli** (eskiden "doğrulanmadı" idi).
+- Taşınan AA Index rakamları (66/63/62/60) farklı bir index sürümünden;
+  güncel v4.3'te 53/51/48. **Karıştırılmamalı.**
+- "Codex Coding Agent Index 67/70" izi sürülemedi → Katman C'ye düşürüldü,
+  artık hiçbir kuralın dayanağı değil.
 
 ---
 

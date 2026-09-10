@@ -17,8 +17,16 @@ if (-not (Test-Path $src)) {
 if (Test-Path $staging) { Remove-Item -Recurse -Force $staging }
 $stageDir = Join-Path $staging $pkgName
 New-Item -ItemType Directory -Force -Path $stageDir | Out-Null
-Copy-Item -Path (Join-Path $src 'SKILL.md') -Destination $stageDir
-Copy-Item -Path (Join-Path $src 'reference.md') -Destination $stageDir
+# Every file the skill ships with. Keep this list in sync with skill/ --
+# a missing file here silently produces a broken claude.ai upload.
+$payload = @('SKILL.md', 'reference.md', 'benchmarks.json')
+foreach ($file in $payload) {
+    $path = Join-Path $src $file
+    if (-not (Test-Path $path)) {
+        throw "Missing skill file: $path"
+    }
+    Copy-Item -Path $path -Destination $stageDir
+}
 
 New-Item -ItemType Directory -Force -Path $distDir | Out-Null
 if (Test-Path $zipPath) { Remove-Item $zipPath }

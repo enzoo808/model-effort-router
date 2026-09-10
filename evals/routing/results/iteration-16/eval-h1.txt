@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Opus 5 · effort: max
+Codex: Sol · effort: max
+Evidence: Low-confidence — tool-less from-scratch architecture has no cross-ecosystem row, so AA v4.3 aggregate (Opus 5 max 51 vs Sol max 47) is the only signal, and a single indivisible novel design at R=3 is the one case where max still earns its quota.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
+Do not apply without human review.

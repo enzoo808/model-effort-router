@@ -1,6 +1,6 @@
 # model-effort-router
 
-**Paste a task. Get told which model and effort level to run it on — for both Claude and Codex/ChatGPT, in two lines.** It does *not* run the task; it routes it.
+**Paste a task. Get told which model and effort level to run it on — for both Claude and Codex/ChatGPT — and which of the two is actually the better fit for *that* task.** It does *not* run the task; it routes it.
 
 Installed as a Claude Code / claude.ai skill invoked with `/model-secici`.
 
@@ -8,28 +8,28 @@ Installed as a Claude Code / claude.ai skill invoked with `/model-secici`.
 You:    /model-secici  Move the repo's auth flow to OAuth2
 
 model-secici:
-  Claude: Sonnet 5 · effort: high
+  Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
   Codex:  Terra · effort: xhigh
+  Evidence: Agentic multi-file coding is Claude's strongest published margin
+            (Terminal-Bench 4.0: Opus 5 52.3 vs Sol 37.3); Codex takes a +1
+            notch to compensate.
 ```
 
-(Codex runs a notch hotter here: it's multi-step code restructuring, and
-independent benchmarks put the GPT-5.6 line behind Claude on agentic coding
-specifically — so the router compensates with effort.)
-
-That's the whole idea. One more:
+The badge is **computed, not habitual** — swap the task and it moves:
 
 ```
-You:    /model-secici  Find the race condition that flakes in prod sometimes
+You:    /model-secici  Label these 200 customer reviews as positive/negative
 
 model-secici:
-  Claude: Opus 5 · effort: max
-  Codex:  Sol · effort: max
-  Do not apply without human review.
+  Claude: Haiku 4.5
+  Codex:  ✅ RECOMMENDED AI · Luna · effort: low
+  Evidence: Both clear the bar for mechanical classification, and Luna runs
+            ~30% faster per token at slightly lower cost per task.
 ```
 
-> The skill body (`skill/SKILL.md` + `skill/reference.md`) and its output are
-> English. It routes prompts in any language. 🇹🇷 A longer Turkish walkthrough of
-> the decision logic is in **[README.tr.md](README.tr.md)**.
+> The skill body (`skill/SKILL.md` + `skill/reference.md` + `skill/benchmarks.json`)
+> and its output are English. It routes prompts in any language. 🇹🇷 A longer
+> Turkish walkthrough of the decision logic is in **[README.tr.md](README.tr.md)**.
 
 ---
 
@@ -40,25 +40,101 @@ the most expensive model** and burning your rate-limit window — Claude's 5-hou
 quota *and* ChatGPT Plus's 3-hour / weekly windows. Those are the protected
 resource, not dollars.
 
-`model-secici` scores every task on four axes (risk, depth, breadth, context) and
-maps that to the *cheapest model that actually clears the bar*, on **both**
-ecosystems at once. When in doubt it rounds **down**.
+The decision principle, in one sentence:
 
-It's a ~640-line decision procedure, not a vibe. Every rule is sourced from
-`platform.claude.com` / `openai.com` docs, every uncertain claim is labelled, and
-there's a deterministic regression eval suite (**20/20**, cold-agent re-run —
-iteration-15: adds **GPT-6 Astra** to the Codex arm as a narrow gated pick — the
-"Critical"-cyber offensive gate with Daybreak access, a new 1000+-file / ≥1M-token
-Codex frontier gate, and the flagship `max` list — without making it the default).
+> **Select the lowest-quota model × effort combination that stays on the
+> task-specific capability frontier.** Prefer the stronger candidate when the
+> task-relevant performance difference is meaningful; prefer the more
+> token-efficient candidate when capability sits inside a defensible equivalence
+> band.
+
+Not "always cheapest". Not "always strongest". Not "highest benchmark score wins".
+
+## What changed in iteration-16
+
+Through iteration-15 the router read a prompt's **R/D/W/C** (risk, depth, width,
+context) and mapped that straight to a model and an effort level. R/D/W/C
+describes *scope and stakes* very well and *nothing about what kind of ability
+the work needs* — "depth 3" is equally true of a race-condition hunt, a topology
+proof and a contract-conflict review, and those three want different models.
+
+R/D/W/C is still here and still does its job. It is now one input among four:
+
+```
+prompt
+  → quality gate                     (Step 0, unchanged)
+  → hard gates: capability/safety/availability   (Step 1)
+  → task capability profile          (Step 2, NEW)
+  → R/D/W/C + scope                  (Step 3)
+  → candidate model × effort, per arm (Step 4)
+  → benchmark evidence · comparability · equivalence · dominance (Step 5, NEW)
+  → token & quota efficiency         (Step 5c/5d, NEW)
+  → cross-ecosystem comparison → ✅ RECOMMENDED AI + Evidence line (Step 6, NEW)
+  → quota guards                     (Step 7)
+```
+
+Three of the new rules change real outputs, and each is asserted in the eval set:
+
+- **`Sonnet 5 · max` is dominated.** Artificial Analysis v4.3 (one harness, all
+  rungs comparable): Sonnet 5 at `max` scores **38 for $5.09/task**; Opus 5 at
+  `xhigh` scores **50 for $4.88**. Stronger *and* cheaper. So escalation is now a
+  **model** change, not an effort change — `Sonnet 5 → Opus 5`, at the same rung.
+  The Codex mirror: `Sol · high` (42, $0.81) dominates `Terra · max` (42, $1.40),
+  and `max` isn't offered on Terra at all.
+- **`max` over `xhigh` buys almost nothing.** Fable 5.1 scores 53 at both rungs
+  ($7.63 → $5.98); Astra 53 at both ($3.26 → $2.31); Opus 5 51 vs 50. `max` now
+  requires `D=3 ∧ R=3` **and** a single indivisible novel-design or formal
+  decision — not merely "hard and irreversible".
+- **A computer-use gate on the Codex arm.** Astra's one clear published lead over
+  Sol. It was named in the roster notes but the gate table never had the row.
+
+## Data honesty
+
+The rule this repo used to lead with was *"the router never selects a model from
+a benchmark number."* That was the right instinct and the wrong mechanism: it
+kept bad numbers out by keeping all numbers out. The replacement:
+
+> **Evidence sets the direction and the equivalence band; the capability profile
+> decides which evidence applies; efficiency breaks the ties capability leaves
+> open. A leaderboard position on its own decides nothing.**
+
+What that buys in practice:
+
+- **Benchmarks are bound to capabilities.** A pure maths prompt gives
+  Terminal-Bench, CursorBench and SWE-bench a weight of **zero**. An aggregate
+  intelligence index is admitted for exactly three jobs (effort-rung comparisons
+  within one model, token-load comparisons, and a last-resort tie-break marked
+  `low-confidence`) and never overrides a task-specific benchmark.
+- **Comparability is checked before comparing.** Two numbers count as comparable
+  only when benchmark, version, harness, tool access, scaffold *and* effort
+  match. Real traps already in the record: OSWorld 2.0's partial and strict
+  scoring differ by ~36 points on the same model; AA index versions aren't
+  comparable across versions; "agentic coding" puts Sol 15 points behind Opus 5
+  on Terminal-Bench 4.0, 2.8 on CursorBench and 1 on DeepSWE.
+- **No interpolation between effort rungs, ever.** Sonnet 5 at `high` and Sol at
+  `xhigh` simply aren't published. They're recorded as unknown, not estimated.
+- **Vendor benchmarks are used but discounted.** Anthropic's launch note measures
+  GPT-5.6 Sol in Anthropic's own harness. That's direction, not a settled
+  ranking, and it's labelled `vendor_run: true` in the data.
+- **Conflicts are recorded, not averaged away.** Five open conflicts and eleven
+  explicit non-findings are written down in `skill/reference.md` §12.3–§12.4 —
+  including that WebSearch was unavailable for the whole 10 Sep research pass, so
+  the Terminal-Bench, LiveBench, OSWorld and SWE-bench *owner* leaderboards could
+  not be read.
+
+Every record — benchmark, version, model, effort, harness, tool access, scaffold,
+trials, dispersion, cost/task, date, source, source tier, comparability group —
+is in **[`skill/benchmarks.json`](skill/benchmarks.json)**, 61 rows, `null` wherever
+a figure isn't published.
 
 ---
 
 ## Install
 
 It's a [Claude skill](https://docs.claude.com/en/docs/claude-code/skills) —
-two Markdown files (`skill/SKILL.md` + `skill/reference.md`) that live in a
-`model-secici/` folder. "Installing" is just putting that folder where Claude
-looks for skills.
+three files (`skill/SKILL.md`, `skill/reference.md`, `skill/benchmarks.json`)
+that live in a `model-secici/` folder. "Installing" is just putting that folder
+where Claude looks for skills.
 
 ```bash
 git clone https://github.com/enzoo808/model-effort-router.git
@@ -80,7 +156,7 @@ cd model-effort-router
 **Or by hand (any OS)** — the scripts just do this:
 ```bash
 mkdir -p ~/.claude/skills/model-secici
-cp skill/SKILL.md skill/reference.md ~/.claude/skills/model-secici/
+cp skill/SKILL.md skill/reference.md skill/benchmarks.json ~/.claude/skills/model-secici/
 ```
 
 Start a new Claude Code session, then:
@@ -88,7 +164,7 @@ Start a new Claude Code session, then:
 /model-secici  <your task>
 ```
 It also triggers on its own when you ask things like "which model should I use
-for this?".
+for this?" or "which AI is better for this?".
 
 Prefer it project-scoped instead of user-scoped? Put the `model-secici/` folder
 under `.claude/skills/` in your repo.
@@ -113,7 +189,7 @@ Project, and it's the Turkish variant — an English port is welcome.)
 
 There's no skill mechanism on the Codex side — the router just produces the
 `Codex:` line for you to act on. Run `model-secici` on the Claude side (or the
-claude.ai fallback) and read both lines.
+claude.ai fallback) and read both lines plus the badge.
 
 ---
 
@@ -121,30 +197,38 @@ claude.ai fallback) and read both lines.
 
 | Step | What happens |
 |---|---|
-| **0 · Quality gate** | Four mechanical checks (rule stated by example but not generalised? silent-wrong-result risk? concrete target? two plausible readings?). If any fires → **no model, ask a clarifying question.** |
-| **1 · Hard gates** | Sub-second / high-volume → **Haiku**. Offensive security (exploit, pentest, binary scanning) → **Opus 4.8 · xhigh** / Codex `use Claude` (or `Astra` w/ Daybreak). Biology R&D → **Fable 5.1** / Codex `unverified`. >200k context → drops Haiku. 1000+ files → **Fable 5.1** / Codex **Astra**. ≥1M-token Codex context → **Astra**. |
-| **2 · Score** | **R**isk, **D**epth, **W**idth, **C**ontext — each 0–3, each with a diagnostic question and a worked-example library. |
-| **3 · Map** | Model ← `max(D, C)` — **not** risk. At `D=3`: flagship (Opus 5 / Sol) only for Rule-2 work (agentic code / math / tool-less); analytical/research/review D=3 stays mid-tier (Sonnet 5 / Terra). Effort ← `D` (`0→low · 1→medium · 2→high · 3→xhigh`); `D=3∧R=3→max` **flagship-only** (Opus 5 / Opus 4.8 / Fable 5.1 / Sol / Astra) — mid-tier caps at `xhigh` and the review note carries the stakes. Claude modifiers: `ultracode` (`W=3 ∧ >30 min ∧ ¬(D=3∧R=3)`), `opusplan`. Codex modifier: **`+1` effort notch for agentic multi-step coding** (the one axis LiveBench puts the GPT-5.6 line behind Claude — Terra/Sol only, never Astra). |
-| **4 · Quota guards** | `R=3` adds a human-review note (never changes the model). MCP-server bloat, auto-accept, alias drift warnings. |
+| **0 · Quality gate** | Four mechanical checks (rule stated by example but not generalised? silent-wrong-result risk? concrete target? two plausible readings?). If any fires → **no model, no badge, ask a clarifying question.** |
+| **1 · Hard gates** | Capability / safety / availability, never traded against efficiency. Sub-second or high-volume → **Haiku** / **Luna**. Offensive security → **Opus 4.8 · xhigh** / Codex `use Claude` (or `Astra` w/ Daybreak). Biology R&D → **Fable 5.1** / Codex `unverified`. >200k context → drops Haiku. 1000+ files → **Fable 5.1** / **Astra**. ≥1M-token Codex context → **Astra**. GUI-driving is the task → **Astra**. |
+| **2 · Capability profile** | Name the one or two capabilities the task actually needs — `agentic-code`, `terminal-tool`, `deep-reasoning`, `knowledge-work`, `research-synthesis`, `long-context`, `computer-use`, `science`, `workflow-automation`, `doc-data-understanding`, `parallel-independent`, `latency-volume`. This is what makes benchmark evidence applicable *or not*. |
+| **3 · Score scope & stakes** | **R**isk, **D**epth, **W**idth, **C**ontext — each 0–3, each with a diagnostic question and a worked-example library. |
+| **4 · Candidate model × effort** | Model ← `max(D, C)` and the capability profile — **not** risk. Flagship only at `D=3` *and* a capability on the flagship list. Effort ← `D` (`0→low · 1→medium · 2→high · 3→xhigh`). Claude modifiers: `ultracode`, `opusplan`. Codex modifier: `+1` notch for agentic multi-step coding (Terra/Sol only, never Astra). |
+| **5 · Evidence, equivalence, efficiency** | Check comparability. Decide "meaningfully better" from a published CI first (Terminal-Bench 4.0 ships 95% whiskers; TB-Science ships SE ±3.5–4.5), then repeated-trial variance, then — with neither — refuse to read a small gap as a win. Widen the bar when `R=3`. Then apply dominance: reasoning tokens → output tokens → total tokens → tokens per *successful* task → quota pressure → cost → latency. |
+| **6 · `✅ RECOMMENDED AI`** | Compare the two arms in order: hard gate → task-relevant capability → benchmark confidence → near-parity → token/quota efficiency → cost → latency. Emit one badge and one `Evidence:` sentence naming at most 1–2 signals. |
+| **7 · Quota guards** | `R=3` adds a human-review note (never changes the model). Escalation is a model change, not an effort change. MCP-server bloat, auto-accept, alias drift warnings. |
 
-Key design choice: **risk raises human oversight, not model tier.** The old
-approach forced risky work onto the priciest model, then walked it back with a
-second rule — convoluted, and it collapsed every prompt onto the same two models.
+Two design choices carried over unchanged, because they still hold: **risk raises
+human oversight, not model tier**, and **when in doubt, round down**.
 
 ---
 
 ## The rosters
 
-**Claude (as of 1 Sep 2026):**
+**Claude (verified 10 Sep 2026):**
 
 | Model | Role | $/Mtok in·out |
 |---|---|---|
-| Haiku 4.5 | speed / volume, no effort param | $1 / $5 |
-| **Sonnet 5** | daily driver, default starting point | $3 / $15 |
+| Haiku 4.5 | speed / volume, no effort param, 200k context | $1 / $5 |
+| **Sonnet 5** | daily driver, default starting point | **$2 / $10** |
 | **Opus 5** | flagship — complex agentic code, enterprise | $5 / $25 |
 | Opus 4.8 | legacy — kept **only** for the offensive-security gate | $5 / $25 |
 | **Fable 5.1** | frontier scale, long-horizon autonomy, biology-adjacent R&D | $10 / $50 (cache reads ¼: $0.25) |
 | Mythos 5.1 | = Fable 5.1 with permissive safeguards, **Project Glasswing invite only** | — |
+
+> ⚠️ **Correction, 10 Sep 2026.** Earlier versions of this repo recorded Sonnet 5
+> at **$3/$15** from 1 September, on the basis that its $2/$10 launch price was
+> introductory. Anthropic **cancelled** that increase — $2/$10 is now the standard
+> price. The Opus 5 : Sonnet 5 quota ratio is therefore **2.5×**, not 1.67×,
+> which widens the case for staying on Sonnet 5 wherever it clears the bar.
 
 **Codex / ChatGPT (GPT-5.6 family + GPT-6 Astra):**
 
@@ -153,28 +237,32 @@ second rule — convoluted, and it collapsed every prompt onto the same two mode
 | Luna | speed / volume, cheapest. Codex CLI default | Haiku 4.5 |
 | Terra | balanced daily driver | Sonnet 5 |
 | **Sol** | GPT-5.6 flagship — code / science / security; the D=3 pick | Opus 5 |
-| **Sol Ultra** | a Codex *mode* on Sol (Plus+): ~4 collaborating agents in parallel | stronger than Claude's `ultracode` |
-| **Astra** | GPT-6 flagship (`gpt-6-astra`). New top tier — **gated pick only**: offensive-sec *with Daybreak access*, 1000+ files, ≥1M-token context. ≈ Opus 5 / Sol on the indices, behind Fable 5.1 | Opus 5 / Fable 5.1 (frontier) |
+| **Sol Ultra** | a Codex *mode* on Sol (Plus+): ~4 collaborating agents in parallel. Also available on Astra | stronger than Claude's `ultracode` |
+| **Astra** | GPT-6 flagship (`gpt-6-astra`), 1.05M context. **Gated pick only**: offensive-sec *with Daybreak*, 1000+ files, ≥1M-token context, GUI-driving | Opus 5 / Fable 5.1 (frontier) |
+| *Codex Spark 5.3* | text-only research preview for near-instant coding iteration — **the router does not select it** (no benchmark record, text-only) | — |
 
-Biology-R&D prompts still route to Claude (`unverified — use Claude`) — Astra's
-system card is cyber-only. For **offensive security**, standard Codex access
-hard-stops the task, so the router says `use Claude`; with **Daybreak Blue**
-access it routes to `Astra · xhigh` (mirrors Claude's Mythos 5.1 / Glasswing).
+> **`max` is Astra/Sol only** on Codex — a capability limit, not a preference.
+> Biology-R&D prompts still route to Claude (`unverified — use Claude`). For
+> **offensive security**, standard Codex access hard-stops the task, so the
+> router says `use Claude`; with **Daybreak Blue** access it routes to
+> `Astra · xhigh`.
 
 ---
 
 ## Examples
 
-| Task | Claude | Codex |
-|---|---|---|
-| Label 200 customer reviews positive/negative | `Haiku 4.5` | `Luna · low` |
-| Add dark mode to this React component | `Sonnet 5 · medium` | `Terra · medium` |
-| Add cursor-based pagination to this API | `Sonnet 5 · medium` | `Terra · medium` |
-| Audit this genomics pipeline's variant-calling logic | `Fable 5.1 · high` | `unverified — use Claude` |
-| Pentest this 180-service environment, build auth-bypass chains | `Opus 4.8 · ultracode` | `use Claude` (standard) · `Astra · xhigh` (Daybreak) |
-| Split this 6000-file legacy monolith into services | `Fable 5.1 · max` + review note | `Astra · max` + review note |
-| Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5 · low` + review note | `Terra · low` + review note |
-| "Fix this code" | *(no model — asks: which code? broken how? done = ?)* | |
+| Task | Claude | Codex | Recommended |
+|---|---|---|---|
+| Label 200 customer reviews positive/negative | `Haiku 4.5` | `Luna · low` | **Codex** — both clear the bar; Luna is faster and cheaper |
+| Add a `--dry-run` flag to this CLI command | `Sonnet 5 · medium` | `Terra · medium` | **Claude** — D=1, so efficiency decides; $2/$10 vs $2/$12 |
+| Refactor the payment module across 40 files, make the tests pass | `Sonnet 5 · high` | `Terra · xhigh` | **Claude** — Terminal-Bench 4.0 agentic-code margin |
+| Prove this scheduling bound, no code | `Opus 5 · xhigh` | `Sol · xhigh` | **Claude**, low-confidence — coding benchmarks weigh zero here |
+| Drive the desktop ERP client through month-end close | `Sonnet 5 · high` | `Astra · high` | **Codex**, low-confidence — OSWorld computer-use lead |
+| Check 120 unrelated vendors' DPA compliance | `Sonnet 5 · ultracode` | `Sol Ultra · xhigh` | **Codex** — genuine parallel-agent mechanism, no Claude capability edge |
+| Audit this genomics pipeline's variant-calling logic | `Fable 5.1 · high` | `unverified — use Claude` | **Claude** — availability gate |
+| Split this 6000-file legacy monolith into services | `Fable 5.1 · max` + review note | `Astra · max` + review note | **Claude** — the one case where `max` still earns its quota |
+| Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5 · low` + review note | `Terra · low` + review note | **Claude** |
+| "Fix this code" | *(no model, no badge — asks: which code? broken how? done = ?)* | | |
 
 ---
 
@@ -185,30 +273,24 @@ by `evals/routing/grade_routing.py` (pure regex, no LLM). The protocol: spin up
 **cold agents** that read `skill/SKILL.md` fresh and route each prompt; grade the
 raw output.
 
-Latest run (**iteration-15**, cold agents against the current `SKILL.md`):
-**20/20 auto-graded pass** (adds `a1` Daybreak→Astra, `a2` Codex frontier-context
-→Astra; `d3`/`f1` updated for the GPT-6 Astra gates). Run history and the
-reasoning behind each rule change is in [`evals/README.md`](evals/README.md).
+The grader checks the Claude model, the Claude effort, the Codex model, the Codex
+effort, **which side carries the badge** (`expected_recommended`), and that an
+`Evidence:` line is present and non-trivial. It deliberately does **not** compare
+the Evidence wording — that line is free-form by design — but it can require it
+to flag `low-confidence` where the rules say it must.
 
----
-
-## Data honesty
-
-The single most important rule in this repo: **don't inherit an old model's
-benchmark numbers onto a new one.** Leaderboards (LiveBench, BenchLM BenchAlign,
-Artificial Analysis) only confirm the *direction* of a routing rule — the router
-never selects a model from a benchmark score. Aggregate scores mislead
-(BenchAlign ranks Sonnet 5 at #39 purely from thin benchmark coverage; LiveBench,
-with full coverage, puts it at 76.0). See `skill/reference.md` §2 / §7 / §9 for
-every disputed number and why it's flagged.
+Run history and the reasoning behind every rule change is in
+[`evals/README.md`](evals/README.md).
 
 ---
 
 ## Contributing
 
-Corrections to model specs, prices, effort defaults, or safety-fallback behaviour
-are very welcome — cite the primary source. Rule changes must keep the eval suite
-green (`python evals/routing/grade_routing.py --results-dir <new iteration>`).
+Corrections to model specs, prices, effort defaults, safety-fallback behaviour or
+**benchmark records** are very welcome — cite the primary source, and add the
+harness/effort/date alongside the number so the comparability check can use it.
+Rule changes must keep the eval suite green
+(`python evals/routing/grade_routing.py --results-dir <new iteration>`).
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License

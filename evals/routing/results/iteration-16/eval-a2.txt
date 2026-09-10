@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: medium
+Codex: Astra · effort: medium
+Evidence: Shallow long-context mapping — Sonnet 5 carries a 1M window at $2/$10, while the Codex arm must reach for Astra at $10/$50 with a 2× surcharge over 272k input tokens.
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

@@ -32,6 +32,29 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 
+SKILL_FILENAMES = {"SKILL.md", "reference.md", "benchmarks.json"}
+
+
+def _is_skill_file(path: str) -> bool:
+    """True only for a Read that actually opens the skill.
+
+    The slug appears in other paths on a developer machine -- most notably
+    Claude Code's own auto-memory file (`.../memory/model-secici-project.md`),
+    which has nothing to do with the skill's `description` firing. Counting
+    those as triggers produced two spurious false positives on 2026-09-10.
+    A real trigger reads a file inside a skill directory or the temp probe
+    command this script writes.
+    """
+    if not path:
+        return False
+    norm = path.replace("\\", "/").lower()
+    if "/memory/" in norm:
+        return False
+    if "/skills/" in norm or "/commands/" in norm:
+        return True
+    return norm.rsplit("/", 1)[-1] in {f.lower() for f in SKILL_FILENAMES}
+
+
 def parse_skill_md(skill_dir: Path) -> tuple[str, str]:
     """Return (name, description) from skill_dir/SKILL.md frontmatter."""
     text = (skill_dir / "SKILL.md").read_text(encoding="utf-8")
@@ -96,6 +119,9 @@ def run_one(query: str, skill_name: str, desc: str, project_root: str, timeout: 
                 blob = json.dumps(inp)
                 target = inp.get("skill") or inp.get("file_path") or blob[:80]
                 if name in ("Skill", "Read") and (clean in blob or skill_name in blob):
+                    if name == "Read" and not _is_skill_file(inp.get("file_path") or ""):
+                        # A Read that merely mentions the slug is not a trigger.
+                        return False, f"first tool={name}({target}) [not a skill file]"
                     return True, f"triggered via {name}({target})"
                 return False, f"first tool={name}({target})"
         return False, "no tool_use"

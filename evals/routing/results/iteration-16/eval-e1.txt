@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Codex: Terra · effort: high
+Evidence: A finished memo off a 900-page corpus is knowledge-work at shallow depth — Claude leads GDPval-AA v2 (Opus 5 1824 vs Sol 1711), and Sonnet 5's 1M window carries the corpus without reaching for a flagship.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

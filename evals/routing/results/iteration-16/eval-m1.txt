@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: xhigh
+Codex: Terra · effort: xhigh
+Evidence: D=3 review outside the flagship capability list keeps both arms mid-tier; max is dominated on both (Opus 5 xhigh outscores Sonnet 5 max at lower cost), so the review note carries the stakes.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.

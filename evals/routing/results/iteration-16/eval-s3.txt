@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: low
+Codex: Terra · effort: low
+Evidence: A live but reversible flag toggle is D=0 with R=2, which keeps both arms on their daily driver, and Sonnet 5 undercuts Terra on output tokens ($2/$10 vs $2/$12).
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

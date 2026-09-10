@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: xhigh
+Codex: Terra · effort: xhigh
+Evidence: Single-artefact adversarial review is a D=3 review outside the flagship capability list, so both arms stay mid-tier and the lighter daily driver decides (Sonnet 5 $2/$10 vs Terra $2/$12) — low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

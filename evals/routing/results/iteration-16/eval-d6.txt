@@ -1,0 +1,6 @@
+Claude: ✅ RECOMMENDED AI · opusplan · plan: max · execute: medium
+⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.
+Codex: Sol · effort: max
+Evidence: Difficulty is front-loaded into one indivisible auth-boundary design at R=3 — the one case where max still earns its quota — and no cross-ecosystem tool-less design row exists, so the Claude badge rests low-confidence on the AA v4.3 aggregate (Opus 5 max 51 vs Sol max 47).
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.

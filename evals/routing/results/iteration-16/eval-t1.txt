@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Opus 5 · effort: xhigh
+Codex: Sol · effort: xhigh
+Evidence: Reproducing a CI-only build failure inside the container is a build-and-test loop — the terminal-tool profile where Claude leads (Terminal-Bench 4.0: Opus 5 52.3 vs Sol 37.3).
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).

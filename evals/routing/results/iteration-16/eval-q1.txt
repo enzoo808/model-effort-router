@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Opus 5 · effort: xhigh
+Codex: Sol · effort: xhigh
+Evidence: The explicit "must not be under-resourced" escalation moves each arm one model tier up at the same rung (Opus 5 xhigh 50 @ $4.88 dominates Sonnet 5 max 38 @ $5.09), and adversarial correctness hunting in code sits on Claude's Terminal-Bench 4.0 profile (Opus 5 52.3 vs Sol 37.3).
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
+Do not apply without human review.

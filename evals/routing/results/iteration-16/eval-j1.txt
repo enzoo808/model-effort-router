@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Codex: Terra · effort: high
+Evidence: Scanned-invoice extraction and matching is doc-data-understanding, backed only by vendor-reported vision gains, so this is a low-confidence lean to Claude; D=2 keeps both arms mid-tier at high.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Opus 5 · effort: xhigh
+Codex: Sol · effort: xhigh
+Evidence: low-confidence — a tool-less formal proof weights every coding benchmark at zero, leaving only the AA v4.3 aggregate (Opus 5 max 51 vs Sol max 47), and Sol is ~3× lighter on quota.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).

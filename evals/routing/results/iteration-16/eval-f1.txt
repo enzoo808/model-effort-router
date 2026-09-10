@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Fable 5.1 · effort: max
+Codex: Astra · effort: max
+Evidence: A single indivisible boundary design at 1000+ file scale is the one case where max still earns its quota, and Claude leads the agentic-code profile (Terminal-Bench 4.0 55.8 vs Sol 37.3).
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.

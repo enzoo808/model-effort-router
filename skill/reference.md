@@ -12,6 +12,15 @@
 > that report is not inherited by Opus 5** — a separate model, a separate
 > benchmark profile.
 >
+> **Latest research pass: 10 September 2026 (iteration-16).** The
+> benchmark-aware routing engine landed in that pass. Its verified facts,
+> corrections, open conflicts and explicit non-findings are in **§12**; the
+> capability→benchmark map is **§11**; the efficiency data and the three
+> dominance rules are **§13**; the `✅ RECOMMENDED AI` rationale and the
+> ablation checks are **§14**. The raw evidence records — one row per
+> benchmark×model×effort, with harness, tool access, dispersion, date, source
+> and source tier — live in **`benchmarks.json`** next to this file.
+>
 > This file is read only when needed — `SKILL.md` is sufficient on its own.
 
 ---
@@ -128,14 +137,19 @@ access.
 |---|---|---|---|---|
 | Context | 1M | 1M | 1M | 200k |
 | Max output | 128k | 128k | 128k | 64k |
-| Price (input/output $/MTok) | $10/$50 | $5/$25 | $3/$15* | $1/$5 |
+| Price (input/output $/MTok) | $10/$50 | $5/$25 | **$2/$10*** | $1/$5 |
 | Cache read ($/MTok) | **$0.25** (0.025x) | $0.50 | $0.30 | $0.10 |
 | Effort support | low–max | low–max | low–max | **none** |
 | Effort default | `high` (CC) / `medium` (chat) | `high` | `high` | — |
 | Adaptive thinking | yes (always on) | yes | yes | no |
 | Knowledge cutoff | **Jun 2026** | May 2026 | Jan 2026 | Feb 2025 |
 
-*Sonnet 5's intro price ($2/$10) ended 31 August 2026, standard is $3/$15.
+*⚠️ **Corrected 10 Sep 2026.** Sonnet 5 is **$2/$10** and stays there. The
+$2/$10 launch price was announced as introductory through 31 Aug 2026, but the
+scheduled rise to $3/$15 on 1 Sep **was cancelled** and $2/$10 is now the
+standard price (`platform.claude.com/docs/en/about-claude/pricing`, read
+10 Sep 2026). Earlier iterations of this file said $3/$15 — that was wrong, and
+it understated how quota-efficient Sonnet 5 is relative to Opus 5.
 **Mythos 5.1** = exactly the same specs/price as Fable 5.1 (invite only).
 **Fable 5** (legacy) is still available: $10/$50, cache read $1.00, knowledge
 cutoff Jan 2026 — but Fable 5.1 is "the go-to wherever Fable 5 was the choice".
@@ -182,7 +196,21 @@ supports that direction.
 
 ---
 
-## 2.1. Independent leaderboards (2 Sep 2026) — LiveBench / BenchAlign / AA Index
+## 2.1. Independent leaderboards (2 Sep 2026) — ⚠️ STALE, superseded by §12
+
+> **Status as of 10 September 2026: this whole section is historical.**
+> `livebench.ai` returned no leaderboard table when re-read on 10 Sep 2026, so
+> none of the LiveBench rows below could be re-verified, and the AA Intelligence
+> Index figures here (66 / 63 / 62 / 60) come from an **older index version**
+> than the current **v4.3** — Artificial Analysis states that scores are *not*
+> comparable across index versions, so these numbers must never be mixed with
+> the v4.3 figures in §13.1.
+>
+> The two rules this section used to carry (the Codex **+1 agentic-coding
+> notch** and the **D=3 mid-tier default**) survive, but they are now grounded
+> on **Terminal-Bench 4.0** and **AA Index v4.3** instead — see §11 and §12.
+> The section is kept because iterations 13–15 were decided on it and the
+> reasoning is still legible; it is no longer cited as live evidence.
 
 > **Why this section exists:** §7's "no published equal-effort Opus 5 vs Sonnet 5
 > comparison" gap is now **partly** closed — LiveBench (contamination-free,
@@ -280,8 +308,9 @@ model's **entire** token spend — text, tool calls, thinking.
 If `xhigh` is requested but unsupported, it falls to the nearest supported level
 below (e.g. `xhigh` → `high` on Opus 4.6).
 
-> **`max` is a supported *setting* on every tier, but the router only *emits* it
-> on a flagship** (Opus 5 / Opus 4.8 / Fable 5.1 / Sol) — iteration-14. The
+> **`max` is a supported *setting* on every Claude tier, but the router only
+> *emits* it on a flagship** (Opus 5 / Opus 4.8 / Fable 5.1 / Sol / Astra), and
+> since iteration-16 only when Rule E3 also allows it (§13.2). The
 > `D=3 ∧ R=3 → max` rule fires there; on a mid-tier model (Sonnet 5 / Terra) it
 > stays `xhigh`. Rationale: the router picks the mid tier only when the reasoning
 > need is *moderate* (D=3 outside Rule 2), so pairing it with `max` is
@@ -298,7 +327,12 @@ below (e.g. `xhigh` → `high` on Opus 4.6).
   from earlier Opus generations; low/medium is no longer a "restricted mode",
   it's a normal dial.
 - **Sonnet 5:** `high` default. `xhigh` for the hardest coding/agentic work
-  (Anthropic's advice stops here — no `max` guidance for Sonnet 5).
+  ⚠️ **Corrected 10 Sep 2026:** an earlier version of this file said Anthropic
+  publishes no `max` guidance for Sonnet 5. It does — the effort page lists
+  "**Max effort:** For tasks requiring the absolute highest capability with no
+  constraints on token spending" for Sonnet 5. The router still never emits
+  `Sonnet 5 · max`, but the reason is now the measured dominance in §13.2
+  (Rule E1), not a missing vendor recommendation.
   `medium` ≈ "Sonnet 4.6's `high`".
 - **Opus 4.8/4.7:** start from `xhigh` for coding/agentic work; drop to
   `low`/`medium` only after measuring with an eval (more conservative advice than
@@ -323,7 +357,11 @@ level:
   4.6/Sonnet 4.6 have no `xhigh` → `ultracode` falls to `high` if requested.
 - Ways to enable: `/effort ultracode` · `claude --effort ultracode` · `"ultracode":
   true` via `--settings` · Agent SDK `effortLevel: "ultracode"`
-- **Per-session.** Can't be written to a config file or `CLAUDE_CODE_EFFORT_LEVEL`.
+- ⚠️ **Corrected 10 Sep 2026:** it *can* be persisted. `code.claude.com/docs/en/model-config`
+  lists an `ultracode` settings key and `CLAUDE_CODE_EFFORT_LEVEL=<level>`
+  alongside `/effort ultracode` and `--effort ultracode` (the flag needs
+  v2.1.203+). The earlier "per-session only" claim was wrong. Routing behaviour
+  is unaffected.
 - If workflows are off, `--effort ultracode` applies `xhigh` only.
 
 ### `ultrathink` — one-off depth
@@ -402,7 +440,7 @@ pass. This is evidence the criterion makes the right distinction on a real case.
 | **Opus 5** | $5.00 | $25.00 | $6.25 | $0.50 |
 | Opus 4.8 (legacy) | $5.00 | $25.00 | $6.25 | $0.50 |
 | Opus 4.8 (Fast Mode) | $10.00 | $50.00 | $12.50 | $1.00 |
-| Sonnet 5 (promo ended 31 Aug 2026) | $3.00 | $15.00 | $3.75 | $0.30 |
+| **Sonnet 5** (the $3/$15 rise was cancelled) | **$2.00** | **$10.00** | $2.50 | $0.20 |
 | Haiku 4.5 | $1.00 | $5.00 | $1.25 | $0.10 |
 
 **Fable 5.1 cache read:** **0.025x** of base input (every other model is 0.1x).
@@ -410,8 +448,12 @@ Long agentic sessions that re-read a cached prefix pay **¼** of the Fable 5 rat
 — recommending Fable 5.1 at the frontier gate is markedly cheaper on quota than
 the Fable 5 era. Batch: $5 / $25.
 
-**Opus 5 / Sonnet 5 ratio:** 1.67x (promo ended). For a subscription user this
-is a rough proxy for how fast quota burns.
+**Opus 5 / Sonnet 5 ratio: 2.5x** (corrected 10 Sep 2026 — it was recorded as
+1.67x on the wrong $3/$15 assumption). For a subscription user this is a rough
+proxy for how fast quota burns, and the correction *widens* the case for staying
+on Sonnet 5 wherever the capability bar is met. It does **not** widen the case
+for `Sonnet 5 · max`, which §13.2 Rule E1 shows is dominated by `Opus 5 · high`
+on both quality and cost.
 
 **Fast Mode now covers Opus 5 too** (research preview): $10/$50, 2.5x faster
 output. Toggled with `/fast` in Claude Code. Not on Opus 4.7, runs at standard
@@ -495,6 +537,10 @@ individual.
 | "Sonnet 5 beat Opus on GDPval" | 3 Elo is not meaningful, Opus's K1 score is 1890 |
 | Opus 4.8's benchmark profile applies to Opus 5 too | **Separate model**, no granular comparison published |
 
+> **Note (10 Sep 2026):** the list below is the iteration-15 status. §12.3 and
+> §12.4 supersede it for anything the 10 Sep pass touched — in particular the
+> LiveBench rows referenced here could not be re-verified.
+
 ### ⚠️ Still unresolved
 
 - **Opus 5 vs Sonnet 5**: Anthropic's own equal-effort SWE-bench Pro /
@@ -517,6 +563,13 @@ individual.
 ---
 
 ## 8. Example library — use for analogy when scoring
+
+> The `→` column gives the **Claude** model·effort (Codex per the Codex mapping).
+> It predates the `✅ RECOMMENDED AI` badge and deliberately does not show it —
+> these rows exist to calibrate *scoring*, and the badge is computed afterwards
+> from the capability profile (§11) and Step 6. Effort values here are still
+> current except where Rule E3 (§13.2) narrows `max`; the `max` rows that remain
+> below are all indivisible novel-design decisions, which E3 still allows.
 
 Each row: prompt → R,D,W,C → model·effort. Non-coding areas are included too,
 because SKILL.md's default reading drifts toward coding. If your own prompt
@@ -718,11 +771,17 @@ things**:
      (e.g. d2 auth→OAuth2: Claude `high` / Codex `xhigh`).
    - **UI name drift:** the Codex app / ChatGPT Work / IDE label `low` as
      **"Light"**; the CLI and API say `low`. Same rung.
-   - **`max`** is available on every GPT-5.6 tier (not Sol-only — one aggregator
-     claimed Sol-only; the official model-guidance page lists the full ladder for
-     all three). Some third-party gateways still 400 on `effort: "max"` — a
-     tooling gap. Router uses `max` as the ceiling for `D=3 ∧ R=3`, matching
-     Claude.
+   - **`max` — ⚠️ conflicting sources, re-checked 10 Sep 2026.**
+     `learn.chatgpt.com/docs/models` now states plainly: *"All models support:
+     Low/Light, Medium (default), High, and Extra High. **Astra and Sol
+     additionally offer Max and Ultra modes**"* — i.e. `max` is **not** available
+     on Terra or Luna. The earlier reading of the API model-guidance page put the
+     full ladder on all three tiers, and Artificial Analysis still publishes a
+     `Terra (max)` row. Unresolved; see §12.3. **Routing impact: none in
+     practice** — the router already never emitted `Terra · max`, and under the
+     stricter reading that restraint becomes a hard capability limit rather than
+     a preference. Some third-party gateways also 400 on `effort: "max"` — a
+     separate tooling gap.
    - **GPT-6 Astra effort:** same ladder **minus `none`** (`none` is rejected at
      the API layer). Codex CLI config default `model_reasoning_effort = "high"`;
      OpenAI / community guidance is "start at `medium`" for agentic coding and
@@ -854,8 +913,8 @@ agentic coding work.
   **biology-adjacent** content. Astra's system card is cyber-only (re-checked
   8 Sep 2026) — so the Codex arm still says "unverified — use Claude" for
   biology-R&D. (The cyber side is now partly known — see the ✅ list.)
-- Whether Ultra mode / parallel subagents run on `gpt-6-astra` (undocumented
-  either way — no "Astra Ultra" asserted).
+- ~~Whether Ultra mode / parallel subagents run on `gpt-6-astra`~~ —
+  **resolved 10 Sep 2026**: they do (`learn.chatgpt.com/docs/models`).
 - Per-model context window for Luna/Terra/Sol-base (only a single-source ~1.5M
   claim for Sol Ultra).
 - Whether the ChatGPT Plus quota numbers carried to GPT-5.6 (§9.4).
@@ -1020,9 +1079,12 @@ failure detail (behind a `config.toml` flag, becoming default). Async "ask" —
 Astra continues work that doesn't depend on your reply, waits only on
 consequential decisions.
 
-**Not verified / left out:** whether Ultra mode / parallel subagents run on
-`gpt-6-astra` (not documented either way — "Sol Ultra" language unchanged, no
-"Astra Ultra" asserted); exact LiveBench rows for Astra (not on the 2026-06-25
+**Not verified / left out:** ~~whether Ultra mode / parallel subagents run on
+`gpt-6-astra`~~ — **resolved 10 Sep 2026**: `learn.chatgpt.com/docs/models` says
+"Astra and Sol additionally offer Max and Ultra modes", so Ultra **does** run on
+Astra. The router's path (a) still names `Sol Ultra` because Sol is the D=3
+parallel pick; Astra is reached by gate, and no Astra gate currently coexists
+with path (a). Still open: exact LiveBench rows for Astra (not on the 2026-06-25
 board); which ChatGPT-plan users hit the cyber monitor hardest.
 
 ---
@@ -1397,3 +1459,358 @@ Full specs / benchmarks / cyber-tier detail in §9.8. Routing summary:
   cyber-only (re-checked 8 Sep 2026).
 - **Ultra + Astra:** undocumented — no "Astra Ultra" asserted; `Sol Ultra`
   language unchanged.
+
+---
+
+## 11. Capability → benchmark map (iteration-16)
+
+> **Why this section exists.** Before iteration-16 the router scored a prompt on
+> R/D/W/C and stopped. R/D/W/C describes *scope and stakes* very well and
+> *nothing about what kind of ability the work needs* — "depth 3" is true of a
+> race-condition hunt, a topology proof and a contract-conflict review alike,
+> and those three want different models. Step 2 of `SKILL.md` now names the
+> capability first; this section is the full map behind that table, including
+> which benchmarks are deliberately **excluded** for each tag. Raw records with
+> harness/effort/date/source: `benchmarks.json`.
+
+### 11.1. The tags, in full
+
+| Tag | Counts | Primary evidence | Explicitly **excluded** |
+|---|---|---|---|
+| `agentic-code` | multi-file implementation, code generation at scale, refactor, migration, feature build, debug-and-fix across files, repository navigation | Terminal-Bench 4.0 · CursorBench 3.2.0 · DeepSWE v1.1 (tier C) | HLE, GDPval, OSWorld, AA-LCR |
+| `terminal-tool` | terminal/CLI use, build-and-test loops, tool orchestration, long-horizon autonomous execution | Terminal-Bench 4.0 | CursorBench (IDE scaffold, different failure modes) |
+| `deep-reasoning` | architecture from scratch, algorithm design, mathematics and formal proof, tool-less analysis, adversarial correctness hunting | HLE (tool-less **and** tooled rows, they differ) · AA Index Scientific Reasoning category | **All coding benchmarks weight ~0 here.** This is the single most important exclusion in the map |
+| `knowledge-work` | produce a finished document, spreadsheet, deck, memo, filing, model | GDPval-AA v2 | Terminal-Bench, SWE-style benchmarks |
+| `research-synthesis` | multi-source research, web search, following up on findings, reconciling sources | AA-Omniscience + AA-Briefcase (via AA Index) | Coding benchmarks |
+| `long-context` | read/map/summarise a large corpus; reason across a full window | AA-LCR v1.1 (via AA Index) **plus the hard context-window spec**, which is a gate not a score | Aggregate index (a model can win the index and still lack the window) |
+| `computer-use` | drive a browser or desktop GUI end-to-end, click through an app, screenshots | OSWorld — **always state version and scoring mode** | Everything else; see §12.3 for why this row is low-confidence |
+| `science` | genomics, chemistry, physics, research engineering, lab pipelines | Terminal-Bench-Science 0.1 (publishes SE) · CritPt (via AA Index) | General coding benchmarks |
+| `workflow-automation` | wire up business workflows, integrations, multi-tool orchestration | AutomationBench | — |
+| `doc-data-understanding` | scanned documents, PDFs, dense charts, nested tables, multimodal extraction | *none cross-ecosystem* — vendor vision claims only | — |
+| `parallel-independent` | 3+ targets genuinely unaware of each other, merging at the end | *product mechanism, not a benchmark*: `ultracode` (one orchestrated chain) vs Ultra mode (~4 collaborating agents) | Any benchmark. This tag never outranks a benchmark-backed tag — see the tie-break in `SKILL.md` Step 6 |
+| `latency-volume` | sub-second response, high-throughput bulk classification/parsing | AA Index output-speed and cost/task columns | Intelligence scores — the bar is "clears it", not "wins" |
+| `instruction-following` | rigid format/schema compliance | folded into the dominant tag | never dominant alone |
+
+### 11.2. Where the requested capability list landed
+
+The upgrade brief named 21 capability categories. They are all covered; several
+collapse onto one tag because no benchmark distinguishes them:
+
+agentic software engineering · multi-file implementation · code generation ·
+debugging · repository navigation → **`agentic-code`** ·
+terminal / CLI tool use · tool use / orchestration → **`terminal-tool`** (+
+`workflow-automation` when the tools are business systems rather than a shell) ·
+architecture / system design · deep reasoning · mathematics / formal reasoning →
+**`deep-reasoning`** · instruction following → **`instruction-following`**
+(folded) · knowledge work → **`knowledge-work`** · research / multi-source
+synthesis → **`research-synthesis`** · long-context comprehension →
+**`long-context`** · document/data understanding → **`doc-data-understanding`** ·
+computer use / GUI interaction · multimodal reasoning → **`computer-use`** /
+**`doc-data-understanding`** (multimodal splits by what the task *does* with the
+image) · science → **`science`** · cybersecurity → Step 1 gate (offensive) or
+`deep-reasoning` + scale tag (defensive) · independent parallel workstreams →
+**`parallel-independent`** · latency / high-volume processing →
+**`latency-volume`**.
+
+### 11.3. Weighting, in practice
+
+Pick the **one or two dominant** tags and ignore the rest. A tag is dominant
+when removing it would change what "done" means. Worked examples:
+
+- *"Refactor auth across 300 files, run the tests, fix what breaks"* →
+  `agentic-code` (dominant) + `terminal-tool` + width. `deep-reasoning` is
+  present but secondary; `knowledge-work` and `computer-use` are zero.
+- *"Prove this scheduling bound or find a counterexample, from the definitions
+  given here"* → `deep-reasoning` alone. **Terminal-Bench and CursorBench weigh
+  zero.** This is the case the old router could not express: it scored D=3 and
+  then reached for evidence about code agents.
+- *"Reconcile 60 scanned invoices against the ledger"* →
+  `doc-data-understanding` + `long-context`. Evidence-poor: say so.
+
+---
+
+## 12. Comparability record — research pass of 10 September 2026
+
+Source hierarchy used: **Tier A** vendor primary docs / launch posts / system
+cards → **Tier B** benchmark owner or serious independent evaluator → **Tier C**
+blogs, aggregators, and figures this repo carried forward without
+re-verification. A Tier C claim never becomes a routing rule on its own.
+
+### 12.1. Verified this pass (Tier A unless noted)
+
+| Fact | Source | Effect |
+|---|---|---|
+| Claude roster: Fable 5.1 / Opus 5 / Sonnet 5 / Haiku 4.5, with Mythos 5.1 Glasswing-only; legacy Fable 5, Opus 4.8/4.7/4.6/4.5, Sonnet 4.6/4.5 | `platform.claude.com/docs/en/models/overview` | roster unchanged |
+| Effort ladder `low, medium, high, xhigh, max`; default `high` on Fable 5.1 / Opus 5 / Sonnet 5; Haiku 4.5 has no effort parameter | `.../build-with-claude/effort` | unchanged |
+| **Sonnet 5 is $2/$10 permanently** — the 1 Sep rise to $3/$15 was cancelled | `.../about-claude/pricing` | §1/§4 corrected; Opus/Sonnet ratio 1.67x → **2.5x** |
+| Fable 5.1 / Mythos 5.1 cache reads at 0.025x base input ($0.25/MTok); all others 0.1x | `.../about-claude/pricing` | unchanged |
+| Fable 5.1's permitted refusal-fallback targets are **Opus 4.8 and Opus 5** | `.../models/fable-5-1/whats-new-fable-5-1` | offensive-security gate re-validated |
+| Fable 5.1's six named capability gains: agentic coding over long sessions · knowledge work with documents/spreadsheets/slides · research and search · vision · long-context · computer use | same | this is the backbone of the §11 tag list |
+| Anthropic model-selection matrix: Opus 5 for "multihour autonomous coding agents, large-scale refactoring, complex systems engineering, vision-heavy workflows, computer use" | `.../models/choosing-a-model` | supports flagship capability list in Step 4 |
+| Sonnet 5 **does** have published `max` guidance | `.../build-with-claude/effort` | falsified an earlier claim in §3 |
+| `ultracode` = `xhigh` + dynamic workflow orchestration; settable via `/effort`, `--effort` (v2.1.203+), settings key, `CLAUDE_CODE_EFFORT_LEVEL`; `opusplan` = Opus in plan mode → Sonnet in execution | `code.claude.com/docs/en/model-config` | both mechanisms re-validated; "per-session only" falsified |
+| Astra: `gpt-6-astra`, 1,050,000-token context (922k input / 128k output), cutoff 30 Apr 2026, $10/$50 (+2× above 272k), `reasoning.effort` `low…max`, **`none` rejected** | `developers.openai.com/api/docs/models/gpt-6-astra` | roster + gates unchanged |
+| Codex roster: **Astra**, **5.6 Sol** (premium); **5.6 Terra**, **5.6 Luna** (standard); **5.3 Codex Spark** (text-only research preview); legacy 5.5/5.4 | `learn.chatgpt.com/docs/models` | Codex Spark newly recorded; router does not select it |
+| **`max` and Ultra are Astra/Sol only**; Ultra therefore runs on Astra too | same | resolves an open question; hardens the Terra cap |
+| GPT-5.6 defaults to `medium` effort; "Treat `reasoning.effort` as a tuning knob, not the primary way to recover quality" | `developers.openai.com/api/docs/guides/reasoning` | quoted in `SKILL.md` effort notes; supports Rules E1–E3 |
+| "Astra achieves stronger results while using substantially fewer output tokens — delivering a lower estimated API cost per task" | `developers.openai.com/api/docs/guides/latest-model` | token-efficiency signal; partially conflicts with AA, see §12.3 |
+| Astra is at OpenAI's **Critical** cyber Preparedness level; Critical-capability deployment carries stricter isolation and universal trajectory monitoring | `deploymentsafety.openai.com/gpt-6-astra` | offensive-security gate re-validated |
+| AA Intelligence Index **v4.3** composition: Agents 30% (AA-Briefcase, GDPval-AA v2, AutomationBench-AA) · General 30% (AA-Omniscience, GDP.pdf, AA-LCR v1.1) · Coding 20% (Terminal-Bench v4.0, SciCode) · Scientific Reasoning 20% (HLE, CritPt); **scores not comparable across index versions** | `artificialanalysis.ai/methodology/intelligence-benchmarking` (Tier B) | the single most useful methodological find of the pass |
+| Per-model, per-effort index + cost/task + output speed + latency | `artificialanalysis.ai/leaderboards/models` (Tier B) | §13.1; basis of Rules E1–E3 |
+| Terminal-Bench 4.0 / TB-Science 0.1 / HLE / CursorBench 3.2.0 / GDPval-AA v2 / OSWorld 2.0 / AutomationBench numbers incl. GPT-5.6 Sol | `anthropic.com/claude-fable-and-mythos-5-1` | §11 anchors — **vendor-run**, direction only |
+
+### 12.2. What changed in the router because of it
+
+1. **Sonnet 5 pricing** — corrected everywhere; the Opus/Sonnet quota ratio is
+   2.5x, not 1.67x.
+2. **`Sonnet 5 · max` / `Terra · max`** — were forbidden by a heuristic; now
+   forbidden by measured dominance (§13.2 E1/E2) plus, on Terra, a hard
+   capability limit.
+3. **The escalation target changed** from "same tier, more effort" to "next tier
+   up, same or lower rung" (Step 7 Rule 2).
+4. **`max` narrowed** (§13.2 E3): it now requires a single indivisible
+   novel-design or formal decision, not merely `D=3 ∧ R=3`.
+5. **New Codex computer-use gate** — `SKILL.md` already *mentioned* computer use
+   as one of Astra's gates in its roster note but the gate table never had the
+   row. Fixed.
+6. **`minimal`/`none` rungs** — the reasoning guide still lists `none` and
+   `minimal`; `learn.chatgpt.com` lists neither. The router emits neither, so
+   the conflict is recorded and left alone.
+7. **The 2026-09-02 leaderboard section (§2.1) was demoted to historical** and
+   the two rules it carried were re-grounded on Terminal-Bench 4.0 + AA v4.3.
+
+### 12.3. Conflicts left open — recorded, not silently resolved
+
+1. **Codex `max` availability.** `learn.chatgpt.com/docs/models` (10 Sep):
+   Max/Ultra are Astra+Sol only. The API model-guidance reading used in
+   iteration-12 put the full ladder on all GPT-5.6 tiers. Artificial Analysis
+   publishes a `Terra (max)` row, which implies they could run it. Possible
+   causes: product surface vs API surface; a staged rollout; AA using API access
+   the ChatGPT product doesn't expose. **Not resolved.** Router behaviour is the
+   same under both readings.
+2. **"Agentic coding" gap for Sol.** Terminal-Bench 4.0 (Tier A, 2026-09-01):
+   Sol 37.3 vs Opus 5 52.3 — a ~15-point gap. DeepSWE v1.1 (Tier C, carried):
+   Sol 72.7 vs Opus 5 73.7 — a 1-point gap. CursorBench 3.2.0 (Tier A): Sol 67.2
+   vs Opus 5 70.0 — 2.8 points. Three benchmarks, three magnitudes, one label.
+   Most likely cause: scaffold. Terminal-Bench is a bare terminal agent loop;
+   CursorBench runs inside an IDE agent; DeepSWE's scaffold is unstated. **Not
+   resolved.** The router weights Terminal-Bench 4.0 highest (Tier A, dated,
+   names its harness, and is an AA Index component) — but keeps the consequence
+   at a **+1 effort notch** rather than a model change precisely because the
+   other two benchmarks disagree about the size.
+3. **Astra token efficiency.** OpenAI: Astra uses substantially fewer output
+   tokens than Sol and costs less per task. AA v4.3: Astra max $3.26/task vs Sol
+   max $1.99/task — i.e. *more* per task, not less. Both can be true (different
+   task mixes, different effort pairings, per-token vs per-task), but they are
+   not the same claim. The router uses the AA figure for Astra-vs-Claude
+   comparisons, where the two sources agree in direction, and does **not** use
+   the vendor claim to prefer Astra over Sol.
+4. **OSWorld.** Anthropic publishes OSWorld **2.0** with *partial* and *strict*
+   scoring (a ~36-point spread on the same model). The Astra 72.6 / Sol 65.7
+   figures this repo carries are OSWorld **V2** with the scoring mode unstated.
+   These sets are **not directly comparable**. Consequence: the computer-use
+   badge is real but always marked **low-confidence**.
+5. **Codex Coding Agent Index.** The 67 / 70 figures carried from iteration-15
+   could not be traced to any live index — AA v4.3 has no standalone coding-agent
+   index. Demoted to Tier C and removed from every rule's justification.
+
+### 12.4. Could not be verified this pass — stated plainly
+
+- **WebSearch was unavailable for the entire pass.** All research was done by
+  fetching known primary URLs directly. Anything that would have been *found*
+  by search rather than *fetched* by URL is therefore missing from this pass.
+- **Terminal-Bench 4.0 leaderboard rows** (`tbench.ai/leaderboard`) — page
+  reachable, table not rendered. This is the highest-value gap: the owner's
+  leaderboard carries per-model **cost, tokens and 95% CI whiskers**, which
+  would replace vendor-run Terminal-Bench numbers *and* give the equivalence
+  band a published CI.
+- **LiveBench** — no table returned. The whole 2026-06-25 row set is now
+  unverifiable; §2.1 is marked historical.
+- **OSWorld leaderboard** (`os-world.github.io`) — connection refused.
+- **SWE-bench / SWE-bench Pro leaderboards** — page truncated before the rows.
+  No current SWE-bench figures entered this pass at all.
+- **`openai.com/index/gpt-6-astra/`** — HTTP 403. Astra's launch benchmarks come
+  only from the API docs and carried Tier C figures.
+- **"Daybreak Blue" by name** — the Astra safety page describes Critical-tier
+  access controls but did not name the programme in what was retrieved. The gate
+  is unchanged because it is conservative either way (standard access → "use
+  Claude"), and the exception only fires when the *user* states the access.
+- **Astra's biology/CBRN threshold** — the page shows that bio/chem capability
+  thresholds exist but not Astra's level. Biology stays `unverified — use Claude`.
+- **MRCR, GraphWalks, BrowseComp, ScreenSpot-Pro, FrontierMath, ARC-AGI,
+  Toolathlon** — none verified cross-ecosystem this pass. Where a tag depends on
+  them (`long-context` beyond AA-LCR, `computer-use` beyond OSWorld,
+  `deep-reasoning` maths), the router says `low-confidence` rather than inventing
+  a ranking.
+- **Sonnet 5 at `high` / `xhigh`, and Sol at `xhigh`,** are absent from the AA
+  extract. Those rungs are **unknown**. They are not interpolated anywhere.
+
+---
+
+## 13. Efficiency and quota data
+
+### 13.1. AA Intelligence Index v4.3 — one harness, one suite, all rungs comparable
+
+Read 10 Sep 2026 from `artificialanalysis.ai/leaderboards/models` (Tier B).
+`Cost/task` is the cost of running the whole fixed evaluation suite, so within
+this table it is a sound **proxy for total token load**.
+
+| Model | Effort | Index | Cost/task | Output tok/s | Latency (s) |
+|---|---|---|---|---|---|
+| Fable 5.1 | max | 53 | $7.63 | 67 | 296.2 |
+| Fable 5.1 | xhigh | **53** | **$5.98** | 60 | 138.4 |
+| Fable 5.1 | high | 51 | $3.91 | 51 | 23.7 |
+| Astra | max | 53 | $3.26 | 54 | 334.8 |
+| Astra | xhigh | **53** | **$2.31** | 51 | 220.6 |
+| Astra | high | 51 | $1.72 | 48 | 93.3 |
+| Opus 5 | max | 51 | $5.86 | 52 | 94.9 |
+| Opus 5 | xhigh | 50 | $4.88 | 52 | 30.6 |
+| Opus 5 | high | 48 | $3.61 | 51 | 26.0 |
+| GPT-5.6 Sol | max | 47 | $1.99 | 64 | 140.3 |
+| GPT-5.6 Sol | high | 42 | $0.81 | 59 | 39.9 |
+| GPT-5.6 Terra | max | 42 | $1.40 | 84 | 183.1 |
+| Sonnet 5 | max | **38** | **$5.09** | 79 | 197.8 |
+| GPT-5.6 Luna | max | 38 | $0.18 | 112 | 138.6 |
+| Haiku 4.5 | — | 18 | $0.21 | 85 | 22.2 |
+
+⚠️ **This is an aggregate** (Agents 30 / General 30 / Coding 20 / Science 20).
+It never overrides a task-specific benchmark for a task that benchmark covers.
+Its legitimate uses are: (a) effort-rung comparisons *within one model*, (b)
+cost/token-load comparisons, (c) a last-resort tie-break when no task-specific
+row exists — flagged `low-confidence`.
+
+⚠️ **Not comparable with the 66/63/62/60 figures in §2.1** — different index
+version.
+
+### 13.2. The three dominance rules
+
+**Rule E1 — `Sonnet 5 · max` is dominated.**
+Sonnet 5 max = 38 @ $5.09. Opus 5 xhigh = 50 @ $4.88. Opus 5 high = 48 @ $3.61.
+Twelve index points *better* and cheaper. There is no task on which paying
+Sonnet 5's `max` premium is the rational move, so the router never emits it and
+the escalation target is `Opus 5 · xhigh`. (Iterations 14–15 reached the same
+output from a heuristic — "max on a mid-tier model risks over-thinking" — plus a
+citation that turned out to be wrong. The behaviour is unchanged; the reason is
+now measured.)
+
+**Rule E2 — `Terra · max` is dominated, and also unavailable.**
+Terra max = 42 @ $1.40. `Sol · high` = 42 @ $0.81. Identical index score at 42%
+less quota — and `learn.chatgpt.com` says `max` isn't offered on Terra at all.
+Codex escalation therefore goes **Terra → Sol**, not Terra → more effort.
+
+**Rule E3 — `max` over `xhigh` buys almost nothing.**
+Fable 5.1: 53 → 53 ($7.63 → $5.98, and 296s → 138s). Astra: 53 → 53 ($3.26 →
+$2.31). Opus 5: 51 → 50 ($5.86 → $4.88, and 95s → 31s). One index point at most,
+for 17–28% more quota and 2–3× the latency. So `max` is emitted only when
+`D=3 ∧ R=3` **and** the difficulty is a *single indivisible novel-design or
+formal decision*: architecture or boundary design from scratch, a proof, a
+one-shot irreversible design call. Review, audit, migration and breadth-driven
+`D=3 ∧ R=3` work stops at `xhigh`; the human-review note carries the stakes.
+
+> **What E3 is not.** It is not "always use xhigh". Where the vendor's own
+> guidance and the task class agree that the top rung matters — a frontier
+> problem, an irreversible one-shot design — `max` still fires. `f1` (split a
+> 6000-file monolith into services) and the `opusplan` plan phase both still
+> emit `max`.
+
+### 13.3. Efficiency signals, in priority order
+
+1. **Reasoning tokens** — the biggest hidden quota drain. Rarely published; the
+   one solid figure in the record is Opus 5 using ~1/7 of Opus 4.8's reasoning
+   tokens on an internal trading benchmark (generation-over-generation only).
+2. **Output tokens** — OpenAI's Astra claim and Anthropic's "26% fewer tokens at
+   max" legal figure live here.
+3. **Total tokens per task.**
+4. **Tokens per *successful* task** — the honest metric, since a failed
+   expensive run costs twice. Nobody publishes it directly; AA's cost/task on a
+   fixed suite is the closest available proxy and is what §13.1 uses.
+5. **Quota pressure** — which of the user's two windows is being spent. This is
+   the actual objective; dollars are a proxy for it.
+6. **Cost per task.**
+7. **Latency / wall-clock.**
+
+**The efficiency rule of engagement:** when the task-relevant capability
+difference is meaningful, quality wins and efficiency only picks the rung. When
+capability sits inside the equivalence band, efficiency picks the candidate.
+Efficiency never downgrades a model whose capability edge is real — that is the
+failure mode this ordering exists to prevent.
+
+**Behaviour notes that cost tokens without changing quality** (worth mentioning
+if the user asks why a session is burning quota): Fable 5.1 issues more one-call
+turns in agent loops than Fable 5 did, and rewrites whole files for small edits;
+both are prompt-fixable (§0.1). MCP tool schemas are re-sent every message.
+Auto-accept chains edits geometrically.
+
+---
+
+## 14. `✅ RECOMMENDED AI` — rationale and ablation
+
+### 14.1. Why a badge at all
+
+Since 5 Aug 2026 the router has produced both arms and left the choice to the
+user. That is still right for *which quota to spend* — only the user knows which
+window is emptier. But "both are fine" was never true task-by-task: the
+published evidence shows genuinely different profiles, and withholding that made
+the output *less* useful, not more neutral. The badge states the router's read;
+the user still decides.
+
+### 14.2. How it is computed
+
+The decision order lives in `SKILL.md` Step 6. The two properties that keep it
+honest:
+
+- **It is capability-conditional.** No global "Claude is better" or "Codex is
+  cheaper" term exists anywhere in the rule set. Change the dominant capability
+  tag and the badge moves.
+- **It degrades loudly.** Where the evidence is thin the badge still appears —
+  users need an answer — but the Evidence line must carry `low-confidence`.
+  Four of the twelve badge rows are permanently marked that way.
+
+### 14.3. Ablation and sanity checks (run at iteration-16)
+
+1. **Turn the benchmark layer off — what changes?** With Step 5 and Step 6
+   removed, the router falls back to iteration-15 behaviour. The outputs that
+   change are: the badge on every prompt (it wouldn't exist); `Opus 5 · max` →
+   `Opus 5 · xhigh` on `D=3 ∧ R=3` review work (Rule E3); the escalation target
+   (`Sonnet 5 · max` → `Opus 5 · xhigh`, Rule E1); and the new computer-use
+   Codex gate. Model selection on ordinary prompts is unchanged — which is the
+   intended result: the evidence layer refines the edges, it doesn't re-found
+   the router.
+2. **Does the badge collapse onto one ecosystem?** No, but it leans. Measured on
+   the iteration-16 run: **Claude 24 · Codex 5 · no badge 1** (`d7`, Step-0
+   blocked). The Codex wins come from three different causes, not one — `d1`,
+   `r2`, `s1` are `D≤1` efficiency calls (Luna over Haiku 4.5); `g1` is a
+   capability lead (computer use); `i1` is a product mechanism (Ultra's parallel
+   agents). **The lean is real and worth stating honestly:** the live eval set is
+   coding- and repo-heavy because that is what this router was built for, and the
+   published evidence puts Claude ahead on exactly those capabilities
+   (Terminal-Bench 4.0, CursorBench, GDPval-AA v2, AutomationBench,
+   Terminal-Bench-Science). A set weighted toward GUI automation, bulk
+   classification and parallel research would tilt the other way. What matters
+   for the ablation is that the badge **moves with the capability profile**, and
+   it demonstrably does.
+3. **Are top-tier models over-selected?** No. Model spread across the 30-eval
+   run (both arms, 59 model lines): Sonnet 5 17 · Terra 13 · Astra 6 · Sol 5 ·
+   Opus 5 4 · Haiku 4.5 3 · Luna 3 · Fable 5.1 2 · Sol Ultra 2 · Opus 4.8 2 ·
+   `opusplan` 1. The mid tier carries half the set, the flagships 11 lines, and
+   the frontier tier only where a gate put it there.
+4. **Is `max` over-selected?** No longer. Effort spread across the run:
+   `xhigh` 16 · `medium` 10 · `high` 9 · `low` 9 · `max` **5** · `ultracode` 4.
+   The five `max` lines are `f1` (both arms), `h1` (both arms) and `d6`'s
+   `opusplan` plan phase — all indivisible novel-design decisions at `R=3`,
+   which is exactly the surviving E3 case. Before E3, `q1` would also have
+   produced `max`; it now stops at `xhigh`.
+5. **Does efficiency ever actually change a decision?** Yes, and it is asserted
+   in the eval set, not just described: the volume gate's badge, the
+   long-context badge, the parallel-work badge, and the escalation eval
+   (`q1`) all turn on efficiency rather than on a capability gap.
+6. **Does efficiency override quality too often?** It is structurally barred
+   from doing so: 5c requires "not meaningfully worse" *before* any efficiency
+   axis is consulted, and 5b widens the equivalence bar when `R=3`.
+7. **Does the aggregate index steamroll task-specific benchmarks?** The AA Index
+   is admitted for exactly three purposes (§13.1) and is explicitly excluded
+   from `deep-reasoning`, `agentic-code` and every other tag with its own row.
+8. **Are different-harness numbers being compared?** The three known cases
+   (OSWorld version/scoring, the three agentic-coding scaffolds, AA index
+   versions) are each recorded in §12.3 and each carry an explicit
+   `not directly comparable` marker rather than a silent average.

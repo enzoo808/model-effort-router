@@ -63,7 +63,7 @@ buried.
 >
 > It's sourced from the official docs, every uncertain claim is labelled, and
 > there's a deterministic regression eval (cold agents read the rules fresh and
-> route a fixed prompt set; a regex grader checks the output). Currently 20/20.
+> route a fixed prompt set; a regex grader checks the output). Currently 30/30.
 >
 > Repo: <link>
 
@@ -107,7 +107,7 @@ GPT-6 Astra is handled as a narrow gated pick, not the default).
    made v1 collapse every prompt onto the same 2 models.
 4. Everything's sourced from the official docs, uncertain claims are labelled,
    and there's a deterministic eval suite — cold agents route a fixed prompt set,
-   a regex grader checks it. 20/20 right now.
+   a regex grader checks it. 30/30 right now.
 5. MIT. One-line install for Claude Code. English port of the rules is the top
    open issue if anyone wants a first PR. <link>
 

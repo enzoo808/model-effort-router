@@ -1,0 +1,4 @@
+Claude: Sonnet 5 · effort: high
+Codex: ✅ RECOMMENDED AI · Astra · effort: high
+Evidence: low-confidence — driving a desktop GUI end-to-end is the computer-use gate, and Astra's OSWorld lead over Sol is the only anchor (different version/scoring mode from Anthropic's rows).
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

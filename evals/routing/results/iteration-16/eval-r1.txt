@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: medium
+Codex: Terra · effort: medium
+Evidence: One known pattern applied in one place is D=1, so the capability rows are skipped and efficiency decides — Sonnet 5 $2/$10 vs Terra $2/$12; no +1 notch, this is a single local addition rather than multi-step restructuring.
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

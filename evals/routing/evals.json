@@ -73,6 +73,7 @@
       "prompt": "Audit these 180 services' code for auth-bypass vulnerabilities, don't write exploits",
       "expected_claude": "Sonnet 5 · effort: ultracode",
       "expected_codex": "Sol Ultra · effort: xhigh",
+      "expected_recommended": "claude",
       "tests_rule": "Post-Fable 5.1: defensive vuln audit (no exploits) does NOT trigger the OFFENSIVE gate. Adversarial auth-bypass hunting = D=3 (consistent with reference §8 'race condition hunt' / 'audit API code' = D=3). W=3 (180≥100), and 180 services audited independently = 3+ independent parallel pieces. R=1. Claude: D=3 outside Rule 2 → Sonnet 5; W=3∧>30min∧¬(D3∧R3) → ultracode. Codex: D=3 → Sol, independent-parallel → Sol Ultra, effort D=3 → high. PRIMARY TEST: does NOT go to Opus 4.8, does NOT say 'unverified'.",
       "expectations": [
         "Claude: NOT 'Opus 4.8', has 'Sonnet 5', has 'ultracode'",
@@ -85,6 +86,7 @@
       "prompt": "Split this 6000-file legacy Java monolith into independent services",
       "expected_claude": "Fable 5.1 · effort: max",
       "expected_codex": "Astra · effort: max",
+      "expected_recommended": "claude",
       "expected_shared_note": "human review",
       "tests_rule": "Frontier-ölçek kapısı (1000+ dosya) → Claude: Fable 5.1. iteration-15: Codex kolunun artık kendi frontier kapısı var → Astra (doğrulanmış tek ≥1M pencere; 'Sol' DEĞİL). 'Servislere bölme' (modüle ayırma DEĞİL) = ağ/veri/deploy sınırı → R=3; D=3 → çakışma kuralı efor 'max' (ultracode DEĞİL). Frontier kapısı path (a)'yı da ezer — 1000+ ölçekte Sol Ultra değil Astra. R=3 → tek paylaşılan onay notu. Karşıtı: id 8 'modüllere ayır' = R=2.",
       "expectations": [
@@ -99,6 +101,7 @@
       "prompt": "Review this single-file JWT validation module for security vulnerabilities",
       "expected_claude": "Sonnet 5 · effort: xhigh",
       "expected_codex": "Terra · effort: xhigh",
+      "expected_recommended": "claude",
       "tests_rule": "Savunma güvenlik incelemesi (kapı tetiklenmez) + küçük kapsam (tek dosya, W=0 → ultracode YOK). Güvenlik zafiyeti avı = adversarial akıl yürütme → D=3. Kural 2 dışı + sıralı (3+ bağımsız paralel değil) → Claude Sonnet 5·xhigh / Codex path (c) Terra·xhigh (iteration-14: Codex'e Rule 3 aynalandı — D=3 analitik/inceleme → Terra, Sol değil; Terra reasoning 90.6 ≈ Sol). Analiz → agentic-kodlama +1 YOK.",
       "expectations": [
         "Claude: 'Sonnet 5' içeriyor, 'xhigh', 'ultracode' İÇERMİYOR, 'Opus 4.8' İÇERMİYOR",
@@ -111,6 +114,7 @@
       "prompt": "These production DB migration scripts run tonight with no further review — check them for anything that silently loses or corrupts data",
       "expected_claude": "Sonnet 5 · effort: xhigh",
       "expected_codex": "Terra · effort: xhigh",
+      "expected_recommended": "claude",
       "expected_shared_note": "human review",
       "tests_rule": "iteration-14: D=3 (kuplajlı sistemde adversarial doğruluk avı — race condition / çelişen madde ailesi) ∧ R=3 (bu gece çalışıyor, geri dönüşsüz veri kaybı) ∧ Kural 2 DIŞI (inceleme/analiz, kod yazma/tasarım değil). Model: her iki tarafta orta katman — Claude Sonnet 5 (Rule 3), Codex Terra (Rule 3 mirror, path c). Efor: D=3∧R=3 normalde 'max' ama 'max' yalnızca amiral gemisinde → orta katman 'xhigh'da kapanır, R=3 notu riski taşır. İki golden cevap da 'max' İÇERMEZ. Ayrıca 5b/f2 ile birlikte: bu router'ın 'Sonnet 5 · max' / 'Terra · max' üretemeyeceğini kanıtlar.",
       "expectations": [
@@ -418,6 +422,7 @@
       "prompt": "Label these 200 customer reviews as positive/negative",
       "expected_claude": "Haiku 4.5",
       "expected_codex": "Luna · effort: low",
+      "expected_recommended": "codex",
       "tests_rule": "Her iki tarafta da hacim kapısı, en ucuz tier. Codex efor: hacim kapısı → 'low' (eski 'minimal' seviyesi kaldırıldı — resmi ladder none/low/medium/high/xhigh/max).",
       "expectations": [
         "Claude: Haiku 4.5, efor yok",
@@ -430,6 +435,7 @@
       "prompt": "Understand the repo's auth flow and move it to OAuth2",
       "expected_claude": "Sonnet 5 · effort: high",
       "expected_codex": "Terra · effort: xhigh",
+      "expected_recommended": "claude",
       "tests_rule": "D=2 taban durum (repo'yu anla + çok adımlı migration; README.tr.md id 3 = 'Skorlama (D=2)'). Ortak D→efor tablosu D=2 → her iki arm 'high'. AMA OAuth2'ye taşıma = agentic çok-adımlı kodlama (birbirine bağımlı adımlarda kod yeniden yapılandırma) → Codex +1 kademe (iteration-13, LiveBench §2.1: GPT-5.6 hattı agentic kodlamada Claude'un gerisinde) → Codex 'xhigh'. Claude tabloda kalır ('high'). Bu, iki arm'ın efor sütunundaki TEK farkı gösteren eval. (Tarihçe: expected_codex 'low'→'medium' [it-11]→'high' [it-12 merdiven kayması]→'xhigh' [it-13 agentic-kodlama +1].)",
       "expectations": [
         "Claude: Sonnet 5 · high (tabloda kalır)",
@@ -442,6 +448,7 @@
       "prompt": "Run a penetration test against this 180-service environment, build auth-bypass chains",
       "expected_claude": "Opus 4.8 · effort: ultracode",
       "expected_codex": "use Claude",
+      "expected_recommended": "claude",
       "tests_rule": "iteration-15: Saldırı amaçlı siber güvenlik kapısı. Claude gerçek cevap verir (Opus 4.8 · ultracode, W=3). Codex: STANDART erişim bu görevi HARD-STOP eder (GPT-6 Astra 'Critical' cyber; exploit/PoC üretimi reddedilir, onay için duraklamaz) → Codex satırı 'use Claude' der, çalıştırılabilir model adı yok. (Daybreak Blue erişimi belirtilmediği sürece — bkz. a1.)",
       "expectations": [
         "Claude: Opus 4.8 · ultracode",
@@ -454,6 +461,7 @@
       "prompt": "I have Daybreak Blue access. Run a penetration test against this 180-service environment and build auth-bypass chains.",
       "expected_claude": "Opus 4.8 · effort: ultracode",
       "expected_codex": "Astra · effort: xhigh",
+      "expected_recommended": "claude",
       "tests_rule": "iteration-15: kullanıcı Daybreak Blue erişimini AÇIKÇA belirtiyor → Codex offensive kapısının istisnası devreye girer: Astra · effort: xhigh (taban; W/süre 'ultracode'a çıkaramaz — o Claude Code ayarı, Astra'nın kendi tavanı 'max'). Claude tarafı değişmez (Opus 4.8 · ultracode). Mythos 5.1 / Glasswing kalıbının Codex aynası.",
       "expectations": [
         "Claude: Opus 4.8 · ultracode",
@@ -466,6 +474,7 @@
       "prompt": "Load this entire 1.2M-token repository into context and map every call site of the payment module",
       "expected_claude": "Sonnet 5 · effort: medium",
       "expected_codex": "Astra · effort: medium",
+      "expected_recommended": "claude",
       "tests_rule": "iteration-15: Codex frontier/bağlam kapısı — ≥~1M-token külliyat 'aynı anda yükle' → Astra (doğrulanmış tek büyük pencere, 1.05M). Claude tarafı: C=3 ama D=1 (mekanik call-site haritalama) → C tek başına Opus'u tetiklemez → Sonnet 5; efor D=1 → medium. Codex: kapı Astra'yı sabitler, efor D=1 → medium (agentic-kodlama +1 YOK — Astra'da hiç uygulanmaz + bu analiz zaten). PRIMARY: Codex 'Astra' der, Sol/Terra değil.",
       "expectations": [
         "Claude: 'Sonnet 5' içeriyor (Opus DEĞİL — C=3 tek başına tetiklemez), effort medium",
@@ -478,6 +487,7 @@
       "prompt": "Audit this genomics pipeline's variant-calling logic",
       "expected_claude": "Fable 5.1 · effort: high",
       "expected_codex": "unverified",
+      "expected_recommended": "claude",
       "tests_rule": "Biyoloji Ar-Ge kapısı — aynı 'doğrulanmadı' mantığı",
       "expectations": [
         "Claude: Fable 5.1 · high",
@@ -490,6 +500,7 @@
       "prompt": "Bump MAX_RETRIES from 3 to 5 in the prod config",
       "expected_claude": "Sonnet 5 · effort: low",
       "expected_codex": "Terra · effort: low",
+      "expected_recommended": "claude",
       "expected_shared_note": "human review",
       "tests_rule": "R=3, D=0 — her iki taraf da kendi en-ucuz tier'ına düşmüyor (R-tabanı kuralı iki tarafta da var), paylaşılan tek insan-onayı notu. Efor D=0 → low (ortak merdiven; eski Codex 'minimal' kaldırıldı).",
       "expectations": [
@@ -504,6 +515,7 @@
       "prompt": "Redesign the auth architecture of 200 prod services from scratch",
       "expected_claude": "opusplan · plan: max · execute: medium",
       "expected_codex": "Sol · effort: max",
+      "expected_recommended": "claude",
       "expected_claude_note": "does not carry over",
       "expected_shared_note": "human review",
       "tests_rule": "opusplan yalnızca Claude'da var; Codex kendi normal eşlemesinden bağımsız olarak düz Sol'a çıkar",
@@ -531,6 +543,7 @@
       "prompt": "Add the same health-check endpoint to each of 60 independent microservices, each unaware of the others",
       "expected_claude": "Sonnet 5 · effort: medium",
       "expected_codex": "Terra · effort: medium",
+      "expected_recommended": "claude",
       "tests_rule": "'Birbirinden habersiz' ifadesi Sol Ultra/ultracode dilini taklit ediyor ama (a) 60 birim < 100 → W=2 DEĞİL W=3 (SKILL.md W eşiği sayısal), ultracode W=3 gerektirir; (b) D=1 boilerplate → efor medium (ortak merdiven: Claude 1→medium, Codex 1→medium). Sol Ultra sadece D=3→Sol üzerine biner. Novel prompt.",
       "expectations": [
         "Claude: Sonnet 5 · medium (ultracode DEĞİL — W=2, 60<100)",
@@ -543,6 +556,7 @@
       "prompt": "List which security-group rules in this Terraform module allow 0.0.0.0/0 on ports other than 80 and 443",
       "expected_claude": "Sonnet 5 · effort: medium",
       "expected_codex": "Terra · effort: medium",
+      "expected_recommended": "claude",
       "tests_rule": "PRIMARY TEST: defensive infra review does NOT trigger the 'offensive' gate (post-Fable 5.1) — no 'unverified', no Opus 4.8. Prompt deliberately phrased as a mechanical enumeration (list rules matching a fixed condition), not 'review/find vulnerabilities', so D=1 is unambiguous → Sonnet 5 · medium / Terra · medium (shared D→effort ladder: 1→medium both arms). (An open-ended 'review this for security holes' phrasing splits agents D=1 vs D=3 — see f2 for the deliberate D=3 case.)",
       "expectations": [
         "Claude: Sonnet 5 (NOT Opus 4.8, gate must not fire), effort medium",
@@ -555,6 +569,7 @@
       "prompt": "Add a `last_login_at` column to the users table and make it nullable",
       "expected_claude": "Sonnet 5 · effort: low",
       "expected_codex": "Terra · effort: low",
+      "expected_recommended": "claude",
       "tests_rule": "Tam belirtilmiş additive şema değişikliği (sütun adı + nullable hepsi verilmiş, tasarım kararı yok) → D=0 (SKILL.md D=0 kodlama hücresi). R=2 (tersinir migration, R=1 değil) — R≤1 olmadığı için Haiku/Luna'ya düşmüyor, taban Sonnet·low / Terra·low (efor D=0 → low, ortak merdiven; eski Codex 'minimal' kaldırıldı).",
       "expectations": [
         "Claude: Sonnet 5 · low (Haiku DEĞİL, R=2; efor D=0 → low)",
@@ -567,6 +582,7 @@
       "prompt": "Add cursor-based pagination to this API",
       "expected_claude": "Sonnet 5 · effort: medium",
       "expected_codex": "Terra · effort: medium",
+      "expected_recommended": "claude",
       "tests_rule": "D=1/D=2 sınırı: iyi belgelenmiş tek kalıp → D=1, D=2'ye yuvarlanmamalı. Ortak D→efor merdiveninde D=1 → her iki arm 'medium'. (Not: iteration-12 öncesi Codex D=1 → 'low' idi; kullanıcı sahada Terra·low'un Sonnet·medium ile eşdeğer olmadığını, hatalı işlem yaptığını bildirdi → OpenAI'nin kendi kılavuzuyla ('medium' = kodlama varsayılanı, 'low' = hızlı/dar kapsam) merdiven bir kademe yukarı kaydırıldı.)",
       "expectations": [
         "Claude: Sonnet 5 · medium (high DEĞİL — D=1, D=2 değil)",
@@ -579,6 +595,7 @@
       "prompt": "Rewrite these three paragraphs in a more formal tone",
       "expected_claude": "Haiku 4.5",
       "expected_codex": "Luna · effort: low",
+      "expected_recommended": "codex",
       "tests_rule": "D=0'ın kod-dışı alanda çapası: saf ton/biçim değişikliği (içerik değişmiyor) → D=0, uzunluk yüzünden D=1'e yuvarlanmamalı. Codex efor D=0 → low (eski 'minimal' kaldırıldı).",
       "expectations": [
         "Claude: Haiku 4.5",
@@ -591,6 +608,7 @@
       "prompt": "Change this button's colour from blue to green",
       "expected_claude": "Haiku 4.5",
       "expected_codex": "Luna · effort: low",
+      "expected_recommended": "codex",
       "tests_rule": "R rubriği: kod tabanı değişikliği varsayılan R=1 (normal PR-incelemeli akış), sadece canlıya doğrudan giden operasyonel değerler R=2/R=3 — 'izole UI değeri' Luna/Haiku'yu elememelı. Codex efor D=0 → low (eski 'minimal' kaldırıldı).",
       "expectations": [
         "Claude: Haiku 4.5 (Sonnet 5 DEĞİL)",
@@ -603,10 +621,157 @@
       "prompt": "Turn on the new checkout flow for all users from the feature-flag panel",
       "expected_claude": "Sonnet 5 · effort: low",
       "expected_codex": "Terra · effort: low",
+      "expected_recommended": "claude",
       "tests_rule": "s1'in karşıt-örneği — canlıya doğrudan giden, kod incelemesinden geçmeyen bir operasyonel değer (feature flag) R=2/R=3 arası (yargı; checkout hızlı fark edilir → R=2 daha doğru ama grader'ı etkilemez, D=0'da ikisi de Sonnet·low/Terra·low). Asıl test: R≥2 olduğu için Haiku/Luna'ya DÜŞMEZ.",
       "expectations": [
         "Claude: Sonnet 5 · low (Haiku DEĞİL, R=2)",
         "Codex: Terra · low (Luna DEĞİL)"
+      ]
+    },
+    {
+      "id": "b1",
+      "eval_name": "capability-agentic-cok-dosyali-kodlama",
+      "prompt": "Refactor the payment module across these 40 files to use the new idempotency-key API, update every caller, and make the test suite pass.",
+      "expected_claude": "Sonnet 5 · effort: high",
+      "expected_codex": "Terra · effort: xhigh",
+      "expected_recommended": "claude",
+      "tests_rule": "iteration-16 / brief maddesi B. Baskin capability = agentic-code (cok dosyali implementasyon + test dongusu). D=2 (belgelenmis cok adimli is), W=2 (40 dosya, 100'un altinda), R=1, C=2. Ortak D->efor tablosu her iki arm icin 'high'; kod yeniden yapilandirmasi oldugu icin Codex +1 kademe -> xhigh. ASIL TEST: rozet, agregat zeka indeksinden degil goreve ozgu benchmark'tan geliyor -- Terminal-Bench 4.0 (Fable 5.1 55.8 / Opus 5 52.3 / Sol 37.3) agentic kodlamada kanit setindeki en buyuk Claude-Codex farki. Genel zeka tek basina karar vermemeli.",
+      "expectations": [
+        "Claude: Sonnet 5 · high (Opus DEGIL -- D=2)",
+        "Codex: Terra · xhigh (+1 agentic kademe)",
+        "Rozet Claude'da"
+      ]
+    },
+    {
+      "id": "t1",
+      "eval_name": "capability-terminal-agir-kok-neden",
+      "prompt": "The container build passes locally but fails only on the release CI runner. Reproduce it inside the container, find the root cause, and fix the Dockerfile and the CI workflow.",
+      "expected_claude": "Opus 5 · effort: xhigh",
+      "expected_codex": "Sol · effort: xhigh",
+      "expected_recommended": "claude",
+      "tests_rule": "iteration-16 / brief maddesi C. Baskin capability = terminal-tool + agentic-code (reproduce-in-container + build/test dongusu + kod duzeltme). D=3 (kuplajli sistemde kok-neden avi), R=2 (CI/altyapi, PR incelemeli), W=1, C=2. Claude: D=3 + flagship capability listesi -> Opus 5; efor D=3 -> xhigh (R=3 olmadigi icin max sorusu hic acilmaz). Codex: D=3 path (b) -> Sol; efor xhigh, ustune agentic +1 -> max (Sol amiral gemisi, max destekli). ASIL TEST: terminal/tool benchmarklari (Terminal-Bench 4.0) bu satirda etkili -- CursorBench degil, cunku IDE scaffoldu degil. [iteration-16 duzeltme: golden ilk yazildiginda Codex 'Sol · max' idi (+1 kademe varsayimiyla). Soguk ajan baskin capability'yi terminal-tool okudu ve kademeyi uygulamadi -- savunulabilir: zor kisim teshis, duzeltme iki config dosyasi, 'kod tabanina yayilan yeniden yapilandirma' degil. SKILL.md'ye kademenin *duzeltmeye* baktigi, teshise bakmadigi acikca yazildi ve golden 'Sol · xhigh'a cekildi. Kademenin kendisi b1'de test ediliyor.]",
+      "expectations": [
+        "Claude: Opus 5 · xhigh",
+        "Codex: Sol · xhigh (+1 YOK -- teshis agir, duzeltme lokal)",
+        "Rozet Claude'da"
+      ]
+    },
+    {
+      "id": "p1",
+      "eval_name": "capability-derin-akil-yurutme-kodlama-benchmarki-sifir",
+      "prompt": "Prove that this greedy scheduling heuristic's worst-case makespan is within 4/3 of optimal, or give a counterexample. Work only from the definitions in this message — do not write or run any code.",
+      "expected_claude": "Opus 5 · effort: xhigh",
+      "expected_codex": "Sol · effort: xhigh",
+      "expected_recommended": "claude",
+      "tests_rule": "iteration-16 / brief maddesi D. Baskin capability = deep-reasoning (matematik/formal ispat, ARACSIZ). D=3, R=1, W=0, C=0. Claude: D=3 + flagship listesi (matematik/aracsiz) -> Opus 5 · xhigh. Codex: path (b) -> Sol · xhigh. ASIL TEST 1: agentic-kodlama +1 kademesi burada UYGULANMAZ -- kod yazilmiyor, bu analiz/ispat. ASIL TEST 2: SWE/Terminal-Bench/CursorBench agirligi SIFIR olmali; rozet gerekcesi HLE (aracsiz) tarafindan tasinmali, kodlama benchmarki tarafindan degil. Kanit zayif oldugu icin Evidence satirinda dusuk guven isareti kabul edilir ama zorunlu degil.",
+      "expectations": [
+        "Claude: Opus 5 · xhigh",
+        "Codex: Sol · xhigh (+1 YOK -- kodlama degil)",
+        "Rozet Claude'da"
+      ]
+    },
+    {
+      "id": "e1",
+      "eval_name": "capability-uzun-baglam-sentez-memo",
+      "prompt": "Read these 900 pages of regulatory filings and write one memo on how the disclosure requirements changed between 2023 and 2026.",
+      "expected_claude": "Sonnet 5 · effort: high",
+      "expected_codex": "Terra · effort: high",
+      "expected_recommended": "claude",
+      "tests_rule": "iteration-16 / brief maddesi E. Baskin capability = long-context + knowledge-work (bitmis bir memo uretiliyor). C=3, D=2, W=1, R=1. Model <- max(D,C)=3 ama D<3 -> her iki tarafta ORTA KATMAN (C tek basina amiral gemisini tetiklemez; 1M pencere isi gorur). Efor <- D=2 -> high, iki tarafta da (+1 YOK: kod degil). Rozet: knowledge-work satiri (GDPval-AA v2: Fable 5.1 1853 / Opus 5 1824 / Sol 1711) -> Claude. ASIL TEST: uzun baglam modeli yukseltmiyor, ama long-context/knowledge-work benchmarklari rozeti belirliyor.",
+      "expectations": [
+        "Claude: Sonnet 5 · high (Opus DEGIL -- C=3 tek basina tetiklemez)",
+        "Codex: Terra · high (Sol/Astra DEGIL -- 1M altinda, kapi yok)",
+        "Rozet Claude'da"
+      ]
+    },
+    {
+      "id": "g1",
+      "eval_name": "capability-computer-use-codex-kapisi",
+      "prompt": "Drive the vendor's desktop ERP client through the 14 month-end close steps in our staging environment, resolve any validation errors it raises, and export the trial balance.",
+      "expected_claude": "Sonnet 5 · effort: high",
+      "expected_codex": "Astra · effort: high",
+      "expected_recommended": "codex",
+      "expected_low_confidence": true,
+      "tests_rule": "iteration-16 / brief maddesi F. Baskin capability = computer-use (GUI'yi ucdan uca surmek). YENI Codex kapisi: gorevin kendisi bilgisayar/GUI kullanimiysa -> Astra (Sol'a karsi yayinlanmis tek net ustunlugu). Claude tarafinda kapi yok: D=2 (14 adim tanimli; hata cozumu yargi ister ama sifirdan tasarim degil), C=2, W=2, R=2 (staging) -> Sonnet 5 · high. Codex efor D=2 -> high (Astra'da +1 ASLA). ASIL TEST 1: rozet Codex'e gidiyor -- router tek ekosisteme cokmuyor. ASIL TEST 2: OSWorld surum/skorlama uyusmazligi nedeniyle Evidence satiri DUSUK GUVEN isareti tasimali ('low-confidence').",
+      "expectations": [
+        "Claude: Sonnet 5 · high",
+        "Codex: Astra · high (computer-use kapisi; Sol/Terra DEGIL)",
+        "Rozet Codex'te + Evidence'ta low-confidence"
+      ]
+    },
+    {
+      "id": "h1",
+      "eval_name": "yuksek-risk-mimari-verimlilik-kaliteyi-ezmemeli",
+      "prompt": "Design the multi-region failover and data-consistency model for our payments ledger from scratch. It goes live next quarter and the design cannot be re-litigated afterwards.",
+      "expected_claude": "Opus 5 · effort: max",
+      "expected_codex": "Sol · effort: max",
+      "expected_recommended": "claude",
+      "expected_shared_note": "human review",
+      "tests_rule": "iteration-16 / brief maddesi H. D=3 (sifirdan mimari tasarim), R=3 (geri donusu yok, paylasilan cekirdek), W=2, C=1. Baskin capability = deep-reasoning + architecture -> her iki tarafta amiral gemisi (Opus 5 / Sol). ASIL TEST: Kural E3 burada max'i KISMIYOR -- bu tek parcali, bolunemez, ozgun bir tasarim karari, yani E3'un max'e izin verdigi tam durum. Token tasarrufu kalite gereksinimini EZMEMELI. opusplan tetiklenmemeli: somut bir yurutum-kapsam sayisi verilmemis, zorluk plana on-yuklu degil. R=3 -> tek paylasilan insan-onayi notu.",
+      "expectations": [
+        "Claude: Opus 5 · max (opusplan DEGIL, xhigh DEGIL)",
+        "Codex: Sol · max",
+        "Rozet Claude'da",
+        "Tek paylasilan insan-onayi notu"
+      ]
+    },
+    {
+      "id": "i1",
+      "eval_name": "paralel-bagimsiz-is-codex-ultra",
+      "prompt": "For each of these 120 unrelated vendors, reconcile their sub-processor terms against our DPA's flow-down and audit clauses and decide whether there is an actual breach — the clauses conflict with each other in non-obvious ways. The vendors are unaware of each other. This is a first-pass triage; our counsel reviews every flag before anything leaves the building.",
+      "expected_claude": "Sonnet 5 · effort: ultracode",
+      "expected_codex": "Sol Ultra · effort: xhigh",
+      "expected_recommended": "codex",
+      "tests_rule": "iteration-16 / brief maddesi I. D=3 (celisen sozlesme maddelerini uzlastirma), W=3 (120 >= 100), R=1, C=2. Baskin capability = parallel-independent + research-synthesis; agentic-code/terminal SIFIR (kod yok, repo yok). Claude: D=3 flagship capability listesi DISINDA (hukuki/analitik) -> Sonnet 5; W=3 & >30dk & degil(D3&R3) -> ultracode. Codex: path (a) 3+ zaten-bagimsiz hedef -> Sol Ultra, efor D=3 -> xhigh (+1 YOK, analiz). ASIL TEST: rozet Codex'e -- Ultra modu gercek paralel ajan mekanizmasi ve bu gorevde Claude'un kanitlanmis bir capability ustunlugu YOK. 5b'nin tersi: orada Terminal-Bench kaniti mekanizmayi yeniyordu, burada yenecek kanit yok. [iteration-16 duzeltme: ilk hali 'whether their sub-processor chain would breach our DPA' idi ve soguk ajan bunu D=2 cok-kaynakli sentez okudu; D=2'de Codex path (a) erisilemez oldugu icin eval kendi amacini test edemiyordu. Prompt, D rubriginin kendi D=3 dilini ('celisen kaynaklari uzlastirma') acikca tasiyacak sekilde keskinlestirildi. n2'nin iteration-9'da ayni nedenle sikilastirilmasiyla ayni kalip.] [iteration-16 ikinci duzeltme: soguk ajan 'breach karari' ifadesini R=3 (hukuki tavsiye) okudu; D=3&R=3 catismasi ultracode'u blokladi ve eval'in test etmek istedigi ultracode/Sol Ultra ciftini bozdu. Ajanin okumasi savunulabilirdi, bu yuzden kural degil PROMPT netlestirildi: is artik acikca 'counsel her flag'i inceliyor' -> R=1. Boylece W=3 & >30dk kosulu ultracode'u tetikler.]",
+      "expectations": [
+        "Claude: Sonnet 5 · ultracode (Opus DEGIL)",
+        "Codex: Sol Ultra · xhigh",
+        "Rozet Codex'te"
+      ]
+    },
+    {
+      "id": "j1",
+      "eval_name": "kanit-fakiri-karsilastirma-dusuk-guven",
+      "prompt": "Reconcile these 60 scanned supplier invoices against the ledger extract: line items are worded differently on the two sides, some invoices are split across several ledger entries, and I need every unmatched line explained.",
+      "expected_claude": "Sonnet 5 · effort: high",
+      "expected_codex": "Terra · effort: high",
+      "expected_recommended": "claude",
+      "expected_low_confidence": true,
+      "tests_rule": "iteration-16 / brief maddesi J. Baskin capability = doc-data-understanding (taranmis belge/tablo cikarimi) + long-context. D=2, W=2, C=2, R=2 -> her iki tarafta orta katman, efor high. ASIL TEST: bu capability icin DOGRULANMIS capraz-ekosistem benchmark satiri YOK (bkz. reference.md 12.4). Router sahte bir benchmark ustunlugu iddia ETMEMELI; makul bir default verip Evidence satirinda 'low-confidence' isareti tasimali. [iteration-16 duzeltme: ilk hali 'line by line reconcile' idi ve soguk ajan bunu D=1 mekanik eslestirme okudu; D<=1'de Adim 6'nin 'capability satirlarini atla, verimlilik karar versin' tie-break'i devreye girip kanit-fakiri satirini tamamen bypass ediyordu -- yani eval test etmek istedigi seyi test edemiyordu. Prompt, eslestirme stratejisi bir tasarim karari haline gelecek sekilde D=2'ye tasindi.]",
+      "expectations": [
+        "Claude: Sonnet 5 · high",
+        "Codex: Terra · high",
+        "Rozet var ama Evidence 'low-confidence' diyor"
+      ]
+    },
+    {
+      "id": "k1",
+      "eval_name": "basit-kodlama-en-pahali-model-refleksi-yok",
+      "prompt": "Add a `--dry-run` flag to this CLI command that prints what it would do instead of doing it.",
+      "expected_claude": "Sonnet 5 · effort: medium",
+      "expected_codex": "Terra · effort: medium",
+      "expected_recommended": "claude",
+      "tests_rule": "iteration-16 / brief maddesi G. D=1 (bilinen kalip, tek makul yaklasim), W=0, R=1, C=1. ASIL TEST 1: en pahali model refleks olarak secilmemeli -- Opus 5 / Sol / Astra hicbiri cikmamali; en dusuk YETERLI model x efor kombinasyonu Sonnet 5 · medium / Terra · medium. ASIL TEST 2: D=1 oldugu icin Adim 6 tie-breaki devreye girer (her iki arm bariyeri zaten asiyor -> verimlilik karar verir; Sonnet 5 $2/$10 vs Terra $2/$12 -> Claude). Agentic +1 kademesi tek-dosyali kucuk bir ekleme icin uygulanmaz.",
+      "expectations": [
+        "Claude: Sonnet 5 · medium (Opus DEGIL, high DEGIL)",
+        "Codex: Terra · medium (Sol DEGIL)",
+        "Rozet Claude'da"
+      ]
+    },
+    {
+      "id": "q1",
+      "eval_name": "dominance-yukseltme-model-degistirir-efor-degil",
+      "prompt": "This is critical and must not be under-resourced: these production DB migration scripts run tonight with no further review — check them for anything that silently loses or corrupts data.",
+      "expected_claude": "Opus 5 · effort: xhigh",
+      "expected_codex": "Sol · effort: xhigh",
+      "expected_recommended": "claude",
+      "expected_shared_note": "human review",
+      "tests_rule": "iteration-16 -- verimlilik kanitinin karari GERCEKTEN degistirdigi eval. m1 ile ayni gorev profili (D=3 adversarial inceleme, R=3, flagship capability listesi DISINDA) ama kullanici isi acikca KRITIK ilan ediyor -> Adim 7 Kural 2 yukseltmesi tetikleniyor. YENI DAVRANIS: yukseltme bir MODEL degisimi, efor degisimi degil. Sonnet 5 -> Opus 5, Terra -> Sol; efor D=3 tablosunda kalir (xhigh). Gerekce olculmus dominance (reference.md 13.2): Opus 5 · xhigh (indeks 50, $4.88) hem Sonnet 5 · max'ten (38, $5.09) guclu hem ucuz; Sol · high (42, $0.81) Terra · max'i (42, $1.40) domine eder ve Terra'da max zaten yok. E3 geregi max CIKMAZ -- bu bir inceleme, bolunemez ozgun tasarim degil.",
+      "expectations": [
+        "Claude: Opus 5 · xhigh (max DEGIL, Sonnet 5 DEGIL)",
+        "Codex: Sol · xhigh (max DEGIL, Terra DEGIL)",
+        "Rozet Claude'da",
+        "Tek paylasilan insan-onayi notu"
       ]
     }
   ]
