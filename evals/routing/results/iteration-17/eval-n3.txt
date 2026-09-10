@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: low
+Codex: Terra · effort: low
+Evidence: D=0 fully-specified schema change — both arms are far past the bar, so efficiency decides (Sonnet 5 $2/$10 vs Terra $2/$12), while R=2 on a live database keeps it off Haiku/Luna.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

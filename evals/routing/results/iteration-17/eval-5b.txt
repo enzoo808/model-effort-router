@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: ultracode
+Codex: Sol Ultra · effort: xhigh
+Evidence: A 180-service defensive audit is terminal-tool + parallel-independent, and Terminal-Bench 4.0 (Opus 5 52.3 vs Sol 37.3) is task-specific evidence that outranks Ultra mode's product-level parallelism; the scale buys ultracode, not a higher tier.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

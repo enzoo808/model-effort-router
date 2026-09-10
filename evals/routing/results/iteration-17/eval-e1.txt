@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Codex: Terra · effort: high
+Evidence: Large-corpus but shallow-depth synthesis (C=3, D=2) keeps both arms mid-tier, and on long-context Sonnet 5 carries a 1M window at $2/$10 while the Codex arm has no verified large window below Astra at $10/$50 with a 2× surcharge above 272k input tokens.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

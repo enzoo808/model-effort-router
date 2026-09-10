@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: medium
+Codex: Terra · effort: medium
+Evidence: 60 units is W=2, not the 100+ that would unlock ultracode or Ultra mode, and D=1 mechanical repetition skips the capability rows entirely — so efficiency decides and Sonnet 5 is the cheaper daily driver on output tokens ($10 vs $12/MTok).
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

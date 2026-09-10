@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Codex: Terra · effort: high
+Evidence: Scanned-document extraction and reconciliation has no verified cross-ecosystem benchmark row, so the preference for Claude's doc-data-understanding profile is low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

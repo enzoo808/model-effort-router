@@ -1,0 +1,4 @@
+Claude: Haiku 4.5
+Codex: ✅ RECOMMENDED AI · Luna · effort: low
+Evidence: Both clear the bar for mechanical classification, and Luna runs ~30% faster per token at slightly lower cost per task (AA v4.3: 112 tok/s at $0.18 vs 85 tok/s at $0.21).
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

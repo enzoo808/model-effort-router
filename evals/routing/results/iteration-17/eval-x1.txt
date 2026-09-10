@@ -1,0 +1,4 @@
+Claude: Fable 5.1 · effort: ultracode
+Codex: ✅ RECOMMENDED AI · Astra · effort: high
+Evidence: The 1000+ file gate fixes both arms (Fable 5.1; Astra is the only Codex model with a verified ≥1M window), and on the independent AA Terminal-Bench 4.0 run Astra leads 59 vs Fable 5.1's 52 while spending ~27k output tokens per task against 78k.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

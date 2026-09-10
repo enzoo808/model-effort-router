@@ -27,8 +27,8 @@ model-secici:
             ~30% faster per token at slightly lower cost per task.
 ```
 
-> The skill body (`skill/SKILL.md` + `skill/reference.md` + `skill/benchmarks.json`)
-> and its output are English. It routes prompts in any language. 🇹🇷 A longer
+> The skill body (`skill/SKILL.md`, plus `reference.md`, `benchmarks.json` and
+> the generated `benchmark_frontiers.json`) and its output are English. It routes prompts in any language. 🇹🇷 A longer
 > Turkish walkthrough of the decision logic is in **[README.tr.md](README.tr.md)**.
 
 ---
@@ -50,7 +50,15 @@ The decision principle, in one sentence:
 
 Not "always cheapest". Not "always strongest". Not "highest benchmark score wins".
 
-## What changed in iteration-16
+## What changed, and when
+
+**iteration-17 (Phase 2)** hardened the evidence rather than the router: it went
+back for the benchmark *owners*' own leaderboards, turned the path from a raw
+score into a routing rule into a deterministic compiler, and measured how much of
+the router's ecosystem preference rests on vendor-run numbers. One routing rule
+moved — see the Astra example below. Details: **[Data honesty](#data-honesty)**.
+
+**iteration-16 (Phase 1)** is where the benchmark-aware engine came from:
 
 Through iteration-15 the router read a prompt's **R/D/W/C** (risk, depth, width,
 context) and mapped that straight to a model and an effort level. R/D/W/C
@@ -71,6 +79,21 @@ prompt
   → token & quota efficiency         (Step 5c/5d, NEW)
   → cross-ecosystem comparison → ✅ RECOMMENDED AI + Evidence line (Step 6, NEW)
   → quota guards                     (Step 7)
+```
+
+The badge is **conditional on which Codex model is on the line** — a capability
+can genuinely favour Claude against Sol and not against Astra:
+
+```
+You:    /model-secici  Split this 6000-file legacy Java monolith into independent services
+
+model-secici:
+  Claude: Fable 5.1 · effort: max
+  Codex:  ✅ RECOMMENDED AI · Astra · effort: max
+  Evidence: Capability is level against Astra (AA Terminal-Bench 4.0: Astra 59
+            vs Fable 5.1 52; Coding Agent Index tied at 62), so efficiency
+            decides — 27k output tokens/task vs 78k.
+  Do not apply without human review.
 ```
 
 Three of the new rules change real outputs, and each is asserted in the eval set:
@@ -116,24 +139,60 @@ What that buys in practice:
 - **Vendor benchmarks are used but discounted.** Anthropic's launch note measures
   GPT-5.6 Sol in Anthropic's own harness. That's direction, not a settled
   ranking, and it's labelled `vendor_run: true` in the data.
-- **Conflicts are recorded, not averaged away.** Five open conflicts and eleven
-  explicit non-findings are written down in `skill/reference.md` §12.3–§12.4 —
-  including that WebSearch was unavailable for the whole 10 Sep research pass, so
-  the Terminal-Bench, LiveBench, OSWorld and SWE-bench *owner* leaderboards could
-  not be read.
+- **Conflicts are recorded, not averaged away.** The open conflicts and the
+  explicit non-findings are written down in `skill/reference.md` §12.3–§12.5 —
+  including that the two vendors publish Opus 5 on the same OSWorld version and
+  scoring mode 5.2 points apart, and that OpenAI's and Anthropic's Terminal-Bench
+  figures for the Claude models are digit-for-digit identical, which makes them
+  one number re-cited rather than two runs.
 
 Every record — benchmark, version, model, effort, harness, tool access, scaffold,
 trials, dispersion, cost/task, date, source, source tier, comparability group —
-is in **[`skill/benchmarks.json`](skill/benchmarks.json)**, 61 rows, `null` wherever
-a figure isn't published.
+is in **[`skill/benchmarks.json`](skill/benchmarks.json)**, 123 rows, `null`
+wherever a figure isn't published.
+
+### The evidence is compiled, not asserted
+
+Three layers, and **only the first is read at runtime**:
+
+| Layer | File | Written by | Read when |
+|---|---|---|---|
+| Runtime rule | `skill/SKILL.md` | a human | every route |
+| Derived frontier | `skill/benchmark_frontiers.json` | the compiler — **generated** | auditing a rule |
+| Raw evidence | `skill/benchmarks.json` | a human, one record per measurement | changing a rule |
+
+```bash
+python scripts/validate_benchmarks.py            # schema, groups, rule provenance, staleness
+python scripts/compile_benchmark_frontiers.py    # regenerate the derived frontier
+python scripts/test_frontier_compiler.py         # 26 comparison-semantics assertions
+python scripts/ablate_evidence.py                # vendor-bias measurement
+```
+
+The compiler never interprets a number on its own: every threshold, grouping and
+precedence weight is declared in `benchmarks.json`, and where the declared
+metadata doesn't settle a comparison the answer is `UNRESOLVED` — which tells the
+router to fall through to efficiency. It never averages two conflicting sources.
+Two runs produce byte-identical output, and the frontier stores the sha256 of the
+evidence it came from, so editing the evidence without recompiling fails the
+build.
+
+**The vendor-bias measurement is the uncomfortable one.** Re-derive the frontier
+using only independent (tier B) evidence, or with vendor-measures-competitor rows
+removed, and only `agentic-code` and `terminal-tool` survive. Every other
+capability — Claude's lead on knowledge work and science, Codex's lead on
+computer use — collapses to `UNRESOLVED`. Both sides' advantages outside terminal
+work rest on one vendor's account of the other. The router doesn't paper over
+that or force a balanced badge: those capabilities are marked in the rule table
+and their Evidence line has to say `low-confidence`.
 
 ---
 
 ## Install
 
 It's a [Claude skill](https://docs.claude.com/en/docs/claude-code/skills) —
-three files (`skill/SKILL.md`, `skill/reference.md`, `skill/benchmarks.json`)
-that live in a `model-secici/` folder. "Installing" is just putting that folder
+four files (`skill/SKILL.md`, `skill/reference.md`, `skill/benchmarks.json`,
+`skill/benchmark_frontiers.json`) in a `model-secici/` folder. Only `SKILL.md` is
+read when routing; the rest are there for auditing a rule. "Installing" is just putting that folder
 where Claude looks for skills.
 
 ```bash
@@ -156,7 +215,7 @@ cd model-effort-router
 **Or by hand (any OS)** — the scripts just do this:
 ```bash
 mkdir -p ~/.claude/skills/model-secici
-cp skill/SKILL.md skill/reference.md skill/benchmarks.json ~/.claude/skills/model-secici/
+cp skill/*.md skill/*.json ~/.claude/skills/model-secici/
 ```
 
 Start a new Claude Code session, then:
@@ -253,6 +312,7 @@ human oversight, not model tier**, and **when in doubt, round down**.
 
 | Task | Claude | Codex | Recommended |
 |---|---|---|---|
+| Split this 6000-file monolith into services | `Fable 5.1 · max` | `Astra · max` | **Codex** — against Astra the coding lead is level, so token load decides |
 | Label 200 customer reviews positive/negative | `Haiku 4.5` | `Luna · low` | **Codex** — both clear the bar; Luna is faster and cheaper |
 | Add a `--dry-run` flag to this CLI command | `Sonnet 5 · medium` | `Terra · medium` | **Claude** — D=1, so efficiency decides; $2/$10 vs $2/$12 |
 | Refactor the payment module across 40 files, make the tests pass | `Sonnet 5 · high` | `Terra · xhigh` | **Claude** — Terminal-Bench 4.0 agentic-code margin |
@@ -260,7 +320,6 @@ human oversight, not model tier**, and **when in doubt, round down**.
 | Drive the desktop ERP client through month-end close | `Sonnet 5 · high` | `Astra · high` | **Codex**, low-confidence — OSWorld computer-use lead |
 | Check 120 unrelated vendors' DPA compliance | `Sonnet 5 · ultracode` | `Sol Ultra · xhigh` | **Codex** — genuine parallel-agent mechanism, no Claude capability edge |
 | Audit this genomics pipeline's variant-calling logic | `Fable 5.1 · high` | `unverified — use Claude` | **Claude** — availability gate |
-| Split this 6000-file legacy monolith into services | `Fable 5.1 · max` + review note | `Astra · max` + review note | **Claude** — the one case where `max` still earns its quota |
 | Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5 · low` + review note | `Terra · low` + review note | **Claude** |
 | "Fix this code" | *(no model, no badge — asks: which code? broken how? done = ?)* | | |
 
@@ -278,6 +337,10 @@ effort, **which side carries the badge** (`expected_recommended`), and that an
 `Evidence:` line is present and non-trivial. It deliberately does **not** compare
 the Evidence wording — that line is free-form by design — but it can require it
 to flag `low-confidence` where the rules say it must.
+
+Latest run: **32/32** (iteration-17). The evidence layer has its own,
+faster checks that run without an LLM — schema validation, rule-provenance
+resolution, frontier staleness, 26 compiler assertions and the bias ablation.
 
 Run history and the reasoning behind every rule change is in
 [`evals/README.md`](evals/README.md).

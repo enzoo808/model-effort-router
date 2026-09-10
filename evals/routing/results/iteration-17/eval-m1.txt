@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: xhigh
+Codex: Terra · effort: xhigh
+Evidence: D=3 adversarial silent-corruption review sits outside the flagship capability list, so both arms stay mid-tier at xhigh, and the Claude side rests on the against-interest tooled-HLE deep-reasoning row (Opus 5 63.6 vs Astra 57.2) — low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.

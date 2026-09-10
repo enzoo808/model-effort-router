@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Codex: Terra · effort: high
+Evidence: Workflow-automation favours Claude on AutomationBench (31.4 / 26.9 vs Sol ~19) but the row is low-confidence, and configuration-only work earns no Codex agentic-coding notch.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

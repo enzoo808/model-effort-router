@@ -59,7 +59,61 @@ the same pass.
 - `b1`, `t1`, `p1`, `e1`, `g1`, `h1`, `i1`, `j1`, `k1`, `q1` — added in
   iteration-16 for the capability profile, the equivalence/efficiency layer and
   the `✅ RECOMMENDED AI` badge. One per capability class the brief named.
-- Live regression set: **30** as of iteration-16.
+- `x1`, `x2` — added in iteration-17 (Phase 2) for the model-conditional badge
+  and the mandatory hedge on vendor-dependent capabilities.
+- Live regression set: **32** as of iteration-17.
+
+### The Phase 2 test matrix
+
+Phase 2 asked for fifteen additional cases. Nine were already covered by named
+evals; four are properties of the frontier compiler rather than of a prompt, and
+are tested exactly — with synthetic fixtures — in
+`scripts/test_frontier_compiler.py` instead of being inferred from a routing
+decision three layers downstream; two needed new routing evals.
+
+| # | Case | Where it is tested |
+|---|---|---|
+| 1 | Terminal-heavy end-to-end | `t1`, and `x1` for the Astra column |
+| 2 | Pure model-level reasoning | `p1` |
+| 3 | GUI / computer-use | `g1` |
+| 4 | Coding review | `f2`, `5b` |
+| 5 | Agentic implementation | `b1`, `d2` |
+| 6 | Math / formal reasoning | `p1` |
+| 7 | Long-context shallow synthesis | `a2`, `e1` |
+| 8 | Independent parallel workstreams | `i1`, `5b` |
+| 9 | Same capability, efficiency tie-break | `k1` (D≤1), `f1` (capability-level) |
+| 10 | Vendor evidence disagreement | `x2`; compiler: "two equally-weighted vendor tables pointing opposite ways" |
+| 11 | Evidence insufficient | `j1` |
+| 12 | Same score / different cost | compiler unit test |
+| 13 | Same cost / meaningful score gap | compiler unit test |
+| 14 | CI-overlapping result | compiler unit test |
+| 15 | CI-non-overlapping result | compiler unit test |
+
+`expected_recommended` is asserted on every badge-bearing eval, and
+`expected_low_confidence` on the seven whose capability collapses under the
+vendor-bias ablation.
+
+## 3. Evidence checks (Phase 2, no LLM, no network)
+
+Run these before the routing evals — they are fast, deterministic and catch the
+failure mode routing evals cannot see, which is the router being *confidently
+wrong* because its evidence rotted.
+
+```
+python scripts/validate_benchmarks.py            # schema, groups, rule provenance, staleness
+python scripts/compile_benchmark_frontiers.py    # regenerate the derived frontier
+python scripts/compile_benchmark_frontiers.py --check   # exit 1 if the frontier is stale
+python scripts/test_frontier_compiler.py         # 26 comparison-semantics assertions
+python scripts/ablate_evidence.py                # vendor-bias measurement
+```
+
+**The staleness check is the important one.** `benchmark_frontiers.json` stores
+the sha256 of the exact bytes of `benchmarks.json`. Edit the evidence without
+recompiling and both the compiler's `--check` and the validator fail. A derived
+layer that silently lags its evidence is worse than no derived layer at all.
+
+**Determinism is a build requirement:** run the compiler twice and diff. If the
+output is not byte-identical, that is a failure, not a quirk.
 - `1`–`22`, `c1`–`c5`, `v1` — legacy single-ecosystem format, marked
   `format_outdated: true`, skipped by the grader. Backfilling them to
   dual-output is the remaining eval-debt.
@@ -133,4 +187,5 @@ under `claude -p` print mode).
 | 13 | After iteration-12 the two effort columns were byte-identical on every row — the skill owner asked for the effort column to still carry a distinction. Added the **one cited asymmetry** as a rule: **Codex +1 effort notch for agentic multi-step coding** (writing/restructuring code across dependent steps — multi-file feature, refactor, migration, architecture implementation, codebase-spanning debug-and-fix; capped at `max`; Claude untouched). LiveBench §2.1 puts the whole GPT-5.6 line behind Claude on agentic coding (Sol 56.2 < Sonnet 5 59.4 < Opus 5 65.2) and nowhere else. Excludes code review / vuln analysis (f2, 5b stay level), non-code design, mechanical cross-file repetition. Only golden answer that moves: **d2** `Terra high→xhigh`. Cold re-run. First pass: one cold agent read "split monolith into **independent** services" (f1) as Sol Ultra — the iteration-11 trim had moved the "monolith decomposition = plain Sol, not Sol Ultra" counter-example out of `SKILL.md`. Restored it inline in the Codex mapping row; f1 re-run → plain Sol. | **17/17** |
 | 14 | A real output (`Claude: Sonnet 5 · max` / `Codex: Sol · max` for a D=3 ∧ R=3 review task) exposed two inconsistencies. **(1) Codex had no Rule-3 equivalent** — every D=3 went to Sol, so the Claude arm protected quota (stayed on Sonnet 5) while the Codex arm jumped to the flagship for the same analytical work. Fixed: the Codex D=3 row is now an ordered check — (a) 3+ already-independent parallel targets → Sol Ultra; (b) Rule 2 territory (agentic code / math / tool-less) → Sol; (c) otherwise (analytical / research / single-artefact review) → **Terra** (LiveBench reasoning 90.6 ≈ Sol; escalate to Sol if critical). **(2) `Sonnet 5 · max` / `Terra · max`** were rule-valid but in neither vendor's mid-tier tuning advice. Fixed: `max` (from `D=3 ∧ R=3`) is **flagship-only** — mid-tier caps at `xhigh`, the R=3 review note carries the stakes. Golden answers: **f2** `Sol · xhigh → Terra · xhigh`; new eval **m1** locks the D=3 ∧ R=3-outside-Rule-2 case (`Sonnet 5 · xhigh` / `Terra · xhigh`, no `max`). Live set now 18. Cold re-run (4 parallel agents). | **18/18** |
 | 16 | **Benchmark-aware routing engine.** The router no longer picks a model from R/D/W/C alone. New pipeline: quality gate → hard gates → **task capability profile** → R/D/W/C → candidate model x effort → **benchmark evidence, comparability, equivalence, dominance** → **token/quota efficiency** → **cross-ecosystem `✅ RECOMMENDED AI` + one Evidence line**. R/D/W/C is kept in full and demoted from *the* input to *an* input. Research pass (10 Sep 2026, `docs/research-provenance.tr.md`) re-verified every hard gate and produced `skill/benchmarks.json` — 61 records with harness, effort, dispersion, cost/task, date, source tier and comparability group. Corrections: **Sonnet 5 is $2/$10, not $3/$15** (the rise was cancelled — Opus/Sonnet ratio 1.67x → 2.5x); Sonnet 5 *does* have published `max` guidance (the old citation was wrong); `max` on Codex is **Astra/Sol only**; the AA Index figures the repo carried are from an incomparable index version; the "Codex Coding Agent Index" could not be traced and was demoted. New rules that change output: **E1** `Sonnet 5 · max` is dominated by `Opus 5 · xhigh` on both quality and cost, so escalation is a **model** change not an effort change; **E2** the Codex mirror (`Sol · high` dominates `Terra · max`, which is unavailable anyway); **E3** `max` buys ~nothing over `xhigh`, so it now needs `D=3 ∧ R=3` **and** an indivisible novel-design decision; plus a **Codex computer-use gate** (named in the roster notes since iteration-15, never actually in the gate table). Golden answers changed: **t1** (new) `Sol · max → Sol · xhigh`. Prompts sharpened: **i1**, **j1** (cold agents scored them a depth lower than intended, which bypassed the very rule each was written to test — same fix pattern as `n2` in iteration-9). Five cold-agent rounds; five internal inconsistencies in the first draft were found *by* the evals and fixed in `SKILL.md`: the flagship capability list wrongly swept in code *review*, the +1 notch lost its "multi-step" scope, the schema-migration `R=2` ruling was dropped in the rewrite, `opusplan` was not excluded from the Claude `/fast` half, and the analysis carve-out wrongly suppressed Codex path (a). | **30/30** routing |
+| 17 | **Phase 2 — benchmark evidence hardening + deterministic frontier compilation.** Not a redesign: the Phase 1 pipeline is unchanged. Went back for the benchmark-**owner** sources Phase 1 could not reach (WebSearch was down for that entire pass) and made the path from a raw score to a routing rule mechanical. New: `skill/benchmark_frontiers.json` (**generated**), `scripts/compile_benchmark_frontiers.py`, `scripts/validate_benchmarks.py`, `scripts/test_frontier_compiler.py`, `scripts/ablate_evidence.py`, `scripts/render-social-preview.ps1`. `benchmarks.json` 61 → **123 records**, every one with a stable `id`, an `evidence_class` (`model_intrinsic` / `ecosystem_end_to_end` / `vendor_relative` / `aggregate` / `efficiency_only`) and `verified_at`; plus authored `comparability_groups`, `evidence_precedence`, `no_dispersion_rule`, `excluded_from_direction`, `model_ecosystem` and a `routing_rules` block giving every rule machine-readable `evidence_ids`. **Research:** Vals.ai runs Terminal-Bench 2.1 on the Terminus 2 harness for every model (Astra 87.27 · Sol 85.77 · Fable 5.1 85.02 · Opus 5 84.64 — but saturated, so excluded); the tbench.ai owner leaderboard end-to-end has Codex CLI+Sol 89.5 ≈ Claude Code+Opus 5 89.1; **Artificial Analysis on the unsaturated TB 4.0 gives Astra 59 · Fable 5.1 52 · Sol 40**. LiveBench re-verified only as a mutable snapshot and excluded; SWE-bench found saturated within ~1 point and excluded; OSWorld metadata pinned down (2.0, offline set, partial scoring) and the two vendors found to disagree by 5.2 points on Opus 5. Closed two Phase 1 open items: the untraceable "Coding Agent Index 67/70" is an older AA index version, and the carried AA Index 66/63/62 figures are v4.1.1. **Routing change — exactly one:** the `agentic-code` / `terminal-tool` badge is now conditional on which Codex model is on the line. Against Terra/Sol the Claude lead survives every source and every filter; against **Astra** it does not — Anthropic's TB 4.0 table, which the iteration-16 rule rested on, contains no Astra row at all. Golden changes: **f1** badge claude → **codex**; **x2** golden corrected to the cold agent's better D=3 reading; seven evals gained `expected_low_confidence` because the ablation shows their capability collapses without vendor-run rows. Also fixed: SKILL.md's f1 worked example still showed the old badge and cited Sol, a model that is not on that line (caught by a cold agent, not by me). Social preview HTML **and** PNG regenerated together and the render scripted. | **32/32** routing · validator 0 errors · 26/26 compiler tests · frontier byte-identical across runs |
 | 15 | **GPT-6 Astra** (`gpt-6-astra`, 3 Sep 2026) added to the Codex arm — conservatively (user choice). Research: ≈ Opus 5 / Sol on intelligence + agentic-coding indices, behind Fable 5.1; clear lead only on computer use; ~2.5× Sol's headline price; **"Critical" cyber level** (standard access hard-stops exploit/PoC generation, does defensive discovery; **Daybreak Blue** = elevated). Changes: (1) Codex offensive gate `unverified — use Claude` → `use Claude` for standard access, **`Astra · xhigh`** with stated Daybreak access (mirrors Mythos 5.1 / Glasswing); (2) new **Codex frontier gate** — 1000+ files / ≥1M-token corpus → Astra (mirrors the Claude Fable 5.1 gate; wins over path (a)); (3) Astra joins the flagship `max` list; (4) **+1 agentic-coding notch never applies on Astra** (parity with Opus 5). Biology stays `unverified` (Astra's card is cyber-only). Golden answers: **d3** `unverified → use Claude`; **f1** Codex `Sol · max → Astra · max`. New evals: **a1** (Daybreak → `Astra · xhigh`), **a2** (Codex ≥1M-context gate → `Astra`). Live set now 20. Cold re-run (4 parallel agents) + trigger eval re-run (`description` gained `GPT-6 Astra`). | **20/20** routing · **19/20** trigger (same harness artifact) |

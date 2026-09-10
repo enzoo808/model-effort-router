@@ -3,20 +3,187 @@
 Bu dosya router'ı besleyen veri araştırmasının **tekrarlanabilir kaydıdır**.
 Skill'in parçası değildir, çalışma zamanında hiçbir şey okumaz.
 
-İki bölüm var:
+Üç bölüm var, en yenisi önce:
 
-1. **[Araştırma kaydı — 10 Eylül 2026 (iteration-16)](#arastirma-kaydi--10-eylul-2026-iteration-16)**
+1. **Araştırma kaydı — 10 Eylül 2026, Faz 2 (iteration-17)** — benchmark-**sahibi**
+   kaynakların kapatılması, ham kanıttan routing kuralına giden yolun
+   mekanikleştirilmesi, ve vendor-run benchmarkların cross-ecosystem tavsiyesi
+   üzerindeki etkisinin ölçülmesi.
+2. **Araştırma kaydı — 10 Eylül 2026, Faz 1 (iteration-16)**
    — benchmark-aware routing motorunun dayandığı araştırma. Ne arandı, hangi
    kaynak hiyerarşisi kullanıldı, ne doğrulandı, ne çürütüldü, ne
    doğrulanamadı, hangi routing kuralları değişti.
-2. **[Ek: Gemini Deep Research prompt'u (2026 ortası)](#ek--gemini-deep-research-promptu-2026-ortasi)**
+3. **[Ek: Gemini Deep Research prompt'u (2026 ortası)](#ek--gemini-deep-research-promptu-2026-ortasi)**
    — `reference.md` §7'deki eski açık soruları kapatmak için kullanılan orijinal
    araştırma prompt'u. Tarihsel; kaynak disiplininin nasıl kurulduğunu gösterdiği
    için korunuyor.
 
 ---
 
-## Araştırma kaydı — 10 Eylül 2026 (iteration-16)
+## Araştırma kaydı — 10 Eylül 2026, Faz 2 (iteration-17)
+
+**Amaç.** Faz 1'in mimarisini değiştirmek DEĞİL. Üç şey: (1) Faz 1'de
+doğrulanamayan **benchmark-sahibi** kaynakları kapatmak, (2) ham benchmark
+verisinden routing kuralına giden yolu mekanik ve denetlenebilir hâle getirmek,
+(3) vendor-run benchmarkların cross-ecosystem tavsiyesi üzerinde gereğinden
+fazla etkisi olup olmadığını **ölçmek**.
+
+### Faz 1'in kısıtı kalktı
+
+Faz 1 boyunca **WebSearch kullanılamıyordu**; her şey bilinen URL'leri doğrudan
+çekerek yapılmıştı ve bu yüzden benchmark sahiplerinin kendi leaderboard'larının
+hiçbiri okunamamıştı. Faz 2'de arama çalıştı. Bulunanlar Faz 1'in en önemli
+sonucunu düzeltti.
+
+### Terminal-Bench — setteki en büyük düzeltme
+
+| Kaynak | Sınıf | Satırlar |
+|---|---|---|
+| **Vals.ai, TB 2.1, her model Terminus 2 harness'ında** | model_intrinsic, B | Astra 87.27 · Sol 85.77 · Fable 5.1 85.02 · Opus 5 84.64 |
+| **tbench.ai sahibi leaderboard, TB 2.1** | ecosystem_end_to_end, B | Codex CLI + Sol **89.5** · Claude Code + Opus 5 (max) **89.1** |
+| **Artificial Analysis, TB 4.0** | model_intrinsic, B | **Astra 59 · Fable 5.1 52 · Sol 40** |
+| OpenAI lansman tablosu, TB 4.0 (aktarma) | vendor_relative, C | Astra 57.7 · Fable 5.1 55.8 · Opus 5 52.3 · Fable 5 42.0 · Sol 37.3 |
+| Anthropic lansman notu, TB 4.0 | vendor_relative, A | Mythos 5.1 60.9 · Fable 5.1 55.8 · Opus 5 52.3 · Fable 5 42.0 · Sol 37.3 |
+
+Dört sonuç, dördü de önemli:
+
+1. **İki vendor tablosu aslında tek tablo.** OpenAI'nin TB 4.0 rakamları
+   Fable 5.1 (55.8), Opus 5 (52.3), Fable 5 (42.0) ve Sol (37.3) için
+   Anthropic'inkiyle **rakam rakam aynı**. Bu, iki bağımsız koşu değil, tek bir
+   yayımlanmış sayının iki tarafça yeniden alıntılanması — yani teyit değil,
+   iki kez sayılmamalı.
+2. **Anthropic'in tablosunda Astra satırı hiç yok.** iteration-16'nın
+   "agentic-code → Claude" kuralı, karşısında kullanıldığı modeli hiç ölçmemiş
+   bir tablodan okunmuştu. Bu bir muhakeme hatası değil **örnekleme** hatası.
+3. **Bağımsız koşu Sol konusunda hemfikir, Astra konusunda değil.** AA'nın TB
+   4.0'ı Claude-over-Sol yönünü aynen üretiyor (52 vs 40) ve Astra'yı ikisinin
+   de üstüne koyuyor. Rozetin model-koşullu hâle gelmesinin sebebi bu.
+4. **TB 2.1 doygun, TB 4.0 değil.** 84–88'e karşı 40–59. İkisi de veri
+   deposunda `saturated: true` işaretli; compiler doygun bir gruptan sıralama
+   okumayı reddediyor.
+
+**TB 2.1 ile TB 4.0 asla karşılaştırılmıyor.** 2.1'in açık dataset reposu var
+(`harbor-framework/terminal-bench-2-1`) ve submission protokolü belgeli:
+`metadata.yaml` (agent + model), iş başına `config.json`, deneme başına
+`result.json`, görev başına **en az 5 deneme**. Sahibin leaderboard sütunları:
+Rank / Model / Agent / Resolution rate / Cost / Tokens + **%95 güven aralığı**.
+
+**Hâlâ çıkarılamayan:** leaderboard'un satırlarının kendisi. `tbench.ai`
+client-side render ediyor, Hugging Face aynası (`harborframework/terminal-bench-2-leaderboard`)
+yalnız 2.0 ve dataset viewer'ı kapalıydı, repo ise toplu tablo yerine ham
+deneme artefaktları tutuyor. Yukarıdaki iki end-to-end satır leaderboard'u
+alıntılayan arama indeksinden geldi — grup B ama **CI sütunu hâlâ elde yok**.
+Yayımlanmış %95 CI'lar bir sonraki pass'in en değerli hedefi olmayı sürdürüyor.
+
+### LiveBench — mutable snapshot olarak doğrulandı, sonra dışlandı
+
+Genel skorlar teyit edildi: Fable 5.1 83.4 · Fable 5 83.0 · Sol 81.0 · Opus 5
+80.1 · Sonnet 5 76.0 (53 model varyantı, 23 görev, 7 kategori). **Canonical
+artefakt bulunamadı:** LiveBench GitHub reposu yalnız 2025-04-25'e kadar
+release belgeliyor ve `all_groups.csv` / `all_tasks.csv`'yi release başına
+yayımlanan bir dosya değil, yerel bir script'in *ürettiği* çıktı olarak tarif
+ediyor. Bu yüzden satırlar `mutable_snapshot: true` + retrieval tarihi taşıyor
+ve LiveBench **dışlanmış listede** — hiçbir yön belirlemiyor. iteration-14'e
+kadar kullanılan kategori satırları (Codex +1 kademesinin dayanağı dahil) yine
+doğrulanamadı; kademe ayakta çünkü Faz 1'de TB 4.0'a yeniden temellendirilmişti.
+
+### SWE-bench — bilerek NULL
+
+SWE-bench Verified doygun: Opus 5 ~96, Sol ~96.2, Fable 5 ~95 — frontier ~1
+puan içinde ve hiçbir agregatör scaffold'u belirtmiyor. SWE-bench Pro rakamları
+(Fable 5.1 ~81.2) yalnız C katmanı bloglarda, harness yok, Sonnet 5 / Terra
+satırı yok. **Hiçbir SWE-bench sayısı router'a girmedi** ve eski Claude 4.x /
+GPT-5.x sonuçlarından ekstrapolasyon yapılmadı.
+
+### OSWorld — computer-use kapısı ayakta, cross-vendor rozet değil
+
+OpenAI tablosu, Faz 1'de eksik olan metadata ile: **OSWorld 2.0, offline set,
+partial scoring** — Astra 72.6 · Opus 5 70.2 · Sol 65.7; görev başına ~40 dk,
+Sol ~75 dk (~%47 azalma). Anthropic tablosu, aynı sürüm ve aynı skorlama
+*etiketi*: Fable 5.1 77.9 · Opus 5 75.4 · Fable 5 72.9 (partial); 41.7 / 39.6 /
+36.1 (strict).
+
+**İki vendor da Opus 5'i OSWorld 2.0 partial'da yayımlıyor ve 5.2 puan
+ayrışıyorlar** (70.2 vs 75.4). Muhtemel fark "offline set" — ki bunu yalnız
+OpenAI adlandırıyor. Sonuç: **Codex-içi** yön (Astra > Sol) üç ayrı benchmark'la
+teyitli (OSWorld, ScreenSpot-Pro 92.7 vs 76.9, Agents' Last Exam 59.3 vs 53.6),
+o yüzden GUI işini Astra'ya yollayan kapı duruyor. Ama **cross-ecosystem**
+karşılaştırma geçersiz: Astra 72.6 ile Fable 5.1 77.9 iki farklı vendor
+harness'ı. Computer-use rozeti tam olarak bu yüzden `low-confidence`.
+
+### Faz 1'de olmayan yeni cross-ecosystem satırlar
+
+- **Araçlı HLE** (OpenAI'nin kendi tablosu): Fable 5.1 65.0 · Opus 5 63.6 ·
+  **Astra 57.2**. Bir vendor'ın rakibi lehine sonuç yayımlaması
+  *against-interest*'tir ve vendor kanıtının en güvenilir türüdür.
+  `deep-reasoning`'in Claude'da kalmasının sebebi bu.
+- **FrontierMath Tier 4 (v2)**: Astra 97.6 · Fable 5.1 87.8 · Opus 5 73.2 —
+  ters yönde, ve **dışlandı**: benchmark'ı Epoch AI koşuyor ama kaynağın kendisi
+  OpenAI'nin geliştirmesini finanse ettiğini ve bir kısmına özel erişimi
+  olduğunu açıklıyor.
+- **ARC-AGI-3**: Astra 99.9 · Opus 5 30.2 · Sol 7.8 — **dışlandı**: Anthropic'in
+  kendi Opus 5 notu bu benchmark'ta "en yakın rakibin üç katı" diyor, 30.2 ile
+  uzlaşmıyor, ve iki taraf da harness belirtmiyor.
+- **AA Coding Agent Index (güncel)**: Astra+Codex 62 = Fable 5.1+Claude Code 62 ·
+  Opus 5 60 · Sol 55. iteration-15'in izi sürülemeyen "67/70" rakamları bunun
+  **eski sürümüne** ait (Fable 5 68.1 · Fable 5.1 67.2 · Astra 67.0). **Faz 1
+  açık maddesi kapandı.**
+- **AA Intelligence Index v4.1.1**: Fable 5.1 65.7 · Opus 5 63.1 · Astra 61.2.
+  Repo'nun taşıdığı 66/63/62 rakamları buradan geliyor. v4.1.1'de Astra
+  Fable 5.1'in 4.5 puan *altında*, v4.3'te 53'te eşit. **İkinci Faz 1 açık
+  maddesi kapandı.**
+- **Görev başına output token** (AA v4.3): Astra 27k / $3.26 · Fable 5.1 78k /
+  $7.63. Setteki ilk gerçek output-token rakamları.
+- **MRCR v2 8-needle**: Astra 100 vs Sol 91.5 (256–512K), 96.3 vs 73.8
+  (512K–1M). Claude satırı yok.
+- **ExploitBench gerçek.** Faz 1 §7 bunu "muhtemelen içerik çiftliği uydurması"
+  diye işaretlemişti; OpenAI'nin lansman tablosunda var. Hiçbir routing kuralını
+  etkilemiyor (saldırı-amaçlı siber sert bir güvenlik kapısı) ama o not yanlıştı.
+
+### Vendor-bias ablation — ölçüm, zorlama değil
+
+`python scripts/ablate_evidence.py` aynı kanıt setini üç görünümde derliyor:
+
+| görünüm | tutulan kayıt | claude | codex | verimlilik karar verir |
+|---|---|---|---|---|
+| tümü | 123 | 14 | 7 | 10 |
+| yalnız bağımsız (B katmanı) | 31 | 11 | 6 | 14 |
+| vendor-cross-model kapalı | 48 | 11 | 6 | 14 |
+
+**Yalnız `agentic-code` ve `terminal-tool` her iki filtreden sağ çıkıyor.**
+Diğer her capability, bir vendor'ın rakibi kendi harness'ında ölçtüğü satırlar
+çıkarılınca UNRESOLVED'a düşüyor: `knowledge-work` (GDPval, yalnız Anthropic),
+`science` ve `workflow-automation` (iki vendor'ın da kendi tablosu),
+`computer-use` (yalnız OpenAI), `deep-reasoning` (yalnız OpenAI'nin HLE satırı).
+
+**İki tarafın da terminal dışındaki üstünlüğü vendor-bağımlı.** Bu, 50/50'ye
+zorlamak için bir sebep değil — dengeli bir rozet uydurma olurdu. Yapılan şey
+router'ın bunu **söylemek zorunda** kalması: bu capability'ler Adım 6 tablosunda
+† işaretli ve Evidence satırları `low-confidence` demek zorunda.
+
+### Değişen tek routing kuralı
+
+`agentic-code` / `terminal-tool` rozeti artık **hangi Codex modelinin hatta
+olduğuna** bağlı. Terra/Sol'a karşı Claude üstünlüğü her kaynakta ve her
+filtrede ayakta; **Astra**'ya karşı değil. Model ve efor seçimine dokunulmadı.
+
+### Nasıl tekrarlanır
+
+```
+python scripts/validate_benchmarks.py
+python scripts/compile_benchmark_frontiers.py
+python scripts/compile_benchmark_frontiers.py --check
+python scripts/test_frontier_compiler.py
+python scripts/ablate_evidence.py
+```
+
+Ham kanıtı değiştirip frontier'ı yeniden derlemezsen hem `--check` hem validator
+FAIL eder (`benchmark_frontiers.json` girdinin sha256'sını saklıyor). Compiler
+iki kez çalıştırıldığında çıktı bayt-bayt aynı olmalı; değilse bu bir hatadır.
+
+---
+
+## Araştırma kaydı — 10 Eylül 2026, Faz 1 (iteration-16)
 
 **Amaç.** Router'ı yalnız R/D/W/C'den model seçen bir sistemden;
 **task capability + benchmark evidence + model×effort capability + token/quota

@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: medium
+Codex: Terra · effort: medium
+Evidence: Defensive enumeration against a stated rule is D=1, not adversarial D=3, so the capability rows are skipped and efficiency decides — Sonnet 5 is the cheaper daily driver on output tokens ($10 vs $12/MTok).
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

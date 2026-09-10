@@ -19,7 +19,7 @@ $stageDir = Join-Path $staging $pkgName
 New-Item -ItemType Directory -Force -Path $stageDir | Out-Null
 # Every file the skill ships with. Keep this list in sync with skill/ --
 # a missing file here silently produces a broken claude.ai upload.
-$payload = @('SKILL.md', 'reference.md', 'benchmarks.json')
+$payload = @('SKILL.md', 'reference.md', 'benchmarks.json', 'benchmark_frontiers.json')
 foreach ($file in $payload) {
     $path = Join-Path $src $file
     if (-not (Test-Path $path)) {

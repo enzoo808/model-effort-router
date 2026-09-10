@@ -1,0 +1,3 @@
+Claude: ✅ RECOMMENDED AI · Fable 5.1 · effort: high
+Codex: unverified — use Claude (no published Astra biology threshold)
+Evidence: The biology gate decides it — Codex has no published Astra biology threshold, and Claude's science profile backs the same side (Terminal-Bench-Science 0.1: 52.6 vs Sol 22.4, SE ±3.5–4.5).

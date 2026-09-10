@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: low
+Codex: Terra · effort: low
+Evidence: D=0 work — both are far past the bar, and Sonnet 5 is the cheaper of the two daily drivers on output tokens.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.

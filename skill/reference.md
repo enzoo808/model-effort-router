@@ -12,7 +12,18 @@
 > that report is not inherited by Opus 5** — a separate model, a separate
 > benchmark profile.
 >
-> **Latest research pass: 10 September 2026 (iteration-16).** The
+> **Latest research pass: 10 September 2026 — Phase 2 (iteration-17).** Phase 2
+> closed the benchmark-owner gaps Phase 1 could not reach (WebSearch was down for
+> that pass), and made the path from a raw score to a routing rule mechanical:
+> `benchmarks.json` is now a validated evidence store with stable record ids,
+> `scripts/compile_benchmark_frontiers.py` derives `benchmark_frontiers.json`
+> from it deterministically, and every benchmark-derived rule carries
+> machine-readable provenance. **§15** is the architecture; **§12.5** is the
+> Phase 2 research record; **§14.3** carries the vendor-bias ablation. The single
+> routing consequence: the agentic-code / terminal-tool badge is now conditional
+> on which Codex model is on the line.
+>
+> **Phase 1 research pass: 10 September 2026 (iteration-16).** The
 > benchmark-aware routing engine landed in that pass. Its verified facts,
 > corrections, open conflicts and explicit non-findings are in **§12**; the
 > capability→benchmark map is **§11**; the efficiency data and the three
@@ -1614,7 +1625,10 @@ re-verification. A Tier C claim never becomes a routing rule on its own.
    could not be traced to any live index — AA v4.3 has no standalone coding-agent
    index. Demoted to Tier C and removed from every rule's justification.
 
-### 12.4. Could not be verified this pass — stated plainly
+### 12.4. Could not be verified in Phase 1 — stated plainly
+
+> Phase 2 closed most of this list. See §12.5 for what was actually found; the
+> entries below are kept as the Phase 1 record.
 
 - **WebSearch was unavailable for the entire pass.** All research was done by
   fetching known primary URLs directly. Anything that would have been *found*
@@ -1644,6 +1658,155 @@ re-verification. A Tier C claim never becomes a routing rule on its own.
   a ranking.
 - **Sonnet 5 at `high` / `xhigh`, and Sol at `xhigh`,** are absent from the AA
   extract. Those rungs are **unknown**. They are not interpolated anywhere.
+
+### 12.5. Phase 2 research record — benchmark-owner sources (10 September 2026)
+
+Phase 1 ran with WebSearch unavailable and could only fetch known URLs, so every
+benchmark-owner leaderboard went unread. Phase 2 had search and went back for
+them. What changed is substantial.
+
+#### Terminal-Bench — the biggest correction in the set
+
+| Source | Class | Rows |
+|---|---|---|
+| **Vals.ai, TB 2.1, Terminus 2 for every model** | model_intrinsic, tier B | Astra 87.27 · Sol 85.77 · Fable 5.1 85.02 · Opus 5 84.64 |
+| **tbench.ai owner leaderboard, TB 2.1** | ecosystem_end_to_end, tier B | Codex CLI + Sol **89.5** · Claude Code + Opus 5 (max) **89.1** |
+| **Artificial Analysis, TB 4.0** | model_intrinsic, tier B | **Astra 59 · Fable 5.1 52 · Sol 40** |
+| OpenAI launch table, TB 4.0 (relayed) | vendor_relative, tier C | Astra 57.7 · Fable 5.1 55.8 · Opus 5 52.3 · Fable 5 42.0 · Sol 37.3 |
+| Anthropic launch note, TB 4.0 | vendor_relative, tier A | Mythos 5.1 60.9 · Fable 5.1 55.8 · Opus 5 52.3 · Fable 5 42.0 · Sol 37.3 |
+
+Four things fall out of this table, and each of them matters:
+
+1. **The two vendor tables are one table.** OpenAI's TB 4.0 figures for Fable 5.1
+   (55.8), Opus 5 (52.3), Fable 5 (42.0) and Sol (37.3) are digit-for-digit
+   identical to Anthropic's. That is one published number being re-cited by both
+   sides, not two independent runs, so it is not corroboration and must not be
+   counted twice.
+2. **Anthropic's table has no Astra row.** The iteration-16 rule
+   "agentic-code → Claude" was read off a table that never measured the model it
+   was being used to rule against. That is a sampling error, and it is exactly
+   the failure mode the Phase 2 brief asked to look for.
+3. **The independent run agrees about Sol and disagrees about Astra.** AA's TB
+   4.0 reproduces the Claude-over-Sol direction (52 vs 40) and puts Astra above
+   both. Hence the model-conditional badge.
+4. **TB 2.1 is saturated and TB 4.0 is not.** 84–88 versus 40–59. Both groups are
+   flagged `saturated: true` in the evidence store, so the compiler refuses to
+   read a ranking off them; the unsaturated version is the discriminating
+   instrument.
+
+**Terminal-Bench 2.1 vs 4.0 are different benchmarks and are never compared.**
+2.1 is a tagged release with a public dataset repo (`harbor-framework/terminal-bench-2-1`)
+and a documented submission protocol — `metadata.yaml` naming agent and model,
+`config.json` per job, `result.json` per trial, minimum five trials per task. The
+owner leaderboard columns are Rank / Model / Agent / Resolution rate / Cost /
+Tokens with 95% CI whiskers.
+
+**What still could not be extracted:** the owner leaderboard's actual rows.
+`tbench.ai` renders client-side, the Hugging Face mirror
+(`harborframework/terminal-bench-2-leaderboard`) is 2.0-only and its dataset
+viewer was down, and the repo stores raw per-trial artifacts rather than an
+aggregated table. The two end-to-end rows above come from a search index quoting
+the leaderboard, which is why that group is tier B but the CI column is still
+unavailable. **The published 95% CIs remain the single highest-value gap.**
+
+#### LiveBench — re-verified as a mutable snapshot, then excluded
+
+Overall figures re-verified: Fable 5.1 83.4 · Fable 5 83.0 · Sol 81.0 · Opus 5
+80.1 · Sonnet 5 76.0, across 53 model variants, 23 tasks, 7 categories. No
+canonical artifact could be pinned: the LiveBench GitHub repo documents releases
+only to 2025-04-25 and describes `all_groups.csv` / `all_tasks.csv` as *generated*
+by a local script rather than published per release. So the rows carry
+`mutable_snapshot: true` with a retrieval date, and **LiveBench is on the
+excluded list** — it sets no direction. The per-category rows this repo relied on
+through iteration-14, including the agentic-coding figures behind the Codex +1
+notch, still could not be re-verified. The notch survives because it was
+re-grounded on TB 4.0 in Phase 1 and independently in Phase 2.
+
+#### SWE-bench — deliberately null
+
+SWE-bench Verified is saturated: Opus 5 ~96, Sol ~96.2, Fable 5 ~95, with the
+top models clustered inside about one point and no aggregator stating the
+scaffold. SWE-bench Pro figures (Fable 5.1 ~81.2) appear only on tier C blogs
+with no harness and no Sonnet 5 or Terra rows. **No SWE-bench number entered the
+router**, and no extrapolation was made from the older Claude 4.x / GPT-5.x
+results. The record `swebench-verified-saturation` exists purely to document the
+exclusion so the next maintainer does not re-derive it.
+
+#### OSWorld — the computer-use gate survives, the cross-vendor badge does not
+
+OpenAI's table, with the metadata Phase 1 was missing: **OSWorld 2.0, offline
+set, partial scoring** — Astra 72.6 · Opus 5 70.2 · Sol 65.7, and ~40 min/task
+against Sol's ~75 (a ~47% reduction). Anthropic's table, same version and the
+same *scoring-mode label*: Fable 5.1 77.9 · Opus 5 75.4 · Fable 5 72.9 partial,
+and 41.7 / 39.6 / 36.1 strict.
+
+**Both vendors publish Opus 5 on OSWorld 2.0 partial and disagree by 5.2 points**
+(70.2 vs 75.4). The likely differentiator is the offline set, which only OpenAI
+names. Consequences:
+
+- The **within-Codex** direction (Astra > Sol) is corroborated three ways —
+  OSWorld, ScreenSpot-Pro (92.7 vs 76.9), Agents' Last Exam (59.3 vs 53.6) — so
+  the computer-use gate that routes GUI work to Astra stands.
+- The **cross-ecosystem** comparison does not: Astra 72.6 against Fable 5.1 77.9
+  is two vendors' harnesses, not one measurement. The computer-use badge stays
+  `low-confidence` for exactly this reason.
+
+#### New cross-ecosystem rows that did not exist in Phase 1
+
+- **Tooled HLE** (OpenAI's own table): Fable 5.1 65.0 · Fable 5 63.8 · Opus 5
+  63.6 · **Astra 57.2**. A vendor publishing a result that favours the competitor
+  is against-interest and is the most credible vendor evidence there is. It is
+  why `deep-reasoning` stays with Claude.
+- **FrontierMath Tier 4 (v2)**: Astra 97.6 · Fable 5.1 87.8 · Opus 5 73.2 —
+  points the other way, and **excluded**: Epoch AI runs it, but the source itself
+  discloses that OpenAI funded its development and holds exclusive access to part
+  of it.
+- **ARC-AGI-3**: Astra 99.9 · Opus 5 30.2 · Sol 7.8 — **excluded**: Anthropic's
+  own Opus 5 launch note claims "three times the nearest competitor" on this
+  benchmark, which cannot be reconciled with 30.2, and neither vendor publishes a
+  harness spec.
+- **AA Coding Agent Index (current)**: Astra+Codex 62 = Fable 5.1+Claude Code 62 ·
+  Opus 5 60 · Sol 55, with Astra at $7.09/task at max. This is the index the
+  iteration-15 "67/70" figures could not be traced to — they belong to an older
+  version of it (Fable 5 68.1 · Fable 5.1 67.2 · Astra 67.0), which is now
+  recorded separately and excluded. **A Phase 1 open item, closed.**
+- **AA Intelligence Index v4.1.1**: Fable 5.1 65.7 · Opus 5 63.1 · Fable 5 62.1 ·
+  Astra 61.2. This is where the 66/63/62 figures this repo carried came from.
+  Under v4.1.1 Astra sat 4.5 points *below* Fable 5.1; under v4.3 they tie at 53.
+  Same models, same evaluator, opposite conclusion — the concrete proof behind
+  "index versions are not comparable". **A second Phase 1 open item, closed.**
+- **Output tokens per task** (AA v4.3): Astra 27k at $3.26 · Fable 5.1 78k at
+  $7.63. The first genuine output-token figures in the set — efficiency signal
+  #2, not a cost proxy — and what decides the agentic-code badge against Astra.
+- **MRCR v2 8-needle**: Astra 100 vs Sol 91.5 (256–512K), 96.3 vs 73.8
+  (512K–1M). No Claude row, so long-context still has no cross-ecosystem
+  comparison.
+- **ExploitBench is real.** Phase 1's §7 listed it among claims that looked like
+  content-farm inventions. It appears in OpenAI's launch table (Astra 100.0 ·
+  Sol 78.5 · Fable 5.1 70.0, both run without production safeguards). It informs
+  no routing rule — offensive security is a hard safety gate, not a capability
+  comparison — but the "probably fabricated" note was wrong.
+
+#### Still unresolved after Phase 2
+
+- **Terminal-Bench owner leaderboard rows with their published 95% CIs.** The one
+  thing that would let the equivalence band rest on real dispersion instead of
+  the declared spread rule for the most important capability in the set.
+- **`openai.com/index/gpt-6-astra/` still returns HTTP 403.** Every OpenAI launch
+  figure in this record is a tier C relay of that page.
+- **Sol pricing.** One relay states $4/$20 promotional against the $5/$30 this
+  repo carries. Not re-verified against OpenAI's own pricing page; the router
+  uses Sol's price only as an efficiency tie-break input, so the exposure is
+  small, but it is a known soft spot.
+- **"Daybreak Blue" by name** — still not seen on the safety page itself.
+- **Astra's biology/CBRN threshold** — still unpublished, so the biology gate
+  still declines on the Codex arm.
+- **Sonnet 5 and Terra are missing from nearly every cross-ecosystem benchmark.**
+  Every capability comparison in this record is between the *top* of each roster.
+  The mid tier — which is what most prompts actually route to — is compared
+  almost entirely on the AA aggregate. This is the largest structural weakness
+  remaining in the evidence base.
+
 
 ---
 
@@ -1776,23 +1939,39 @@ honest:
    Codex gate. Model selection on ordinary prompts is unchanged — which is the
    intended result: the evidence layer refines the edges, it doesn't re-found
    the router.
-2. **Does the badge collapse onto one ecosystem?** No, but it leans. Measured on
-   the iteration-16 run: **Claude 24 · Codex 5 · no badge 1** (`d7`, Step-0
-   blocked). The Codex wins come from three different causes, not one — `d1`,
-   `r2`, `s1` are `D≤1` efficiency calls (Luna over Haiku 4.5); `g1` is a
-   capability lead (computer use); `i1` is a product mechanism (Ultra's parallel
-   agents). **The lean is real and worth stating honestly:** the live eval set is
-   coding- and repo-heavy because that is what this router was built for, and the
-   published evidence puts Claude ahead on exactly those capabilities
-   (Terminal-Bench 4.0, CursorBench, GDPval-AA v2, AutomationBench,
-   Terminal-Bench-Science). A set weighted toward GUI automation, bulk
-   classification and parallel research would tilt the other way. What matters
-   for the ablation is that the badge **moves with the capability profile**, and
-   it demonstrably does.
-3. **Are top-tier models over-selected?** No. Model spread across the 30-eval
-   run (both arms, 59 model lines): Sonnet 5 17 · Terra 13 · Astra 6 · Sol 5 ·
-   Opus 5 4 · Haiku 4.5 3 · Luna 3 · Fable 5.1 2 · Sol Ultra 2 · Opus 4.8 2 ·
-   `opusplan` 1. The mid tier carries half the set, the flagships 11 lines, and
+2. **Does the badge collapse onto one ecosystem?** No, and Phase 2 measured
+   *why* instead of asserting it. Iteration-17: **Claude 24 · Codex 7 · no badge
+   1** (`d7`, Step-0 blocked). The seven Codex wins come from four distinct
+   causes — `d1`/`r2`/`s1` are `D≤1` efficiency calls (Luna over Haiku 4.5);
+   `g1` is a capability lead (computer use); `i1` is a product mechanism (Ultra's
+   parallel agents); `f1`/`x1` are the Phase 2 model-conditional finding (against
+   Astra, Claude's agentic-code lead does not hold).
+
+   **The vendor-bias ablation** (`python scripts/ablate_evidence.py`) reruns the
+   whole frontier under three evidence views and is the real answer to "is this
+   lean earned?":
+
+   | view | records kept | claude | codex | efficiency decides |
+   |---|---|---|---|---|
+   | full | 123 | 14 | 7 | 10 |
+   | independent only (tier B) | 31 | 11 | 6 | 14 |
+   | vendor-cross-model disabled | 48 | 11 | 6 | 14 |
+
+   Only **`agentic-code` and `terminal-tool` survive both filters.** Every other
+   capability collapses to UNRESOLVED once you remove rows where one vendor
+   scored the other in its own harness — `knowledge-work` (GDPval, Anthropic
+   only), `science` and `workflow-automation` (both vendors' own tables),
+   `computer-use` (OpenAI only), `deep-reasoning` (OpenAI's HLE row only).
+
+   **Both sides' advantages outside terminal work are vendor-dependent.** That is
+   a fact about the published record, not a reason to force a 50/50 split — a
+   balanced badge would be a fabrication. The response was to make the router say
+   so: those capabilities are marked † in the Step 6 table and their Evidence
+   line must carry `low-confidence`. The eval set enforces it (`x2`, `q1`, `h1`,
+   `p1`, `d6`, `f2`, `m1`).
+3. **Are top-tier models over-selected?** No. Across the 32-eval iteration-17
+   run the mid tier (Sonnet 5 / Terra) still carries roughly half of all model
+   lines, the flagships appear only at `D=3` plus a flagship-list capability, and
    the frontier tier only where a gate put it there.
 4. **Is `max` over-selected?** No longer. Effort spread across the run:
    `xhigh` 16 · `medium` 10 · `high` 9 · `low` 9 · `max` **5** · `ultracode` 4.
@@ -1814,3 +1993,144 @@ honest:
    (OSWorld version/scoring, the three agentic-coding scaffolds, AA index
    versions) are each recorded in §12.3 and each carry an explicit
    `not directly comparable` marker rather than a silent average.
+
+---
+
+## 15. Evidence architecture — raw, derived, runtime (Phase 2, 10 Sep 2026)
+
+> **Why this section exists.** Phase 1 built the benchmark-aware engine and left
+> the path from a raw score to a routing rule inside prose. That works until it
+> doesn't: a number changes, a rule keeps citing it, and nothing fails. Phase 2
+> made the path mechanical. The routing behaviour barely moved — the point was to
+> make it *auditable*.
+
+### 15.1. Three layers, and only one is read at runtime
+
+| Layer | File | Written by | Read when | Size |
+|---|---|---|---|---|
+| **Runtime rule** | `skill/SKILL.md` | a human | every route | ~740 lines |
+| **Derived frontier** | `skill/benchmark_frontiers.json` | `scripts/compile_benchmark_frontiers.py` — **generated** | auditing a rule | ~1.5k lines |
+| **Raw evidence** | `skill/benchmarks.json` | a human, one record per measurement | changing a rule | 123 records |
+
+**Runtime cost, stated honestly.** The router still reads only `SKILL.md`, and
+that is the constraint that matters: loading 123 evidence records to answer
+"which model for this prompt" would be precisely the quota waste this project
+exists to prevent, and `SKILL.md` says so explicitly. The two data files ship in
+the package so a maintainer can check a rule, not so the router can consult them.
+
+`SKILL.md` itself grew **+5.7%** (39,415 → 41,653 bytes) in Phase 2. That is not
+free and it is not zero. It buys the model-conditional badge table, which is a
+fourth column rather than a longer file, plus three comparability traps in §5a
+that exist because the first draft fell into two of them. A trim pass afterwards
+recovered ~2.2KB by cutting the badge table's evidence column down to the
+decisive figure — the full rows live in §11 and §13, which the router does not
+read. Anything in `SKILL.md` that is explanation rather than decision belongs
+here instead; that is the standing rule when it next grows.
+
+### 15.2. The compiler
+
+`scripts/compile_benchmark_frontiers.py` transforms raw records into
+capability frontiers. Its one hard constraint: **it never interprets a number on
+its own.** Every threshold is declared in `benchmarks.json`:
+
+- `comparability_groups` — a group *asserts* that benchmark, version, harness,
+  tool access, scaffold and evaluator were constant. The compiler never infers
+  comparability; it only trusts the assertion. Groups also declare
+  `saturated: true` and an `equivalence_band`.
+- `evidence_precedence` — the weight of each (evidence class, source tier) pair.
+- `no_dispersion_rule` — when a group publishes no CI or SE, the band is a
+  declared fraction (0.15) of the group's own observed spread. That is the
+  codification of §5b step 3: a gap counts only if it is large relative to how
+  discriminating the benchmark actually is.
+- `excluded_from_direction` — benchmarks that may never set a direction, each
+  with a written reason.
+- `model_ecosystem` — which model belongs to which arm. Declared, never parsed
+  out of a model name.
+
+Where the declared metadata does not settle a comparison the output is
+**`UNRESOLVED`**, which is a first-class result: it tells the router to fall
+through to the efficiency tie-break. The compiler never averages two conflicting
+sources, never splits a difference, never prefers the newer number, and never
+fills in a missing effort rung.
+
+Two subtleties that cost a rewrite each, both now covered by unit tests:
+
+1. **A cell is (group, benchmark, version), not (group).** One source publishing
+   HLE, FrontierMath and ARC-AGI-3 under one harness yields three cells. Pooling
+   them let the first draft compare an ARC-AGI-3 score against an HLE score.
+2. **The equivalence band comes from the full cell, never from a subset.** With
+   two rows the spread *is* the gap, so a subset-derived band would make every
+   two-model comparison produce a winner.
+
+### 15.3. Model-conditional frontiers
+
+The compiler emits `by_codex_model` alongside the overall verdict, because
+"best Claude vs best Codex" is the wrong question for a router. The Codex
+candidate is usually Terra or Sol; Astra only appears behind a gate. A capability
+can favour Claude against Sol and not against Astra — and on agentic coding it
+does exactly that:
+
+| capability | vs Sol | vs Astra |
+|---|---|---|
+| `agentic-code` | **claude** (high) | equivalent → efficiency decides |
+| `terminal-tool` | **claude** (high) | **codex** (medium) |
+| `science` | claude | codex |
+| `workflow-automation` | claude | codex |
+| `computer-use` | claude | **codex** |
+| `deep-reasoning` | UNRESOLVED | claude (low) |
+
+Phase 1 collapsed the first two rows into a single "agentic-code → Claude", which
+was right against Sol and wrong against Astra. That was not a reasoning error so
+much as a **sampling** error: the rule rested on Anthropic's Terminal-Bench 4.0
+table, and that table has no Astra row at all.
+
+### 15.4. Rule provenance
+
+Every benchmark-derived rule in `SKILL.md` has a machine-readable entry in
+`benchmarks.json` → `routing_rules`, carrying `rule_id`, `evidence_ids`,
+`capability`, `comparison_type`, `confidence` and `last_verified`. The validator
+fails if any `evidence_id` stops resolving, so a rule cannot outlive the number
+it was built on. `benchmark_frontiers.json` → `rule_provenance` resolves each
+rule to its evidence classes, source tiers and whether it is entirely vendor-run.
+
+`BADGE-parallel-independent` deliberately carries an empty evidence list: it
+rests on a documented product mechanism, not a benchmark. The validator permits
+that only for `comparison_type` of `product_mechanism`, `spec_and_price` or
+`excluded` — everything else must cite evidence.
+
+### 15.5. Validation and staleness
+
+```
+python scripts/validate_benchmarks.py          # schema, groups, rules, staleness
+python scripts/compile_benchmark_frontiers.py  # regenerate the frontier
+python scripts/compile_benchmark_frontiers.py --check   # fail if stale
+python scripts/test_frontier_compiler.py       # 26 comparison-semantics assertions
+python scripts/ablate_evidence.py              # vendor-bias measurement
+```
+
+The validator catches: invalid or missing source tier · missing/duplicate record
+id · a score with no `benchmark_version` where the benchmark is versioned · a
+score with no unit · a record whose class or tier contradicts its group · **two
+different harnesses inside one comparability cell** · an `ecosystem_end_to_end`
+group that uses only one harness (mislabelled) · partial/strict scoring living in
+one group · text that reads as an interpolated figure · a rule citing a
+nonexistent evidence id · a rule with no evidence where its type requires some ·
+and **a derived frontier that no longer matches the evidence it came from**.
+
+Staleness is enforced by hash: the frontier stores `input_sha256` of the exact
+bytes of `benchmarks.json`. Edit the evidence without recompiling and both the
+compiler's `--check` and the validator fail. That is deliberate — a benchmark
+router whose derived layer silently lags its evidence is worse than one with no
+derived layer at all.
+
+**Determinism** is a build requirement, not a nicety: the compiler sorts every
+key and derives `generated_from` from the input rather than from the wall clock,
+so two runs produce byte-identical output. `scripts/test_frontier_compiler.py`
+asserts it, and the release checklist runs the compiler twice and diffs.
+
+### 15.6. What Phase 2 changed in routing
+
+Almost nothing, on purpose. One badge row became model-conditional
+(`agentic-code` / `terminal-tool` against Astra), and seven capabilities gained a
+mandatory `low-confidence` marker because the ablation showed they rest entirely
+on vendor-run cross-model rows. Model and effort selection are untouched.

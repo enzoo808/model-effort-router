@@ -202,7 +202,64 @@ evals/                          Regresyon eval seti (routing + trigger) + koşu 
 
 ---
 
-## Ne değişti — iteration-16 (10 Eylül 2026)
+## Ne değişti — iteration-17 / Faz 2 (10 Eylül 2026)
+
+Faz 2 router'ı değil **kanıtı** sertleştirdi. Üç iş: benchmark **sahiplerinin**
+kendi leaderboard'larına geri dönmek, ham skordan routing kuralına giden yolu
+deterministik bir compiler'a çevirmek, ve router'ın ekosistem tercihinin ne
+kadarının vendor-run sayılara dayandığını **ölçmek**.
+
+**Üç katman, ve yalnız birincisi çalışma zamanında okunuyor:**
+
+| Katman | Dosya | Kim yazar | Ne zaman okunur |
+|---|---|---|---|
+| Runtime kural | `skill/SKILL.md` | insan | her route'ta |
+| Türetilmiş frontier | `skill/benchmark_frontiers.json` | compiler — **üretilir** | bir kural denetlenirken |
+| Ham kanıt | `skill/benchmarks.json` | insan, ölçüm başına bir kayıt | bir kural değişirken |
+
+```bash
+python scripts/validate_benchmarks.py            # şema, gruplar, kural kaynağı, bayatlık
+python scripts/compile_benchmark_frontiers.py    # frontier'ı yeniden üret
+python scripts/test_frontier_compiler.py         # 26 karşılaştırma-semantiği iddiası
+python scripts/ablate_evidence.py                # vendor-bias ölçümü
+```
+
+Compiler **hiçbir sayıyı kendi başına yorumlamaz**: her eşik, her gruplama, her
+öncelik ağırlığı `benchmarks.json` içinde beyan edilir; beyan edilen metadata
+karşılaştırmayı çözmüyorsa cevap `UNRESOLVED` olur — bu da router'a verimlilik
+tie-break'ine düşmesini söyler. İki çelişen kaynağı asla ortalamaz. İki koşu
+bayt-bayt aynı çıktı verir; frontier girdinin sha256'sını saklar, yani kanıtı
+değiştirip yeniden derlemezsen build FAIL eder.
+
+**Rahatsız edici ölçüm.** Frontier'ı yalnız bağımsız (B katmanı) kanıtla, ya da
+"vendor rakibini kendi harness'ında ölçtü" satırları çıkarılmış hâlde yeniden
+türet: yalnızca `agentic-code` ve `terminal-tool` ayakta kalıyor. Diğer her
+capability — Claude'un knowledge-work ve science üstünlüğü, Codex'in
+computer-use üstünlüğü — `UNRESOLVED`'a düşüyor. **İki tarafın da terminal
+dışındaki üstünlüğü, karşı tarafı kendi harness'ında ölçen tek bir vendor
+tablosuna dayanıyor.** Router bunu örtmüyor ve rozeti zorla dengelemiyor: o
+capability'ler Adım 6 tablosunda işaretli ve Evidence satırları
+`low-confidence` demek zorunda.
+
+**Değişen tek routing kuralı:** `agentic-code` / `terminal-tool` rozeti artık
+hangi Codex modelinin hatta olduğuna bağlı. Terra/Sol'a karşı Claude üstünlüğü
+her kaynakta ve her filtrede duruyor; **Astra**'ya karşı durmuyor — çünkü
+iteration-16'nın dayandığı Anthropic tablosunda Astra satırı hiç yok.
+Bağımsız değerlendirici (AA) aynı benchmark'ta Astra 59 / Fable 5.1 52 veriyor
+ve Astra görev başına 27k output token harcarken Fable 5.1 78k harcıyor.
+
+```
+Claude: Fable 5.1 · effort: max
+Codex: ✅ RECOMMENDED AI · Astra · effort: max
+Evidence: Astra'ya karşı capability eşit (AA Terminal-Bench 4.0: Astra 59 vs
+          Fable 5.1 52; Coding Agent Index 62-62), verimlilik karar veriyor —
+          görev başına 27k output token, 78k'ya karşı.
+Do not apply without human review.
+```
+
+---
+
+## Ne değişti — iteration-16 / Faz 1 (10 Eylül 2026)
 
 iteration-15'e kadar router bir promptun **R/D/W/C**'sini okuyup doğrudan model
 ve efora eşliyordu. R/D/W/C *kapsamı ve riski* çok iyi tarif eder ve **işin ne tür
@@ -380,7 +437,7 @@ makine-okunur, tekrar koşturulabilir kopyası `evals/routing/evals.json`
 ile regresyon kontrolü yap (bkz. `evals/README.md`). **Taze/soğuk
 ajanlarla** (README'nin kendi bağlamını bilmeyen) koşturmak önemli — kural her
 değiştiğinde paralel cold agent'lar canlı eval'leri yeniden koşturuyor.
-**Son koşu: iteration-16 — 30/30.** Grader artık Claude modeli · Claude eforu ·
+**Son koşu: iteration-17 — 32/32.** Grader artık Claude modeli · Claude eforu ·
 Codex modeli · Codex eforu · **rozetin hangi tarafta olduğu**
 (`expected_recommended`) · tam olarak bir rozet olduğu · `Evidence:` satırının
 var ve dolu olduğunu kontrol ediyor. Evidence **metni** kasıtlı olarak
@@ -507,7 +564,9 @@ Tüm iterasyonların gerekçesi `evals/README.md`'de.
 | 5 | Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur | **Claude: Opus 4.8 · ultracode** · **Codex: `use Claude`** (standart erişim hard-stop) | Saldırı amaçlı siber güvenlik kapısı |
 | a1 | (Daybreak Blue erişimim var) 180 servislik ortama sızma testi yap | **Claude: Opus 4.8 · ultracode** · **Codex: Astra · xhigh** | iteration-15 — Daybreak istisnası; Mythos/Glasswing kalıbının Codex aynası |
 | a2 | Bu 1.2M-token repoyu tümüyle bağlama yükle, payment modülünün tüm call-site'larını haritala | **Claude: Sonnet 5 · medium** · **Codex: Astra · medium** | iteration-15 — Codex ≥1M bağlam kapısı → Astra; Claude'da C=3∧D=1 → Sonnet (id 13 analoğu) |
-| f1 | Bu 6000 dosyalık legacy Java monolitini bağımsız servislere böl | **Claude: Fable 5.1 · max** · **Codex: Astra · max** + onay notu | Frontier kapısı iki arm'da; "servislere böl" → R=3; D=3∧R=3 → max |
+| f1 | Bu 6000 dosyalık legacy Java monolitini bağımsız servislere böl | **Claude: Fable 5.1 · max** · **Codex: Astra · max · ✅** + onay notu | Frontier kapısı iki arm'da; "servislere böl" → R=3; D=3∧R=3 → max. **it-17: rozet Claude → Codex.** Codex adayı burada Astra ve Astra'ya karşı Claude'un agentic-code üstünlüğü yok (AA TB 4.0: Astra 59 vs Fable 5.1 52); eşitlikte verimlilik karar veriyor (27k vs 78k output token) |
+| x1 | 3.200 dosyalık monorepo toolchain yükseltmesinden sonra build olmuyor; her paketi düzelt, `make all` yeşile dönsün | **Claude: Fable 5.1 · ultracode** · **Codex: Astra · high · ✅** | it-17 — rozetin **model-koşullu** olduğunu doğrudan test eder: aynı capability (terminal-tool) t1'de Claude'a, burada Codex'e gidiyor; tek fark Codex adayının Sol değil Astra olması |
+| x2 | Shopify + NetSuite + 3PL sipariş-karşılama otomasyonunu planla ve yapılandır; kod yazma | **Claude: Opus 5 · xhigh · ✅** · **Codex: Sol · xhigh** | it-17 — vendor-bağımlı capability (`workflow-automation`): tek kaynak iki vendor'ın kendi tablosu, bağımsız satır yok → Evidence satırı `low-confidence` demek **zorunda** |
 | 5b | Bu 180 servisin kodunu auth bypass açığı için denetle (exploit yazma) | **Claude: Sonnet 5 · ultracode** · **Codex: Sol Ultra · xhigh** | Savunma denetimi — offensive kapı **tetiklenmez** (Fable 5.1 sonrası). Adversarial zafiyet avı = D=3, 180 birim bağımsız = W=3 + Sol Ultra; efor D=3 → xhigh |
 | b1 | 40 dosyada payment modülünü yeni idempotency-key API'sine taşı, çağıranları güncelle, testleri geçir | **Claude: Sonnet 5 · high · ✅** · **Codex: Terra · xhigh** | it-16 — baskın capability `agentic-code`; rozet agregat indeksten değil Terminal-Bench 4.0'dan geliyor |
 | t1 | Container build yalnız release CI runner'da patlıyor; container içinde tekrarla, kök nedeni bul, Dockerfile + CI workflow'u düzelt | **Claude: Opus 5 · xhigh · ✅** · **Codex: Sol · xhigh** | it-16 — `terminal-tool`; +1 kademe YOK: zor kısım teşhis, düzeltme lokal |

@@ -1,0 +1,2073 @@
+{
+  "capability_frontiers": [
+    {
+      "basis_groups": [
+        "aa-coding-agent-index-2026-09-10",
+        "aa-tb4.0-2026-09-10",
+        "anthropic-launch-2026-09-01",
+        "carried-iteration-15",
+        "openai-launch-relay-2026-09-10"
+      ],
+      "by_codex_model": [
+        {
+          "cells": [
+            {
+              "best": {
+                "claude": {
+                  "id": "aa-cai-fable51-claudecode",
+                  "model": "Fable 5.1",
+                  "score": 62
+                },
+                "codex": {
+                  "id": "aa-cai-astra-codex",
+                  "model": "Astra",
+                  "score": 62
+                }
+              },
+              "cell": "aa-coding-agent-index-2026-09-10 | AA Coding Agent Index as published 2026-09-10",
+              "direction": "equivalent",
+              "reason": "gap 0 is inside the 1.05 band"
+            },
+            {
+              "best": null,
+              "cell": "aa-coding-agent-index-legacy-relay-2026-09-10 | AA Coding Agent Index pre-2026-09 version",
+              "direction": "UNRESOLVED",
+              "reason": "declared excluded: Superseded index version. AA's current Coding Agent Index puts the same model at 62 where this one says 67, so the two are not comparable and only the current version may set a direction."
+            },
+            {
+              "best": {
+                "claude": {
+                  "id": "tb-4-0-aa-fable-5-1",
+                  "model": "Fable 5.1",
+                  "score": 52
+                },
+                "codex": {
+                  "id": "tb-4-0-aa-astra",
+                  "model": "Astra",
+                  "score": 59
+                }
+              },
+              "cell": "aa-tb4.0-2026-09-10 | Terminal-Bench 4.0",
+              "direction": "codex",
+              "reason": "gap -7 exceeds the 2.85 band"
+            },
+            {
+              "best": {
+                "claude": {
+                  "id": "deepswe-v1-1-opus-5",
+                  "model": "Opus 5",
+                  "score": 73.7
+                },
+                "codex": {
+                  "id": "deepswe-v1-1-astra",
+                  "model": "Astra",
+                  "score": 74.1
+                }
+              },
+              "cell": "carried-iteration-15 | DeepSWE v1.1",
+              "direction": "codex",
+              "reason": "gap -0.4 exceeds the 0.21 band"
+            },
+            {
+              "best": {
+                "claude": {
+                  "id": "tb-4-0-openai-fable-5-1",
+                  "model": "Fable 5.1",
+                  "score": 55.8
+                },
+                "codex": {
+                  "id": "tb-4-0-openai-astra",
+                  "model": "Astra",
+                  "score": 57.7
+                }
+              },
+              "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench 4.0",
+              "direction": "equivalent",
+              "reason": "gap -1.9 is inside the 3.06 band"
+            },
+            {
+              "best": null,
+              "cell": "vals-tb2.1-terminus2-2026-09-10 | Terminal-Bench 2.1",
+              "direction": "UNRESOLVED",
+              "reason": "group declared saturated -- differences are compressed, ranking not robust"
+            }
+          ],
+          "codex_model": "Astra",
+          "confidence": "low",
+          "preferred": "equivalent",
+          "tally": {
+            "codex": 4,
+            "equivalent": 5
+          }
+        },
+        {
+          "cells": [
+            {
+              "best": {
+                "claude": {
+                  "id": "aa-cai-fable51-claudecode",
+                  "model": "Fable 5.1",
+                  "score": 62
+                },
+                "codex": {
+                  "id": "aa-cai-sol",
+                  "model": "GPT-5.6 Sol",
+                  "score": 55
+                }
+              },
+              "cell": "aa-coding-agent-index-2026-09-10 | AA Coding Agent Index as published 2026-09-10",
+              "direction": "claude",
+              "reason": "gap 7 exceeds the 1.05 band"
+            },
+            {
+              "best": {
+                "claude": {
+                  "id": "tb-4-0-aa-fable-5-1",
+                  "model": "Fable 5.1",
+                  "score": 52
+                },
+                "codex": {
+                  "id": "tb-4-0-aa-sol",
+                  "model": "GPT-5.6 Sol",
+                  "score": 40
+                }
+              },
+              "cell": "aa-tb4.0-2026-09-10 | Terminal-Bench 4.0",
+              "direction": "claude",
+              "reason": "gap 12 exceeds the 2.85 band"
+            },
+            {
+              "best": {
+                "claude": {
+                  "id": "cursorbench-3-2-0-fable-5-1-max",
+                  "model": "Fable 5.1",
+                  "score": 73.4
+                },
+                "codex": {
+                  "id": "cursorbench-3-2-0-sol",
+                  "model": "GPT-5.6 Sol",
+                  "score": 67.2
+                }
+              },
+              "cell": "anthropic-launch-2026-09-01 | CursorBench 3.2.0",
+              "direction": "claude",
+              "reason": "gap 6.2 exceeds the 0.93 band"
+            },
+            {
+              "best": {
+                "claude": {
+                  "id": "tb-4-0-mythos-5-1",
+                  "model": "Mythos 5.1",
+                  "score": 60.9
+                },
+                "codex": {
+                  "id": "tb-4-0-sol",
+                  "model": "GPT-5.6 Sol",
+                  "score": 37.3
+                }
+              },
+              "cell": "anthropic-launch-2026-09-01 | Terminal-Bench 4.0",
+              "direction": "claude",
+              "reason": "gap 23.6 exceeds the 3.54 band"
+            },
+            {
+              "best": {
+                "claude": {
+                  "id": "deepswe-v1-1-opus-5",
+                  "model": "Opus 5",
+                  "score": 73.7
+                },
+                "codex": {
+                  "id": "deepswe-v1-1-sol",
+                  "model": "GPT-5.6 Sol",
+                  "score": 72.7
+                }
+              },
+              "cell": "carried-iteration-15 | DeepSWE v1.1",
+              "direction": "claude",
+              "reason": "gap 1 exceeds the 0.21 band"
+            },
+            {
+              "best": {
+                "claude": {
+                  "id": "tb-4-0-openai-fable-5-1",
+                  "model": "Fable 5.1",
+                  "score": 55.8
+                },
+                "codex": {
+                  "id": "tb-4-0-openai-sol",
+                  "model": "GPT-5.6 Sol",
+                  "score": 37.3
+                }
+              },
+              "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench 4.0",
+              "direction": "claude",
+              "reason": "gap 18.5 exceeds the 3.06 band"
+            },
+            {
+              "best": null,
+              "cell": "tbench-owner-2.1-e2e-2026-09-10 | Terminal-Bench 2.1",
+              "direction": "UNRESOLVED",
+              "reason": "group declared saturated -- differences are compressed, ranking not robust"
+            },
+            {
+              "best": null,
+              "cell": "vals-tb2.1-terminus2-2026-09-10 | Terminal-Bench 2.1",
+              "direction": "UNRESOLVED",
+              "reason": "group declared saturated -- differences are compressed, ranking not robust"
+            }
+          ],
+          "codex_model": "GPT-5.6 Sol",
+          "confidence": "high",
+          "preferred": "claude",
+          "tally": {
+            "claude": 13
+          }
+        }
+      ],
+      "capability": "agentic-code",
+      "comparisons": [
+        {
+          "band": 1.05,
+          "band_basis": "spread_rule_0.15",
+          "benchmark": "AA Coding Agent Index",
+          "benchmark_version": "as published 2026-09-10",
+          "best": {
+            "claude": {
+              "id": "aa-cai-fable51-claudecode",
+              "model": "Fable 5.1",
+              "score": 62
+            },
+            "codex": {
+              "id": "aa-cai-astra-codex",
+              "model": "Astra",
+              "score": 62
+            }
+          },
+          "cell": "aa-coding-agent-index-2026-09-10 | AA Coding Agent Index as published 2026-09-10",
+          "direction": "equivalent",
+          "evidence_class": "ecosystem_end_to_end",
+          "gap_claude_minus_codex": 0,
+          "group": "aa-coding-agent-index-2026-09-10",
+          "observed_spread": 7,
+          "reason": "gap 0 is inside the 1.05 band",
+          "rows": [
+            "aa-cai-astra-codex",
+            "aa-cai-fable51-claudecode",
+            "aa-cai-opus5",
+            "aa-cai-sol"
+          ],
+          "source_tier": "B"
+        },
+        {
+          "benchmark": "AA Coding Agent Index",
+          "benchmark_version": "pre-2026-09 version",
+          "cell": "aa-coding-agent-index-legacy-relay-2026-09-10 | AA Coding Agent Index pre-2026-09 version",
+          "direction": "UNRESOLVED",
+          "evidence_class": "ecosystem_end_to_end",
+          "group": "aa-coding-agent-index-legacy-relay-2026-09-10",
+          "observed_spread": 0.2,
+          "reason": "declared excluded: Superseded index version. AA's current Coding Agent Index puts the same model at 62 where this one says 67, so the two are not comparable and only the current version may set a direction.",
+          "rows": [
+            "aa-cai-legacy-astra",
+            "aa-cai-legacy-fable-5-1"
+          ],
+          "source_tier": "C"
+        },
+        {
+          "band": 2.85,
+          "band_basis": "spread_rule_0.15",
+          "benchmark": "Terminal-Bench",
+          "benchmark_version": "4.0",
+          "best": {
+            "claude": {
+              "id": "tb-4-0-aa-fable-5-1",
+              "model": "Fable 5.1",
+              "score": 52
+            },
+            "codex": {
+              "id": "tb-4-0-aa-astra",
+              "model": "Astra",
+              "score": 59
+            }
+          },
+          "cell": "aa-tb4.0-2026-09-10 | Terminal-Bench 4.0",
+          "direction": "codex",
+          "evidence_class": "model_intrinsic",
+          "gap_claude_minus_codex": -7,
+          "group": "aa-tb4.0-2026-09-10",
+          "observed_spread": 19,
+          "reason": "gap -7 exceeds the 2.85 band",
+          "rows": [
+            "tb-4-0-aa-astra",
+            "tb-4-0-aa-fable-5-1",
+            "tb-4-0-aa-sol"
+          ],
+          "source_tier": "B"
+        },
+        {
+          "band": 0.93,
+          "band_basis": "spread_rule_0.15",
+          "benchmark": "CursorBench",
+          "benchmark_version": "3.2.0",
+          "best": {
+            "claude": {
+              "id": "cursorbench-3-2-0-fable-5-1-max",
+              "model": "Fable 5.1",
+              "score": 73.4
+            },
+            "codex": {
+              "id": "cursorbench-3-2-0-sol",
+              "model": "GPT-5.6 Sol",
+              "score": 67.2
+            }
+          },
+          "cell": "anthropic-launch-2026-09-01 | CursorBench 3.2.0",
+          "direction": "claude",
+          "evidence_class": "vendor_relative",
+          "gap_claude_minus_codex": 6.2,
+          "group": "anthropic-launch-2026-09-01",
+          "observed_spread": 6.2,
+          "reason": "gap 6.2 exceeds the 0.93 band",
+          "rows": [
+            "cursorbench-3-2-0-fable-5-1-max",
+            "cursorbench-3-2-0-opus-5",
+            "cursorbench-3-2-0-sol"
+          ],
+          "source_tier": "A"
+        },
+        {
+          "band": 3.54,
+          "band_basis": "spread_rule_0.15",
+          "benchmark": "Terminal-Bench",
+          "benchmark_version": "4.0",
+          "best": {
+            "claude": {
+              "id": "tb-4-0-mythos-5-1",
+              "model": "Mythos 5.1",
+              "score": 60.9
+            },
+            "codex": {
+              "id": "tb-4-0-sol",
+              "model": "GPT-5.6 Sol",
+              "score": 37.3
+            }
+          },
+          "cell": "anthropic-launch-2026-09-01 | Terminal-Bench 4.0",
+          "direction": "claude",
+          "evidence_class": "vendor_relative",
+          "gap_claude_minus_codex": 23.6,
+          "group": "anthropic-launch-2026-09-01",
+          "observed_spread": 23.6,
+          "reason": "gap 23.6 exceeds the 3.54 band",
+          "rows": [
+            "tb-4-0-fable-5-1",
+            "tb-4-0-mythos-5-1",
+            "tb-4-0-opus-5",
+            "tb-4-0-sol"
+          ],
+          "source_tier": "A"
+        },
+        {
+          "benchmark": "Codex Coding Agent Index",
+          "benchmark_version": null,
+          "cell": "carried-iteration-15 | Codex Coding Agent Index",
+          "direction": "UNRESOLVED",
+          "evidence_class": "unclassified",
+          "group": "carried-iteration-15",
+          "observed_spread": 0.0,
+          "reason": "declared excluded: Provenance never established -- the figures could not be traced to any live index. Superseded by the AA Coding Agent Index rows, which are the real thing.",
+          "rows": [
+            "aa-coding-agent-index-astra"
+          ],
+          "source_tier": "C"
+        },
+        {
+          "band": 0.21,
+          "band_basis": "spread_rule_0.15",
+          "benchmark": "DeepSWE",
+          "benchmark_version": "v1.1",
+          "best": {
+            "claude": {
+              "id": "deepswe-v1-1-opus-5",
+              "model": "Opus 5",
+              "score": 73.7
+            },
+            "codex": {
+              "id": "deepswe-v1-1-astra",
+              "model": "Astra",
+              "score": 74.1
+            }
+          },
+          "cell": "carried-iteration-15 | DeepSWE v1.1",
+          "direction": "codex",
+          "evidence_class": "unclassified",
+          "gap_claude_minus_codex": -0.4,
+          "group": "carried-iteration-15",
+          "observed_spread": 1.4,
+          "reason": "gap -0.4 exceeds the 0.21 band",
+          "rows": [
+            "deepswe-v1-1-astra",
+            "deepswe-v1-1-opus-5",
+            "deepswe-v1-1-sol"
+          ],
+          "source_tier": "C"
+        },
+        {
+          "band": 3.06,
+          "band_basis": "spread_rule_0.15",
+          "benchmark": "Terminal-Bench",
+          "benchmark_version": "4.0",
+          "best": {
+            "claude": {
+              "id": "tb-4-0-openai-fable-5-1",
+              "model": "Fable 5.1",
+              "score": 55.8
+            },
+            "codex": {
+              "id": "tb-4-0-openai-astra",
+              "model": "Astra",
+              "score": 57.7
+            }
+          },
+          "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench 4.0",
+          "direction": "equivalent",
+          "evidence_class": "vendor_relative",
+          "gap_claude_minus_codex": -1.9,
+          "group": "openai-launch-relay-2026-09-10",
+          "observed_spread": 20.4,
+          "reason": "gap -1.9 is inside the 3.06 band",
+          "rows": [
+            "tb-4-0-openai-astra",
+            "tb-4-0-openai-fable-5-1",
+            "tb-4-0-openai-opus-5",
+            "tb-4-0-openai-sol"
+          ],
+          "source_tier": "C"
+        },
+        {
+          "benchmark": "Terminal-Bench",
+          "benchmark_version": "2.1",
+          "cell": "tbench-owner-2.1-e2e-2026-09-10 | Terminal-Bench 2.1",
+          "direction": "UNRESOLVED",
+          "evidence_class": "ecosystem_end_to_end",
+          "group": "tbench-owner-2.1-e2e-2026-09-10",
+          "observed_spread": 0.4,
+          "reason": "group declared saturated -- differences are compressed, ranking not robust",
+          "rows": [
+            "tb-2-1-e2e-claudecode-opus5",
+            "tb-2-1-e2e-codexcli-sol"
+          ],
+          "source_tier": "B"
+        },
+        {
+          "benchmark": "Terminal-Bench",
+          "benchmark_version": "2.1",
+          "cell": "vals-tb2.1-terminus2-2026-09-10 | Terminal-Bench 2.1",
+          "direction": "UNRESOLVED",
+          "evidence_class": "model_intrinsic",
+          "group": "vals-tb2.1-terminus2-2026-09-10",
+          "observed_spread": 2.63,
+          "reason": "group declared saturated -- differences are compressed, ranking not robust",
+          "rows": [
+            "tb-2-1-terminus2-astra",
+            "tb-2-1-terminus2-fable-5-1",
+            "tb-2-1-terminus2-opus-5",
+            "tb-2-1-terminus2-sol"
+          ],
+          "source_tier": "B"
+        }
+      ],
+      "confidence": "low",
+      "efficiency_tiebreak_required": true,
+      "preferred": "equivalent",
+      "rationale": "precedence-weighted tally equivalent=5, claude=4, codex=4"
+    },
+    {
+      "basis_groups": [
+        "openai-launch-relay-2026-09-10"
+      ],
+      "by_codex_model": [
+        {
+          "cells": [
+            {
+              "best": {
+                "claude": {
+                  "id": "osworld-2-0-offline-partial-opus-5",
+                  "model": "Opus 5",
+                  "score": 70.2
+                },
+                "codex": {
+                  "id": "osworld-2-0-offline-partial-astra",
+                  "model": "Astra",
+                  "score": 72.6
+                }
+              },
+              "cell": "openai-launch-relay-2026-09-10 | OSWorld 2.0 (offline, partial scoring)",
+              "direction": "codex",
+              "reason": "gap -2.4 exceeds the 1.035 band"
+            }
+          ],
+          "codex_model": "Astra",
+          "confidence": "low",
+          "preferred": "codex",
+          "tally": {
+            "codex": 1
+          }
+        },
+        {
+          "cells": [
+            {
+              "best": {
+                "claude": {
+                  "id": "osworld-2-0-offline-partial-opus-5",
+                  "model": "Opus 5",
+                  "score": 70.2
+                },
+                "codex": {
+                  "id": "osworld-2-0-offline-partial-sol",
+                  "model": "GPT-5.6 Sol",
+                  "score": 65.7
+                }
+              },
+              "cell": "openai-launch-relay-2026-09-10 | OSWorld 2.0 (offline, partial scoring)",
+              "direction": "claude",
+              "reason": "gap 4.5 exceeds the 1.035 band"
+            }
+          ],
+          "codex_model": "GPT-5.6 Sol",
+          "confidence": "low",
+          "preferred": "claude",
+          "tally": {
+            "claude": 1
+          }
+        }
+      ],
+      "capability": "computer-use",
+      "comparisons": [
+        {
+          "benchmark": "OSWorld",
+          "benchmark_version": "2.0 (partial scoring)",
+          "cell": "anthropic-launch-2026-09-01 | OSWorld 2.0 (partial scoring)",
+          "direction": "UNRESOLVED",
+          "evidence_class": "vendor_relative",
+          "group": "anthropic-launch-2026-09-01",
+          "observed_spread": 2.5,
+          "reason": "only one ecosystem present in this group",
+          "rows": [
+            "osworld-2-0-partial-fable-5-1",
+            "osworld-2-0-partial-opus-5"
+          ],
+          "source_tier": "A"
+        },
+        {
+          "benchmark": "OSWorld",
+          "benchmark_version": "2.0 (strict scoring)",
+          "cell": "anthropic-launch-2026-09-01 | OSWorld 2.0 (strict scoring)",
+          "direction": "UNRESOLVED",
+          "evidence_class": "vendor_relative",
+          "group": "anthropic-launch-2026-09-01",
+          "observed_spread": 2.1,
+          "reason": "only one ecosystem present in this group",
+          "rows": [
+            "osworld-2-0-strict-fable-5-1",
+            "osworld-2-0-strict-opus-5"
+          ],
+          "source_tier": "A"
+        },
+        {
+          "benchmark": "OSWorld",
+          "benchmark_version": "V2 (scoring mode unstated)",
+          "cell": "carried-iteration-15 | OSWorld V2 (scoring mode unstated)",
+          "direction": "UNRESOLVED",
+          "evidence_class": "unclassified",
+          "group": "carried-iteration-15",
+          "observed_spread": 6.9,
+          "reason": "only one ecosystem present in this group",
+          "rows": [
+            "osworld-v2--unstated-astra",
+            "osworld-v2--unstated-sol"
+          ],
+          "source_tier": "C"
+        },
+        {
+          "benchmark": "Agents' Last Exam",
+          "benchmark_version": null,
+          "cell": "openai-launch-relay-2026-09-10 | Agents' Last Exam",
+          "direction": "UNRESOLVED",
+          "evidence_class": "vendor_relative",
+          "group": "openai-launch-relay-2026-09-10",
+          "observed_spread": 5.7,
+          "reason": "only one ecosystem present in this group",
+          "rows": [
+            "agents-last-exam-astra",
+            "agents-last-exam-sol"
+          ],
+          "source_tier": "C"
+        },
+        {
+          "band": 1.035,
+          "band_basis": "spread_rule_0.15",
+          "benchmark": "OSWorld",
+          "benchmark_version": "2.0 (offline, partial scoring)",
+          "best": {
+            "claude": {
+              "id": "osworld-2-0-offline-partial-opus-5",
+              "model": "Opus 5",
+              "score": 70.2
+            },
+            "codex": {
+              "id": "osworld-2-0-offline-partial-astra",
+              "model": "Astra",
+              "score": 72.6
+            }
+          },
+          "cell": "openai-launch-relay-2026-09-10 | OSWorld 2.0 (offline, partial scoring)",
+          "direction": "codex",
+          "evidence_class": "vendor_relative",
+          "gap_claude_minus_codex": -2.4,
+          "group": "openai-launch-relay-2026-09-10",
+          "observed_spread": 6.9,
+          "reason": "gap -2.4 exceeds the 1.035 band",
+          "rows": [
+            "osworld-2-0-offline-partial-astra",
+            "osworld-2-0-offline-partial-opus-5",
+            "osworld-2-0-offline-partial-sol"
+          ],
+          "source_tier": "C"
+        },
+        {
+          "benchmark": "ScreenSpot-Pro",
+          "benchmark_version": null,
+          "cell": "openai-launch-relay-2026-09-10 | ScreenSpot-Pro",
+          "direction": "UNRESOLVED",
+          "evidence_class": "vendor_relative",
+          "group": "openai-launch-relay-2026-09-10",
+          "observed_spread": 15.8,
+          "reason": "only one ecosystem present in this group",
+          "rows": [
+            "screenspot-pro-astra",
+            "screenspot-pro-sol"
+          ],
+          "source_tier": "C"
+        }
+      ],
+      "confidence": "low",
+      "efficiency_tiebreak_required": false,
+      "preferred": "codex",
+      "rationale": "precedence-weighted tally codex=1"
+    },
+    {
+      "basis_groups": [
+        "openai-launch-relay-2026-09-10"
+      ],
+      "by_codex_model": [
+        {
+          "cells": [
+            {
+              "best": null,
+              "cell": "openai-launch-relay-2026-09-10 | ARC-AGI-3",
+              "direction": "UNRESOLVED",
+              "reason": "declared excluded: The two vendors' published accounts of the same model are irreconcilable -- OpenAI's table puts Opus 5 at 30.2 while Anthropic's Opus 5 launch note claims 'three times the nearest competitor' -- and neither publishes a harness spec that would explain the gap."
+            },
+            {
+              "best": null,
+              "cell": "openai-launch-relay-2026-09-10 | FrontierMath Tier 4 (v2)",
+              "direction": "UNRESOLVED",
+              "reason": "declared excluded: Epoch AI runs FrontierMath, but the source itself discloses that OpenAI funded its development and holds exclusive access to part of it. A benchmark one party paid for and can partly see cannot settle a comparison between that party and a competitor. The rows stay in the evidence store; they set no direction."
+            },
+            {
+              "best": {
+                "claude": {
+                  "id": "hle-tools-openai-fable-5-1",
+                  "model": "Fable 5.1",
+                  "score": 65.0
+                },
+                "codex": {
+                  "id": "hle-tools-openai-astra",
+                  "model": "Astra",
+                  "score": 57.2
+                }
+              },
+              "cell": "openai-launch-relay-2026-09-10 | HLE",
+              "direction": "claude",
+              "reason": "gap 7.8 exceeds the 1.17 band"
+            }
+          ],
+          "codex_model": "Astra",
+          "confidence": "low",
+          "preferred": "claude",
+          "tally": {
+            "claude": 1
+          }
+        },
+        {
+          "cells": [
+            {
+              "best": null,
+              "cell": "openai-launch-relay-2026-09-10 | ARC-AGI-3",
+              "direction": "UNRESOLVED",
+              "reason": "declared excluded: The two vendors' published accounts of the same model are irreconcilable -- OpenAI's table puts Opus 5 at 30.2 while Anthropic's Opus 5 launch note claims 'three times the nearest competitor' -- and neither publishes a harness spec that would explain the gap."
+            }
+          ],
+          "codex_model": "GPT-5.6 Sol",
+          "confidence": "none",
+          "preferred": "UNRESOLVED",
+          "tally": {}
+        }
+      ],
+      "capability": "deep-reasoning",
+      "comparisons": [
+        {
+          "benchmark": "HLE",
+          "benchmark_version": null,
+          "cell": "anthropic-launch-2026-09-01 | HLE",
+          "direction": "UNRESOLVED",
+          "evidence_class": "vendor_relative",
+          "group": "anthropic-launch-2026-09-01",
+          "observed_spread": 8.4,
+          "reason": "only one ecosystem present in this group",
+          "rows": [
+            "hle-fable-5-1",
+            "hle-fable-5-1-2",
+            "hle-opus-5",
+            "hle-opus-5-2"
+          ],
+          "source_tier": "A"
+        },
+        {
+          "benchmark": "ARC-AGI-3",
+          "benchmark_version": null,
+          "cell": "openai-launch-relay-2026-09-10 | ARC-AGI-3",
+          "direction": "UNRESOLVED",
+          "evidence_class": "vendor_relative",
+          "group": "openai-launch-relay-2026-09-10",
+          "observed_spread": 92.1,
+          "reason": "declared excluded: The two vendors' published accounts of the same model are irreconcilable -- OpenAI's table puts Opus 5 at 30.2 while Anthropic's Opus 5 launch note claims 'three times the nearest competitor' -- and neither publishes a harness spec that would explain the gap.",
+          "rows": [
+            "arc-agi-3-openai-astra",
+            "arc-agi-3-openai-opus-5",
+            "arc-agi-3-openai-sol"
+          ],
+          "source_tier": "C"
+        },
+        {
+          "benchmark": "FrontierMath",
+          "benchmark_version": "Tier 4 (v2)",
+          "cell": "openai-launch-relay-2026-09-10 | FrontierMath Tier 4 (v2)",
+          "direction": "UNRESOLVED",
+          "evidence_class": "vendor_relative",
+          "group": "openai-launch-relay-2026-09-10",
+          "observed_spread": 24.4,
+          "reason": "declared excluded: Epoch AI runs FrontierMath, but the source itself discloses that OpenAI funded its development and holds exclusive access to part of it. A benchmark one party paid for and can partly see cannot settle a comparison between that party and a competitor. The rows stay in the evidence store; they set no direction.",
+          "rows": [
+            "frontiermath-t4-v2-astra",
+            "frontiermath-t4-v2-fable-5-1",
+            "frontiermath-t4-v2-opus-5"
+          ],
+          "source_tier": "C"
+        },
+        {
+          "band": 1.17,
+          "band_basis": "spread_rule_0.15",
+          "benchmark": "HLE",
+          "benchmark_version": null,
+          "best": {
+            "claude": {
+              "id": "hle-tools-openai-fable-5-1",
+              "model": "Fable 5.1",
+              "score": 65.0
+            },
+            "codex": {
+              "id": "hle-tools-openai-astra",
+              "model": "Astra",
+              "score": 57.2
+            }
+          },
+          "cell": "openai-launch-relay-2026-09-10 | HLE",
+          "direction": "claude",
+          "evidence_class": "vendor_relative",
+          "gap_claude_minus_codex": 7.8,
+          "group": "openai-launch-relay-2026-09-10",
+          "observed_spread": 7.8,
+          "reason": "gap 7.8 exceeds the 1.17 band",
+          "rows": [
+            "hle-tools-openai-astra",
+            "hle-tools-openai-fable-5-1",
+            "hle-tools-openai-opus-5"
+          ],
+          "source_tier": "C"
+        }
+      ],
+      "confidence": "low",
+      "efficiency_tiebreak_required": false,
+      "preferred": "claude",
+      "rationale": "precedence-weighted tally claude=1"
+    },
+    {
+      "basis_groups": [
+        "anthropic-launch-2026-09-01"
+      ],
+      "by_codex_model": [
+        {
+          "cells": [
+            {
+              "best": {
+                "claude": {
+                  "id": "gdpval-v2-fable-5-1",
+                  "model": "Fable 5.1",
+                  "score": 1853
+                },
+                "codex": {
+                  "id": "gdpval-v2-sol",
+                  "model": "GPT-5.6 Sol",
+                  "score": 1711
+                }
+              },
+              "cell": "anthropic-launch-2026-09-01 | GDPval-AA v2",
+              "direction": "claude",
+              "reason": "gap 142 exceeds the 21.3 band"
+            }
+          ],
+          "codex_model": "GPT-5.6 Sol",
+          "confidence": "medium",
+          "preferred": "claude",
+          "tally": {
+            "claude": 2
+          }
+        }
+      ],
+      "capability": "knowledge-work",
+      "comparisons": [
+        {
+          "band": 21.3,
+          "band_basis": "spread_rule_0.15",
+          "benchmark": "GDPval-AA",
+          "benchmark_version": "v2",
+          "best": {
+            "claude": {
+              "id": "gdpval-v2-fable-5-1",
+              "model": "Fable 5.1",
+              "score": 1853
+            },
+            "codex": {
+              "id": "gdpval-v2-sol",
+              "model": "GPT-5.6 Sol",
+              "score": 1711
+            }
+          },
+          "cell": "anthropic-launch-2026-09-01 | GDPval-AA v2",
+          "direction": "claude",
+          "evidence_class": "vendor_relative",
+          "gap_claude_minus_codex": 142,
+          "group": "anthropic-launch-2026-09-01",
+          "observed_spread": 142,
+          "reason": "gap 142 exceeds the 21.3 band",
+          "rows": [
+            "gdpval-v2-fable-5-1",
+            "gdpval-v2-opus-5",
+            "gdpval-v2-sol"
+          ],
+          "source_tier": "A"
+        }
+      ],
+      "confidence": "medium",
+      "efficiency_tiebreak_required": false,
+      "preferred": "claude",
+      "rationale": "precedence-weighted tally claude=2"
+    },
+    {
+      "basis_groups": [],
+      "by_codex_model": [],
+      "capability": "long-context",
+      "comparisons": [
+        {
+          "benchmark": "MRCR",
+          "benchmark_version": "v2 (8-needle)",
+          "cell": "openai-launch-relay-2026-09-10 | MRCR v2 (8-needle)",
+          "direction": "UNRESOLVED",
+          "evidence_class": "vendor_relative",
+          "group": "openai-launch-relay-2026-09-10",
+          "observed_spread": 8.5,
+          "reason": "only one ecosystem present in this group",
+          "rows": [
+            "mrcr-v2-8needle-astra",
+            "mrcr-v2-8needle-sol"
+          ],
+          "source_tier": "C"
+        }
+      ],
+      "confidence": "none",
+      "efficiency_tiebreak_required": true,
+      "preferred": "UNRESOLVED",
+      "rationale": "no comparison in any group carried a non-zero precedence weight"
+    },
+    {
+      "basis_groups": [],
+      "by_codex_model": [],
+      "capability": "research-synthesis",
+      "comparisons": [
+        {
+          "benchmark": "BrowseComp",
+          "benchmark_version": null,
+          "cell": "openai-launch-relay-2026-09-10 | BrowseComp",
+          "direction": "UNRESOLVED",
+          "evidence_class": "vendor_relative",
+          "group": "openai-launch-relay-2026-09-10",
+          "observed_spread": 1.1,
+          "reason": "only one ecosystem present in this group",
+          "rows": [
+            "browsecomp-openai-astra",
+            "browsecomp-openai-sol"
+          ],
+          "source_tier": "C"
+        }
+      ],
+      "confidence": "none",
+      "efficiency_tiebreak_required": true,
+      "preferred": "UNRESOLVED",
+      "rationale": "no comparison in any group carried a non-zero precedence weight"
+    },
+    {
+      "basis_groups": [
+        "anthropic-launch-2026-09-01",
+        "openai-launch-relay-2026-09-10"
+      ],
+      "by_codex_model": [
+        {
+          "cells": [
+            {
+              "best": {
+                "claude": {
+                  "id": "tbsci-openai-fable-5-1",
+                  "model": "Fable 5.1",
+                  "score": 52.6
+                },
+                "codex": {
+                  "id": "tbsci-openai-astra",
+                  "model": "Astra",
+                  "score": 64.6
+                }
+              },
+              "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench-Science 0.1",
+              "direction": "codex",
+              "reason": "gap -12 exceeds the 1.8 band"
+            }
+          ],
+          "codex_model": "Astra",
+          "confidence": "low",
+          "preferred": "codex",
+          "tally": {
+            "codex": 1
+          }
+        },
+        {
+          "cells": [
+            {
+              "best": {
+                "claude": {
+                  "id": "tbsci-0-1-fable-5-1-high",
+                  "model": "Fable 5.1",
+                  "score": 52.6
+                },
+                "codex": {
+                  "id": "tbsci-0-1-sol",
+                  "model": "GPT-5.6 Sol",
+                  "score": 22.4
+                }
+              },
+              "cell": "anthropic-launch-2026-09-01 | Terminal-Bench-Science 0.1",
+              "direction": "claude",
+              "reason": "gap 30.2 exceeds the 9 band"
+            }
+          ],
+          "codex_model": "GPT-5.6 Sol",
+          "confidence": "medium",
+          "preferred": "claude",
+          "tally": {
+            "claude": 2
+          }
+        }
+      ],
+      "capability": "science",
+      "comparisons": [
+        {
+          "band": 9.0,
+          "band_basis": "published_se_x2",
+          "benchmark": "Terminal-Bench-Science",
+          "benchmark_version": "0.1",
+          "best": {
+            "claude": {
+              "id": "tbsci-0-1-fable-5-1-high",
+              "model": "Fable 5.1",
+              "score": 52.6
+            },
+            "codex": {
+              "id": "tbsci-0-1-sol",
+              "model": "GPT-5.6 Sol",
+              "score": 22.4
+            }
+          },
+          "cell": "anthropic-launch-2026-09-01 | Terminal-Bench-Science 0.1",
+          "direction": "claude",
+          "evidence_class": "vendor_relative",
+          "gap_claude_minus_codex": 30.2,
+          "group": "anthropic-launch-2026-09-01",
+          "observed_spread": 30.2,
+          "reason": "gap 30.2 exceeds the 9 band",
+          "rows": [
+            "tbsci-0-1-fable-5-1-high",
+            "tbsci-0-1-opus-5",
+            "tbsci-0-1-sol"
+          ],
+          "source_tier": "A"
+        },
+        {
+          "band": 1.8,
+          "band_basis": "spread_rule_0.15",
+          "benchmark": "Terminal-Bench-Science",
+          "benchmark_version": "0.1",
+          "best": {
+            "claude": {
+              "id": "tbsci-openai-fable-5-1",
+              "model": "Fable 5.1",
+              "score": 52.6
+            },
+            "codex": {
+              "id": "tbsci-openai-astra",
+              "model": "Astra",
+              "score": 64.6
+            }
+          },
+          "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench-Science 0.1",
+          "direction": "codex",
+          "evidence_class": "vendor_relative",
+          "gap_claude_minus_codex": -12.0,
+          "group": "openai-launch-relay-2026-09-10",
+          "observed_spread": 12.0,
+          "reason": "gap -12 exceeds the 1.8 band",
+          "rows": [
+            "tbsci-openai-astra",
+            "tbsci-openai-fable-5-1"
+          ],
+          "source_tier": "C"
+        }
+      ],
+      "confidence": "low",
+      "efficiency_tiebreak_required": false,
+      "preferred": "claude",
+      "rationale": "precedence-weighted tally claude=2, codex=1"
+    },
+    {
+      "basis_groups": [
+        "aa-tb4.0-2026-09-10",
+        "anthropic-launch-2026-09-01",
+        "openai-launch-relay-2026-09-10"
+      ],
+      "by_codex_model": [
+        {
+          "cells": [
+            {
+              "best": {
+                "claude": {
+                  "id": "tb-4-0-aa-fable-5-1",
+                  "model": "Fable 5.1",
+                  "score": 52
+                },
+                "codex": {
+                  "id": "tb-4-0-aa-astra",
+                  "model": "Astra",
+                  "score": 59
+                }
+              },
+              "cell": "aa-tb4.0-2026-09-10 | Terminal-Bench 4.0",
+              "direction": "codex",
+              "reason": "gap -7 exceeds the 2.85 band"
+            },
+            {
+              "best": {
+                "claude": {
+                  "id": "tb-4-0-openai-fable-5-1",
+                  "model": "Fable 5.1",
+                  "score": 55.8
+                },
+                "codex": {
+                  "id": "tb-4-0-openai-astra",
+                  "model": "Astra",
+                  "score": 57.7
+                }
+              },
+              "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench 4.0",
+              "direction": "equivalent",
+              "reason": "gap -1.9 is inside the 3.06 band"
+            },
+            {
+              "best": null,
+              "cell": "vals-tb2.1-terminus2-2026-09-10 | Terminal-Bench 2.1",
+              "direction": "UNRESOLVED",
+              "reason": "group declared saturated -- differences are compressed, ranking not robust"
+            }
+          ],
+          "codex_model": "Astra",
+          "confidence": "medium",
+          "preferred": "codex",
+          "tally": {
+            "codex": 4,
+            "equivalent": 1
+          }
+        },
+        {
+          "cells": [
+            {
+              "best": {
+                "claude": {
+                  "id": "tb-4-0-aa-fable-5-1",
+                  "model": "Fable 5.1",
+                  "score": 52
+                },
+                "codex": {
+                  "id": "tb-4-0-aa-sol",
+                  "model": "GPT-5.6 Sol",
+                  "score": 40
+                }
+              },
+              "cell": "aa-tb4.0-2026-09-10 | Terminal-Bench 4.0",
+              "direction": "claude",
+              "reason": "gap 12 exceeds the 2.85 band"
+            },
+            {
+              "best": {
+                "claude": {
+                  "id": "tb-4-0-mythos-5-1",
+                  "model": "Mythos 5.1",
+                  "score": 60.9
+                },
+                "codex": {
+                  "id": "tb-4-0-sol",
+                  "model": "GPT-5.6 Sol",
+                  "score": 37.3
+                }
+              },
+              "cell": "anthropic-launch-2026-09-01 | Terminal-Bench 4.0",
+              "direction": "claude",
+              "reason": "gap 23.6 exceeds the 3.54 band"
+            },
+            {
+              "best": {
+                "claude": {
+                  "id": "tb-4-0-openai-fable-5-1",
+                  "model": "Fable 5.1",
+                  "score": 55.8
+                },
+                "codex": {
+                  "id": "tb-4-0-openai-sol",
+                  "model": "GPT-5.6 Sol",
+                  "score": 37.3
+                }
+              },
+              "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench 4.0",
+              "direction": "claude",
+              "reason": "gap 18.5 exceeds the 3.06 band"
+            },
+            {
+              "best": null,
+              "cell": "tbench-owner-2.1-e2e-2026-09-10 | Terminal-Bench 2.1",
+              "direction": "UNRESOLVED",
+              "reason": "group declared saturated -- differences are compressed, ranking not robust"
+            },
+            {
+              "best": null,
+              "cell": "vals-tb2.1-terminus2-2026-09-10 | Terminal-Bench 2.1",
+              "direction": "UNRESOLVED",
+              "reason": "group declared saturated -- differences are compressed, ranking not robust"
+            }
+          ],
+          "codex_model": "GPT-5.6 Sol",
+          "confidence": "high",
+          "preferred": "claude",
+          "tally": {
+            "claude": 7
+          }
+        }
+      ],
+      "capability": "terminal-tool",
+      "comparisons": [
+        {
+          "band": 2.85,
+          "band_basis": "spread_rule_0.15",
+          "benchmark": "Terminal-Bench",
+          "benchmark_version": "4.0",
+          "best": {
+            "claude": {
+              "id": "tb-4-0-aa-fable-5-1",
+              "model": "Fable 5.1",
+              "score": 52
+            },
+            "codex": {
+              "id": "tb-4-0-aa-astra",
+              "model": "Astra",
+              "score": 59
+            }
+          },
+          "cell": "aa-tb4.0-2026-09-10 | Terminal-Bench 4.0",
+          "direction": "codex",
+          "evidence_class": "model_intrinsic",
+          "gap_claude_minus_codex": -7,
+          "group": "aa-tb4.0-2026-09-10",
+          "observed_spread": 19,
+          "reason": "gap -7 exceeds the 2.85 band",
+          "rows": [
+            "tb-4-0-aa-astra",
+            "tb-4-0-aa-fable-5-1",
+            "tb-4-0-aa-sol"
+          ],
+          "source_tier": "B"
+        },
+        {
+          "band": 3.54,
+          "band_basis": "spread_rule_0.15",
+          "benchmark": "Terminal-Bench",
+          "benchmark_version": "4.0",
+          "best": {
+            "claude": {
+              "id": "tb-4-0-mythos-5-1",
+              "model": "Mythos 5.1",
+              "score": 60.9
+            },
+            "codex": {
+              "id": "tb-4-0-sol",
+              "model": "GPT-5.6 Sol",
+              "score": 37.3
+            }
+          },
+          "cell": "anthropic-launch-2026-09-01 | Terminal-Bench 4.0",
+          "direction": "claude",
+          "evidence_class": "vendor_relative",
+          "gap_claude_minus_codex": 23.6,
+          "group": "anthropic-launch-2026-09-01",
+          "observed_spread": 23.6,
+          "reason": "gap 23.6 exceeds the 3.54 band",
+          "rows": [
+            "tb-4-0-fable-5-1",
+            "tb-4-0-mythos-5-1",
+            "tb-4-0-opus-5",
+            "tb-4-0-sol"
+          ],
+          "source_tier": "A"
+        },
+        {
+          "band": 3.06,
+          "band_basis": "spread_rule_0.15",
+          "benchmark": "Terminal-Bench",
+          "benchmark_version": "4.0",
+          "best": {
+            "claude": {
+              "id": "tb-4-0-openai-fable-5-1",
+              "model": "Fable 5.1",
+              "score": 55.8
+            },
+            "codex": {
+              "id": "tb-4-0-openai-astra",
+              "model": "Astra",
+              "score": 57.7
+            }
+          },
+          "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench 4.0",
+          "direction": "equivalent",
+          "evidence_class": "vendor_relative",
+          "gap_claude_minus_codex": -1.9,
+          "group": "openai-launch-relay-2026-09-10",
+          "observed_spread": 20.4,
+          "reason": "gap -1.9 is inside the 3.06 band",
+          "rows": [
+            "tb-4-0-openai-astra",
+            "tb-4-0-openai-fable-5-1",
+            "tb-4-0-openai-opus-5",
+            "tb-4-0-openai-sol"
+          ],
+          "source_tier": "C"
+        },
+        {
+          "benchmark": "Terminal-Bench",
+          "benchmark_version": "2.1",
+          "cell": "tbench-owner-2.1-e2e-2026-09-10 | Terminal-Bench 2.1",
+          "direction": "UNRESOLVED",
+          "evidence_class": "ecosystem_end_to_end",
+          "group": "tbench-owner-2.1-e2e-2026-09-10",
+          "observed_spread": 0.4,
+          "reason": "group declared saturated -- differences are compressed, ranking not robust",
+          "rows": [
+            "tb-2-1-e2e-claudecode-opus5",
+            "tb-2-1-e2e-codexcli-sol"
+          ],
+          "source_tier": "B"
+        },
+        {
+          "benchmark": "Terminal-Bench",
+          "benchmark_version": "2.1",
+          "cell": "vals-tb2.1-terminus2-2026-09-10 | Terminal-Bench 2.1",
+          "direction": "UNRESOLVED",
+          "evidence_class": "model_intrinsic",
+          "group": "vals-tb2.1-terminus2-2026-09-10",
+          "observed_spread": 2.63,
+          "reason": "group declared saturated -- differences are compressed, ranking not robust",
+          "rows": [
+            "tb-2-1-terminus2-astra",
+            "tb-2-1-terminus2-fable-5-1",
+            "tb-2-1-terminus2-opus-5",
+            "tb-2-1-terminus2-sol"
+          ],
+          "source_tier": "B"
+        }
+      ],
+      "confidence": "medium",
+      "efficiency_tiebreak_required": false,
+      "preferred": "codex",
+      "rationale": "precedence-weighted tally codex=4, claude=2, equivalent=1"
+    },
+    {
+      "basis_groups": [
+        "anthropic-launch-2026-09-01",
+        "openai-launch-relay-2026-09-10"
+      ],
+      "by_codex_model": [
+        {
+          "cells": [
+            {
+              "best": {
+                "claude": {
+                  "id": "automationbench-openai-fable-5-1",
+                  "model": "Fable 5.1",
+                  "score": 31.4
+                },
+                "codex": {
+                  "id": "automationbench-openai-astra",
+                  "model": "Astra",
+                  "score": 41.4
+                }
+              },
+              "cell": "openai-launch-relay-2026-09-10 | AutomationBench",
+              "direction": "codex",
+              "reason": "gap -10 exceeds the 3.495 band"
+            }
+          ],
+          "codex_model": "Astra",
+          "confidence": "low",
+          "preferred": "codex",
+          "tally": {
+            "codex": 1
+          }
+        },
+        {
+          "cells": [
+            {
+              "best": {
+                "claude": {
+                  "id": "automationbench-fable-5-1",
+                  "model": "Fable 5.1",
+                  "score": 31.4
+                },
+                "codex": {
+                  "id": "automationbench-sol",
+                  "model": "GPT-5.6 Sol",
+                  "score": 19.6
+                }
+              },
+              "cell": "anthropic-launch-2026-09-01 | AutomationBench",
+              "direction": "claude",
+              "reason": "gap 11.8 exceeds the 1.77 band"
+            },
+            {
+              "best": {
+                "claude": {
+                  "id": "automationbench-openai-fable-5-1",
+                  "model": "Fable 5.1",
+                  "score": 31.4
+                },
+                "codex": {
+                  "id": "automationbench-openai-sol",
+                  "model": "GPT-5.6 Sol",
+                  "score": 18.1
+                }
+              },
+              "cell": "openai-launch-relay-2026-09-10 | AutomationBench",
+              "direction": "claude",
+              "reason": "gap 13.3 exceeds the 3.495 band"
+            }
+          ],
+          "codex_model": "GPT-5.6 Sol",
+          "confidence": "medium",
+          "preferred": "claude",
+          "tally": {
+            "claude": 3
+          }
+        }
+      ],
+      "capability": "workflow-automation",
+      "comparisons": [
+        {
+          "band": 1.77,
+          "band_basis": "spread_rule_0.15",
+          "benchmark": "AutomationBench",
+          "benchmark_version": null,
+          "best": {
+            "claude": {
+              "id": "automationbench-fable-5-1",
+              "model": "Fable 5.1",
+              "score": 31.4
+            },
+            "codex": {
+              "id": "automationbench-sol",
+              "model": "GPT-5.6 Sol",
+              "score": 19.6
+            }
+          },
+          "cell": "anthropic-launch-2026-09-01 | AutomationBench",
+          "direction": "claude",
+          "evidence_class": "vendor_relative",
+          "gap_claude_minus_codex": 11.8,
+          "group": "anthropic-launch-2026-09-01",
+          "observed_spread": 11.8,
+          "reason": "gap 11.8 exceeds the 1.77 band",
+          "rows": [
+            "automationbench-fable-5-1",
+            "automationbench-opus-5",
+            "automationbench-sol"
+          ],
+          "source_tier": "A"
+        },
+        {
+          "band": 3.495,
+          "band_basis": "spread_rule_0.15",
+          "benchmark": "AutomationBench",
+          "benchmark_version": null,
+          "best": {
+            "claude": {
+              "id": "automationbench-openai-fable-5-1",
+              "model": "Fable 5.1",
+              "score": 31.4
+            },
+            "codex": {
+              "id": "automationbench-openai-astra",
+              "model": "Astra",
+              "score": 41.4
+            }
+          },
+          "cell": "openai-launch-relay-2026-09-10 | AutomationBench",
+          "direction": "codex",
+          "evidence_class": "vendor_relative",
+          "gap_claude_minus_codex": -10.0,
+          "group": "openai-launch-relay-2026-09-10",
+          "observed_spread": 23.3,
+          "reason": "gap -10 exceeds the 3.495 band",
+          "rows": [
+            "automationbench-openai-astra",
+            "automationbench-openai-fable-5-1",
+            "automationbench-openai-opus-5",
+            "automationbench-openai-sol"
+          ],
+          "source_tier": "C"
+        }
+      ],
+      "confidence": "low",
+      "efficiency_tiebreak_required": false,
+      "preferred": "claude",
+      "rationale": "precedence-weighted tally claude=2, codex=1"
+    }
+  ],
+  "effort_curves": [
+    {
+      "band": 0.3,
+      "band_basis": "spread_rule_0.15",
+      "dominated_rungs": [
+        {
+          "band": 0.3,
+          "cost_delta_usd": 0.95,
+          "dominated_by": "xhigh",
+          "ids": [
+            "aa-index-v4-3-astra-max",
+            "aa-index-v4-3-astra-xhigh"
+          ],
+          "rung": "max",
+          "score_gain": 0
+        }
+      ],
+      "group": "aa-index-v4.3-2026-09-10",
+      "model": "Astra",
+      "points": [
+        {
+          "cost_per_task_usd": 1.72,
+          "effort": "high",
+          "id": "aa-index-v4-3-astra-high",
+          "score": 51
+        },
+        {
+          "cost_per_task_usd": 2.31,
+          "effort": "xhigh",
+          "id": "aa-index-v4-3-astra-xhigh",
+          "score": 53
+        },
+        {
+          "cost_per_task_usd": 3.26,
+          "effort": "max",
+          "id": "aa-index-v4-3-astra-max",
+          "score": 53
+        }
+      ]
+    },
+    {
+      "band": 0.3,
+      "band_basis": "spread_rule_0.15",
+      "dominated_rungs": [
+        {
+          "band": 0.3,
+          "cost_delta_usd": 1.65,
+          "dominated_by": "xhigh",
+          "ids": [
+            "aa-index-v4-3-fable-5-1-max",
+            "aa-index-v4-3-fable-5-1-xhigh"
+          ],
+          "rung": "max",
+          "score_gain": 0
+        }
+      ],
+      "group": "aa-index-v4.3-2026-09-10",
+      "model": "Fable 5.1",
+      "points": [
+        {
+          "cost_per_task_usd": 3.91,
+          "effort": "high",
+          "id": "aa-index-v4-3-fable-5-1-high",
+          "score": 51
+        },
+        {
+          "cost_per_task_usd": 5.98,
+          "effort": "xhigh",
+          "id": "aa-index-v4-3-fable-5-1-xhigh",
+          "score": 53
+        },
+        {
+          "cost_per_task_usd": 7.63,
+          "effort": "max",
+          "id": "aa-index-v4-3-fable-5-1-max",
+          "score": 53
+        }
+      ]
+    },
+    {
+      "band": 9.0,
+      "band_basis": "published_se_x2",
+      "dominated_rungs": [],
+      "group": "anthropic-launch-2026-09-01",
+      "model": "Fable 5.1",
+      "points": [
+        {
+          "cost_per_task_usd": null,
+          "effort": "high",
+          "id": "tbsci-0-1-fable-5-1-high",
+          "score": 52.6
+        },
+        {
+          "cost_per_task_usd": null,
+          "effort": "max",
+          "id": "cursorbench-3-2-0-fable-5-1-max",
+          "score": 73.4
+        }
+      ]
+    },
+    {
+      "band": 0.75,
+      "band_basis": "spread_rule_0.15",
+      "dominated_rungs": [],
+      "group": "aa-index-v4.3-2026-09-10",
+      "model": "GPT-5.6 Sol",
+      "points": [
+        {
+          "cost_per_task_usd": 0.81,
+          "effort": "high",
+          "id": "aa-index-v4-3-sol-high",
+          "score": 42
+        },
+        {
+          "cost_per_task_usd": 1.99,
+          "effort": "max",
+          "id": "aa-index-v4-3-sol-max",
+          "score": 47
+        }
+      ]
+    },
+    {
+      "band": 0.45,
+      "band_basis": "spread_rule_0.15",
+      "dominated_rungs": [],
+      "group": "aa-index-v4.3-2026-09-10",
+      "model": "Opus 5",
+      "points": [
+        {
+          "cost_per_task_usd": 3.61,
+          "effort": "high",
+          "id": "aa-index-v4-3-opus-5-high",
+          "score": 48
+        },
+        {
+          "cost_per_task_usd": 4.88,
+          "effort": "xhigh",
+          "id": "aa-index-v4-3-opus-5-xhigh",
+          "score": 50
+        },
+        {
+          "cost_per_task_usd": 5.86,
+          "effort": "max",
+          "id": "aa-index-v4-3-opus-5-max",
+          "score": 51
+        }
+      ]
+    }
+  ],
+  "evidence_filter": "full",
+  "generator": "scripts/compile_benchmark_frontiers.py",
+  "generator_version": "1.0",
+  "how_to_read": "GENERATED FILE -- do not hand-edit; run the compiler. 'preferred' is which ecosystem the declared evidence favours for that capability, or UNRESOLVED when the declared metadata does not settle it. UNRESOLVED and 'equivalent' both mean the router must fall through to the efficiency tie-break; they are not failures. Nothing here is read at runtime -- SKILL.md carries the compact rules and this file is how those rules are audited.",
+  "input_compiled": "2026-09-10",
+  "input_file": "skill/benchmarks.json",
+  "input_sha256": "b2435b6a05151a5e07ad56d3d261ae067239de8d49d132306021c5911050df8c",
+  "rule_provenance": [
+    {
+      "all_vendor_run": false,
+      "any_vendor_run": false,
+      "capability": "aggregate",
+      "comparability_groups": [
+        "aa-index-v4.3-2026-09-10"
+      ],
+      "comparison_type": "efficiency_dominance",
+      "confidence": "high",
+      "evidence_classes": [
+        "aggregate"
+      ],
+      "evidence_ids": [
+        "aa-index-v4-3-opus-5-high",
+        "aa-index-v4-3-opus-5-xhigh",
+        "aa-index-v4-3-sonnet-5-max"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "E1",
+      "source_tiers": [
+        "B"
+      ],
+      "summary": "Sonnet 5 . max is dominated by Opus 5 . xhigh; escalation is a model change"
+    },
+    {
+      "all_vendor_run": false,
+      "any_vendor_run": false,
+      "capability": "aggregate",
+      "comparability_groups": [
+        "aa-index-v4.3-2026-09-10"
+      ],
+      "comparison_type": "efficiency_dominance",
+      "confidence": "high",
+      "evidence_classes": [
+        "aggregate"
+      ],
+      "evidence_ids": [
+        "aa-index-v4-3-sol-high",
+        "aa-index-v4-3-terra-max"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "E2",
+      "source_tiers": [
+        "B"
+      ],
+      "summary": "Terra . max is dominated by Sol . high, and max is unavailable on Terra"
+    },
+    {
+      "all_vendor_run": false,
+      "any_vendor_run": false,
+      "capability": "aggregate",
+      "comparability_groups": [
+        "aa-index-v4.3-2026-09-10"
+      ],
+      "comparison_type": "effort_curve",
+      "confidence": "high",
+      "evidence_classes": [
+        "aggregate"
+      ],
+      "evidence_ids": [
+        "aa-index-v4-3-astra-max",
+        "aa-index-v4-3-astra-xhigh",
+        "aa-index-v4-3-fable-5-1-max",
+        "aa-index-v4-3-fable-5-1-xhigh",
+        "aa-index-v4-3-opus-5-max",
+        "aa-index-v4-3-opus-5-xhigh"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "E3",
+      "source_tiers": [
+        "B"
+      ],
+      "summary": "max buys at most one index point over xhigh; require an indivisible novel-design decision"
+    },
+    {
+      "all_vendor_run": false,
+      "any_vendor_run": true,
+      "capability": "agentic-code",
+      "comparability_groups": [
+        "aa-coding-agent-index-2026-09-10",
+        "aa-tb4.0-2026-09-10",
+        "anthropic-launch-2026-09-01"
+      ],
+      "comparison_type": "model_intrinsic+ecosystem_end_to_end",
+      "confidence": "medium",
+      "evidence_classes": [
+        "ecosystem_end_to_end",
+        "model_intrinsic",
+        "vendor_relative"
+      ],
+      "evidence_ids": [
+        "aa-cai-astra-codex",
+        "aa-cai-fable51-claudecode",
+        "aa-cai-opus5",
+        "aa-cai-sol",
+        "tb-4-0-aa-astra",
+        "tb-4-0-aa-fable-5-1",
+        "tb-4-0-aa-sol",
+        "tb-4-0-fable-5-1",
+        "tb-4-0-sol"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "BADGE-agentic-code",
+      "source_tiers": [
+        "A",
+        "B"
+      ],
+      "summary": "agentic-code / terminal-tool badge, model-conditional"
+    },
+    {
+      "all_vendor_run": false,
+      "any_vendor_run": false,
+      "capability": "terminal-tool",
+      "comparability_groups": [
+        "aa-tb4.0-2026-09-10",
+        "tbench-owner-2.1-e2e-2026-09-10"
+      ],
+      "comparison_type": "model_intrinsic+ecosystem_end_to_end",
+      "confidence": "medium",
+      "evidence_classes": [
+        "ecosystem_end_to_end",
+        "model_intrinsic"
+      ],
+      "evidence_ids": [
+        "tb-2-1-e2e-claudecode-opus5",
+        "tb-2-1-e2e-codexcli-sol",
+        "tb-4-0-aa-astra",
+        "tb-4-0-aa-fable-5-1",
+        "tb-4-0-aa-sol"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "BADGE-terminal-tool",
+      "source_tiers": [
+        "B"
+      ],
+      "summary": "same as agentic-code"
+    },
+    {
+      "all_vendor_run": true,
+      "any_vendor_run": true,
+      "capability": "science",
+      "comparability_groups": [
+        "anthropic-launch-2026-09-01",
+        "openai-launch-relay-2026-09-10"
+      ],
+      "comparison_type": "vendor_relative",
+      "confidence": "low",
+      "evidence_classes": [
+        "vendor_relative"
+      ],
+      "evidence_ids": [
+        "tbsci-0-1-fable-5-1-high",
+        "tbsci-0-1-opus-5",
+        "tbsci-0-1-sol",
+        "tbsci-openai-astra",
+        "tbsci-openai-fable-5-1"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "BADGE-science",
+      "source_tiers": [
+        "A",
+        "C"
+      ],
+      "summary": "science badge -> Claude against Sol; gate usually decides anyway"
+    },
+    {
+      "all_vendor_run": true,
+      "any_vendor_run": true,
+      "capability": "knowledge-work",
+      "comparability_groups": [
+        "anthropic-launch-2026-09-01"
+      ],
+      "comparison_type": "vendor_relative",
+      "confidence": "low",
+      "evidence_classes": [
+        "vendor_relative"
+      ],
+      "evidence_ids": [
+        "gdpval-v2-fable-5-1",
+        "gdpval-v2-opus-5",
+        "gdpval-v2-sol"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "BADGE-knowledge-work",
+      "source_tiers": [
+        "A"
+      ],
+      "summary": "knowledge-work badge -> Claude"
+    },
+    {
+      "all_vendor_run": true,
+      "any_vendor_run": true,
+      "capability": "workflow-automation",
+      "comparability_groups": [
+        "anthropic-launch-2026-09-01",
+        "openai-launch-relay-2026-09-10"
+      ],
+      "comparison_type": "vendor_relative",
+      "confidence": "low",
+      "evidence_classes": [
+        "vendor_relative"
+      ],
+      "evidence_ids": [
+        "automationbench-fable-5-1",
+        "automationbench-openai-astra",
+        "automationbench-openai-sol",
+        "automationbench-opus-5",
+        "automationbench-sol"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "BADGE-workflow-automation",
+      "source_tiers": [
+        "A",
+        "C"
+      ],
+      "summary": "workflow-automation badge, model-conditional"
+    },
+    {
+      "all_vendor_run": true,
+      "any_vendor_run": true,
+      "capability": "computer-use",
+      "comparability_groups": [
+        "anthropic-launch-2026-09-01",
+        "openai-launch-relay-2026-09-10"
+      ],
+      "comparison_type": "vendor_relative",
+      "confidence": "low",
+      "evidence_classes": [
+        "vendor_relative"
+      ],
+      "evidence_ids": [
+        "osworld-2-0-offline-partial-astra",
+        "osworld-2-0-offline-partial-opus-5",
+        "osworld-2-0-offline-partial-sol",
+        "osworld-2-0-partial-fable-5-1",
+        "osworld-2-0-partial-opus-5"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "BADGE-computer-use",
+      "source_tiers": [
+        "A",
+        "C"
+      ],
+      "summary": "computer-use badge -> Codex, low confidence"
+    },
+    {
+      "all_vendor_run": false,
+      "any_vendor_run": false,
+      "capability": "latency-volume",
+      "comparability_groups": [
+        "aa-index-v4.3-2026-09-10"
+      ],
+      "comparison_type": "efficiency_dominance",
+      "confidence": "high",
+      "evidence_classes": [
+        "aggregate"
+      ],
+      "evidence_ids": [
+        "aa-index-v4-3-haiku-4-5-n",
+        "aa-index-v4-3-luna-max"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "BADGE-latency-volume",
+      "source_tiers": [
+        "B"
+      ],
+      "summary": "latency-volume badge -> Codex"
+    },
+    {
+      "all_vendor_run": false,
+      "any_vendor_run": false,
+      "capability": "parallel-independent",
+      "comparability_groups": [],
+      "comparison_type": "product_mechanism",
+      "confidence": "low",
+      "evidence_classes": [],
+      "evidence_ids": [],
+      "last_verified": "2026-09-10",
+      "rule_id": "BADGE-parallel-independent",
+      "source_tiers": [],
+      "summary": "parallel-independent badge -> Codex (mechanism)"
+    },
+    {
+      "all_vendor_run": true,
+      "any_vendor_run": true,
+      "capability": "long-context",
+      "comparability_groups": [
+        "openai-launch-relay-2026-09-10"
+      ],
+      "comparison_type": "spec_and_price",
+      "confidence": "medium",
+      "evidence_classes": [
+        "vendor_relative"
+      ],
+      "evidence_ids": [
+        "mrcr-v2-8needle-astra",
+        "mrcr-v2-8needle-sol"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "BADGE-long-context",
+      "source_tiers": [
+        "C"
+      ],
+      "summary": "long-context badge -> Claude on window economics"
+    },
+    {
+      "all_vendor_run": true,
+      "any_vendor_run": true,
+      "capability": "deep-reasoning",
+      "comparability_groups": [
+        "openai-launch-relay-2026-09-10"
+      ],
+      "comparison_type": "vendor_relative",
+      "confidence": "low",
+      "evidence_classes": [
+        "vendor_relative"
+      ],
+      "evidence_ids": [
+        "arc-agi-3-openai-astra",
+        "arc-agi-3-openai-opus-5",
+        "frontiermath-t4-v2-astra",
+        "frontiermath-t4-v2-fable-5-1",
+        "frontiermath-t4-v2-opus-5",
+        "hle-tools-openai-astra",
+        "hle-tools-openai-fable-5-1",
+        "hle-tools-openai-opus-5"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "BADGE-deep-reasoning",
+      "source_tiers": [
+        "C"
+      ],
+      "summary": "deep-reasoning badge -> Claude, low confidence"
+    },
+    {
+      "all_vendor_run": true,
+      "any_vendor_run": true,
+      "capability": "computer-use",
+      "comparability_groups": [
+        "openai-launch-relay-2026-09-10"
+      ],
+      "comparison_type": "vendor_relative",
+      "confidence": "medium",
+      "evidence_classes": [
+        "vendor_relative"
+      ],
+      "evidence_ids": [
+        "agents-last-exam-astra",
+        "agents-last-exam-sol",
+        "osworld-2-0-offline-partial-astra",
+        "osworld-2-0-offline-partial-sol",
+        "screenspot-pro-astra",
+        "screenspot-pro-sol"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "GATE-codex-computer-use",
+      "source_tiers": [
+        "C"
+      ],
+      "summary": "GUI-driving task -> Astra on the Codex arm"
+    },
+    {
+      "all_vendor_run": false,
+      "any_vendor_run": false,
+      "capability": "agentic-code",
+      "comparability_groups": [
+        "aa-tb4.0-2026-09-10",
+        "carried-iteration-15"
+      ],
+      "comparison_type": "model_intrinsic",
+      "confidence": "medium",
+      "evidence_classes": [
+        "model_intrinsic",
+        "unclassified"
+      ],
+      "evidence_ids": [
+        "deepswe-v1-1-astra",
+        "deepswe-v1-1-opus-5",
+        "tb-4-0-aa-astra",
+        "tb-4-0-aa-fable-5-1",
+        "tb-4-0-aa-sol"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "NOTCH-codex-agentic-coding",
+      "source_tiers": [
+        "B",
+        "C"
+      ],
+      "summary": "+1 Codex effort notch on Terra/Sol, never Astra"
+    },
+    {
+      "all_vendor_run": false,
+      "any_vendor_run": false,
+      "capability": "agentic-code",
+      "comparability_groups": [
+        "not-usable"
+      ],
+      "comparison_type": "excluded",
+      "confidence": "high",
+      "evidence_classes": [
+        "unclassified"
+      ],
+      "evidence_ids": [
+        "swebench-verified-saturation"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "EXCLUDE-swebench",
+      "source_tiers": [
+        "C"
+      ],
+      "summary": "SWE-bench influences no routing rule"
+    },
+    {
+      "all_vendor_run": false,
+      "any_vendor_run": false,
+      "capability": "aggregate",
+      "comparability_groups": [
+        "livebench-2026-06-25-snapshot-2026-09-10"
+      ],
+      "comparison_type": "excluded",
+      "confidence": "high",
+      "evidence_classes": [
+        "aggregate"
+      ],
+      "evidence_ids": [
+        "livebench-2026-06-25-fable-5-1",
+        "livebench-2026-06-25-opus-5",
+        "livebench-2026-06-25-sol",
+        "livebench-2026-06-25-sonnet-5"
+      ],
+      "last_verified": "2026-09-10",
+      "rule_id": "EXCLUDE-livebench",
+      "source_tiers": [
+        "C"
+      ],
+      "summary": "LiveBench influences no routing rule"
+    }
+  ]
+}

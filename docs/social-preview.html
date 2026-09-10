@@ -42,24 +42,36 @@
   }
   .tag b { color: #e6edf3; font-weight: 600; }
   .card {
-    margin-top: 44px;
+    margin-top: 26px;
     background: #010409;
     border: 1px solid #30363d;
     border-radius: 14px;
-    padding: 26px 30px;
-    max-width: 900px;
+    padding: 22px 28px;
+    max-width: 930px;
     box-shadow: 0 24px 60px -20px rgba(0,0,0,0.7);
   }
-  .card .prompt { color: #7d8590; font-size: 22px; margin-bottom: 16px; }
+  .card .prompt { color: #7d8590; font-size: 21px; margin-bottom: 14px; }
   .card .prompt .cmd { color: #58a6ff; }
-  .row { font-size: 27px; line-height: 1.62; white-space: pre; }
+  .row { font-size: 24px; line-height: 1.52; white-space: pre; }
   .lbl { color: #7d8590; }
+  .badge { color: #3fb950; font-weight: 600; }
+  .ev {
+    margin-top: 11px;
+    padding-top: 11px;
+    border-top: 1px solid #21262d;
+    font-size: 17px;
+    line-height: 1.4;
+    color: #8b949e;
+    white-space: normal;
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  }
+  .ev .k { color: #7d8590; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
   .claude { color: #d2a8ff; }
   .codex  { color: #7ee787; }
   .dim { color: #6e7681; }
   .foot {
     position: absolute;
-    bottom: 46px;
+    bottom: 30px;
     left: 84px;
     right: 84px;
     display: flex;
@@ -75,19 +87,21 @@
   <div class="kicker">Claude Code · claude.ai · Codex CLI skill</div>
   <h1>model<span class="slash">-</span>effort<span class="slash">-</span>router</h1>
   <div class="tag">
-    Paste a task &rarr; get the <b>cheapest model + effort that clears the bar</b>,
-    for Claude <b>and</b> Codex/ChatGPT, in two lines. It routes, it doesn't run.
+    Paste a task &rarr; get the <b>lowest-quota model + effort that still clears the
+    bar</b>, for Claude <b>and</b> Codex/ChatGPT &mdash; and which of the two actually
+    fits the task. It routes, it doesn't run.
   </div>
 
   <div class="card">
     <div class="prompt"><span class="cmd">/model-secici</span>  move the repo's auth flow to OAuth2</div>
-    <div class="row"><span class="lbl">Claude:</span> <span class="claude">Sonnet 5</span> <span class="dim">·</span> effort: high</div>
-    <div class="row"><span class="lbl">Codex:</span>  <span class="codex">Terra</span> <span class="dim">·</span> effort: low</div>
+    <div class="row"><span class="lbl">Claude:</span> <span class="badge">&#10003; RECOMMENDED AI</span> <span class="dim">·</span> <span class="claude">Sonnet 5</span> <span class="dim">·</span> effort: high</div>
+    <div class="row"><span class="lbl">Codex:</span>  <span class="codex">Terra</span> <span class="dim">·</span> effort: xhigh</div>
+    <div class="ev"><span class="k">Evidence:</span> Agentic multi-file coding is Claude's widest published margin against Sol (Terminal-Bench 4.0: Opus 5 52.3 vs 40); Codex takes a +1 notch to compensate.</div>
   </div>
 
   <div class="foot">
     <span>Protects your rate-limit windows &mdash; not your wallet.</span>
-    <span class="r">MIT · sourced from the docs · 17/17 regression evals</span>
+    <span class="r">MIT · sourced from the docs · 32/32 regression evals</span>
   </div>
 </body>
 </html>

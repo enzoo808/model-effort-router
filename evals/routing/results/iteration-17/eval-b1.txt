@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Codex: Terra · effort: xhigh
+Evidence: A 40-file API migration with the test suite as the bar is the agentic-code profile, Claude's widest published margin (Terminal-Bench 4.0: Opus 5 52.3 vs Sol 37.3); Codex takes the +1 agentic notch to compensate.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

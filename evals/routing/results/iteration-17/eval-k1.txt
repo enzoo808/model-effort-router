@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: medium
+Codex: Terra · effort: medium
+Evidence: Adding one flag to one command is D=1 standard-pattern work, so efficiency decides (Sonnet 5 $2/$10 vs Terra $2/$12); no +1 notch for a single local addition.
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

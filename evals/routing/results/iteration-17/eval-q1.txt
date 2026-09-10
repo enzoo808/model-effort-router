@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Opus 5 · effort: xhigh
+Codex: Sol · effort: xhigh
+Evidence: "Must not be under-resourced" is an escalation request, so each arm moves one model tier up at the rung D already gave (Rule E1: Opus 5 xhigh 50 @ $4.88 beats Sonnet 5 max 38 @ $5.09), and the adversarial-correctness edge goes to Claude on the against-interest tooled HLE row — low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
+Do not apply without human review.
