@@ -1,0 +1,302 @@
+{
+  "schema_version": "1.1",
+  "policy_version": "iteration-18",
+  "compiled": "2026-09-11",
+  "purpose": "Machine-readable mirror of the decision rules in skill/SKILL.md, used by scripts/check_routing_reachability.py to audit which model x effort x mode combinations the rules can and cannot produce, and by scripts/check_policy_sync.py to prove this mirror and the shipped SKILL.md still describe the SAME rules. Nothing reads this at runtime; skill/SKILL.md remains the single source of truth for routing.",
+  "drift_guard": "Every entry under `rules` carries `skill_md_assertion` (substrings that MUST appear in skill/SKILL.md) and, where a rule replaced an older one, `skill_md_must_not_appear` (the superseded wording). `scripts/check_policy_sync.py` fails if the marker version, the assertions or the negative assertions disagree with skill/SKILL.md. Change a rule here without changing SKILL.md and it fails; change SKILL.md's rule text without updating this file and it fails too. This exists because the audit once spent a whole pass validating iteration-18 while the shipped skill still implemented iteration-17.",
+  "not_shipped": "Deliberately lives under evals/, not skill/. build-claude-ai-zip.ps1 ships only SKILL.md, reference.md, benchmarks.json and benchmark_frontiers.json, so this file adds nothing to the runtime package.",
+  "support_matrix": {
+    "note": "What the PRODUCT supports, verified against the sources recorded in reference.md 3 (Claude effort support), 9.3 (Codex effort mechanics) and 9.8 (Astra). 'unsupported' here is a capability limit, never a routing preference -- the router may not emit an unsupported cell even if a rule asked for it.",
+    "claude": {
+      "Haiku 4.5": {
+        "efforts": [],
+        "modes": [],
+        "note": "no effort parameter at all; ultracode needs xhigh support, which Haiku has not"
+      },
+      "Sonnet 5": {
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "modes": [
+          "ultracode"
+        ],
+        "note": "also the execute half of opusplan"
+      },
+      "Opus 5": {
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "modes": [
+          "ultracode",
+          "opusplan"
+        ]
+      },
+      "Opus 4.8": {
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "modes": [
+          "ultracode"
+        ]
+      },
+      "Fable 5.1": {
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "modes": [
+          "ultracode"
+        ]
+      },
+      "Mythos 5.1": {
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "modes": [
+          "ultracode"
+        ],
+        "note": "Project Glasswing invite only"
+      }
+    },
+    "codex": {
+      "Luna": {
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh"
+        ],
+        "modes": [],
+        "note": "max and Ultra are Astra/Sol only (learn.chatgpt.com, 10 Sep 2026)"
+      },
+      "Terra": {
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh"
+        ],
+        "modes": [],
+        "note": "max unsupported -- capability limit, not preference; one conflicting AA row, see reference.md 12.3"
+      },
+      "Sol": {
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "modes": [
+          "ultra"
+        ]
+      },
+      "Astra": {
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "modes": [
+          "ultra"
+        ],
+        "note": "Ultra on Astra confirmed 10 Sep 2026; effort 'none' rejected at the API"
+      }
+    },
+    "cross_arm": {
+      "ultracode": "Claude Code setting. Never on the Codex arm.",
+      "ultra": "Codex product mode. Never on the Claude arm.",
+      "opusplan": "Claude Code only."
+    }
+  },
+  "derived_signals": {
+    "note": "Not new 0-3 axes. Each is a named diagnostic that R/D/W/C provably does not measure, and each maps to exactly one product mechanism. Added in the reachability calibration pass (iteration-18).",
+    "O": {
+      "name": "orchestration load",
+      "question": "How many DIFFERENT KINDS of step must the SESSION sequence and re-enter -- discover/research, implement, author tests, run tests/build/lint, repair what they caught, sync docs or package?",
+      "high_when": "three or more distinct kinds of step, including a verification step whose failures feed back into implementation",
+      "not": [
+        "repeating ONE kind of step across many units -- that is W",
+        "the stages of the ARTEFACT being built. A four-stage data pipeline authored in one go is implement x4 plus verify: two kinds, not four. O is about the session's steps, never the deliverable's.",
+        "an investigation loop. Measure, hypothesise, re-measure is one kind of step iterated; a root-cause hunt is deep work, not orchestration, and routes to xhigh."
+      ],
+      "drives": [
+        "ultracode"
+      ],
+      "arm": "claude"
+    },
+    "P": {
+      "name": "parallelisable strands",
+      "question": "Does the work split into 3+ strands that proceed without waiting on each other and merge at the end?",
+      "high_when": "3+ strands, which may be targets (services, repos, vendors) OR work-kinds (two investigation branches is NOT enough -- three or more: compare alternative approaches side by side, prototype competing designs, run independent investigations)",
+      "not": "one coherent decision sliced up after the fact. Splitting a monolith is ONE boundary decision, not four strands.",
+      "mutually_exclusive_with": "indivisible_single_chain. A task that splits into 3+ independent strands is not one indivisible decision, so `ultra` and `max` can never co-occur. The corpus lint enforces this rather than trusting the labeller.",
+      "drives": [
+        "ultra"
+      ],
+      "arm": "codex"
+    },
+    "A": {
+      "name": "autonomy horizon",
+      "question": "Does the task run autonomously for a long stretch with many tool loops before a human sees it?",
+      "high_when": "hours of unattended agentic execution, or the user states an earlier flagship-tier run already fell short",
+      "drives": [
+        "frontier-escalation"
+      ],
+      "arm": "both"
+    }
+  },
+  "effort_from_D": {
+    "0": "low",
+    "1": "medium",
+    "2": "high",
+    "3": "xhigh"
+  },
+  "effort_rungs": [
+    "low",
+    "medium",
+    "high",
+    "xhigh",
+    "max"
+  ],
+  "flagship_models": [
+    "Opus 5",
+    "Opus 4.8",
+    "Fable 5.1",
+    "Mythos 5.1",
+    "Sol",
+    "Astra"
+  ],
+  "flagship_capabilities": [
+    "agentic-code",
+    "terminal-tool",
+    "deep-reasoning",
+    "science",
+    "computer-use",
+    "workflow-automation"
+  ],
+  "escalation_ladders": {
+    "note": "A model change, never an effort change (Step 7 Rule 2). Each rung has its own trigger; the ladder is not climbed by difficulty alone.",
+    "claude": [
+      "Sonnet 5",
+      "Opus 5",
+      "Fable 5.1"
+    ],
+    "codex": [
+      "Terra",
+      "Sol",
+      "Astra"
+    ],
+    "rung_2_trigger": "user states the work is critical / must not be under-resourced / an earlier run fell short",
+    "rung_3_trigger": "A=high AND the dominant capability is on the flagship list AND the user states a flagship-tier run at xhigh or max already fell short, or the session is an hours-long unattended agentic run"
+  },
+  "rules": {
+    "ultracode": {
+      "version": "iteration-18",
+      "expr": "duration_gt_30min AND (O == high OR (W == 3 AND D >= 2)) AND NOT indivisible_single_chain",
+      "previous": "W == 3 AND duration_gt_30min AND NOT (D == 3 AND R == 3)",
+      "why_changed": "W measures surface; ultracode buys workflow orchestration. Three separate defects in the old rule: (1) false negative on mid-width multi-phase work -- a 25-file implement/test/build/repair session got no orchestration because it was not 100 files wide; (2) false positive on mechanical width -- 150 files of one rename fired it at D=1, which is pure quota waste, so the width disjunct now carries a depth qualifier; (3) a dead zone at D=3 AND R=3 where ultracode was refused for depth while Rule E3 independently refused max, leaving irreversible 300-service migrations on a bare xhigh. The guard is now the same indivisible-single-chain test E3 uses, so the two rules can no longer refuse a task for contradictory reasons.",
+      "skill_md_assertion": [
+        "`W = 3` ∧ `D ≥ 2`",
+        "estimated duration > 30 min",
+        "**not one indivisible chain**",
+        "One kind repeated across many units is `W`, not orchestration"
+      ],
+      "skill_md_must_not_appear": [
+        "¬(D=3 ∧ R=3)"
+      ]
+    },
+    "ultra": {
+      "version": "iteration-18",
+      "expr": "P == high AND D == 3",
+      "previous": "three_or_more_independent_targets AND D == 3",
+      "why_changed": "Parallelism is not target count. Strands of work inside one job count too -- three candidate designs investigated or prototyped side by side is the same primitive as three independent services. The D==3 floor is kept on purpose: Ultra runs ~4 agents, so it costs ~4x, and at D<=2 the mid tier already clears the bar.",
+      "skill_md_assertion": [
+        "3+ genuinely parallel strands",
+        "**Two** strands is not enough"
+      ],
+      "skill_md_must_not_appear": [
+        "3+ already-independent targets scanned side by side"
+      ]
+    },
+    "codex_notch": {
+      "version": "iteration-18",
+      "expr": "agentic_multistep_write AND model in [Terra, Sol] -> +1 rung, capped at xhigh, and NEVER downward",
+      "previous": "agentic_multistep_write AND model in [Terra, Sol] -> +1 rung, capped at max on Sol / xhigh on Terra",
+      "why_changed": "The notch compensates for a MODEL-tier gap. Letting it reach the last rung contradicts Step 7 Rule 2 (escalation is a model change, not an effort change) and Rule E3. The 'never downward' half is a bug fix found by this audit: a cap applied to a rung that Rule E3 had already raised to max was silently pulling it back to xhigh, which broke the indivisible-novel-design case the top rung exists for.",
+      "skill_md_assertion": [
+        "**caps at `xhigh` on both**",
+        "never lowers a rung"
+      ],
+      "skill_md_must_not_appear": [
+        "`low→medium · medium→high · high→xhigh · xhigh→max`"
+      ]
+    },
+    "max": {
+      "expr": "D == 3 AND R == 3 AND model in flagship_models AND indivisible_single_chain",
+      "unchanged": true,
+      "skill_md_assertion": [
+        "**only** on a flagship (Opus 5 / Opus 4.8 / Fable 5.1 / Sol / Astra)"
+      ]
+    },
+    "E4": {
+      "version": "iteration-18",
+      "expr": "dominant capability in [agentic-code, terminal-tool] AND the rules would emit Sol max -> emit Astra xhigh instead",
+      "why": "AA Intelligence Index v4.3: Astra xhigh 53 @ $2.31 vs Sol max 47 @ $1.99. AA Terminal-Bench 4.0 (independent harness): Astra 59 vs Sol 40. Astra is ~70% more token-efficient, and output tokens outrank cost/task in the 5c ordering. Capability-scoped on purpose: HLE puts Astra BEHIND on deep-reasoning and GDPval shows a regression on knowledge-work, so E4 must not fire there.",
+      "why_not_wider": "Widening E4 below max would mean comparing Astra xhigh against Sol xhigh, and AA publishes Sol only at high and max. Estimating the missing rung is exactly the interpolation Step 5a forbids, so the rule stops where the published rungs stop. That, not a frequency target, is what keeps Astra rare.",
+      "skill_md_assertion": [
+        "**Rule E4 — on `agentic-code` / `terminal-tool`",
+        "E4\n  > must not fire there"
+      ]
+    },
+    "frontier_escalation": {
+      "version": "iteration-18",
+      "expr": "A == high AND prior_run_fell_short AND capability in flagship_capabilities -> Opus 5 becomes Fable 5.1, Sol becomes Astra",
+      "previous": "no explicit rung; Fable 5.1 was reachable only through the biology and 1000+ file gates",
+      "why_changed": "Anthropic publishes the trigger verbatim ('if your evals at xhigh or max effort still fall short on demanding reasoning or long-horizon agentic work, move to Claude Fable 5.1'), and the old skill text called it 'consistent, no extra rule needed' -- which meant a user who SAID the flagship had already failed got the flagship again. Deliberately narrow: on the aggregate index Fable 5.1 is inside the equivalence band against Opus 5 at ~1.5x cost per task, so difficulty alone must never reach it.",
+      "skill_md_assertion": [
+        "**Third rung — frontier.** Opus 5 → **Fable 5.1**, Sol → **Astra**",
+        "Difficulty alone never reaches it"
+      ],
+      "skill_md_must_not_appear": [
+        "consistent, no extra rule needed"
+      ]
+    },
+    "uncertainty": {
+      "version": "iteration-18",
+      "expr": "direction requires published CI, published SE, repeated-trial dispersion, or a benchmark-owner practical-significance threshold; otherwise UNRESOLVED",
+      "previous": "a gap counted if it was large relative to the benchmark's own observed spread across the roster (compiled as 0.15 x spread)",
+      "why_changed": "Observed spread is how far apart the models happen to sit, not how precisely either score was measured. On a two-row cell the spread IS the gap, so every comparison would 'win'. Removing it leaves `science` as the only capability with a certified direction -- which is the honest state of the published record, and is why the badge table's thin rows carry `low-confidence`.",
+      "skill_md_assertion": [
+        "**Score spread is not uncertainty.**",
+        "`UNRESOLVED` for that comparison",
+        "**Zero gap needs no interval.**"
+      ],
+      "skill_md_must_not_appear": [
+        "large relative to the benchmark's own spread"
+      ],
+      "compiler": "scripts/compile_benchmark_frontiers.py DIRECTION_BASIS; the compiler raises SpreadFallbackResurrected if min_fraction_of_spread comes back"
+    }
+  }
+}

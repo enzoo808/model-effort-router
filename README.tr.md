@@ -349,13 +349,20 @@ R=3 onay notu riski taşır (iteration-14: `max` ile orta katman modeli eşlemek
 tutarsız, aşırı-düşünme riski). Router **`Sonnet 5 · max` / `Terra · max` hiç
 üretmez.** Sonra her arm kendi düzenleyicisini uygular:
 
-- **Claude:** `ultracode` ⇔ `W=3 ∧ >30dk ∧ ¬(D=3∧R=3)` (model kısıtsız, Haiku
-  hariç; efor alanı `xhigh` yerine `ultracode` yazılır) · `opusplan` (aşağıda).
+- **Claude:** `ultracode` ⇔ `>30dk ∧ (3+ FARKLI TÜR adım birbirini besliyor
+  ∨ W=3 ∧ D≥2) ∧ tek bölünemez zincir değil` (model kısıtsız, Haiku hariç; efor
+  alanı `xhigh` yerine `ultracode` yazılır) · `opusplan` (aşağıda).
+  > **iteration-18:** `ultracode` **orkestrasyon** satın alır, genişlik değil.
+  > Oturumun adım **türlerini** say, ürünün aşamalarını değil; tek türün çok
+  > birimde tekrarı `W`'dir; araştırma döngüsü (ölç → hipotez → yeniden ölç) de
+  > tek türdür ve `xhigh` alır. Reachability denetimi eski kuralın 150 dosyalık
+  > mekanik bir yeniden adlandırmaya orkestrasyon sattığını gösterdi.
 - **Codex:** ladder'ı `none, low, medium, high, xhigh, max` — **`minimal` yok**
   (OpenAI kılavuzu: `medium` = kodlama varsayılanı, `low` = yalnızca hızlı/dar
   kapsam). **Agentic çok-adımlı kodlamada +1 efor kademesi** (iteration-13) —
   çok-dosyalı özellik, refactor, migration, mimari uygulama, kod-tabanına yayılan
-  debug-fix; `max`'ta kapanır, Claude dokunulmaz. Kod incelemesi/analizi,
+  debug-fix; **`xhigh`'da kapanır (her iki modelde de)** ve bir kademeyi asla
+  **düşürmez**, Claude dokunulmaz. Kod incelemesi/analizi,
   kod-dışı tasarım, mekanik tekrar hariç. Gerekçe: LiveBench §2.1 GPT-5.6 hattını
   **yalnızca** agentic kodlamada Claude'un gerisinde gösteriyor (Sol 56.2 <
   Sonnet 5 59.4 < Opus 5 65.2).
@@ -585,7 +592,9 @@ Tüm iterasyonların gerekçesi `evals/README.md`'de.
 | 9 | Prod'daki 200 servisin auth mimarisini baştan tasarla | **opusplan · plan: max · uygulama: medium** | Mimari karar ön-yüklü (bir kez tasarlanır, 200 servise mekanik uygulanır), W=3, R=3∧Kural2a — opusplan'ın flagship senaryosu |
 | 9b | 40 mikroservisi ortak bir auth middleware'e geçir, tasarımı bir kez belirle | **opusplan · plan: xhigh · uygulama: medium** | Aynı örüntü, R=2 (geri alınabilir) — plan eforu `xhigh` kalır, `max`'a çıkmaz |
 | 10 | 40 sayfalık sözleşmede çelişen hükümleri bul | **Sonnet 5 · xhigh** | Kural 3 (D=3, Kural 2 dışı, kanıtsız-ama-ucuz) |
-| 11 | 300 dosyada require()'ları import'a çevir (mekanik, geri alınabilir) | **Sonnet 5 · ultracode** | `ultracode` model kısıtsız — Sonnet'te de çalışır |
+| 11 | 300 dosyada require()'ları import'a çevir (mekanik, geri alınabilir) | **Sonnet 5 · medium** | **iteration-18 düzeltmesi:** `W=3` ama `D=1` — tek mekanik adımın tekrarı genişliktir, orkestrasyon değil; eski kural buraya boşuna `ultracode` satıyordu |
+| 11b | Bu RFC'yi ~25 dosyada uygula: testleri yaz, lint ve build'i çalıştır, kırılanları düzelt | **Sonnet 5 · ultracode** | Beş farklı tür adım birbirini besliyor — `W=2` olması önemli değil, orkestrasyon bir genişlik sorusu değil |
+| 11c | Üç aday event-bus tasarımını bağımsız araştır, sonra karşılaştır | **Sonnet 5 · xhigh** · **Codex: Sol Ultra · xhigh · ✅** | iteration-18: şerit = hedef **veya** iş türü; üç bağımsız araştırma kolu Ultra'yı tetikler, `ultracode` tek zincirdir |
 | 12 | Bu genomik pipeline'daki varyant çağırma mantığını denetle | **Fable 5.1 · high** | Biyoloji Ar-Ge kapısı — Opus 5 **değil** |
 | 13 | 300 sayfalık API dokümantasyonunu oku, deprecated endpoint'leri listele | **Sonnet 5 · medium** | `C=3, D=1` — büyük bağlam Opus 5'i **tetiklemez**, model Sonnet'te kalır, efor D'yi takip eder |
 | 14 | Bu router'ın model seçimini riskten ayrıştır, çakışma kurallarını sıfırdan tasarla | **Opus 5 · xhigh** | Kural 2a artık kod-dışı yapılandırılmış tasarımı da kapsıyor — canlı testte bulunan gerçek boşluk |

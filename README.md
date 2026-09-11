@@ -164,9 +164,23 @@ Three layers, and **only the first is read at runtime**:
 ```bash
 python scripts/validate_benchmarks.py            # schema, groups, rule provenance, staleness
 python scripts/compile_benchmark_frontiers.py    # regenerate the derived frontier
-python scripts/test_frontier_compiler.py         # 26 comparison-semantics assertions
+python scripts/test_frontier_compiler.py         # comparison-semantics assertions
 python scripts/ablate_evidence.py                # vendor-bias measurement
+python scripts/check_policy_sync.py              # SKILL.md and the policy mirror agree
+python scripts/check_routing_reachability.py --check --report
+python scripts/test_reachability_tool.py         # the auditor's own regression suite
 ```
+
+> **What "meaningfully better" may rest on.** A published confidence interval, a
+> published standard error, repeated-trial dispersion, or a practical-significance
+> threshold the benchmark's owner publishes. Nothing else. Until iteration-18 the
+> compiler fell back to *a fraction of the roster's observed score spread* — which
+> reads as statistics and is not: spread is how far apart the models happen to
+> sit, not how precisely either score was measured, and on a two-row comparison
+> the spread *is* the gap. Removing it leaves `science` as the only capability
+> with a certified direction; everything else is `UNRESOLVED` and falls through to
+> efficiency. The directions the record points are unchanged — what is gone is the
+> pretence that they were measured.
 
 The compiler never interprets a number on its own: every threshold, grouping and
 precedence weight is declared in `benchmarks.json`, and where the declared
@@ -260,8 +274,8 @@ claude.ai fallback) and read both lines plus the badge.
 | **1 · Hard gates** | Capability / safety / availability, never traded against efficiency. Sub-second or high-volume → **Haiku** / **Luna**. Offensive security → **Opus 4.8 · xhigh** / Codex `use Claude` (or `Astra` w/ Daybreak). Biology R&D → **Fable 5.1** / Codex `unverified`. >200k context → drops Haiku. 1000+ files → **Fable 5.1** / **Astra**. ≥1M-token Codex context → **Astra**. GUI-driving is the task → **Astra**. |
 | **2 · Capability profile** | Name the one or two capabilities the task actually needs — `agentic-code`, `terminal-tool`, `deep-reasoning`, `knowledge-work`, `research-synthesis`, `long-context`, `computer-use`, `science`, `workflow-automation`, `doc-data-understanding`, `parallel-independent`, `latency-volume`. This is what makes benchmark evidence applicable *or not*. |
 | **3 · Score scope & stakes** | **R**isk, **D**epth, **W**idth, **C**ontext — each 0–3, each with a diagnostic question and a worked-example library. |
-| **4 · Candidate model × effort** | Model ← `max(D, C)` and the capability profile — **not** risk. Flagship only at `D=3` *and* a capability on the flagship list. Effort ← `D` (`0→low · 1→medium · 2→high · 3→xhigh`). Claude modifiers: `ultracode`, `opusplan`. Codex modifier: `+1` notch for agentic multi-step coding (Terra/Sol only, never Astra). |
-| **5 · Evidence, equivalence, efficiency** | Check comparability. Decide "meaningfully better" from a published CI first (Terminal-Bench 4.0 ships 95% whiskers; TB-Science ships SE ±3.5–4.5), then repeated-trial variance, then — with neither — refuse to read a small gap as a win. Widen the bar when `R=3`. Then apply dominance: reasoning tokens → output tokens → total tokens → tokens per *successful* task → quota pressure → cost → latency. |
+| **4 · Candidate model × effort** | Model ← `max(D, C)` and the capability profile — **not** risk. Flagship only at `D=3` *and* a capability on the flagship list. Effort ← `D` (`0→low · 1→medium · 2→high · 3→xhigh`). Claude modifier: **`ultracode`** — >30 min **and** 3+ different *kinds* of step feeding each other (or `W=3` ∧ `D≥2`), **and** not one indivisible chain; plus `opusplan`. Codex modifiers: **Sol Ultra** for 3+ genuinely parallel strands, and a `+1` notch for agentic multi-step coding (Terra/Sol only, never Astra, caps at `xhigh`). Third escalation rung — Opus 5 → Fable 5.1, Sol → Astra — only on a *stated* flagship-tier shortfall. |
+| **5 · Evidence, equivalence, efficiency** | Check comparability. Decide "meaningfully better" from **published dispersion only** — a confidence interval, a standard error, repeated-trial variance, or a threshold the benchmark's own owner publishes. With none of those the comparison is **`UNRESOLVED`**, however large the gap looks: observed score spread is not uncertainty. Widen the bar when `R=3`. Then apply dominance: reasoning tokens → output tokens → total tokens → tokens per *successful* task → quota pressure → cost → latency. |
 | **6 · `✅ RECOMMENDED AI`** | Compare the two arms in order: hard gate → task-relevant capability → benchmark confidence → near-parity → token/quota efficiency → cost → latency. Emit one badge and one `Evidence:` sentence naming at most 1–2 signals. |
 | **7 · Quota guards** | `R=3` adds a human-review note (never changes the model). Escalation is a model change, not an effort change. MCP-server bloat, auto-accept, alias drift warnings. |
 
@@ -297,7 +311,7 @@ human oversight, not model tier**, and **when in doubt, round down**.
 | Terra | balanced daily driver | Sonnet 5 |
 | **Sol** | GPT-5.6 flagship — code / science / security; the D=3 pick | Opus 5 |
 | **Sol Ultra** | a Codex *mode* on Sol (Plus+): ~4 collaborating agents in parallel. Also available on Astra | stronger than Claude's `ultracode` |
-| **Astra** | GPT-6 flagship (`gpt-6-astra`), 1.05M context. **Gated pick only**: offensive-sec *with Daybreak*, 1000+ files, ≥1M-token context, GUI-driving | Opus 5 / Fable 5.1 (frontier) |
+| **Astra** | GPT-6 flagship (`gpt-6-astra`), 1.05M context. **Rare pick.** Gates: offensive-sec *with Daybreak*, 1000+ files, ≥1M-token context, GUI-driving — plus two narrow non-gate routes, Rule E4 (where `Sol · max` would be emitted on agentic-code / terminal-tool) and a stated flagship-tier shortfall | Opus 5 / Fable 5.1 (frontier) |
 | *Codex Spark 5.3* | text-only research preview for near-instant coding iteration — **the router does not select it** (no benchmark record, text-only) | — |
 
 > **`max` is Astra/Sol only** on Codex — a capability limit, not a preference.
@@ -316,6 +330,10 @@ human oversight, not model tier**, and **when in doubt, round down**.
 | Label 200 customer reviews positive/negative | `Haiku 4.5` | `Luna · low` | **Codex** — both clear the bar; Luna is faster and cheaper |
 | Add a `--dry-run` flag to this CLI command | `Sonnet 5 · medium` | `Terra · medium` | **Claude** — D=1, so efficiency decides; $2/$10 vs $2/$12 |
 | Refactor the payment module across 40 files, make the tests pass | `Sonnet 5 · high` | `Terra · xhigh` | **Claude** — Terminal-Bench 4.0 agentic-code margin |
+| Implement the RFC across ~25 files: add tests, run lint and the build, fix what breaks | `Sonnet 5 · ultracode` | `Terra · xhigh` | **Claude** — five kinds of step is orchestration, and it is not a width question |
+| Rename `userId` to `accountId` across 150 files | `Sonnet 5 · medium` | `Terra · medium` | **Claude** — `W=3` but `D=1`; one step repeated is width, so no orchestration mode |
+| Investigate three candidate event-bus designs independently, then compare | `Sonnet 5 · xhigh` | `Sol Ultra · xhigh` | **Codex** — three strands that never wait on each other; `ultracode` is one chain |
+| Design and implement the cross-service transaction boundary — ships tonight, no rollback | `Opus 5 · max` | `Astra · xhigh` | **Codex** — Rule E4: Astra `xhigh` outscores Sol `max` at a third of the output tokens |
 | Prove this scheduling bound, no code | `Opus 5 · xhigh` | `Sol · xhigh` | **Claude**, low-confidence — coding benchmarks weigh zero here |
 | Drive the desktop ERP client through month-end close | `Sonnet 5 · high` | `Astra · high` | **Codex**, low-confidence — OSWorld computer-use lead |
 | Check 120 unrelated vendors' DPA compliance | `Sonnet 5 · ultracode` | `Sol Ultra · xhigh` | **Codex** — genuine parallel-agent mechanism, no Claude capability edge |
@@ -340,7 +358,19 @@ to flag `low-confidence` where the rules say it must.
 
 Latest run: **32/32** (iteration-17). The evidence layer has its own,
 faster checks that run without an LLM — schema validation, rule-provenance
-resolution, frontier staleness, 26 compiler assertions and the bias ablation.
+resolution, frontier staleness, the compiler assertions and the bias ablation.
+
+**Correctness is not coverage.** A regression suite answers "does this prompt get
+the right answer?"; it cannot answer "is there any prompt at all that reaches
+`Sonnet 5 · ultracode`?" `evals/reachability/` answers the second one: a
+154-prompt labelled corpus, a machine-readable mirror of the rules, and a
+generated matrix with one row per supported model × effort/mode cell. **A zero
+with no written rationale fails the run.** The counts are a diagnostic, never a
+target — no frequency goal was used and no prompt exists to make a cell non-zero.
+It found three bugs the routing evals could not see: an effort emitted on a model
+that has no effort parameter, orchestration bought for 150 files of one
+mechanical rename, and a dead zone where `ultracode` and `max` refused the same
+task for opposite reasons. Details in `skill/reference.md` §16.
 
 Run history and the reasoning behind every rule change is in
 [`evals/README.md`](evals/README.md).

@@ -46,7 +46,7 @@
       "saturated": false,
       "equivalence_band": {
         "kind": "none",
-        "note": "AA publishes no CI on the index. Gaps of 1-2 points are treated as undetermined by the compiler's no-dispersion rule."
+        "note": "AA publishes no CI on the index, so every cell in this group is UNRESOLVED for direction. The rungs are still used for EFFORT-CURVE dominance (Rules E1-E4), which is a within-model cost/score comparison under one harness and does not need a cross-model band."
       }
     },
     "openai-docs-2026-09-10": {
@@ -103,7 +103,7 @@
       "saturated": false,
       "equivalence_band": {
         "kind": "none",
-        "note": "No CI published, but the 40-59 spread is wide relative to the gaps being read, so the compiler's spread rule applies."
+        "note": "No CI published in AA's own run, so this group sets no direction (the 40-59 spread is a diagnostic, not an interval). The benchmark OWNER's leaderboard does publish 95% CI whiskers -- extracting them is the single highest-value evidence task outstanding, because it would decide agentic-code and terminal-tool on real uncertainty."
       }
     },
     "openai-launch-relay-2026-09-10": {
@@ -295,9 +295,17 @@
       "GPT-5.6 Luna"
     ]
   },
-  "no_dispersion_rule": {
-    "note": "When a comparability group publishes no CI or SE, the compiler still needs a declared way to decide 'meaningfully better'. It uses a fraction of the group's own observed spread across the roster, so the bar scales with how discriminating the benchmark actually is. This is the codification of SKILL.md 5b step 3 ('a gap counts only if it is large relative to the benchmark's own spread'). It is a declared constant, not a per-comparison judgement.",
-    "min_fraction_of_spread": 0.15
+  "direction_setting_hierarchy": {
+    "note": "The ONLY bases on which a comparability group may set a direction, in order. A group whose equivalence_band names none of these sets no direction, however large the gap looks. Replaces the old no_dispersion_rule, which fell back to 0.15 x the roster's observed score spread: that reads as statistics and is not one. Spread is how far apart the models happen to sit, not how precisely either score was measured, and on a two-row cell the spread IS the gap, so every comparison would have 'won'. The compiler now refuses min_fraction_of_spread outright so the fallback cannot come back by accident.",
+    "order": [
+      {"kind": "published_ci", "band": "the published interval", "note": "e.g. the Terminal-Bench owner leaderboard's 95% CI whiskers -- a value the record does not yet carry, which is why the AA TB 4.0 cells are UNRESOLVED rather than a Codex win"},
+      {"kind": "published_se", "band": "2 x SE", "note": "95% interval by the conventional multiplier; applies_to scopes it to the benchmark it was published for"},
+      {"kind": "repeated_trial_variance", "band": "2 x SD over repeated runs under one harness", "note": "reproducible dispersion, e.g. a mean over 5 attempts with its spread stated"},
+      {"kind": "owner_practical_threshold", "band": "the threshold the benchmark owner publishes", "note": "an explicit practical-significance bar stated by whoever runs the benchmark -- not one this repo invents"},
+      {"kind": "none", "band": null, "note": "UNRESOLVED for that evidence cell. The router falls through to the efficiency tie-break and says low-confidence."}
+    ],
+    "observed_spread_is_diagnostic_only": "The compiler still emits observed_spread and gap_over_observed_spread_diagnostic per cell. They are there to show which cells are worth chasing a published interval for. They never set a direction.",
+    "consequence": "After this change only the Terminal-Bench-Science cells carry a real band (SE +/-3.5-4.5, published by Anthropic). Every other capability direction is UNRESOLVED at this layer. That does not make SKILL.md's badge table wrong -- the badge is ranked by provenance (Step 6 order: gate, capability, WHO RAN IT, parity, efficiency), not by significance -- but it does mean no direction in this record is statistically certified except science."
   },
   "effort_rung_order": [
     "low",
@@ -382,6 +390,22 @@
           "aa-index-v4-3-opus-5-xhigh"
         ],
         "last_verified": "2026-09-10"
+      },
+      {
+        "rule_id": "E4",
+        "summary": "on agentic-code / terminal-tool, Sol max is replaced by Astra xhigh",
+        "capability": "agentic-code, terminal-tool",
+        "comparison_type": "effort_curve",
+        "confidence": "medium",
+        "evidence_ids": [
+          "aa-index-v4-3-astra-xhigh",
+          "aa-index-v4-3-sol-max",
+          "aa-index-v4-3-sol-high",
+          "tb-4-0-aa-astra",
+          "tb-4-0-aa-sol",
+          "aa-index-outtok-astra"
+        ],
+        "last_verified": "2026-09-11"
       },
       {
         "rule_id": "BADGE-agentic-code",

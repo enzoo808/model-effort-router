@@ -30,7 +30,7 @@ import json
 import sys
 from pathlib import Path
 
-GENERATOR_VERSION = "1.0"
+GENERATOR_VERSION = "1.1"
 
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "skill" / "benchmarks.json"
@@ -61,27 +61,46 @@ def precedence_weight(cls: str, tier: str, table: list) -> int:
     return 0
 
 
+# The ONLY things that may set a direction, in order. Anything else -> UNRESOLVED.
+#
+# What is deliberately NOT here: a fraction of the roster's observed score spread.
+# Until this pass the compiler fell back to `0.15 * spread` whenever no dispersion
+# was published, which reads as statistics and is not: spread is how far apart the
+# models happen to sit, not how precisely either score was measured. On a cell
+# where four models span 40-59 it declares any gap over ~2.9 points a win, and on
+# a two-row cell it would call every comparison a win. Removing it turns most
+# cells UNRESOLVED, which is the honest answer -- "not published" already is one
+# everywhere else in this repo.
+DIRECTION_BASIS = ("published_ci", "published_se", "repeated_trial_variance",
+                   "owner_practical_threshold")
+
+
 def band_for(group: dict, benchmark: str, rule: dict, spread: float) -> tuple[float | None, str]:
     """The equivalence band for one comparability group, from declared metadata only.
 
-    Returns (band, basis). band is None only when the declared metadata gives no
-    way to compute one, which the caller treats as UNRESOLVED rather than as zero.
+    Returns (band, basis). band is None whenever the declared metadata gives no
+    MEASURE OF UNCERTAINTY, which the caller treats as UNRESOLVED. Observed spread
+    is carried through the output as a diagnostic and never used here.
     """
     eb = group.get("equivalence_band") or {"kind": "none"}
     kind = eb.get("kind")
-    if kind == "published_ci" and eb.get("value") is not None:
-        return float(eb["value"]), "published_ci"
-    if kind == "published_se" and eb.get("value") is not None:
-        applies = eb.get("applies_to")
-        if applies is None or benchmark in applies:
-            # 95% interval from a standard error, the conventional multiplier.
-            return 2.0 * float(eb["value"]), "published_se_x2"
-        # SE published for a different benchmark in the same group does not carry over.
-    # No published dispersion: fall back to the declared spread rule.
-    frac = rule.get("min_fraction_of_spread")
-    if frac is None or spread <= 0:
-        return None, "no_dispersion_and_no_spread_rule"
-    return float(frac) * spread, "spread_rule_%g" % frac
+    value = eb.get("value")
+    if kind not in DIRECTION_BASIS or value is None:
+        return None, "no_published_dispersion"
+    applies = eb.get("applies_to")
+    if applies is not None and benchmark not in applies:
+        # Dispersion published for a different benchmark in the same group does
+        # not carry over to this one.
+        return None, "dispersion_published_for_another_benchmark"
+    if kind == "published_ci":
+        return float(value), "published_ci"
+    if kind == "published_se":
+        # 95% interval from a standard error, the conventional multiplier.
+        return 2.0 * float(value), "published_se_x2"
+    if kind == "repeated_trial_variance":
+        # A standard deviation over repeated runs under one harness, same convention.
+        return 2.0 * float(value), "repeated_trial_sd_x2"
+    return float(value), "owner_practical_threshold"
 
 
 def excluded_reason(benchmark: str, version, table: list) -> str | None:
@@ -150,12 +169,24 @@ def compare_group(rows: list, group: dict, eco_map: dict, rule: dict,
     out["best"] = {eco: {"model": r["model"], "score": r["score"], "id": r["id"]}
                    for eco, r in sorted(best.items())}
     out["gap_claude_minus_codex"] = round(gap, 4)
+    # DIAGNOSTIC ONLY. How the gap compares with how far apart the roster happens
+    # to sit. Useful for spotting a cell worth chasing a published CI for. It is
+    # not a confidence statement and never sets `direction`.
+    out["gap_over_observed_spread_diagnostic"] = (
+        None if spread <= 0 else round(abs(gap) / spread, 4))
     out["band"] = None if band is None else round(band, 4)
     out["band_basis"] = basis
 
-    if band is None:
+    if gap == 0:
+        # Equality is not an inference, so it needs no interval. This keeps the
+        # "same score, different cost" case alive -- the router must still be told
+        # to fall through to the efficiency tie-break there.
+        out["direction"] = EQUIVALENT
+        out["reason"] = "identical scores; efficiency decides"
+    elif band is None:
         out["direction"] = UNRESOLVED
-        out["reason"] = "no published dispersion and no spread rule applies"
+        out["reason"] = ("no measure of uncertainty is published for this cell (%s), so the gap "
+                         "sets no direction -- see DIRECTION_BASIS" % basis)
     elif abs(gap) <= band:
         out["direction"] = EQUIVALENT
         out["reason"] = "gap %.4g is inside the %.4g band" % (gap, band)
@@ -171,7 +202,7 @@ def compile_capability(cap: str, records: list, meta: dict) -> dict:
     roster = set(eco_map["current_roster"])
     groups_meta = meta["comparability_groups"]
     prec = meta["evidence_precedence"]["order"]
-    rule = meta["no_dispersion_rule"]
+    rule = meta["direction_setting_hierarchy"]
 
     # Cell = (comparability group, benchmark, version). One source publishing five
     # benchmarks yields five cells, never one pooled comparison.
@@ -239,7 +270,7 @@ def compile_by_codex_model(cap: str, cells: dict, meta: dict) -> list:
     eco_map = meta["model_ecosystem"]
     groups_meta = meta["comparability_groups"]
     prec = meta["evidence_precedence"]["order"]
-    rule = meta["no_dispersion_rule"]
+    rule = meta["direction_setting_hierarchy"]
 
     excluded = meta.get("excluded_from_direction", [])
 
@@ -294,11 +325,19 @@ def compile_by_codex_model(cap: str, cells: dict, meta: dict) -> list:
 def compile_effort_curves(records: list, meta: dict) -> list:
     """Per-model effort curves, within one comparability group only.
 
-    A rung is marked dominated when a LOWER rung in the same group scores at least
-    as well within the declared band while costing less. No interpolation: a rung
-    that was never published simply does not appear.
+    A rung is marked dominated when a LOWER rung in the same group costs less and
+    scores NO BETTER. That needs no equivalence band -- a gain of zero or below is
+    not a measurement question -- which is why removing the spread fallback does
+    not disarm Rules E1 and E3: their evidence is a tie or a loss at higher cost,
+    not a small positive gap talked down.
+
+    A gain that is positive but small goes to `unresolved_rungs` instead, where it
+    stays until somebody publishes an interval for the benchmark. Calling it
+    dominated would be exactly the manufactured confidence this pass removed.
+
+    No interpolation: a rung that was never published simply does not appear.
     """
-    rule = meta["no_dispersion_rule"]
+    rule = meta["direction_setting_hierarchy"]
     groups_meta = meta["comparability_groups"]
     roster = set(meta["model_ecosystem"]["current_roster"])
     order = meta["effort_rung_order"]
@@ -326,24 +365,40 @@ def compile_effort_curves(records: list, meta: dict) -> list:
         points = [{"effort": r["effort"], "score": r["score"],
                    "cost_per_task_usd": r.get("cost_per_task_usd"),
                    "id": r["id"]} for r in rows]
-        dominated = []
+        dominated, unresolved = [], []
         for i, hi in enumerate(rows):
+            dom = unres = None
             for lo in rows[:i]:
                 gain = hi["score"] - lo["score"]
                 hc, lc = hi.get("cost_per_task_usd"), lo.get("cost_per_task_usd")
-                if band is None or hc is None or lc is None:
+                if hc is None or lc is None or hc <= lc:
                     continue
-                if gain <= band and hc > lc:
-                    dominated.append({
-                        "rung": hi["effort"], "dominated_by": lo["effort"],
-                        "score_gain": round(gain, 4), "band": round(band, 4),
-                        "cost_delta_usd": round(hc - lc, 4),
-                        "ids": [hi["id"], lo["id"]],
-                    })
+                entry = {
+                    "rung": hi["effort"], "dominated_by": lo["effort"],
+                    "score_gain": round(gain, 4), "band": None if band is None else round(band, 4),
+                    "cost_delta_usd": round(hc - lc, 4), "ids": [hi["id"], lo["id"]],
+                }
+                if gain <= 0:
+                    entry["basis"] = "no_gain_at_higher_cost"
+                    dom = entry
                     break
+                if band is not None and gain <= band:
+                    entry["basis"] = "gain_inside_published_band"
+                    dom = entry
+                    break
+                # Positive gain with nothing to say whether it is real. Keep looking
+                # for a lower rung that actually dominates; if none does, the closest
+                # lower rung is the most informative thing to report.
+                entry["basis"] = "positive_gain_no_published_dispersion"
+                unres = entry
+            if dom is not None:
+                dominated.append(dom)
+            elif unres is not None:
+                unresolved.append(unres)
         curves.append({
             "model": model, "group": gid, "band": None if band is None else round(band, 4),
             "band_basis": basis, "points": points, "dominated_rungs": dominated,
+            "unresolved_rungs": unresolved,
         })
     return curves
 
@@ -369,7 +424,22 @@ def compile_rule_provenance(meta: dict, by_id: dict) -> list:
     return out
 
 
+class SpreadFallbackResurrected(Exception):
+    """A fraction-of-spread band was reintroduced. It is not uncertainty."""
+
+
 def build(raw: dict, digest: str, evidence_filter=None, filter_name: str = "full") -> dict:
+    hierarchy = raw["direction_setting_hierarchy"]
+    if "min_fraction_of_spread" in hierarchy or "no_dispersion_rule" in raw:
+        raise SpreadFallbackResurrected(
+            "benchmarks.json declares a fraction-of-spread equivalence band. Observed spread is "
+            "not statistical uncertainty -- see direction_setting_hierarchy. Remove it.")
+    for gid, g in raw["comparability_groups"].items():
+        kind = (g.get("equivalence_band") or {}).get("kind", "none")
+        if kind not in DIRECTION_BASIS + ("none",):
+            raise SpreadFallbackResurrected(
+                "comparability group %r declares equivalence_band kind %r, which is not in the "
+                "declared direction-setting hierarchy %s" % (gid, kind, list(DIRECTION_BASIS)))
     records = raw["records"]
     if evidence_filter is not None:
         records = [r for r in records if evidence_filter(r)]
@@ -390,7 +460,11 @@ def build(raw: dict, digest: str, evidence_filter=None, filter_name: str = "full
             "GENERATED FILE -- do not hand-edit; run the compiler. 'preferred' is which ecosystem the "
             "declared evidence favours for that capability, or UNRESOLVED when the declared metadata does "
             "not settle it. UNRESOLVED and 'equivalent' both mean the router must fall through to the "
-            "efficiency tie-break; they are not failures. Nothing here is read at runtime -- SKILL.md "
+            "efficiency tie-break; they are not failures. A cell is UNRESOLVED whenever no confidence "
+            "interval, standard error, repeated-trial dispersion or benchmark-owner significance "
+            "threshold is published for it -- however large the gap looks; observed spread is not "
+            "uncertainty. 'gap_over_observed_spread_diagnostic' shows which cells are worth chasing a "
+            "real interval for and sets nothing. Nothing here is read at runtime -- SKILL.md "
             "carries the compact rules and this file is how those rules are audited."
         ),
         "capability_frontiers": frontiers,

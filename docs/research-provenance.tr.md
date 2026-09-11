@@ -20,6 +20,53 @@ Skill'in parçası değildir, çalışma zamanında hiçbir şey okumaz.
 
 ---
 
+## Metodoloji düzeltmesi — 11 Eylül 2026 (iteration-18)
+
+**Kaldırılan: gözlenen skor yayılımının bir kesri, eşdeğerlik bandı olarak.**
+
+`benchmarks.json` → `no_dispersion_rule` bir grup CI veya SE yayınlamadığında
+bandı `0.15 × roster'ın gözlenen yayılımı` olarak hesaplıyordu. Bu, istatistik
+gibi okunuyor ama istatistik değil:
+
+- Yayılım, modellerin **tesadüfen ne kadar uzak durduğunu** ölçer; hiçbirinin
+  skorunun **ne kadar hassas ölçüldüğünü** değil.
+- 40–59 arası yayılan dört modelli bir hücrede ~2.9 puanı aşan her farkı
+  "kazanılmış" ilan ediyordu.
+- İki satırlık bir karşılaştırmada yayılım **farkın kendisidir**, yani her
+  karışılaştırma kazanırdı.
+
+**Yerine gelen hiyerarşi** (`direction_setting_hierarchy`, sırayla):
+
+1. yayımlanmış güven aralığı (CI)
+2. yayımlanmış standart hata (SE) → band = 2 × SE
+3. tek harness altında tekrarlı-deneme dağılımı
+4. benchmark **sahibinin** yayımladığı pratik-anlamlılık eşiği
+5. hiçbiri yoksa → o kanıt hücresi için **`UNRESOLVED`** — fark ne kadar büyük
+   görünürse görünsün
+
+**Bedeli, açıkça:** artık yalnızca `science` sertifikalı bir yöne sahip
+(Terminal-Bench-Science'ın yayımladığı SE ±3.5–4.5 sayesinde). `agentic-code` ve
+`terminal-tool` dahil diğer her capability `UNRESOLVED`'a düştü ve verimlilik
+tie-break'ine düşüyor. Kaydın **işaret ettiği yön değişmedi** — kaybolan şey,
+o yönün ölçülmüş olduğu iddiasıydı. Step 6'nın rozet tablosu **köken** sırasına
+göre karar verir (kim, kimin harness'ında ölçtü), anlamlılık testine göre
+değil, o yüzden geçerliliğini koruyor — ama `low-confidence` artık daha dürüst
+bir kelime.
+
+**E1 ve E3 etkilenmedi.** İkisinin de kanıtı "daha yüksek maliyete **daha iyi
+olmayan** bir kademe" — yani dominans, küçük bir farkın büyüttülmesi değil; ve
+eşitlik için aralığa gerek yok. Opus 5'in `max`-üzeri-`xhigh` bir puanlık
+kazancı "bandın içinde"den `unresolved_rungs`'a taşındı — ki bu zaten
+`SKILL.md` §5c'nin düz yazıyla söylediği şeydi.
+
+**Kapanması gereken tek boşluk:** Terminal-Bench sahibinin leaderboard'undaki
+%95 CI çubukları. Kayıttaki en değerli açık iş bu; çıkarılırsa setin en önemli
+iki capability'si gerçek belirsizlik üzerinde karara bağlanır.
+
+**Yeniden üretmek için:** `python scripts/compile_benchmark_frontiers.py` ·
+`python scripts/test_frontier_compiler.py`. Derleyici, `min_fraction_of_spread`
+geri gelirse `SpreadFallbackResurrected` fırlatır.
+
 ## Araştırma kaydı — 10 Eylül 2026, Faz 2 (iteration-17)
 
 **Amaç.** Faz 1'in mimarisini değiştirmek DEĞİL. Üç şey: (1) Faz 1'de

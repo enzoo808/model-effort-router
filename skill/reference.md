@@ -382,11 +382,22 @@ level doesn't change**. Phrasings like "think", "think hard" are not recognised.
 
 ### When `ultracode` is used
 
-- **Yes:** 100+ file audit, huge migration, cross-verification needing 3+
-  independent verification angles, competitive analysis, PRD review.
-- **No:** single-file edit, quick question, everyday work.
+Iteration-18 moved the trigger from **width** to **orchestration** — see
+`SKILL.md` Step 4. `ultracode` sends `xhigh` *and* plans a workflow, so it pays
+off when the session has several kinds of step to sequence, not when it has many
+copies of one step.
+
+- **Yes:** implement → author tests → run the build → repair → sync docs, over
+  30+ minutes, at any width. 100+ units that each need judgement (a 180-service
+  auth-bypass audit) still qualify on width, because `W=3 ∧ D≥2`.
+- **No:** single-file edit, quick question, everyday work — and **not** a 150-file
+  mechanical rename, which is `W=3` but `D=1`: one step repeated is width, and
+  orchestrating it buys nothing. Not a root-cause hunt either; measure →
+  hypothesise → re-measure is one kind of step, so that is `xhigh`.
 - **Conflict:** `ultracode` only sends `xhigh` to the model; if you need `max`,
-  don't pick `ultracode`.
+  don't pick `ultracode`. The rule encodes this as *not one indivisible chain* —
+  the same test Rule E3 uses — so the two can never refuse a task for opposite
+  reasons, which is the dead zone the old `¬(D=3 ∧ R=3)` guard created.
 
 ### `opusplan` — plan/execute model split
 
@@ -611,8 +622,8 @@ effort per Step 3 + the **+1 notch for agentic multi-step coding** (§10.6):
 | "Add dark mode support to this component" | 1,1,1,1 | Sonnet 5 · medium |
 | "Merge 3 services onto a shared auth middleware" | 2,2,2,2 | Sonnet 5 · high |
 | "Find and fix the race condition in this cache-invalidation logic" | 2,3,1,2 | Opus 5 · xhigh *(agentic code domain)* |
-| "Split the monolith into 12 microservices, including data consistency" | 3,3,3,3 | Opus 5 · max, `ultracode` **no** *(D=3∧R=3 conflict)* |
-| "Migrate 500 files from the old logging library to the new one" | 1,1,3,1 | Sonnet 5 · **ultracode** *(when ultracode fires, the effort field says "ultracode", not D's value)* |
+| "Split the monolith into 12 microservices, including data consistency" | 3,3,3,3 | Opus 5 · max, `ultracode` **no** *(one indivisible boundary decision)* |
+| "Migrate 500 files from the old logging library to the new one" | 1,1,3,1 | Sonnet 5 · **medium** *(iteration-18: `W=3` but `D=1`, so width alone no longer buys orchestration)* |
 | "Get this SQL query out of N+1" | 1,1,0,0 | Sonnet 5 · medium *(D=1 "known bug shape" → not Haiku)* |
 | "Add cursor-based pagination to this API" | 1,1,0,0 | Sonnet 5 · medium *(well-documented single pattern → D=1, not D=2)* |
 | "Add a `last_login_at` column and make it nullable" | 2,0,0,0 | Sonnet 5 · low *(fully-specified additive schema → D=0; R=2 reversible migration → not Haiku)* |
@@ -660,9 +671,9 @@ Sonnet. This category shows Rule 2(a) also covers non-code.
 | Prompt | R,D,W,C | → |
 |---|---|---|
 | "Find the flaky test in the CI pipeline" | 1,1,1,0 | Sonnet 5 · medium |
-| "Add the same health-check endpoint to 60 independent microservices" | 1,1,2,0 | Sonnet 5 · medium *(60 < 100 → W=2, not W=3 → no ultracode; effort follows D=1)* |
+| "Add the same health-check endpoint to 60 independent microservices" | 1,1,2,0 | Sonnet 5 · medium *(60 < 100 → W=2; and at D=1 even 600 would not fire ultracode — one step repeated is width)* |
 | "List which security-group rules allow 0.0.0.0/0 on ports other than 80/443" | 1,1,1,1 | Sonnet 5 · medium *(mechanical enumeration → D=1, not the D=3 adversarial case; defensive → no gate)* |
-| "Profile 180 services for performance regression" | 2,2,3,2 | Sonnet 5 · **ultracode** *(W=3 triggered; the effort field says "ultracode", not D's `high`)* |
+| "Profile 180 services for performance regression" | 2,2,3,2 | Sonnet 5 · **ultracode** *(`W=3 ∧ D=2` — 180 services that each need judgement; the effort field says "ultracode", not D's `high`)* |
 | "Find the deploy that caused the prod CPU spike, don't roll back yet" | 2,2,1,2 | Sonnet 5 · high |
 | "Migrate the Kubernetes cluster to multi-region HA from scratch" | 3,3,2,2 | Opus 5 · max |
 
@@ -1789,9 +1800,12 @@ names. Consequences:
 
 #### Still unresolved after Phase 2
 
-- **Terminal-Bench owner leaderboard rows with their published 95% CIs.** The one
-  thing that would let the equivalence band rest on real dispersion instead of
-  the declared spread rule for the most important capability in the set.
+- **Terminal-Bench owner leaderboard rows with their published 95% CIs.** Now the
+  single highest-value evidence task outstanding. Iteration-18 removed the
+  fraction-of-spread fallback (§15.2), so `agentic-code` and `terminal-tool` —
+  the most important capabilities in the set — sit at `UNRESOLVED` until somebody
+  extracts those intervals. The direction the record points is unchanged; what is
+  gone is the pretence that it was measured.
 - **`openai.com/index/gpt-6-astra/` still returns HTTP 403.** Every OpenAI launch
   figure in this record is a tier C relay of that page.
 - **Sol pricing.** One relay states $4/$20 promotional against the $5/$30 this
@@ -2038,10 +2052,28 @@ its own.** Every threshold is declared in `benchmarks.json`:
   comparability; it only trusts the assertion. Groups also declare
   `saturated: true` and an `equivalence_band`.
 - `evidence_precedence` — the weight of each (evidence class, source tier) pair.
-- `no_dispersion_rule` — when a group publishes no CI or SE, the band is a
-  declared fraction (0.15) of the group's own observed spread. That is the
-  codification of §5b step 3: a gap counts only if it is large relative to how
-  discriminating the benchmark actually is.
+- `direction_setting_hierarchy` — the only four bases on which a group may set a
+  direction: a published **confidence interval**, a published **standard error**
+  (×2 for the 95% interval), **repeated-trial dispersion** under one harness, or
+  a **practical-significance threshold the benchmark's owner publishes**. A group
+  with none of those sets no direction, however large the gap looks.
+  > **This replaced a fallback that was quietly wrong.** Until iteration-18 the
+  > compiler used `0.15 × the roster's observed spread` whenever no dispersion was
+  > published. Spread is how far apart the models happen to sit, not how precisely
+  > either score was measured; on a four-model cell spanning 40–59 it declared any
+  > gap over ~2.9 points a win, and on a two-row cell the spread *is* the gap, so
+  > everything would have won. The compiler now raises
+  > `SpreadFallbackResurrected` if `min_fraction_of_spread` reappears anywhere.
+  > Observed spread survives as `gap_over_observed_spread_diagnostic`, which is
+  > labelled a diagnostic and routes nothing.
+  >
+  > **What it cost:** `science` is now the only capability with a certified
+  > direction, on Terminal-Bench-Science's published SE. Everything else is
+  > `UNRESOLVED`. Rules E1 and E3 are untouched, because their evidence is a rung
+  > that scores *no better* at higher cost — dominance, not a small gap talked up
+  > — and equality needs no interval. Opus 5's `max`-over-`xhigh` gain of one
+  > point moved from "inside the band" to `unresolved_rungs`, which is what
+  > `SKILL.md` §5c already said in prose.
 - `excluded_from_direction` — benchmarks that may never set a direction, each
   with a written reason.
 - `model_ecosystem` — which model belongs to which arm. Declared, never parsed
@@ -2134,3 +2166,128 @@ Almost nothing, on purpose. One badge row became model-conditional
 (`agentic-code` / `terminal-tool` against Astra), and seven capabilities gained a
 mandatory `low-confidence` marker because the ablation showed they rest entirely
 on vendor-run cross-model rows. Model and effort selection are untouched.
+
+---
+
+## 16. Reachability audit — iteration-18 (11 September 2026)
+
+### 16.1. The question the routing eval cannot ask
+
+`evals/routing/` measures **correctness**: given a prompt, is the golden answer
+produced? It cannot measure **coverage**: given the whole rule set, is there any
+prompt at all that reaches `Sonnet 5 · ultracode`? A suite can be green on the
+first question while a supported combination is dead on the second, and nobody
+notices, because nothing fails.
+
+`scripts/check_routing_reachability.py` answers the second question against a
+154-prompt labelled corpus (`evals/reachability/corpus.json`) and a hand-kept
+policy mirror (`evals/reachability/routing_policy.json`). Every supported
+model × effort/mode cell gets a row. **A zero with no written rationale fails the
+run** — either the corpus is missing a workload or no rule can reach the cell,
+and both are bugs until somebody says otherwise in the `INTENTIONAL` table.
+
+Counts in the generated matrix are a diagnostic, never a target. No upper-tier
+frequency goal was used, and no prompt was written to make a cell non-zero.
+
+### 16.2. Three signals R/D/W/C does not measure
+
+Each maps to exactly one product mechanism, and each exists because the axis it
+replaced was measuring the wrong quantity.
+
+| Signal | Question | Drives |
+|---|---|---|
+| **O** — orchestration load | How many **different kinds of step** must the *session* sequence and re-enter? | `ultracode` |
+| **P** — parallelisable strands | Does the work split into **3+ strands** that never wait on each other and merge at the end? | Ultra |
+| **A** — autonomy horizon | Hours unattended, or a stated flagship-tier shortfall? | the frontier rung |
+
+The three traps, all of which produced real mislabels in the first corpus pass:
+
+1. **O is about the session, not the deliverable.** A four-stage data pipeline
+   authored in one go is implement ×4 plus verify — two kinds, not four.
+2. **One kind repeated across many units is `W`.** Driving a portal to pull each
+   invoice and file it is one procedure × N.
+3. **An investigation loop is one kind.** Measure → hypothesise → re-measure is
+   depth, so a root-cause hunt is `xhigh`.
+
+**P and `indivisible_single_chain` are mutually exclusive.** A task that splits
+into 3+ independent strands is not one indivisible decision, so `Sol Ultra · max`
+is not a combination the rules can produce. The corpus linter enforces that
+rather than trusting the labeller.
+
+### 16.3. The four unreachable cells
+
+| Cell | Finding | Resolution |
+|---|---|---|
+| `Fable 5.1 · high` | **Corpus gap.** `high` is the documented default effort of the biology gate, but both biology prompts were multi-phase pipeline builds, which fire `ultracode`. A single-phase biology task — interpret a gene-panel report — is an obvious real workload and was simply missing. | added one prompt |
+| `Sol · high` | **Corpus gap.** Rule E2 names `Sol · high` as *the* Codex escalation target ("42 @ $0.81 matches Terra max at $1.40"), so a cell the doc holds up as the destination cannot be unreachable. Needs `D=2` + a stated escalation + no agentic-write notch: the most ordinary escalation there is ("we tried, it came back wrong"). | added one prompt |
+| `Opus 4.8 · max` | **Intentionally rare.** Structurally reachable — the offensive gate does not bypass the effort table — but `benchmarks.json` carries **zero** records for Opus 4.8 at any rung, so nothing supports spending the top rung on it, and reaching the cell needs an offensive-security prompt whose output is irreversible against a live target. This audit does not author operational examples for gated categories. Mythos 5.1 `max` is the same argument plus conditional access. | claimed, abstract placeholder only |
+| `Sol Ultra · max` | **Intentional zero, structural.** Ultra needs `P=high`; `max` needs one indivisible chain. Nothing is both. The two prompts that reached it under the old rules were breadth-driven migrations whose `max` came from the +1 notch climbing to the top rung — which iteration-18 caps, because Step 7 Rule 2 makes escalation a model change and E3 refuses `max` for breadth. | claimed + enforced by a corpus lint |
+
+### 16.4. Bugs the audit found
+
+Three were **pre-existing**, not introduced by iteration-18:
+
+- **`Haiku 4.5 · low`.** `SKILL.md` says "Haiku selected → leave the effort field
+  blank". The gate branch did; the *scored* branch fell through to the D table and
+  emitted an effort on a model that has no effort parameter — on 4 corpus prompts,
+  under both rule sets. Caught by a new lint that demands every emitted cell have
+  a support-matrix row.
+- **Mechanical width bought orchestration.** `W=3 ∧ duration>30min` fired
+  `ultracode` on a 150-file rename, a `require()`→`import` conversion, and three
+  other `D=1` enumerations. Fixed by the `D ≥ 2` qualifier on the width disjunct.
+- **The `ultracode` / `max` dead zone.** `¬(D=3 ∧ R=3)` refused orchestration for
+  depth while E3 independently refused `max` for breadth, so an irreversible
+  400-service migration got a bare `xhigh` and no orchestration. Both rules now
+  use the same indivisible-chain test.
+
+One was **introduced by the first iteration-18 draft and caught before shipping**:
+capping the +1 Codex notch at `xhigh` was implemented as a clamp, so it pulled a
+rung E3 had already raised to `max` back *down* — silently deleting `Sol · max`
+from `d6`, a shipped golden. `bump()` is now monotonic.
+
+### 16.5. Decision-flip review
+
+36 prompts route differently under iteration-18. The rule responsible for each is
+**computed**, not declared: the auditor switches exactly one delta off at a time
+and reports which one restores the old route, so the attribution cannot rot.
+
+Every flip carries a written verdict in `evals/reachability/flip-review.json`, and
+an unreviewed flip — or one marked `REJECT` — fails the run. The first draft
+produced 43 flips; 12 were reviewed **REJECT** and fixed at the source (10 corpus
+labels contradicting their own definitions, 2 caused by the notch bug), 5 new
+flips appeared as a *result* of those fixes (the mechanical-width prompts leaving
+`ultracode`), and the remaining 36 are all `ACCEPT`. The rejected ones are kept
+in the file: a review that deletes its own failures is not a review.
+
+### 16.6. Astra
+
+Before iteration-18 Astra was reachable **only** through a deciding gate.
+It now has a narrow non-gate region — 18 of 154 prompts, up from 14:
+
+- **14 gate-driven:** frontier scale (9), computer-use (4), offensive + Daybreak (1).
+- **2 by Rule E4:** the exact point where `Sol · max` would be emitted on
+  agentic-code / terminal-tool.
+- **2 by the frontier escalation rung:** a stated flagship-tier failure on a long
+  unattended agentic run.
+
+It stays rare for a *methodological* reason, not a quota target. E4 could only be
+widened below `max` by comparing `Astra · xhigh` with `Sol · xhigh`, and AA
+publishes Sol at `high` and `max` only — estimating the missing rung is the §5a
+interpolation trap. Meanwhile 28 D=3 flagship-capability prompts keep **Sol**,
+including every `deep-reasoning` `max` case, because tooled HLE puts Astra behind
+there.
+
+### 16.7. Policy ↔ skill drift
+
+The audit reached a state where `routing_policy.json` described iteration-18 and
+the shipped `SKILL.md` still described iteration-17 — so every zero the audit
+certified was a zero of a policy nobody could run.
+
+`scripts/check_policy_sync.py` makes that fail. `SKILL.md` carries
+`<!-- routing-policy-version: iteration-18 -->`; the mirror carries the same
+string; each rule in the mirror lists short `skill_md_assertion` quotations that
+must appear in `SKILL.md` and `skill_md_must_not_appear` quotations of the
+superseded wording that must be gone. Change either file alone and the check
+fails. It is deliberately not a second `SKILL.md` parser — assertions are short
+quotations, because asserting a paragraph makes the guard fail on a typo fix and
+teaches people to delete assertions.

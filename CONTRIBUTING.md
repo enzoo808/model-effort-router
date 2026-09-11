@@ -36,6 +36,14 @@ Very welcome. Requirements:
   compared with anything, so it cannot inform a rule. Leave a field `null` when
   it isn't published — never guess it, and never interpolate a score between
   effort levels.
+- **Only published dispersion may set a direction.** A confidence interval, a
+  standard error, repeated-trial variance, or a practical-significance threshold
+  the benchmark's *owner* publishes. Nothing else — and specifically **not a
+  fraction of the roster's observed score spread**, which reads as statistics and
+  is not one. A group with no dispersion sets no direction however large its gap
+  looks; `UNRESOLVED` is the answer and the router falls through to efficiency.
+  `scripts/compile_benchmark_frontiers.py` raises `SpreadFallbackResurrected` if
+  a spread-based band is reintroduced.
 - **A benchmark that cannot separate the candidates does not belong in a rule.**
   If the frontier clusters within a point or two, add the row with a note and put
   the benchmark on `excluded_from_direction` rather than reading a ranking off
@@ -57,7 +65,30 @@ procedure.
    save the raw outputs under `evals/routing/results/iteration-<N>/`.
 4. `python evals/routing/grade_routing.py --results-dir evals/routing/results/iteration-<N>`
    must be green.
-5. If the rule is benchmark-derived, add or update its entry in
+5. **Mirror the rule into `evals/reachability/routing_policy.json` in the same
+   commit**, including its `skill_md_assertion` quotations, and bump
+   `policy_version` + the `<!-- routing-policy-version: ... -->` marker in
+   `skill/SKILL.md` if the rule set is a new iteration. Then run:
+   ```
+   python scripts/check_policy_sync.py
+   python scripts/check_routing_reachability.py --check --report
+   python scripts/test_reachability_tool.py
+   ```
+   `check_policy_sync.py` exists because the mirror and the shipped skill once
+   drifted a whole iteration apart, which meant an audit was certifying a policy
+   nobody could run. It fails if either file moves without the other.
+
+   The reachability run must end **0 errors**. Two rules about reading it:
+   - **A zero is allowed when zero is correct.** If a cell becomes unreachable,
+     decide which it is — a real routing bug, a corpus gap, or a combination with
+     no natural workload — and for the third, write the rationale into the
+     script's `INTENTIONAL` table. Never add a prompt whose only purpose is to
+     turn a cell green.
+   - **Every decision flip needs a verdict** in
+     `evals/reachability/flip-review.json`, and `REJECT` fails the run. Ask
+     whether the *new* recommendation is better for the task — "it matches the
+     new rule" is not a review.
+6. If the rule is benchmark-derived, add or update its entry in
    `skill/benchmarks.json` → `routing_rules` with the `evidence_ids` it rests on.
    The validator fails on a dangling id, which is what stops a rule outliving the
    number behind it. Then run:
@@ -69,12 +100,12 @@ procedure.
    Read the ablation even when it passes: if a capability's verdict disappears
    once vendor-run rows are dropped, the rule needs a `low-confidence` marker,
    not a stronger claim.
-5. Mirror the change into `claude-ai/instructions.tr.md` (the no-code-execution
+7. Mirror the change into `claude-ai/instructions.tr.md` (the no-code-execution
    fallback), except the Claude Code-only parts (`opusplan`, the `⚡ Fast Mode`
    speed line, the `/model opus` alias rule) — that file has a footer listing its
    deliberate differences.
-6. Re-run `.\build-claude-ai-zip.ps1`.
-7. If `docs/social-preview.html` changed, re-render the PNG in the same commit:
+8. Re-run `.\build-claude-ai-zip.ps1`.
+9. If `docs/social-preview.html` changed, re-render the PNG in the same commit:
    `.\scripts\render-social-preview.ps1`. A stale PNG is a wrong screenshot of the
    product on every link preview, and nobody notices because nobody opens the HTML.
 

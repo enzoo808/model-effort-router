@@ -235,11 +235,22 @@ def check_frontier(d: dict, rep: Report) -> None:
     expected = c.dumps(c.build(raw, digest))
     actual = FRONTIER.read_text(encoding="utf-8")
     if actual != expected:
-        stale = json.loads(actual).get("input_sha256", "?")
-        rep.error("frontier-stale",
-                  "skill/benchmark_frontiers.json was generated from input_sha256 %s but "
-                  "skill/benchmarks.json now hashes to %s. Re-run the compiler."
-                  % (stale[:16], digest[:16]))
+        old = json.loads(actual)
+        stale = old.get("input_sha256", "?")
+        if stale == digest:
+            # Same evidence, different output: the COMPILER moved, not the data.
+            # Saying "benchmarks.json now hashes to <the same hash>" sends the
+            # reader hunting for an evidence change that never happened.
+            rep.error("frontier-stale",
+                      "skill/benchmark_frontiers.json matches the current skill/benchmarks.json "
+                      "(sha256 %s) but not the current compiler (generator_version %s, now %s). "
+                      "Re-run scripts/compile_benchmark_frontiers.py."
+                      % (digest[:16], old.get("generator_version", "?"), c.GENERATOR_VERSION))
+        else:
+            rep.error("frontier-stale",
+                      "skill/benchmark_frontiers.json was generated from input_sha256 %s but "
+                      "skill/benchmarks.json now hashes to %s. Re-run the compiler."
+                      % (stale[:16], digest[:16]))
 
     front = json.loads(actual)
     for f in front.get("capability_frontiers", []):

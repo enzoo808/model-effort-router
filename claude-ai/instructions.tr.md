@@ -78,9 +78,13 @@ kendini sorgulama. Çoğu prompt bu durumdadır.
    eşlemesini, path (a) dahil, ezer.
 3. Diğer her promptta Codex kendi R/D/W/C eşlemesinden bağımsız bir cevap
    üretir: `D=0∧W=0∧C≤1∧R≤1→Luna` · `max(D,C)≤2→Terra` · `max(D,C)=3∧D<3→Terra`.
-   **`max(D,C)=3 ∧ D=3` — sırayla:** (a) **3+ zaten-bağımsız hedef** yan yana
-   taranıyorsa (40 ayrı servisi aynı anda denetle, her biri habersiz) →
-   **Sol Ultra** · (b) **Kural 2 bölgesi** (agentic çok-adımlı yapılandırılmış
+   **`max(D,C)=3 ∧ D=3` — sırayla:** (a) **3+ gerçekten paralel şerit** varsa →
+   **Sol Ultra**. Şerit = birbirini beklemeden ilerleyip sonda birleşen iş:
+   zaten-bağımsız **hedefler** (40 ayrı servis, depo, tedarikçi) **veya** bağımsız
+   **iş türleri** (üç aday tasarımı yan yana araştırmak/prototiplemek). **İki** şerit
+   yetmez — Ultra ~4 ajan çalıştırır, yaklaşık 4x maliyet, bu yüzden eşik üç.
+   Şeritler ile `max` **birbirini dışlar**: `max` tek bölünemez zincir ister, yani
+   `Sol Ultra · max` kuralların üretebileceği bir kombinasyon değil · (b) **Kural 2 bölgesi** (agentic çok-adımlı yapılandırılmış
    iş / matematik / araçsız akıl yürütme) → **Sol** · (c) **yoksa** (D=3 analitik/
    araştırma/inceleme — çelişen madde avı, regresyon, tek-artefakt zafiyet
    incelemesi) → **Terra** (Claude'daki Rule 3'ün aynası; Terra reasoning 90.6 ≈
@@ -128,10 +132,13 @@ Dört şeyi bil:
    rakamlar uydurma.
 4. **İki arm da aynı `D→efor` tablosundan başlar** (Adım 3), sonra her biri
    kendi düzenleyicisini uygular:
-   - **Claude:** `ultracode` (W=3 ∧ >30dk), `opusplan` (yalnızca Claude Code —
-     bu talimatta geçerli değil).
-   - **Codex:** **agentic çok-adımlı kodlamada +1 efor kademesi** (`max`'ta
-     kapanır; **yalnızca Terra/Sol — Astra'da asla**). Codex ladder'ı `none, low,
+   - **Claude:** `ultracode` (>30dk ∧ 3+ farklı tür adım veya `W=3 ∧ D≥2`, ∧ tek
+     bölünemez zincir değil), `opusplan` (yalnızca Claude Code — bu talimatta
+     geçerli değil).
+   - **Codex:** **agentic çok-adımlı kodlamada +1 efor kademesi** (**`xhigh`'da
+     kapanır — her iki modelde de**; kademe bir model-katmanı farkını telafi eder,
+     son basamağı satın almaz. Bir kadameyi asla **düşürmez**: `max` zaten
+     yandıysa olduğu gibi kalır. **Yalnızca Terra/Sol — Astra'da asla**). Codex ladder'ı `none, low,
      medium, high, xhigh, max` — `minimal` yok (Astra `none`'ı da düşürür);
      `medium` = OpenAI'nin kodlama varsayılanı, `low` = yalnızca hızlı / dar
      kapsam / gecikmeye duyarlı iş.
@@ -302,11 +309,26 @@ Haiku 4.5 seçildiyse efor alanını boş bırak.
 D=3 dışında hiç seçilmiyor, dolayısıyla `low`/`medium` ile önerilmez. Router
 `Sonnet 5 · max` / `Terra · max` **hiç üretmez** (orta katman `xhigh`'da kapanır).
 
-`ultracode` ⇔ `W=3` **∧** tahmini süre > 30 dk **∧** `¬(D=3 ∧ R=3)`
-Efor alanına `xhigh` değil **`ultracode`** yaz. Model kısıtı yok (Haiku hariç).
+`ultracode` ⇔ tahmini süre > 30 dk **∧** (**3+ FARKLI TÜR adım** birbirini
+besliyor — keşfet · uygula · test yaz · test/build/lint çalıştır · çıkan hataları
+onar · döküman/paket **VEYA** `W=3 ∧ D≥2`) **∧** zorluk **tek bölünemez zincir
+değil**. Efor alanına `xhigh` değil **`ultracode`** yaz. Model kısıtı yok (Haiku
+hariç).
 
-**Çakışma çözümü:** `D=3 ∧ R=3` ise efor `max`, `ultracode` **hayır**.
-Derinlik → `max`. Genişlik → `ultracode`.
+`ultracode` **workflow orkestrasyonu** satın alır, genişlik değil — bu yüzden
+dosya sayısına değil, oturumun kaç **tür** adımı sıraladığına bakar:
+
+- **Oturumun adımlarını say, ürünün aşamalarını değil.** Tek seferde yazılan
+  dört aşamalı bir pipeline = uygula ×4 + doğrula: iki tür, dört değil.
+- **Tek türün çok birimde tekrarı `W`'dir, orkestrasyon değil.** 150 dosyalık
+  `userId → accountId` yeniden adlandırma `D=1`'dir → `medium`, mod yok.
+- **Araştırma döngüsü de tek türdür.** Ölç → hipotez kur → yeniden ölç derinliktir;
+  kök-neden avı `xhigh` alır, `ultracode` değil.
+
+**Çakışma çözümü:** zorluk **tek bölünemez** bir tasarım/kanıt kararıysa
+(`max`'ın da şartı) `ultracode` **hayır**. Aynı testi kullandıkları için ikisi
+artık bir işi zıt gerekçelerle reddedemez — eski `¬(D=3 ∧ R=3)` kuralının
+yarattığı ölü bölge buydu.
 
 **`opusplan` — BU BAĞLAMDA GEÇERLİ DEĞİL.** `opusplan` (plan modunda Opus,
 yürütmede otomatik Sonnet'e geçen model ayarı) yalnızca Claude Code CLI'de

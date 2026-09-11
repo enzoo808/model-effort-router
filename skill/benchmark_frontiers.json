@@ -2,11 +2,7 @@
   "capability_frontiers": [
     {
       "basis_groups": [
-        "aa-coding-agent-index-2026-09-10",
-        "aa-tb4.0-2026-09-10",
-        "anthropic-launch-2026-09-01",
-        "carried-iteration-15",
-        "openai-launch-relay-2026-09-10"
+        "aa-coding-agent-index-2026-09-10"
       ],
       "by_codex_model": [
         {
@@ -26,7 +22,7 @@
               },
               "cell": "aa-coding-agent-index-2026-09-10 | AA Coding Agent Index as published 2026-09-10",
               "direction": "equivalent",
-              "reason": "gap 0 is inside the 1.05 band"
+              "reason": "identical scores; efficiency decides"
             },
             {
               "best": null,
@@ -48,8 +44,8 @@
                 }
               },
               "cell": "aa-tb4.0-2026-09-10 | Terminal-Bench 4.0",
-              "direction": "codex",
-              "reason": "gap -7 exceeds the 2.85 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             },
             {
               "best": {
@@ -65,8 +61,8 @@
                 }
               },
               "cell": "carried-iteration-15 | DeepSWE v1.1",
-              "direction": "codex",
-              "reason": "gap -0.4 exceeds the 0.21 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             },
             {
               "best": {
@@ -82,8 +78,8 @@
                 }
               },
               "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench 4.0",
-              "direction": "equivalent",
-              "reason": "gap -1.9 is inside the 3.06 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             },
             {
               "best": null,
@@ -93,11 +89,10 @@
             }
           ],
           "codex_model": "Astra",
-          "confidence": "low",
+          "confidence": "high",
           "preferred": "equivalent",
           "tally": {
-            "codex": 4,
-            "equivalent": 5
+            "equivalent": 4
           }
         },
         {
@@ -116,8 +111,8 @@
                 }
               },
               "cell": "aa-coding-agent-index-2026-09-10 | AA Coding Agent Index as published 2026-09-10",
-              "direction": "claude",
-              "reason": "gap 7 exceeds the 1.05 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             },
             {
               "best": {
@@ -133,8 +128,8 @@
                 }
               },
               "cell": "aa-tb4.0-2026-09-10 | Terminal-Bench 4.0",
-              "direction": "claude",
-              "reason": "gap 12 exceeds the 2.85 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             },
             {
               "best": {
@@ -150,8 +145,8 @@
                 }
               },
               "cell": "anthropic-launch-2026-09-01 | CursorBench 3.2.0",
-              "direction": "claude",
-              "reason": "gap 6.2 exceeds the 0.93 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (dispersion_published_for_another_benchmark), so the gap sets no direction -- see DIRECTION_BASIS"
             },
             {
               "best": {
@@ -167,8 +162,8 @@
                 }
               },
               "cell": "anthropic-launch-2026-09-01 | Terminal-Bench 4.0",
-              "direction": "claude",
-              "reason": "gap 23.6 exceeds the 3.54 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (dispersion_published_for_another_benchmark), so the gap sets no direction -- see DIRECTION_BASIS"
             },
             {
               "best": {
@@ -184,8 +179,8 @@
                 }
               },
               "cell": "carried-iteration-15 | DeepSWE v1.1",
-              "direction": "claude",
-              "reason": "gap 1 exceeds the 0.21 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             },
             {
               "best": {
@@ -201,8 +196,8 @@
                 }
               },
               "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench 4.0",
-              "direction": "claude",
-              "reason": "gap 18.5 exceeds the 3.06 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             },
             {
               "best": null,
@@ -218,18 +213,16 @@
             }
           ],
           "codex_model": "GPT-5.6 Sol",
-          "confidence": "high",
-          "preferred": "claude",
-          "tally": {
-            "claude": 13
-          }
+          "confidence": "none",
+          "preferred": "UNRESOLVED",
+          "tally": {}
         }
       ],
       "capability": "agentic-code",
       "comparisons": [
         {
-          "band": 1.05,
-          "band_basis": "spread_rule_0.15",
+          "band": null,
+          "band_basis": "no_published_dispersion",
           "benchmark": "AA Coding Agent Index",
           "benchmark_version": "as published 2026-09-10",
           "best": {
@@ -248,9 +241,10 @@
           "direction": "equivalent",
           "evidence_class": "ecosystem_end_to_end",
           "gap_claude_minus_codex": 0,
+          "gap_over_observed_spread_diagnostic": 0.0,
           "group": "aa-coding-agent-index-2026-09-10",
           "observed_spread": 7,
-          "reason": "gap 0 is inside the 1.05 band",
+          "reason": "identical scores; efficiency decides",
           "rows": [
             "aa-cai-astra-codex",
             "aa-cai-fable51-claudecode",
@@ -275,8 +269,8 @@
           "source_tier": "C"
         },
         {
-          "band": 2.85,
-          "band_basis": "spread_rule_0.15",
+          "band": null,
+          "band_basis": "no_published_dispersion",
           "benchmark": "Terminal-Bench",
           "benchmark_version": "4.0",
           "best": {
@@ -292,12 +286,13 @@
             }
           },
           "cell": "aa-tb4.0-2026-09-10 | Terminal-Bench 4.0",
-          "direction": "codex",
+          "direction": "UNRESOLVED",
           "evidence_class": "model_intrinsic",
           "gap_claude_minus_codex": -7,
+          "gap_over_observed_spread_diagnostic": 0.3684,
           "group": "aa-tb4.0-2026-09-10",
           "observed_spread": 19,
-          "reason": "gap -7 exceeds the 2.85 band",
+          "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS",
           "rows": [
             "tb-4-0-aa-astra",
             "tb-4-0-aa-fable-5-1",
@@ -306,8 +301,8 @@
           "source_tier": "B"
         },
         {
-          "band": 0.93,
-          "band_basis": "spread_rule_0.15",
+          "band": null,
+          "band_basis": "dispersion_published_for_another_benchmark",
           "benchmark": "CursorBench",
           "benchmark_version": "3.2.0",
           "best": {
@@ -323,12 +318,13 @@
             }
           },
           "cell": "anthropic-launch-2026-09-01 | CursorBench 3.2.0",
-          "direction": "claude",
+          "direction": "UNRESOLVED",
           "evidence_class": "vendor_relative",
           "gap_claude_minus_codex": 6.2,
+          "gap_over_observed_spread_diagnostic": 1.0,
           "group": "anthropic-launch-2026-09-01",
           "observed_spread": 6.2,
-          "reason": "gap 6.2 exceeds the 0.93 band",
+          "reason": "no measure of uncertainty is published for this cell (dispersion_published_for_another_benchmark), so the gap sets no direction -- see DIRECTION_BASIS",
           "rows": [
             "cursorbench-3-2-0-fable-5-1-max",
             "cursorbench-3-2-0-opus-5",
@@ -337,8 +333,8 @@
           "source_tier": "A"
         },
         {
-          "band": 3.54,
-          "band_basis": "spread_rule_0.15",
+          "band": null,
+          "band_basis": "dispersion_published_for_another_benchmark",
           "benchmark": "Terminal-Bench",
           "benchmark_version": "4.0",
           "best": {
@@ -354,12 +350,13 @@
             }
           },
           "cell": "anthropic-launch-2026-09-01 | Terminal-Bench 4.0",
-          "direction": "claude",
+          "direction": "UNRESOLVED",
           "evidence_class": "vendor_relative",
           "gap_claude_minus_codex": 23.6,
+          "gap_over_observed_spread_diagnostic": 1.0,
           "group": "anthropic-launch-2026-09-01",
           "observed_spread": 23.6,
-          "reason": "gap 23.6 exceeds the 3.54 band",
+          "reason": "no measure of uncertainty is published for this cell (dispersion_published_for_another_benchmark), so the gap sets no direction -- see DIRECTION_BASIS",
           "rows": [
             "tb-4-0-fable-5-1",
             "tb-4-0-mythos-5-1",
@@ -383,8 +380,8 @@
           "source_tier": "C"
         },
         {
-          "band": 0.21,
-          "band_basis": "spread_rule_0.15",
+          "band": null,
+          "band_basis": "no_published_dispersion",
           "benchmark": "DeepSWE",
           "benchmark_version": "v1.1",
           "best": {
@@ -400,12 +397,13 @@
             }
           },
           "cell": "carried-iteration-15 | DeepSWE v1.1",
-          "direction": "codex",
+          "direction": "UNRESOLVED",
           "evidence_class": "unclassified",
           "gap_claude_minus_codex": -0.4,
+          "gap_over_observed_spread_diagnostic": 0.2857,
           "group": "carried-iteration-15",
           "observed_spread": 1.4,
-          "reason": "gap -0.4 exceeds the 0.21 band",
+          "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS",
           "rows": [
             "deepswe-v1-1-astra",
             "deepswe-v1-1-opus-5",
@@ -414,8 +412,8 @@
           "source_tier": "C"
         },
         {
-          "band": 3.06,
-          "band_basis": "spread_rule_0.15",
+          "band": null,
+          "band_basis": "no_published_dispersion",
           "benchmark": "Terminal-Bench",
           "benchmark_version": "4.0",
           "best": {
@@ -431,12 +429,13 @@
             }
           },
           "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench 4.0",
-          "direction": "equivalent",
+          "direction": "UNRESOLVED",
           "evidence_class": "vendor_relative",
           "gap_claude_minus_codex": -1.9,
+          "gap_over_observed_spread_diagnostic": 0.0931,
           "group": "openai-launch-relay-2026-09-10",
           "observed_spread": 20.4,
-          "reason": "gap -1.9 is inside the 3.06 band",
+          "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS",
           "rows": [
             "tb-4-0-openai-astra",
             "tb-4-0-openai-fable-5-1",
@@ -478,15 +477,13 @@
           "source_tier": "B"
         }
       ],
-      "confidence": "low",
+      "confidence": "high",
       "efficiency_tiebreak_required": true,
       "preferred": "equivalent",
-      "rationale": "precedence-weighted tally equivalent=5, claude=4, codex=4"
+      "rationale": "precedence-weighted tally equivalent=4"
     },
     {
-      "basis_groups": [
-        "openai-launch-relay-2026-09-10"
-      ],
+      "basis_groups": [],
       "by_codex_model": [
         {
           "cells": [
@@ -504,16 +501,14 @@
                 }
               },
               "cell": "openai-launch-relay-2026-09-10 | OSWorld 2.0 (offline, partial scoring)",
-              "direction": "codex",
-              "reason": "gap -2.4 exceeds the 1.035 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             }
           ],
           "codex_model": "Astra",
-          "confidence": "low",
-          "preferred": "codex",
-          "tally": {
-            "codex": 1
-          }
+          "confidence": "none",
+          "preferred": "UNRESOLVED",
+          "tally": {}
         },
         {
           "cells": [
@@ -531,16 +526,14 @@
                 }
               },
               "cell": "openai-launch-relay-2026-09-10 | OSWorld 2.0 (offline, partial scoring)",
-              "direction": "claude",
-              "reason": "gap 4.5 exceeds the 1.035 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             }
           ],
           "codex_model": "GPT-5.6 Sol",
-          "confidence": "low",
-          "preferred": "claude",
-          "tally": {
-            "claude": 1
-          }
+          "confidence": "none",
+          "preferred": "UNRESOLVED",
+          "tally": {}
         }
       ],
       "capability": "computer-use",
@@ -606,8 +599,8 @@
           "source_tier": "C"
         },
         {
-          "band": 1.035,
-          "band_basis": "spread_rule_0.15",
+          "band": null,
+          "band_basis": "no_published_dispersion",
           "benchmark": "OSWorld",
           "benchmark_version": "2.0 (offline, partial scoring)",
           "best": {
@@ -623,12 +616,13 @@
             }
           },
           "cell": "openai-launch-relay-2026-09-10 | OSWorld 2.0 (offline, partial scoring)",
-          "direction": "codex",
+          "direction": "UNRESOLVED",
           "evidence_class": "vendor_relative",
           "gap_claude_minus_codex": -2.4,
+          "gap_over_observed_spread_diagnostic": 0.3478,
           "group": "openai-launch-relay-2026-09-10",
           "observed_spread": 6.9,
-          "reason": "gap -2.4 exceeds the 1.035 band",
+          "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS",
           "rows": [
             "osworld-2-0-offline-partial-astra",
             "osworld-2-0-offline-partial-opus-5",
@@ -652,15 +646,13 @@
           "source_tier": "C"
         }
       ],
-      "confidence": "low",
-      "efficiency_tiebreak_required": false,
-      "preferred": "codex",
-      "rationale": "precedence-weighted tally codex=1"
+      "confidence": "none",
+      "efficiency_tiebreak_required": true,
+      "preferred": "UNRESOLVED",
+      "rationale": "no comparison in any group carried a non-zero precedence weight"
     },
     {
-      "basis_groups": [
-        "openai-launch-relay-2026-09-10"
-      ],
+      "basis_groups": [],
       "by_codex_model": [
         {
           "cells": [
@@ -690,16 +682,14 @@
                 }
               },
               "cell": "openai-launch-relay-2026-09-10 | HLE",
-              "direction": "claude",
-              "reason": "gap 7.8 exceeds the 1.17 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             }
           ],
           "codex_model": "Astra",
-          "confidence": "low",
-          "preferred": "claude",
-          "tally": {
-            "claude": 1
-          }
+          "confidence": "none",
+          "preferred": "UNRESOLVED",
+          "tally": {}
         },
         {
           "cells": [
@@ -768,8 +758,8 @@
           "source_tier": "C"
         },
         {
-          "band": 1.17,
-          "band_basis": "spread_rule_0.15",
+          "band": null,
+          "band_basis": "no_published_dispersion",
           "benchmark": "HLE",
           "benchmark_version": null,
           "best": {
@@ -785,12 +775,13 @@
             }
           },
           "cell": "openai-launch-relay-2026-09-10 | HLE",
-          "direction": "claude",
+          "direction": "UNRESOLVED",
           "evidence_class": "vendor_relative",
           "gap_claude_minus_codex": 7.8,
+          "gap_over_observed_spread_diagnostic": 1.0,
           "group": "openai-launch-relay-2026-09-10",
           "observed_spread": 7.8,
-          "reason": "gap 7.8 exceeds the 1.17 band",
+          "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS",
           "rows": [
             "hle-tools-openai-astra",
             "hle-tools-openai-fable-5-1",
@@ -799,15 +790,13 @@
           "source_tier": "C"
         }
       ],
-      "confidence": "low",
-      "efficiency_tiebreak_required": false,
-      "preferred": "claude",
-      "rationale": "precedence-weighted tally claude=1"
+      "confidence": "none",
+      "efficiency_tiebreak_required": true,
+      "preferred": "UNRESOLVED",
+      "rationale": "no comparison in any group carried a non-zero precedence weight"
     },
     {
-      "basis_groups": [
-        "anthropic-launch-2026-09-01"
-      ],
+      "basis_groups": [],
       "by_codex_model": [
         {
           "cells": [
@@ -825,23 +814,21 @@
                 }
               },
               "cell": "anthropic-launch-2026-09-01 | GDPval-AA v2",
-              "direction": "claude",
-              "reason": "gap 142 exceeds the 21.3 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (dispersion_published_for_another_benchmark), so the gap sets no direction -- see DIRECTION_BASIS"
             }
           ],
           "codex_model": "GPT-5.6 Sol",
-          "confidence": "medium",
-          "preferred": "claude",
-          "tally": {
-            "claude": 2
-          }
+          "confidence": "none",
+          "preferred": "UNRESOLVED",
+          "tally": {}
         }
       ],
       "capability": "knowledge-work",
       "comparisons": [
         {
-          "band": 21.3,
-          "band_basis": "spread_rule_0.15",
+          "band": null,
+          "band_basis": "dispersion_published_for_another_benchmark",
           "benchmark": "GDPval-AA",
           "benchmark_version": "v2",
           "best": {
@@ -857,12 +844,13 @@
             }
           },
           "cell": "anthropic-launch-2026-09-01 | GDPval-AA v2",
-          "direction": "claude",
+          "direction": "UNRESOLVED",
           "evidence_class": "vendor_relative",
           "gap_claude_minus_codex": 142,
+          "gap_over_observed_spread_diagnostic": 1.0,
           "group": "anthropic-launch-2026-09-01",
           "observed_spread": 142,
-          "reason": "gap 142 exceeds the 21.3 band",
+          "reason": "no measure of uncertainty is published for this cell (dispersion_published_for_another_benchmark), so the gap sets no direction -- see DIRECTION_BASIS",
           "rows": [
             "gdpval-v2-fable-5-1",
             "gdpval-v2-opus-5",
@@ -871,10 +859,10 @@
           "source_tier": "A"
         }
       ],
-      "confidence": "medium",
-      "efficiency_tiebreak_required": false,
-      "preferred": "claude",
-      "rationale": "precedence-weighted tally claude=2"
+      "confidence": "none",
+      "efficiency_tiebreak_required": true,
+      "preferred": "UNRESOLVED",
+      "rationale": "no comparison in any group carried a non-zero precedence weight"
     },
     {
       "basis_groups": [],
@@ -930,8 +918,7 @@
     },
     {
       "basis_groups": [
-        "anthropic-launch-2026-09-01",
-        "openai-launch-relay-2026-09-10"
+        "anthropic-launch-2026-09-01"
       ],
       "by_codex_model": [
         {
@@ -950,16 +937,14 @@
                 }
               },
               "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench-Science 0.1",
-              "direction": "codex",
-              "reason": "gap -12 exceeds the 1.8 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             }
           ],
           "codex_model": "Astra",
-          "confidence": "low",
-          "preferred": "codex",
-          "tally": {
-            "codex": 1
-          }
+          "confidence": "none",
+          "preferred": "UNRESOLVED",
+          "tally": {}
         },
         {
           "cells": [
@@ -1012,6 +997,7 @@
           "direction": "claude",
           "evidence_class": "vendor_relative",
           "gap_claude_minus_codex": 30.2,
+          "gap_over_observed_spread_diagnostic": 1.0,
           "group": "anthropic-launch-2026-09-01",
           "observed_spread": 30.2,
           "reason": "gap 30.2 exceeds the 9 band",
@@ -1023,8 +1009,8 @@
           "source_tier": "A"
         },
         {
-          "band": 1.8,
-          "band_basis": "spread_rule_0.15",
+          "band": null,
+          "band_basis": "no_published_dispersion",
           "benchmark": "Terminal-Bench-Science",
           "benchmark_version": "0.1",
           "best": {
@@ -1040,12 +1026,13 @@
             }
           },
           "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench-Science 0.1",
-          "direction": "codex",
+          "direction": "UNRESOLVED",
           "evidence_class": "vendor_relative",
           "gap_claude_minus_codex": -12.0,
+          "gap_over_observed_spread_diagnostic": 1.0,
           "group": "openai-launch-relay-2026-09-10",
           "observed_spread": 12.0,
-          "reason": "gap -12 exceeds the 1.8 band",
+          "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS",
           "rows": [
             "tbsci-openai-astra",
             "tbsci-openai-fable-5-1"
@@ -1053,17 +1040,13 @@
           "source_tier": "C"
         }
       ],
-      "confidence": "low",
+      "confidence": "medium",
       "efficiency_tiebreak_required": false,
       "preferred": "claude",
-      "rationale": "precedence-weighted tally claude=2, codex=1"
+      "rationale": "precedence-weighted tally claude=2"
     },
     {
-      "basis_groups": [
-        "aa-tb4.0-2026-09-10",
-        "anthropic-launch-2026-09-01",
-        "openai-launch-relay-2026-09-10"
-      ],
+      "basis_groups": [],
       "by_codex_model": [
         {
           "cells": [
@@ -1081,8 +1064,8 @@
                 }
               },
               "cell": "aa-tb4.0-2026-09-10 | Terminal-Bench 4.0",
-              "direction": "codex",
-              "reason": "gap -7 exceeds the 2.85 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             },
             {
               "best": {
@@ -1098,8 +1081,8 @@
                 }
               },
               "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench 4.0",
-              "direction": "equivalent",
-              "reason": "gap -1.9 is inside the 3.06 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             },
             {
               "best": null,
@@ -1109,12 +1092,9 @@
             }
           ],
           "codex_model": "Astra",
-          "confidence": "medium",
-          "preferred": "codex",
-          "tally": {
-            "codex": 4,
-            "equivalent": 1
-          }
+          "confidence": "none",
+          "preferred": "UNRESOLVED",
+          "tally": {}
         },
         {
           "cells": [
@@ -1132,8 +1112,8 @@
                 }
               },
               "cell": "aa-tb4.0-2026-09-10 | Terminal-Bench 4.0",
-              "direction": "claude",
-              "reason": "gap 12 exceeds the 2.85 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             },
             {
               "best": {
@@ -1149,8 +1129,8 @@
                 }
               },
               "cell": "anthropic-launch-2026-09-01 | Terminal-Bench 4.0",
-              "direction": "claude",
-              "reason": "gap 23.6 exceeds the 3.54 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (dispersion_published_for_another_benchmark), so the gap sets no direction -- see DIRECTION_BASIS"
             },
             {
               "best": {
@@ -1166,8 +1146,8 @@
                 }
               },
               "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench 4.0",
-              "direction": "claude",
-              "reason": "gap 18.5 exceeds the 3.06 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             },
             {
               "best": null,
@@ -1183,18 +1163,16 @@
             }
           ],
           "codex_model": "GPT-5.6 Sol",
-          "confidence": "high",
-          "preferred": "claude",
-          "tally": {
-            "claude": 7
-          }
+          "confidence": "none",
+          "preferred": "UNRESOLVED",
+          "tally": {}
         }
       ],
       "capability": "terminal-tool",
       "comparisons": [
         {
-          "band": 2.85,
-          "band_basis": "spread_rule_0.15",
+          "band": null,
+          "band_basis": "no_published_dispersion",
           "benchmark": "Terminal-Bench",
           "benchmark_version": "4.0",
           "best": {
@@ -1210,12 +1188,13 @@
             }
           },
           "cell": "aa-tb4.0-2026-09-10 | Terminal-Bench 4.0",
-          "direction": "codex",
+          "direction": "UNRESOLVED",
           "evidence_class": "model_intrinsic",
           "gap_claude_minus_codex": -7,
+          "gap_over_observed_spread_diagnostic": 0.3684,
           "group": "aa-tb4.0-2026-09-10",
           "observed_spread": 19,
-          "reason": "gap -7 exceeds the 2.85 band",
+          "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS",
           "rows": [
             "tb-4-0-aa-astra",
             "tb-4-0-aa-fable-5-1",
@@ -1224,8 +1203,8 @@
           "source_tier": "B"
         },
         {
-          "band": 3.54,
-          "band_basis": "spread_rule_0.15",
+          "band": null,
+          "band_basis": "dispersion_published_for_another_benchmark",
           "benchmark": "Terminal-Bench",
           "benchmark_version": "4.0",
           "best": {
@@ -1241,12 +1220,13 @@
             }
           },
           "cell": "anthropic-launch-2026-09-01 | Terminal-Bench 4.0",
-          "direction": "claude",
+          "direction": "UNRESOLVED",
           "evidence_class": "vendor_relative",
           "gap_claude_minus_codex": 23.6,
+          "gap_over_observed_spread_diagnostic": 1.0,
           "group": "anthropic-launch-2026-09-01",
           "observed_spread": 23.6,
-          "reason": "gap 23.6 exceeds the 3.54 band",
+          "reason": "no measure of uncertainty is published for this cell (dispersion_published_for_another_benchmark), so the gap sets no direction -- see DIRECTION_BASIS",
           "rows": [
             "tb-4-0-fable-5-1",
             "tb-4-0-mythos-5-1",
@@ -1256,8 +1236,8 @@
           "source_tier": "A"
         },
         {
-          "band": 3.06,
-          "band_basis": "spread_rule_0.15",
+          "band": null,
+          "band_basis": "no_published_dispersion",
           "benchmark": "Terminal-Bench",
           "benchmark_version": "4.0",
           "best": {
@@ -1273,12 +1253,13 @@
             }
           },
           "cell": "openai-launch-relay-2026-09-10 | Terminal-Bench 4.0",
-          "direction": "equivalent",
+          "direction": "UNRESOLVED",
           "evidence_class": "vendor_relative",
           "gap_claude_minus_codex": -1.9,
+          "gap_over_observed_spread_diagnostic": 0.0931,
           "group": "openai-launch-relay-2026-09-10",
           "observed_spread": 20.4,
-          "reason": "gap -1.9 is inside the 3.06 band",
+          "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS",
           "rows": [
             "tb-4-0-openai-astra",
             "tb-4-0-openai-fable-5-1",
@@ -1320,16 +1301,13 @@
           "source_tier": "B"
         }
       ],
-      "confidence": "medium",
-      "efficiency_tiebreak_required": false,
-      "preferred": "codex",
-      "rationale": "precedence-weighted tally codex=4, claude=2, equivalent=1"
+      "confidence": "none",
+      "efficiency_tiebreak_required": true,
+      "preferred": "UNRESOLVED",
+      "rationale": "no comparison in any group carried a non-zero precedence weight"
     },
     {
-      "basis_groups": [
-        "anthropic-launch-2026-09-01",
-        "openai-launch-relay-2026-09-10"
-      ],
+      "basis_groups": [],
       "by_codex_model": [
         {
           "cells": [
@@ -1347,16 +1325,14 @@
                 }
               },
               "cell": "openai-launch-relay-2026-09-10 | AutomationBench",
-              "direction": "codex",
-              "reason": "gap -10 exceeds the 3.495 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             }
           ],
           "codex_model": "Astra",
-          "confidence": "low",
-          "preferred": "codex",
-          "tally": {
-            "codex": 1
-          }
+          "confidence": "none",
+          "preferred": "UNRESOLVED",
+          "tally": {}
         },
         {
           "cells": [
@@ -1374,8 +1350,8 @@
                 }
               },
               "cell": "anthropic-launch-2026-09-01 | AutomationBench",
-              "direction": "claude",
-              "reason": "gap 11.8 exceeds the 1.77 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (dispersion_published_for_another_benchmark), so the gap sets no direction -- see DIRECTION_BASIS"
             },
             {
               "best": {
@@ -1391,23 +1367,21 @@
                 }
               },
               "cell": "openai-launch-relay-2026-09-10 | AutomationBench",
-              "direction": "claude",
-              "reason": "gap 13.3 exceeds the 3.495 band"
+              "direction": "UNRESOLVED",
+              "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS"
             }
           ],
           "codex_model": "GPT-5.6 Sol",
-          "confidence": "medium",
-          "preferred": "claude",
-          "tally": {
-            "claude": 3
-          }
+          "confidence": "none",
+          "preferred": "UNRESOLVED",
+          "tally": {}
         }
       ],
       "capability": "workflow-automation",
       "comparisons": [
         {
-          "band": 1.77,
-          "band_basis": "spread_rule_0.15",
+          "band": null,
+          "band_basis": "dispersion_published_for_another_benchmark",
           "benchmark": "AutomationBench",
           "benchmark_version": null,
           "best": {
@@ -1423,12 +1397,13 @@
             }
           },
           "cell": "anthropic-launch-2026-09-01 | AutomationBench",
-          "direction": "claude",
+          "direction": "UNRESOLVED",
           "evidence_class": "vendor_relative",
           "gap_claude_minus_codex": 11.8,
+          "gap_over_observed_spread_diagnostic": 1.0,
           "group": "anthropic-launch-2026-09-01",
           "observed_spread": 11.8,
-          "reason": "gap 11.8 exceeds the 1.77 band",
+          "reason": "no measure of uncertainty is published for this cell (dispersion_published_for_another_benchmark), so the gap sets no direction -- see DIRECTION_BASIS",
           "rows": [
             "automationbench-fable-5-1",
             "automationbench-opus-5",
@@ -1437,8 +1412,8 @@
           "source_tier": "A"
         },
         {
-          "band": 3.495,
-          "band_basis": "spread_rule_0.15",
+          "band": null,
+          "band_basis": "no_published_dispersion",
           "benchmark": "AutomationBench",
           "benchmark_version": null,
           "best": {
@@ -1454,12 +1429,13 @@
             }
           },
           "cell": "openai-launch-relay-2026-09-10 | AutomationBench",
-          "direction": "codex",
+          "direction": "UNRESOLVED",
           "evidence_class": "vendor_relative",
           "gap_claude_minus_codex": -10.0,
+          "gap_over_observed_spread_diagnostic": 0.4292,
           "group": "openai-launch-relay-2026-09-10",
           "observed_spread": 23.3,
-          "reason": "gap -10 exceeds the 3.495 band",
+          "reason": "no measure of uncertainty is published for this cell (no_published_dispersion), so the gap sets no direction -- see DIRECTION_BASIS",
           "rows": [
             "automationbench-openai-astra",
             "automationbench-openai-fable-5-1",
@@ -1469,19 +1445,20 @@
           "source_tier": "C"
         }
       ],
-      "confidence": "low",
-      "efficiency_tiebreak_required": false,
-      "preferred": "claude",
-      "rationale": "precedence-weighted tally claude=2, codex=1"
+      "confidence": "none",
+      "efficiency_tiebreak_required": true,
+      "preferred": "UNRESOLVED",
+      "rationale": "no comparison in any group carried a non-zero precedence weight"
     }
   ],
   "effort_curves": [
     {
-      "band": 0.3,
-      "band_basis": "spread_rule_0.15",
+      "band": null,
+      "band_basis": "no_published_dispersion",
       "dominated_rungs": [
         {
-          "band": 0.3,
+          "band": null,
+          "basis": "no_gain_at_higher_cost",
           "cost_delta_usd": 0.95,
           "dominated_by": "xhigh",
           "ids": [
@@ -1513,14 +1490,29 @@
           "id": "aa-index-v4-3-astra-max",
           "score": 53
         }
+      ],
+      "unresolved_rungs": [
+        {
+          "band": null,
+          "basis": "positive_gain_no_published_dispersion",
+          "cost_delta_usd": 0.59,
+          "dominated_by": "high",
+          "ids": [
+            "aa-index-v4-3-astra-xhigh",
+            "aa-index-v4-3-astra-high"
+          ],
+          "rung": "xhigh",
+          "score_gain": 2
+        }
       ]
     },
     {
-      "band": 0.3,
-      "band_basis": "spread_rule_0.15",
+      "band": null,
+      "band_basis": "no_published_dispersion",
       "dominated_rungs": [
         {
-          "band": 0.3,
+          "band": null,
+          "basis": "no_gain_at_higher_cost",
           "cost_delta_usd": 1.65,
           "dominated_by": "xhigh",
           "ids": [
@@ -1552,6 +1544,20 @@
           "id": "aa-index-v4-3-fable-5-1-max",
           "score": 53
         }
+      ],
+      "unresolved_rungs": [
+        {
+          "band": null,
+          "basis": "positive_gain_no_published_dispersion",
+          "cost_delta_usd": 2.07,
+          "dominated_by": "high",
+          "ids": [
+            "aa-index-v4-3-fable-5-1-xhigh",
+            "aa-index-v4-3-fable-5-1-high"
+          ],
+          "rung": "xhigh",
+          "score_gain": 2
+        }
       ]
     },
     {
@@ -1573,11 +1579,12 @@
           "id": "cursorbench-3-2-0-fable-5-1-max",
           "score": 73.4
         }
-      ]
+      ],
+      "unresolved_rungs": []
     },
     {
-      "band": 0.75,
-      "band_basis": "spread_rule_0.15",
+      "band": null,
+      "band_basis": "no_published_dispersion",
       "dominated_rungs": [],
       "group": "aa-index-v4.3-2026-09-10",
       "model": "GPT-5.6 Sol",
@@ -1594,11 +1601,25 @@
           "id": "aa-index-v4-3-sol-max",
           "score": 47
         }
+      ],
+      "unresolved_rungs": [
+        {
+          "band": null,
+          "basis": "positive_gain_no_published_dispersion",
+          "cost_delta_usd": 1.18,
+          "dominated_by": "high",
+          "ids": [
+            "aa-index-v4-3-sol-max",
+            "aa-index-v4-3-sol-high"
+          ],
+          "rung": "max",
+          "score_gain": 5
+        }
       ]
     },
     {
-      "band": 0.45,
-      "band_basis": "spread_rule_0.15",
+      "band": null,
+      "band_basis": "no_published_dispersion",
       "dominated_rungs": [],
       "group": "aa-index-v4.3-2026-09-10",
       "model": "Opus 5",
@@ -1621,16 +1642,42 @@
           "id": "aa-index-v4-3-opus-5-max",
           "score": 51
         }
+      ],
+      "unresolved_rungs": [
+        {
+          "band": null,
+          "basis": "positive_gain_no_published_dispersion",
+          "cost_delta_usd": 1.27,
+          "dominated_by": "high",
+          "ids": [
+            "aa-index-v4-3-opus-5-xhigh",
+            "aa-index-v4-3-opus-5-high"
+          ],
+          "rung": "xhigh",
+          "score_gain": 2
+        },
+        {
+          "band": null,
+          "basis": "positive_gain_no_published_dispersion",
+          "cost_delta_usd": 0.98,
+          "dominated_by": "xhigh",
+          "ids": [
+            "aa-index-v4-3-opus-5-max",
+            "aa-index-v4-3-opus-5-xhigh"
+          ],
+          "rung": "max",
+          "score_gain": 1
+        }
       ]
     }
   ],
   "evidence_filter": "full",
   "generator": "scripts/compile_benchmark_frontiers.py",
-  "generator_version": "1.0",
-  "how_to_read": "GENERATED FILE -- do not hand-edit; run the compiler. 'preferred' is which ecosystem the declared evidence favours for that capability, or UNRESOLVED when the declared metadata does not settle it. UNRESOLVED and 'equivalent' both mean the router must fall through to the efficiency tie-break; they are not failures. Nothing here is read at runtime -- SKILL.md carries the compact rules and this file is how those rules are audited.",
+  "generator_version": "1.1",
+  "how_to_read": "GENERATED FILE -- do not hand-edit; run the compiler. 'preferred' is which ecosystem the declared evidence favours for that capability, or UNRESOLVED when the declared metadata does not settle it. UNRESOLVED and 'equivalent' both mean the router must fall through to the efficiency tie-break; they are not failures. A cell is UNRESOLVED whenever no confidence interval, standard error, repeated-trial dispersion or benchmark-owner significance threshold is published for it -- however large the gap looks; observed spread is not uncertainty. 'gap_over_observed_spread_diagnostic' shows which cells are worth chasing a real interval for and sets nothing. Nothing here is read at runtime -- SKILL.md carries the compact rules and this file is how those rules are audited.",
   "input_compiled": "2026-09-10",
   "input_file": "skill/benchmarks.json",
-  "input_sha256": "b2435b6a05151a5e07ad56d3d261ae067239de8d49d132306021c5911050df8c",
+  "input_sha256": "681c18541845f3a91d2e9e3fec92794df4606b3802eabc795d878ed660bdfad0",
   "rule_provenance": [
     {
       "all_vendor_run": false,
@@ -1705,6 +1752,36 @@
         "B"
       ],
       "summary": "max buys at most one index point over xhigh; require an indivisible novel-design decision"
+    },
+    {
+      "all_vendor_run": false,
+      "any_vendor_run": false,
+      "capability": "agentic-code, terminal-tool",
+      "comparability_groups": [
+        "aa-index-v4.3-2026-09-10",
+        "aa-tb4.0-2026-09-10"
+      ],
+      "comparison_type": "effort_curve",
+      "confidence": "medium",
+      "evidence_classes": [
+        "aggregate",
+        "efficiency_only",
+        "model_intrinsic"
+      ],
+      "evidence_ids": [
+        "aa-index-outtok-astra",
+        "aa-index-v4-3-astra-xhigh",
+        "aa-index-v4-3-sol-high",
+        "aa-index-v4-3-sol-max",
+        "tb-4-0-aa-astra",
+        "tb-4-0-aa-sol"
+      ],
+      "last_verified": "2026-09-11",
+      "rule_id": "E4",
+      "source_tiers": [
+        "B"
+      ],
+      "summary": "on agentic-code / terminal-tool, Sol max is replaced by Astra xhigh"
     },
     {
       "all_vendor_run": false,
