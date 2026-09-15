@@ -1,0 +1,4 @@
+Claude: Sonnet 5 · effort: high
+Codex: ✅ RECOMMENDED AI · Astra · effort: high
+Evidence: Driving a desktop ERP GUI is computer-use, Astra's one clear published lead (OSWorld 2.0 offline partial: Astra 72.6 vs Sol 65.7), a low-confidence cross-ecosystem call.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

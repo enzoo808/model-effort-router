@@ -1,0 +1,5 @@
+Claude: Opus 4.8 · effort: ultracode
+Codex: ✅ RECOMMENDED AI · Astra · effort: xhigh
+Evidence: Daybreak Blue clears Astra through the offensive gate, and 180-service exploit-chain building is terminal/agentic work where the vs-Astra row favours Codex (AA TB 4.0: Astra 59 vs Sol 40, ~27k output tokens/task vs 78k).
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
+Do not apply without human review.

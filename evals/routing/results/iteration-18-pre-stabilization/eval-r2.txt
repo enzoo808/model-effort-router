@@ -1,0 +1,4 @@
+Claude: Haiku 4.5
+Codex: ✅ RECOMMENDED AI · Luna · effort: low
+Evidence: A pure form/tone rewrite is D=0, so both are far past the bar and efficiency decides — Luna is ~5x cheaper per token and the fastest model in the table.
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

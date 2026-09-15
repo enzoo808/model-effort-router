@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: xhigh
+Codex: Terra · effort: xhigh
+Evidence: A single-file vulnerability review is deep-reasoning (adversarial correctness) where Claude leads on tooled HLE (low-confidence; Fable 65.0 · Opus 5 63.6 · Astra 57.2).
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

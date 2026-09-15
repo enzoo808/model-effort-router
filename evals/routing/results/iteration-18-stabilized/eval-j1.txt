@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Codex: Terra · effort: high
+Evidence: Reconciling 60 scanned invoices against a ledger extract is doc-data-understanding with no cross-ecosystem benchmark, so the default sits with Claude, low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

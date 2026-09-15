@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Opus 5 · effort: high
+Codex: Sol · effort: high
+Evidence: Bounded post-deploy diagnosis (D=2) leans on the agentic/terminal profile where Claude leads Sol (Terminal-Bench 4.0: Opus 5 52.3 vs Sol 37.3); the "came back wrong / don't under-resource" cue is a Rung-2 escalation lifting both tiers at the same rung.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).

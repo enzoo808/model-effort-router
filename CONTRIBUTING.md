@@ -71,9 +71,16 @@ procedure.
    `skill/SKILL.md` if the rule set is a new iteration. Then run:
    ```
    python scripts/check_policy_sync.py
+   python scripts/check_examples.py
    python scripts/check_routing_reachability.py --check --report
    python scripts/test_reachability_tool.py
    ```
+   `check_examples.py` fails if a worked example in `SKILL.md` contradicts the
+   golden it matches (a shipped example missing a required `low-confidence`
+   marker, wrong badge side, wrong effort). `check_policy_sync.py` verifies each
+   `<!-- rule:ID -->` block in `SKILL.md` matches the canonical text in
+   `routing_policy.json` `rule_blocks` **verbatim** — edit the block and the
+   mirror together.
    `check_policy_sync.py` exists because the mirror and the shipped skill once
    drifted a whole iteration apart, which meant an audit was certifying a policy
    nobody could run. It fails if either file moves without the other.

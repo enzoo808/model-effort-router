@@ -132,9 +132,9 @@ Dört şeyi bil:
    rakamlar uydurma.
 4. **İki arm da aynı `D→efor` tablosundan başlar** (Adım 3), sonra her biri
    kendi düzenleyicisini uygular:
-   - **Claude:** `ultracode` (>30dk ∧ 3+ farklı tür adım veya `W=3 ∧ D≥2`, ∧ tek
-     bölünemez zincir değil), `opusplan` (yalnızca Claude Code — bu talimatta
-     geçerli değil).
+   - **Claude:** `ultracode` (>30dk ∧ (`O=high` = 3+ ayrı faz **veya** `W=3 ∧ D≥2`) ∧
+     tek bölünemez zincir değil — faz tanımı aşağıda), `opusplan` (yalnızca Claude
+     Code — bu talimatta geçerli değil).
    - **Codex:** **agentic çok-adımlı kodlamada +1 efor kademesi** (**`xhigh`'da
      kapanır — her iki modelde de**; kademe bir model-katmanı farkını telafi eder,
      son basamağı satın almaz. Bir kadameyi asla **düşürmez**: `max` zaten
@@ -309,26 +309,32 @@ Haiku 4.5 seçildiyse efor alanını boş bırak.
 D=3 dışında hiç seçilmiyor, dolayısıyla `low`/`medium` ile önerilmez. Router
 `Sonnet 5 · max` / `Terra · max` **hiç üretmez** (orta katman `xhigh`'da kapanır).
 
-`ultracode` ⇔ tahmini süre > 30 dk **∧** (**3+ FARKLI TÜR adım** birbirini
-besliyor — keşfet · uygula · test yaz · test/build/lint çalıştır · çıkan hataları
-onar · döküman/paket **VEYA** `W=3 ∧ D≥2`) **∧** zorluk **tek bölünemez zincir
-değil**. Efor alanına `xhigh` değil **`ultracode`** yaz. Model kısıtı yok (Haiku
-hariç).
+`ultracode` ⇔ tahmini süre > 30 dk **∧** (`O=high` **VEYA** `W=3 ∧ D≥2`) **∧**
+zorluk **tek bölünemez zincir değil**. Efor alanına `xhigh` değil **`ultracode`**
+yaz. Model kısıtı yok (Haiku hariç).
 
-`ultracode` **workflow orkestrasyonu** satın alır, genişlik değil — bu yüzden
-dosya sayısına değil, oturumun kaç **tür** adımı sıraladığına bakar:
+**O=high (orkestrasyon), iteration-18:** oturum, **3+ ayrı FAZ** çalıştırmalı —
+faz = farklı türde bir çıktı üreten ve çıktısı sonraki faz tarafından tüketilen
+bir iş bloğu. Sayılan fazlar: araştırma, uygulama, bağımsız doğrulama, paketleme,
+veri/şema göçü, dokümantasyon, triyaj.
 
-- **Oturumun adımlarını say, ürünün aşamalarını değil.** Tek seferde yazılan
-  dört aşamalı bir pipeline = uygula ×4 + doğrula: iki tür, dört değil.
-- **Tek türün çok birimde tekrarı `W`'dir, orkestrasyon değil.** 150 dosyalık
-  `userId → accountId` yeniden adlandırma `D=1`'dir → `medium`, mod yok.
-- **Araştırma döngüsü de tek türdür.** Ölç → hipotez kur → yeniden ölç derinliktir;
-  kök-neden avı `xhigh` alır, `ultracode` değil.
+- **Tüm uygula→çalıştır→onar döngüsü TEK fazdır** — kaç dosya olursa olsun, kendi
+  değişikliğin için yazdığın testler bu fazın içindedir. "40 dosyada refactor yap
+  ve test suite'i yeşile getir" = tek faz → `ultracode` **yok**, `high`.
+- **İki faz, içinde adımları olan bir iştir.** "Var olan davranışı çöz, port et,
+  checkpoint store'u göçür, geçen haftanın trafiğini yeniden oynat, runbook'u
+  güncelle" = beş faz → `ultracode`.
+- **Tek türün çok birimde tekrarı `W`'dir, faz değil.** 150 dosyalık
+  `userId → accountId` `D=1`'dir → `medium`.
+- **Araştırma/kök-neden döngüsü tek fazdır.** Ölç → hipotez → yeniden ölç
+  derinliktir; `xhigh` alır, `ultracode` değil.
+
+Genişlik limbi (`W=3 ∧ D≥2`) ayrı durumdur: 100+ birimin **her biri yargı
+gerektirdiğinde** (180 servislik auth-bypass denetimi). `D≤1`'de genişlik hiçbir
+şey satın almaz.
 
 **Çakışma çözümü:** zorluk **tek bölünemez** bir tasarım/kanıt kararıysa
-(`max`'ın da şartı) `ultracode` **hayır**. Aynı testi kullandıkları için ikisi
-artık bir işi zıt gerekçelerle reddedemez — eski `¬(D=3 ∧ R=3)` kuralının
-yarattığı ölü bölge buydu.
+(`max`'ın da şartı) `ultracode` **hayır** — ikisi aynı testi kullanır.
 
 **`opusplan` — BU BAĞLAMDA GEÇERLİ DEĞİL.** `opusplan` (plan modunda Opus,
 yürütmede otomatik Sonnet'e geçen model ayarı) yalnızca Claude Code CLI'de

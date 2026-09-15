@@ -1,0 +1,4 @@
+Claude: Opus 4.8 · effort: ultracode
+Codex: ✅ RECOMMENDED AI · Astra · effort: xhigh
+Evidence: Daybreak Blue lifts the Codex hard-stop to Astra, and a 180-service pen test is terminal-tool/agentic execution where Astra leads on Terminal-Bench 4.0 (Astra 59 vs Claude 52) at ~27k output tokens/task against 78k.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).

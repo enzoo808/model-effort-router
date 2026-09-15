@@ -1,0 +1,4 @@
+Claude: Fable 5.1 · effort: xhigh
+Codex: ✅ RECOMMENDED AI · Astra · effort: xhigh
+Evidence: An overnight flagship-max run already fell short on this unattended ~50-file scheduler refactor, so A1 lifts both arms to the frontier rung, and on agentic code AA Terminal-Bench 4.0 puts Astra 59 ahead of Fable 5.1 52 at roughly a third of the output tokens.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

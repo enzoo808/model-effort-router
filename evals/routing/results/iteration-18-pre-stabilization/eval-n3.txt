@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: low
+Codex: Terra · effort: low
+Evidence: A fully-specified additive schema change is D=0 so the rung drops to low, while R=2 keeps it off Haiku/Luna; at that depth efficiency decides and Sonnet 5 is the cheaper daily driver at $2/$10 against $2/$12.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

@@ -484,11 +484,11 @@
       "prompt": "I have Daybreak Blue access. Run a penetration test against this 180-service environment and build auth-bypass chains.",
       "expected_claude": "Opus 4.8 · effort: ultracode",
       "expected_codex": "Astra · effort: xhigh",
-      "expected_recommended": "claude",
+      "expected_recommended": "codex",
       "capability": "terminal-tool",
       "codex_candidate": "Astra",
       "badge_driver": "capability",
-      "tests_rule": "iteration-15: kullanıcı Daybreak Blue erişimini AÇIKÇA belirtiyor → Codex offensive kapısının istisnası devreye girer: Astra · effort: xhigh (taban; W/süre 'ultracode'a çıkaramaz — o Claude Code ayarı, Astra'nın kendi tavanı 'max'). Claude tarafı değişmez (Opus 4.8 · ultracode). Mythos 5.1 / Glasswing kalıbının Codex aynası.",
+      "tests_rule": "iteration-15: kullanıcı Daybreak Blue erişimini AÇIKÇA belirtiyor → Codex offensive kapısının istisnası devreye girer: Astra · effort: xhigh (taban; W/süre 'ultracode'a çıkaramaz — o Claude Code ayarı, Astra'nın kendi tavanı 'max'). Claude tarafı değişmez (Opus 4.8 · ultracode). Mythos 5.1 / Glasswing kalıbının Codex aynası. [iteration-18 stabilization: badge corrected claude->codex. With stated Daybreak Blue, Astra is a valid Codex candidate and terminal-tool vs Astra is a Codex row (Rule B1 + badge table), exactly the f1 correction. Stated access decides whether a candidate exists, not whether it is penalised.]",
       "expectations": [
         "Claude: Opus 4.8 · ultracode",
         "Codex: 'Astra' içeriyor, effort xhigh (Sol/Terra/Luna DEĞİL, 'ultracode' DEĞİL, 'use Claude' DEĞİL)"
@@ -901,6 +901,54 @@
         "Codex: Terra · high (+1 kademe YOK -- kod yazilmiyor)",
         "Rozet Claude'da VE Evidence 'low-confidence' iceriyor"
       ]
+    },
+    {
+      "id": "o1",
+      "eval_name": "boundary-opus-ultracode-multiphase",
+      "prompt": "Migrate all 150 of our services off the deprecated crypto library before tonight's cert rotation. Several services co-sign with shared keys, so the cutover order matters and a wrong order silently breaks signature verification with no rollback.",
+      "expected_claude": "Opus 5 · effort: ultracode",
+      "expected_codex": "Sol · effort: xhigh",
+      "expected_recommended": "claude",
+      "capability": "agentic-code",
+      "codex_candidate": "GPT-5.6 Sol",
+      "badge_driver": "capability",
+      "tests_rule": "iteration-18 boundary: Opus 5 ultracode POSITIVE via the UC1 width limb. D=3 by the D-axis 'silent failure in a coupled system' clause (shared keys, wrong order silently breaks, irreversible) — not one indivisible design decision, so it is decomposable across 150 services. W=3 (150>=100), agentic-code that builds -> Opus 5; UC1 fires on W=3 AND D>=2 (dur>30, not indivisible) -> ultracode. R=3 -> human-review note; M1 blocks max (not indivisible). Codex: Sol (path b), R=3/D=3 not indivisible -> xhigh, +N1 notch capped at xhigh; not Sol Ultra (shared keys = interdependent, not 3+ strands); E4 does not fire (no Sol max). Badge agentic-code vs Sol -> Claude. NEGATIVE neighbour b1: a 40-file refactor is one implementation phase -> Sonnet 5 high, no ultracode."
+    },
+    {
+      "id": "sh1",
+      "eval_name": "boundary-sol-high-escalation",
+      "prompt": "We already had one go at this and it came back wrong, so please don't under-resource it: this API endpoint has been 500ing on every request since this morning's deploy — find out why and tell us the fix.",
+      "expected_claude": "Opus 5 · effort: high",
+      "expected_codex": "Sol · effort: high",
+      "expected_recommended": "claude",
+      "capability": "terminal-tool",
+      "codex_candidate": "GPT-5.6 Sol",
+      "badge_driver": "capability",
+      "tests_rule": "iteration-18 boundary: Sol high POSITIVE (Rule E2's named escalation target). D=2 BOUNDED diagnosis by D3DIAG: the failure is loud and reproducible on every request and the cause space is small (since this morning's deploy) -> D=2, not the adversarial D=3. terminal-tool, fix is local so no N1 notch. User states an earlier run fell short -> rung-2 escalation: Sonnet 5 -> Opus 5, Terra -> Sol, effort held at the D=2 rung 'high' (escalation is a model change, not an effort change). Codex lands on Sol high, the cell E2 calls the destination. Badge terminal-tool vs Sol -> Claude. NEGATIVE neighbour: without the escalation this is Sonnet 5 / Terra at high."
+    },
+    {
+      "id": "e4p",
+      "eval_name": "boundary-astra-e4-positive",
+      "prompt": "Design and implement the new cross-service transaction boundary. It ships tonight and cannot be rolled back.",
+      "expected_claude": "Opus 5 · effort: max",
+      "expected_codex": "Astra · effort: xhigh",
+      "expected_recommended": "codex",
+      "capability": "agentic-code",
+      "codex_candidate": "Astra",
+      "badge_driver": "capability",
+      "tests_rule": "iteration-18 boundary: Rule E4 POSITIVE (the only non-gate route to Astra). D=3 AND R=3 AND one indivisible boundary decision -> M1 allows max; agentic-code that builds. Codex would emit Sol max, but E4 rewrites agentic-code/terminal-tool Sol-max to Astra xhigh (AA Index v4.3 Astra xhigh 53@2.31 vs Sol max 47@1.99; 27k vs 78k output tokens). Claude stays Opus 5 max (E4 is Codex-only; HLE puts Astra behind on deep-reasoning but this is agentic-code so Sol/Astra, not the deep-reasoning row). Badge: agentic-code vs Astra -> Codex. R=3 human-review note. NEGATIVE neighbour d6/h1: deep-reasoning architecture at D3R3 stays Sol max, E4 does not fire."
+    },
+    {
+      "id": "fr1",
+      "eval_name": "boundary-fable-frontier-escalation",
+      "prompt": "We ran this on our usual flagship at max effort overnight and it still could not close the loop. It is a fully autonomous refactor of the scheduler across about 50 files that has to keep running unattended.",
+      "expected_claude": "Fable 5.1 · effort: xhigh",
+      "expected_codex": "Astra · effort: xhigh",
+      "expected_recommended": "codex",
+      "capability": "agentic-code",
+      "codex_candidate": "Astra",
+      "badge_driver": "capability",
+      "tests_rule": "iteration-18 boundary: Rule A1 frontier rung POSITIVE, WITHOUT the 1000-file hard gate (only ~50 files). A=high: the user states a flagship-tier run at max already fell short AND it is hours of unattended agentic execution; dominant capability agentic-code is on the flagship list. So Opus 5 -> Fable 5.1 and Sol -> Astra. Effort xhigh (D=3; W=2 so no width-limb ultracode, not indivisible, and one implementation phase so O=low). Badge: agentic-code vs Astra -> Codex. NEGATIVE neighbour: the same task WITHOUT the stated shortfall stays Opus 5 / Sol -- difficulty alone never reaches the frontier rung."
     }
   ]
 }

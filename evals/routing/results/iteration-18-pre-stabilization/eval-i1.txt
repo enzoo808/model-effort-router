@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: ultracode
+Codex: Sol Ultra · effort: xhigh
+Evidence: Reconciling clauses that conflict in non-obvious ways is deep-reasoning, where tooled HLE (Opus 5 63.6 vs Astra 57.2) outranks Ultra's parallelism as a product mechanism, and W=3 with per-unit judgement over a long session is what ultracode buys; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

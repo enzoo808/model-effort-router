@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Opus 5 · effort: xhigh
+Codex: Sol · effort: xhigh
+Evidence: A tool-less approximation-ratio proof is deep-reasoning where Claude leads Sol on HLE (low-confidence, equivalence band unresolved); R=1 keeps it at xhigh, not max, despite being one indivisible formal decision.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).

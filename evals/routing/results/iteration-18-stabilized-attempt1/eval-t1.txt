@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Opus 5 · effort: xhigh
+Codex: Sol · effort: xhigh
+Evidence: Adversarial CI-only build debugging leans on the terminal/agentic profile where Claude leads Sol (Terminal-Bench 4.0: Opus 5 52.3 vs Sol 37.3); the fix is local so no Codex notch, and max needs an indivisible design decision at R=3 which this is not.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).

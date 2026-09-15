@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Opus 5 · effort: max
+Codex: Sol · effort: max
+Evidence: A payments-ledger consistency model designed from scratch is one indivisible deep-reasoning decision at D=3∧R=3, so both arms take max; deep-reasoning favours Claude (tooled HLE: Opus 5 63.6 vs Astra 57.2), low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
+Do not apply without human review.

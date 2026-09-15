@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Codex: Terra · effort: high
+Evidence: Doc-data-understanding has no cross-ecosystem benchmark row at all, so the more sensible default stays with Claude, and D=2 across 60 units keeps both arms mid-tier at high — low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

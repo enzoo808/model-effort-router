@@ -59,25 +59,43 @@ def main() -> int:
         errors.append("policy version mismatch: routing_policy.json says %r, skill/SKILL.md says "
                       "%r. One of them was changed without the other." % (declared, m.group(1)))
 
+    # --- canonical rule blocks: the strong check --------------------------------
+    # Each rule id must appear in SKILL.md as a marked block
+    #   <!-- rule:ID -->\n<body>\n<!-- /rule:ID -->
+    # whose body EQUALS the canonical string in routing_policy.json rule_blocks.
+    # Verbatim equality, not substring: the defining sentence cannot drift.
     checked = 0
-    for rule_id, rule in sorted(policy.get("rules", {}).items()):
-        for needle in rule.get("skill_md_assertion", []):
-            checked += 1
-            if needle not in skill:
-                errors.append("rule %r: routing_policy.json asserts skill/SKILL.md contains\n"
-                              "        %r\n"
-                              "      but it does not. Either SKILL.md was not updated to the new "
-                              "rule, or its wording changed and the mirror was not." % (rule_id, needle))
-        for needle in rule.get("skill_md_must_not_appear", []):
-            checked += 1
-            if needle in skill:
-                errors.append("rule %r: skill/SKILL.md still contains the SUPERSEDED wording\n"
-                              "        %r\n"
-                              "      which routing_policy.json records as replaced." % (rule_id, needle))
+    blocks = policy.get("rule_blocks", {}).get("blocks", {})
+    if not blocks:
+        errors.append("routing_policy.json has no rule_blocks; nothing anchors the derived-signal "
+                      "rules to SKILL.md.")
+    for rule_id, canonical in sorted(blocks.items()):
+        checked += 1
+        m2 = re.search(r"<!-- rule:%s -->\n(.*?)\n<!-- /rule:%s -->" % (re.escape(rule_id),
+                                                                        re.escape(rule_id)),
+                       skill, re.S)
+        if not m2:
+            errors.append("rule %r: routing_policy.json defines it but skill/SKILL.md has no "
+                          "<!-- rule:%s -->...<!-- /rule:%s --> block." % (rule_id, rule_id, rule_id))
+            continue
+        found = m2.group(1).strip()
+        if found != canonical.strip():
+            errors.append("rule %r: the block in skill/SKILL.md does not match the canonical text in "
+                          "routing_policy.json rule_blocks.\n"
+                          "        SKILL.md: %r\n"
+                          "        policy  : %r\n"
+                          "      Edit both together." % (rule_id, found[:160], canonical.strip()[:160]))
+
+    # --- superseded wording that must be gone -----------------------------------
+    for needle in policy.get("skill_md_must_not_appear", []):
+        checked += 1
+        if needle in skill:
+            errors.append("skill/SKILL.md still contains superseded wording that routing_policy.json "
+                          "records as replaced:\n        %r" % needle)
 
     if not checked:
         errors.append("routing_policy.json declares no assertions at all, so this guard would "
-                      "pass against any SKILL.md. Add skill_md_assertion entries.")
+                      "pass against any SKILL.md.")
 
     for e in errors:
         print("ERROR [policy-sync] %s" % e)
@@ -85,8 +103,8 @@ def main() -> int:
         print("\n%d error(s). The audit must never validate a policy the skill does not ship."
               % len(errors))
         return 1
-    print("policy sync OK: skill/SKILL.md and routing_policy.json both at %r (%d assertions)"
-          % (declared, checked))
+    print("policy sync OK: skill/SKILL.md and routing_policy.json both at %r (%d rule blocks + "
+          "negative assertions verified)" % (declared, checked))
     return 0
 
 

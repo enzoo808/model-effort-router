@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Opus 5 · effort: xhigh
+Codex: Sol · effort: xhigh
+Evidence: A build that passes locally but fails only on the release CI runner is adversarial (D=3) diagnosis in the terminal/agentic profile where Claude leads Sol (Terminal-Bench 4.0: Opus 5 52.3 vs Sol 37.3); R=1 holds it to xhigh and the local fix takes no notch.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).

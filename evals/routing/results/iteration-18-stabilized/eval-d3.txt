@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Opus 4.8 · effort: ultracode
+Codex: use Claude — standard access hard-stops offensive-security tasks (Astra sits at OpenAI's Critical cyber level)
+Evidence: Offensive exploit / auth-bypass-chain generation is a hard gate to Opus 4.8 on Claude, while Codex declines on standard access, so Claude takes it by availability.
+Do not apply without human review.

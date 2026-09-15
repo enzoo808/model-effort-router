@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · opusplan · plan: xhigh · execute: medium
+⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.
+Codex: Sol · effort: xhigh
+Evidence: Workflow automation is the dominant capability and favours Claude on AutomationBench (31.4 / 26.9 vs Sol ~19, low-confidence), while the difficulty sits in the event map and the configuration that follows repeats a pattern.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

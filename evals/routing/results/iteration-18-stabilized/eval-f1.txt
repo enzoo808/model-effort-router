@@ -1,0 +1,5 @@
+Claude: Fable 5.1 · effort: max
+Codex: ✅ RECOMMENDED AI · Astra · effort: max
+Evidence: The boundary design is one indivisible decision at D=3∧R=3, which is what max buys; the 6000-file scale gates both arms to frontier and the wide execution is not the difficulty.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.

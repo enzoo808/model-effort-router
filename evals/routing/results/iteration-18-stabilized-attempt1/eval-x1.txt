@@ -1,0 +1,4 @@
+Claude: Fable 5.1 · effort: ultracode
+Codex: ✅ RECOMMENDED AI · Astra · effort: high
+Evidence: Whole-monorepo agentic build-fixing favours Astra on AA Terminal-Bench 4.0 (Astra 59 vs Fable 52) at ~27k output tokens/task against ~78k; the 3,200-file scale gates both models and ultracode fires on Claude's width limb.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

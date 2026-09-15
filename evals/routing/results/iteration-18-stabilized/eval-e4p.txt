@@ -1,0 +1,5 @@
+Claude: Opus 5 · effort: max
+Codex: ✅ RECOMMENDED AI · Astra · effort: xhigh
+Evidence: One indivisible boundary decision at R=3 is the case max exists for, but on agentic code Astra xhigh outscores Sol max (AA Index v4.3: 53 @ $2.31 vs 47 @ $1.99) at roughly a third of the output tokens.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
+Do not apply without human review.

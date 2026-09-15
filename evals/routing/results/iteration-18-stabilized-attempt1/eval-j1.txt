@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Codex: Terra · effort: high
+Evidence: Scanned-invoice reconciliation is doc-data-understanding with no cross-ecosystem benchmark row, so the stronger document-extraction default takes it; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

@@ -1,0 +1,4 @@
+Claude: Haiku 4.5
+Codex: ✅ RECOMMENDED AI · Luna · effort: low
+Evidence: D=0 single-value CSS change clears the bar for both, and Luna runs faster per token at slightly lower cost per task than Haiku 4.5.
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

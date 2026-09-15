@@ -16,109 +16,85 @@ description: >-
 Analyse the user's prompt and say, **separately for Claude and for
 Codex/ChatGPT**, which model and effort level to run it on — then mark the one
 better suited to *this* task with `✅ RECOMMENDED AI`. Do **not** run the prompt
-— only route it. The user decides which recommendation to use; this router
-starts nothing automatically.
+— only route it.
 
 **The decision principle.** *Select the lowest-quota model × effort combination
 that stays on the task-specific capability frontier.* Prefer the stronger
 candidate when the task-relevant performance difference is meaningful; prefer
 the more token-efficient candidate when capability sits inside a defensible
-equivalence band. This is **not** "always cheapest", **not** "always strongest",
-and **not** "highest benchmark score wins".
+equivalence band. Not "always cheapest", not "always strongest", not "highest
+benchmark score wins".
 
-**Calibration: two separate subscription quotas.** The protected resource is
-Claude's 5-hour window **and** ChatGPT Plus's 3-hour + weekly windows — not
-dollars. The real danger isn't picking a model that's too weak; it's
-*reflexively picking the most expensive model and burning the quota.* When in
-doubt, round **down**.
+**Calibration.** The protected resource is Claude's 5-hour window **and**
+ChatGPT Plus's 3-hour + weekly windows — not dollars. The real danger isn't
+picking a model that's too weak; it's *reflexively picking the most expensive
+model and burning the quota.* When in doubt, round **down**.
 
-**How to run this — keep it cheap.** Do Steps 0–6 **in your head, in one pass**;
-don't write them out. Produce only the final two lines plus the `Evidence:`
-line. Show workings only if the user asks "why?".
+**How to run this.** Steps 0–6 **in your head, in one pass**. Emit only the two
+recommendation lines plus `Evidence:`. Show workings only if asked "why?".
 
-> **Fast path.** If Step 0 raises nothing **and** no Step 1 gate fires, read the
-> capability profile and the four axes in a single pass, apply the two mapping
-> tables, then the badge table — and emit. Most prompts are this case. Open
-> `reference.md` only when a specific call is genuinely ambiguous after one read
-> (§10 edge-case rulings · §8 example library · §11 capability→benchmark map ·
-> §12 the evidence record itself).
+> **Every rule you need is in this file, with its exceptions attached to it.**
+> `reference.md` is for auditing a rule, not for applying one — open it only if
+> a call is still ambiguous after reading the rule *and* the note under it.
 
-**Claude model roster (verified 10 September 2026):**
+**Rosters (verified 10 September 2026).** Claude:
 
 | Model | Role |
 |---|---|
-| Haiku 4.5 | Speed/volume specialist. No effort parameter. 200k context |
-| Sonnet 5 | Daily work — speed+intelligence balance. **Default starting point.** $2/$10 (the rise to $3/$15 was cancelled; $2/$10 is now the standard price) |
-| **Opus 5** | **Flagship.** Complex agentic code and enterprise work. $5/$25 |
+| Haiku 4.5 | Speed/volume. **No effort parameter.** 200k context |
+| Sonnet 5 | Daily work. **Default starting point.** $2/$10, 1M context |
+| **Opus 5** | **Flagship.** Complex agentic code, enterprise work. $5/$25 |
 | Opus 4.8 | Legacy — the **only** lasting role is the offensive-security gate |
-| **Fable 5.1** | Frontier scale: long-horizon autonomy, extreme breadth, **biology-adjacent R&D**. $10/$50, cache reads ¼ ($0.25/MTok); cutoff Jun 2026 |
-| Mythos 5.1 | **Same model** as Fable 5.1 with permissive safeguards — **Project Glasswing invite only**. Recommend only if the user states they have this access |
+| **Fable 5.1** | Frontier scale: long-horizon autonomy, extreme breadth, **biology-adjacent R&D**. $10/$50 |
+| Mythos 5.1 | = Fable 5.1 with permissive safeguards. **Project Glasswing invite only** |
 
-> **Anthropic's own framing (re-verified 10 Sep 2026):** "Most workloads start
-> with Claude Opus 5… if your evals at `xhigh` or `max` effort still fall short
-> on demanding reasoning or long-horizon agentic work, move to Claude Fable
-> 5.1." That is the **third escalation rung** — see Step 4's escalation note. It
-> is a *stated shortfall*, not difficulty: a long session on its own does not
-> earn it.
+Codex/ChatGPT (GPT-5.6 family + GPT-6 Astra):
 
-**Codex/ChatGPT roster (GPT-5.6 family + GPT-6 Astra, verified 10 Sep 2026):**
-
-| Model | Role | Claude analogue (rough) |
+| Model | Role | Claude analogue |
 |---|---|---|
-| Luna | Speed/volume specialist, cheapest tier. Codex CLI default | Haiku 4.5 |
-| Terra | Daily work, balanced — **default starting point** | Sonnet 5 |
-| **Sol** | **GPT-5.6 flagship** — code/science/security; the **D=3** pick | Opus 5 |
-| **Sol Ultra** | A Codex *mode* toggled on Sol (Plus+): ~4 collaborating agents in parallel. Not a separate model; `effort:"ultra"` → HTTP 400. **Also available on Astra** (confirmed 10 Sep) | stronger parallelism primitive than `ultracode` |
-| **Astra** | **GPT-6 flagship** (`gpt-6-astra`). 1.05M context. **Gated pick only** — the five Codex gates below. ~2.5× Sol's headline price but materially fewer output tokens | Opus 5 / Fable 5.1 (frontier) |
-| *Codex Spark 5.3* | Text-only research preview for near-instant coding iteration. **The router does not select it** — research preview, text-only, no benchmark record | — |
+| Luna | Speed/volume, cheapest. Codex CLI default | Haiku 4.5 |
+| Terra | Balanced daily driver. **Default starting point** | Sonnet 5 |
+| **Sol** | **GPT-5.6 flagship** — code/science/security; the `D=3` pick | Opus 5 |
+| **Sol Ultra** | A Codex *mode* on Sol (Plus+): ~4 collaborating agents. Not a model; `effort:"ultra"` → HTTP 400. Also runs on Astra | — |
+| **Astra** | **GPT-6 flagship** (`gpt-6-astra`), 1.05M context. Rare: four gates, plus Rule E4 and the frontier rung. ~2.5× Sol's price, far fewer output tokens | Opus 5 / Fable 5.1 |
+| *Codex Spark 5.3* | Text-only research preview. **The router does not select it** | — |
 
-> **`max` on Codex is Astra/Sol only** (`learn.chatgpt.com/docs/models`, 10 Sep
-> 2026: "Astra and Sol additionally offer Max and Ultra modes"). On Terra and
-> Luna it is a **capability limit**, not a preference — the router cannot emit
-> `Terra · max` even if a rule asked for it. One conflicting source lists a
-> Terra `max` row; see `reference.md` §12.3.
+> **`max` on Codex is Astra/Sol only** — a capability limit, not a preference.
+> The router cannot emit `Terra · max` even if a rule asked for it.
+> **`ultracode` is Claude-only; Ultra is Codex-only.**
 
 ---
 
 ## Effort levels
 
-Claude Code `/effort` menu — and, rung for rung, the Codex ladder:
-
 | Level | What it does |
 |---|---|
 | `low` | Short, well-scoped work that needs no intelligence |
-| `medium` | Cost-sensitive work; gives up some intelligence. **Codex API default** |
+| `medium` | Cost-sensitive work. **Codex API default** |
 | `high` | **Claude default** (every model that supports effort) |
 | `xhigh` | Deeper reasoning. 30 min+ agentic/coding work |
-| `max` | Deepest reasoning. Over-thinking risk. Claude: all tiers. **Codex: Astra/Sol only** |
+| `max` | Deepest reasoning. Over-thinking risk. **Codex: Astra/Sol only** |
 | `ultracode` | `xhigh` + **dynamic workflow orchestration**. Claude Code setting |
 
 1. **`ultracode` is a Claude Code setting, not a model effort level.** It sends
-   `xhigh` and adds workflow orchestration. Works on every model that supports
-   `xhigh`. Not Haiku.
-2. **Haiku 4.5 does not support the effort parameter.** Recommend Haiku → write
-   no effort.
-3. Effort is a behavioural signal, not a token budget. "low = 1,024 tokens"
-   figures are made up.
-4. **Effort is not the primary quality dial.** OpenAI states it outright: "Treat
-   `reasoning.effort` as a tuning knob, not the primary way to recover quality."
-   Step 5's dominance rules act on exactly this — a *stronger model at a lower
-   rung* often beats a *weaker model at a higher rung* on both quality and
-   quota.
+   `xhigh` and adds workflow orchestration. Every model that supports `xhigh`.
+   Not Haiku.
+2. **Haiku 4.5 has no effort parameter.** Recommend Haiku → write no effort.
+3. Effort is a behavioural signal, not a token budget.
+4. **Effort is not the primary quality dial.** A *stronger model at a lower rung*
+   often beats a *weaker model at a higher rung* on both quality and quota — see
+   Rules E1–E4.
 
 ---
 
 ## Step 0 — Prompt quality gate
 
-**Do not skip.** Before anything else, run these four checks. "Is there a
-success criterion / scope?" as a single question is not enough — most real
-prompts contain scope but carry an unnoticed ambiguity. If any check is "yes",
-**recommend no model, no badge** — clarify first, concretely (name what's
-missing, don't just say "it's unclear").
+**Do not skip.** If any check is "yes", emit the blocked form below — no model,
+no badge, no `Evidence:` line.
 
 1. **A rule stated by example but not generalised?** "For instance if X then Y"
-   with no general formula/threshold. *("500 of 1000 units land the same day" —
-   50%, a fixed 500, or an hour cutoff?)*
+   with no formula or threshold. *("500 of 1000 units land the same day" — 50%,
+   a fixed 500, or an hour cutoff?)*
 2. **Would a wrong assumption silently produce a wrong result?** Code runs
    without error but systematically miscalculates on real data.
 3. **Is the target concrete?** "We'll do it like this in the system" doesn't say
@@ -127,21 +103,30 @@ missing, don't just say "it's unclear").
    prompt?** *("delete inactive users" — `is_active` flag, or no login for N
    days? Different delete sets.)*
 
-Sending an unclear prompt to the most expensive model is pure quota waste — it
-guesses the context, guesses wrong, the work is redone. Counter-example (do
-**not** block): "Add a `deleted_at` column and implement soft-delete instead of
-`DELETE`" — rule complete, one interpretation, concrete scope → go to Step 1.
+<!-- rule:S0 -->
+**S0 · blocked output.** A prompt blocked at Step 0 emits exactly one line, a `Clarify:` line naming the missing information as a question, and no `Claude:`, `Codex:`, `Evidence:` or badge line at all.
+<!-- /rule:S0 -->
+
+```
+Clarify: <the specific thing that is missing, as a question>
+```
+
+> This **overrides** the "three lines, always" output contract. A blocked prompt
+> has no models to name, so there are no lines to put them on.
+
+Counter-example (do **not** block): "Add a `deleted_at` column and implement
+soft-delete instead of `DELETE`" — rule complete, one interpretation, concrete
+scope → go to Step 1.
 
 ---
 
 ## Step 1 — Hard gates
 
-**Hard constraints, never weighted scores.** Capability limits, safety
-behaviour and availability are not preferences and do not trade against
-efficiency. Every gate below was re-verified on 10 Sep 2026 and survived.
+**Hard constraints, never weighted scores.** Capability limits, safety and
+availability do not trade against efficiency.
 
 - **Deciding gate:** fixes **which model**, bypasses Step 4 model selection.
-  Does not bypass the effort/`ultracode` check, and does not bypass Step 6.
+  Does **not** bypass the effort/`ultracode` check, and does not bypass Step 6.
 - **Eliminating gate:** removes one candidate; scoring runs among the rest.
 
 ### Claude arm
@@ -151,7 +136,7 @@ efficiency. Every gate below was re-verified on 10 Sep 2026 and survived.
 | Sub-second latency **or** high-volume classification/parsing | Deciding | **Haiku 4.5.** No effort. Stop |
 | **Offensive security:** exploit generation, penetration testing, binary-based vulnerability scanning | Deciding | **Opus 4.8**, effort floor `xhigh` (W/duration can still raise it to `ultracode`) — with Glasswing access, **Mythos 5.1** |
 | **Biology-adjacent R&D:** genomics, protein/chemistry-heavy pipeline, bio-CTF | Deciding | **Fable 5.1** (default effort `high`, no floor) |
-| Context exceeds 200k tokens | **Eliminating** | **Haiku 4.5 removed**, scoring runs with the rest |
+| Context exceeds 200k tokens | **Eliminating** | **Haiku 4.5 removed** |
 | **1000+ files / whole-codebase scale** | Deciding | **Fable 5.1** |
 
 ### Codex arm
@@ -159,130 +144,156 @@ efficiency. Every gate below was re-verified on 10 Sep 2026 and survived.
 | Condition | Kind | Result |
 |---|---|---|
 | Sub-second latency / high-volume classification | Deciding | **Luna**, effort `low` |
-| **Offensive security** (same definitions) | Deciding | **"use Claude"** — standard Codex/ChatGPT access **hard-stops** these tasks (Astra sits at OpenAI's **Critical** cyber level; a cyber safety check ends the run rather than pausing for approval). **Exception:** if the user states **Daybreak Blue** access → **Astra · `xhigh`** floor |
-| **Biology-adjacent R&D** (same definitions) | Deciding | **"unverified — use Claude"**, no model. Astra's system card is cyber-focused; no Astra biology threshold is published (re-checked 10 Sep 2026) |
-| **1000+ files / whole-codebase scale** | Deciding | **Astra** — only Codex model with a verified ≥1M window (1.05M). Wins over the D=3 mapping, path (a) included |
-| **≥ ~1M-token corpus / "load the whole repo at once"** | Deciding | **Astra**. Mind the **2× price** above 272k input tokens |
-| **Computer use / GUI is the task itself** (drive a browser or desktop app end-to-end) | Deciding | **Astra** — its one clear published lead over Sol. Not for "code that happens to touch a browser" |
+| **Offensive security** (same definitions) | Deciding | **"use Claude"** — standard access **hard-stops** these tasks (Astra sits at OpenAI's **Critical** cyber level). **Exception:** user states **Daybreak Blue** access → **Astra**, floor `xhigh` |
+| **Biology-adjacent R&D** (same definitions) | Deciding | **"unverified — use Claude"**, no model |
+| **1000+ files / whole-codebase scale** | Deciding | **Astra** — only Codex model with a verified ≥1M window |
+| **≥ ~1M-token corpus / "load the whole repo at once"** | Deciding | **Astra**. Mind the **2× price** above 272k input |
+| **Computer use / GUI is the task itself** | Deciding | **Astra** — its one clear published lead. Not for "code that happens to touch a browser" |
 
 > **Defensive security work does not trigger the offensive gate — on either arm,
-> at any scale.** "Audit this code/infra for vulnerabilities", "find open
-> ports", "audit 180 services for auth-bypass bugs (no exploits)" → normal
-> scoring. Fable 5.1 and Astra both do defensive vulnerability *discovery* by
-> default; only exploit / PoC *generation* is gated.
+> at any scale.** "Audit this code for vulnerabilities", "find open ports",
+> "audit 180 services for auth-bypass bugs (no exploits)" → normal scoring. Only
+> exploit / PoC *generation* is gated.
 >
-> **Frontier-scale gate — one signal is enough:** the file/scope count (1000+).
-> 100–999 files does **not** gate — normal scoring (`W=3`).
+> **Frontier-scale gate — one signal only: the file count (1000+).** 100–999
+> files does **not** gate; that is `W=3` under normal scoring.
 >
-> Rationale and worked pairs: `reference.md` §10.1.
+> **Stated access does not penalise a candidate.** An access tier decides
+> whether a candidate *exists*, not whether it wins. Once the user says they
+> have Daybreak Blue or Glasswing, compare that candidate on capability like any
+> other — Step 6 runs normally.
 
 ---
 
 ## Step 2 — Task capability profile
 
-**Before scoring scope, name the capabilities the task actually needs.** This is
-what makes benchmark evidence usable: a benchmark only counts for a task whose
-capability it measures. A pure maths problem gives SWE-bench, Terminal-Bench and
-CursorBench a weight of **zero**.
+**Name the capabilities the task actually needs before scoring scope.** A
+benchmark only counts for a task whose capability it measures: a pure maths
+problem gives SWE-bench and Terminal-Bench a weight of **zero**.
 
-Pick the **one or two dominant** capabilities — not the full list. The dominant
-one drives the evidence lookup in Step 5 and the badge in Step 6.
+Pick the **one or two dominant** tags. They drive Step 5's evidence lookup and
+Step 6's badge — and **only these tags** may bring evidence into the badge
+decision (Rule B1).
 
-| Capability tag | Prompt signals | Evidence anchor (Step 5) |
+| Capability tag | Prompt signals | Evidence anchor |
 |---|---|---|
-| **agentic-code** | multi-file implementation, refactor, migration, feature build, debug-and-fix across files, repository navigation | Terminal-Bench 4.0 · CursorBench 3.2.0 |
+| **agentic-code** | multi-file implementation, refactor, migration, feature build, debug-and-fix across files | Terminal-Bench 4.0 · CursorBench 3.2.0 |
 | **terminal-tool** | terminal/CLI work, build & test loops, tool orchestration, long-horizon execution | Terminal-Bench 4.0 |
-| **deep-reasoning** | architecture from scratch, algorithm design, mathematics/formal proof, tool-less analysis, adversarial correctness hunting | HLE (tool-less vs tooled) |
-| **knowledge-work** | produce a finished document / spreadsheet / deck / memo / filing; professional deliverable | GDPval-AA v2 |
-| **research-synthesis** | multi-source research, web search, reconciling conflicting sources | AA-Omniscience, AA-Briefcase (via AA Index) |
-| **long-context** | read a large corpus, map/summarise across hundreds of pages or a whole repo | AA-LCR v1.1 (via AA Index) + the hard context-window spec |
+| **deep-reasoning** | **architecture from scratch**, algorithm design, mathematics/formal proof, tool-less analysis, adversarial correctness hunting | HLE (tool-less vs tooled) |
+| **knowledge-work** | produce a finished document / spreadsheet / deck / memo / filing | GDPval-AA v2 |
+| **research-synthesis** | multi-source research, web search, reconciling conflicting sources | AA-Omniscience (via AA Index) |
+| **long-context** | read a large corpus, map/summarise across hundreds of pages or a whole repo | AA-LCR v1.1 + the context-window spec |
 | **computer-use** | drive a browser or desktop GUI, click through an app, screenshots | OSWorld (⚠️ version + scoring mode) |
 | **science** | genomics, chemistry, physics, research engineering, lab pipelines | Terminal-Bench-Science 0.1 |
 | **workflow-automation** | wire up business workflows, integrations, multi-tool orchestration | AutomationBench |
-| **doc-data-understanding** | scanned documents, PDFs, charts, tables, multimodal extraction | *no verified cross-ecosystem row — evidence-poor* |
-| **parallel-independent** | 3+ targets that are genuinely unaware of each other and merge at the end | *product mechanism, not a benchmark:* `ultracode` vs Ultra mode |
-| **latency-volume** | sub-second, high-throughput, bulk classification/parsing | output speed + cost/task (AA Index table) |
-| **instruction-following** | rigid format/schema compliance | folded into the dominant tag; never dominant on its own |
+| **doc-data-understanding** | scanned documents, PDFs, charts, tables, multimodal extraction | *evidence-poor* |
+| **parallel-independent** | 3+ targets or strands that proceed unaware of each other and merge at the end | *product mechanism:* `ultracode` vs Ultra |
+| **latency-volume** | sub-second, high-throughput, bulk classification/parsing | output speed + cost/task |
+| **instruction-following** | rigid format/schema compliance | never dominant on its own |
 
-> Cybersecurity splits: **offensive** is a Step 1 gate; **defensive** hunting is
+> Cybersecurity: **offensive** is a Step 1 gate. **Defensive** hunting is
 > `deep-reasoning` (adversarial correctness) plus whichever of `agentic-code` /
 > `terminal-tool` the scale demands.
 >
-> Full capability→benchmark map, including which benchmarks are *excluded* for
-> each tag: `reference.md` §11.
+> `parallel-independent` is inert below `D=3` — Codex path (a) requires `D=3`
+> and the badge table is skipped at `D ≤ 1`.
 
 ---
 
 ## Step 3 — Score scope and stakes on four axes, 0–3
 
-The capability profile says *what kind of work*; R/D/W/C says *how much of it
-and at what risk*. Both feed the mapping. For each axis **ask the diagnostic
-first**, then place the level. **When in doubt, round down.**
+**Ask the diagnostic first, then place the level. When in doubt, round down.**
 
 ### R — Risk / irreversibility
 
-*Diagnostic: if the output is wrong, minutes or days to fix? Automatic rollback
-(git revert, feature flag)? How many users/systems affected? Money/health/legal?*
+*If the output is wrong: minutes or days to fix? Automatic rollback? How many
+users/systems? Money/health/legal?*
 
-`0` Throwaway draft — no loss even if unused
-`1` Used but a human reviews and approves (PR, draft email)
-`2` Goes to a real system but reversible (feature-flagged deploy, reversible migration, isolated operational value)
-`3` No way back / disproportionately costly — data-loss risk, irreversible migration, outbound message/payment, central shared-core architectural decision, medical/legal/financial advice, live user data
+`0` Throwaway — no loss even if unused · `1` Used but a human reviews and
+approves (PR, draft email) · `2` Goes to a real system but reversible
+(feature-flagged deploy, reversible migration, isolated operational value) ·
+`3` No way back or disproportionately costly — data loss, irreversible
+migration, outbound message/payment, central shared-core decision,
+medical/legal/financial advice, live user data
 
 > **First separate: a codebase change, or a live/operational value?** A normal
-> source-code change is **R=1 by default** — the normal flow is PR review +
-> deploy. R=2/R=3 only kick in if the prompt explicitly points at a value that
-> goes live **without** code review — prod config file, live admin panel,
-> feature-flag toggle, DB setting.
-> - **"Architectural decision" alone ≠ R=3.** Rollable out service-by-service
->   and rewindable → **R=2**. R=3 only when (a) no real rollback, or (b) a
->   **central/shared** core the whole system depends on.
+> source-code change is **R=1 by default** — PR review + deploy. R=2/R=3 only
+> kick in when the prompt points at a value that goes live **without** code
+> review: prod config, live admin panel, feature-flag toggle, DB setting.
+> - **"Architectural decision" alone ≠ R=3.** Rollable service-by-service →
+>   **R=2**. R=3 only when (a) no real rollback, or (b) a **central/shared** core
+>   the whole system depends on.
 > - **Decompose → module or service?** "modules" = internal refactor → **R=2**.
 >   "separate **services/processes**" → **R=3**.
 > - **"One-line config" alone ≠ R=2.** Blast radius, not line length. A line
 >   governing **system-wide** behaviour (retry count, timeout, pool size) → R=3.
-> - **A schema / DB migration is R=2 even when it is trivially specified.** It
->   lands in a live database, so it is not a plain source change. "Add a
->   `last_login_at` column and make it nullable" is `D=0` **and** `R=2` — the
->   depth sets the effort (`low`), the risk keeps it off Haiku/Luna.
->
-> Worked ✅/❌ pairs: `reference.md` §10.2.
+> - **A schema / DB migration is R=2 even when trivially specified.** "Add a
+>   `last_login_at` column, nullable" is `D=0` **and** `R=2`.
 
 ### D — Depth
 
-*Diagnostic: known/standard pattern, or thought out from scratch? How many
-approaches is a choice being made between?*
+*Known pattern, or thought out from scratch? How many approaches is a choice
+being made between?*
 
 | Level | Coding | Writing/analysis | Research | Data |
 |---|---|---|---|---|
-| `0` | Pattern match, known constant; **fully-specified additive schema change** | One-sentence answer **or** pure form/tone change (length irrelevant) | Single-source lookup | Reading a single number |
+| `0` | Pattern match, known constant; **fully-specified additive schema change** | One-sentence answer **or** pure form/tone change | Single-source lookup | Reading a single number |
 | `1` | Standard pattern (CRUD, known bug shape); schema change with a choice | Simple summary/draft | Single-source summary | Simple filter/aggregation |
 | `2` | Multi-step but well-documented feature | Multi-source synthesis report | Multi-source synthesis | Statistical inference |
 | `3` | Design from scratch, concurrency, algorithmic complexity, conflicting constraints; **adversarial security-vulnerability hunting** | Original argument, reconciling conflicting sources | New hypothesis/framework | Modelling, causal inference |
 
 > - **"Well-documented" alone ≠ D=2.** How many **independent design decisions**
->   are left to the implementer? One reasonable approach → **D=1**.
-> - **Mechanical enumeration = D=1**, not D=3. Open-ended "review this for
->   security holes" is the D=3 adversarial case.
-> - **"Adversarial" is narrow.** It means hunting *security* vulnerabilities, or
->   subtle logic errors in a coupled system where the failure is silent (a race
->   condition, silent data corruption, conflicting contract clauses). A careful
->   **domain-correctness audit** of well-specified scientific or business logic
->   is **D=2** — "audit this pipeline's variant-calling logic" is D=2, not D=3.
+>   are left to the implementer? One reasonable approach → **D=1**. A standard
+>   pattern applied once — "add cursor-based pagination to this API", "add a
+>   `--dry-run` flag" — is **D=1** even though it touches a few call sites.
+> - **Mechanical enumeration = D=1**, not D=3.
+
+<!-- rule:D3DIAG -->
+**D3DIAG · diagnosis.** The coding column is written for building, so debugging scores on its own test: bounded diagnosis is `D=2`, and adversarial diagnosis is `D=3` when at least two of these hold — the root cause is non-local or depends on timing or ordering; reproduction is intermittent or environment-dependent; several plausible causes must be ruled out by constructing competing hypotheses; a local-looking fix could mask a deeper invariant violation.
+<!-- /rule:D3DIAG -->
+
+> **`D=2` — bounded diagnosis.** The symptom is local, the failure is loud and
+> reproducible on demand, the candidate-cause space is small, and ordinary
+> tracing or bisection settles it. *"This endpoint 500s on every call since the
+> last deploy — find out why."*
 >
-> Worked pairs: `reference.md` §10.3.
+> **`D=3` — adversarial diagnosis.** *"It flakes in prod sometimes."* *"Passes
+> locally, fails only on the CI runner — reproduce it inside the container."*
+> *"Two engines disagree on 1 in 400 orders."*
+>
+> **Not every bug is `D=3`**, and "it only fails in CI" is not on its own
+> enough — it is enough *with* a second marker, which is usually the difficulty
+> of reproducing it.
+>
+> A careful **domain-correctness audit** of well-specified scientific or
+> business logic is **D=2** — "audit this pipeline's variant-calling logic" is
+> D=2, not D=3. So is running a **defined process with bounded reactive
+> handling** — "drive the 14-step month-end close and resolve any validation
+> errors it raises" is D=2, not D=1: the reactive error-resolution is judgement
+> the fixed steps are not.
+>
+> **Adversarial correctness beyond debugging is also `D=3`.** Hunting for a
+> **silent failure in a coupled system** — silent data loss or corruption, a
+> race, conflicting contract clauses — is the same D=3 as security-vuln hunting.
+> "Check these migration scripts for anything that silently loses or corrupts
+> data" is D=3: the failure is invisible and the system is coupled. This is
+> distinct from the domain-correctness audit above, where the logic is
+> well-specified and the question is only whether it is implemented correctly.
 
 ### W — Width
 
-*Diagnostic: how many files/documents read or changed? Independent
-(parallelisable) or sequential?*
+*How many files/documents/units read or changed?*
 
-`0` Single file/document · `1` 2–5 files, one module · `2` **6–99 files/units**
-or 2–3 verification angles · `3` **100+ files** / whole codebase or 3+
-independent, parallelisable verification angles
+`0` Single file · `1` 2–5 files, one module · `2` **6–99 files/units** ·
+`3` **100+ files/units**
 
 > **The W=2 / W=3 threshold is numeric — 100.** "60 microservices" → W=2.
 > "Unaware of each other" phrasing doesn't change the count.
+>
+> **W counts what you act on, not what you read.** A large corpus you read to
+> produce one deliverable is **C**, not W: "read 900 pages of filings and write
+> one memo" is `C=3, W≤1` (one memo out), not `W=3`. W=3 needs 100+ files you
+> change, or 100+ units each needing their own judgement (a 180-service audit).
 
 ### C — Context synthesis
 
@@ -294,11 +305,10 @@ independent, parallelisable verification angles
 ## Step 4 — Candidate model × effort, per arm
 
 Model selection is by **intelligence need** (D, C) and the capability profile —
-risk (R) does not raise the model, it raises human oversight.
+risk does not raise the model, it raises human oversight.
 
 **Model** ← `max(D, C)`. **The flagship is a candidate only when `D=3`** —
-`C=3` alone (large but shallow synthesis) stays mid-tier; a 1M window handles it
-at a fraction of the quota.
+`C=3` alone (large but shallow synthesis) stays mid-tier.
 
 ### Claude
 
@@ -307,23 +317,16 @@ at a fraction of the quota.
 | `D = 0` ∧ `W=0` ∧ `C≤1` ∧ `R≤1` | **Haiku 4.5** |
 | Above not met, `max(D,C) ≤ 2` | Sonnet 5 |
 | `max(D,C) = 3`, `D<3` (C triggered it) | **Sonnet 5** — large context, shallow reasoning |
-| `max(D,C) = 3`, `D=3` | **Opus 5** if the dominant capability is on the **flagship list** below. **Otherwise Sonnet 5** (quota-aware default) |
+| `max(D,C) = 3`, `D=3` | **Opus 5** if the dominant capability is on the **flagship list**. **Otherwise Sonnet 5** |
 
 > **The flagship list** (`D=3` only): `agentic-code` · `terminal-tool` ·
-> `deep-reasoning` (maths / formal proof / tool-less) · `science` ·
-> `computer-use` · `workflow-automation` — **and only where the task builds,
-> changes or drives the artefact.**
+> `deep-reasoning` · `science` · `computer-use` · `workflow-automation` — **and
+> only where the task builds, changes or drives the artefact.**
 >
 > **Reading, reviewing, auditing or answering-from-code is analysis and stays
 > mid-tier, at any scale.** A 180-service defensive audit and a single-file JWT
-> review get the *same Claude tier* (Sonnet 5) — scale changes `W`, and therefore
-> `ultracode`, not the tier. Analytical, research and legal `D=3` work is not on
-> the list at all. This is the same carve-out the Codex +1 notch uses.
->
-> On the **Codex** arm this carve-out governs paths (b) and (c) only. Path (a)
-> is a *parallelism* mechanism, not a depth judgement, and is still checked
-> first — 180 independently auditable services reach `Sol Ultra` even though the
-> work is analysis.
+> review get the *same Claude tier* (Sonnet 5) — scale changes `W`, and
+> therefore `ultracode`, not the tier.
 
 ### Codex
 
@@ -332,347 +335,313 @@ at a fraction of the quota.
 | `D=0 ∧ W=0 ∧ C≤1 ∧ R≤1` | **Luna** |
 | Otherwise `max(D,C) ≤ 2` | Terra |
 | `max(D,C)=3`, `D<3` (C triggered it) | Terra |
-| `max(D,C)=3`, `D=3` | In order: **(a)** **3+ genuinely parallel strands** → **Sol Ultra** — *this is about parallelism, so it fires for analysis work too, before (b)/(c) are considered*. **(b)** same flagship capability list as Claude → **Sol**. **(c)** otherwise (D=3 analytical / research / single-artefact review) → **Terra** |
+| `max(D,C)=3`, `D=3` | In order: **(a)** `P = high` (Rule P1) → **Sol Ultra** — *parallelism, not depth, so it fires for analysis work too and is checked first*. **(b)** same flagship capability list as Claude → **Sol**. **(c)** otherwise (D=3 analytical / research / single-artefact review) → **Terra** |
 
-> **What counts as a strand.** Anything that proceeds without waiting on the
-> others and merges at the end: already-independent **targets** (services, repos,
-> vendors) **or** independent **work-kinds** — three candidate designs
-> investigated or prototyped side by side, two separate hypotheses plus a
-> reproduction. **Two** strands is not enough; Ultra runs ~4 agents and costs
-> roughly 4×, so the bar is three.
+<!-- rule:P1 -->
+**P1 · parallelisable strands.** `P = high` when the work splits into three or more strands that proceed without waiting on each other and merge at the end. A strand may be an already-independent target (service, repo, vendor) or an independent work-kind (three candidate designs investigated or prototyped side by side). Two strands is not enough, and one coherent decision sliced up after the fact is never strands.
+<!-- /rule:P1 -->
+
+> Splitting a monolith is plain **Sol** (path b) — one boundary decision; the
+> pieces are interdependent *during* the work. Ultra runs ~4 agents at ~4× cost,
+> so the bar is three genuine strands.
 >
-> **(a) vs "split one codebase into modules/services".** Splitting a monolith is
-> plain **Sol** (path b) — one coherent boundary decision; the pieces are
-> interdependent *during the work* even if the end state is "independent". One
-> decision sliced up after the fact is never strands.
->
-> Strands and `max` are **mutually exclusive**: `max` needs one indivisible
+> **Strands and `max` are mutually exclusive** — `max` needs one indivisible
 > chain, so `Sol Ultra · max` is not a combination the rules can produce.
 
 **Effort ← D**, one shared table for both arms:
 
 | D | Effort |
 |---|---|
-| 0 | `low` |
-| 1 | `medium` |
-| 2 | `high` |
-| 3 | `xhigh` |
-| 3 ∧ R=3 | `max` — **only** on a flagship (Opus 5 / Opus 4.8 / Fable 5.1 / Sol / Astra) **and** only where Step 5 Rule E3 allows it. Otherwise `xhigh` |
+| 0 | `low` · 1 `medium` · 2 `high` · 3 `xhigh` |
+
+<!-- rule:M1 -->
+**M1 · `max`.** Emit `max` only when `D = 3` and `R = 3` and the model is a flagship (Opus 5 / Opus 4.8 / Fable 5.1 / Mythos 5.1 / Sol / Astra) and the difficulty is one indivisible novel-design or formal decision. Otherwise `xhigh`.
+<!-- /rule:M1 -->
+
+> For review, audit, migration or breadth-driven work at `D=3 ∧ R=3`, stop at
+> **`xhigh`** — the R=3 human-review note carries the stakes. Rationale: Rule E3.
 
 Haiku 4.5 selected → leave the effort field blank.
 
-**Escalation request — a model change, never an effort change.** If the user
-explicitly says the work is critical, must not be under-resourced, or that an
-earlier run fell short, move **one model tier up** — Sonnet 5 → **Opus 5**,
-Terra → **Sol** — and keep the effort rung the `D` table already gave.
+**Escalation — a model change, never an effort change.**
 
-> **Third rung — frontier.** Opus 5 → **Fable 5.1**, Sol → **Astra**. Narrower
-> than rung two, and it needs *all* of: the user states a **flagship-tier run at
-> `xhigh` or `max` already fell short** (or the session is an hours-long
-> unattended agentic run), the dominant capability is on the flagship list, and
-> the work is long-horizon. Difficulty alone never reaches it — on the aggregate
-> index Fable 5.1 sits inside the equivalence band against Opus 5 at roughly
-> 1.5× the cost per task, so an unprompted jump is quota burned for nothing.
+- **Rung 2.** The user says the work is critical, must not be under-resourced,
+  or that an earlier run fell short → **Sonnet 5 → Opus 5**, **Terra → Sol**,
+  same rung. Do *not* crank the mid tier instead: Rules E1/E2 show its top rung
+  is dominated by the next tier's ordinary rung on quality *and* quota.
 
-Do *not* raise the effort on the mid tier instead: Step 5 Rules E1/E2 show the
-mid tier's top rung is dominated by the next tier's ordinary rung on **both** quality and
-quota (`Opus 5 · xhigh` 50 @ $4.88 beats `Sonnet 5 · max` 38 @ $5.09;
-`Sol · high` 42 @ $0.81 matches `Terra · max` 42 @ $1.40). This is the only thing
-that overrides the mid-tier `D=3` default.
+<!-- rule:A1 -->
+**A1 · frontier rung.** Opus 5 becomes Fable 5.1 and Sol becomes Astra only when the dominant capability is on the flagship list and `A = high`, where `A = high` means hours of unattended agentic execution or the user states that an earlier flagship-tier run at `xhigh` or `max` already fell short.
+<!-- /rule:A1 -->
 
-**Arm modifiers**
+> Difficulty alone never reaches the frontier rung. On the aggregate index Fable
+> 5.1 sits inside the equivalence band against Opus 5 at ~1.5× the cost per
+> task, so an unprompted jump is quota burned for nothing.
 
-- **Claude — `ultracode`.** It buys **workflow orchestration**, so it keys on how
-  many *kinds* of step the session must sequence, not on how many files it
-  touches. Write `ultracode` in the effort field; no model restriction except
-  Haiku. Fires when **all three** hold:
-  1. estimated duration > 30 min, **and**
-  2. **three or more different kinds of step feed each other** in one session —
-     discover · implement · author tests · run tests/build/lint · repair what
-     they caught · sync docs or package — **or** `W = 3` ∧ `D ≥ 2` (100+ units
-     that each need judgement), **and**
-  3. the difficulty is **not one indivisible chain** — the same test Rule E3
-     uses for `max`, so the two rules can never refuse a task for opposite
-     reasons.
-  > **Count the session's steps, not the deliverable's stages.** A four-stage
-  > pipeline written in one go is implement ×4 plus verify — two kinds, not four.
-  >
-  > **One kind repeated across many units is `W`, not orchestration.** 150 files
-  > of one rename is `D=1`; it gets `medium`, not an orchestration mode.
-  >
-  > **An investigation loop is one kind too.** Measure → hypothesise → re-measure
-  > is depth, so a root-cause hunt gets `xhigh` and never `ultracode`.
-- **Codex — +1 effort notch for agentic multi-step coding.** Only when the task
-  is *writing or restructuring* code across **multiple dependent steps**: a
-  multi-file feature, a refactor, a migration, implementing an architecture, or a
-  debug-and-fix that spans the codebase. Then bump the Codex effort one rung
-  (`low→medium · medium→high · high→xhigh`). It **caps at `xhigh` on both**
-  models: the notch compensates for a *model-tier* gap, and Step 7 Rule 2 says
-  the top rung is not where you buy that. It also **never lowers a rung** — if
-  the `max` row already fired, the notch leaves it alone. **Terra/Sol only,
-  never on Astra.** Claude is untouched. Basis: Terminal-Bench 4.0 (Sol 37.3 vs
-  Opus 5 52.3 / Fable 5.1 55.8) — the largest published Claude-vs-Codex gap in
-  the evidence set.
-  - **Does NOT apply to:** a **single local addition** — one endpoint, one flag,
-    one column, one pattern applied in one place ("add cursor-based pagination to
-    this API", "add a `--dry-run` flag") — that is D=1 work, not multi-step
-    restructuring; code *review* / vulnerability *analysis* / reading code to
-    answer; non-code design; mechanical repetition of the same edit across files
-    (that is width, not depth).
-  - **The notch keys on the *fix*, not the diagnosis.** If the hard part is
-    working out what is wrong and the resulting change is local (one or two
-    files, a config, a flag), there is no notch — that is `terminal-tool` /
-    `deep-reasoning` work. The notch is for the case where the *writing* itself
-    spans dependent steps.
-  - `Sol Ultra` rides on top of the bumped level.
+### Arm modifiers
+
+<!-- rule:O1 -->
+**O1 · orchestration load.** `O = high` when the session must run three or more distinct phases, where a phase is a stretch of work that produces a different kind of deliverable and whose output is consumed by a later phase. The phases that count are research, implementation, independent verification, packaging, data or schema migration, documentation, and triage. The whole edit-run-repair implementation loop is one phase, and tests you write for your own change are inside it.
+<!-- /rule:O1 -->
+
+> **What each phase means.**
+> **Research** — establish how something behaves, or choose between approaches,
+> *before* the shape of the work is known. Finding which files to edit is not
+> research. **Implementation** — edit source, run its tests, repair what they
+> catch, repeat. **Independent verification** — a gate the implementation loop
+> does not already run: a build/lint/CI gate, a golden-image or traffic replay,
+> a smoke run against a deployed environment. **Packaging** — build an image,
+> publish, ship a preview. **Migration** — backfill, seed, migrate data or
+> schema. **Documentation** — runbook, docs, release notes. **Triage** — turn a
+> run's output into a filed finding that is itself a deliverable.
+>
+> **Two phases is a job with steps in it.** `locate → edit → test → fix` is
+> **one** phase however many files it touches and however long it takes.
+> "Refactor 40 files onto the new API and make the suite pass" is one phase.
+> "Work out how the current back-pressure behaves, port it, migrate the
+> checkpoint store, replay last week's traffic against it, update the runbook"
+> is five.
+
+<!-- rule:UC1 -->
+**UC1 · `ultracode`.** Emit `ultracode` when the estimated duration is over 30 minutes and either `O = high` or (`W = 3` and `D >= 2`) and the difficulty is not one indivisible chain. Write `ultracode` in the effort field. Every model except Haiku 4.5.
+<!-- /rule:UC1 -->
+
+> `ultracode` buys **workflow orchestration**, so it keys on distinct phases
+> (O1), not on file count. The width limb is the separate case where 100+ units
+> *each need judgement* — a 180-service auth-bypass audit. At `D ≤ 1` width buys
+> nothing: 150 files of one rename is `medium`.
+>
+> The indivisible-chain guard is **the same test M1 uses for `max`**, so the two
+> rules can never refuse a task for opposite reasons.
+
+<!-- rule:N1 -->
+**N1 · Codex +1 notch.** When the task is writing or restructuring code across multiple dependent steps and the model is Terra or Sol, raise the Codex effort one rung, capped at `xhigh` on both models, and never lower a rung that another rule already set higher. Never on Astra. Claude is untouched.
+<!-- /rule:N1 -->
+
+> Basis: Terminal-Bench 4.0 (Sol 37.3 vs Opus 5 52.3 / Fable 5.1 55.8) — the
+> largest published Claude-vs-Codex gap in the evidence set. The cap is at
+> `xhigh` because the notch compensates for a *model-tier* gap and Rule E3 says
+> the top rung is not where you buy that.
+>
+> **Does NOT apply to:** a **single local addition** — one endpoint, one flag,
+> one column, one pattern in one place; code *review* / vulnerability *analysis*
+> / reading code to answer; non-code design; mechanical repetition of the same
+> edit across files.
+>
+> **The notch keys on the *fix*, not the diagnosis.** If the hard part is working
+> out what is wrong and the resulting change is local, there is no notch.
+>
+> `Sol Ultra` rides on top of the bumped level.
 
 ### `opusplan` — plan/execute model split
 
 **Claude Code only.** Overrides the Opus 5 branch when all three hold:
-1. `max(D,C)=3 ∧ D=3` ∧ the dominant capability is structured design/architecture.
+
+1. `max(D,C)=3 ∧ D=3` ∧ the dominant capability is **`deep-reasoning`** — the
+   same tag that put the task on Opus 5 in the first place. Not
+   `workflow-automation`, not `agentic-code`.
 2. **Difficulty front-loaded into the plan** — once the plan is done, execution
    repeats a pattern. Opposite (do **not** use): debugging, formal proof,
    new-algorithm design.
-   > A concrete target-scope number ("design the auth architecture for 200
-   > services") implies the execution phase exists.
+   > A concrete target-scope number ("the auth architecture for 200 services")
+   > implies the execution phase exists.
 3. `W ≥ 2`.
 
 ```
 Claude: opusplan · plan: <effort> · execute: <effort>
 ⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort <execute effort>.
 ```
+
 Plan effort = the flagship result (`xhigh`, or `max` if `R=3` — the plan phase
-is novel design, so Rule E3 allows it). Execute effort = the post-plan estimated
-D (usually `medium`). **The ⚠️ warning is mandatory on every `opusplan` output.**
+is novel design, so M1 allows it). Execute effort = the post-plan estimated D
+(usually `medium`). The ⚠️ warning is mandatory. The badge, if it lands here,
+goes immediately after `Claude:` as usual.
 
 ---
 
 ## Step 5 — Evidence, equivalence and efficiency
 
-This is the step that makes the router benchmark-*aware* rather than
-benchmark-*driven*. Apply it to the Step 4 candidates.
-
 ### 5a. Which numbers may be compared at all
 
 Two scores are comparable only when **benchmark, version, harness, tool access,
-agent scaffold and effort all match**. Otherwise say `not directly comparable`
-and fall back to the next-best evidence. Concrete traps already in the record:
+agent scaffold and effort all match**. Otherwise say `not directly comparable`.
+Traps already in the record:
 
 - **OSWorld 2.0 partial vs strict scoring** differ by ~36 points on the *same*
-  model. Any OSWorld comparison without a stated scoring mode is unusable.
-- **AA Intelligence Index versions are not comparable.** v4.3's 53/51/48 and the
-  older 66/63/60 figures are different scales.
+  model. **AA Intelligence Index versions are not comparable.**
 - **"Agentic coding" is not one number.** Terminal-Bench 4.0 puts Sol ~15 points
-  behind Opus 5; CursorBench 3.2.0 puts it 2.8 behind; DeepSWE puts it 1 behind.
-  Different scaffolds. Name the benchmark, never the label.
-- **A vendor's table is not a roster.** Anthropic's Terminal-Bench 4.0 table has
-  no Astra row, so a Claude lead read off it says nothing about Astra. And when
-  both vendors publish the same figure to the decimal — as they do for the Claude
-  models on TB 4.0 — that is one number re-cited, not corroboration.
-- **A saturated benchmark cannot separate candidates.** Terminal-Bench 2.1 sits
-  in an 84–88 band, SWE-bench Verified inside ~1 point. Neither is used.
-- **Never interpolate between effort rungs.** A missing rung is unknown. Sol at
-  `xhigh` and Sonnet 5 at `high` are simply not published — don't estimate them.
-- **Never invent a number.** "Not published" is a valid and useful answer.
+  behind Opus 5; CursorBench 2.8; DeepSWE 1. Name the benchmark, never the label.
+- **A vendor's table is not a roster.** Anthropic's TB 4.0 table has no Astra
+  row. When both vendors publish the same figure to the decimal, that is one
+  number re-cited, not corroboration.
+- **A saturated benchmark cannot separate candidates** (Terminal-Bench 2.1,
+  SWE-bench Verified). Neither is used.
+- **Never interpolate between effort rungs**, and **never invent a number.**
+  "Not published" is a valid answer.
 
-### 5b. The equivalence band — no fixed constant
+### 5b. The equivalence band
 
-Decide "meaningfully better" in this order, and stop at the first that applies:
+Decide "meaningfully better" in this order, stopping at the first that applies:
 
-1. **Published confidence interval.** Terminal-Bench 4.0's owner leaderboard
-   publishes 95% CI whiskers. Inside it → equivalent.
-2. **Published standard error** → the 95% interval is 2 × SE. Terminal-Bench-
-   Science 0.1 publishes SE ±3.5–4.5. An SE published for one benchmark does
-   **not** carry over to another in the same source.
-3. **Repeated-trial variance under one harness** (e.g. a mean over 5 attempts
-   with its spread stated).
+1. **Published confidence interval** (Terminal-Bench 4.0's owner leaderboard).
+2. **Published standard error** → the 95% interval is 2 × SE (TB-Science 0.1:
+   SE ±3.5–4.5). An SE published for one benchmark does **not** carry to another.
+3. **Repeated-trial variance under one harness.**
 4. **A practical-significance threshold the benchmark's own owner publishes.**
-   Not one invented here.
-5. **None of those → `UNRESOLVED` for that comparison.** Say so, and fall through
-   to efficiency. **However large the gap looks.**
+5. **None of those → `UNRESOLVED`.** Say so, fall through to efficiency.
+   **However large the gap looks.**
 
-> **Score spread is not uncertainty.** "These four models span 40–59, so a
-> 7-point gap must be real" is a sentence about how far apart the models happen
-> to sit, not about how precisely either score was measured — and on a two-model
-> row the spread *is* the gap, so everything would "win". A ratio of gap to
-> spread is useful for deciding which benchmark is worth chasing an interval for.
-> It is not a finding. `benchmark_frontiers.json` reports it under
-> `gap_over_observed_spread_diagnostic` and never routes on it.
+> **Score spread is not uncertainty.** "These four span 40–59, so a 7-point gap
+> must be real" is a claim about how far apart the models sit, not how precisely
+> either was measured — and on a two-model row the spread *is* the gap. After
+> this rule `science` is the only capability with a certified direction; the rest
+> are `UNRESOLVED`, which makes `low-confidence` the honest word. Detail:
+> `reference.md` §15.2.
 >
-> **Two consequences worth knowing.** After this rule, `science` is the only
-> capability in the record whose direction rests on published dispersion; every
-> other capability comparison is `UNRESOLVED` at the evidence layer. That does
-> **not** make Step 6's badge table wrong — the badge ranks by *provenance* (who
-> ran it, in whose harness), which is a different question — but it does mean no
-> direction here is a significance test, and `low-confidence` is the honest word
-> whenever one is asked about.
+> **Zero gap needs no interval.** Two identical scores are equal; go straight to
+> efficiency. Same for a rung that scores no better than a cheaper one — that is
+> dominance, not measurement, which is why E1 and E3 survive intact.
 >
-> **Zero gap needs no interval.** Two identical scores are equal, not
-> indistinguishable; go straight to efficiency. Same for an effort rung that
-> scores no better than a cheaper one — that is dominance, not a measurement
-> question, which is why Rules E1 and E3 survive this tightening intact.
->
-> **High-risk task (`R=3`, or safety/irreversibility in play)** → widen the bar
-> for calling parity. When genuinely unsure, take the stronger candidate.
+> **High-risk task (`R=3`)** → widen the bar for calling parity. When genuinely
+> unsure, take the stronger candidate.
 
 ### 5c. Dominance — the efficiency axes
 
-Candidate **A dominates B** when A is *not meaningfully worse* on the
-task-relevant capability (5b) **and** clearly better on at least one of, in
-priority order: **reasoning tokens → output tokens → total tokens/task → tokens
-per *successful* task → quota pressure → cost/task → latency**. A dominated
-candidate is never emitted — regardless of tier or brand.
+**A dominates B** when A is not meaningfully worse on the task-relevant
+capability **and** clearly better on at least one of, in priority order:
+**reasoning tokens → output tokens → total tokens/task → tokens per *successful*
+task → quota pressure → cost/task → latency.** A dominated candidate is never
+emitted, regardless of tier or brand.
 
-Three dominance results are settled and hard-coded (AA Index v4.3, 10 Sep 2026 —
-one harness, one suite, all rungs comparable):
+Four settled results (AA Index v4.3, one harness, all rungs comparable):
 
-- **Rule E1 — `Sonnet 5 · max` is dominated.** Sonnet 5 max scores 38 at
-  $5.09/task; Opus 5 **xhigh** scores 50 at $4.88 and Opus 5 **high** scores 48
-  at $3.61. Stronger *and* cheaper. → The router **never** emits `Sonnet 5 ·
-  max`. When a mid-tier `D=3` task turns out to need more, the escalation target
-  is **`Opus 5 · xhigh`**, not more effort on Sonnet 5.
-- **Rule E2 — `Terra · max` is dominated (and unavailable).** Terra max scores
-  42 at $1.40; **`Sol · high`** scores 42 at $0.81. Same score, 42% less quota —
-  and `max` isn't offered on Terra anyway. → Codex escalation target is
-  **`Sol`**, never more effort on Terra.
-- **Rule E3 — `max` over `xhigh` buys almost nothing.** Fable 5.1: 53 at both
-  rungs ($7.63 → $5.98). Astra: 53 at both ($3.26 → $2.31). Opus 5: 51 vs 50
-  ($5.86 → $4.88). → Emit `max` **only** when `D=3 ∧ R=3` **and** the difficulty
-  is a *single indivisible novel-design or formal decision* (architecture from
-  scratch, boundary design, a proof). For review, audit, migration or
-  breadth-driven work at `D=3 ∧ R=3`, stop at **`xhigh`** — the R=3 human-review
-  note carries the stakes. The user can always set `max` by hand.
-  > **Precision:** the *dominance* holds only on Fable 5.1 and Astra, where `max`
-  > ties `xhigh` — a gain of zero at higher cost, which needs no interval. On
-  > Opus 5 the one-point gain is **unresolved**, not equivalent, so holding `max`
-  > back there is a quota policy, not a free lunch.
-- **Rule E4 — on `agentic-code` / `terminal-tool`, `Sol · max` becomes
-  `Astra · xhigh`.** Where the rules would emit `Sol · max`, emit `Astra · xhigh`
-  instead. AA Index v4.3: Astra `xhigh` 53 @ $2.31 vs Sol `max` 47 @ $1.99; AA
+- **E1 — `Sonnet 5 · max` is dominated.** 38 @ $5.09 vs Opus 5 `xhigh` 50 @
+  $4.88. Stronger *and* cheaper → the router **never** emits `Sonnet 5 · max`;
+  the escalation target is `Opus 5 · xhigh`.
+- **E2 — `Terra · max` is dominated** (and unavailable). 42 @ $1.40 vs
+  `Sol · high` 42 @ $0.81 → the Codex escalation target is **`Sol`**.
+- **E3 — `max` over `xhigh` buys almost nothing.** Fable 5.1 53 at both rungs;
+  Astra 53 at both; Opus 5 51 vs 50. → `max` needs M1 in full.
+  > The *dominance* holds only where `max` ties `xhigh` — a gain of zero at
+  > higher cost, which needs no interval. Opus 5's one point is **unresolved**,
+  > so holding `max` back there is quota policy, not a free lunch.
+
+<!-- rule:E4 -->
+**E4 · Astra swap.** When the dominant capability is agentic-code or terminal-tool and the rules would emit `Sol · max`, emit `Astra · xhigh` instead.
+<!-- /rule:E4 -->
+
+  AA Index v4.3: Astra `xhigh` 53 @ $2.31 vs Sol `max` 47 @ $1.99; AA
   Terminal-Bench 4.0 (the only independent source covering both ecosystems)
-  Astra 59 vs Sol 40, at ~27k output tokens/task against ~78k. Better on
-  capability *and* on the axis that outranks cost.
+  Astra 59 vs Sol 40, at ~27k output tokens/task against ~78k.
   > **Capability-scoped on purpose.** Tooled HLE puts Astra **behind** on
-  > `deep-reasoning` and GDPval shows a regression on `knowledge-work`, so E4
-  > must not fire there — a `D=3 ∧ R=3` architecture decision stays `Sol · max`.
-  > **And it stops at `max` on purpose:** widening it downward would mean
-  > comparing `Astra · xhigh` with `Sol · xhigh`, a rung AA does not publish, and
-  > estimating it is the Step 5a interpolation trap. That, not a frequency
-  > target, is what keeps Astra rare.
+  > `deep-reasoning` and GDPval shows a regression on `knowledge-work`, so a
+  > `D=3 ∧ R=3` architecture decision stays `Sol · max`. **And it stops at
+  > `max`:** widening it downward would compare `Astra · xhigh` with
+  > `Sol · xhigh`, a rung AA does not publish. That, not a frequency target, is
+  > what keeps Astra rare.
 
 ### 5d. Choosing the effort rung
 
-Ask: **what is the lowest rung that reaches the capability level this task
-needs?** — not "what does the D table say", and not "how deep can I go". The D
-table is the starting point; E1–E4 and 5b are the corrections. Round *down* when
-the evidence shows the next rung up is inside the equivalence band; do **not**
-round down when the low→high gap on the dominant capability is real.
+**What is the lowest rung that reaches the capability level this task needs?**
+The D table is the starting point; E1–E4 and 5b are the corrections. Round
+*down* when the next rung up is inside the band; do **not** round down when the
+low→high gap on the dominant capability is real.
 
 ---
 
 ## Step 6 — `✅ RECOMMENDED AI`
 
-Compare the Claude candidate with the Codex candidate and mark exactly one. The
-badge is **computed**, never habitual. Decision order:
+Compare the two candidates and mark exactly one. The badge is **computed**,
+never habitual.
 
-1. **Hard capability / safety / availability gate.** If one arm declines
-   (offensive-security "use Claude", biology "unverified") or lacks the required
-   context window, the other arm gets the badge. No further analysis.
-2. **Task-relevant capability**, from the dominant tag's evidence anchor.
+<!-- rule:B1 -->
+**B1 · evidence applicability.** A benchmark row takes part in the badge decision only if the capability it measures is one of the dominant tags named for this prompt in Step 2. Applicability is checked before evidence quality and before any tie-break, and a row that is not applicable does not enter the comparison at all, however strong its number.
+<!-- /rule:B1 -->
+
+Decision order:
+
+1. **Hard capability / safety / availability gate.** If one arm declines, or
+   lacks the required context window, the other arm gets the badge. Stop.
+2. **Applicable** task-relevant capability (B1), from the dominant tag's anchor.
 3. **Benchmark confidence** — tier, date, harness, and *who ran it*. An
-   independent evaluator holding the harness constant outranks a vendor's own
-   table. A vendor result favouring the **competitor** is against-interest and is
-   the most credible vendor evidence there is; one favouring the vendor is
-   direction at best.
-4. **Near-parity check** (5b). If capability is inside the band, go to 5.
-5. **Token / quota efficiency** (5c priority order).
-6. **Cost per task.**
-7. **Latency.**
+   independent evaluator outranks a vendor's own table. A vendor result favouring
+   the **competitor** is against-interest and is the most credible vendor
+   evidence there is.
+4. **Near-parity check** (5b). Inside the band → go to 5.
+5. **Token / quota efficiency** (5c order). 6. **Cost per task.** 7. **Latency.**
 
 "Claude has the better general intelligence index" is **not** on its own a
-reason to pick Claude. "Codex scores higher on a coding benchmark" is **not** on
-its own a reason to pick Codex on every prompt. The task profile decides.
+reason to pick Claude, and the mirror-image claim is not a reason to pick Codex.
 
 ### Badge table — dominant capability → default side
 
-**The badge is conditional on which Codex model is on the line.** A capability
-can genuinely favour Claude against Sol and not against Astra — collapsing that
-into one verdict is how a badge ends up wrong half the time. Astra only appears
-behind a gate, so the Sol/Terra column is the common case.
+**Conditional on which Codex model is on the line.** A capability can favour
+Claude against Sol and not against Astra.
 
 | Dominant capability | vs **Terra / Sol** | vs **Astra** | Evidence to name |
 |---|---|---|---|
-| `agentic-code` | **Claude** | **Codex** — level, efficiency decides | AA Terminal-Bench 4.0: Fable 5.1 52 · Sol 40 · **Astra 59**; Astra 27k output tokens/task vs 78k |
+| `agentic-code` | **Claude** | **Codex** | AA TB 4.0: Fable 5.1 52 · Sol 40 · **Astra 59**; 27k output tokens/task vs 78k |
 | `terminal-tool` | **Claude** | **Codex** | same TB 4.0 row |
-| `science` † | **Claude** | **Codex** | TB-Science 0.1: 52.6 vs Sol 22.4 (SE ±3.5–4.5); the biology gate usually decides first |
+| `science` † | **Claude** | **Codex** | TB-Science 0.1: 52.6 vs Sol 22.4 (SE ±3.5–4.5) |
 | `knowledge-work` † | **Claude** | *no Astra row* → as vs Sol | GDPval-AA v2: 1853 / 1824 vs Sol 1711 |
 | `workflow-automation` † | **Claude** | **Codex** | AutomationBench: 31.4 / 26.9 vs Sol ~19 |
-| `computer-use` † | **Claude** | **Codex** | OSWorld 2.0 offline partial: Astra 72.6 vs Sol 65.7, ~47% faster/task |
-| `latency-volume` | **Codex** | **Codex** | Luna 112 tok/s @ $0.18 vs Haiku 4.5 85 @ $0.21 — both clear a D=0 bar |
-| `parallel-independent` (no Claude capability edge on the same task) | **Codex** | **Codex** | Ultra runs ~4 collaborating agents; `ultracode` is one chain |
-| `long-context` (shallow) | **Claude** | **Claude** | Sonnet 5's 1M window at $2/$10 vs Astra $10/$50 (2× over 272k) |
-| `deep-reasoning` — architecture / maths / formal / tool-less † | **Claude** | **Claude** | Tooled HLE, published by OpenAI and favouring the competitor: Fable 5.1 65.0 · Opus 5 63.6 · **Astra 57.2** |
+| `computer-use` † | **Claude** | **Codex** | OSWorld 2.0 offline partial: Astra 72.6 vs Sol 65.7 |
+| `latency-volume` | **Codex** | **Codex** | Luna 112 tok/s @ $0.18 vs Haiku 4.5 85 @ $0.21 |
+| `parallel-independent` | **Codex** | **Codex** | Ultra runs ~4 collaborating agents; `ultracode` is one chain |
+| `long-context` (shallow) | **Claude** | **Claude** | Sonnet 5's 1M window at $2/$10 vs Astra $10/$50 |
+| `deep-reasoning` † | **Claude** | **Claude** | Tooled HLE, published by OpenAI and favouring the competitor: Fable 5.1 65.0 · Opus 5 63.6 · **Astra 57.2** |
 | `research-synthesis` †, `doc-data-understanding` † | **Claude** | **Claude** | no cross-ecosystem row at all |
-| anything else / no evidence | the **lighter** chosen model × effort | same | AA v4.3 cost/task; say `low-confidence preference` |
+| anything else / no evidence | the **lighter** chosen model × effort | same | say `low-confidence` |
 
-> **† — the Evidence line must say `low-confidence`.**
-
-> Drop every row where one vendor scored the other in its own harness and these
-> capabilities collapse to UNRESOLVED — only `agentic-code` and `terminal-tool`
-> survive on independent evidence. That is a fact about the published record, not
-> a reason to flip the badge: it is a reason to say the preference is thin.
-> Reproduce it with `python scripts/ablate_evidence.py`.
+> **† — the Evidence line must say `low-confidence`.** So must the
+> "anything else" row. Check this against the row you actually used before
+> emitting.
 
 **Tie-breaks**
 
-- **`D ≤ 1` → skip the capability rows entirely; efficiency decides.** At that
-  depth both arms clear the bar by construction, so a capability lead is
-  unusable. Compare the two chosen models directly: **Haiku 4.5 vs Luna →
-  Codex** (Luna is ~5× cheaper per token and the fastest model in the table);
-  **Sonnet 5 vs Terra → Claude** ($2/$10 vs $2/$12). `R` doesn't change this —
-  it sets the same floor on both arms.
-- Two capability rows conflict → the one backed by a **task-specific benchmark**
-  beats one backed only by a **product mechanism**. *(A 180-service defensive
-  audit is `terminal-tool` + `parallel-independent`: Terminal-Bench 4.0 evidence
-  outranks Ultra mode → Claude.)*
-- Both arms are gated to the same conclusion (e.g. both declined) → no badge.
-- Step 0 blocked → no badge, no models.
-- **Genuinely insufficient evidence:** still give the more sensible default —
-  but put `low-confidence` in the Evidence line. Never manufacture certainty.
+- **`D ≤ 1` → skip the capability rows entirely; efficiency decides.** Both arms
+  clear the bar by construction. **Haiku 4.5 vs Luna → Codex**; **Sonnet 5 vs
+  Terra → Claude** ($2/$10 vs $2/$12). `R` doesn't change this.
+- **Two *dominant* capability rows conflict** → the one backed by a
+  task-specific benchmark beats one backed only by a product mechanism. Both
+  rows must be dominant tags for this prompt (B1) — a benchmark for a capability
+  this task does not need has already been excluded and cannot break the tie.
+  *(A 180-service defensive audit is `terminal-tool` + `parallel-independent`:
+  TB 4.0 outranks Ultra mode → Claude. A 120-vendor contract triage is
+  `parallel-independent` + `research-synthesis`: no code, no repo, so TB 4.0 is
+  not applicable at all → Ultra's mechanism decides → Codex.)*
+- Both arms gated to the same conclusion → no badge. Step 0 blocked → no badge.
+- **Genuinely insufficient evidence:** give the more sensible default, with
+  `low-confidence` in the Evidence line. Never manufacture certainty.
 
 ---
 
 ## Step 7 — Quota-protection and accuracy rules
 
-Terse list; rationale in `reference.md` §10.5. Only Rule 1's note is auto-added.
+Rationale in `reference.md` §10.5. **Only Rule 1's note is auto-added.**
 
-1. **R=3 → human-review note** ("Do not apply without human review."). Model/
+1. **R=3 → human-review note** ("Do not apply without human review."). Model and
    effort unchanged. One shared note, not one per arm.
-2. **Escalation is a model change, not an effort change** — see Step 4's
-   "Escalation request". Sonnet 5 → **Opus 5**, Terra → **Sol**, at the same
-   rung. Cranking the mid tier is dominated (Rules E1/E2).
+2. **Escalation is a model change, not an effort change** — Step 4.
 3. **`D=3` outside the flagship capability list → mid-tier default** (Sonnet 5 /
-   Terra) at `xhigh`. The mid tier handles analytical / research / review D=3.
-4. **User knowledge (not a router output change):** low/medium on Opus 5 is not
-   "waste" — Anthropic explicitly recommends using them "liberally as your
-   primary control for token cost and response time wherever your evals show
-   quality holds."
+   Terra) at `xhigh`.
+4. **User knowledge:** low/medium on Opus 5 is not "waste" — Anthropic
+   recommends them "liberally as your primary control for token cost".
 5. **No `ultracode` for work under 30 min.** For one-off depth, write
    `ultrathink` into the prompt instead.
 6. **Long-session / MCP warning:** each MCP server injects tool schemas into
-   every message, proportional to tool count (GitHub MCP 27 tools ≈ 18k tokens).
+   every message (GitHub MCP 27 tools ≈ 18k tokens).
 7. **Auto-accept warning:** if R≥2, suggest turning auto-accept off.
 8. **Alias safety:** `/model opus` → Opus 5 on Claude Code v2.1.219+.
 
 ### Fast Mode (1.5x) — the speed line
 
-Codex CLI has a Fast Mode toggle (user-reported, still not independently
-verified — `reference.md` §9.7): output ~**1.5x** faster, quota burns 1.5x,
-quality unchanged. Claude analogue: `/fast` — 2.5x faster, **2× price**,
-**Opus 5 / Opus 4.8 only**.
+Codex CLI has a Fast Mode toggle (user-reported, `reference.md` §9.7): output
+~**1.5x** faster, quota burns 1.5x, quality unchanged. Claude analogue: `/fast`
+— 2.5x faster, **2× price**, **Opus 5 / Opus 4.8 only**.
 
 **Append one speed line to every CLI Codex output whose Codex line names a real
-model.** The first word says which:
+model.**
 
 - **`recommended`** — when `R ≤ 1` **and** any of: `D ≤ 1` · the volume/latency
   gate fired · the user asked for speed.
@@ -685,18 +654,18 @@ model.** The first word says which:
   ```
   If the Claude line is `Opus 5` / `Opus 4.8`, append the Claude half **to the
   `available` form only**: `· Claude /fast (2.5x faster, 2× price).` **Not on
-  `opusplan`** — that line names neither model, and execution drops to Sonnet 5
-  where `/fast` doesn't exist.
+  `opusplan`** — execution drops to Sonnet 5, where `/fast` doesn't exist.
 
 **No speed line** when the Codex line names no runnable model, or on a web
-surface. It **does** appear when the offensive gate resolves to `Astra · xhigh`
-via stated Daybreak access.
+surface. It **does** appear when the offensive gate resolves to Astra via stated
+Daybreak access.
 
 ---
 
 ## Output format
 
-**Three lines, always.** The two recommendations, then one short Evidence line.
+**Three lines** — unless Step 0 blocked, which emits the `Clarify:` line alone
+(Rule S0).
 
 ```
 Claude: <Model> · effort: <level>
@@ -705,26 +674,22 @@ Evidence: <one sentence>
 ```
 
 - The badge sits **immediately after the ecosystem label**, before the model
-  name. Exactly one badge per output. This is the only accepted placement.
-- The `Evidence:` line is **one sentence**, naming at most **1–2** benchmarks or
-  efficiency signals — the ones that actually decided it. It is not a
-  leaderboard dump.
-- **If the badge row you used is marked †, the sentence must say
-  `low-confidence`** — those capabilities rest entirely on one vendor scoring the
-  other in its own harness.
-- No effort for Haiku 4.5; on the Codex side every model takes an effort.
-- Add `low-confidence` inside the Evidence sentence when Step 6 says so.
+  name. Exactly one badge per output.
+- `Evidence:` is **one sentence** naming at most **1–2** benchmarks or efficiency
+  signals — the ones that actually decided it. Not a leaderboard dump.
+- **If the badge row you used is marked †, or you used the "anything else" row,
+  the sentence must say `low-confidence`.**
+- No effort for Haiku 4.5; every Codex model takes an effort.
 
-If the user asks "why?" or "show the benchmarks", *then* expand: benchmark,
-version, score, effort, harness, token/cost figures, source tier — from
-`reference.md` §11–§13 and `benchmarks.json`. Never unprompted.
-
-**The only auto-added extras** (below the three lines, each on its own line):
+**Auto-added extras**, each on its own line:
 
 1. `R=3` → **`Do not apply without human review.`** — goes **last**.
 2. `opusplan` → the `⚠️ Effort does not carry over` warning, directly under the
    Claude line.
-3. **Speed line** — sits just above the `R=3` note.
+3. **Speed line** — just above the `R=3` note.
+
+If the user asks "why?", *then* expand from `reference.md` §11–§13. Never
+unprompted.
 
 ### Examples
 
@@ -736,82 +701,65 @@ Evidence: Both clear the bar for mechanical classification, and Luna runs ~30% f
 ⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.
 ```
 
-*"Understand the repo's auth flow and move it to OAuth2"*
+*"Fix this code"*
+```
+Clarify: which file or function is broken, what does it do now, and what should it do instead?
+```
+> Step 0 check 3 and check 4. **No `Claude:` / `Codex:` / `Evidence:` line and
+> no badge** — Rule S0 overrides "three lines".
+
+*"Refactor the payment module across these 40 files to use the new idempotency-key API, update every caller, and make the test suite pass."*
 ```
 Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
 Codex: Terra · effort: xhigh
-Evidence: Agentic multi-file coding is Claude's strongest published margin (Terminal-Bench 4.0: Opus 5 52.3 vs Sol 37.3); Codex takes a +1 notch to compensate.
+Evidence: Agentic multi-file coding is Claude's strongest published margin (Terminal-Bench 4.0: Opus 5 52.3 vs Sol 37.3); Codex takes the +1 notch to xhigh.
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
 ```
+> **One phase, not four.** Locate the callers, edit, run the existing suite, fix
+> what it catches — that is the implementation loop (O1), so **no `ultracode`**
+> however many files or minutes it takes.
+
+*"Stand up the new staging environment from scratch: Terraform it, deploy the 12 services, seed the data, run the smoke suite, and fix whatever does not come up."*
+```
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: ultracode
+Codex: Terra · effort: xhigh
+Evidence: Implementation, a data-seeding phase and a smoke run against a deployed environment are three distinct phases feeding each other, which is what ultracode's orchestration buys; Codex takes the +1 notch.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+```
+> Three phases at `W=2` — orchestration is not a width question.
 
 *"Find the race condition that flakes in prod sometimes"*
 ```
 Claude: ✅ RECOMMENDED AI · Opus 5 · effort: xhigh
 Codex: Sol · effort: xhigh
-Evidence: Adversarial debugging inside a repo leans on the terminal/agentic profile where Claude leads against Sol; max needs an indivisible design decision at R=3, and a bug hunt is neither.
+Evidence: Adversarial debugging inside a repo leans on the terminal/agentic profile where Claude leads against Sol; max needs one indivisible design decision at R=3, and a bug hunt is neither.
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
 ```
-> **`xhigh`, not `ultracode`.** The session is long and loops through tools, but
-> measure → hypothesise → re-measure is *one* kind of step. No notch either: the
-> hard part is the diagnosis and the fix is local.
+> `D=3` by D3DIAG — intermittent *and* timing-dependent. **`xhigh`, not
+> `ultracode`:** the session is long and loops through tools, but it is one
+> implementation phase. No notch either — the fix is local.
 
-*"Implement the notifications feature from the architecture doc across the service — about 25 files. Add tests, run lint and the build, and fix whatever breaks."*
+*"For each of these 120 unrelated vendors, reconcile their sub-processor terms against our DPA and decide whether there is an actual breach — counsel reviews every flag."*
 ```
-Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: ultracode
-Codex: Terra · effort: xhigh
-Evidence: Discover, implement, author tests, run the build, repair — five kinds of step feeding each other over a long session is exactly what ultracode buys, and 25 files is nowhere near W=3; Codex takes the +1 agentic notch to xhigh.
-⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
-```
-> Orchestration is not width. The same session at 150 files of one mechanical
-> rename would be `D=1` → `Sonnet 5 · medium`, no mode at all.
-
-*"We have three candidate designs for the event bus. Investigate each one independently against our throughput and ordering requirements, then bring me a comparison."*
-```
-Claude: Sonnet 5 · effort: xhigh
+Claude: Sonnet 5 · effort: ultracode
 Codex: ✅ RECOMMENDED AI · Sol Ultra · effort: xhigh
-Evidence: Three strands that never wait on each other is a parallelism problem, and Ultra's ~4 collaborating agents are the primitive for it — ultracode is one chain, and D=3 analysis keeps Claude mid-tier.
+Evidence: 120 vendors reconciled independently is a parallelism problem and Ultra runs ~4 collaborating agents against ultracode's single chain; no coding benchmark applies to contract triage.
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
 ```
+> Dominant tags are `parallel-independent` + `research-synthesis`. There is no
+> code and no repo, so Terminal-Bench is **not applicable** (B1) and cannot
+> outrank the mechanism. `ultracode` fires on the width limb (`W=3 ∧ D≥2`).
 
 *"Design and implement the new cross-service transaction boundary. It ships tonight and cannot be rolled back."*
 ```
 Claude: Opus 5 · effort: max
 Codex: ✅ RECOMMENDED AI · Astra · effort: xhigh
-Evidence: One indivisible boundary decision at R=3 is the case max exists for — but on agentic code Astra xhigh outscores Sol max (AA Index v4.3: 53 @ $2.31 vs 47 @ $1.99) at roughly a third of the output tokens, so Rule E4 spends the model instead of the rung.
+Evidence: One indivisible boundary decision at R=3 is the case max exists for, but on agentic code Astra xhigh outscores Sol max (AA Index v4.3: 53 @ $2.31 vs 47 @ $1.99) at roughly a third of the output tokens.
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
 Do not apply without human review.
 ```
-> The **only** non-gate route to Astra. Change the capability to architecture or
-> a written deliverable and it stays `Sol · max` — E4 does not fire outside
-> `agentic-code` / `terminal-tool`.
-
-*"These prod migration scripts run tonight with no further review — check them for anything that silently loses or corrupts data"*
-```
-Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: xhigh
-Codex: Terra · effort: xhigh
-Evidence: D=3 review outside the flagship capability list keeps both arms mid-tier; max is dominated on both (Opus 5 xhigh outscores Sonnet 5 max at lower cost), so the review note carries the stakes.
-⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
-Do not apply without human review.
-```
-
-*"Run a penetration test against this 180-service environment, build auth-bypass chains"*
-```
-Claude: ✅ RECOMMENDED AI · Opus 4.8 · effort: ultracode
-Codex: use Claude — standard access hard-stops offensive-cyber work (with Daybreak Blue access: Astra · effort: xhigh)
-Evidence: Availability gate — standard Codex access ends the run rather than pausing, so the comparison never gets to capability.
-```
-
-*"Break this 6000-file legacy Java monolith into independent services"*
-```
-Claude: Fable 5.1 · effort: max
-Codex: ✅ RECOMMENDED AI · Astra · effort: max
-Evidence: Capability is level against Astra (AA Terminal-Bench 4.0: Astra 59 vs Fable 5.1 52; Coding Agent Index tied at 62), so efficiency decides — 27k output tokens/task vs 78k.
-⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
-Do not apply without human review.
-```
-> The gate puts **Astra** on the Codex line, and Claude's agentic-code lead is a
-> lead over **Sol** — reading it as a lead over Astra is the Step 5a mistake.
-> `max` fires because the boundary design is one indivisible decision (E3).
+> The **only** non-gate route to Astra (E4). Change the capability to
+> architecture or a written deliverable and it stays `Sol · max`.
 
 *"Bump `MAX_RETRIES` from 3 to 5 in the prod config"*
 ```
@@ -821,27 +769,45 @@ Evidence: D=0 work — both are far past the bar, and Sonnet 5 is the cheaper of
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
 Do not apply without human review.
 ```
+> `R=3` by blast radius, not line length — which is also why Haiku/Luna are out.
+
+*"Split this 6000-file legacy Java monolith into independent services"*
+```
+Claude: Fable 5.1 · effort: max
+Codex: ✅ RECOMMENDED AI · Astra · effort: max
+Evidence: The boundary design is one indivisible decision at D=3∧R=3, which is what max buys; the 6000-file scale gates both arms to frontier and the wide execution is not the difficulty.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.
+```
+> **`max`, not `ultracode`.** The difficulty is the *boundary decision* — one
+> indivisible design call (M1) — even though moving 6000 files is wide. Width is
+> execution, not the difficulty, so the indivisible guard blocks `ultracode`.
+> "One boundary decision" is also why P1 does **not** make it Sol Ultra.
+
+*"Redesign the auth architecture of 200 prod services from scratch"*
+```
+Claude: ✅ RECOMMENDED AI · opusplan · plan: max · execute: medium
+⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.
+Codex: Sol · effort: max
+Evidence: Front-loaded architecture design (deep-reasoning) at D=3∧R=3 is opusplan on Claude with a max plan phase; Codex has no plan/execute split, so the same indivisible design decision is Sol · max (low-confidence).
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.
+```
+> **Codex is `Sol · max`, not `xhigh`.** opusplan separates the *plan* from the
+> mechanical execution on the Claude arm; the design decision itself is still one
+> indivisible novel-design call (M1). Codex has no opusplan, so it takes that
+> decision whole at `max`. `deep-reasoning`, so E4 does not fire.
 
 ---
 
 ## If detail is needed
 
 `reference.md`: **§8** example library · **§10** edge-case rulings · **§11**
-capability→benchmark map · **§12** comparability record, conflicts and what
-could not be verified · **§13** efficiency/quota data · **§14** recommended-AI
-rationale and the ablation checks · **§15** the three-layer evidence
-architecture and how to re-derive it · **§16** the reachability audit (which
-model × effort combinations the rules can actually produce, and why four of them
-are deliberately zero).
+capability→benchmark map · **§12** comparability record and conflicts · **§13**
+efficiency/quota data · **§14** recommended-AI rationale and the ablation ·
+**§15** the three-layer evidence architecture · **§16** the reachability audit.
 
 **Three layers; only this file is read at runtime.** `benchmark_frontiers.json`
-is generated by `scripts/compile_benchmark_frontiers.py` from `benchmarks.json`
-and is there for auditing a rule, not for answering one. **Never load either to
-route a prompt** — the rules above are their compiled form, and re-reading 120+
-records per route is exactly the quota waste this router exists to prevent.
-
-**The router does not select a model from a benchmark number, and it does not
-ignore benchmarks either.** Evidence sets the *direction* and the *equivalence
-band*; the capability profile decides which evidence applies; efficiency breaks
-the ties that capability leaves open. A leaderboard position on its own decides
-nothing.
+is generated from `benchmarks.json` for auditing a rule, not for answering one.
+**Never load either to route a prompt** — the rules above are their compiled
+form.

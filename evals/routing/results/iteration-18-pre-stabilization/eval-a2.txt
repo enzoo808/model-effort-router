@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: medium
+Codex: Astra · effort: medium
+Evidence: D=1 enumeration puts both arms well past the bar, so efficiency decides — Sonnet 5's 1M window at $2/$10 against the $10/$50 Astra the ≥1M-corpus gate forces onto the Codex line (2× over 272k input tokens).
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

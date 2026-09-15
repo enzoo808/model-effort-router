@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: ultracode
+Codex: Sol Ultra · effort: xhigh
+Evidence: A 180-service defensive audit is terminal-tool plus parallel-independent, and the task-specific benchmark outranks the product mechanism (Terminal-Bench 4.0: Opus 5 52.3 vs Sol 37.3, against Ultra's ~4 agents), while W=3 with D=3 turns on ultracode and review work keeps Claude mid-tier.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

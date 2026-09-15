@@ -1,0 +1,5 @@
+Claude: Fable 5.1 · effort: ultracode
+Codex: ✅ RECOMMENDED AI · Astra · effort: xhigh
+Evidence: Splitting a 6000-file monolith is whole-repo agentic-code where Astra leads on AA Terminal-Bench 4.0 (Astra 59 · Fable 52 · Sol 40) at ~27k output tokens/task vs 78k.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.

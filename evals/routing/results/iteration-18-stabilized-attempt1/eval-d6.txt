@@ -1,0 +1,6 @@
+Claude: ✅ RECOMMENDED AI · opusplan · plan: max · execute: medium
+⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.
+Codex: Sol · effort: xhigh
+Evidence: Redesign-from-scratch is deep-reasoning, where OpenAI's own tooled HLE favours Claude (Opus 5 63.6) at low-confidence; opusplan front-loads the indivisible design at max, then execution at medium.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.

@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: xhigh
+Codex: Terra · effort: xhigh
+Evidence: A single-file adversarial security review is tool-less deep-reasoning, where the only cross-ecosystem row is OpenAI's own tooled HLE favouring the competitor (Opus 5 63.6 vs Astra 57.2) and is therefore low-confidence; D=3 review sits outside the flagship capability list, so both arms stay mid-tier at xhigh.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

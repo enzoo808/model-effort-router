@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Codex: Terra · effort: high
+Evidence: Auditing migration scripts for silent data loss is a deep-reasoning correctness audit where Claude leads on tooled HLE (low-confidence).
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.

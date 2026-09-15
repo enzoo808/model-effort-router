@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: medium
+Codex: Astra · effort: medium
+Evidence: Shallow whole-repo mapping is long-context work where Sonnet 5's 1M window at $2/$10 is favoured over Astra at $10/$50, and neither window fully holds 1.2M so availability does not decide it.
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

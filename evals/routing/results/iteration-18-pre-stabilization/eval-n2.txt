@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: medium
+Codex: Terra · effort: medium
+Evidence: Defensive enumeration against a stated predicate is D=1 mechanical reading, not adversarial hunting, so efficiency decides at that depth — Sonnet 5 at $2/$10 against Terra at $2/$12.
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

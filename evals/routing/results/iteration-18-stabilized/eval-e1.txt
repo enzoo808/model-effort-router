@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Codex: Terra · effort: high
+Evidence: Reading 900 pages into one memo is long-context plus knowledge-work; Sonnet 5's 1M window covers the corpus at $2/$10 and GDPval leans Claude, though the cross-ecosystem signal is low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

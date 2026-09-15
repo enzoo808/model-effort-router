@@ -1,0 +1,3 @@
+Claude: no model — clarify the prompt first
+Codex: no model — clarify the prompt first
+Evidence: Step 0 gate — "this code" names no file, function or service and no symptom is stated, so two implementers would change two different things; say which file/function is broken, what it does now, and what it should do instead.

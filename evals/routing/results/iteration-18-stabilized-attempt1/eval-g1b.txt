@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Codex: Terra · effort: xhigh
+Evidence: Standing up a CI pipeline is terminal-tool build-and-test work where Terminal-Bench 4.0 gives Claude the edge (Opus 5 52.3 vs Sol 37.3); it is one implementation phase so no ultracode, and Codex takes the +1 notch to xhigh.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

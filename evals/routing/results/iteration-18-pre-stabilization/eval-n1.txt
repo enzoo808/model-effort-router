@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: medium
+Codex: Terra · effort: medium
+Evidence: One endpoint repeated across 60 services is width, not depth (D=1, W=2), so the capability rows are skipped and efficiency decides — Sonnet 5 at $2/$10 against Terra at $2/$12.
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

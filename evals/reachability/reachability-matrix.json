@@ -4,36 +4,6 @@
     {
       "badge_after": "claude",
       "badge_before": "claude",
-      "claude_after": "Sonnet 5 · ultracode",
-      "claude_before": "Sonnet 5 · high",
-      "codex_after": "Terra · xhigh",
-      "codex_before": "Terra · xhigh",
-      "id": "rc-018",
-      "prompt": "Implement the feature described in docs/architecture/notifications.md across the service -- about 25 files. Add tests, run lint and the build, fix whatever fails, then up",
-      "review_note": "ultracode ON at W=2. Implement, author tests, run lint and the build, repair the fallout -- four distinct kinds of step with a failure loop. This is the false negative the old W=3 rule was wrong about, and the case the rule change exists for.",
-      "rules_responsible": [
-        "ultracode"
-      ],
-      "verdict": "ACCEPT"
-    },
-    {
-      "badge_after": "claude",
-      "badge_before": "claude",
-      "claude_after": "Sonnet 5 · ultracode",
-      "claude_before": "Sonnet 5 · high",
-      "codex_after": "Terra · xhigh",
-      "codex_before": "Terra · xhigh",
-      "id": "rc-019",
-      "prompt": "Add the reporting module the RFC specifies. Work out how the existing export pipeline behaves first, implement it, generate tests, run them, fix the regressions, regenera",
-      "review_note": "ultracode ON at W=1. Discover existing behaviour, implement, generate tests, run, repair. Width is irrelevant to what orchestration buys here.",
-      "rules_responsible": [
-        "ultracode"
-      ],
-      "verdict": "ACCEPT"
-    },
-    {
-      "badge_after": "claude",
-      "badge_before": "claude",
       "claude_after": "Sonnet 5 · medium",
       "claude_before": "Sonnet 5 · ultracode",
       "codex_after": "Terra · medium",
@@ -56,21 +26,6 @@
       "id": "rc-021",
       "prompt": "Convert require() calls to import across 300 files. Behaviour must not change.",
       "review_note": "ultracode OFF, same mechanical-width false positive. 300 files, D=1, behaviour must not change.",
-      "rules_responsible": [
-        "ultracode"
-      ],
-      "verdict": "ACCEPT"
-    },
-    {
-      "badge_after": "claude",
-      "badge_before": "claude",
-      "claude_after": "Fable 5.1 · ultracode",
-      "claude_before": "Fable 5.1 · high",
-      "codex_after": "(no model)",
-      "codex_before": "(no model)",
-      "id": "rc-035",
-      "prompt": "Build the variant-calling pipeline for this whole-genome dataset and validate it against the GIAB truth set.",
-      "review_note": "ultracode ON. Build the variant-calling pipeline, run it, validate against the GIAB truth set -- build/run/validate is genuine orchestration, and the biology gate has already fixed the model.",
       "rules_responsible": [
         "ultracode"
       ],
@@ -133,21 +88,6 @@
       "review_note": "Codex max -> xhigh, notch cap. Note the task IS indivisible, but R=2, so E3's max condition never applied; the max came from the notch alone.",
       "rules_responsible": [
         "notch_cap"
-      ],
-      "verdict": "ACCEPT"
-    },
-    {
-      "badge_after": "claude",
-      "badge_before": "claude",
-      "claude_after": "Sonnet 5 · ultracode",
-      "claude_before": "Sonnet 5 · high",
-      "codex_after": "Terra · xhigh",
-      "codex_before": "Terra · xhigh",
-      "id": "rc-060",
-      "prompt": "Set up the CI pipeline for this repo: lint, test, build the container, push it, and gate the merge on all four.",
-      "review_note": "ultracode ON at W=1. Lint, test, build the container, push, gate the merge -- you cannot author a CI pipeline without running and repairing it.",
-      "rules_responsible": [
-        "ultracode"
       ],
       "verdict": "ACCEPT"
     },
@@ -232,63 +172,45 @@
     {
       "badge_after": "codex",
       "badge_before": "claude",
-      "claude_after": "Fable 5.1 · ultracode",
+      "claude_after": "Fable 5.1 · xhigh",
       "claude_before": "Opus 5 · xhigh",
       "codex_after": "Astra · xhigh",
       "codex_before": "Sol · max",
       "id": "rc-068",
       "prompt": "We already ran this on our usual flagship at max effort overnight and it still could not close the loop. It is a fully autonomous refactor of the scheduling subsystem wit",
-      "review_note": "Rung-3 escalation on both arms plus ultracode. The user states a flagship-tier run at max already fell short on a long unattended agentic job, which is verbatim the condition Anthropic publishes for moving to Fable 5.1. Codex mirrors it Sol -> Astra. Badge follows the Astra column.",
+      "review_note": "Rung-3 frontier escalation (A1): the user states a flagship-tier run at max already fell short on a long unattended agentic refactor, the published condition for Opus 5 -> Fable 5.1 / Sol -> Astra. Effort stays xhigh -- W=2 and one implementation phase, so no ultracode after the O1 tightening.",
       "rules_responsible": [
-        "rung3",
-        "ultracode"
+        "rung3"
       ],
       "verdict": "ACCEPT"
     },
     {
       "badge_after": "claude",
       "badge_before": "claude",
-      "claude_after": "Opus 5 · ultracode",
+      "claude_after": "Opus 5 · xhigh",
       "claude_before": "Opus 5 · xhigh",
       "codex_after": "Sol · xhigh",
       "codex_before": "Sol · max",
       "id": "rc-069",
       "prompt": "Leave this running unattended overnight: work through the migration backlog in this repo, one ticket at a time, implement each, run the suite, fix regressions, and open a",
-      "review_note": "Claude ultracode ON for an unattended overnight backlog run (implement, run the suite, repair, next ticket); Codex max -> xhigh from the notch cap.",
+      "review_note": "Codex max -> xhigh from the notch cap (N1); Claude unchanged at Opus 5 xhigh. An overnight backlog run is the implementation loop repeated, which is one phase under O1, so no ultracode.",
       "rules_responsible": [
-        "notch_cap",
-        "ultracode"
+        "notch_cap"
       ],
       "verdict": "ACCEPT"
     },
     {
       "badge_after": "claude",
       "badge_before": "claude",
-      "claude_after": "Sonnet 5 · ultracode",
-      "claude_before": "Sonnet 5 · high",
-      "codex_after": "Terra · xhigh",
-      "codex_before": "Terra · xhigh",
-      "id": "rc-078",
-      "prompt": "80 mikroservisin healthcheck endpoint'lerini tek tek kontrol et, eksik olanlara ekle, testleri yaz, CI'ı yeşile getir.",
-      "review_note": "ultracode ON at W=2 (Turkish). Check each of 80 services, add what is missing, write tests, get CI green.",
-      "rules_responsible": [
-        "ultracode"
-      ],
-      "verdict": "ACCEPT"
-    },
-    {
-      "badge_after": "claude",
-      "badge_before": "claude",
-      "claude_after": "Opus 5 · ultracode",
+      "claude_after": "Opus 5 · xhigh",
       "claude_before": "Opus 5 · xhigh",
       "codex_after": "Sol · xhigh",
       "codex_before": "Sol · max",
       "id": "rc-082",
       "prompt": "Implement the compiler pass the design doc describes, add the IR tests, run the full compiler test suite, fix the fallout, and regenerate the golden files.",
-      "review_note": "ultracode ON: implement the pass, add IR tests, run the full suite, repair, regenerate goldens. Codex max -> xhigh from the notch cap.",
+      "review_note": "Codex max -> xhigh from the notch cap (N1); Claude unchanged at Opus 5 xhigh. Implement the pass, run the suite, regenerate goldens is implementation plus one data artefact -- two phases, not orchestration.",
       "rules_responsible": [
-        "notch_cap",
-        "ultracode"
+        "notch_cap"
       ],
       "verdict": "ACCEPT"
     },
@@ -338,21 +260,6 @@
       "verdict": "ACCEPT"
     },
     {
-      "badge_after": "claude",
-      "badge_before": "claude",
-      "claude_after": "Sonnet 5 · ultracode",
-      "claude_before": "Sonnet 5 · high",
-      "codex_after": "Terra · xhigh",
-      "codex_before": "Terra · xhigh",
-      "id": "rc-093",
-      "prompt": "Set up the simulation harness for this fluid solver, sweep the parameter grid, and report where it goes unstable.",
-      "review_note": "ultracode ON at W=1. Build the harness, sweep the grid, report instability -- implement, run, analyse.",
-      "rules_responsible": [
-        "ultracode"
-      ],
-      "verdict": "ACCEPT"
-    },
-    {
       "badge_after": "codex",
       "badge_before": "claude",
       "claude_after": "opusplan",
@@ -364,21 +271,6 @@
       "review_note": "E4. Decomposing a service into separately deployed processes at R=3 is indivisible, so E3 does allow max here -- and at that exact point the published rungs favour Astra xhigh over Sol max on score, output tokens and index together. Shipped golden f1 already sends monolith decomposition to Astra at scale.",
       "rules_responsible": [
         "E4"
-      ],
-      "verdict": "ACCEPT"
-    },
-    {
-      "badge_after": "claude",
-      "badge_before": "claude",
-      "claude_after": "Sonnet 5 · ultracode",
-      "claude_before": "Sonnet 5 · high",
-      "codex_after": "Terra · xhigh",
-      "codex_before": "Terra · xhigh",
-      "id": "rc-101",
-      "prompt": "Instrument the whole request path with OpenTelemetry across these 70 files, add the span tests, run the suite, fix the fallout, and update the observability runbook.",
-      "review_note": "ultracode ON at W=2. Instrument 70 files, add span tests, run, repair, update the runbook -- implement + tests + verify + docs.",
-      "rules_responsible": [
-        "ultracode"
       ],
       "verdict": "ACCEPT"
     },
@@ -400,21 +292,6 @@
     {
       "badge_after": "claude",
       "badge_before": "claude",
-      "claude_after": "Sonnet 5 · ultracode",
-      "claude_before": "Sonnet 5 · high",
-      "codex_after": "Terra · xhigh",
-      "codex_before": "Terra · xhigh",
-      "id": "rc-116",
-      "prompt": "Build the internal admin app: scaffold the CRUD screens per the spec, wire the API, add e2e tests, run them headless, fix the failures, and ship a preview build. Around 4",
-      "review_note": "ultracode ON at W=2. Scaffold, wire, add e2e tests, run headless, repair, ship a preview build.",
-      "rules_responsible": [
-        "ultracode"
-      ],
-      "verdict": "ACCEPT"
-    },
-    {
-      "badge_after": "claude",
-      "badge_before": "claude",
       "claude_after": "Sonnet 5 · medium",
       "claude_before": "Sonnet 5 · ultracode",
       "codex_after": "Terra · medium",
@@ -422,21 +299,6 @@
       "id": "rc-118",
       "prompt": "Go through these 110 Grafana dashboards and update every one that still queries the retired metric.",
       "review_note": "ultracode OFF. 110 dashboards, one retired metric, D=1.",
-      "rules_responsible": [
-        "ultracode"
-      ],
-      "verdict": "ACCEPT"
-    },
-    {
-      "badge_after": "claude",
-      "badge_before": "claude",
-      "claude_after": "Sonnet 5 · ultracode",
-      "claude_before": "Sonnet 5 · high",
-      "codex_after": "Terra · xhigh",
-      "codex_before": "Terra · xhigh",
-      "id": "rc-122",
-      "prompt": "Set up a reproducible dev container for this repo and document how to use it.",
-      "review_note": "ultracode ON at W=1 -- the narrowest accepted case in the set, kept deliberately as the boundary marker. A REPRODUCIBLE dev container means author, build, run the toolchain inside it, repair what is missing, then document.",
       "rules_responsible": [
         "ultracode"
       ],
@@ -462,21 +324,6 @@
     {
       "badge_after": "claude",
       "badge_before": "claude",
-      "claude_after": "Fable 5.1 · ultracode",
-      "claude_before": "Fable 5.1 · high",
-      "codex_after": "(no model)",
-      "codex_before": "(no model)",
-      "id": "rc-131",
-      "prompt": "Build the genome annotation pipeline, run it over the 40 sample FASTQs, and QC the output.",
-      "review_note": "ultracode ON. Build the annotation pipeline, run it over 40 FASTQs, QC the output.",
-      "rules_responsible": [
-        "ultracode"
-      ],
-      "verdict": "ACCEPT"
-    },
-    {
-      "badge_after": "claude",
-      "badge_before": "claude",
       "claude_after": "Opus 5 · ultracode",
       "claude_before": "Opus 5 · xhigh",
       "codex_after": "Sol · xhigh",
@@ -493,16 +340,15 @@
     {
       "badge_after": "claude",
       "badge_before": "claude",
-      "claude_after": "Opus 5 · ultracode",
+      "claude_after": "Opus 5 · xhigh",
       "claude_before": "Opus 5 · xhigh",
       "codex_after": "Sol · xhigh",
       "codex_before": "Sol · max",
       "id": "rc-136",
       "prompt": "We keep losing the failure detail on long agent runs. Investigate our agent harness across these 55 files, add durable run notes, write the tests, run them, and document ",
-      "review_note": "ultracode ON: investigate 55 files, add durable run notes, write tests, run. Codex max -> xhigh from the notch cap.",
+      "review_note": "Codex max -> xhigh from the notch cap (N1); Claude unchanged at Opus 5 xhigh. Investigate then instrument is research + implementation, two phases, so no ultracode under O1.",
       "rules_responsible": [
-        "notch_cap",
-        "ultracode"
+        "notch_cap"
       ],
       "verdict": "ACCEPT"
     },
@@ -524,23 +370,22 @@
     {
       "badge_after": "claude",
       "badge_before": "claude",
-      "claude_after": "Opus 5 · ultracode",
+      "claude_after": "Opus 5 · xhigh",
       "claude_before": "Opus 5 · xhigh",
       "codex_after": "Sol · xhigh",
       "codex_before": "Sol · max",
       "id": "rc-147",
       "prompt": "Implement the spec in RFC-0042 across the platform: it touches the gateway, three services and the SDK. Research the existing behaviour, implement, generate contract test",
-      "review_note": "ultracode ON: research existing behaviour, implement across gateway/services/SDK, generate tests, run. Codex max -> xhigh from the notch cap.",
+      "review_note": "Codex max -> xhigh from the notch cap (N1); Claude unchanged at Opus 5 xhigh. Research existing behaviour then implement across the platform is two phases; the RFC work is one implementation loop, so no ultracode.",
       "rules_responsible": [
-        "notch_cap",
-        "ultracode"
+        "notch_cap"
       ],
       "verdict": "ACCEPT"
     },
     {
       "badge_after": "codex",
       "badge_before": "claude",
-      "claude_after": "Fable 5.1 · ultracode",
+      "claude_after": "Fable 5.1 · xhigh",
       "claude_before": "Opus 5 · xhigh",
       "codex_after": "Astra · xhigh",
       "codex_before": "Sol · max",
@@ -548,8 +393,7 @@
       "prompt": "We ran this on the flagship at xhigh twice and it still cannot get the integration suite green. It is an 80-file migration with a long tail of interacting failures. What ",
       "review_note": "Rung-3 escalation, same as rc-068: two stated flagship-tier failures at xhigh on a long-tailed 80-file migration. This is the published condition for the frontier rung, not difficulty on its own.",
       "rules_responsible": [
-        "rung3",
-        "ultracode"
+        "rung3"
       ],
       "verdict": "ACCEPT"
     }
@@ -568,10 +412,10 @@
     },
     "claude_cell_after": {
       "(no model)": 4,
-      "Fable 5.1 · high": 1,
+      "Fable 5.1 · high": 3,
       "Fable 5.1 · max": 1,
-      "Fable 5.1 · ultracode": 10,
-      "Fable 5.1 · xhigh": 1,
+      "Fable 5.1 · ultracode": 6,
+      "Fable 5.1 · xhigh": 3,
       "Haiku 4.5": 8,
       "Mythos 5.1 · xhigh": 1,
       "Opus 4.8 · ultracode": 2,
@@ -579,12 +423,12 @@
       "Opus 5 · high": 2,
       "Opus 5 · max": 9,
       "Opus 5 · medium": 1,
-      "Opus 5 · ultracode": 9,
-      "Opus 5 · xhigh": 7,
-      "Sonnet 5 · high": 32,
+      "Opus 5 · ultracode": 5,
+      "Opus 5 · xhigh": 11,
+      "Sonnet 5 · high": 40,
       "Sonnet 5 · low": 5,
       "Sonnet 5 · medium": 29,
-      "Sonnet 5 · ultracode": 16,
+      "Sonnet 5 · ultracode": 8,
       "Sonnet 5 · xhigh": 10,
       "opusplan": 5
     },
@@ -689,13 +533,15 @@
       "effort_or_mode": "high",
       "lost_by_this_pass": false,
       "model": "Fable 5.1",
-      "observed_after": 1,
+      "observed_after": 3,
       "observed_before": 3,
       "platform_forced": false,
       "rationale": null,
       "reachable_by_current_rules": true,
       "recovered_by_this_pass": false,
       "representative_prompt_ids": [
+        "rc-035",
+        "rc-131",
         "rc-153"
       ],
       "status": "HEALTHY",
@@ -753,17 +599,17 @@
       "effort_or_mode": "ultracode",
       "lost_by_this_pass": false,
       "model": "Fable 5.1",
-      "observed_after": 10,
+      "observed_after": 6,
       "observed_before": 6,
       "platform_forced": false,
       "rationale": null,
       "reachable_by_current_rules": true,
       "recovered_by_this_pass": false,
       "representative_prompt_ids": [
-        "rc-035",
         "rc-038",
         "rc-039",
-        "rc-068"
+        "rc-091",
+        "rc-103"
       ],
       "status": "HEALTHY",
       "supported": true
@@ -773,14 +619,16 @@
       "effort_or_mode": "xhigh",
       "lost_by_this_pass": false,
       "model": "Fable 5.1",
-      "observed_after": 1,
+      "observed_after": 3,
       "observed_before": 1,
       "platform_forced": false,
       "rationale": null,
       "reachable_by_current_rules": true,
       "recovered_by_this_pass": false,
       "representative_prompt_ids": [
-        "rc-036"
+        "rc-036",
+        "rc-068",
+        "rc-148"
       ],
       "status": "HEALTHY",
       "supported": true
@@ -1067,7 +915,7 @@
       "effort_or_mode": "ultracode",
       "lost_by_this_pass": false,
       "model": "Opus 5",
-      "observed_after": 9,
+      "observed_after": 5,
       "observed_before": 1,
       "platform_forced": false,
       "rationale": null,
@@ -1077,7 +925,7 @@
         "rc-063",
         "rc-064",
         "rc-065",
-        "rc-069"
+        "rc-090"
       ],
       "status": "HEALTHY",
       "supported": true
@@ -1087,7 +935,7 @@
       "effort_or_mode": "xhigh",
       "lost_by_this_pass": false,
       "model": "Opus 5",
-      "observed_after": 7,
+      "observed_after": 11,
       "observed_before": 17,
       "platform_forced": false,
       "rationale": null,
@@ -1107,7 +955,7 @@
       "effort_or_mode": "high",
       "lost_by_this_pass": false,
       "model": "Sonnet 5",
-      "observed_after": 32,
+      "observed_after": 40,
       "observed_before": 43,
       "platform_forced": false,
       "rationale": null,
@@ -1116,8 +964,8 @@
       "representative_prompt_ids": [
         "rc-016",
         "rc-017",
-        "rc-040",
-        "rc-041"
+        "rc-018",
+        "rc-019"
       ],
       "status": "HEALTHY",
       "supported": true
@@ -1182,17 +1030,17 @@
       "effort_or_mode": "ultracode",
       "lost_by_this_pass": false,
       "model": "Sonnet 5",
-      "observed_after": 16,
+      "observed_after": 8,
       "observed_before": 9,
       "platform_forced": false,
       "rationale": null,
       "reachable_by_current_rules": true,
       "recovered_by_this_pass": false,
       "representative_prompt_ids": [
-        "rc-018",
-        "rc-019",
         "rc-030",
-        "rc-047"
+        "rc-047",
+        "rc-062",
+        "rc-089"
       ],
       "status": "HEALTHY",
       "supported": true

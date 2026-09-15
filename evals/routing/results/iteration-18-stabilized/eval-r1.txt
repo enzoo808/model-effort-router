@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: medium
+Codex: Terra · effort: medium
+Evidence: D=1 standard pattern applied once, so efficiency decides the badge — Sonnet 5 edges Terra on output-token price, and no +1 notch applies because it is one pattern in one place, not multi-step code writing.
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

@@ -1,0 +1,4 @@
+Claude: Fable 5.1 · effort: xhigh
+Codex: ✅ RECOMMENDED AI · Astra · effort: xhigh
+Evidence: Autonomous multi-file agentic refactor where Astra leads on the frontier rung (AA Terminal-Bench 4.0: Astra 59 vs Fable 5.1 52, at ~27k output tokens/task vs ~78k).
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

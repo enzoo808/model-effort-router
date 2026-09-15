@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: medium
+Codex: Astra · effort: medium
+Evidence: Shallow long-context call-site mapping (D=1) favours Sonnet 5's 1M window at $2/$10 over Astra's $10/$50, and mechanical enumeration needs only medium.
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

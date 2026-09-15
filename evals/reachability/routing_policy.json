@@ -216,87 +216,62 @@
       "version": "iteration-18",
       "expr": "duration_gt_30min AND (O == high OR (W == 3 AND D >= 2)) AND NOT indivisible_single_chain",
       "previous": "W == 3 AND duration_gt_30min AND NOT (D == 3 AND R == 3)",
-      "why_changed": "W measures surface; ultracode buys workflow orchestration. Three separate defects in the old rule: (1) false negative on mid-width multi-phase work -- a 25-file implement/test/build/repair session got no orchestration because it was not 100 files wide; (2) false positive on mechanical width -- 150 files of one rename fired it at D=1, which is pure quota waste, so the width disjunct now carries a depth qualifier; (3) a dead zone at D=3 AND R=3 where ultracode was refused for depth while Rule E3 independently refused max, leaving irreversible 300-service migrations on a bare xhigh. The guard is now the same indivisible-single-chain test E3 uses, so the two rules can no longer refuse a task for contradictory reasons.",
-      "skill_md_assertion": [
-        "`W = 3` ∧ `D ≥ 2`",
-        "estimated duration > 30 min",
-        "**not one indivisible chain**",
-        "One kind repeated across many units is `W`, not orchestration"
-      ],
-      "skill_md_must_not_appear": [
-        "¬(D=3 ∧ R=3)"
-      ]
+      "why_changed": "W measures surface; ultracode buys workflow orchestration. Three separate defects in the old rule: (1) false negative on mid-width multi-phase work -- a 25-file implement/test/build/repair session got no orchestration because it was not 100 files wide; (2) false positive on mechanical width -- 150 files of one rename fired it at D=1, which is pure quota waste, so the width disjunct now carries a depth qualifier; (3) a dead zone at D=3 AND R=3 where ultracode was refused for depth while Rule E3 independently refused max, leaving irreversible 300-service migrations on a bare xhigh. The guard is now the same indivisible-single-chain test E3 uses, so the two rules can no longer refuse a task for contradictory reasons."
     },
     "ultra": {
       "version": "iteration-18",
       "expr": "P == high AND D == 3",
       "previous": "three_or_more_independent_targets AND D == 3",
-      "why_changed": "Parallelism is not target count. Strands of work inside one job count too -- three candidate designs investigated or prototyped side by side is the same primitive as three independent services. The D==3 floor is kept on purpose: Ultra runs ~4 agents, so it costs ~4x, and at D<=2 the mid tier already clears the bar.",
-      "skill_md_assertion": [
-        "3+ genuinely parallel strands",
-        "**Two** strands is not enough"
-      ],
-      "skill_md_must_not_appear": [
-        "3+ already-independent targets scanned side by side"
-      ]
+      "why_changed": "Parallelism is not target count. Strands of work inside one job count too -- three candidate designs investigated or prototyped side by side is the same primitive as three independent services. The D==3 floor is kept on purpose: Ultra runs ~4 agents, so it costs ~4x, and at D<=2 the mid tier already clears the bar."
     },
     "codex_notch": {
       "version": "iteration-18",
       "expr": "agentic_multistep_write AND model in [Terra, Sol] -> +1 rung, capped at xhigh, and NEVER downward",
       "previous": "agentic_multistep_write AND model in [Terra, Sol] -> +1 rung, capped at max on Sol / xhigh on Terra",
-      "why_changed": "The notch compensates for a MODEL-tier gap. Letting it reach the last rung contradicts Step 7 Rule 2 (escalation is a model change, not an effort change) and Rule E3. The 'never downward' half is a bug fix found by this audit: a cap applied to a rung that Rule E3 had already raised to max was silently pulling it back to xhigh, which broke the indivisible-novel-design case the top rung exists for.",
-      "skill_md_assertion": [
-        "**caps at `xhigh` on both**",
-        "never lowers a rung"
-      ],
-      "skill_md_must_not_appear": [
-        "`low→medium · medium→high · high→xhigh · xhigh→max`"
-      ]
+      "why_changed": "The notch compensates for a MODEL-tier gap. Letting it reach the last rung contradicts Step 7 Rule 2 (escalation is a model change, not an effort change) and Rule E3. The 'never downward' half is a bug fix found by this audit: a cap applied to a rung that Rule E3 had already raised to max was silently pulling it back to xhigh, which broke the indivisible-novel-design case the top rung exists for."
     },
     "max": {
       "expr": "D == 3 AND R == 3 AND model in flagship_models AND indivisible_single_chain",
-      "unchanged": true,
-      "skill_md_assertion": [
-        "**only** on a flagship (Opus 5 / Opus 4.8 / Fable 5.1 / Sol / Astra)"
-      ]
+      "unchanged": true
     },
     "E4": {
       "version": "iteration-18",
       "expr": "dominant capability in [agentic-code, terminal-tool] AND the rules would emit Sol max -> emit Astra xhigh instead",
       "why": "AA Intelligence Index v4.3: Astra xhigh 53 @ $2.31 vs Sol max 47 @ $1.99. AA Terminal-Bench 4.0 (independent harness): Astra 59 vs Sol 40. Astra is ~70% more token-efficient, and output tokens outrank cost/task in the 5c ordering. Capability-scoped on purpose: HLE puts Astra BEHIND on deep-reasoning and GDPval shows a regression on knowledge-work, so E4 must not fire there.",
-      "why_not_wider": "Widening E4 below max would mean comparing Astra xhigh against Sol xhigh, and AA publishes Sol only at high and max. Estimating the missing rung is exactly the interpolation Step 5a forbids, so the rule stops where the published rungs stop. That, not a frequency target, is what keeps Astra rare.",
-      "skill_md_assertion": [
-        "**Rule E4 — on `agentic-code` / `terminal-tool`",
-        "E4\n  > must not fire there"
-      ]
+      "why_not_wider": "Widening E4 below max would mean comparing Astra xhigh against Sol xhigh, and AA publishes Sol only at high and max. Estimating the missing rung is exactly the interpolation Step 5a forbids, so the rule stops where the published rungs stop. That, not a frequency target, is what keeps Astra rare."
     },
     "frontier_escalation": {
       "version": "iteration-18",
       "expr": "A == high AND prior_run_fell_short AND capability in flagship_capabilities -> Opus 5 becomes Fable 5.1, Sol becomes Astra",
       "previous": "no explicit rung; Fable 5.1 was reachable only through the biology and 1000+ file gates",
-      "why_changed": "Anthropic publishes the trigger verbatim ('if your evals at xhigh or max effort still fall short on demanding reasoning or long-horizon agentic work, move to Claude Fable 5.1'), and the old skill text called it 'consistent, no extra rule needed' -- which meant a user who SAID the flagship had already failed got the flagship again. Deliberately narrow: on the aggregate index Fable 5.1 is inside the equivalence band against Opus 5 at ~1.5x cost per task, so difficulty alone must never reach it.",
-      "skill_md_assertion": [
-        "**Third rung — frontier.** Opus 5 → **Fable 5.1**, Sol → **Astra**",
-        "Difficulty alone never reaches it"
-      ],
-      "skill_md_must_not_appear": [
-        "consistent, no extra rule needed"
-      ]
+      "why_changed": "Anthropic publishes the trigger verbatim ('if your evals at xhigh or max effort still fall short on demanding reasoning or long-horizon agentic work, move to Claude Fable 5.1'), and the old skill text called it 'consistent, no extra rule needed' -- which meant a user who SAID the flagship had already failed got the flagship again. Deliberately narrow: on the aggregate index Fable 5.1 is inside the equivalence band against Opus 5 at ~1.5x cost per task, so difficulty alone must never reach it."
     },
     "uncertainty": {
       "version": "iteration-18",
       "expr": "direction requires published CI, published SE, repeated-trial dispersion, or a benchmark-owner practical-significance threshold; otherwise UNRESOLVED",
       "previous": "a gap counted if it was large relative to the benchmark's own observed spread across the roster (compiled as 0.15 x spread)",
       "why_changed": "Observed spread is how far apart the models happen to sit, not how precisely either score was measured. On a two-row cell the spread IS the gap, so every comparison would 'win'. Removing it leaves `science` as the only capability with a certified direction -- which is the honest state of the published record, and is why the badge table's thin rows carry `low-confidence`.",
-      "skill_md_assertion": [
-        "**Score spread is not uncertainty.**",
-        "`UNRESOLVED` for that comparison",
-        "**Zero gap needs no interval.**"
-      ],
-      "skill_md_must_not_appear": [
-        "large relative to the benchmark's own spread"
-      ],
       "compiler": "scripts/compile_benchmark_frontiers.py DIRECTION_BASIS; the compiler raises SpreadFallbackResurrected if min_fraction_of_spread comes back"
     }
-  }
+  },
+  "rule_blocks": {
+    "note": "Canonical one-block statement of each load-bearing derived-signal rule, keyed by the rule id marked in skill/SKILL.md as <!-- rule:ID -->...<!-- /rule:ID -->. scripts/check_policy_sync.py asserts each string here appears VERBATIM inside its marked block in SKILL.md. This is stronger than the loose skill_md_assertion quotations: the sentence that defines the rule cannot drift from the mirror without failing the build. When a rule changes, edit the block in SKILL.md and this string together.",
+    "blocks": {
+      "S0": "**S0 · blocked output.** A prompt blocked at Step 0 emits exactly one line, a `Clarify:` line naming the missing information as a question, and no `Claude:`, `Codex:`, `Evidence:` or badge line at all.",
+      "D3DIAG": "**D3DIAG · diagnosis.** The coding column is written for building, so debugging scores on its own test: bounded diagnosis is `D=2`, and adversarial diagnosis is `D=3` when at least two of these hold — the root cause is non-local or depends on timing or ordering; reproduction is intermittent or environment-dependent; several plausible causes must be ruled out by constructing competing hypotheses; a local-looking fix could mask a deeper invariant violation.",
+      "P1": "**P1 · parallelisable strands.** `P = high` when the work splits into three or more strands that proceed without waiting on each other and merge at the end. A strand may be an already-independent target (service, repo, vendor) or an independent work-kind (three candidate designs investigated or prototyped side by side). Two strands is not enough, and one coherent decision sliced up after the fact is never strands.",
+      "M1": "**M1 · `max`.** Emit `max` only when `D = 3` and `R = 3` and the model is a flagship (Opus 5 / Opus 4.8 / Fable 5.1 / Mythos 5.1 / Sol / Astra) and the difficulty is one indivisible novel-design or formal decision. Otherwise `xhigh`.",
+      "A1": "**A1 · frontier rung.** Opus 5 becomes Fable 5.1 and Sol becomes Astra only when the dominant capability is on the flagship list and `A = high`, where `A = high` means hours of unattended agentic execution or the user states that an earlier flagship-tier run at `xhigh` or `max` already fell short.",
+      "O1": "**O1 · orchestration load.** `O = high` when the session must run three or more distinct phases, where a phase is a stretch of work that produces a different kind of deliverable and whose output is consumed by a later phase. The phases that count are research, implementation, independent verification, packaging, data or schema migration, documentation, and triage. The whole edit-run-repair implementation loop is one phase, and tests you write for your own change are inside it.",
+      "UC1": "**UC1 · `ultracode`.** Emit `ultracode` when the estimated duration is over 30 minutes and either `O = high` or (`W = 3` and `D >= 2`) and the difficulty is not one indivisible chain. Write `ultracode` in the effort field. Every model except Haiku 4.5.",
+      "N1": "**N1 · Codex +1 notch.** When the task is writing or restructuring code across multiple dependent steps and the model is Terra or Sol, raise the Codex effort one rung, capped at `xhigh` on both models, and never lower a rung that another rule already set higher. Never on Astra. Claude is untouched.",
+      "E4": "**E4 · Astra swap.** When the dominant capability is agentic-code or terminal-tool and the rules would emit `Sol · max`, emit `Astra · xhigh` instead.",
+      "B1": "**B1 · evidence applicability.** A benchmark row takes part in the badge decision only if the capability it measures is one of the dominant tags named for this prompt in Step 2. Applicability is checked before evidence quality and before any tie-break, and a row that is not applicable does not enter the comparison at all, however strong its number."
+    }
+  },
+  "skill_md_must_not_appear": [
+    "3+ already-independent targets scanned side by side",
+    "large relative to the benchmark's own spread",
+    "the dominant capability is structured design/architecture"
+  ]
 }

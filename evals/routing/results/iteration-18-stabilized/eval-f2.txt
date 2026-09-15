@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: xhigh
+Codex: Terra · effort: xhigh
+Evidence: Single-file vulnerability review is deep-reasoning (adversarial correctness), Claude's default side against Terra; low-confidence, as no cross-ecosystem benchmark covers this mid tier.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: medium
+Codex: Terra · effort: medium
+Evidence: D=1 mechanical repetition across independent services — both clear the bar, so efficiency decides and Sonnet 5 edges Terra on output-token price ($2/$10 vs $2/$12).
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

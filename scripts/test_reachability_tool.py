@@ -451,6 +451,19 @@ GOLDENS = [
      dict(cap="deep-reasoning", R=1, D=3, W=0, C=1)),
     ("p1", "Opus 5 · xhigh", "Sol · xhigh",
      dict(cap="deep-reasoning", R=1, D=3, W=0, C=0, dur_gt30=True, builds=True)),
+    # iteration-18 stabilization boundary evals
+    ("o1", "Opus 5 · ultracode", "Sol · xhigh",
+     dict(cap="agentic-code", R=3, D=3, W=3, C=2, dur_gt30=True, builds=True,
+          agentic_write=True, indiv=False)),
+    ("sh1", "Opus 5 · high", "Sol · high",
+     dict(cap="terminal-tool", R=1, D=2, W=1, C=1, builds=False, agentic_write=False,
+          flags=["escalation"])),
+    ("e4p", "Opus 5 · max", "Astra · xhigh",
+     dict(cap="agentic-code", R=3, D=3, W=2, C=2, indiv=True, dur_gt30=True, builds=True,
+          agentic_write=True)),
+    ("fr1", "Fable 5.1 · xhigh", "Astra · xhigh",
+     dict(cap="agentic-code", R=2, D=3, W=2, C=3, A="high", dur_gt30=True, builds=True,
+          agentic_write=True, flags=["escalation", "prior_run_fell_short"])),
 ]
 
 for eid, want_cl, want_cx, labels in GOLDENS:

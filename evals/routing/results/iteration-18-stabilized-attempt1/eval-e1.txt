@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: ultracode
+Codex: Terra · effort: high
+Evidence: Reading 900 pages into one memo is long-context knowledge-work where Claude leads (GDPval-AA v2 and Sonnet 5's efficient 1M window), low-confidence; the width limb W=3 ∧ D≥2 triggers ultracode.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

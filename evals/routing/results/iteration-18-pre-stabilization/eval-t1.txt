@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Codex: Terra · effort: high
+Evidence: Reproduce-inside-the-container build and CI debugging is terminal-tool work, where Claude leads on Terminal-Bench 4.0 (Opus 5 52.3 vs Sol 37.3); the hard part is the diagnosis and the fix is two files, so no +1 notch and no orchestration mode.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

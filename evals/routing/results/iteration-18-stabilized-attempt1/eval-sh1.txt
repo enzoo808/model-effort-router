@@ -1,0 +1,3 @@
+Claude: ✅ RECOMMENDED AI · Opus 5 · effort: xhigh
+Codex: Sol · effort: xhigh
+Evidence: Adversarial debugging inside a repo leans on the terminal/agentic profile where Claude leads against Sol (Terminal-Bench 4.0); the generic "came back wrong" note doesn't state a flagship xhigh/max run fell short, so it holds at the flagship rung with no effort bump.

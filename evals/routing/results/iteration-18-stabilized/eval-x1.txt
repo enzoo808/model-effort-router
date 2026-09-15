@@ -1,0 +1,4 @@
+Claude: Fable 5.1 · effort: ultracode
+Codex: ✅ RECOMMENDED AI · Astra · effort: high
+Evidence: The 3,200-file monorepo gates both arms to frontier scale, and toolchain build-repair is agentic-code/terminal-tool where Astra leads (AA Terminal-Bench 4.0: Astra 59 vs Fable 5.1 52) at roughly a third of the output tokens.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

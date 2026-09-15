@@ -2277,6 +2277,55 @@ interpolation trap. Meanwhile 28 D=3 flagship-capability prompts keep **Sol**,
 including every `deep-reasoning` `max` case, because tooled HLE puts Astra behind
 there.
 
+### 16.8. Iteration-18 stabilization (11 September 2026)
+
+A cold routing pass against the shipped iteration-18 `SKILL.md` scored 25/32.
+None of the seven misses was random; each traced to a rule a cold reader could
+follow to the wrong answer, which is the only kind of failure worth fixing.
+
+- **b1 — `ultracode` over-fired (the real defect).** The orchestration trigger
+  counted *kinds of step*, and a cold reader counted "discover callers · implement
+  · run tests · repair" as four kinds on an ordinary 40-file refactor. That is
+  the implementation loop, not orchestration. **Rule O1** now defines a phase as
+  *a stretch that produces a different kind of deliverable and feeds a later
+  phase*, and states outright that the whole edit-run-repair loop — tests
+  included — is **one** phase. `ultracode` needs 3+ such phases (or the width
+  limb). b1 → `Sonnet 5 · high`; a genuine 3-phase build (rc-018 shape) still
+  reaches `ultracode`; a 150-file rename still does not.
+- **t1 — the D axis described building, not diagnosis.** **Rule D3DIAG** splits
+  bounded diagnosis (`D=2`: local symptom, loud, small cause space) from
+  adversarial diagnosis (`D=3`: non-local/timing/ordering, hard to reproduce,
+  competing hypotheses, a local fix that may mask an invariant break). "Fails
+  only on the CI runner, reproduce it inside the container" is `D=3` — CI-only is
+  not enough on its own, but the reproduction difficulty is the second marker.
+  Golden unchanged (`Opus 5 · xhigh`); the *reason* is now derivable.
+- **a1 — stale badge, corrected.** With Daybreak Blue stated, Astra is a valid
+  Codex candidate, and `terminal-tool` vs Astra is a **Codex** row — the same
+  correction iteration-17 already made for f1. Golden `claude → codex`. Stated
+  access decides whether a candidate exists, not whether it is penalised (Step 1
+  note).
+- **m1 — the worked example contradicted its own rule.** The shipped example
+  omitted `low-confidence` on a †-`deep-reasoning` badge. Example checker added
+  (`scripts/check_examples.py`) so a runtime example can no longer contradict the
+  rule above it.
+- **d7 — Step 0 had no output shape.** **Rule S0** defines the `Clarify:` line
+  and states it overrides "three lines, always". Grader updated to accept it.
+- **i1 — badge tie-break applicability.** **Rule B1**: a benchmark enters the
+  badge decision only if its capability is a dominant tag for the prompt.
+  Contract triage is `parallel-independent` + `research-synthesis`; Terminal-Bench
+  is not applicable and cannot outrank Ultra's mechanism. Badge → Codex.
+- **x2 — `opusplan` taxonomy.** Condition 1 keyed on "structured
+  design/architecture", not a Step 2 tag. It now reads **`deep-reasoning`**. x2's
+  dominant tag is `workflow-automation`, so `opusplan` no longer fires and it
+  routes `Sonnet 5 · high` / `Terra · high` — the intended mid-tier result.
+
+**Rule IDs.** The load-bearing derived-signal rules now carry HTML-comment
+markers in `SKILL.md` (`S0 D3DIAG P1 M1 A1 O1 UC1 N1 E4 B1`). `routing_policy.json`
+stores each rule's canonical one-sentence statement, and `check_policy_sync.py`
+asserts the canonical text appears verbatim inside the marked block — a stronger
+guard than the old loose-quotation check, because the sentence that defines the
+rule can no longer drift from the mirror without failing the build.
+
 ### 16.7. Policy ↔ skill drift
 
 The audit reached a state where `routing_policy.json` described iteration-18 and

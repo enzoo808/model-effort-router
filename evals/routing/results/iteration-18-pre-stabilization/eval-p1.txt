@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Opus 5 · effort: xhigh
+Codex: Sol · effort: xhigh
+Evidence: A tool-less formal proof is the deep-reasoning row, where OpenAI's own tooled HLE favours the competitor (Opus 5 63.6 vs Astra 57.2) — low-confidence; max needs R=3, which a proof written for review is not.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).

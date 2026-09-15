@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: medium
+Codex: Terra · effort: medium
+Evidence: D=1 work skips the capability rows, so efficiency decides — Sonnet 5 is the cheaper of the two daily drivers on output tokens ($2/$10 vs $2/$12), and a single local addition earns no +1 agentic notch.
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

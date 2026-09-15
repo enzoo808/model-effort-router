@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: low
+Codex: Terra · effort: low
+Evidence: D=0 operational toggle where both arms are far past the bar, so efficiency decides — Sonnet 5 is the cheaper daily driver on output tokens, and the R=3 blast radius is what keeps it off Haiku/Luna rather than any depth need.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.

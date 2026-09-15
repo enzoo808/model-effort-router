@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Codex: Terra · effort: high
+Evidence: 900 pages into one memo is shallow long-context knowledge work, so C=3 alone keeps both arms mid-tier — Sonnet 5's 1M window carries the corpus at $2/$10 and GDPval-AA v2 (1853/1824 vs Sol 1711) favours Claude on the deliverable; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
