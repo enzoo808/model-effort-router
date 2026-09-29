@@ -41,13 +41,13 @@ gösterme, kullanıcı "neden?" demedikçe.
 tetiklenmiyorsa — dört ekseni tek geçişte puanla ve yaz, tekrar türetme /
 kendini sorgulama. Çoğu prompt bu durumdadır.
 
-**Claude model kadrosu (1 Eylül 2026 itibarıyla):**
+**Claude model kadrosu (29 Eylül 2026 itibarıyla):**
 
 | Model | Rol |
 |---|---|
-| Haiku 4.5 | Hız/hacim uzmanı. Efor desteklemez |
-| Sonnet 5 | Günlük iş — hız+zeka dengesi. Varsayılan başlangıç noktası |
-| **Opus 5** | **Amiral gemisi.** Opus 4.8'in yerini aldı |
+| Haiku 4.5 | Hız/hacim uzmanı. Efor desteklemez. Emeklilik tabanı **15 Ekim 2026**; Haiku 5.5 duyuruldu ama **çıkmadı — router seçmez** |
+| Sonnet 5.5 | Günlük iş — hız+zeka dengesi. Varsayılan başlangıç noktası. $2/$10, 1M. Sonnet 5'in yerini aldı (28 Eyl 2026) |
+| **Opus 5.5** | **Amiral gemisi.** $4/$20, 1M, **API varsayılan eforu `medium`**. Opus 5'in yerini aldı (22 Eyl 2026) |
 | Opus 4.8 | Legacy — **yalnızca saldırı amaçlı siber güvenlik kapısı için** |
 | **Fable 5.1** | Frontier ölçek + **biyoloji-bitişik Ar-Ge**. Fable 5'in yerini aldı (1 Eyl 2026); aynı $10/$50, cache okuması ¼'ü |
 | Mythos 5.1 | Fable 5.1 ile aynı model, izinli safeguard'lar — **yalnızca Project Glasswing daveti** (doğrulanmış siber-savunmacı / yaşam bilimci). Kullanıcı bu erişimi belirtmedikçe önerme |
@@ -57,10 +57,10 @@ kendini sorgulama. Çoğu prompt bu durumdadır.
 | Model | Rol | Claude dengi (kaba) |
 |---|---|---|
 | Luna | Hız/hacim, en ucuz. Codex CLI varsayılanı | Haiku 4.5 |
-| Terra | Günlük iş, dengeli — varsayılan | Sonnet 5 |
-| **Sol** | GPT-5.6 amiral gemisi — **D=3 varsayılanı** | Opus 5 |
+| Terra | Günlük iş, dengeli — varsayılan | Sonnet 5.5 |
+| **Sol** | GPT-5.6 amiral gemisi — **D=3 varsayılanı** | Opus 5.5 |
 | **Sol Ultra** | Sol'da açılan ürün modu (Plus+): ~4 paralel işbirlikçi ajan. Efor değeri değil (`effort:"ultra"` → HTTP 400) | Net dengi yok |
-| **Astra** | GPT-6 amiral gemisi (`gpt-6-astra`, 3 Eyl 2026). Yeni üst katman. **Yalnızca dar seçim** — aşağıdaki Codex kapıları. ~2.5× Sol fiyatı; Claude amiral gemilerinin net önünde değil (kodlama/zeka indekslerinde ≈ Opus 5 / Sol, Fable 5.1'in gerisinde; yalnızca bilgisayar kullanımında açık ara önde). Codex CLI v0.153.0+ | Opus 5 / Fable 5.1 (frontier) |
+| **Astra** | GPT-6 amiral gemisi (`gpt-6-astra`, 3 Eyl 2026). Yeni üst katman. **Yalnızca dar seçim** — aşağıdaki Codex kapıları. ~2.5× Sol fiyatı; Claude amiral gemilerinin net önünde değil (kodlama/zeka indekslerinde ≈ Opus 5.5 / Sol, Fable 5.1'in gerisinde; yalnızca bilgisayar kullanımında açık ara önde). Codex CLI v0.153.0+ | Opus 5.5 / Fable 5.1 (frontier) |
 
 **Codex Kolu — özet (tam mantık `SKILL.md`'de, bu bir kısaltılmış özet):**
 1. **Saldırı amaçlı siber güvenlik:** GPT-6 Astra "Critical" siber seviyede —
@@ -95,12 +95,12 @@ kendini sorgulama. Çoğu prompt bu durumdadır.
 4. Efor ← D: **`0→low·1→medium·2→high·3→xhigh`**; `D=3∧R=3→max` **yalnızca amiral
    gemisinde** (Sol / Astra). **Terra'da D=3∧R=3 → `xhigh`'da kalır** — orta
    katman modeli `max`'a zorlamak aşırı-düşünme riski, güvenlik katmaz; R=3 notu
-   riski taşır. Claude tarafı da aynı: `Sonnet 5 · max` çıkmaz. (OpenAI ladder
+   riski taşır. Claude tarafı da aynı: `Sonnet 5.5 · max` çıkmaz. (OpenAI ladder
    `none,low,medium,high,xhigh,max`; `minimal` yok; Astra `none`'ı da düşürür;
    `medium` = kodlama varsayılanı, `low` = hızlı/dar kapsam.) D=1 iş `Terra·low`
    DEĞİL `Terra·medium`. **Agentic çok-adımlı kodlamada (çok-dosyalı özellik,
    refactor, migration, mimari uygulama) Codex +1 efor kademesi — yalnızca
-   Terra/Sol'da, Astra'da ASLA** (Astra kodlamada Opus 5 ile eşit, telafi
+   Terra/Sol'da, Astra'da ASLA** (Astra kodlamada Opus 5.5 ile eşit, telafi
    edilecek fark yok). Claude dokunulmaz; kod incelemesi/analizi, kod-dışı
    tasarım, mekanik tekrar hariç. `mode: pro` yalnızca Responses API'de,
    sorulursa bahset. `ultra` bir efor değeri değil, ürün modudur (`effort:
@@ -125,8 +125,8 @@ okunmalı (Adım 0-4 sadece Claude satırını üretir, Codex satırı yukarıda
 
 Dört şeyi bil:
 1. **`ultracode` bir model efor seviyesi değil, Claude Code ayarıdır.** Model
-   kısıtı yok — `xhigh` destekleyen her modelde çalışır: Fable 5.1, Sonnet 5,
-   **Opus 5**, Opus 4.8. Haiku'da değil.
+   kısıtı yok — `xhigh` destekleyen her modelde çalışır: Fable 5.1, Sonnet 5.5,
+   **Opus 5.5**, Opus 4.8. Haiku'da değil.
 2. **Haiku 4.5 efor parametresini desteklemez.** Haiku önerdiysen efor yazma.
 3. Efor bir token bütçesi değil, davranışsal sinyaldir; "low = 1024 token" gibi
    rakamlar uydurma.
@@ -143,10 +143,10 @@ Dört şeyi bil:
      `medium` = OpenAI'nin kodlama varsayılanı, `low` = yalnızca hızlı / dar
      kapsam / gecikmeye duyarlı iş.
 
-**Opus 5'te low/medium (genel bilgi, router çıktısını değiştirmez):** Anthropic
+**Opus 5.5'te low/medium (genel bilgi, router çıktısını değiştirmez):** Anthropic
 bunu "eval tuttuğu her yerde normal maliyet kontrolü" olarak öneriyor. Router
-Opus 5'i yalnızca D=3'te önerdiği için kendi çıktısı hep xhigh/max olur; ama
-kullanıcı Opus 5'i elle çalıştırırken low/medium'dan çekinmesin.
+Opus 5.5'i yalnızca D=3'te önerdiği için kendi çıktısı hep xhigh/max olur; ama
+kullanıcı Opus 5.5'i elle çalıştırırken low/medium'dan çekinmesin.
 
 ## Adım 0 — Kalite kapısı
 
@@ -179,7 +179,7 @@ listeden çıkarır, final model kararını Adım 2/3 verir).
 - Saniye altı gecikme **veya** yüksek hacimli sınıflandırma → **Haiku 4.5**, efor yok. Dur. (belirleyici)
 - **Saldırı amaçlı siber güvenlik** (exploit üretimi, sızma testi, ikili/binary tabanlı zafiyet taraması) → **Opus 4.8**, **efor tabanı `xhigh`**. (belirleyici — ama W/süre uygunsa efor `xhigh`'dan `ultracode`'a çıkabilir) — Glasswing erişimi varsa **Mythos 5.1**.
 - **Biyoloji-bitişik Ar-Ge** (genomik, protein/kimya pipeline, biyo-CTF) → **Fable 5.1**. (belirleyici)
-- Bağlam 200k token'ı aşıyor → **Haiku 4.5 elenir**, kalan adaylarla (Sonnet 5/Opus 5/Fable 5.1) normal Adım 2/3 skorlaması çalışır. (**eleyici** — final modeli tek başına belirlemez)
+- Bağlam 200k token'ı aşıyor → **Haiku 4.5 elenir**, kalan adaylarla (Sonnet 5.5/Opus 5.5/Fable 5.1) normal Adım 2/3 skorlaması çalışır. (**eleyici** — final modeli tek başına belirlemez)
 - **1000+ dosya / tüm kod tabanı ölçeğinde** (frontier ölçek) → **Fable 5.1**. (belirleyici)
   Tek sinyal yeterli — "eşzamanlı 1M bağlam" ve "kalıcı bellek" ayrıca
   belirtilmesi gerekmez, bu ölçekte zaten var sayılır. (100-999 dosya bu
@@ -192,16 +192,16 @@ normal skorlamaya girer. Fable 5.1 bunu kendisi yapabiliyor (1 Eyl 2026'dan
 beri). Yalnızca üç saldırı-amaçlı kategori (exploit üretimi, sızma testi,
 binary tabanlı zafiyet taraması) kapı tetikler.
 
-**Neden saldırı amaçlı siber → Opus 4.8:** Fable 5.1 ve Opus 5'in kendi güvenlik
+**Neden saldırı amaçlı siber → Opus 4.8:** Fable 5.1 ve Opus 5.5'in kendi güvenlik
 sınıflandırıcıları var; saldırı amaçlı istek işaretlenince Fable 5.1'in izinli
-fallback hedefleri **Opus 4.8 ve Opus 5**. Router doğrudan **Opus 4.8**'i önerir.
-Sonnet 5'i önerme — exploit üretiminden bilinçli yalıtılmış (Firefox 147'de %0).
+fallback hedefleri **Opus 4.8 ve Opus 5.5**. Router doğrudan **Opus 4.8**'i önerir.
+Sonnet 5.5'i önerme — exploit üretiminden bilinçli yalıtılmış (Firefox 147'de %0).
 Doğrulanmış savunmacı (Cyber Verification Program / Glasswing) ise **Mythos 5.1**.
 
-**Neden biyoloji-bitişik → Fable 5.1, Opus 5 değil:** Selim biyoloji-tıp
+**Neden biyoloji-bitişik → Fable 5.1, Opus 5.5 değil:** Selim biyoloji-tıp
 soruları artık kapı değil (%85 daha az işaretleniyor). Ar-Ge yoğun işte Fable 5.1
-Ar-Ge-işaretli kısımları Opus modellerine yönlendirir (beklenen); ama **Opus 5'in
-kendisinde biyoloji Ar-Ge için hiç fallback yok** — doğrudan reddeder. Fable 5.1'i
+Ar-Ge-işaretli kısımları Opus modellerine yönlendirir (beklenen); ama **Opus 5.5'in
+kendisinde biyoloji Ar-Ge için hiç fallback yok** — doğrudan reddeder (Opus 5.5'in biyoloji-Ar-Ge davranışı doğrulanmadı; kapı aynen duruyor). Fable 5.1'i
 öner. Life Sciences Verification Program araştırmacısı ise **Mythos 5.1**.
 
 **Fable 5.1'e efor tabanı koyma.** Biyoloji kapısı çıktısı `Fable 5.1 · high`
@@ -277,37 +277,37 @@ Siber güvenlik ayrışır: **saldırı amaçlı** Adım 1 kapısıdır; **savun
 Model **zeka ihtiyacına** (D, C) göre seçilir; risk (R) modeli değil, insan
 gözetimini yükseltir.
 
-Model ← max(D, C). **Opus 5 yalnızca D=3 ise aday olur** — C=3 tek başına
-(D düşükken büyük bağlam) Opus 5'i tetiklemez, Sonnet 5'te kalır (Sonnet'in
+Model ← max(D, C). **Opus 5.5 yalnızca D=3 ise aday olur** — C=3 tek başına
+(D düşükken büyük bağlam) Opus 5.5'i tetiklemez, Sonnet 5.5'te kalır (Sonnet'in
 1M bağlamı büyük-ama-sığ sentez için yeterli).
 
 - `D=0 ∧ W=0 ∧ C≤1 ∧ R≤1` → **Haiku 4.5**
-- Yukarıdaki sağlanmıyor ve max(D,C)≤1 → Sonnet 5
-- max(D,C)=2 → Sonnet 5
-- max(D,C)=3, D<3 (yani C=3 tetikledi) → **Sonnet 5**
-- max(D,C)=3, D=3 → **Opus 5** (ajanik çok adımlı kod / matematik-ispat /
-  araçsız derin akıl yürütmeyse) — **değilse Sonnet 5** (kota-bilinçli varsayılan)
+- Yukarıdaki sağlanmıyor ve max(D,C)≤1 → Sonnet 5.5
+- max(D,C)=2 → Sonnet 5.5
+- max(D,C)=3, D<3 (yani C=3 tetikledi) → **Sonnet 5.5**
+- max(D,C)=3, D=3 → **Opus 5.5** (ajanik çok adımlı kod / matematik-ispat /
+  araçsız derin akıl yürütmeyse) — **değilse Sonnet 5.5** (kota-bilinçli varsayılan)
 
 **Haiku sadece D=0'da.** D=1 "bilinen kalıp" demek (N+1 fix, standart
 validasyon) — gerçek yargı ister, örüntü eşleştirme değil. D=1 ise taban
-Sonnet 5'tir. **R eşiği 1, çünkü R=2 hâlâ gerçek bir prod değişikliği** —
+Sonnet 5.5'tir. **R eşiği 1, çünkü R=2 hâlâ gerçek bir prod değişikliği** —
 Haiku'nun hız/hacim profiline bırakılacak kadar önemsiz değil.
 
-**R tabanı (genel):** `R=3` ise Haiku hiç seçilmez, taban Sonnet 5'tir; ayrıca
+**R tabanı (genel):** `R=3` ise Haiku hiç seçilmez, taban Sonnet 5.5'tir; ayrıca
 çıktıya insan onayı notu eklenir.
 
 **Efor ← D.** `0→low` · `1→medium` · `2→high` · `3→xhigh` · **`3 ∧ R=3 → max`
-yalnızca amiral gemisinde** (Opus 5 / Opus 4.8 / Fable 5.1 / Sol / Astra). Orta
-katman modelde (Sonnet 5 / Terra) `D=3 ∧ R=3 → xhigh`'da kapanır — model zaten "orta
+yalnızca amiral gemisinde** (Opus 5.5 / Opus 4.8 / Fable 5.1 / Sol / Astra). Orta
+katman modelde (Sonnet 5.5 / Terra) `D=3 ∧ R=3 → xhigh`'da kapanır — model zaten "orta
 zeka ihtiyacı" (D=3 ama Kural 2 dışı) diye seçildi; `max` ile eşlemek tutarsız
 ve aşırı-düşünme riski, güvenlik katmaz. R=3 insan-onayı notu riski taşır;
 gerçekten maksimum akıl yürütme gerekiyorsa amiral gemisine yükselt.
 
 Haiku 4.5 seçildiyse efor alanını boş bırak.
 
-**Sonuç:** Opus 5 bu router'da her zaman D=3 ile çıkar (`xhigh`/`max`) —
+**Sonuç:** Opus 5.5 bu router'da her zaman D=3 ile çıkar (`xhigh`/`max`) —
 D=3 dışında hiç seçilmiyor, dolayısıyla `low`/`medium` ile önerilmez. Router
-`Sonnet 5 · max` / `Terra · max` **hiç üretmez** (orta katman `xhigh`'da kapanır).
+`Sonnet 5.5 · max` / `Terra · max` **hiç üretmez** (orta katman `xhigh`'da kapanır).
 
 `ultracode` ⇔ tahmini süre > 30 dk **∧** (`O=high` **VEYA** `W=3 ∧ D≥2`) **∧**
 zorluk **tek bölünemez zincir değil**. Efor alanına `xhigh` değil **`ultracode`**
@@ -340,7 +340,7 @@ gerektirdiğinde** (180 servislik auth-bypass denetimi). `D≤1`'de genişlik hi
 yürütmede otomatik Sonnet'e geçen model ayarı) yalnızca Claude Code CLI'de
 var; Claude.ai'nin plan modu/model-alias mekanizması yok. Bu talimat setini
 kullanan biri Claude.ai'daysa, `opusplan` hiç önerme — Kural 2(a)'nın normal
-sonucu (düz Opus 5 · xhigh/max) geçerli kalır. `opusplan`'ın tam kuralları ve
+sonucu (düz Opus 5.5 · xhigh/max) geçerli kalır. `opusplan`'ın tam kuralları ve
 teşhis kriterleri için Claude Code kurulumundaki `SKILL.md`'ye bak.
 
 ## Adım 4 — Kota koruma ve doğruluk kuralları
@@ -348,29 +348,28 @@ teşhis kriterleri için Claude Code kurulumundaki `SKILL.md`'ye bak.
 **1. R=3 → insan onayı notu.** Model/efor değişmez; çıktıya "insan onayı
 olmadan uygulama" notu eklenir.
 
-**2. Şu üç alanda Opus 5'i tercih et:** ajanik çok adımlı **yapılandırılmış iş**
+**2. Şu üç alanda Opus 5.5'i tercih et:** ajanik çok adımlı **yapılandırılmış iş**
 (programlama diliyle sınırlı değil — kural motoru/karar ağacı tasarımı, sistem/
 prompt mimarisi de girer) · matematik/ispat · **araçsız** derin akıl yürütme.
-(Opus 4.8 döneminden kalan örüntü; LiveBench 2026-06-25'te de doğrulanıyor —
-agentic coding: Opus 5 65.2 ≈ Fable 5.1 66.1, ikisi de Sonnet 5'in 59.4'ünün
-~6 puan üstünde.)
+(Gerçek-repo satırları Opus 5.5'ten yana: FrontierCode 1.1 54.4 vs Sonnet 5.5
+46.2 (max), CursorBench 4.0 57.8 vs 55.5; Anthropic: Opus "sürekli yargı
+gerektiren karmaşık, açık uçlu işte belirgin biçimde güçlü". Terminal-Bench 4.0'da
+Sonnet 5.5 önde (70.6 vs 66.4) ama `max`'ta çok daha fazla token yakıyor.)
 
 > **Araç erişimi kararı çevirir.** Görev Claude Code / arama / kod çalıştırma
-> içeriyorsa Sonnet 5 genelde yeter. Saf bağlamdan ispat isteniyorsa Opus 5.
+> içeriyorsa Sonnet 5.5 genelde yeter. Saf bağlamdan ispat isteniyorsa Opus 5.
 
 **3. D=3 ama Kural 2'ye girmiyorsa → orta katman · xhigh (kota gerekçesi) —
-İKİ TARAFTA.** Claude: Sonnet 5 · xhigh. Codex: **Terra · xhigh** (Rule 3 artık
+İKİ TARAFTA.** Claude: Sonnet 5.5 · xhigh. Codex: **Terra · xhigh** (Rule 3 artık
 Codex koluna da aynalandı — Terra reasoning 90.6 ≈ Sol; eski hâlinde her D=3
-Sol'a gidiyordu). LiveBench 2026-06-25 Opus 5'i Sonnet 5'in üstünde gösteriyor
-(agentic coding +5.8, language +13.7) ama router kota gerekçesiyle orta katmanı
-varsayılan tutuyor. **Sonuç kritikse veya language/muhakeme ağırlıklıysa →
-amiral gemisine (Opus 5 / Sol) · xhigh (R=3 ise `max`) çıkmanın somut gerekçesi
-var.** Aggregate leaderboard skoruyla model **seçme** — BenchAlign Sonnet 5'i
-kapsama artefaktıyla düşük (#39) gösteriyor, gerçekte LiveBench'te 76.0.
+Sol'a gidiyordu). AA-Omniscience doğruluğu Opus 5.5'te 12 puan yüksek (66 vs 54) ama router kota
+gerekçesiyle orta katmanı varsayılan tutuyor. **Sonuç kritikse veya language/muhakeme ağırlıklıysa →
+amiral gemisine (Opus 5.5 / Sol) · xhigh (R=3 ise `max`) çıkmanın somut gerekçesi
+var.** Aggregate leaderboard skoruyla model **seçme**.
 
-**4. Kullanıcı bilgisi (router çıktısını değiştirmez):** (a) Anthropic Opus 5'te
+**4. Kullanıcı bilgisi (router çıktısını değiştirmez):** (a) Anthropic Opus 5.5'te
 low/medium'u "eval'in tuttuğu her yerde" normal maliyet kontrolü olarak
-öneriyor; router bunu kendi çıktısında göstermez (Opus 5 hep D=3'te çıkar) ama
+öneriyor; router bunu kendi çıktısında göstermez (Opus 5.5 hep D=3'te çıkar) ama
 kullanıcı elle çalıştırırken bilmeli. (b) Router orta katman modelde `max`
 üretmez (`D=3∧R=3` orada `xhigh`'da kapanır); belirli bir geri-dönüşsüz iş
 gerçekten maksimum akıl yürütme hak ediyorsa kullanıcı elle `max` yapabilir ya
@@ -404,18 +403,21 @@ standart hata (Terminal-Bench 4.0 %95 CI yayımlıyor; TB-Science SE ±3.5–4.5
 (2) aynı harness'ta tekrarlı deneme varyansı; (3) ikisi de yoksa küçük farkı
 kesin üstünlük sayma; (4) `R=3` ise bandı genişlet, emin değilsen güçlüyü al.
 
-**Dominance — ölçülmüş üç kural (AA Index v4.3, 10 Eyl 2026):**
-- **E1:** `Sonnet 5 · max` (38, $5.09) domine edilmiş — `Opus 5 · xhigh`
-  (50, $4.88) hem güçlü hem ucuz. Router `Sonnet 5 · max` **üretmez**.
+**Dominance — ölçülmüş üç kural (AA Index; her sürümde tek harness):**
+- **E1:** `Sonnet 5.5 · max` (56, $7.60, ~193k çıktı tokeni/görev — AA'nın ölçtüğü en
+  yüksek) `Opus 5.5 · xhigh` (56, $3.46) ile AYNI skoru 2.2× maliyetle veriyor
+  (AA v4.3.2). Anthropic dipnotu: Sonnet 5.5 FrontierCode'da `max`'ta `xhigh`'tan
+  DÜŞÜK. Router `Sonnet 5.5 · max` **üretmez**; Sonnet 5.5'in alt kademeleri
+  yayımlanmadı, E1 onlar hakkında bir şey söylemez.
 - **E2:** `Terra · max` (42, $1.40) domine edilmiş — `Sol · high` (42, $0.81)
   aynı skor, %42 az kota; üstelik `max` Terra'da zaten yok.
-- **E3:** `max`, `xhigh`'ın üstüne neredeyse hiçbir şey katmaz (Fable 5.1 53=53,
-  Astra 53=53, Opus 5 51'e 50). `max` yalnızca `D=3 ∧ R=3` **artı** tek parçalı,
+- **E3:** `max`, `xhigh`'ın üstüne az şey katar (Fable 5.1 53=53, Astra 53=53,
+  Opus 5.5 58'e 56 = +2 puan için +%73 maliyet, aralık yayımlanmadığı için çözümsüz). `max` yalnızca `D=3 ∧ R=3` **artı** tek parçalı,
   bölünemez özgün bir tasarım/ispat kararında yazılır. İnceleme, denetim,
   migration ve genişlik kaynaklı işte `xhigh`'da dur.
 
 **Yükseltme bir MODEL değişimidir, efor değişimi değil.** Kullanıcı işin kritik
-olduğunu / yetersiz kaldığını açıkça söylerse: Sonnet 5 → **Opus 5**,
+olduğunu / yetersiz kaldığını açıkça söylerse: Sonnet 5.5 → **Opus 5.5**,
 Terra → **Sol**, efor kademesi `D` tablosundaki gibi kalır.
 
 **Verimlilik sinyalleri, öncelik sırasıyla:** reasoning token → output token →
@@ -436,22 +438,22 @@ için yeterli değil. Görev profili belirler.
 
 | Baskın capability | Rozet | Kanıt |
 |---|---|---|
-| `agentic-code`, `terminal-tool` | **Claude** | Terminal-Bench 4.0: Fable 5.1 55.8 · Opus 5 52.3 · Sol 37.3 |
-| `science` | **Claude** | TB-Science 0.1: 52.6 vs Sol 22.4 (SE ±3.5–4.5) |
-| `knowledge-work` | **Claude** | GDPval-AA v2: 1853 / 1824 vs Sol 1711 |
-| `workflow-automation` | **Claude** | AutomationBench: 26.9–31.4 vs Sol 19.6 |
+| `agentic-code`, `terminal-tool` | **Claude** (Sol karşısında); **Codex, `low-confidence`** (Astra karşısında) | Terminal-Bench 4.0: Opus 5.5 66.4 (SE ±2.6) vs Sol 37.3. Astra karşısında bağımsız satırlar eşit (AA TB 4.0 Astra 60 vs Opus 5.5 59.6; Coding Agent Index 62=62) — token kararı verir (~27k vs ~119k) |
+| `science` | **Claude** (Sol karşısında); **Codex, `low-confidence`** (Astra karşısında, ±5 bandı içinde) | TB-Science 0.1: 58.7 vs Sol 22.4 |
+| `knowledge-work` | **Claude**, `low-confidence` | GDPval-AA v2.1: Opus 5.5 1846 vs Astra 1542 / Sol 1588 (aralık yayımlanmadı) |
+| `workflow-automation` | **Claude** (Sol karşısında, `low-confidence`); **Codex, `low-confidence`** (Astra karşısında) | AutomationBench: Opus 5.5 40.0 vs Sol 28.8; Astra 41.4 ile eşit |
 | `deep-reasoning` — sıfırdan mimari/tasarım | **Claude** | komşu iki profilde de önde (Terminal-Bench 4.0 + GDPval-AA v2) |
 | `computer-use` | **Codex** | OSWorld: Astra Sol'un önünde — ⚠️ farklı sürüm/skorlama, `low-confidence` |
 | `latency-volume` | **Codex** | Luna 112 tok/s @ $0.18 vs Haiku 4.5 85 tok/s @ $0.21; ikisi de barı aşıyor |
 | `parallel-independent` (Claude'un capability üstünlüğü yoksa) | **Codex** | Ultra ~4 işbirlikçi ajan; `ultracode` tek zincir |
-| `long-context` (sığ derinlik) | **Claude** | Sonnet 5 1M pencereyi $2/$10 ile taşır; Codex Astra'ya ($10/$50, 272k üstü 2×) uzanmak zorunda |
+| `long-context` (sığ derinlik) | **Claude** | Sonnet 5.5 1M pencereyi $2/$10 ile taşır; Codex Astra'ya ($10/$50, 272k üstü 2×) uzanmak zorunda |
 | `deep-reasoning` — matematik/ispat/araçsız | **Claude**, `low-confidence` | doğrulanmış çapraz-ekosistem satırı yok |
 | `research-synthesis`, `doc-data-understanding` | **Claude**, `low-confidence` | göreve özgü çapraz-vendor satırı yok |
 | başka her şey / kanıt yok | model × eforu **daha hafif** olan arm | `low-confidence preference` yaz |
 
 **Eşitlik bozucular.** `D ≤ 1` ise capability satırlarını tamamen atla —
 o derinlikte iki arm da barı zaten aşar, **verimlilik karar verir**:
-Haiku 4.5 vs Luna → **Codex**; Sonnet 5 vs Terra → **Claude**. `R` bunu
+Haiku 4.5 vs Luna → **Codex**; Sonnet 5.5 vs Terra → **Claude**. `R` bunu
 değiştirmez (iki arma da aynı tabanı koyar). İki capability satırı çakışırsa
 **göreve özgü benchmark**'a dayanan, yalnız **ürün mekanizması**na dayananı
 yener. Adım 0 blokladıysa rozet yok.
@@ -498,11 +500,11 @@ SKILL.md'nin diğer iki otomatik-eklenen istisnası burada yok:
 
 | Model | Bağlam | Efor desteği | Not |
 |---|---|---|---|
-| **Fable 5.1** | 1M / 128k çıktı | `low`–`max` (varsayılan `high`, chat `medium`) | Frontier + biyoloji Ar-Ge; savunma zafiyet keşfini kendisi yapar; saldırı-amaçlı istek Opus 4.8/Opus 5'e yönlenir; cache okuma $0.25/MTok; bilgi kesimi Haz 2026 |
+| **Fable 5.1** | 1M / 128k çıktı | `low`–`max` (varsayılan `high`, chat `medium`) | Frontier + biyoloji Ar-Ge; savunma zafiyet keşfini kendisi yapar; saldırı-amaçlı istek Opus 4.8/Opus 5.5'e yönlenir; cache okuma $0.25/MTok; bilgi kesimi Haz 2026 |
 | Mythos 5.1 | 1M / 128k çıktı | `low`–`max` (varsayılan `high`) | Fable 5.1 = izinli safeguard; **yalnızca Project Glasswing daveti** |
-| **Opus 5** | 1M | `low`–`max` (varsayılan `high`) | Amiral gemisi; cyber-işaretli istek Opus 4.8'e düşer, biyoloji Ar-Ge refuse |
+| **Opus 5.5** | 1M | `low`–`max` (varsayılan **`medium`**) | Amiral gemisi; cyber görevlerin çoğu Opus 4.8'e yönlenir; biyoloji sınıflandırıcısı var (Ar-Ge davranışı doğrulanmadı) |
 | Opus 4.8 | 1M | `low`–`max` (varsayılan `high`) | Yalnızca saldırı-amaçlı siber güvenlik için öner |
-| Sonnet 5 | 1M | `low`–`max` (varsayılan `high`) | Exploit üretiminden yalıtılmış (savunma denetimi OK) |
+| Sonnet 5.5 | 1M | `low`–`max` (varsayılan `high`; Claude uygulamalarında `medium`) | Yüksek riskli cyber görevleri Sonnet 5'e (eski) düşer; savunma denetimi OK. `xhigh`/`max`'ta çıktı token yükü çok yüksek |
 | Haiku 4.5 | **200k** | **Yok** | Çok adımlı ajan akışlarında yetersiz |
 
 ## Örnekler
@@ -515,7 +517,7 @@ Codex: Luna · effort: low
 
 *"Repodaki auth akışını OAuth2'ye taşı"*  (D=2, agentic çok-adımlı kodlama)
 ```
-Claude: Sonnet 5 · effort: high
+Claude: Sonnet 5.5 · effort: high
 Codex: Terra · effort: xhigh
 ```
 (D=2 tablo ikisine de `high` verir; migration = çok-adımlı kod yeniden
@@ -529,9 +531,9 @@ Codex: use Claude — standart erişim saldırı-amaçlı siber işi hard-stop e
 (Kullanıcı Daybreak Blue erişimini açıkça belirtirse Codex satırı
 `Codex: Astra · effort: xhigh` olur. Ama *"bu 180 servisin kodunu auth bypass açığı için denetle"* savunma işidir →
 kapı yok; adversarial zafiyet avı = D=3, 180 birim bağımsız = W=3 →
-`Claude: Sonnet 5 · effort: ultracode` / `Codex: Sol Ultra · effort: xhigh`
+`Claude: Sonnet 5.5 · effort: ultracode` / `Codex: Sol Ultra · effort: xhigh`
 [path a: 180 zaten-bağımsız hedef]. Tek servise indir → sıralı D=3 inceleme,
-Kural 2 dışı → `Sonnet 5 · xhigh` / `Terra · xhigh` [path c].)
+Kural 2 dışı → `Sonnet 5.5 · xhigh` / `Terra · xhigh` [path c].)
 
 *"Bu genomik pipeline'daki varyant çağırma mantığını denetle"*
 ```
@@ -551,24 +553,24 @@ R=3; D=3∧R=3 çakışması → `max`.)
 
 *"Prod'da ara sıra düşen race condition'ı bul"*  (D=3, R=3, agentic kod / Kural 2 → amiral gemisi)
 ```
-Claude: Opus 5 · effort: max
+Claude: Opus 5.5 · effort: max
 Codex: Sol · effort: max
 Do not apply without human review.
 ```
 
 *"Bu prod migration script'leri bu gece incelemesiz çalışacak — sessiz veri kaybı var mı bak"*  (D=3 adversarial inceleme, R=3, **Kural 2 dışı**)
 ```
-Claude: Sonnet 5 · effort: xhigh
+Claude: Sonnet 5.5 · effort: xhigh
 Codex: Terra · effort: xhigh
 Do not apply without human review.
 ```
 (D=3 ama Kural 2 değil → iki tarafta da orta katman. R=3 normalde `max` ama
 `max` yalnızca amiral gemisinde → ikisi de `xhigh`'da kalır; onay notu riski
-taşır. Yeterli gelmezse Opus 5 / Sol'a elle yükselt.)
+taşır. Yeterli gelmezse Opus 5.5 / Sol'a elle yükselt.)
 
 *"Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek"*
 ```
-Claude: Sonnet 5 · effort: low
+Claude: Sonnet 5.5 · effort: low
 Codex: Terra · effort: low
 Do not apply without human review.
 ```
@@ -578,7 +580,13 @@ Do not apply without human review.
 
 *Senkron: `skill/SKILL.md` iteration-16 (10 Eyl 2026 — benchmark-aware routing
 engine: capability profili, kanıt/eşdeğerlik/dominance katmanı, token
-verimliliği, `✅ RECOMMENDED AI`). Bilerek korunan farklar: Türkçe · kendi
+verimliliği, `✅ RECOMMENDED AI`) **+ iteration-19 model yaması (29 Eyl 2026)**:
+Opus 5.5 / Sonnet 5.5 kadrosu, E1/E3 yeniden yazımı, rozet satırlarındaki
+Astra `low-confidence` hücreleri, biyoloji kapısındaki "Opus 5.5 davranışı
+doğrulanmadı" notu. **Bu fallback iteration-17/18/19'un frontier derleyicisini,
+A1 daraltmasını (yalnızca belirtilen yetersizlik Fable 5.1'e çıkarır; süre tek
+başına çıkarmaz) ve efor-eşleşmesi korumasını taşımaz** — tam kural seti için
+`skill/SKILL.md`. Bilerek korunan farklar: Türkçe · kendi
 kendine yeterli (`reference.md` / `benchmarks.json` yok — bu yüzden benchmark
 rakamları burada özet hâlde gömülü) · `opusplan` ve Fast Mode speed line yok
 (Claude.ai yüzeyi) · Codex Kolu kısaltılmış özet.*

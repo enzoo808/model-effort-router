@@ -12,7 +12,18 @@
 > that report is not inherited by Opus 5** — a separate model, a separate
 > benchmark profile.
 >
-> **Latest research pass: 10 September 2026 — Phase 2 (iteration-17).** Phase 2
+> **Latest research pass: 29 September 2026 — the Claude 5.5 generation
+> (iteration-19).** Claude Opus 5.5 (22 Sep) and Claude Sonnet 5.5 (28 Sep)
+> replaced Opus 5 and Sonnet 5 on the roster. **§17** is the research record:
+> verified facts, the new AA v4.3.2 effort curve, the rules it changed (E1 and E3
+> restated; A1 narrowed; four badge cells now say `low-confidence`), two compiler
+> defects it exposed, and what was deliberately *not* changed. OpenAI's GPT-6 Sol
+> and Luna (22 Sep) are recorded but **not routed** — a Codex-arm iteration of
+> their own. The tables in §1, §3 and §4 below were updated for the new roster;
+> **every other section is a dated record and still names Opus 5 / Sonnet 5 where
+> that was true at the time.**
+>
+> **Earlier: 10 September 2026 — Phase 2 (iteration-17).** Phase 2
 > closed the benchmark-owner gaps Phase 1 could not reach (WebSearch was down for
 > that pass), and made the path from a raw score to a routing rule mechanical:
 > `benchmarks.json` is now a validated evidence store with stable record ids,
@@ -144,18 +155,27 @@ access.
 
 ## 1. Model capability table (Anthropic official)
 
-| Feature | Fable 5.1 | Opus 5 | Sonnet 5 | Haiku 4.5 |
+*Updated 29 Sep 2026 (`platform.claude.com/docs/en/models/overview`, read directly).*
+
+| Feature | Fable 5.1 | **Opus 5.5** | **Sonnet 5.5** | Haiku 4.5 |
 |---|---|---|---|---|
+| Released | 1 Sep 2026 | **22 Sep 2026** | **28 Sep 2026** | 15 Oct 2025 |
 | Context | 1M | 1M | 1M | 200k |
 | Max output | 128k | 128k | 128k | 64k |
-| Price (input/output $/MTok) | $10/$50 | $5/$25 | **$2/$10*** | $1/$5 |
-| Cache read ($/MTok) | **$0.25** (0.025x) | $0.50 | $0.30 | $0.10 |
+| Price (input/output $/MTok) | $10/$50 | **$4/$20** | **$2/$10** | $1/$5 |
+| Cache read ($/MTok) | **$0.25** (0.025x) | **$0.20** (0.05x) | $0.20 | $0.10 |
 | Effort support | low–max | low–max | low–max | **none** |
-| Effort default | `high` (CC) / `medium` (chat) | `high` | `high` | — |
-| Adaptive thinking | yes (always on) | yes | yes | no |
-| Knowledge cutoff | **Jun 2026** | May 2026 | Jan 2026 | Feb 2025 |
+| API default effort | `high` | **`medium`** | `high` (`medium` in the Claude apps) | — |
+| Thinking | adaptive, always on | adaptive, **always on — `disabled` is a 400** | adaptive (lowest setting `between_tools`, high effort or below) | extended |
+| Knowledge cutoff | Jun 2026 | **Jun 2026** | **Jun 2026** | Feb 2025 |
+| Retirement (Anthropic platforms) | not before 1 Sep 2027 | not before 22 Sep 2027 | not before 28 Sep 2027 | **not before 15 Oct 2026** |
 
-*⚠️ **Corrected 10 Sep 2026.** Sonnet 5 is **$2/$10** and stays there. The
+**Legacy, still available:** Opus 5 ($5/$25, cache read $0.50, cutoff May 2026,
+default `high`) and Sonnet 5 ($2/$10, cache read $0.30, cutoff Jan 2026, default
+`high`). Neither is selected by the router any more; **Sonnet 5 is still the model
+a Sonnet 5.5 request falls back to** when the cyber classifier declines it.
+
+*⚠️ **Corrected 10 Sep 2026** (about the Sonnet 5 generation). Sonnet 5 is **$2/$10** and stays there. The
 $2/$10 launch price was announced as introductory through 31 Aug 2026, but the
 scheduled rise to $3/$15 on 1 Sep **was cancelled** and $2/$10 is now the
 standard price (`platform.claude.com/docs/en/about-claude/pricing`, read
@@ -309,8 +329,10 @@ model's **entire** token spend — text, tool calls, thinking.
 |---|---|---|
 | **Fable 5.1** / Mythos 5.1 | low, medium, high, xhigh, max | high (Claude Code) · medium (claude.ai / Cowork) |
 | Fable 5 (legacy) | low, medium, high, xhigh, max | high |
-| **Opus 5** | low, medium, high, xhigh, max | high |
-| Sonnet 5 | low, medium, high, xhigh, max | high |
+| **Opus 5.5** | low, medium, high, xhigh, max | **medium** (Opus 5 and every earlier Opus defaulted to `high`) |
+| **Sonnet 5.5** | low, medium, high, xhigh, max | high (API) · medium (Claude apps) |
+| Opus 5 (legacy) | low, medium, high, xhigh, max | high |
+| Sonnet 5 (legacy) | low, medium, high, xhigh, max | high |
 | Opus 4.8 | low, medium, high, xhigh, max | high |
 | Opus 4.7 | low, medium, high, xhigh, max | **xhigh** (exception) |
 | Opus 4.6, Sonnet 4.6 | low, medium, high, max (**no xhigh**) | high |
@@ -320,7 +342,7 @@ If `xhigh` is requested but unsupported, it falls to the nearest supported level
 below (e.g. `xhigh` → `high` on Opus 4.6).
 
 > **`max` is a supported *setting* on every Claude tier, but the router only
-> *emits* it on a flagship** (Opus 5 / Opus 4.8 / Fable 5.1 / Sol / Astra), and
+> *emits* it on a flagship** (Opus 5.5 / Opus 4.8 / Fable 5.1 / Sol / Astra), and
 > since iteration-16 only when Rule E3 also allows it (§13.2). The
 > `D=3 ∧ R=3 → max` rule fires there; on a mid-tier model (Sonnet 5 / Terra) it
 > stays `xhigh`. Rationale: the router picks the mid tier only when the reasoning
@@ -331,6 +353,23 @@ below (e.g. `xhigh` → `high` on Opus 4.6).
 > stakes; if maximum reasoning is genuinely needed, escalate to the flagship.
 
 ### Advice per model (Anthropic's own text)
+
+- **Opus 5.5** (`platform.claude.com/docs/en/build-with-claude/effort`, 29 Sep):
+  supports all five levels; **`medium` is the default** ("a request that omits
+  `effort` runs one level lower than it did on Opus 5"); adaptive thinking is
+  always on; "run an effort sweep on your own evals rather than carrying settings
+  over from an earlier model"; set a large `max_tokens` at the higher levels. It
+  "tends to think more per turn than Opus 5 at the same setting, most of all at
+  `xhigh` and `max`".
+- **Sonnet 5.5:** all five levels; `high` is the API default. **Levels are
+  recalibrated** against Sonnet 5. "For agentic coding and multistep tool use,
+  start with `medium` for well-specified tasks and move to `high` for harder or
+  longer ones. For chat and latency-sensitive work, `medium` or `low`. **Use
+  `xhigh` or `max` only where your evals show a quality gain.**" At `low`/`medium`
+  it is more likely to stop and check in on long agentic tasks and, at `low`, to
+  skip verifying a change. At `xhigh`/`max` it "starts its own rounds of review
+  and verification" — Anthropic's own FrontierCode footnote says Sonnet 5.5
+  scores *lower* at `max` than at `xhigh` for exactly that reason.
 
 - **Opus 5:** start from `high` (default). Go to `xhigh` for coding/agentic work,
   to `max` for a genuine frontier problem. **"Use low and medium freely as a
@@ -459,10 +498,13 @@ pass. This is evidence the criterion makes the right distinction on a real case.
 |---|---|---|---|---|
 | **Fable 5.1** / Mythos 5.1 | $10.00 | $50.00 | $12.50 | **$0.25** |
 | Fable 5 (legacy) | $10.00 | $50.00 | $12.50 | $1.00 |
-| **Opus 5** | $5.00 | $25.00 | $6.25 | $0.50 |
+| **Opus 5.5** (22 Sep 2026) | **$4.00** | **$20.00** | $5.00 | **$0.20** |
+| Opus 5.5 (Fast Mode, API research preview) | $8.00 | $40.00 | — | — |
+| Opus 5 (legacy) | $5.00 | $25.00 | $6.25 | $0.50 |
 | Opus 4.8 (legacy) | $5.00 | $25.00 | $6.25 | $0.50 |
 | Opus 4.8 (Fast Mode) | $10.00 | $50.00 | $12.50 | $1.00 |
-| **Sonnet 5** (the $3/$15 rise was cancelled) | **$2.00** | **$10.00** | $2.50 | $0.20 |
+| **Sonnet 5.5** (28 Sep 2026) | **$2.00** | **$10.00** | $2.50 | $0.20 |
+| Sonnet 5 (legacy; the $3/$15 rise was cancelled) | $2.00 | $10.00 | $2.50 | $0.30 |
 | Haiku 4.5 | $1.00 | $5.00 | $1.25 | $0.10 |
 
 **Fable 5.1 cache read:** **0.025x** of base input (every other model is 0.1x).
@@ -470,19 +512,26 @@ Long agentic sessions that re-read a cached prefix pay **¼** of the Fable 5 rat
 — recommending Fable 5.1 at the frontier gate is markedly cheaper on quota than
 the Fable 5 era. Batch: $5 / $25.
 
-**Opus 5 / Sonnet 5 ratio: 2.5x** (corrected 10 Sep 2026 — it was recorded as
+**Opus 5.5 / Sonnet 5.5 list-price ratio: 2.0x** — narrower than the 2.5x of the
+previous generation, but the *per-task* ratio can invert: at `max` Sonnet 5.5
+costs **more** than Opus 5.5 ($7.60 vs $5.98 on AA v4.3.2, §17.3). List price is a
+proxy for quota burn only when the two models are run at comparable effort.
+
+**Opus 5 / Sonnet 5 ratio: 2.5x** (previous generation; corrected 10 Sep 2026 — it was recorded as
 1.67x on the wrong $3/$15 assumption). For a subscription user this is a rough
 proxy for how fast quota burns, and the correction *widens* the case for staying
 on Sonnet 5 wherever the capability bar is met. It does **not** widen the case
 for `Sonnet 5 · max`, which §13.2 Rule E1 shows is dominated by `Opus 5 · high`
-on both quality and cost.
+on both quality and cost — and §17.3 shows the same for `Sonnet 5.5 · max`.
 
 **Fast Mode now covers Opus 5 too** (research preview): $10/$50, 2.5x faster
-output. Toggled with `/fast` in Claude Code. Not on Opus 4.7, runs at standard
+output. Toggled with `/fast` in Claude Code. **Opus 5.5 also supports it** ($8/$40
+— still 2× its base price; the model docs list it as **Claude API only**, and
+whether Claude Code's `/fast` reaches Opus 5.5 was not verified). Not on Opus 4.7, runs at standard
 speed/price on Opus 4.6. The Codex-side analogue is **Codex CLI Fast Mode (1.5x)**
 — see §9.7. The router appends a speed line to every CLI Codex output
 (`SKILL.md` → Codex arm → "Fast Mode (1.5x)"); the Claude `/fast` half is added
-only when the Claude line is Opus 5 / Opus 4.8.
+only when the Claude line is Opus 5.5 / Opus 4.8.
 
 **Tokenizer inflation:** the Opus 4.7+ tokenizer produces ~30% more tokens for
 the same text (1.4x for English). Opus 5, Fable 5.1, Fable 5, Sonnet 5 all use
@@ -2340,3 +2389,225 @@ superseded wording that must be gone. Change either file alone and the check
 fails. It is deliberately not a second `SKILL.md` parser — assertions are short
 quotations, because asserting a paragraph makes the guard fail on a typo fix and
 teaches people to delete assertions.
+
+---
+
+## 17. The Claude 5.5 generation — iteration-19 (29 September 2026)
+
+Research pass with WebSearch **and** WebFetch both working. Primary sources read
+directly: `anthropic.com/claude-opus-5-5`, `anthropic.com/claude-sonnet-5-5`,
+`platform.claude.com/docs/en/models/{overview, opus-5-5/*, sonnet-5-5/*}`,
+`.../build-with-claude/{effort, refusals-and-fallback, prompt-engineering/prompting-claude-sonnet-5-5}`,
+`.../about-claude/models/choosing-a-model`, Claude Code release notes, and the
+Artificial Analysis (AA) articles and comparison pages for both models.
+
+### 17.1. What shipped
+
+| Date | Event | Router consequence |
+|---|---|---|
+| 22 Sep | **Claude Opus 5.5** (`claude-opus-5-5`), $4/$20, 1M, default effort `medium`. Claude Code **v2.1.280**: now the default Opus. | Replaces Opus 5. |
+| 22 Sep | **GPT-6 Sol / GPT-6 Luna** (OpenAI). Sol reported at $2/$10 (half of GPT-5.6 Sol, a fifth of Astra) — from TechCrunch, **not** verified on an OpenAI page. | **Recorded, not routed.** See 17.7. |
+| 28 Sep | **Claude Sonnet 5.5** (`claude-sonnet-5-5`), $2/$10, 1M, default `high`. Claude Code **v2.1.284**: now the default Sonnet. | Replaces Sonnet 5. |
+| pending | **Claude Haiku 5.5** — "in the coming weeks", no date, price or benchmark. | **Not selected.** Haiku 4.5 stays. Its retirement floor is **15 Oct 2026**, two weeks out. |
+
+### 17.2. Verified facts (Tier A unless stated)
+
+- **Safeguards.** Opus 5.5 "launches with safeguards comparable to Fable 5.1 on
+  cybersecurity, biology and distillation"; on cyber "most tasks are routed to
+  Opus 4.8" — so the **offensive-security gate stays Opus 4.8**. Sonnet 5.5:
+  "higher-risk cybersecurity tasks will visibly fall back to Sonnet 5"; defending
+  and debugging code stay allowed. Both run a biology classifier and a
+  `reasoning_extraction` classifier. **Not verified:** what Opus 5.5 does on a
+  biology-R&D decline (Opus 5 refused outright with no fallback, which is why
+  the biology gate sends that work to Fable 5.1). The gate is therefore
+  unchanged and flagged open.
+- **Breaking API changes that matter to a reader of the router's output.** Opus
+  5.5: `thinking:{disabled}` and manual budgets return 400; forced `tool_choice`
+  returns 400. Sonnet 5.5: non-default `temperature`/`top_p`/`top_k` return 400;
+  `between_tools` (its "no up-front thinking" setting) is rejected at `xhigh` and
+  `max`. None changes a routing rule; they explain why an old integration breaks
+  when it moves to 5.5.
+- **Effort defaults.** Opus 5.5 → `medium` (Anthropic: "the default across
+  products"; Claude Code's own default was not stated in its release notes).
+  Sonnet 5.5 → `high` on the API, `medium` in the Claude apps.
+- **Anthropic's own positioning.** "Start with Opus 5.5 for most workloads. Use
+  Fable 5.1 for demanding reasoning and long-horizon agentic work, or when your
+  evals on Opus 5.5 at higher effort still fall short." The model-selection matrix
+  gives Fable 5.1 "agent sessions that run for hours" **and** Opus 5.5 "multihour
+  autonomous coding agents" — the two overlap, which is why the evidence below
+  matters.
+
+### 17.3. The evidence
+
+**AA Intelligence Index v4.3.2** (one harness, all rungs comparable *within this
+group*; AA states scores are not comparable across index versions, so v4.3 rows
+are never pooled with these):
+
+| Model · effort | Index | Cost/task | Marginal, per rung |
+|---|---|---|---|
+| Opus 5.5 · low | 42 | $0.55 | — |
+| Opus 5.5 · medium (API default) | 51 | $1.34 | +9 for +$0.79 |
+| Opus 5.5 · high | 54 | $1.82 | +3 for +$0.48 ($0.16/pt) |
+| Opus 5.5 · xhigh | 56 | $3.46 | +2 for +$1.64 ($0.82/pt) |
+| Opus 5.5 · max | 58 (119k output tokens/task) | $5.98 | +2 for +$2.52 ($1.26/pt) |
+| Sonnet 5.5 · max | **56** (~193k output tokens/task) | **$7.60** | — |
+| Sonnet 5 · max (legacy) | 38 | $5.09 | — |
+
+Reading it:
+
+1. **E1 restated and stronger.** `Sonnet 5.5 · max` ties `Opus 5.5 · xhigh` at 56
+   for 2.2× the cost and is the highest-token configuration AA has measured
+   (~60% more than Opus 5.5 at max, ~7× Astra). Anthropic's own footnote adds that
+   Sonnet 5.5 scores lower at `max` than at `xhigh` on FrontierCode. The
+   generation before showed the same shape (38 @ $5.09 vs Opus 5 `xhigh` 50 @
+   $4.88). **Not claimed:** anything about Sonnet 5.5 at `low`–`xhigh` — AA's
+   extract has only its `max` row, so those rungs are *unknown, not inferred*, and
+   nothing here says Opus 5.5 `medium` dominates Sonnet 5.5 `high`.
+2. **E3 restated.** Opus 5.5 is the first row where `max` buys more than one
+   point over `xhigh` (+2 for +73% cost). With no published interval that is
+   `UNRESOLVED` — neither "worth it" nor "dominated" — so `max` stays behind M1
+   as quota policy. The Fable 5.1 (53/53) and Astra (53/53) ties still stand.
+3. **The D→effort table needed no change.** The marginal-cost column is a
+   post-hoc justification for it: `medium→high` costs $0.16 per index point,
+   `high→xhigh` $0.82, `xhigh→max` $1.26 — the steepening that the table's
+   `D=2 → high`, `D=3 → xhigh` and M1-gated `max` already encode.
+4. **Opus 5.5 at `high` (54 @ $1.82) beats Opus 5 at `max` (51 @ $5.86, v4.3).**
+   Different index versions, so this is direction, not a certified gap — but it is
+   why the roster swap is not a lateral move.
+5. **Opus 5.5 spends *more* output tokens than Opus 5 (~73k) or Fable 5.1 (~78k)
+   at max** (119k). Its price cut is per token; at the top rung the per-task
+   saving is smaller than "40% cheaper" suggests. (Anthropic's 40% is a claim
+   about typical work at lower effort; it is not contradicted, only not
+   reproduced at `max`.)
+
+**Vendor tables** (Anthropic, same harness applied to every column, `vendor_relative`):
+
+| Benchmark | Opus 5.5 | Fable 5.1 | Astra | GPT-5.6 Sol |
+|---|---|---|---|---|
+| Terminal-Bench 4.0 (Opus **xhigh**, Astra **high** — unmatched) | 66.4 ±2.6 | 55.8 | 57.9 | 37.3 |
+| FrontierCode 1.1 (Main) | 54.4 | 50.3 | 53.3 | 47.5 |
+| CursorBench 4.0 | 57.8 | 51.8 | — | 41.7 |
+| GDPval-AA v2.1 | 1846 | 1735 | 1542 | 1588 |
+| AutomationBench | 40.0 | 31.4 | 41.4 | 28.8 |
+| HLE (tools) | 67.7 | 65.6 | 57.2 | — |
+| TB-Science 0.1 (SE ±3.5–5) | 58.7 | 52.6 | 64.6 | 22.4 |
+| OSWorld 2.1 partial | 81.8 | 80.7 | — | — |
+
+- **Opus 5.5 ≥ Fable 5.1 on all 8**, at $4/$20 vs $10/$50 — the vendor's cheaper
+  model beating its own flagship, which is against-interest evidence. This is
+  what narrowed **A1** (below).
+- **Sonnet 5.5 vs Opus 5.5** (Sonnet note): Terminal-Bench 4.0 70.6 vs 66.4;
+  FrontierCode 46.2 (max) vs 54.4; CursorBench 4.0 55.5 vs 57.8; GDPval-AA 1844
+  vs 1846; AA-Briefcase 1811 vs 1822; HLE 64.5 vs 67.7; OSWorld 2.1 80.1 vs 81.8.
+  AA's own runs: Terminal-Bench 4.0 **64 vs 59.6**, AutomationBench-AA 71 vs 70,
+  AA-Omniscience accuracy **54 vs 66** (Opus 5.5's clearest AA lead).
+  Sonnet 5.5 is ahead or level on the terminal and knowledge-work rows and behind
+  on the real-repo and factual-accuracy rows.
+- **The two OpenAI-side games:** Anthropic's Opus table uses **GPT-5.6 Sol**; the
+  Sonnet table uses **GPT-6 Sol** (FrontierCode 49.3, GDPval-AA 1487, AA-Briefcase
+  1483). Different models. Only the former is on the roster.
+
+### 17.4. What changed in the router
+
+| Change | Where | Basis |
+|---|---|---|
+| Roster: Opus 5.5 / Sonnet 5.5 replace Opus 5 / Sonnet 5 | SKILL.md tables, examples, gates, Rule 4/8, fast-mode line | 17.1 |
+| **E1** restated on the 5.5 generation | SKILL.md 5c | 17.3 (1) |
+| **E3** restated (`max` buys 0–2 points, not ≤1) | SKILL.md 5c | 17.3 (2) |
+| **A1 narrowed** — the "hours of unattended execution" limb is gone; only the stated shortfall reaches Fable 5.1 / Astra | SKILL.md A1 + note, policy mirror | Opus 5.5 ≥ Fable 5.1 on 8/8 same-harness rows; TB 4.0 is *the* long-horizon benchmark and Opus leads it by 10.6 |
+| **`agentic-code` / `terminal-tool` / `science` vs Astra → `Codex †`**, and `workflow-automation` vs Astra `Codex †`, `knowledge-work` vs Astra `Claude †` | SKILL.md badge table | Astra ties Opus 5.5 on the independent rows (AA TB 4.0 60 vs 59.6; Coding Agent Index 62 = 62; TB-Science inside a ±5 band), so tokens decide (Astra ~27k vs ~119k) and the badge must hedge |
+| A **†** now binds one **cell**, not a row | SKILL.md badge note | `agentic-code` vs Sol needs no hedge; vs Astra does |
+| *(The Codex half of A1 — Sol → Astra — loses the hours limb **by symmetry, not by evidence**: nothing in the 5.5 pass measures Astra against Sol on long runs. Revisit in the Codex iteration, 17.8 item 1.)* | SKILL.md A1 | honesty note |
+| Rung note: Opus 5.5 defaults to `medium`; Sonnet 5.5 recalibrated | SKILL.md effort list item 4 | 17.2 |
+| Alias safety: `/model opus` → Opus 5.5 (v2.1.280+); `/model sonnet` → Sonnet 5.5 (v2.1.284+) | SKILL.md Rule 8 | Claude Code release notes |
+| `/fast` half now names Opus 5.5 | SKILL.md speed line | `choosing-a-model` |
+| Evals f1 / a1 / x1 / e4p / fr1 gained `expected_low_confidence` | evals.json | same as the badge row above |
+
+### 17.5. What did **not** change, and why
+
+- **The flagship list and D=3 → Opus 5.5.** The tempting reading of the
+  Terminal-Bench rows is "Sonnet 5.5 beats Opus 5.5, so stop sending D=3 agentic
+  work to Opus". Against it: the real-repo rows favour Opus 5.5 (FrontierCode 54.4
+  vs 46.2, CursorBench 57.8 vs 55.5); Sonnet 5.5 needs far more tokens at `max`
+  (Terminal-Bench cost per attempt reported as $12.54 vs $7.35 — **tier C**, the
+  primary page shows charts only); and Anthropic says Opus is "clearly stronger
+  at complex, open-ended work requiring sustained judgment". What the evidence
+  *does* support is the existing behaviour: Sonnet 5.5 at `D≤2` and at
+  `high`/`xhigh`.
+- **The biology and 1000+-file gates still route to Fable 5.1.** Those are
+  hard capability/availability gates, not efficiency choices. For *biology* the
+  reason (Opus 5 refuses with no fallback) is unverified for Opus 5.5 — flagged.
+  For *scale* there is no evidence at 1000+ files for either model, and
+  Anthropic's positioning still names Fable 5.1 for "the highest available
+  capability". **This is the least-supported decision in the router now**: the
+  only quantitative signal (Opus 5.5 ≥ Fable 5.1 everywhere) points the other way.
+  Left as a hard gate on purpose; revisit with a benchmark that actually runs at
+  that scale.
+- **The D→effort table**, **M1** (`max` flagship-only, D=3 ∧ R=3, indivisible),
+  **UC1/O1/P1/N1** — nothing in the 5.5 evidence touches them.
+- **Haiku 4.5** stays the only Haiku.
+
+### 17.6. Two compiler defects the new rows exposed
+
+Both were latent; adding effort-labelled rows made them visible. Both now have
+unit tests (`scripts/test_frontier_compiler.py`, 42 → 52 checks).
+
+1. **Effort curves pooled every benchmark.** `compile_effort_curves` keyed on
+   `(model, group)`, so a launch note publishing TB-Science at `high` and
+   CursorBench at `max` produced one "curve" running 52.6 → 73.4. It now keys on
+   `(model, group, benchmark, version)` and emits `benchmark` on each curve. No
+   published dominance claim changed (none of the pooled curves carried costs).
+2. **Unmatched efforts were compared as if matched.** Anthropic's Opus 5.5 table
+   runs Opus 5.5 at `xhigh` and Astra at `high` on Terminal-Bench 4.0 and states
+   a ±2.6 SE, so the compiler called it a clean Claude win (gap 8.5 > band 5.2).
+   SKILL.md 5a has always said efforts must match. `compare_group` now returns
+   `UNRESOLVED` — "efforts not matched (xhigh vs high)" — when both best rows
+   name an effort and the efforts differ. An effort the source never stated is
+   *not* treated as a mismatch.
+
+The compiler also gained one **backward-compatible** feature: a group's
+`equivalence_band` may be a list, each entry scoped by `applies_to`. The Opus 5.5
+note publishes a different SE per benchmark (TB 4.0 ±2.6; TB-Science ±3.5–5, the
+upper bound used).
+
+### 17.7. Conflicts, corrections and things left open
+
+- **AA's Opus 5.5 `$5.98` is the `max` rung, not `xhigh`** — kingy.ai (tier C)
+  labels it xhigh. AA's comparison page lists `$5.98` under max (58) and `$3.46`
+  under xhigh (56), and the token arithmetic agrees (260M ÷ 119k ≈ 2,190 tasks;
+  Sonnet 410M ÷ 193k ≈ 2,120). AA's page is used; the secondary label is wrong.
+- **Sonnet 5.5 FrontierCode row.** Anthropic's table prints `46.2% Max²` for
+  Sonnet 5.5 and `49.3% / 52.1% Xhigh` for GPT-6 Sol. A secondary source reads
+  52.1 as *Sonnet 5.5's* `xhigh` figure, which would fit footnote ² ("scores lower
+  at Max than Xhigh") — but the extract is ambiguous, so **only 46.2 is recorded**
+  and the footnote is cited in words.
+- **Sonnet 5.5 Terminal-Bench 4.0 `xhigh` = 61.5** exists only in tier C
+  (`secondary-2026-09-29`), recorded as `unclassified`. If real, it is inside a
+  2 × 2.6 band of Opus 5.5 `xhigh` 66.4 — but it cannot support a rule.
+- **AA rank.** One AA snippet says Sonnet 5.5 is "#2", another "#3 of 216" — the
+  difference is plausibly Opus 5.5 `xhigh` (56) sharing the score. Not used.
+- **AA Index v4.3 → v4.3.2** is a patch; Sonnet 5 max reads 38 @ $5.09 on both.
+  One coincidence is not licence to pool the groups, so they stay separate.
+- **AA-Omniscience hallucination rate** (Sonnet 5.5 47 vs Opus 5.5 59): "lower is
+  better" was *not* verified against AA's definition, so no direction is drawn.
+- **Sonnet 5.5 was a pre-release build** with a structured-output bug on AA's
+  runs (AA expects it understated). Every Sonnet 5.5 AA row carries that caveat.
+- **Not re-run this pass:** the trigger eval (`description` gained "Sonnet 5.5 /
+  Opus 5.5") and the cold-agent routing eval. Deterministic checks — compiler,
+  validator, 52-check compiler tests, policy sync, examples, reachability and
+  its tests — all pass; the routing evals are the part that needs live agents.
+
+### 17.8. Follow-ups, in priority order
+
+1. **Codex arm for GPT-6 Sol / Luna.** The router still names GPT-5.6 Sol/Terra/
+   Luna. If GPT-6 Sol is $2/$10 (Sonnet-priced) and "Astra-level reliability", the
+   `D=3 → Sol` pick, the E2/E4 dominance numbers, the N1 notch's Terminal-Bench
+   basis and the `Sonnet 5.5 vs Terra` price tie-break all need re-deriving. That
+   is a Codex iteration, not a footnote to this one.
+2. **Cold-agent routing eval** (64 cases) against the new SKILL.md, then the
+   trigger eval.
+3. **Haiku 5.5** when it ships — and a decision before **15 Oct 2026**, when
+   Haiku 4.5's retirement floor passes.
+4. **Terminal-Bench 4.0 owner-leaderboard CI whiskers** — still the highest-value
+   missing datum; it would settle `agentic-code` vs Astra on real uncertainty.
+5. **A benchmark at 1000+ files** for the Fable 5.1 scale gate (17.5).

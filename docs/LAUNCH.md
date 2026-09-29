@@ -81,7 +81,7 @@ GPT-6 Astra is handled as a narrow gated pick, not the default).
 
 **Body:**
 > Short version: paste a task, it replies with two lines —
-> `Claude: Sonnet 5 · effort: high` / `Codex: Terra · effort: high` — and doesn't
+> `Claude: Sonnet 5.5 · effort: high` / `Codex: Terra · effort: high` — and doesn't
 > run anything.
 >
 > It's built around one idea: the thing you're actually running out of is your

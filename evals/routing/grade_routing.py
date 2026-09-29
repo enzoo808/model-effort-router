@@ -28,7 +28,7 @@ from pathlib import Path
 # Order matters for the first-match lookup below: a longer name that contains a
 # shorter one must come first. "Sol" is a substring of "Sol Ultra"; "Fable 5" of
 # "Fable 5.1"; "Mythos 5" of "Mythos 5.1".
-MODEL_NAMES = ["Haiku 4.5", "Sonnet 5", "Opus 4.8", "Opus 5",
+MODEL_NAMES = ["Haiku 4.5", "Sonnet 5.5", "Opus 4.8", "Opus 5.5",
                "Fable 5.1", "Fable 5", "Mythos 5.1",
                "Sol Ultra", "Sol", "Terra", "Luna", "Astra"]
 

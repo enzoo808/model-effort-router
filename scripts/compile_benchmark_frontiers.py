@@ -83,6 +83,12 @@ def band_for(group: dict, benchmark: str, rule: dict, spread: float) -> tuple[fl
     is carried through the output as a diagnostic and never used here.
     """
     eb = group.get("equivalence_band") or {"kind": "none"}
+    if isinstance(eb, list):
+        # One source can publish a different dispersion per benchmark. Each entry
+        # names the benchmarks it covers via applies_to; a benchmark no entry
+        # covers has no published dispersion.
+        eb = next((b for b in eb if benchmark in (b.get("applies_to") or [])), None) \
+            or {"kind": "none"}
     kind = eb.get("kind")
     value = eb.get("value")
     if kind not in DIRECTION_BASIS or value is None:
@@ -166,6 +172,18 @@ def compare_group(rows: list, group: dict, eco_map: dict, rule: dict,
 
     band, basis = band_for(group, out["benchmark"], rule, spread)
     gap = best[CLAUDE]["score"] - best[CODEX]["score"]
+    ce, xe = best[CLAUDE].get("effort"), best[CODEX].get("effort")
+    if ce is not None and xe is not None and ce != xe:
+        # SKILL.md 5a: two scores are comparable only when the effort matches too.
+        # A vendor that runs its own model at xhigh and the competitor at high has
+        # published two numbers, not a comparison.
+        out["best"] = {eco: {"model": r["model"], "score": r["score"], "id": r["id"]}
+                       for eco, r in sorted(best.items())}
+        out["gap_claude_minus_codex"] = round(gap, 4)
+        out["direction"] = UNRESOLVED
+        out["reason"] = ("efforts not matched (%s vs %s) -- not directly comparable, so the gap "
+                         "sets no direction" % (ce, xe))
+        return out
     out["best"] = {eco: {"model": r["model"], "score": r["score"], "id": r["id"]}
                    for eco, r in sorted(best.items())}
     out["gap_claude_minus_codex"] = round(gap, 4)
@@ -348,11 +366,15 @@ def compile_effort_curves(records: list, meta: dict) -> list:
             continue
         if r["model"] not in roster or r["effort"] not in order:
             continue
-        buckets.setdefault((r["model"], r["comparability_group"]), []).append(r)
+        # A curve is one model on ONE benchmark. Keying on (model, group) alone pooled
+        # every benchmark a launch note publishes, so 'Fable 5.1 high 52.6 -> max 73.4'
+        # was TB-Science against CursorBench.
+        buckets.setdefault((r["model"], r["comparability_group"], r["benchmark"],
+                            r.get("benchmark_version") or ""), []).append(r)
 
     curves = []
-    for (model, gid) in sorted(buckets):
-        rows = buckets[(model, gid)]
+    for (model, gid, bench, ver) in sorted(buckets):
+        rows = buckets[(model, gid, bench, ver)]
         if len(rows) < 2:
             continue
         gmeta = groups_meta.get(gid)
@@ -396,7 +418,8 @@ def compile_effort_curves(records: list, meta: dict) -> list:
             elif unres is not None:
                 unresolved.append(unres)
         curves.append({
-            "model": model, "group": gid, "band": None if band is None else round(band, 4),
+            "model": model, "group": gid, "benchmark": bench, "benchmark_version": ver or None,
+            "band": None if band is None else round(band, 4),
             "band_basis": basis, "points": points, "dominated_rungs": dominated,
             "unresolved_rungs": unresolved,
         })
@@ -435,11 +458,13 @@ def build(raw: dict, digest: str, evidence_filter=None, filter_name: str = "full
             "benchmarks.json declares a fraction-of-spread equivalence band. Observed spread is "
             "not statistical uncertainty -- see direction_setting_hierarchy. Remove it.")
     for gid, g in raw["comparability_groups"].items():
-        kind = (g.get("equivalence_band") or {}).get("kind", "none")
-        if kind not in DIRECTION_BASIS + ("none",):
-            raise SpreadFallbackResurrected(
-                "comparability group %r declares equivalence_band kind %r, which is not in the "
-                "declared direction-setting hierarchy %s" % (gid, kind, list(DIRECTION_BASIS)))
+        eb = g.get("equivalence_band") or {}
+        for band in (eb if isinstance(eb, list) else [eb]):
+            kind = band.get("kind", "none")
+            if kind not in DIRECTION_BASIS + ("none",):
+                raise SpreadFallbackResurrected(
+                    "comparability group %r declares equivalence_band kind %r, which is not in the "
+                    "declared direction-setting hierarchy %s" % (gid, kind, list(DIRECTION_BASIS)))
     records = raw["records"]
     if evidence_filter is not None:
         records = [r for r in records if evidence_filter(r)]

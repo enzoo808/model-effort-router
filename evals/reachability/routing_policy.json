@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1",
-  "policy_version": "iteration-18",
-  "compiled": "2026-09-11",
+  "policy_version": "iteration-19",
+  "compiled": "2026-09-29",
   "purpose": "Machine-readable mirror of the decision rules in skill/SKILL.md, used by scripts/check_routing_reachability.py to audit which model x effort x mode combinations the rules can and cannot produce, and by scripts/check_policy_sync.py to prove this mirror and the shipped SKILL.md still describe the SAME rules. Nothing reads this at runtime; skill/SKILL.md remains the single source of truth for routing.",
   "drift_guard": "Every entry under `rules` carries `skill_md_assertion` (substrings that MUST appear in skill/SKILL.md) and, where a rule replaced an older one, `skill_md_must_not_appear` (the superseded wording). `scripts/check_policy_sync.py` fails if the marker version, the assertions or the negative assertions disagree with skill/SKILL.md. Change a rule here without changing SKILL.md and it fails; change SKILL.md's rule text without updating this file and it fails too. This exists because the audit once spent a whole pass validating iteration-18 while the shipped skill still implemented iteration-17.",
   "not_shipped": "Deliberately lives under evals/, not skill/. build-claude-ai-zip.ps1 ships only SKILL.md, reference.md, benchmarks.json and benchmark_frontiers.json, so this file adds nothing to the runtime package.",
@@ -13,7 +13,7 @@
         "modes": [],
         "note": "no effort parameter at all; ultracode needs xhigh support, which Haiku has not"
       },
-      "Sonnet 5": {
+      "Sonnet 5.5": {
         "efforts": [
           "low",
           "medium",
@@ -24,9 +24,9 @@
         "modes": [
           "ultracode"
         ],
-        "note": "also the execute half of opusplan"
+        "note": "also the execute half of opusplan. Anthropic (Sonnet 5.5 prompting guide): `between_tools` thinking is rejected at xhigh/max -- irrelevant to routing, recorded because it is a support fact"
       },
-      "Opus 5": {
+      "Opus 5.5": {
         "efforts": [
           "low",
           "medium",
@@ -37,7 +37,8 @@
         "modes": [
           "ultracode",
           "opusplan"
-        ]
+        ],
+        "note": "API default effort is medium (Opus 5 was high); adaptive thinking cannot be disabled. Fast mode (research preview) is Claude API only per the model docs; Claude Code's /fast on 5.5 is unverified"
       },
       "Opus 4.8": {
         "efforts": [
@@ -160,7 +161,7 @@
     "A": {
       "name": "autonomy horizon",
       "question": "Does the task run autonomously for a long stretch with many tool loops before a human sees it?",
-      "high_when": "hours of unattended agentic execution, or the user states an earlier flagship-tier run already fell short",
+      "high_when": "the user states that an earlier flagship-tier run at xhigh or max already fell short. A long or unattended session is NOT that (iteration-19: the hours-of-unattended-execution limb was removed -- Anthropic's own same-harness table has Opus 5.5 at or above Fable 5.1 on all eight benchmarks it lists, Terminal-Bench 4.0 included).",
       "drives": [
         "frontier-escalation"
       ],
@@ -181,7 +182,7 @@
     "max"
   ],
   "flagship_models": [
-    "Opus 5",
+    "Opus 5.5",
     "Opus 4.8",
     "Fable 5.1",
     "Mythos 5.1",
@@ -199,8 +200,8 @@
   "escalation_ladders": {
     "note": "A model change, never an effort change (Step 7 Rule 2). Each rung has its own trigger; the ladder is not climbed by difficulty alone.",
     "claude": [
-      "Sonnet 5",
-      "Opus 5",
+      "Sonnet 5.5",
+      "Opus 5.5",
       "Fable 5.1"
     ],
     "codex": [
@@ -209,7 +210,7 @@
       "Astra"
     ],
     "rung_2_trigger": "user states the work is critical / must not be under-resourced / an earlier run fell short",
-    "rung_3_trigger": "A=high AND the dominant capability is on the flagship list AND the user states a flagship-tier run at xhigh or max already fell short, or the session is an hours-long unattended agentic run"
+    "rung_3_trigger": "A=high AND the dominant capability is on the flagship list AND the user states a flagship-tier run at xhigh or max already fell short. (iteration-19: 'or the session is an hours-long unattended agentic run' removed.)"
   },
   "rules": {
     "ultracode": {
@@ -241,10 +242,10 @@
       "why_not_wider": "Widening E4 below max would mean comparing Astra xhigh against Sol xhigh, and AA publishes Sol only at high and max. Estimating the missing rung is exactly the interpolation Step 5a forbids, so the rule stops where the published rungs stop. That, not a frequency target, is what keeps Astra rare."
     },
     "frontier_escalation": {
-      "version": "iteration-18",
-      "expr": "A == high AND prior_run_fell_short AND capability in flagship_capabilities -> Opus 5 becomes Fable 5.1, Sol becomes Astra",
+      "version": "iteration-19",
+      "expr": "A == high AND prior_run_fell_short AND capability in flagship_capabilities -> Opus 5.5 becomes Fable 5.1, Sol becomes Astra",
       "previous": "no explicit rung; Fable 5.1 was reachable only through the biology and 1000+ file gates",
-      "why_changed": "Anthropic publishes the trigger verbatim ('if your evals at xhigh or max effort still fall short on demanding reasoning or long-horizon agentic work, move to Claude Fable 5.1'), and the old skill text called it 'consistent, no extra rule needed' -- which meant a user who SAID the flagship had already failed got the flagship again. Deliberately narrow: on the aggregate index Fable 5.1 is inside the equivalence band against Opus 5 at ~1.5x cost per task, so difficulty alone must never reach it."
+      "why_changed": "Anthropic publishes the trigger verbatim ('if your evals at xhigh or max effort still fall short on demanding reasoning or long-horizon agentic work, move to Claude Fable 5.1'), and the old skill text called it 'consistent, no extra rule needed' -- which meant a user who SAID the flagship had already failed got the flagship again. Deliberately narrow: on the aggregate index Fable 5.1 is inside the equivalence band against Opus 5 at ~1.5x cost per task, so difficulty alone must never reach it. Iteration-19 narrowed it once more: A=high now means ONLY the stated shortfall. Opus 5.5 (22 Sep) beats Fable 5.1 on every row of Anthropic's own table (Terminal-Bench 4.0 66.4 vs 55.8, FrontierCode 54.4 vs 50.3, CursorBench 4.0 57.8 vs 51.8, GDPval-AA 1846 vs 1735, AutomationBench 40.0 vs 31.4, HLE 67.7 vs 65.6, TB-Science 58.7 vs 52.6, OSWorld 2.1 81.8 vs 80.7) at $4/$20 vs $10/$50, so duration cannot justify the jump. Anthropic's step-up criterion is kept."
     },
     "uncertainty": {
       "version": "iteration-18",
@@ -252,6 +253,11 @@
       "previous": "a gap counted if it was large relative to the benchmark's own observed spread across the roster (compiled as 0.15 x spread)",
       "why_changed": "Observed spread is how far apart the models happen to sit, not how precisely either score was measured. On a two-row cell the spread IS the gap, so every comparison would 'win'. Removing it leaves `science` as the only capability with a certified direction -- which is the honest state of the published record, and is why the badge table's thin rows carry `low-confidence`.",
       "compiler": "scripts/compile_benchmark_frontiers.py DIRECTION_BASIS; the compiler raises SpreadFallbackResurrected if min_fraction_of_spread comes back"
+    },
+    "E1": {
+      "version": "iteration-19",
+      "expr": "NEVER emit Sonnet 5.5 max; escalation is Sonnet 5.5 -> Opus 5.5 at the same rung",
+      "why": "AA v4.3.2: Sonnet 5.5 max 56 @ $7.60 (~193k output tokens/task) vs Opus 5.5 xhigh 56 @ $3.46 -- same score, 2.2x the cost. Anthropic footnote: Sonnet 5.5 scores lower at max than xhigh on FrontierCode. Sonnet 5.5's lower rungs are unpublished, so E1 claims nothing about them."
     }
   },
   "rule_blocks": {
@@ -260,8 +266,8 @@
       "S0": "**S0 · blocked output.** A prompt blocked at Step 0 emits exactly one line, a `Clarify:` line naming the missing information as a question, and no `Claude:`, `Codex:`, `Evidence:` or badge line at all.",
       "D3DIAG": "**D3DIAG · diagnosis.** The coding column is written for building, so debugging scores on its own test: bounded diagnosis is `D=2`, and adversarial diagnosis is `D=3` when at least two of these hold — the root cause is non-local or depends on timing or ordering; reproduction is intermittent or environment-dependent; several plausible causes must be ruled out by constructing competing hypotheses; a local-looking fix could mask a deeper invariant violation.",
       "P1": "**P1 · parallelisable strands.** `P = high` when the work splits into three or more strands that proceed without waiting on each other and merge at the end. A strand may be an already-independent target (service, repo, vendor) or an independent work-kind (three candidate designs investigated or prototyped side by side). Two strands is not enough, and one coherent decision sliced up after the fact is never strands.",
-      "M1": "**M1 · `max`.** Emit `max` only when `D = 3` and `R = 3` and the model is a flagship (Opus 5 / Opus 4.8 / Fable 5.1 / Mythos 5.1 / Sol / Astra) and the difficulty is one indivisible novel-design or formal decision. Otherwise `xhigh`.",
-      "A1": "**A1 · frontier rung.** Opus 5 becomes Fable 5.1 and Sol becomes Astra only when the dominant capability is on the flagship list and `A = high`, where `A = high` means hours of unattended agentic execution or the user states that an earlier flagship-tier run at `xhigh` or `max` already fell short.",
+      "M1": "**M1 · `max`.** Emit `max` only when `D = 3` and `R = 3` and the model is a flagship (Opus 5.5 / Opus 4.8 / Fable 5.1 / Mythos 5.1 / Sol / Astra) and the difficulty is one indivisible novel-design or formal decision. Otherwise `xhigh`.",
+      "A1": "**A1 · frontier rung.** Opus 5.5 becomes Fable 5.1 and Sol becomes Astra only when the dominant capability is on the flagship list and `A = high`, where `A = high` means the user states that an earlier flagship-tier run at `xhigh` or `max` already fell short. A long or unattended session is not that statement.",
       "O1": "**O1 · orchestration load.** `O = high` when the session must run three or more distinct phases, where a phase is a stretch of work that produces a different kind of deliverable and whose output is consumed by a later phase. The phases that count are research, implementation, independent verification, packaging, data or schema migration, documentation, and triage. The whole edit-run-repair implementation loop is one phase, and tests you write for your own change are inside it.",
       "UC1": "**UC1 · `ultracode`.** Emit `ultracode` when the estimated duration is over 30 minutes and either `O = high` or (`W = 3` and `D >= 2`) and the difficulty is not one indivisible chain. Write `ultracode` in the effort field. Every model except Haiku 4.5.",
       "N1": "**N1 · Codex +1 notch.** When the task is writing or restructuring code across multiple dependent steps and the model is Terra or Sol, raise the Codex effort one rung, capped at `xhigh` on both models, and never lower a rung that another rule already set higher. Never on Astra. Claude is untouched.",
@@ -272,6 +278,8 @@
   "skill_md_must_not_appear": [
     "3+ already-independent targets scanned side by side",
     "large relative to the benchmark's own spread",
-    "the dominant capability is structured design/architecture"
+    "the dominant capability is structured design/architecture",
+    "hours of unattended agentic execution or the user states",
+    "**E1 — `Sonnet 5 · max` is dominated.**"
   ]
 }

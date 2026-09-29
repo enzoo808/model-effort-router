@@ -1,8 +1,8 @@
 ---
 name: model-secici
 description: >-
-  Reads a prompt and recommends, separately for Claude (Haiku 4.5 / Sonnet 5 /
-  Opus 5 / Opus 4.8 / Fable 5.1) AND Codex/ChatGPT (Luna / Terra / Sol / Sol
+  Reads a prompt and recommends, separately for Claude (Haiku 4.5 / Sonnet 5.5 /
+  Opus 5.5 / Opus 4.8 / Fable 5.1) AND Codex/ChatGPT (Luna / Terra / Sol / Sol
   Ultra / GPT-6 Astra), which model + effort level to run it on, and marks which
   of the two is the better fit for this task — all in one short output. Use when
   asked "which model", "which effort", "pick a model", "which AI should I use",
@@ -11,7 +11,7 @@ description: >-
 
 # Claude & Codex model / effort router
 
-<!-- routing-policy-version: iteration-18 -->
+<!-- routing-policy-version: iteration-19 -->
 
 Analyse the user's prompt and say, **separately for Claude and for
 Codex/ChatGPT**, which model and effort level to run it on — then mark the one
@@ -37,13 +37,13 @@ recommendation lines plus `Evidence:`. Show workings only if asked "why?".
 > `reference.md` is for auditing a rule, not for applying one — open it only if
 > a call is still ambiguous after reading the rule *and* the note under it.
 
-**Rosters (verified 10 September 2026).** Claude:
+**Rosters (verified 29 September 2026).** Claude:
 
 | Model | Role |
 |---|---|
-| Haiku 4.5 | Speed/volume. **No effort parameter.** 200k context |
-| Sonnet 5 | Daily work. **Default starting point.** $2/$10, 1M context |
-| **Opus 5** | **Flagship.** Complex agentic code, enterprise work. $5/$25 |
+| Haiku 4.5 | Speed/volume. **No effort parameter.** 200k context. Retirement "not sooner than 15 Oct 2026"; Haiku 5.5 is announced, **not released — the router does not select it** |
+| Sonnet 5.5 | Daily work. **Default starting point.** $2/$10, 1M context. Replaces Sonnet 5 (28 Sep) |
+| **Opus 5.5** | **Flagship.** Complex agentic code, enterprise work. $4/$20, 1M context, **API default effort `medium`**. Replaces Opus 5 (22 Sep) |
 | Opus 4.8 | Legacy — the **only** lasting role is the offensive-security gate |
 | **Fable 5.1** | Frontier scale: long-horizon autonomy, extreme breadth, **biology-adjacent R&D**. $10/$50 |
 | Mythos 5.1 | = Fable 5.1 with permissive safeguards. **Project Glasswing invite only** |
@@ -53,11 +53,12 @@ Codex/ChatGPT (GPT-5.6 family + GPT-6 Astra):
 | Model | Role | Claude analogue |
 |---|---|---|
 | Luna | Speed/volume, cheapest. Codex CLI default | Haiku 4.5 |
-| Terra | Balanced daily driver. **Default starting point** | Sonnet 5 |
-| **Sol** | **GPT-5.6 flagship** — code/science/security; the `D=3` pick | Opus 5 |
+| Terra | Balanced daily driver. **Default starting point** | Sonnet 5.5 |
+| **Sol** | **GPT-5.6 flagship** — code/science/security; the `D=3` pick | Opus 5.5 |
 | **Sol Ultra** | A Codex *mode* on Sol (Plus+): ~4 collaborating agents. Not a model; `effort:"ultra"` → HTTP 400. Also runs on Astra | — |
-| **Astra** | **GPT-6 flagship** (`gpt-6-astra`), 1.05M context. Rare: four gates, plus Rule E4 and the frontier rung. ~2.5× Sol's price, far fewer output tokens | Opus 5 / Fable 5.1 |
+| **Astra** | **GPT-6 flagship** (`gpt-6-astra`), 1.05M context. Rare: four gates, plus Rule E4 and the frontier rung. ~2.5× Sol's price, far fewer output tokens | Opus 5.5 / Fable 5.1 |
 | *Codex Spark 5.3* | Text-only research preview. **The router does not select it** | — |
+| *GPT-6 Sol / GPT-6 Luna* | OpenAI, 22 Sep 2026 ($2/$10 for Sol). **Recorded, not routed** — a different model from the GPT-5.6 Sol above; never call either just "Sol" in evidence | — |
 
 > **`max` on Codex is Astra/Sol only** — a capability limit, not a preference.
 > The router cannot emit `Terra · max` even if a rule asked for it.
@@ -71,7 +72,7 @@ Codex/ChatGPT (GPT-5.6 family + GPT-6 Astra):
 |---|---|
 | `low` | Short, well-scoped work that needs no intelligence |
 | `medium` | Cost-sensitive work. **Codex API default** |
-| `high` | **Claude default** (every model that supports effort) |
+| `high` | **API default** on every effort model **except Opus 5.5** (`medium`) |
 | `xhigh` | Deeper reasoning. 30 min+ agentic/coding work |
 | `max` | Deepest reasoning. Over-thinking risk. **Codex: Astra/Sol only** |
 | `ultracode` | `xhigh` + **dynamic workflow orchestration**. Claude Code setting |
@@ -81,7 +82,12 @@ Codex/ChatGPT (GPT-5.6 family + GPT-6 Astra):
    Not Haiku.
 2. **Haiku 4.5 has no effort parameter.** Recommend Haiku → write no effort.
 3. Effort is a behavioural signal, not a token budget.
-4. **Effort is not the primary quality dial.** A *stronger model at a lower rung*
+4. **Opus 5.5 defaults to `medium`, and Sonnet 5.5's rungs are recalibrated**
+   against Sonnet 5 — so the effort written in the output is always explicit,
+   never "the default". Anthropic's Sonnet 5.5 start points: `medium` for
+   well-specified agentic coding, `high` for harder or longer work, `xhigh`/`max`
+   only where evals show a gain.
+5. **Effort is not the primary quality dial.** A *stronger model at a lower rung*
    often beats a *weaker model at a higher rung* on both quality and quota — see
    Rules E1–E4.
 
@@ -315,9 +321,9 @@ risk does not raise the model, it raises human oversight.
 | Condition | Model |
 |---|---|
 | `D = 0` ∧ `W=0` ∧ `C≤1` ∧ `R≤1` | **Haiku 4.5** |
-| Above not met, `max(D,C) ≤ 2` | Sonnet 5 |
-| `max(D,C) = 3`, `D<3` (C triggered it) | **Sonnet 5** — large context, shallow reasoning |
-| `max(D,C) = 3`, `D=3` | **Opus 5** if the dominant capability is on the **flagship list**. **Otherwise Sonnet 5** |
+| Above not met, `max(D,C) ≤ 2` | Sonnet 5.5 |
+| `max(D,C) = 3`, `D<3` (C triggered it) | **Sonnet 5.5** — large context, shallow reasoning |
+| `max(D,C) = 3`, `D=3` | **Opus 5.5** if the dominant capability is on the **flagship list**. **Otherwise Sonnet 5.5** |
 
 > **The flagship list** (`D=3` only): `agentic-code` · `terminal-tool` ·
 > `deep-reasoning` · `science` · `computer-use` · `workflow-automation` — **and
@@ -325,7 +331,7 @@ risk does not raise the model, it raises human oversight.
 >
 > **Reading, reviewing, auditing or answering-from-code is analysis and stays
 > mid-tier, at any scale.** A 180-service defensive audit and a single-file JWT
-> review get the *same Claude tier* (Sonnet 5) — scale changes `W`, and
+> review get the *same Claude tier* (Sonnet 5.5) — scale changes `W`, and
 > therefore `ultracode`, not the tier.
 
 ### Codex
@@ -355,7 +361,7 @@ risk does not raise the model, it raises human oversight.
 | 0 | `low` · 1 `medium` · 2 `high` · 3 `xhigh` |
 
 <!-- rule:M1 -->
-**M1 · `max`.** Emit `max` only when `D = 3` and `R = 3` and the model is a flagship (Opus 5 / Opus 4.8 / Fable 5.1 / Mythos 5.1 / Sol / Astra) and the difficulty is one indivisible novel-design or formal decision. Otherwise `xhigh`.
+**M1 · `max`.** Emit `max` only when `D = 3` and `R = 3` and the model is a flagship (Opus 5.5 / Opus 4.8 / Fable 5.1 / Mythos 5.1 / Sol / Astra) and the difficulty is one indivisible novel-design or formal decision. Otherwise `xhigh`.
 <!-- /rule:M1 -->
 
 > For review, audit, migration or breadth-driven work at `D=3 ∧ R=3`, stop at
@@ -366,17 +372,21 @@ Haiku 4.5 selected → leave the effort field blank.
 **Escalation — a model change, never an effort change.**
 
 - **Rung 2.** The user says the work is critical, must not be under-resourced,
-  or that an earlier run fell short → **Sonnet 5 → Opus 5**, **Terra → Sol**,
+  or that an earlier run fell short → **Sonnet 5.5 → Opus 5.5**, **Terra → Sol**,
   same rung. Do *not* crank the mid tier instead: Rules E1/E2 show its top rung
   is dominated by the next tier's ordinary rung on quality *and* quota.
 
 <!-- rule:A1 -->
-**A1 · frontier rung.** Opus 5 becomes Fable 5.1 and Sol becomes Astra only when the dominant capability is on the flagship list and `A = high`, where `A = high` means hours of unattended agentic execution or the user states that an earlier flagship-tier run at `xhigh` or `max` already fell short.
+**A1 · frontier rung.** Opus 5.5 becomes Fable 5.1 and Sol becomes Astra only when the dominant capability is on the flagship list and `A = high`, where `A = high` means the user states that an earlier flagship-tier run at `xhigh` or `max` already fell short. A long or unattended session is not that statement.
 <!-- /rule:A1 -->
 
-> Difficulty alone never reaches the frontier rung. On the aggregate index Fable
-> 5.1 sits inside the equivalence band against Opus 5 at ~1.5× the cost per
-> task, so an unprompted jump is quota burned for nothing.
+> Difficulty alone never reaches the frontier rung — and neither does duration.
+> Anthropic's own same-harness table has Opus 5.5 at or above Fable 5.1 on all
+> eight benchmarks it lists (Terminal-Bench 4.0 66.4 vs 55.8, the long-horizon
+> one included) at less than half the price, so "it runs for hours" is an Opus
+> 5.5 job. The frontier rung keeps only Anthropic's published step-up criterion:
+> a stated `xhigh`/`max` shortfall. *(The 1000+-file scale gate above is
+> unchanged — no evidence exists at that scale either way; `reference.md` §17.)*
 
 ### Arm modifiers
 
@@ -418,8 +428,8 @@ Haiku 4.5 selected → leave the effort field blank.
 **N1 · Codex +1 notch.** When the task is writing or restructuring code across multiple dependent steps and the model is Terra or Sol, raise the Codex effort one rung, capped at `xhigh` on both models, and never lower a rung that another rule already set higher. Never on Astra. Claude is untouched.
 <!-- /rule:N1 -->
 
-> Basis: Terminal-Bench 4.0 (Sol 37.3 vs Opus 5 52.3 / Fable 5.1 55.8) — the
-> largest published Claude-vs-Codex gap in the evidence set. The cap is at
+> Basis: Terminal-Bench 4.0 (Sol 37.3 vs Opus 5.5 66.4 ±2.6) — the largest
+> published Claude-vs-Codex gap in the evidence set. The cap is at
 > `xhigh` because the notch compensates for a *model-tier* gap and Rule E3 says
 > the top rung is not where you buy that.
 >
@@ -435,10 +445,10 @@ Haiku 4.5 selected → leave the effort field blank.
 
 ### `opusplan` — plan/execute model split
 
-**Claude Code only.** Overrides the Opus 5 branch when all three hold:
+**Claude Code only.** Overrides the Opus 5.5 branch when all three hold:
 
 1. `max(D,C)=3 ∧ D=3` ∧ the dominant capability is **`deep-reasoning`** — the
-   same tag that put the task on Opus 5 in the first place. Not
+   same tag that put the task on Opus 5.5 in the first place. Not
    `workflow-automation`, not `agentic-code`.
 2. **Difficulty front-loaded into the plan** — once the plan is done, execution
    repeats a pattern. Opposite (do **not** use): debugging, formal proof,
@@ -469,8 +479,12 @@ Traps already in the record:
 
 - **OSWorld 2.0 partial vs strict scoring** differ by ~36 points on the *same*
   model. **AA Intelligence Index versions are not comparable.**
-- **"Agentic coding" is not one number.** Terminal-Bench 4.0 puts Sol ~15 points
-  behind Opus 5; CursorBench 2.8; DeepSWE 1. Name the benchmark, never the label.
+- **"Agentic coding" is not one number.** Terminal-Bench 4.0 puts Sol ~29 points
+  behind Opus 5.5; CursorBench 4.0 ~16; FrontierCode 1.1 ~7. Name the benchmark,
+  never the label.
+- **A vendor table can pair unmatched efforts.** Anthropic's Opus 5.5 table runs
+  Opus 5.5 at `xhigh` and Astra at `high` on Terminal-Bench 4.0: two numbers, not
+  a comparison. Efforts that differ → `UNRESOLVED`, however wide the gap.
 - **A vendor's table is not a roster.** Anthropic's TB 4.0 table has no Astra
   row. When both vendors publish the same figure to the decimal, that is one
   number re-cited, not corroboration.
@@ -513,18 +527,22 @@ capability **and** clearly better on at least one of, in priority order:
 task → quota pressure → cost/task → latency.** A dominated candidate is never
 emitted, regardless of tier or brand.
 
-Four settled results (AA Index v4.3, one harness, all rungs comparable):
+Four settled results (AA Index, one harness per version, all rungs comparable):
 
-- **E1 — `Sonnet 5 · max` is dominated.** 38 @ $5.09 vs Opus 5 `xhigh` 50 @
-  $4.88. Stronger *and* cheaper → the router **never** emits `Sonnet 5 · max`;
-  the escalation target is `Opus 5 · xhigh`.
+- **E1 — `Sonnet 5.5 · max` is dominated.** AA v4.3.2: 56 @ $7.60 (~193k output
+  tokens/task, the most AA has measured) vs Opus 5.5 `xhigh` 56 @ $3.46 — the
+  same score for 2.2× the cost. Anthropic's own footnote adds that Sonnet 5.5
+  scores *lower* at `max` than at `xhigh` on FrontierCode. → the router **never**
+  emits `Sonnet 5.5 · max`; the escalation target is `Opus 5.5 · xhigh`. *(The
+  Sonnet 5 / Opus 5 generation showed the identical shape: 38 @ $5.09 vs 50 @
+  $4.88.)* Sonnet 5.5's lower rungs are unpublished — E1 says nothing about them.
 - **E2 — `Terra · max` is dominated** (and unavailable). 42 @ $1.40 vs
   `Sol · high` 42 @ $0.81 → the Codex escalation target is **`Sol`**.
-- **E3 — `max` over `xhigh` buys almost nothing.** Fable 5.1 53 at both rungs;
-  Astra 53 at both; Opus 5 51 vs 50. → `max` needs M1 in full.
+- **E3 — `max` over `xhigh` buys little.** Fable 5.1 53 at both rungs; Astra 53
+  at both; Opus 5.5 58 vs 56 (+2 for +73% cost/task). → `max` needs M1 in full.
   > The *dominance* holds only where `max` ties `xhigh` — a gain of zero at
-  > higher cost, which needs no interval. Opus 5's one point is **unresolved**,
-  > so holding `max` back there is quota policy, not a free lunch.
+  > higher cost, which needs no interval. Opus 5.5's two points are
+  > **unresolved**, so holding `max` back there is quota policy, not a free lunch.
 
 <!-- rule:E4 -->
 **E4 · Astra swap.** When the dominant capability is agentic-code or terminal-tool and the rules would emit `Sol · max`, emit `Astra · xhigh` instead.
@@ -580,27 +598,28 @@ Claude against Sol and not against Astra.
 
 | Dominant capability | vs **Terra / Sol** | vs **Astra** | Evidence to name |
 |---|---|---|---|
-| `agentic-code` | **Claude** | **Codex** | AA TB 4.0: Fable 5.1 52 · Sol 40 · **Astra 59**; 27k output tokens/task vs 78k |
-| `terminal-tool` | **Claude** | **Codex** | same TB 4.0 row |
-| `science` † | **Claude** | **Codex** | TB-Science 0.1: 52.6 vs Sol 22.4 (SE ±3.5–4.5) |
-| `knowledge-work` † | **Claude** | *no Astra row* → as vs Sol | GDPval-AA v2: 1853 / 1824 vs Sol 1711 |
-| `workflow-automation` † | **Claude** | **Codex** | AutomationBench: 31.4 / 26.9 vs Sol ~19 |
+| `agentic-code` | **Claude** | **Codex** † | TB 4.0: Opus 5.5 66.4 (SE ±2.6) vs Sol 37.3. Against Astra it is a tie — AA TB 4.0 Astra 60 vs Opus 5.5 59.6, Coding Agent Index 62 = 62 — so tokens decide: Astra ~27k output tokens/task vs Opus 5.5 ~119k |
+| `terminal-tool` | **Claude** | **Codex** † | same TB 4.0 row (the vendor's Opus-`xhigh`-vs-Astra-`high` gap is unmatched, so it sets nothing) |
+| `science` | **Claude** | **Codex** † | TB-Science 0.1: 58.7 vs Sol 22.4; vs Astra 64.6 is inside the ±5 band → parity, tokens decide |
+| `knowledge-work` † | **Claude** | **Claude** † | GDPval-AA v2.1: Opus 5.5 1846 vs Astra 1542 / Sol 1588 (no interval published) |
+| `workflow-automation` † | **Claude** | **Codex** † | AutomationBench: Opus 5.5 40.0 vs Sol 28.8; vs Astra 41.4 is a tie |
 | `computer-use` † | **Claude** | **Codex** | OSWorld 2.0 offline partial: Astra 72.6 vs Sol 65.7 |
 | `latency-volume` | **Codex** | **Codex** | Luna 112 tok/s @ $0.18 vs Haiku 4.5 85 @ $0.21 |
 | `parallel-independent` | **Codex** | **Codex** | Ultra runs ~4 collaborating agents; `ultracode` is one chain |
-| `long-context` (shallow) | **Claude** | **Claude** | Sonnet 5's 1M window at $2/$10 vs Astra $10/$50 |
-| `deep-reasoning` † | **Claude** | **Claude** | Tooled HLE, published by OpenAI and favouring the competitor: Fable 5.1 65.0 · Opus 5 63.6 · **Astra 57.2** |
+| `long-context` (shallow) | **Claude** | **Claude** | Sonnet 5.5's 1M window at $2/$10 vs Astra $10/$50 |
+| `deep-reasoning` † | **Claude** | **Claude** | Tooled HLE, published by OpenAI and favouring the competitor: Opus 5.5 67.7 · Fable 5.1 65.0–65.6 · **Astra 57.2** |
 | `research-synthesis` †, `doc-data-understanding` † | **Claude** | **Claude** | no cross-ecosystem row at all |
 | anything else / no evidence | the **lighter** chosen model × effort | same | say `low-confidence` |
 
-> **† — the Evidence line must say `low-confidence`.** So must the
-> "anything else" row. Check this against the row you actually used before
-> emitting.
+> **† — the Evidence line must say `low-confidence`.** A † after the capability
+> name binds the whole row; a † inside a cell binds that cell only
+> (`agentic-code` vs Sol carries none, vs Astra it does). So must the "anything
+> else" row. Check this against the cell you actually used before emitting.
 
 **Tie-breaks**
 
 - **`D ≤ 1` → skip the capability rows entirely; efficiency decides.** Both arms
-  clear the bar by construction. **Haiku 4.5 vs Luna → Codex**; **Sonnet 5 vs
+  clear the bar by construction. **Haiku 4.5 vs Luna → Codex**; **Sonnet 5.5 vs
   Terra → Claude** ($2/$10 vs $2/$12). `R` doesn't change this.
 - **Two *dominant* capability rows conflict** → the one backed by a
   task-specific benchmark beats one backed only by a product mechanism. Both
@@ -623,22 +642,22 @@ Rationale in `reference.md` §10.5. **Only Rule 1's note is auto-added.**
 1. **R=3 → human-review note** ("Do not apply without human review."). Model and
    effort unchanged. One shared note, not one per arm.
 2. **Escalation is a model change, not an effort change** — Step 4.
-3. **`D=3` outside the flagship capability list → mid-tier default** (Sonnet 5 /
+3. **`D=3` outside the flagship capability list → mid-tier default** (Sonnet 5.5 /
    Terra) at `xhigh`.
-4. **User knowledge:** low/medium on Opus 5 is not "waste" — Anthropic
+4. **User knowledge:** low/medium on Opus 5.5 is not "waste" — Anthropic
    recommends them "liberally as your primary control for token cost".
 5. **No `ultracode` for work under 30 min.** For one-off depth, write
    `ultrathink` into the prompt instead.
 6. **Long-session / MCP warning:** each MCP server injects tool schemas into
    every message (GitHub MCP 27 tools ≈ 18k tokens).
 7. **Auto-accept warning:** if R≥2, suggest turning auto-accept off.
-8. **Alias safety:** `/model opus` → Opus 5 on Claude Code v2.1.219+.
+8. **Alias safety:** `/model opus` → Opus 5.5 on Claude Code v2.1.280+; `/model sonnet` → Sonnet 5.5 on v2.1.284+.
 
 ### Fast Mode (1.5x) — the speed line
 
 Codex CLI has a Fast Mode toggle (user-reported, `reference.md` §9.7): output
 ~**1.5x** faster, quota burns 1.5x, quality unchanged. Claude analogue: `/fast`
-— 2.5x faster, **2× price**, **Opus 5 / Opus 4.8 only**.
+— 2.5x faster, **2× price**, **Opus 5.5 / Opus 4.8 only**.
 
 **Append one speed line to every CLI Codex output whose Codex line names a real
 model.**
@@ -652,9 +671,9 @@ model.**
   ```
   ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
   ```
-  If the Claude line is `Opus 5` / `Opus 4.8`, append the Claude half **to the
+  If the Claude line is `Opus 5.5` / `Opus 4.8`, append the Claude half **to the
   `available` form only**: `· Claude /fast (2.5x faster, 2× price).` **Not on
-  `opusplan`** — execution drops to Sonnet 5, where `/fast` doesn't exist.
+  `opusplan`** — execution drops to Sonnet 5.5, where `/fast` doesn't exist.
 
 **No speed line** when the Codex line names no runnable model, or on a web
 surface. It **does** appear when the offensive gate resolves to Astra via stated
@@ -710,9 +729,9 @@ Clarify: which file or function is broken, what does it do now, and what should 
 
 *"Refactor the payment module across these 40 files to use the new idempotency-key API, update every caller, and make the test suite pass."*
 ```
-Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: high
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
 Codex: Terra · effort: xhigh
-Evidence: Agentic multi-file coding is Claude's strongest published margin (Terminal-Bench 4.0: Opus 5 52.3 vs Sol 37.3); Codex takes the +1 notch to xhigh.
+Evidence: Agentic multi-file coding is Claude's strongest published margin (Terminal-Bench 4.0: Opus 5.5 66.4 and Sonnet 5.5 70.6 vs Sol 37.3), and a D=2 job does not need the flagship; Codex takes the +1 notch to xhigh.
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
 ```
 > **One phase, not four.** Locate the callers, edit, run the existing suite, fix
@@ -721,7 +740,7 @@ Evidence: Agentic multi-file coding is Claude's strongest published margin (Term
 
 *"Stand up the new staging environment from scratch: Terraform it, deploy the 12 services, seed the data, run the smoke suite, and fix whatever does not come up."*
 ```
-Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: ultracode
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: ultracode
 Codex: Terra · effort: xhigh
 Evidence: Implementation, a data-seeding phase and a smoke run against a deployed environment are three distinct phases feeding each other, which is what ultracode's orchestration buys; Codex takes the +1 notch.
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
@@ -730,7 +749,7 @@ Evidence: Implementation, a data-seeding phase and a smoke run against a deploye
 
 *"Find the race condition that flakes in prod sometimes"*
 ```
-Claude: ✅ RECOMMENDED AI · Opus 5 · effort: xhigh
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
 Codex: Sol · effort: xhigh
 Evidence: Adversarial debugging inside a repo leans on the terminal/agentic profile where Claude leads against Sol; max needs one indivisible design decision at R=3, and a bug hunt is neither.
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
@@ -741,7 +760,7 @@ Evidence: Adversarial debugging inside a repo leans on the terminal/agentic prof
 
 *"For each of these 120 unrelated vendors, reconcile their sub-processor terms against our DPA and decide whether there is an actual breach — counsel reviews every flag."*
 ```
-Claude: Sonnet 5 · effort: ultracode
+Claude: Sonnet 5.5 · effort: ultracode
 Codex: ✅ RECOMMENDED AI · Sol Ultra · effort: xhigh
 Evidence: 120 vendors reconciled independently is a parallelism problem and Ultra runs ~4 collaborating agents against ultracode's single chain; no coding benchmark applies to contract triage.
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
@@ -752,9 +771,9 @@ Evidence: 120 vendors reconciled independently is a parallelism problem and Ultr
 
 *"Design and implement the new cross-service transaction boundary. It ships tonight and cannot be rolled back."*
 ```
-Claude: Opus 5 · effort: max
+Claude: Opus 5.5 · effort: max
 Codex: ✅ RECOMMENDED AI · Astra · effort: xhigh
-Evidence: One indivisible boundary decision at R=3 is the case max exists for, but on agentic code Astra xhigh outscores Sol max (AA Index v4.3: 53 @ $2.31 vs 47 @ $1.99) at roughly a third of the output tokens.
+Evidence: One indivisible boundary decision at R=3 is the case max exists for, but on agentic code Astra xhigh outscores Sol max (AA Index v4.3: 53 @ $2.31 vs 47 @ $1.99) at roughly a third of the output tokens; against Opus 5.5 the coding rows are a tie, so the badge is low-confidence.
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
 Do not apply without human review.
 ```
@@ -763,9 +782,9 @@ Do not apply without human review.
 
 *"Bump `MAX_RETRIES` from 3 to 5 in the prod config"*
 ```
-Claude: ✅ RECOMMENDED AI · Sonnet 5 · effort: low
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: low
 Codex: Terra · effort: low
-Evidence: D=0 work — both are far past the bar, and Sonnet 5 is the cheaper of the two daily drivers on output tokens.
+Evidence: D=0 work — both are far past the bar, and Sonnet 5.5 is the cheaper of the two daily drivers on output tokens.
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
 Do not apply without human review.
 ```
@@ -775,7 +794,7 @@ Do not apply without human review.
 ```
 Claude: Fable 5.1 · effort: max
 Codex: ✅ RECOMMENDED AI · Astra · effort: max
-Evidence: The boundary design is one indivisible decision at D=3∧R=3, which is what max buys; the 6000-file scale gates both arms to frontier and the wide execution is not the difficulty.
+Evidence: The boundary design is one indivisible decision at D=3∧R=3, which is what max buys; the 6000-file scale gates both arms to frontier, and Astra ties Opus 5.5 on the coding rows, so the badge is low-confidence.
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
 Do not apply without human review.
 ```
@@ -805,7 +824,7 @@ Do not apply without human review.
 `reference.md`: **§8** example library · **§10** edge-case rulings · **§11**
 capability→benchmark map · **§12** comparability record and conflicts · **§13**
 efficiency/quota data · **§14** recommended-AI rationale and the ablation ·
-**§15** the three-layer evidence architecture · **§16** the reachability audit.
+**§15** the three-layer evidence architecture · **§16** the reachability audit · **§17** the Claude 5.5 generation (iteration-19).
 
 **Three layers; only this file is read at runtime.** `benchmark_frontiers.json`
 is generated from `benchmarks.json` for auditing a rule, not for answering one.

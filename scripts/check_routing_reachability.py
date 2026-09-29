@@ -7,7 +7,7 @@
 
 The routing eval (`evals/routing/`) measures CORRECTNESS: given a prompt, is the
 golden answer produced? This script measures COVERAGE: given the whole rule set,
-is there any prompt at all that reaches `Sonnet 5 · ultracode`? Those are
+is there any prompt at all that reaches `Sonnet 5.5 · ultracode`? Those are
 different questions and a suite that passes the first can be silently dead on the
 second.
 
@@ -39,7 +39,7 @@ OUT = ROOT / "evals" / "reachability" / "reachability-matrix.json"
 RUNGS = ["low", "medium", "high", "xhigh", "max"]
 FLAGSHIP_CAPS = {"agentic-code", "terminal-tool", "deep-reasoning", "science",
                  "computer-use", "workflow-automation"}
-CLAUDE_FLAGSHIPS = {"Opus 5", "Opus 4.8", "Fable 5.1", "Mythos 5.1"}
+CLAUDE_FLAGSHIPS = {"Opus 5.5", "Opus 4.8", "Fable 5.1", "Mythos 5.1"}
 CODEX_FLAGSHIPS = {"Sol", "Astra"}
 
 # Dominant capability -> which arm the badge defaults to, conditioned on which
@@ -123,12 +123,12 @@ def ultra_fires(t: dict, variant) -> bool:
 
 
 def rung3_escalation(t: dict) -> bool:
-    """Soft frontier escalation: Opus 5 -> Fable 5.1, Sol -> Astra.
+    """Soft frontier escalation: Opus 5.5 -> Fable 5.1, Sol -> Astra.
 
     Anthropic's own wording is the trigger: 'if your evals at xhigh or max still
     fall short on demanding reasoning or long-horizon agentic work'. A stated
     shortfall is required -- a long session on its own is not enough, because the
-    aggregate evidence puts Fable 5.1 inside the equivalence band against Opus 5
+    aggregate evidence puts Fable 5.1 inside the equivalence band against Opus 5.5
     at higher cost per task.
     """
     return ("prior_run_fell_short" in t["flags"]
@@ -163,17 +163,17 @@ def route_claude(t: dict, variant) -> dict:
         if D == 0 and W == 0 and C <= 1 and R <= 1 and haiku_ok:
             model = "Haiku 4.5"
         elif max(D, C) <= 2 or D < 3:
-            model = "Sonnet 5"
+            model = "Sonnet 5.5"
         else:
-            model = "Opus 5" if (t["cap"] in FLAGSHIP_CAPS and t["builds"]) else "Sonnet 5"
+            model = "Opus 5.5" if (t["cap"] in FLAGSHIP_CAPS and t["builds"]) else "Sonnet 5.5"
 
         # Step 7 Rule 2 -- escalation is a model change, never an effort change.
         if "escalation" in t["flags"] or "prior_run_fell_short" in t["flags"]:
-            if model == "Sonnet 5":
-                model = "Opus 5"
+            if model == "Sonnet 5.5":
+                model = "Opus 5.5"
             elif model == "Haiku 4.5":
-                model = "Sonnet 5"
-        if "rung3" in v and model == "Opus 5" and rung3_escalation(t):
+                model = "Sonnet 5.5"
+        if "rung3" in v and model == "Opus 5.5" and rung3_escalation(t):
             model = "Fable 5.1"
 
     if model == "Haiku 4.5":
@@ -189,8 +189,8 @@ def route_claude(t: dict, variant) -> dict:
     if floor:
         effort = rung_max(effort, floor)
 
-    # opusplan overrides the Opus 5 branch.
-    if (model == "Opus 5" and gate is None and t["D"] == 3 and max(t["D"], t["C"]) == 3
+    # opusplan overrides the Opus 5.5 branch.
+    if (model == "Opus 5.5" and gate is None and t["D"] == 3 and max(t["D"], t["C"]) == 3
             and t.get("structured_design") and t.get("front_loaded") and t["W"] >= 2):
         plan = "max" if t["R"] == 3 else "xhigh"
         return {"model": "opusplan", "effort": "plan:%s/execute:medium" % plan,
@@ -341,12 +341,12 @@ def route_all(corpus: list, variant) -> list:
 
 # Every zero must be claimed. Key is "<ecosystem>|<model>|<effort_or_mode>".
 INTENTIONAL = {
-    "claude|Sonnet 5|max": ("INTENTIONALLY_UNREACHABLE",
-        "Rule E1: Sonnet 5 max scores 38 at $5.09 while Opus 5 xhigh scores 50 at $4.88. "
-        "Stronger and cheaper, so there is no task on which the premium is rational. "
-        "The escalation target is Opus 5 · xhigh."),
-    "claude|Opus 5|low": ("INTENTIONALLY_RARE",
-        "Opus 5 is selected at D=3, and D=3 maps to xhigh. The only path down is an explicit "
+    "claude|Sonnet 5.5|max": ("INTENTIONALLY_UNREACHABLE",
+        "Rule E1: AA v4.3.2 puts Sonnet 5.5 max at 56 for $7.60 (~193k output tokens/task) and Opus 5.5 xhigh at 56 for $3.46. "
+        "Same score at 2.2x the cost, so there is no task on which the premium is rational. "
+        "The escalation target is Opus 5.5 · xhigh."),
+    "claude|Opus 5.5|low": ("INTENTIONALLY_RARE",
+        "Opus 5.5 is selected at D=3, and D=3 maps to xhigh. The only path down is an explicit "
         "user escalation on a D=0 task, which is coherent but vanishingly rare."),
     "claude|Opus 4.8|low": ("INTENTIONALLY_UNREACHABLE",
         "Opus 4.8 is reachable only through the offensive-security gate, which carries an xhigh floor."),
@@ -357,8 +357,8 @@ INTENTIONAL = {
         "D=3 AND R=3 AND an indivisible novel-design decision would emit it -- but deliberately "
         "unrepresented, for two reasons. (1) Evidence: benchmarks.json carries ZERO records for "
         "Opus 4.8 at any rung, so there is no published effort curve to justify spending the top "
-        "rung on it; Rule E3 already holds `max` back on Opus 5, where a curve does exist and the "
-        "gain is one index point. (2) Scope: reaching this cell needs an offensive-security prompt "
+        "rung on it; Rule E3 already holds `max` back on Opus 5.5, where a curve does exist and the "
+        "gain is two index points at +73% cost (unresolved -- no interval). (2) Scope: reaching this cell needs an offensive-security prompt "
         "whose output is irreversible against a live target, and this audit does not author "
         "operational examples for gated task categories. The gate's own routing role is carried by "
         "Opus 4.8 xhigh and Opus 4.8 ultracode, both reachable. Abstract placeholder only."),
@@ -469,7 +469,7 @@ def build_matrix(policy: dict, corpus: list, results_after: list, results_before
             # Claude arm writes into the effort field). 'ultra' is not an effort
             # field value -- it is a model-label change, represented by the
             # separate 'Sol Ultra' / 'Astra Ultra' rows below. 'opusplan' is not
-            # an Opus 5 effort -- it replaces the whole model line and has its own
+            # an Opus 5.5 effort -- it replaces the whole model line and has its own
             # row appended after this loop.
             slots = list(spec["efforts"])
             if "ultracode" in spec["modes"]:

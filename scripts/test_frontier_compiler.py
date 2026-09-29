@@ -352,6 +352,58 @@ check("  ...it is recorded as unresolved instead",
       [(d["rung"], d["basis"]) for d in curve["unresolved_rungs"]],
       [("max", "positive_gain_no_published_dispersion")])
 
+# ------------- a group may publish a DIFFERENT dispersion per benchmark (list form)
+per_bench = [
+    {"kind": "published_se", "value": 2.6, "applies_to": ["B1"]},
+    {"kind": "published_se", "value": 5.0, "applies_to": ["B2"]},
+]
+m = base_meta()
+m["comparability_groups"] = {"g": group(band=per_bench)}
+m["records"] = [
+    row("a1", "Opus 5", 66.0, bench="B1"), row("b1", "Astra", 58.0, bench="B1"),
+    row("a2", "Opus 5", 58.0, bench="B2"), row("b2", "Astra", 64.0, bench="B2"),
+    row("a3", "Opus 5", 70.0, bench="B3"), row("b3", "Astra", 50.0, bench="B3"),
+]
+cells = {c["benchmark"]: c for c in direction(m)["comparisons"]}
+check("list-form band: an 8-point gap over B1's 2 x 2.6 band sets a direction",
+      cells["B1"]["direction"], "claude")
+check("  ...B2's wider 2 x 5.0 band absorbs a 6-point gap -> equivalent",
+      cells["B2"]["direction"], "equivalent")
+check("  ...a benchmark no entry covers gets NO band, however large the gap",
+      cells["B3"]["direction"], "UNRESOLVED")
+check("  ...and the list form still passes build-time validation",
+      bool(C.build(copy.deepcopy(m), "deadbeef")), True)
+
+# ---------------------- a comparison across UNMATCHED efforts is not a comparison
+m = base_meta()
+m["comparability_groups"] = {"g": group(band=ci(2.0))}
+m["records"] = [row("a", "Opus 5", 66.0, effort="xhigh"), row("b", "Astra", 58.0, effort="high")]
+c0 = direction(m)["comparisons"][0]
+check("xhigh vs high on the same benchmark is UNRESOLVED even far outside the band",
+      c0["direction"], "UNRESOLVED")
+check("  ...and the reason names the mismatch", "efforts not matched" in c0["reason"], True)
+m["records"] = [row("a", "Opus 5", 66.0, effort="xhigh"), row("b", "Astra", 58.0, effort="xhigh")]
+check("the same gap at MATCHED efforts still sets a direction",
+      direction(m)["comparisons"][0]["direction"], "claude")
+m["records"] = [row("a", "Opus 5", 66.0, effort="xhigh"), row("b", "Astra", 58.0)]
+check("an effort the source never stated is not treated as a mismatch",
+      direction(m)["comparisons"][0]["direction"], "claude")
+
+# --------------------- an effort curve is one model on ONE benchmark, never a pool
+m = base_meta()
+m["comparability_groups"] = {"g": group()}
+m["records"] = [
+    row("a", "Opus 5", 50.0, bench="X", effort="high", cost_per_task_usd=1.0),
+    row("b", "Opus 5", 40.0, bench="X", effort="max", cost_per_task_usd=3.0),
+    row("c", "Opus 5", 90.0, bench="Y", effort="max", cost_per_task_usd=2.0),
+]
+curves = C.compile_effort_curves(m["records"], m)
+check("two benchmarks in one group give ONE multi-rung curve (X) and never pool Y into it",
+      [(c["benchmark"], [p["effort"] for p in c["points"]]) for c in curves],
+      [("X", ["high", "max"])])
+check("  ...X's higher rung is dominated (lower score, higher cost), untouched by Y's 90",
+      [d["rung"] for d in curves[0]["dominated_rungs"]], ["max"])
+
 # =====================================================================
 # DETERMINISM
 # =====================================================================

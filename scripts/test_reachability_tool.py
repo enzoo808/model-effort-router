@@ -49,7 +49,7 @@ def prompt(pid, **over):
 def policy(claude=None, codex=None):
     return {"support_matrix": {
         "claude": claude if claude is not None else {
-            "Sonnet 5": {"efforts": ["low", "medium"], "modes": []}},
+            "Sonnet 5.5": {"efforts": ["low", "medium"], "modes": []}},
         "codex": codex if codex is not None else {
             "Terra": {"efforts": ["low", "medium"], "modes": []}},
     }}
@@ -82,21 +82,21 @@ ALL_ACCEPT = {"flips": {}}
 multi = prompt("t-multi", D=2, W=2, C=2, O="high", dur_gt30=True, builds=True,
                agentic_write=True)
 check("after: orchestration at W=2 reaches ultracode",
-      R.cell_of(R.route_claude(multi, "after")), "Sonnet 5 · ultracode")
+      R.cell_of(R.route_claude(multi, "after")), "Sonnet 5.5 · ultracode")
 check("before: the same prompt did not, because W was not 3",
-      R.cell_of(R.route_claude(multi, "before")), "Sonnet 5 · high")
+      R.cell_of(R.route_claude(multi, "before")), "Sonnet 5.5 · high")
 
 # 150 files of one mechanical rename.
 mech = prompt("t-mech", D=1, W=3, C=1, dur_gt30=True, builds=True)
 check("before: mechanical width fired ultracode -- the old false positive",
-      R.cell_of(R.route_claude(mech, "before")), "Sonnet 5 · ultracode")
+      R.cell_of(R.route_claude(mech, "before")), "Sonnet 5.5 · ultracode")
 check("after: width without depth does not",
-      R.cell_of(R.route_claude(mech, "after")), "Sonnet 5 · medium")
+      R.cell_of(R.route_claude(mech, "after")), "Sonnet 5.5 · medium")
 
 # 180 targets that each need judgement.
 wide = prompt("t-wide", D=3, W=3, C=3, dur_gt30=True)
 check("after: width WITH depth still reaches ultracode",
-      R.cell_of(R.route_claude(wide, "after")), "Sonnet 5 · ultracode")
+      R.cell_of(R.route_claude(wide, "after")), "Sonnet 5.5 · ultracode")
 
 # The +1 notch must never pull a rung down.
 indivisible = prompt("t-indiv", D=3, R=3, W=2, C=2, indiv=True, builds=True,
@@ -140,7 +140,7 @@ REAL_INTENTIONAL = dict(R.INTENTIONAL)
 R.INTENTIONAL.clear()
 
 # Four cells at 25% each: big enough that nothing trips the 28% over-selection bar.
-FULL = {"Sonnet 5": {"efforts": ["low", "medium", "high", "xhigh", "max"], "modes": []}}
+FULL = {"Sonnet 5.5": {"efforts": ["low", "medium", "high", "xhigh", "max"], "modes": []}}
 TERRA = {"Terra": {"efforts": ["low", "medium", "high", "xhigh"], "modes": []}}
 BALANCED = ([prompt("t-lo%d" % i, D=0, R=2) for i in range(4)]
             + [prompt("t-md%d" % i, D=1, R=2) for i in range(4)]
@@ -148,37 +148,37 @@ BALANCED = ([prompt("t-lo%d" % i, D=0, R=2) for i in range(4)]
             + [prompt("t-xh%d" % i, D=3, R=2, C=2) for i in range(4)])
 m = build(policy(claude=FULL, codex=TERRA), BALANCED)
 check("a cell a prompt lands on is HEALTHY",
-      row(m, "claude", "Sonnet 5", "low")["status"], "HEALTHY")
+      row(m, "claude", "Sonnet 5.5", "low")["status"], "HEALTHY")
 check("  ...and records which prompts reached it",
-      row(m, "claude", "Sonnet 5", "low")["representative_prompt_ids"],
+      row(m, "claude", "Sonnet 5.5", "low")["representative_prompt_ids"],
       ["t-lo0", "t-lo1", "t-lo2", "t-lo3"])
 check("  ...and every other populated cell is healthy too",
-      sorted({row(m, "claude", "Sonnet 5", c)["status"]
+      sorted({row(m, "claude", "Sonnet 5.5", c)["status"]
               for c in ("medium", "high", "xhigh")}), ["HEALTHY"])
 
 POL3 = policy(claude=FULL, codex=TERRA)
 check("an unreached, unclaimed, supported cell is UNINTENTIONALLY_UNREACHABLE",
-      row(m, "claude", "Sonnet 5", "max")["status"], "UNINTENTIONALLY_UNREACHABLE")
+      row(m, "claude", "Sonnet 5.5", "max")["status"], "UNINTENTIONALLY_UNREACHABLE")
 check("  ...and the linter turns that into an ERROR",
       "unreachable" in kinds(R.lint(POL3, m, BALANCED, ALL_ACCEPT)), True)
 
 # An INTENTIONAL claim silences it -- and only it.
 saved = dict(R.INTENTIONAL)
 try:
-    R.INTENTIONAL["claude|Sonnet 5|max"] = ("INTENTIONALLY_UNREACHABLE", "fixture reason")
+    R.INTENTIONAL["claude|Sonnet 5.5|max"] = ("INTENTIONALLY_UNREACHABLE", "fixture reason")
     m2 = build(POL3, BALANCED)
     check("a claimed zero is INTENTIONALLY_UNREACHABLE, not a bug",
-          row(m2, "claude", "Sonnet 5", "max")["status"], "INTENTIONALLY_UNREACHABLE")
+          row(m2, "claude", "Sonnet 5.5", "max")["status"], "INTENTIONALLY_UNREACHABLE")
     check("  ...carries its rationale into the generated matrix",
-          row(m2, "claude", "Sonnet 5", "max")["rationale"], "fixture reason")
+          row(m2, "claude", "Sonnet 5.5", "max")["rationale"], "fixture reason")
     check("  ...and the linter stays quiet about it",
           "unreachable" in kinds(R.lint(POL3, m2, BALANCED, ALL_ACCEPT)), False)
 
     # UNSUPPORTED means the product cannot do it. Emitting it anyway is an error.
-    R.INTENTIONAL["claude|Sonnet 5|low"] = ("UNSUPPORTED", "fixture capability limit")
+    R.INTENTIONAL["claude|Sonnet 5.5|low"] = ("UNSUPPORTED", "fixture capability limit")
     m3 = build(POL3, BALANCED)
     check("a cell declared UNSUPPORTED is marked unsupported in the matrix",
-          row(m3, "claude", "Sonnet 5", "low")["supported"], False)
+          row(m3, "claude", "Sonnet 5.5", "low")["supported"], False)
     check("  ...and emitting it anyway is an ERROR",
           "unsupported-but-emitted" in kinds(R.lint(POL3, m3, BALANCED, ALL_ACCEPT)), True)
 finally:
@@ -187,7 +187,7 @@ finally:
 
 # A cell the rules emit that the support matrix does not list at all has no row,
 # which makes every other check blind to it.
-NARROW = policy(claude={"Sonnet 5": {"efforts": ["low"], "modes": []}}, codex=TERRA)
+NARROW = policy(claude={"Sonnet 5.5": {"efforts": ["low"], "modes": []}}, codex=TERRA)
 check("a cell missing from the support matrix entirely is an ERROR",
       "emitted-cell-not-in-support-matrix" in kinds(
           R.lint(NARROW, build(NARROW, BALANCED), BALANCED, ALL_ACCEPT)), True)
@@ -198,7 +198,7 @@ check("  ...and a complete support matrix is silent",
 # A model with no effort parameter must never be handed one, on ANY branch --
 # the scored branch used to fall through to the D table and emit "Haiku 4.5- low".
 HAIKU_POL = policy(claude={"Haiku 4.5": {"efforts": [], "modes": []},
-                           "Sonnet 5": {"efforts": ["low"], "modes": []}},
+                           "Sonnet 5.5": {"efforts": ["low"], "modes": []}},
                    codex={"Luna": {"efforts": ["low"], "modes": []},
                           "Terra": {"efforts": ["low"], "modes": []}})
 scored_haiku = prompt("t-haiku", D=0, W=0, C=0, R=0)
@@ -211,26 +211,26 @@ check("  ...so no effort cell is emitted for it",
 R.INTENTIONAL.update(REAL_INTENTIONAL)
 
 # Over-selection: one cell swallowing the corpus.
-pol = policy(claude={"Sonnet 5": {"efforts": ["low"], "modes": []}},
+pol = policy(claude={"Sonnet 5.5": {"efforts": ["low"], "modes": []}},
              codex={"Terra": {"efforts": ["low"], "modes": []}})
 corpus = [prompt("t-%d" % i, D=0, R=2) for i in range(10)]
 m = build(pol, corpus)
 check("a cell covering most of the corpus is OVER_SELECTED",
-      row(m, "claude", "Sonnet 5", "low")["status"], "OVER_SELECTED")
+      row(m, "claude", "Sonnet 5.5", "low")["status"], "OVER_SELECTED")
 check("  ...reported as a WARN, not an ERROR",
       [lvl for lvl, k, _ in R.lint(pol, m, corpus, ALL_ACCEPT) if k == "over-selected"],
       ["WARN", "WARN"])
 
 # Route lost between the two rule sets.
-pol = policy(claude={"Sonnet 5": {"efforts": ["low", "medium"], "modes": ["ultracode"]}})
+pol = policy(claude={"Sonnet 5.5": {"efforts": ["low", "medium"], "modes": ["ultracode"]}})
 corpus = [prompt("t-mech", D=1, W=3, C=1, dur_gt30=True, builds=True)]
 m = build(pol, corpus)
 check("a cell reachable before and not after is flagged lost",
-      row(m, "claude", "Sonnet 5", "ultracode")["lost_by_this_pass"], True)
+      row(m, "claude", "Sonnet 5.5", "ultracode")["lost_by_this_pass"], True)
 check("  ...and the linter warns about it",
       "route-lost" in kinds(R.lint(pol, m, corpus, ALL_ACCEPT)), True)
 check("a cell reachable after and not before is flagged recovered",
-      row(m, "claude", "Sonnet 5", "medium")["recovered_by_this_pass"], True)
+      row(m, "claude", "Sonnet 5.5", "medium")["recovered_by_this_pass"], True)
 
 
 # =====================================================================
@@ -238,7 +238,7 @@ check("a cell reachable after and not before is flagged recovered",
 # =====================================================================
 
 pol = policy(claude={"Haiku 4.5": {"efforts": [], "modes": []},
-                     "Sonnet 5": {"efforts": ["low"], "modes": []}})
+                     "Sonnet 5.5": {"efforts": ["low"], "modes": []}})
 corpus = [prompt("t-fast", gates=["latency_volume"], cap="latency-volume"),
           prompt("t-1", D=0, R=2)]
 m = build(pol, corpus)
@@ -248,7 +248,7 @@ check("a model with no effort parameter gets one row, marked platform_forced",
 check("  ...whose status is PLATFORM_FORCED, never HEALTHY -- the platform filled "
       "that cell in, not the policy", haiku["status"], "PLATFORM_FORCED")
 check("  ...and a policy-selected cell is not marked forced",
-      row(m, "claude", "Sonnet 5", "low")["platform_forced"], False)
+      row(m, "claude", "Sonnet 5.5", "low")["platform_forced"], False)
 check("  ...with no lint complaint in the healthy case",
       "platform-forced-model-given-an-effort" in kinds(R.lint(pol, m, corpus, ALL_ACCEPT)),
       False)
@@ -278,16 +278,16 @@ check("Mythos reached WITHOUT stated access is an ERROR",
       "conditional-access-leak" in kinds(R.lint(pol, leaky, no_flag, ALL_ACCEPT)), True)
 
 # A model in the support matrix that produces no row at all.
-pol = policy(claude={"Sonnet 5": {"efforts": ["low"], "modes": []}})
+pol = policy(claude={"Sonnet 5.5": {"efforts": ["low"], "modes": []}})
 corpus = [prompt("t-1", D=0, R=2)]
 m = build(pol, corpus)
-m["matrix"] = [r_ for r_ in m["matrix"] if r_["model"] != "Sonnet 5"]
+m["matrix"] = [r_ for r_ in m["matrix"] if r_["model"] != "Sonnet 5.5"]
 check("a roster model with no matrix row at all is an ERROR",
       "model-missing-from-matrix" in kinds(R.lint(pol, m, corpus, ALL_ACCEPT)), True)
 
 # A mode the product claims that nothing reaches.
 pol = policy(codex={"Sol": {"efforts": ["low", "xhigh"], "modes": ["ultra"]}},
-             claude={"Sonnet 5": {"efforts": ["low"], "modes": []}})
+             claude={"Sonnet 5.5": {"efforts": ["low"], "modes": []}})
 corpus = [prompt("t-1", D=0, R=2)]
 m = build(pol, corpus)
 check("a supported mode no prompt reaches is a WARN",
@@ -317,7 +317,7 @@ check("W=3 at D<=1 labelled O=high is a WARN",
 # FLIP REVIEW
 # =====================================================================
 
-pol = policy(claude={"Sonnet 5": {"efforts": ["low", "medium", "high"], "modes": ["ultracode"]}})
+pol = policy(claude={"Sonnet 5.5": {"efforts": ["low", "medium", "high"], "modes": ["ultracode"]}})
 corpus = [prompt("t-multi", D=2, W=2, C=2, O="high", dur_gt30=True, builds=True,
                  agentic_write=True)]
 m = build(pol, corpus)
@@ -350,22 +350,22 @@ check("a sign-off for a prompt that no longer flips is a WARN",
 # HISTOGRAMS AND STALENESS
 # =====================================================================
 
-pol = policy(claude={"Sonnet 5": {"efforts": ["low", "medium"], "modes": []}})
+pol = policy(claude={"Sonnet 5.5": {"efforts": ["low", "medium"], "modes": []}})
 corpus = [prompt("t-1", D=0, R=2), prompt("t-2", D=0, R=2), prompt("t-3", D=1, R=2)]
 m = build(pol, corpus)
 h = m["histograms"]
 check("the cell histogram counts every prompt exactly once",
       sum(h["claude_cell_after"].values()), len(corpus))
 check("  ...and buckets them by cell",
-      h["claude_cell_after"], {"Sonnet 5 · low": 2, "Sonnet 5 · medium": 1})
+      h["claude_cell_after"], {"Sonnet 5.5 · low": 2, "Sonnet 5.5 · medium": 1})
 check("  ...with a before column for the same corpus",
-      h["claude_cell_before"], {"Sonnet 5 · low": 2, "Sonnet 5 · medium": 1})
+      h["claude_cell_before"], {"Sonnet 5.5 · low": 2, "Sonnet 5.5 · medium": 1})
 check("declined and blocked prompts contribute to no cell",
       build(pol, [prompt("t-x", R=2, step0_block=True)])["histograms"]["claude_cell_after"],
       {"(no model)": 1})
 check("  ...and produce no matrix hit",
       row(build(pol, [prompt("t-x", R=2, step0_block=True)]),
-          "claude", "Sonnet 5", "low")["observed_after"], 0)
+          "claude", "Sonnet 5.5", "low")["observed_after"], 0)
 check("the badge histogram is produced", sorted(h["badge_after"]), ["claude"])
 
 # Staleness: --check must fail when the committed matrix does not match.
@@ -399,9 +399,9 @@ with tempfile.TemporaryDirectory() as tmp:
 # The R/D/W/C/O/P labels are hand-read from SKILL.md Steps 1-3 for each prompt.
 
 GOLDENS = [
-    ("5b", "Sonnet 5 · ultracode", "Sol Ultra · xhigh",
+    ("5b", "Sonnet 5.5 · ultracode", "Sol Ultra · xhigh",
      dict(cap="terminal-tool", R=1, D=3, W=3, C=3, P="high", P_kind="targets", dur_gt30=True)),
-    ("i1", "Sonnet 5 · ultracode", "Sol Ultra · xhigh",
+    ("i1", "Sonnet 5.5 · ultracode", "Sol Ultra · xhigh",
      dict(cap="parallel-independent", R=1, D=3, W=3, C=2, P="high", P_kind="targets",
           dur_gt30=True)),
     ("x1", "Fable 5.1 · ultracode", "Astra · high",
@@ -420,45 +420,45 @@ GOLDENS = [
     ("f1", "Fable 5.1 · max", "Astra · max",
      dict(cap="agentic-code", R=3, D=3, W=3, C=3, O="high", dur_gt30=True, indiv=True,
           builds=True, agentic_write=True, gates=["files_1000plus"])),
-    ("h1", "Opus 5 · max", "Sol · max",
+    ("h1", "Opus 5.5 · max", "Sol · max",
      dict(cap="deep-reasoning", R=3, D=3, W=1, C=2, dur_gt30=True, indiv=True, builds=True)),
-    ("t1", "Opus 5 · xhigh", "Sol · xhigh",
+    ("t1", "Opus 5.5 · xhigh", "Sol · xhigh",
      dict(cap="terminal-tool", R=2, D=3, W=1, C=2, dur_gt30=True, builds=True)),
-    ("b1", "Sonnet 5 · high", "Terra · xhigh",
+    ("b1", "Sonnet 5.5 · high", "Terra · xhigh",
      dict(cap="agentic-code", R=1, D=2, W=2, C=2, dur_gt30=True, builds=True,
           agentic_write=True)),
-    ("d2", "Sonnet 5 · high", "Terra · xhigh",
+    ("d2", "Sonnet 5.5 · high", "Terra · xhigh",
      dict(cap="agentic-code", R=1, D=2, W=2, C=2, dur_gt30=True, builds=True,
           agentic_write=True)),
-    ("x2", "Sonnet 5 · high", "Terra · high",
+    ("x2", "Sonnet 5.5 · high", "Terra · high",
      dict(cap="workflow-automation", R=1, D=2, W=1, C=2, dur_gt30=True, builds=True)),
-    ("m1", "Sonnet 5 · xhigh", "Terra · xhigh",
+    ("m1", "Sonnet 5.5 · xhigh", "Terra · xhigh",
      dict(cap="deep-reasoning", R=3, D=3, W=1, C=1, dur_gt30=True)),
-    ("q1", "Opus 5 · xhigh", "Sol · xhigh",
+    ("q1", "Opus 5.5 · xhigh", "Sol · xhigh",
      dict(cap="deep-reasoning", R=3, D=3, W=1, C=1, dur_gt30=True, flags=["escalation"])),
-    ("n1", "Sonnet 5 · medium", "Terra · medium",
+    ("n1", "Sonnet 5.5 · medium", "Terra · medium",
      dict(cap="agentic-code", R=1, D=1, W=2, C=0, dur_gt30=True, builds=True)),
-    ("k1", "Sonnet 5 · medium", "Terra · medium",
+    ("k1", "Sonnet 5.5 · medium", "Terra · medium",
      dict(cap="agentic-code", R=1, D=1, W=1, C=1, builds=True)),
-    ("g1", "Sonnet 5 · high", "Astra · high",
+    ("g1", "Sonnet 5.5 · high", "Astra · high",
      dict(cap="computer-use", R=2, D=2, W=2, C=1, dur_gt30=True, builds=True,
           gates=["computer_use"])),
-    ("a2", "Sonnet 5 · medium", "Astra · medium",
+    ("a2", "Sonnet 5.5 · medium", "Astra · medium",
      dict(cap="long-context", R=0, D=1, W=3, C=3, gates=["corpus_1m", "context_over_200k"])),
     ("d4", "Fable 5.1 · high", "(no model)",
      dict(cap="science", R=1, D=2, W=1, C=2, gates=["biology"])),
-    ("f2", "Sonnet 5 · xhigh", "Terra · xhigh",
+    ("f2", "Sonnet 5.5 · xhigh", "Terra · xhigh",
      dict(cap="deep-reasoning", R=1, D=3, W=0, C=1)),
-    ("p1", "Opus 5 · xhigh", "Sol · xhigh",
+    ("p1", "Opus 5.5 · xhigh", "Sol · xhigh",
      dict(cap="deep-reasoning", R=1, D=3, W=0, C=0, dur_gt30=True, builds=True)),
     # iteration-18 stabilization boundary evals
-    ("o1", "Opus 5 · ultracode", "Sol · xhigh",
+    ("o1", "Opus 5.5 · ultracode", "Sol · xhigh",
      dict(cap="agentic-code", R=3, D=3, W=3, C=2, dur_gt30=True, builds=True,
           agentic_write=True, indiv=False)),
-    ("sh1", "Opus 5 · high", "Sol · high",
+    ("sh1", "Opus 5.5 · high", "Sol · high",
      dict(cap="terminal-tool", R=1, D=2, W=1, C=1, builds=False, agentic_write=False,
           flags=["escalation"])),
-    ("e4p", "Opus 5 · max", "Astra · xhigh",
+    ("e4p", "Opus 5.5 · max", "Astra · xhigh",
      dict(cap="agentic-code", R=3, D=3, W=2, C=2, indiv=True, dur_gt30=True, builds=True,
           agentic_write=True)),
     ("fr1", "Fable 5.1 · xhigh", "Astra · xhigh",

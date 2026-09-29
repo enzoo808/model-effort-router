@@ -29,7 +29,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SKILL = ROOT / "skill" / "SKILL.md"
 EVALS = ROOT / "evals" / "routing" / "evals.json"
 
-MODELS = ["Haiku 4.5", "Sonnet 5", "Opus 4.8", "Opus 5", "Fable 5.1", "Mythos 5.1",
+MODELS = ["Haiku 4.5", "Sonnet 5.5", "Opus 4.8", "Opus 5.5", "Fable 5.1", "Mythos 5.1",
           "Sol Ultra", "Sol", "Terra", "Luna", "Astra", "opusplan"]
 BADGE = "recommended ai"
 
