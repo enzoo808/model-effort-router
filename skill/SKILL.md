@@ -58,6 +58,11 @@ Codex/ChatGPT (GPT-6 generation — three tiers, **Terra is gone**):
 | **Astra** | **GPT-6 flagship**, $10/$50. **Rare:** the Daybreak gate, the 1000+ file gate and Rule A1. ~1 index point and 3 TB 4.0 points above Sol at 4.5× the cost/task | Opus 5.5 / Fable 5.1 |
 | *Legacy, never selected* | Terra, GPT-5.6 Sol / Luna, GPT-6 Sol, Codex Spark 5.3. Never call a legacy model just "Sol" in evidence | — |
 
+> **Codex model-picker names:** `Luna` = **GPT-6 Luna**, `Sol` = **GPT-6.1 Sol**,
+> `Astra` = **GPT-6 Astra**. The picker still lists GPT-6 Sol, GPT-5.6 Sol / Terra /
+> Luna and GPT-5.5 — they stay selectable but are **never recommended** (dominated
+> or superseded; E2). If the user's picker is set to one of them, say to switch.
+>
 > **`max` only through Rule M1** (a flagship: Sol or Astra on Codex).
 > **`ultracode` is Claude-only; Ultra is Codex-only**; Luna has neither.
 
