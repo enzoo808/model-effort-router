@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+Codex: Sol · effort: high
+Evidence: Reproducing a paper's fit from released data is science work, and against GPT-6.1 Sol two measurements agree — AA SciCode 67 / 61 vs 54 and OpenAI's own Terminal-Bench-Science, Opus 5.5 63.3 vs Sol 57.0 (against-interest); low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

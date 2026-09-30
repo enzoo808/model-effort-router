@@ -1,0 +1,5 @@
+Claude: Fable 5.1 · effort: max
+Codex: ✅ RECOMMENDED AI · Astra · effort: max
+Evidence: The boundary design is one indivisible decision at D=3∧R=3, which is what max buys; the 6000-file scale gates both arms to frontier, and against Astra the coding rows are contested (Terminal-Bench 59 vs 59.6 and a tie on the Coding Agent Index, but Vals has Opus 5.5 ahead), so tokens decide (~27k vs ~119k) and the badge is low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.

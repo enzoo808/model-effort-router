@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: xhigh
+Codex: ✅ RECOMMENDED AI · Sol · effort: xhigh
+Evidence: Single-file adversarial vulnerability hunting is deep-reasoning; HLE (61 vs 53) and CritPt (32 = 32) disagree, so no direction is set and token load decides toward Sol's smaller footprint; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

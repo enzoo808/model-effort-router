@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: xhigh
+Codex: Sol · effort: xhigh
+Evidence: Hunting a silent data-loss failure in coupled migration scripts is adversarial deep-reasoning at D=3, but reviewing stays mid-tier; against GPT-6.1 Sol the row sets no direction (HLE 61 vs 53, CritPt 32 = 32), yet at R=3 the single admissible measurement still decides and leans Claude, so the badge is low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.

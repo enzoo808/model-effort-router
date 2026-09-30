@@ -1,0 +1,4 @@
+Claude: Fable 5.1 · effort: xhigh
+Codex: ✅ RECOMMENDED AI · Astra · effort: xhigh
+Evidence: A stated max-rung shortfall on the flagship tier lifts both arms one rung (A1), and against Astra the Terminal-Bench 4.0 row is a tie (59 vs 59.6), so token load decides — Astra ~27k output tokens against Opus 5.5's ~119k; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

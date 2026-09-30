@@ -207,3 +207,17 @@ python -m scripts.run_eval \
 `--runs-per-query 1` kota maliyetini 3'te birine indirir (varsayılan 3) —
 istatistiksel güven düşer ama ilk kaba sinyal için yeterli; description
 gerçekten değişip iterasyon gerekirse `run_loop.py` ile 3'e çıkarılabilir.
+
+## iteration-20 — GPT-6.1 Sol kuşağı (30 Eylül 2026)
+
+OpenAI 22 Eylül'de GPT-6 Sol ve Luna'yı çıkardı ve 29 Eylül'de Sol'u **GPT-6.1 Sol** ile
+değiştirdi. Codex kolu yeniden türetildi (ayrıntı: `skill/reference.md` §18).
+
+- **Üç katman:** Luna / Sol / Astra. Terra ve GPT-5.6 legacy.
+- **Emekli:** Codex +1 efor kademesi (N1), Kural E4, ≥1M-token ve bilgisayar-kullanımı Astra kapıları.
+- **Yeni:** BD1 (rozet yönü için iki bağımsız ölçüm; `R=3`'te tek ölçümün eğilimi), MECH1 (mekanizma
+  satırları), `orchestration` etiketi, derleyicide Pareto sınırı + `badge_hint`.
+- **Canlı eval:** 38/38 (beş taze ajan). İlk turda `x1` başarısız — kural değil prompt belirsizdi
+  ("kaç paket bozuk" yazmıyordu), prompt netleştirildi. Bir güvenlik sınıflandırıcısı sızma-testi
+  promptlarında bir ajanı durdurdu; grup bölünüp yeniden koşuldu.
+- **Ders (tekrarlayan):** ajanlar ayrışıyorsa önce promptu sorgula, kuralı değil (n2, x2, i1, j1, x1).

@@ -1,0 +1,3 @@
+Claude: ✅ RECOMMENDED AI · Fable 5.1 · effort: high
+Codex: unverified — use Claude
+Evidence: Genomics is biology-adjacent R&D, which gates Claude to Fable 5.1 while Codex declines it as unverified, so the capability gate hands the badge to Claude.

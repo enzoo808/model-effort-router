@@ -1,0 +1,4 @@
+Claude: Opus 5.5 · effort: xhigh
+Codex: ✅ RECOMMENDED AI · Sol · effort: xhigh
+Evidence: A tool-less proof-or-counterexample is deep-reasoning, and against GPT-6.1 Sol it is one row and a tie (HLE 61 vs 53, CritPt 32 = 32), so token load decides — ~38k output tokens per task against ~119k; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).

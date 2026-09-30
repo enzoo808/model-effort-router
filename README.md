@@ -8,14 +8,17 @@ Installed as a Claude Code / claude.ai skill invoked with `/model-secici`.
 You:    /model-secici  Move the repo's auth flow to OAuth2
 
 model-secici:
-  Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
-  Codex:  Terra · effort: xhigh
-  Evidence: Agentic multi-file coding is Claude's strongest published margin
-            (Terminal-Bench 4.0: Opus 5.5 66.4 and Sonnet 5.5 70.6 vs Sol
-            37.3); Codex takes a +1 notch to compensate.
+  Claude: Sonnet 5.5 · effort: high
+  Codex:  ✅ RECOMMENDED AI · Sol · effort: high
+  Evidence: AA's Terminal-Bench 4.0 has Sol 56 against Sonnet 5.5's 64 with no
+            interval, and one row is not a direction — so token load decides:
+            ~38k output tokens and $0.72 per task against ~193k and $7.60
+            (low-confidence).
 ```
 
-The badge is **computed, not habitual** — swap the task and it moves:
+The badge is **computed, not habitual** — swap the task and it moves (the second
+example below is the *Luna* case; the third is the one capability where Claude
+still earns a direction):
 
 ```
 You:    /model-secici  Label these 200 customer reviews as positive/negative
@@ -23,8 +26,19 @@ You:    /model-secici  Label these 200 customer reviews as positive/negative
 model-secici:
   Claude: Haiku 4.5
   Codex:  ✅ RECOMMENDED AI · Luna · effort: low
-  Evidence: Both clear the bar for mechanical classification, and Luna runs
-            ~30% faster per token at slightly lower cost per task.
+  Evidence: Both clear the bar for mechanical classification, and Luna
+            (GPT-6) costs $0.10/$0.50 per MTok against Haiku 4.5's $1/$5.
+```
+
+```
+You:    /model-secici  Draft the Q3 board memo from these notes and the finance pack.
+
+model-secici:
+  Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+  Codex:  Sol · effort: high
+  Evidence: Two independent AA rows agree and none disagrees — GDPval-AA v2.1
+            (1844 vs 1575) and AA-Briefcase (1811 vs 1564) — so knowledge work
+            keeps a Claude direction, low-confidence because no interval is published.
 ```
 
 > The skill body (`skill/SKILL.md`, plus `reference.md`, `benchmarks.json` and
@@ -50,9 +64,46 @@ The decision principle, in one sentence:
 
 Not "always cheapest". Not "always strongest". Not "highest benchmark score wins".
 
+## What changed for GPT-6.1 Sol (iteration-20, 30 Sep 2026)
+
+OpenAI released GPT-6 Sol and Luna on 22 Sep — and replaced Sol with **GPT-6.1 Sol
+seven days later** ($2/$10, 1.05M context, now the Codex default, "near-Astra").
+The previous iteration had only *recorded* the first pair; this one re-derived the
+Codex arm from the evidence. Full record: `skill/reference.md` §18.
+
+- **The Codex arm is three tiers now: Luna / Sol / Astra.** Terra has no successor
+  and is absent from OpenAI's current-recommended list. GPT-6.1 Sol dominates every
+  GPT-6 Sol rung (48 @ $1.05 vs 50 @ $0.32) and scores **52 @ $0.72 at ~38k output
+  tokens** against Astra's 53 @ $3.26 at ~27k (AA v4.3.2, same page).
+- **Three rules retired because their basis went:** the **+1 Codex effort notch**
+  (Terminal-Bench 4.0's Claude lead over Sol fell from ~29 points to 4–8, and Sol's
+  own curve is flat above `high`), **Rule E4** (`Sol · max` → `Astra · xhigh`), and two
+  Astra gates (**≥1M-token corpus** — Sol has the same window — and **computer use** —
+  2.1 OSWorld points at one seventh of the cost, on a tier C relay). The 1000+-file
+  and Daybreak gates stay.
+- **The badge is now computed, not judged.** Rule **BD1**: a badge direction needs two
+  independent measurements that agree (an independent evaluator's run, or a vendor's
+  table that favours its *rival*), none opposing; otherwise efficiency decides — and
+  at `R=3` a single measurement's lean still decides, which is what keeps
+  high-risk architecture work on the stronger arm. The hint is emitted by the
+  compiler and asserted by tests; the badge table in the reachability mirror fails the
+  build if it drifts from it.
+- **A Pareto frontier of model × effort configurations**, compiled from the evidence:
+  Sol `xhigh` (51 @ $0.39) dominates Opus 5.5 `medium` (51 @ $1.34); Astra `max` is
+  dominated by Opus 5.5 `high`; and **Opus 5.5 `high` / `xhigh` / `max` are the only
+  undominated configurations above Sol's 52.** The flagship buys the last points — it
+  is not the cheap way to reach the bar.
+- **The lean is large, and stated plainly.** 91 of 154 corpus prompts change;
+  the badge moves from **Claude 122 / Codex 28** to **Claude 43 / Codex 107**. Against
+  GPT-6.1 Sol almost no capability has a Claude *direction* under BD1, so at `R ≤ 2` it
+  falls to efficiency and efficiency favours a model that uses about a third of the
+  tokens at the same list price. Only knowledge work keeps a clean Claude
+  direction; science and workflow automation keep one only on OpenAI's own
+  against-interest table (the ablation says so).
+
 ## What changed, and when
 
-**iteration-17 (Phase 2)** hardened the evidence rather than the router: it went
+**iteration-17 (Phase 2, historical)** hardened the evidence rather than the router: it went
 back for the benchmark *owners*' own leaderboards, turned the path from a raw
 score into a routing rule into a deterministic compiler, and measured how much of
 the router's ecosystem preference rests on vendor-run numbers. One routing rule
@@ -81,8 +132,8 @@ prompt
   → quota guards                     (Step 7)
 ```
 
-The badge is **conditional on which Codex model is on the line** — a capability
-can genuinely favour Claude against Sol and not against Astra:
+The badge is **conditional on which Codex model is on the line** (Astra only appears
+behind a gate):
 
 ```
 You:    /model-secici  Split this 6000-file legacy Java monolith into independent services
@@ -90,9 +141,9 @@ You:    /model-secici  Split this 6000-file legacy Java monolith into independen
 model-secici:
   Claude: Fable 5.1 · effort: max
   Codex:  ✅ RECOMMENDED AI · Astra · effort: max
-  Evidence: Capability is level against Astra (AA Terminal-Bench 4.0: Astra 60
-            vs Opus 5.5 59.6; Coding Agent Index tied at 62), so efficiency
-            decides — ~27k output tokens/task vs ~119k (low-confidence).
+  Evidence: The 6000-file scale gates both arms to frontier, and against Astra
+            the coding rows are contested, so tokens decide — ~27k output
+            tokens/task vs ~119k (low-confidence).
   Do not apply without human review.
 ```
 
@@ -104,14 +155,14 @@ Three of the new rules change real outputs, and each is asserted in the eval set
   $3.46** — the same score at under half the cost. So escalation is a **model**
   change, not an effort change — `Sonnet 5.5 → Opus 5.5`, at the same rung.
   (The previous generation had the identical shape: 38 @ $5.09 vs 50 @ $4.88.)
-  The Codex mirror: `Sol · high` (42, $0.81) dominates `Terra · max` (42, $1.40),
-  and `max` isn't offered on Terra at all.
+  *(The Codex mirror this bullet used to carry — GPT-5.6 `Sol · high` over `Terra · max` —
+  is moot: Terra is gone. E2 is now GPT-6.1 Sol over every older Sol; see the top.)*
 - **`max` over `xhigh` buys little.** Fable 5.1 scores 53 at both rungs
   ($7.63 → $5.98); Astra 53 at both ($3.26 → $2.31); Opus 5.5 58 vs 56 (+2 for
   +73% cost). `max` requires `D=3 ∧ R=3` **and** a single indivisible
   novel-design or formal decision — not merely "hard and irreversible".
-- **A computer-use gate on the Codex arm.** Astra's one clear published lead over
-  Sol. It was named in the roster notes but the gate table never had the row.
+- ~~**A computer-use gate on the Codex arm.**~~ *Retired in iteration-20: GPT-6.1 Sol
+  is 2.1 OSWorld points behind Astra at one seventh of the cost.*
 
 ## What changed for the Claude 5.5 models (iteration-19, 29 Sep 2026)
 
@@ -136,8 +187,7 @@ touches — full record in `skill/reference.md` §17:
   Terminal-Bench 4.0 but trails on FrontierCode and CursorBench, and burns more
   tokens at `max`), and the biology / 1000+-file gates → Fable 5.1 (no evidence
   either way; flagged as the least-supported decision in the router).
-- **Not done yet:** OpenAI's GPT-6 Sol / Luna (22 Sep) are recorded but not routed —
-  that is a Codex-arm iteration of its own.
+- **Done in iteration-20:** OpenAI's GPT-6 Sol / Luna — see the top of this section.
 
 ## Data honesty
 
@@ -160,15 +210,18 @@ What that buys in practice:
   only when benchmark, version, harness, tool access, scaffold *and* effort
   match. Real traps already in the record: OSWorld 2.0's partial and strict
   scoring differ by ~36 points on the same model; AA index versions aren't
-  comparable across versions; "agentic coding" puts Sol ~29 points behind Opus 5.5
-  on Terminal-Bench 4.0, ~16 on CursorBench 4.0 and ~7 on FrontierCode 1.1 — and a
-  vendor table can pair *unmatched* efforts (Opus 5.5 at `xhigh` against Astra at
-  `high`), which the compiler now refuses to compare.
+  comparable across versions; "agentic coding" is not one number (AA's Terminal-Bench
+  4.0 has GPT-6.1 Sol 4–8 points behind Opus / Sonnet 5.5; the same benchmark had
+  GPT-5.6 Sol ~29 behind; OpenAI's DeepSWE has Sol *ahead* of Sonnet 5.5) — a vendor
+  table can pair *unmatched* efforts (Opus 5.5 at `xhigh` against Astra at `high`),
+  which the compiler refuses to compare, and a vendor scores its rival differently
+  (Opus 5.5 on TB-Science: 63.3 in OpenAI's table, 58.7 in Anthropic's).
 - **No interpolation between effort rungs, ever.** Sonnet 5.5 below `max` and Sol at
   `xhigh` simply aren't published. They're recorded as unknown, not estimated.
-- **Vendor benchmarks are used but discounted.** Anthropic's launch note measures
-  GPT-5.6 Sol in Anthropic's own harness. That's direction, not a settled
-  ranking, and it's labelled `vendor_run: true` in the data.
+- **Vendor benchmarks are used but discounted.** A vendor table that favours its own
+  model counts for nothing in a badge decision; one that favours its *rival* is the
+  most credible vendor evidence there is. Each group declares who ran it
+  (`run_by`), never inferred.
 - **Conflicts are recorded, not averaged away.** The open conflicts and the
   explicit non-findings are written down in `skill/reference.md` §12.3–§12.5 —
   including that the two vendors publish Opus 5 on the same OSWorld version and
@@ -178,7 +231,7 @@ What that buys in practice:
 
 Every record — benchmark, version, model, effort, harness, tool access, scaffold,
 trials, dispersion, cost/task, date, source, source tier, comparability group —
-is in **[`skill/benchmarks.json`](skill/benchmarks.json)**, 123 rows, `null`
+is in **[`skill/benchmarks.json`](skill/benchmarks.json)**, 311 rows, `null`
 wherever a figure isn't published.
 
 ### The evidence is compiled, not asserted
@@ -193,8 +246,8 @@ Three layers, and **only the first is read at runtime**:
 
 ```bash
 python scripts/validate_benchmarks.py            # schema, groups, rule provenance, staleness
-python scripts/compile_benchmark_frontiers.py    # regenerate the derived frontier
-python scripts/test_frontier_compiler.py         # comparison-semantics assertions
+python scripts/compile_benchmark_frontiers.py    # regenerate: frontiers, effort curves, Pareto, badge_hint
+python scripts/test_frontier_compiler.py         # comparison, Pareto and badge-hint assertions
 python scripts/ablate_evidence.py                # vendor-bias measurement
 python scripts/check_policy_sync.py              # SKILL.md and the policy mirror agree
 python scripts/check_routing_reachability.py --check --report
@@ -207,10 +260,11 @@ python scripts/test_reachability_tool.py         # the auditor's own regression 
 > compiler fell back to *a fraction of the roster's observed score spread* — which
 > reads as statistics and is not: spread is how far apart the models happen to
 > sit, not how precisely either score was measured, and on a two-row comparison
-> the spread *is* the gap. Removing it leaves `science` as the only capability
-> with a certified direction; everything else is `UNRESOLVED` and falls through to
-> efficiency. The directions the record points are unchanged — what is gone is the
-> pretence that they were measured.
+> the spread *is* the gap. Removing it leaves no cross-ecosystem direction against
+> a current Codex model certified at all — the only certified results are two
+> *equivalences* (Astra sits inside the Claude frontier's band on TB-Science and on the
+> Terminal-Bench 4.0 leaderboard). Everything else is `UNRESOLVED` and falls through to
+> the badge rule BD1 above. What is gone is the pretence that the gaps were measured.
 
 The compiler never interprets a number on its own: every threshold, grouping and
 precedence weight is declared in `benchmarks.json`, and where the declared
@@ -220,14 +274,15 @@ Two runs produce byte-identical output, and the frontier stores the sha256 of th
 evidence it came from, so editing the evidence without recompiling fails the
 build.
 
-**The vendor-bias measurement is the uncomfortable one.** Re-derive the frontier
+**The vendor-bias measurement is the uncomfortable one.** Re-derive the badge hints
 using only independent (tier B) evidence, or with vendor-measures-competitor rows
-removed, and only `agentic-code` and `terminal-tool` survive. Every other
-capability — Claude's lead on knowledge work and science, Codex's lead on
-computer use — collapses to `UNRESOLVED`. Both sides' advantages outside terminal
-work rest on one vendor's account of the other. The router doesn't paper over
-that or force a balanced badge: those capabilities are marked in the rule table
-and their Evidence line has to say `low-confidence`.
+removed. Against GPT-6.1 Sol only `knowledge-work` keeps its Claude direction
+(two AA rows). `science` and `workflow-automation` fall to `efficiency` — their
+direction rested on OpenAI's *own* table having Opus 5.5 ahead of its own model, which is
+excellent evidence but is still one vendor's account. Against Astra,
+`deep-reasoning` needs OpenAI's tooled-HLE row. The router doesn't paper over that or
+force a balanced badge: those cells are marked † and their Evidence line has to say
+`low-confidence`.
 
 ---
 
@@ -301,12 +356,12 @@ claude.ai fallback) and read both lines plus the badge.
 | Step | What happens |
 |---|---|
 | **0 · Quality gate** | Four mechanical checks (rule stated by example but not generalised? silent-wrong-result risk? concrete target? two plausible readings?). If any fires → **no model, no badge, ask a clarifying question.** |
-| **1 · Hard gates** | Capability / safety / availability, never traded against efficiency. Sub-second or high-volume → **Haiku** / **Luna**. Offensive security → **Opus 4.8 · xhigh** / Codex `use Claude` (or `Astra` w/ Daybreak). Biology R&D → **Fable 5.1** / Codex `unverified`. >200k context → drops Haiku. 1000+ files → **Fable 5.1** / **Astra**. ≥1M-token Codex context → **Astra**. GUI-driving is the task → **Astra**. |
-| **2 · Capability profile** | Name the one or two capabilities the task actually needs — `agentic-code`, `terminal-tool`, `deep-reasoning`, `knowledge-work`, `research-synthesis`, `long-context`, `computer-use`, `science`, `workflow-automation`, `doc-data-understanding`, `parallel-independent`, `latency-volume`. This is what makes benchmark evidence applicable *or not*. |
+| **1 · Hard gates** | Capability / safety / availability, never traded against efficiency. Sub-second or high-volume → **Haiku** / **Luna**. Offensive security → **Opus 4.8 · xhigh** / Codex `use Claude` (or `Astra` w/ Daybreak). Biology R&D → **Fable 5.1** / Codex `unverified`. >200k context → drops Haiku. 1000+ files → **Fable 5.1** / **Astra** (Astra on OpenAI's positioning only — Sol has the same window). |
+| **2 · Capability profile** | Name the one or two capabilities the task actually needs — `agentic-code`, `terminal-tool`, `deep-reasoning`, `knowledge-work`, `research-synthesis`, `long-context`, `computer-use`, `science`, `workflow-automation`, `doc-data-understanding`, `parallel-independent`, `orchestration`, `latency-volume`. This is what makes benchmark evidence applicable *or not*. |
 | **3 · Score scope & stakes** | **R**isk, **D**epth, **W**idth, **C**ontext — each 0–3, each with a diagnostic question and a worked-example library. |
-| **4 · Candidate model × effort** | Model ← `max(D, C)` and the capability profile — **not** risk. Flagship only at `D=3` *and* a capability on the flagship list. Effort ← `D` (`0→low · 1→medium · 2→high · 3→xhigh`). Claude modifier: **`ultracode`** — >30 min **and** either `O=high` (3+ distinct *phases* — research / implementation / verification / packaging / migration / docs / triage — feeding each other; the edit-run-repair loop is **one** phase) or `W=3` ∧ `D≥2`, **and** not one indivisible chain; plus `opusplan`. Codex modifiers: **Sol Ultra** for 3+ genuinely parallel strands, and a `+1` notch for agentic multi-step coding (Terra/Sol only, never Astra, caps at `xhigh`). Third escalation rung — Opus 5.5 → Fable 5.1, Sol → Astra — only on a *stated* flagship-tier shortfall. |
+| **4 · Candidate model × effort** | Model ← `max(D, C)` and the capability profile — **not** risk. Flagship only at `D=3` *and* a capability on the flagship list. Effort ← `D` (`0→low · 1→medium · 2→high · 3→xhigh`). Claude modifier: **`ultracode`** — >30 min **and** either `O=high` (3+ distinct *phases* — research / implementation / verification / packaging / migration / docs / triage — feeding each other; the edit-run-repair loop is **one** phase) or `W=3` ∧ `D≥2`, **and** not one indivisible chain; plus `opusplan`. Codex modifier: **Sol Ultra** for 3+ genuinely parallel strands — **both arms take the same effort from the same table**. Third escalation rung — Opus 5.5 → Fable 5.1, Sol → Astra — only on a *stated* flagship-tier shortfall. |
 | **5 · Evidence, equivalence, efficiency** | Check comparability. Decide "meaningfully better" from **published dispersion only** — a confidence interval, a standard error, repeated-trial variance, or a threshold the benchmark's own owner publishes. With none of those the comparison is **`UNRESOLVED`**, however large the gap looks: observed score spread is not uncertainty. Widen the bar when `R=3`. Then apply dominance: reasoning tokens → output tokens → total tokens → tokens per *successful* task → quota pressure → cost → latency. |
-| **6 · `✅ RECOMMENDED AI`** | Compare the two arms in order: hard gate → task-relevant capability → benchmark confidence → near-parity → token/quota efficiency → cost → latency. Emit one badge and one `Evidence:` sentence naming at most 1–2 signals. |
+| **6 · `✅ RECOMMENDED AI`** | Compare the two arms in order: hard gate → task-relevant capability → benchmark confidence → near-parity → token/quota efficiency → cost → latency. **BD1** decides whether a benchmark may set a direction (two independent measurements that agree, none opposing) — else efficiency, except that at `R=3` a single lean decides; **MECH1** lets a mechanism only one arm has (Ultra, `ultracode` on 3+ phases, `opusplan`) win when nothing benchmark-backed disagrees. Emit one badge and one `Evidence:` sentence naming at most 1–2 signals. |
 | **7 · Quota guards** | `R=3` adds a human-review note (never changes the model). Escalation is a model change, not an effort change. MCP-server bloat, auto-accept, alias drift warnings. |
 
 Two design choices carried over unchanged, because they still hold: **risk raises
@@ -316,7 +371,7 @@ human oversight, not model tier**, and **when in doubt, round down**.
 
 ## The rosters
 
-**Claude (verified 29 Sep 2026):**
+**Claude (verified 30 Sep 2026):**
 
 | Model | Role | $/Mtok in·out |
 |---|---|---|
@@ -334,23 +389,21 @@ human oversight, not model tier**, and **when in doubt, round down**.
 > *(Correction of 10 Sep 2026, about the previous generation: Sonnet 5's rise to
 > $3/$15 was cancelled and $2/$10 stayed.)*
 
-**Codex / ChatGPT (GPT-5.6 family + GPT-6 Astra):**
+**Codex / ChatGPT (GPT-6 generation, verified 30 Sep 2026):**
 
 | Model | Role | rough Claude analogue |
 |---|---|---|
-| Luna | speed / volume, cheapest. Codex CLI default | Haiku 4.5 |
-| Terra | balanced daily driver | Sonnet 5.5 |
-| **Sol** | GPT-5.6 flagship — code / science / security; the D=3 pick | Opus 5.5 |
+| Luna | **GPT-6 Luna**, $0.10 / $0.50 — volume, cheapest, and the weakest agentic model in the record (Terminal-Bench 4.0: 13 vs Sol's 56); never for `D ≥ 1` | Haiku 4.5 |
+| **Sol** | **GPT-6.1 Sol** (29 Sep), $2 / $10, 1.05M context, **Codex default**, near-Astra. The daily driver *and* the D=3 pick — there is no Terra between | Sonnet 5.5 / Opus 5.5 |
 | **Sol Ultra** | a Codex *mode* on Sol (Plus+): ~4 collaborating agents in parallel. Also available on Astra | stronger than Claude's `ultracode` |
-| **Astra** | GPT-6 flagship (`gpt-6-astra`), 1.05M context. **Rare pick.** Gates: offensive-sec *with Daybreak*, 1000+ files, ≥1M-token context, GUI-driving — plus two narrow non-gate routes, Rule E4 (where `Sol · max` would be emitted on agentic-code / terminal-tool) and a stated flagship-tier shortfall | Opus 5.5 / Fable 5.1 (frontier) |
-| *Codex Spark 5.3* | text-only research preview for near-instant coding iteration — **the router does not select it** (no benchmark record, text-only) | — |
-| *GPT-6 Sol / GPT-6 Luna* | released 22 Sep 2026 — **recorded, not routed yet** (a different model from GPT-5.6 Sol) | — |
+| **Astra** | GPT-6 flagship, $10 / $50. **Rare pick:** the Daybreak gate (it leads Sol on every published offensive eval), the 1000+ file gate, and a stated flagship-tier shortfall | Opus 5.5 / Fable 5.1 (frontier) |
+| *Legacy — never selected* | Terra, GPT-5.6 Sol / Luna, GPT-6 Sol (superseded after seven days), Codex Spark 5.3 | — |
 
-> **`max` is Astra/Sol only** on Codex — a capability limit, not a preference.
-> Biology-R&D prompts still route to Claude (`unverified — use Claude`). For
-> **offensive security**, standard Codex access hard-stops the task, so the
-> router says `use Claude`; with **Daybreak Blue** access it routes to
-> `Astra · xhigh`.
+> **`max` only through Rule M1** (D=3 ∧ R=3 ∧ one indivisible decision, on a
+> flagship). Biology-R&D prompts still route to Claude (`unverified — use Claude`).
+> For **offensive security**, standard Codex access hard-stops the task — Astra
+> **and GPT-6.1 Sol** are both at OpenAI's *Critical* cyber level — so the router says
+> `use Claude`; with **Daybreak Blue** access it routes to `Astra · xhigh`.
 
 ---
 
@@ -358,20 +411,20 @@ human oversight, not model tier**, and **when in doubt, round down**.
 
 | Task | Claude | Codex | Recommended |
 |---|---|---|---|
-| Split this 6000-file monolith into services | `Fable 5.1 · max` | `Astra · max` | **Codex**, low-confidence — against Astra the coding lead is level, so token load decides |
-| Label 200 customer reviews positive/negative | `Haiku 4.5` | `Luna · low` | **Codex** — both clear the bar; Luna is faster and cheaper |
-| Add a `--dry-run` flag to this CLI command | `Sonnet 5.5 · medium` | `Terra · medium` | **Claude** — D=1, so efficiency decides; $2/$10 vs $2/$12 |
-| Refactor the payment module across 40 files, make the tests pass | `Sonnet 5.5 · high` | `Terra · xhigh` | **Claude** — Terminal-Bench 4.0 agentic-code margin |
-| Refactor the payment module across 40 files and make the suite pass | `Sonnet 5.5 · high` | `Terra · xhigh` | **Claude** — one implementation phase (edit→test→fix), so no `ultracode` however many files |
-| Stand up staging from scratch: Terraform, deploy 12 services, seed data, run the smoke suite, fix | `Sonnet 5.5 · ultracode` | `Terra · xhigh` | **Claude** — implementation + a data phase + a smoke run against a deployed env is genuine multi-phase orchestration |
-| Rename `userId` to `accountId` across 150 files | `Sonnet 5.5 · medium` | `Terra · medium` | **Claude** — `W=3` but `D=1`; one step repeated is width, so no orchestration mode |
+| Split this 6000-file monolith into services | `Fable 5.1 · max` | `Astra · max` | **Codex**, low-confidence — the coding rows are contested against Astra, so token load decides |
+| Label 200 customer reviews positive/negative | `Haiku 4.5` | `Luna · low` | **Codex** — both clear the bar; Luna is $0.10/$0.50 vs $1/$5 |
+| Add a `--dry-run` flag to this CLI command | `Sonnet 5.5 · medium` | `Sol · medium` | **Codex**, low-confidence — D=1, the same $2/$10, Sol's lower token load |
+| Refactor the payment module across 40 files, make the tests pass | `Sonnet 5.5 · high` | `Sol · high` | **Codex**, low-confidence — one Terminal-Bench row is not a direction, so tokens decide; one implementation phase, so no `ultracode` |
+| Stand up staging from scratch: Terraform, deploy 12 services, seed data, run the smoke suite, fix | `Sonnet 5.5 · ultracode` | `Sol · high` | **Claude** — three phases feeding each other; `ultracode` sequences them and Codex has no equivalent (MECH1) |
+| Rename `userId` to `accountId` across 150 files | `Sonnet 5.5 · medium` | `Sol · medium` | **Codex**, low-confidence — `W=3` but `D=1`; one step repeated is width, so no orchestration mode |
 | Investigate three candidate event-bus designs independently, then compare | `Sonnet 5.5 · xhigh` | `Sol Ultra · xhigh` | **Codex** — three strands that never wait on each other; `ultracode` is one chain |
-| Design and implement the cross-service transaction boundary — ships tonight, no rollback | `Opus 5.5 · max` | `Astra · xhigh` | **Codex** — Rule E4: Astra `xhigh` outscores Sol `max` at a third of the output tokens (low-confidence against Opus 5.5) |
-| Prove this scheduling bound, no code | `Opus 5.5 · xhigh` | `Sol · xhigh` | **Claude**, low-confidence — coding benchmarks weigh zero here |
-| Drive the desktop ERP client through month-end close | `Sonnet 5.5 · high` | `Astra · high` | **Codex**, low-confidence — OSWorld computer-use lead |
-| Check 120 unrelated vendors' DPA compliance | `Sonnet 5.5 · ultracode` | `Sol Ultra · xhigh` | **Codex** — genuine parallel-agent mechanism, no Claude capability edge |
+| Design and implement the cross-service transaction boundary — ships tonight, no rollback | `Opus 5.5 · max` | `Sol · max` | **Claude**, low-confidence — `R=3`, so a single-row lean is not parity (the same task at `R≤2` reads Codex) |
+| Prove this scheduling bound, no code | `Opus 5.5 · xhigh` | `Sol · xhigh` | **Codex**, low-confidence — one HLE row and a CritPt tie are not a direction |
+| Drive the desktop ERP client through month-end close | `Sonnet 5.5 · high` | `Sol · high` | **Codex**, low-confidence — the computer-use gate is retired; no comparable row |
+| Check 120 unrelated vendors' DPA compliance | `Sonnet 5.5 · ultracode` | `Sol Ultra · xhigh` | **Codex** — genuine parallel-agent mechanism |
+| Draft the Q3 board memo from these notes | `Sonnet 5.5 · high` | `Sol · high` | **Claude**, low-confidence — the one capability with a BD1 direction |
 | Audit this genomics pipeline's variant-calling logic | `Fable 5.1 · high` | `unverified — use Claude` | **Claude** — availability gate |
-| Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5.5 · low` + review note | `Terra · low` + review note | **Claude** |
+| Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5.5 · low` + review note | `Sol · low` + review note | **Codex**, low-confidence — `D=0`, efficiency decides |
 | "Fix this code" | *(no model, no badge — asks: which code? broken how? done = ?)* | | |
 
 ---
@@ -389,7 +442,7 @@ effort, **which side carries the badge** (`expected_recommended`), and that an
 the Evidence wording — that line is free-form by design — but it can require it
 to flag `low-confidence` where the rules say it must.
 
-Latest live cold-agent run: **32/32** (iteration-17); iteration-19's deterministic checks all pass, the live re-run against the 5.5 roster is pending. The evidence layer has its own,
+Latest live cold-agent run: **iteration-20, 38/38** (cold agents that had never seen the skill; a first pass caught one ambiguous prompt, `x1`, fixed at the prompt rather than the rule). The evidence layer has its own,
 faster checks that run without an LLM — schema validation, rule-provenance
 resolution, frontier staleness, the compiler assertions and the bias ablation.
 

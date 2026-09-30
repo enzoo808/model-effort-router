@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: medium
+Codex: ✅ RECOMMENDED AI · Sol · effort: medium
+Evidence: Shallow long-context mapping ties on AA-LCR v1.1 (Sol 83 = Sonnet 5.5 83), so token load decides — ~25k vs ~142k reasoning tokens; low-confidence.
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

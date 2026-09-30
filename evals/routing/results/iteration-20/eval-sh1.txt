@@ -1,0 +1,4 @@
+Claude: Opus 5.5 · effort: high
+Codex: ✅ RECOMMENDED AI · Sol · effort: high
+Evidence: Bounded diagnosis (loud, reproducible, one clear cause) is agentic-code; AA's Terminal-Bench 4.0 has Sol 56 vs Opus 5.5 60 with no interval, so token load decides toward Sol's smaller footprint; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).

@@ -51,7 +51,7 @@ def policy(claude=None, codex=None):
         "claude": claude if claude is not None else {
             "Sonnet 5.5": {"efforts": ["low", "medium"], "modes": []}},
         "codex": codex if codex is not None else {
-            "Terra": {"efforts": ["low", "medium"], "modes": []}},
+            "Sol": {"efforts": ["low", "medium"], "modes": []}},
     }}
 
 
@@ -75,59 +75,122 @@ ALL_ACCEPT = {"flips": {}}
 
 
 # =====================================================================
-# ROUTING: before vs after
+# ROUTING: iteration-19 (BEFORE) vs iteration-20 (AFTER)
 # =====================================================================
 
-# A 25-file multi-phase build/test/repair session: the iteration-18 case.
-multi = prompt("t-multi", D=2, W=2, C=2, O="high", dur_gt30=True, builds=True,
-               agentic_write=True)
-check("after: orchestration at W=2 reaches ultracode",
-      R.cell_of(R.route_claude(multi, "after")), "Sonnet 5.5 · ultracode")
-check("before: the same prompt did not, because W was not 3",
-      R.cell_of(R.route_claude(multi, "before")), "Sonnet 5.5 · high")
+# tier -- Terra is gone; Sol is the one Codex mid tier.
+mid = prompt("t-mid", D=2, W=1, C=1, R=1, cap="deep-reasoning")
+check("before: a D=2 analysis prompt went to Terra",
+      R.cell_of(R.route_codex(mid, "before")), "Terra · high")
+check("after: the same prompt goes to Sol -- there is no Terra to drop to",
+      R.cell_of(R.route_codex(mid, "after")), "Sol · high")
+check("  ...and attribution blames the tier merge alone", R.attribute(mid), ["tier"])
 
-# 150 files of one mechanical rename.
+# notch -- N1 retired.
+notch = prompt("t-notch", D=2, W=2, C=2, R=1, builds=True, agentic_write=True, cap="agentic-code",
+               dur_gt30=True)
+check("before: multi-step code writing took the +1 notch to xhigh",
+      R.cell_of(R.route_codex(notch, "before")), "Terra · xhigh")
+check("after: both arms take high from the same table",
+      (R.cell_of(R.route_claude(notch, "after")), R.cell_of(R.route_codex(notch, "after"))),
+      ("Sonnet 5.5 · high", "Sol · high"))
+check("  ...attribution blames the notch AND the tier (each alone leaves a difference)",
+      R.attribute(notch), ["notch", "tier"])
+check("  ...and bump() is still monotonic", R.bump("max", "xhigh"), "max")
+
+# e4 -- retired.
+e4 = prompt("t-e4", D=3, R=3, W=2, C=2, indiv=True, builds=True, agentic_write=True, cap="agentic-code")
+check("before: E4 rewrote Sol max to Astra xhigh on agentic-code",
+      R.cell_of(R.route_codex(e4, "before")), "Astra · xhigh")
+check("after: Sol max stays Sol max",
+      R.cell_of(R.route_codex(e4, "after")), "Sol · max")
+check("  ...attribution blames E4 alone", R.attribute(e4), ["e4"])
+
+# gates -- the >=1M-token and computer-use Astra gates are retired; 1000+ files stays.
+gui = prompt("t-gui", D=2, R=2, W=1, C=1, cap="computer-use", gates=["computer_use"])
+check("before: a GUI-driving task gated to Astra",
+      R.cell_of(R.route_codex(gui, "before")), "Astra · high")
+check("after: it scores normally and lands on Sol",
+      R.cell_of(R.route_codex(gui, "after")), "Sol · high")
+big = prompt("t-big", D=2, R=1, W=3, C=3, gates=["files_1000plus"], cap="agentic-code")
+check("the 1000+ file positioning gate still routes to Astra in both",
+      (R.cell_of(R.route_codex(big, "before")), R.cell_of(R.route_codex(big, "after"))),
+      ("Astra · high", "Astra · high"))
+
+# Luna is D=0 only, on either side.
+check("Luna stays the D=0 tier", R.cell_of(R.route_codex(prompt("t-lo", D=0, R=1), "after")), "Luna · low")
+check("  ...and a D=0 task at R>=2 goes to Sol low, not Luna",
+      R.cell_of(R.route_codex(prompt("t-lo2", D=0, R=2), "after")), "Sol · low")
+
+# Ultra needs D=3 and P=high; on Sol it rides on the one tier.
+check("three strands at D=3 reach Sol Ultra",
+      R.cell_of(R.route_codex(prompt("t-u", D=3, R=2, W=1, C=2, P="high", P_kind="strands", dur_gt30=True,
+                                     cap="parallel-independent"), "after")), "Sol Ultra · xhigh")
+
+# The iteration-18 rules are baked in, not switched: orchestration at W=2 reaches ultracode
+# in BOTH variants now, and mechanical width does not.
+multi = prompt("t-multi", D=2, W=2, C=2, O="high", dur_gt30=True, builds=True, agentic_write=True)
+check("orchestration at W=2 reaches ultracode (iteration-18, now unconditional)",
+      (R.cell_of(R.route_claude(multi, "before")), R.cell_of(R.route_claude(multi, "after"))),
+      ("Sonnet 5.5 · ultracode", "Sonnet 5.5 · ultracode"))
 mech = prompt("t-mech", D=1, W=3, C=1, dur_gt30=True, builds=True)
-check("before: mechanical width fired ultracode -- the old false positive",
-      R.cell_of(R.route_claude(mech, "before")), "Sonnet 5.5 · ultracode")
-check("after: width without depth does not",
+check("150 files of one mechanical rename never fires ultracode",
       R.cell_of(R.route_claude(mech, "after")), "Sonnet 5.5 · medium")
 
-# 180 targets that each need judgement.
-wide = prompt("t-wide", D=3, W=3, C=3, dur_gt30=True)
-check("after: width WITH depth still reaches ultracode",
-      R.cell_of(R.route_claude(wide, "after")), "Sonnet 5.5 · ultracode")
-
-# The +1 notch must never pull a rung down.
-indivisible = prompt("t-indiv", D=3, R=3, W=2, C=2, indiv=True, builds=True,
-                     agentic_write=True, cap="deep-reasoning")
-check("the +1 agentic notch never lowers a rung that E3 already set to max",
+# M1: max needs D=3 AND R=3 AND a flagship AND an indivisible decision -- on Sol too.
+indivisible = prompt("t-indiv", D=3, R=3, W=2, C=2, indiv=True, builds=True, cap="deep-reasoning")
+check("M1 emits Sol max on an indivisible D=3 R=3 decision",
       R.cell_of(R.route_codex(indivisible, "after")), "Sol · max")
-check("  ...and bump() itself is monotonic", R.bump("max", "xhigh"), "max")
-check("  ...while still capping an ordinary climb", R.bump("xhigh", "xhigh"), "xhigh")
+check("  ...and never Luna max", R.cell_of(R.route_codex(prompt("t-l", D=0, R=1), "after")), "Luna · low")
 
-# Ultra on strands, not just targets.
-strands = prompt("t-strands", D=3, R=2, W=1, C=2, P="high", P_kind="strands",
-                 dur_gt30=True, cap="parallel-independent")
-check("after: three strands reach Sol Ultra",
-      R.cell_of(R.route_codex(strands, "after")), "Sol Ultra · xhigh")
-check("before: only already-independent targets counted",
-      R.cell_of(R.route_codex(strands, "before")), "Terra · xhigh")
+# ------------------------------------------------ the badge
+def bdg(cap, D=2, cx_model="Sol", cl_model="Sonnet 5.5", cx_mode=None, cl_mode=None, O="low", eff="high", R_=1):
+    t = prompt("b", cap=cap, D=D, O=O, R=R_)
+    return R.badge(t, {"model": cl_model, "effort": eff, "mode": cl_mode},
+                   {"model": cx_model, "effort": eff, "mode": cx_mode}, "after")
 
-# E4 is capability-scoped.
-e4 = prompt("t-e4", D=3, R=3, W=2, C=2, indiv=True, builds=True, agentic_write=True,
-            cap="agentic-code")
-check("E4 rewrites Sol max to Astra xhigh on agentic-code",
-      R.cell_of(R.route_codex(e4, "after")), "Astra · xhigh")
-check("  ...and leaves deep-reasoning alone",
-      R.cell_of(R.route_codex(dict(e4, cap="deep-reasoning"), "after")), "Sol · max")
+check("agentic-code against Sol falls to efficiency -> Codex", bdg("agentic-code"), "codex")
+check("knowledge-work against Sol keeps a benchmark direction -> Claude", bdg("knowledge-work"), "claude")
+check("science against Sol -> Claude, against Astra -> Codex",
+      (bdg("science"), bdg("science", cx_model="Astra")), ("claude", "codex"))
+check("D<=1 skips the capability rows: efficiency decides -> Codex", bdg("knowledge-work", D=1), "codex")
+check("a mechanism beats an efficiency fall-through: opusplan on agentic-code -> Claude",
+      bdg("agentic-code", cl_model="opusplan", cl_mode="opusplan"), "claude")
+check("...O=high (ultracode) on agentic-code -> Claude", bdg("agentic-code", O="high"), "claude")
+check("...but a benchmark DIRECTION beats a mechanism: knowledge-work + Ultra -> Claude",
+      bdg("knowledge-work", cx_mode="ultra"), "claude")
+check("Ultra beats an efficiency fall-through -> Codex",
+      bdg("agentic-code", cx_mode="ultra"), "codex")
+check("two mechanisms cancel and the capability row decides",
+      bdg("agentic-code", cx_mode="ultra", O="high"), "codex")
+check("an unlisted capability takes the lighter configuration; a tie goes to Codex",
+      bdg("instruction-following"), "codex")
+check("R=3 widens the bar for parity: a single-row LEAN decides instead of efficiency",
+      (bdg("agentic-code", R_=1), bdg("agentic-code", R_=3)), ("codex", "claude"))
+check("  ...but a cell with no lean still falls to efficiency at R=3",
+      bdg("computer-use", R_=3), "codex")
+check("  ...and D<=1 skips the capability rows even at R=3 (both arms clear the bar)",
+      bdg("agentic-code", D=0, R_=3), "codex")
+check("  ...and a lean that points to Codex is followed too",
+      bdg("doc-data-understanding", R_=3), "codex")
 
-# Attribution: exactly one delta explains each of those.
-check("attribution blames the ultracode delta and nothing else",
-      R.attribute(multi), ["ultracode"])
-check("attribution blames the ultra delta for the strands case",
-      R.attribute(strands), ["ultra"])
-
+# ------------------------------------------------ the badge table cannot drift from the compiler
+FRONTIER = json.loads((Path(__file__).resolve().parent.parent / "skill" / "benchmark_frontiers.json")
+                      .read_text(encoding="utf-8"))
+hints = {(c["capability"], m["codex_model"]): m["badge_hint"]
+         for c in FRONTIER["capability_frontiers"] for m in c["by_codex_model"]}
+drift = []
+for (cap, cx_model), h in sorted(hints.items()):
+    col = {"GPT-6.1 Sol": 0, "Astra": 1}.get(cx_model)
+    if col is None or cap not in R.BADGE20:
+        continue
+    side, direction, lean = R.BADGE20[cap][col]
+    want_direction = h["basis"] == "direction_rows"
+    if (direction != want_direction or (want_direction and side != h["toward"])
+            or (not want_direction and lean != h["lean"])):
+        drift.append("%s vs %s: BADGE20 says %s/%s/lean=%s, compiler says %s/%s/lean=%s"
+                     % (cap, cx_model, side, direction, lean, h["toward"], h["basis"], h["lean"]))
+check("BADGE20 agrees with the compiled badge_hint on every capability it can see", drift, [])
 
 # =====================================================================
 # MATRIX STATUSES
@@ -141,7 +204,7 @@ R.INTENTIONAL.clear()
 
 # Four cells at 25% each: big enough that nothing trips the 28% over-selection bar.
 FULL = {"Sonnet 5.5": {"efforts": ["low", "medium", "high", "xhigh", "max"], "modes": []}}
-TERRA = {"Terra": {"efforts": ["low", "medium", "high", "xhigh"], "modes": []}}
+TERRA = {"Sol": {"efforts": ["low", "medium", "high", "xhigh"], "modes": []}}  # the one Codex mid tier
 BALANCED = ([prompt("t-lo%d" % i, D=0, R=2) for i in range(4)]
             + [prompt("t-md%d" % i, D=1, R=2) for i in range(4)]
             + [prompt("t-hi%d" % i, D=2, R=2, C=2) for i in range(4)]
@@ -200,7 +263,7 @@ check("  ...and a complete support matrix is silent",
 HAIKU_POL = policy(claude={"Haiku 4.5": {"efforts": [], "modes": []},
                            "Sonnet 5.5": {"efforts": ["low"], "modes": []}},
                    codex={"Luna": {"efforts": ["low"], "modes": []},
-                          "Terra": {"efforts": ["low"], "modes": []}})
+                          "Sol": {"efforts": ["low"], "modes": []}})
 scored_haiku = prompt("t-haiku", D=0, W=0, C=0, R=0)
 check("Haiku reached by SCORING carries no effort, just like the gate branch",
       R.cell_of(R.route_claude(scored_haiku, "after")), "Haiku 4.5")
@@ -212,7 +275,7 @@ R.INTENTIONAL.update(REAL_INTENTIONAL)
 
 # Over-selection: one cell swallowing the corpus.
 pol = policy(claude={"Sonnet 5.5": {"efforts": ["low"], "modes": []}},
-             codex={"Terra": {"efforts": ["low"], "modes": []}})
+             codex={"Sol": {"efforts": ["low"], "modes": []}})
 corpus = [prompt("t-%d" % i, D=0, R=2) for i in range(10)]
 m = build(pol, corpus)
 check("a cell covering most of the corpus is OVER_SELECTED",
@@ -221,16 +284,17 @@ check("  ...reported as a WARN, not an ERROR",
       [lvl for lvl, k, _ in R.lint(pol, m, corpus, ALL_ACCEPT) if k == "over-selected"],
       ["WARN", "WARN"])
 
-# Route lost between the two rule sets.
-pol = policy(claude={"Sonnet 5.5": {"efforts": ["low", "medium"], "modes": ["ultracode"]}})
-corpus = [prompt("t-mech", D=1, W=3, C=1, dur_gt30=True, builds=True)]
+# Route lost between the two rule sets: a GUI task used to land on Astra, now on Sol.
+pol = policy(codex={"Astra": {"efforts": ["low", "medium", "high"], "modes": []},
+                    "Sol": {"efforts": ["low", "medium", "high"], "modes": []}})
+corpus = [prompt("t-gui", D=2, R=2, W=1, C=1, cap="computer-use", gates=["computer_use"])]
 m = build(pol, corpus)
 check("a cell reachable before and not after is flagged lost",
-      row(m, "claude", "Sonnet 5.5", "ultracode")["lost_by_this_pass"], True)
+      row(m, "codex", "Astra", "high")["lost_by_this_pass"], True)
 check("  ...and the linter warns about it",
       "route-lost" in kinds(R.lint(pol, m, corpus, ALL_ACCEPT)), True)
 check("a cell reachable after and not before is flagged recovered",
-      row(m, "claude", "Sonnet 5.5", "medium")["recovered_by_this_pass"], True)
+      row(m, "codex", "Sol", "high")["recovered_by_this_pass"], True)
 
 
 # =====================================================================
@@ -317,16 +381,15 @@ check("W=3 at D<=1 labelled O=high is a WARN",
 # FLIP REVIEW
 # =====================================================================
 
-pol = policy(claude={"Sonnet 5.5": {"efforts": ["low", "medium", "high"], "modes": ["ultracode"]}})
-corpus = [prompt("t-multi", D=2, W=2, C=2, O="high", dur_gt30=True, builds=True,
-                 agentic_write=True)]
+pol = policy(codex={"Sol": {"efforts": ["low", "medium", "high", "xhigh"], "modes": []}})
+corpus = [prompt("t-multi", D=2, W=2, C=2, builds=True, agentic_write=True, cap="agentic-code")]
 m = build(pol, corpus)
 check("a flip with no verdict is UNREVIEWED in the matrix",
       m["decision_flips"][0]["verdict"], "UNREVIEWED")
 check("  ...and the linter refuses it", "flip-unreviewed" in kinds(
       R.lint(pol, m, corpus, ALL_ACCEPT)), True)
 check("  ...while the rule attribution is computed, not declared",
-      m["decision_flips"][0]["rules_responsible"], ["ultracode"])
+      m["decision_flips"][0]["rules_responsible"], ["notch", "tier"])
 
 accepted = {"flips": {"t-multi": ["ACCEPT", "fixture sign-off"]}}
 m = build(pol, corpus, accepted)
@@ -366,7 +429,7 @@ check("declined and blocked prompts contribute to no cell",
 check("  ...and produce no matrix hit",
       row(build(pol, [prompt("t-x", R=2, step0_block=True)]),
           "claude", "Sonnet 5.5", "low")["observed_after"], 0)
-check("the badge histogram is produced", sorted(h["badge_after"]), ["claude"])
+check("the badge histogram is produced (D<=1 -> efficiency -> Codex)", sorted(h["badge_after"]), ["codex"])
 
 # Staleness: --check must fail when the committed matrix does not match.
 with tempfile.TemporaryDirectory() as tmp:
@@ -424,30 +487,30 @@ GOLDENS = [
      dict(cap="deep-reasoning", R=3, D=3, W=1, C=2, dur_gt30=True, indiv=True, builds=True)),
     ("t1", "Opus 5.5 · xhigh", "Sol · xhigh",
      dict(cap="terminal-tool", R=2, D=3, W=1, C=2, dur_gt30=True, builds=True)),
-    ("b1", "Sonnet 5.5 · high", "Terra · xhigh",
+    ("b1", "Sonnet 5.5 · high", "Sol · high",
      dict(cap="agentic-code", R=1, D=2, W=2, C=2, dur_gt30=True, builds=True,
           agentic_write=True)),
-    ("d2", "Sonnet 5.5 · high", "Terra · xhigh",
+    ("d2", "Sonnet 5.5 · high", "Sol · high",
      dict(cap="agentic-code", R=1, D=2, W=2, C=2, dur_gt30=True, builds=True,
           agentic_write=True)),
-    ("x2", "Sonnet 5.5 · high", "Terra · high",
+    ("x2", "Sonnet 5.5 · high", "Sol · high",
      dict(cap="workflow-automation", R=1, D=2, W=1, C=2, dur_gt30=True, builds=True)),
-    ("m1", "Sonnet 5.5 · xhigh", "Terra · xhigh",
+    ("m1", "Sonnet 5.5 · xhigh", "Sol · xhigh",
      dict(cap="deep-reasoning", R=3, D=3, W=1, C=1, dur_gt30=True)),
     ("q1", "Opus 5.5 · xhigh", "Sol · xhigh",
      dict(cap="deep-reasoning", R=3, D=3, W=1, C=1, dur_gt30=True, flags=["escalation"])),
-    ("n1", "Sonnet 5.5 · medium", "Terra · medium",
+    ("n1", "Sonnet 5.5 · medium", "Sol · medium",
      dict(cap="agentic-code", R=1, D=1, W=2, C=0, dur_gt30=True, builds=True)),
-    ("k1", "Sonnet 5.5 · medium", "Terra · medium",
+    ("k1", "Sonnet 5.5 · medium", "Sol · medium",
      dict(cap="agentic-code", R=1, D=1, W=1, C=1, builds=True)),
-    ("g1", "Sonnet 5.5 · high", "Astra · high",
+    ("g1", "Sonnet 5.5 · high", "Sol · high",
      dict(cap="computer-use", R=2, D=2, W=2, C=1, dur_gt30=True, builds=True,
           gates=["computer_use"])),
-    ("a2", "Sonnet 5.5 · medium", "Astra · medium",
+    ("a2", "Sonnet 5.5 · medium", "Sol · medium",
      dict(cap="long-context", R=0, D=1, W=3, C=3, gates=["corpus_1m", "context_over_200k"])),
     ("d4", "Fable 5.1 · high", "(no model)",
      dict(cap="science", R=1, D=2, W=1, C=2, gates=["biology"])),
-    ("f2", "Sonnet 5.5 · xhigh", "Terra · xhigh",
+    ("f2", "Sonnet 5.5 · xhigh", "Sol · xhigh",
      dict(cap="deep-reasoning", R=1, D=3, W=0, C=1)),
     ("p1", "Opus 5.5 · xhigh", "Sol · xhigh",
      dict(cap="deep-reasoning", R=1, D=3, W=0, C=0, dur_gt30=True, builds=True)),
@@ -458,7 +521,8 @@ GOLDENS = [
     ("sh1", "Opus 5.5 · high", "Sol · high",
      dict(cap="terminal-tool", R=1, D=2, W=1, C=1, builds=False, agentic_write=False,
           flags=["escalation"])),
-    ("e4p", "Opus 5.5 · max", "Astra · xhigh",
+    # iteration-20: E4 retired -- the same labels that used to reach Astra xhigh stay on Sol max
+    ("e4p", "Opus 5.5 · max", "Sol · max",
      dict(cap="agentic-code", R=3, D=3, W=2, C=2, indiv=True, dur_gt30=True, builds=True,
           agentic_write=True)),
     ("fr1", "Fable 5.1 · xhigh", "Astra · xhigh",

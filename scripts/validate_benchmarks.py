@@ -27,6 +27,7 @@ RAW = ROOT / "skill" / "benchmarks.json"
 FRONTIER = ROOT / "skill" / "benchmark_frontiers.json"
 
 VALID_TIERS = {"A", "B", "C"}
+VALID_RUN_BY = {"anthropic", "openai", "independent", "unknown"}
 EFFORT_RUNGS = {"low", "medium", "high", "xhigh", "max"}
 # Scoring modes that describe the same benchmark but are not comparable with
 # each other. Two of these inside one comparability group is a hard error.
@@ -118,6 +119,13 @@ def check_groups(d: dict, rep: Report) -> None:
         by_group[r.get("comparability_group")].append(r)
 
     for gid, gmeta in d["comparability_groups"].items():
+        # run_by decides whether a vendor_relative row favours or opposes its own
+        # vendor (against-interest), so a group without it silently drops out of
+        # every badge hint. Declared, never inferred.
+        if gmeta.get("run_by") not in VALID_RUN_BY:
+            rep.error("group-run-by",
+                      "group %r declares run_by %r, expected one of %s"
+                      % (gid, gmeta.get("run_by"), sorted(VALID_RUN_BY)))
         rows = by_group.get(gid, [])
         if not rows:
             rep.warn("empty-group", "comparability_group %r has no records" % gid)

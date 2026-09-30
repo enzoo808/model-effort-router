@@ -2,7 +2,7 @@
 """Audit which model x effort x mode combinations the routing rules can produce.
 
     POLICY MIRROR   evals/reachability/routing_policy.json   hand-maintained
-    CORPUS          evals/reachability/corpus.json           152 labelled prompts
+    CORPUS          evals/reachability/corpus.json           154 labelled prompts
     MATRIX          evals/reachability/reachability-matrix.json   GENERATED
 
 The routing eval (`evals/routing/`) measures CORRECTNESS: given a prompt, is the
@@ -44,6 +44,9 @@ CODEX_FLAGSHIPS = {"Sol", "Astra"}
 
 # Dominant capability -> which arm the badge defaults to, conditioned on which
 # Codex model is on the line. Mirrors SKILL.md Step 6's badge table.
+#
+# ITERATION-19 table (the BEFORE variant). Built on GPT-5.6 Sol: Claude led the
+# Terminal-Bench 4.0 row by ~29 points, so most rows read Claude against "Sol".
 BADGE = {
     "agentic-code":          ("claude", "codex"),
     "terminal-tool":         ("claude", "codex"),
@@ -57,6 +60,30 @@ BADGE = {
     "deep-reasoning":        ("claude", "claude"),
     "research-synthesis":    ("claude", "claude"),
     "doc-data-understanding": ("claude", "claude"),
+}
+
+# ITERATION-20 table (the AFTER variant): (vs Sol, vs Astra), each (side, direction,
+# lean), where `direction` is True when BD1 licensed a benchmark DIRECTION (two
+# independent measurements agree), False when the cell fell through to efficiency,
+# and `lean` is the side a SINGLE admissible measurement points to -- which decides
+# the cell at R=3, where a lean is not parity. The distinction matters only against a product mechanism: a benchmark
+# direction beats a mechanism, an efficiency fall-through does not.
+# Regenerated from `benchmark_frontiers.json` -> `badge_hint`, and asserted against
+# it by test_reachability_tool.py, so this table cannot drift from the compiler.
+BADGE20 = {
+    "agentic-code":          (("codex", False, "claude"), ("codex", False, None)),
+    "terminal-tool":         (("codex", False, "claude"), ("codex", False, None)),
+    "science":               (("claude", True, None), ("codex", False, None)),
+    "knowledge-work":        (("claude", True, None), ("claude", True, None)),
+    "workflow-automation":   (("claude", True, None), ("codex", False, None)),
+    "computer-use":          (("codex", False, None), ("claude", False, None)),
+    "latency-volume":        (("codex", True, None), ("codex", True, None)),
+    "parallel-independent":  (("codex", False, None), ("codex", False, None)),
+    "long-context":          (("codex", False, "claude"), ("claude", False, "claude")),
+    "deep-reasoning":        (("codex", False, "claude"), ("claude", True, None)),
+    "research-synthesis":    (("codex", False, "claude"), ("claude", False, "claude")),
+    "doc-data-understanding": (("codex", False, "codex"), ("claude", False, "codex")),
+    "orchestration":         (("claude", False, None), ("claude", False, None)),
 }
 
 
@@ -78,13 +105,25 @@ def bump(rung: str, cap_at: str) -> str:
 
 
 # --------------------------------------------------------------------------
-# The routing engine. A `variant` is the SET of iteration-18 deltas that are
+# The routing engine. A `variant` is the SET of iteration-20 deltas that are
 # switched on, so one engine produces both sides of the report -- and, by
 # switching exactly one delta off at a time, attributes every decision flip to
 # the rule that caused it without anybody hand-labelling which rule it was.
+#
+# BEFORE is the iteration-19 rule set (commit 8a2050d), AFTER is iteration-20. The
+# iteration-18 deltas (ultracode on O/W, Ultra on strands, the xhigh notch cap,
+# the frontier rung) are baked in unconditionally: they shipped a release ago and
+# no longer distinguish anything.
+#
+#   tier   Terra is gone -- GPT-6.1 Sol is the Codex daily driver, so the
+#          flagship-capability split that sent analysis to Terra disappears
+#   notch  the Codex +1 agentic-coding notch (N1) is retired
+#   e4     the Sol max -> Astra xhigh swap (E4) is retired
+#   gates  the Codex computer-use and >=1M-token gates to Astra are retired
+#   badge  the badge table is rebuilt against GPT-6.1 Sol, plus mechanism rows
 # --------------------------------------------------------------------------
 
-DELTAS = ("ultracode", "ultra", "notch_cap", "rung3", "E4")
+DELTAS = ("tier", "notch", "e4", "gates", "badge")
 BEFORE: frozenset = frozenset()
 AFTER: frozenset = frozenset(DELTAS)
 
@@ -105,21 +144,13 @@ def ultracode_fires(t: dict, variant) -> bool:
     repeated, and buying orchestration for it is pure quota waste. W alone
     cannot tell those apart -- both are W=3 -- so the per-unit depth does.
     """
-    if "ultracode" not in _variant(variant):
-        return t["W"] == 3 and t["dur_gt30"] and not (t["D"] == 3 and t["R"] == 3)
     return (t["dur_gt30"]
             and (t["O"] == "high" or (t["W"] == 3 and t["D"] >= 2))
             and not t["indiv"])
 
 
 def ultra_fires(t: dict, variant) -> bool:
-    if t["D"] != 3:
-        return False
-    if "ultra" not in _variant(variant):
-        # Only already-independent TARGETS counted. Strands of work inside one
-        # job did not.
-        return t["P"] == "high" and t.get("P_kind") == "targets"
-    return t["P"] == "high"
+    return t["D"] == 3 and t["P"] == "high"
 
 
 def rung3_escalation(t: dict) -> bool:
@@ -173,7 +204,7 @@ def route_claude(t: dict, variant) -> dict:
                 model = "Opus 5.5"
             elif model == "Haiku 4.5":
                 model = "Sonnet 5.5"
-        if "rung3" in v and model == "Opus 5.5" and rung3_escalation(t):
+        if model == "Opus 5.5" and rung3_escalation(t):
             model = "Fable 5.1"
 
     if model == "Haiku 4.5":
@@ -219,15 +250,22 @@ def route_codex(t: dict, variant) -> dict:
         model, floor, gate = "Astra", "xhigh", "offensive+daybreak"
     elif "biology" in gates:
         return {"model": None, "effort": None, "mode": None, "note": "declined:biology-unverified"}
-    elif "files_1000plus" in gates or "corpus_1m" in gates:
+    elif "files_1000plus" in gates:
         model, gate = "Astra", "frontier-scale"
-    elif "computer_use" in gates:
+    elif "gates" not in v and "corpus_1m" in gates:
+        model, gate = "Astra", "frontier-scale"
+    elif "gates" not in v and "computer_use" in gates:
         model, gate = "Astra", "computer-use"
     else:
         gate = None
         D, C, W, R = t["D"], t["C"], t["W"], t["R"]
         if D == 0 and W == 0 and C <= 1 and R <= 1:
             model = "Luna"
+        elif "tier" in v:
+            # One tier between Luna and Astra. Ultra only ever rides on D=3.
+            model = "Sol"
+            if D == 3 and max(D, C) == 3 and ultra_fires(t, variant):
+                mode = "ultra"
         elif max(D, C) <= 2 or D < 3:
             model = "Terra"
         elif ultra_fires(t, variant):
@@ -241,46 +279,85 @@ def route_codex(t: dict, variant) -> dict:
             if model == "Terra":
                 model = "Sol"
             elif model == "Luna":
-                model = "Terra"
-        if "rung3" in v and model == "Sol" and rung3_escalation(t):
+                model = "Sol" if "tier" in v else "Terra"
+        if model == "Sol" and rung3_escalation(t):
             model = "Astra"
 
     effort = {0: "low", 1: "medium", 2: "high", 3: "xhigh"}[t["D"]]
     if t["D"] == 3 and t["R"] == 3 and model in CODEX_FLAGSHIPS and t["indiv"]:
         effort = "max"
 
-    # +1 agentic-coding notch. Never on Astra.
-    if t.get("agentic_write") and model in ("Terra", "Sol"):
-        cap_at = "xhigh" if (model == "Terra" or "notch_cap" in v) else "max"
-        effort = bump(effort, cap_at)
+    # +1 agentic-coding notch (N1), retired in iteration-20. Never on Astra, and
+    # capped at xhigh on both models since iteration-18.
+    if "notch" not in v and t.get("agentic_write") and model in ("Terra", "Sol"):
+        effort = bump(effort, "xhigh")
 
     if floor:
         effort = rung_max(effort, floor)
 
-    # Rule E4 -- capability-scoped. Astra xhigh outscores Sol max on the AA index
-    # at near-parity cost and far fewer output tokens, but only where the
-    # task-specific evidence agrees (agentic-code / terminal-tool). HLE puts Astra
-    # behind on deep-reasoning, so E4 must not fire there.
-    if ("E4" in v and model == "Sol" and effort == "max"
+    # Rule E4 -- retired in iteration-20. Astra xhigh outscored GPT-5.6 Sol max on
+    # the AA index at near-parity cost and a third of the output tokens; GPT-6.1 Sol
+    # max is one point behind Astra at a quarter of the cost, so the swap is gone.
+    if ("e4" not in v and model == "Sol" and effort == "max"
             and t["cap"] in ("agentic-code", "terminal-tool")):
         model, effort = "Astra", "xhigh"
-        mode = mode  # Ultra, if it was on, rides along -- Astra supports it.
 
     return {"model": model, "effort": effort, "mode": mode, "note": gate or "scored"}
 
 
-def badge(t: dict, cl: dict, cx: dict) -> str | None:
+_TIER = {"Haiku 4.5": 1, "Luna": 1, "Sonnet 5.5": 2, "Sol": 2, "Terra": 2,
+         "Opus 5.5": 3, "Opus 4.8": 3, "Astra": 3, "Fable 5.1": 4, "Mythos 5.1": 4, "opusplan": 3}
+
+
+def _lighter(cl: dict, cx: dict) -> str:
+    """The 'anything else / no evidence' row: the lighter chosen model x effort.
+
+    A tie goes to Codex -- against Sol or Luna the Codex side is the more
+    token-efficient at the one rung both arms publish.
+    """
+    rung = lambda e: RUNGS.index(e) if e in RUNGS else 0  # noqa: E731
+    a = (_TIER.get(cl["model"], 3), rung(cl["effort"]))
+    b = (_TIER.get(cx["model"], 3), rung(cx["effort"]))
+    return "claude" if a < b else "codex"
+
+
+def badge(t: dict, cl: dict, cx: dict, variant=AFTER) -> str | None:
     if cl["model"] is None and cx["model"] is None:
         return None
     if cx["model"] is None:
         return "claude"
     if cl["model"] is None:
         return "codex"
+
+    if "badge" not in _variant(variant):
+        if t["D"] <= 1:
+            return "codex" if cl["model"] == "Haiku 4.5" else "claude"
+        col = 1 if cx["model"] == "Astra" else 0
+        row = BADGE.get(t["cap"])
+        return row[col] if row else "claude"
+
+    # Iteration-20. D<=1 skips the capability rows: efficiency decides, and against
+    # Sol or Luna that is the Codex side.
     if t["D"] <= 1:
-        return "codex" if cl["model"] == "Haiku 4.5" else "claude"
+        return "codex"
+
     col = 1 if cx["model"] == "Astra" else 0
-    row = BADGE.get(t["cap"])
-    return row[col] if row else "claude"
+    row = BADGE20.get(t["cap"])
+    side, direction, lean = row[col] if row else (_lighter(cl, cx), False, None)
+    # BD1's R=3 clause: the efficiency fall-through is replaced by the lean.
+    if t["R"] == 3 and not direction and lean:
+        side, direction = lean, True
+
+    # Product mechanisms: only one arm has each. Ultra (Codex); ultracode driven by
+    # O1, or opusplan (Claude). Two mechanisms on one task cancel.
+    mechs = set()
+    if cx["mode"] == "ultra":
+        mechs.add("codex")
+    if t["O"] == "high" or cl["mode"] == "opusplan":
+        mechs.add("claude")
+    if len(mechs) == 1 and not direction:
+        return next(iter(mechs))
+    return side
 
 
 def cell_name(model: str | None, effort: str | None, mode: str | None) -> str:
@@ -297,7 +374,7 @@ def cell_name(model: str | None, effort: str | None, mode: str | None) -> str:
 
 
 def attribute(t: dict) -> list:
-    """Which iteration-18 delta(s) changed this prompt's route.
+    """Which iteration-20 delta(s) changed this prompt's route.
 
     Switch exactly one delta off and see whether the route falls back to what the
     old rules produced. Deterministic, so nobody has to hand-label "the rule
@@ -331,7 +408,7 @@ def route_all(corpus: list, variant) -> list:
     for t in corpus:
         cl, cx = route_claude(t, variant), route_codex(t, variant)
         out.append({"id": t["id"], "claude": cl, "codex": cx,
-                    "badge": badge(t, cl, cx)})
+                    "badge": badge(t, cl, cx, variant)})
     return out
 
 
@@ -383,57 +460,61 @@ INTENTIONAL = {
     "claude|Haiku 4.5|xhigh": ("UNSUPPORTED", "Haiku 4.5 has no effort parameter."),
     "claude|Haiku 4.5|max": ("UNSUPPORTED", "Haiku 4.5 has no effort parameter."),
     "claude|Haiku 4.5|ultracode": ("UNSUPPORTED", "ultracode needs xhigh support; Haiku has none."),
-    "codex|Terra|max": ("UNSUPPORTED",
-        "learn.chatgpt.com: max and Ultra are Astra/Sol only. Rule E2 independently shows "
-        "Terra max is dominated by Sol high (42 at $1.40 vs 42 at $0.81)."),
-    "codex|Luna|max": ("UNSUPPORTED", "max is Astra/Sol only."),
+    "codex|Luna|max": ("INTENTIONALLY_UNREACHABLE",
+        "The product supports it (learn.chatgpt.com: Luna tops out at max, no Ultra), but Rule M1 needs a "
+        "flagship and Luna is the volume tier -- it is only ever emitted at D=0."),
     "codex|Luna|medium": ("INTENTIONALLY_UNREACHABLE",
-        "Luna is the volume tier. Its long-context recall drops to ~41% against Sol's ~91%, so "
-        "the router deliberately never sends D>=1 codebase work to it -- that work goes to Terra."),
+        "Luna is the volume tier. On AA's same-page run it scores 13 on Terminal-Bench 4.0 against GPT-6.1 "
+        "Sol's 56 and 1 on AA-Omniscience against 42, so the router never sends D>=1 work to it -- that "
+        "work goes to Sol."),
     "codex|Luna|high": ("INTENTIONALLY_UNREACHABLE", "Same reason."),
     "codex|Luna|xhigh": ("INTENTIONALLY_UNREACHABLE", "Same reason."),
-    "codex|Luna|ultra": ("UNSUPPORTED", "Ultra is Astra/Sol only."),
-    "codex|Terra|ultra": ("UNSUPPORTED", "Ultra is Astra/Sol only."),
-    "codex|Sol|low": ("INTENTIONALLY_RARE",
-        "Sol is reached at D=3, or by escalation from Terra which keeps the rung. A D=0 escalation "
-        "is coherent but vanishingly rare."),
-    "codex|Sol|medium": ("INTENTIONALLY_RARE", "Same reason as Sol low."),
+    "codex|Luna|ultra": ("UNSUPPORTED", "Ultra is Sol/Astra only (learn.chatgpt.com: Luna 'up to Max, not Ultra')."),
+    "codex|Astra|medium": ("INTENTIONALLY_RARE",
+        "Astra is reached by the Daybreak gate, the 1000+ file positioning gate, or Rule A1. The workload that "
+        "used to land here -- a >=1M-token corpus read at D=1 -- is now Sol medium, because Sol has the same "
+        "1.05M window; a 1000+ file task at D=1 is coherent but rare."),
     "codex|Astra|low": ("INTENTIONALLY_RARE",
-        "Astra is gate-reached. A 1000+ file or 1M-corpus task at D=0 is coherent but rare."),
+        "Astra is reached by the Daybreak gate, the 1000+ file positioning gate, or Rule A1. A D=0 task on any "
+        "of those is coherent but rare."),
     "codex|Sol Ultra|low": ("INTENTIONALLY_UNREACHABLE", "Ultra requires D=3, which maps to xhigh or above."),
     "codex|Sol Ultra|medium": ("INTENTIONALLY_UNREACHABLE", "Ultra requires D=3."),
     "codex|Sol Ultra|high": ("INTENTIONALLY_UNREACHABLE",
         "Ultra requires D=3. Holding Ultra at D=3 is deliberate: it runs ~4 collaborating agents, "
-        "so it costs roughly 4x, and at D<=2 Terra already clears the bar."),
+        "so it costs roughly 4x, and at D<=2 Sol at its ordinary rung already clears the bar."),
     "codex|Sol Ultra|max": ("INTENTIONALLY_UNREACHABLE",
         "Ultra and `max` ask for contradictory labels, so no consistent prompt reaches this cell. "
         "Ultra needs P=high -- 3+ strands that proceed without waiting on each other and merge at "
         "the end. `max` needs `indivisible_single_chain` -- the difficulty is ONE indivisible "
         "novel-design or formal decision. A task cannot be both, and routing_policy.json's P "
         "definition says so outright ('one coherent decision sliced up after the fact ... is ONE "
-        "boundary decision, not four strands'). Two prompts DID reach Sol Ultra max under the old "
-        "rules, but neither was indivisible: the rung came from the +1 agentic notch climbing to "
-        "`max`, which iteration-18 caps at xhigh because Step 7 Rule 2 makes escalation a model "
-        "change, not an effort change, and because Rule E3 refuses `max` for breadth-driven work. "
-        "Both prompts were breadth-driven migrations, so that is the rule working. Enforced by the "
-        "corpus-contradiction lint below, not just asserted here."),
+        "boundary decision, not four strands'). Enforced by the corpus-contradiction lint below, "
+        "not just asserted here."),
     "codex|Astra Ultra|low": ("INTENTIONALLY_UNREACHABLE", "See Astra Ultra xhigh."),
     "codex|Astra Ultra|medium": ("INTENTIONALLY_UNREACHABLE", "See Astra Ultra xhigh."),
     "codex|Astra Ultra|high": ("INTENTIONALLY_UNREACHABLE", "See Astra Ultra xhigh."),
     "codex|Astra Ultra|xhigh": ("INTENTIONALLY_UNREACHABLE",
-        "Ultra does run on Astra (learn.chatgpt.com, 10 Sep 2026), but both routes to Astra close "
-        "this cell. (1) Every GATE route to Astra is a deciding gate, and a deciding gate bypasses "
-        "Step 4, where path (a) -- the only thing that switches Ultra on -- lives. (2) Iteration-18 "
-        "added a second, non-gate route: Rule E4 rewrites `Sol - max` to `Astra - xhigh`, and mode "
-        "rides along. That door is shut too, because `Sol Ultra - max` is itself unreachable (see "
-        "its entry: Ultra needs P=high, `max` needs indivisible, and nothing is both). Recorded as "
-        "a known structural gap rather than papered over: the workload that would need it (1000+ "
-        "files AND 3+ genuinely independent targets) is real but narrow, and opening it would mean "
-        "letting a mode survive a deciding gate, which is a larger change than this audit's "
-        "evidence supports."),
+        "Ultra does run on Astra (learn.chatgpt.com, 10 Sep 2026), but the routes to Astra close this "
+        "cell. (1) Every GATE route to Astra is a deciding gate, and a deciding gate bypasses Step 4, "
+        "where path (a) -- the only thing that switches Ultra on -- lives. (2) Iteration-20 retired "
+        "Rule E4, the one non-gate route that let a mode ride along. (3) Rule A1 can turn `Sol Ultra` "
+        "into `Astra Ultra`, but only on a user's stated flagship-tier shortfall on a P=high task -- "
+        "coherent, and absent from the corpus. Recorded as a known structural gap rather than papered "
+        "over: the workload that would need it (1000+ files AND 3+ genuinely independent targets) is "
+        "real but narrow, and opening it would mean letting a mode survive a deciding gate."),
     "codex|Astra Ultra|max": ("INTENTIONALLY_UNREACHABLE",
         "Both reasons stack: the Astra Ultra gap above, and the Ultra-vs-indivisible contradiction "
         "recorded under Sol Ultra max."),
+}
+
+
+# A cell that legitimately carries more than the over-selection bar because a tier
+# was MERGED, not because something better is being shadowed.
+EXPECTED_HEAVY = {
+    "codex|Sol|high": (
+        "Terra is gone, so Sol is the single Codex tier between Luna and Astra and its `high` rung carries "
+        "every D=2 prompt the two used to share. Claude's Sonnet 5.5 · high carries a comparable share of "
+        "the corpus for the same reason."),
 }
 
 
@@ -495,7 +576,8 @@ def build_matrix(policy: dict, corpus: list, results_after: list, results_before
                         supported = False
                     if hits_after:
                         status = "PLATFORM_FORCED" if forced else "HEALTHY"
-                        if not forced and len(hits_after) > len(corpus) * 0.28:
+                        if (not forced and len(hits_after) > len(corpus) * 0.28
+                                and key not in EXPECTED_HEAVY):
                             status = "OVER_SELECTED"
                     elif claimed:
                         status = claimed[0]
@@ -516,7 +598,8 @@ def build_matrix(policy: dict, corpus: list, results_after: list, results_before
                         "recovered_by_this_pass": bool(hits_after) and not hits_before,
                         "lost_by_this_pass": bool(hits_before) and not hits_after,
                         "status": status,
-                        "rationale": claimed[1] if claimed else None,
+                        "rationale": claimed[1] if claimed else (
+                            EXPECTED_HEAVY.get(key) if hits_after else None),
                     })
 
     # opusplan is a Claude Code mode with no effort cell of its own. It gets a row
@@ -576,8 +659,8 @@ def build_matrix(policy: dict, corpus: list, results_after: list, results_before
         "generator": "scripts/check_routing_reachability.py",
         "how_to_read": (
             "GENERATED -- do not hand-edit. One row per supported model x effort/mode cell. "
-            "'observed_after' counts how many of the 152 corpus prompts land on that cell under the "
-            "current rules; 'observed_before' does the same under the rules at commit 35ff226. A zero "
+            "'observed_after' counts how many of the 154 corpus prompts land on that cell under the "
+            "current rules; 'observed_before' does the same under the iteration-19 rules (commit 8a2050d). A zero "
             "with no rationale is a bug: either the corpus is missing the workload (fix the corpus) or "
             "no rule can reach the cell (fix the rules). Counts are a diagnostic, never a target -- "
             "this file must not be used to flatten the distribution."

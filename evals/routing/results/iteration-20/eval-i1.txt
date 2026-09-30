@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: ultracode
+Codex: ✅ RECOMMENDED AI · Sol Ultra · effort: xhigh
+Evidence: 120 vendors reconciled independently is a parallelism problem and Ultra runs ~4 collaborating agents against ultracode's single chain; no coding benchmark applies to contract triage.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

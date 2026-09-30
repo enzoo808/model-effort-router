@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Opus 4.8 · effort: ultracode
+Codex: use Claude · standard access hard-stop (no Daybreak Blue access stated)
+Evidence: Building auth-bypass chains against a live 180-service environment is exploit generation, a deciding gate that hard-stops Codex without stated Daybreak Blue access so Claude wins by availability, and W=3 at D=3 raises Opus 4.8's floor from xhigh to ultracode.
+Do not apply without human review.

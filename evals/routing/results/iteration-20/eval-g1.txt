@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: high
+Codex: ✅ RECOMMENDED AI · Sol · effort: high
+Evidence: Driving a desktop GUI is computer-use, and there is no comparable OSWorld row (Claude's is 2.1, OpenAI's 2.0), so the lighter configuration decides and Sol is lighter than Sonnet 5.5; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

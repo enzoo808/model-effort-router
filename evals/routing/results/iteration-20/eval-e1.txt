@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+Codex: Sol · effort: high
+Evidence: One finished memo is knowledge-work, where GDPval-AA and AA-Briefcase both show Sonnet clearly ahead of Sol (1846/1822 vs 1575/1564); the long-context row is a tie (AA-LCR 83=83) that falls to efficiency, so the knowledge-work direction decides; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

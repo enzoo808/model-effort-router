@@ -30,7 +30,7 @@ import json
 import sys
 from pathlib import Path
 
-GENERATOR_VERSION = "1.1"
+GENERATOR_VERSION = "1.2"
 
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "skill" / "benchmarks.json"
@@ -154,6 +154,10 @@ def compare_group(rows: list, group: dict, eco_map: dict, rule: dict,
         "source_tier": group["source_tier"],
         "observed_spread": round(spread, 4),
         "rows": sorted(r["id"] for r in rows),
+        # True only when both ecosystems are present at matched efforts in an
+        # unsaturated, non-excluded cell. badge_hint() reads this; a cell that is not
+        # comparable can never count as a direction row.
+        "comparable": False,
     }
 
     why_excluded = excluded_reason(out["benchmark"], out["benchmark_version"], excluded or [])
@@ -172,6 +176,7 @@ def compare_group(rows: list, group: dict, eco_map: dict, rule: dict,
 
     band, basis = band_for(group, out["benchmark"], rule, spread)
     gap = best[CLAUDE]["score"] - best[CODEX]["score"]
+    out["comparable"] = True
     ce, xe = best[CLAUDE].get("effort"), best[CODEX].get("effort")
     if ce is not None and xe is not None and ce != xe:
         # SKILL.md 5a: two scores are comparable only when the effort matches too.
@@ -181,6 +186,7 @@ def compare_group(rows: list, group: dict, eco_map: dict, rule: dict,
                        for eco, r in sorted(best.items())}
         out["gap_claude_minus_codex"] = round(gap, 4)
         out["direction"] = UNRESOLVED
+        out["comparable"] = False
         out["reason"] = ("efforts not matched (%s vs %s) -- not directly comparable, so the gap "
                          "sets no direction" % (ce, xe))
         return out
@@ -277,6 +283,78 @@ def compile_capability(cap: str, records: list, meta: dict) -> dict:
     }
 
 
+# Who may set a badge direction when no interval is published. Declared here in code
+# because it is POLICY about evidence, and it is asserted by test_frontier_compiler.py.
+AB_TIERS = ("A", "B")
+
+
+def _sign(gap: float) -> str | None:
+    if gap is None or gap == 0:
+        return None
+    return CLAUDE if gap > 0 else CODEX
+
+
+def _admissible(cell: dict) -> bool:
+    """May this comparable cell count as a DIRECTION row for the badge?
+
+    Yes when the run is independent (model_intrinsic / ecosystem_end_to_end, tier
+    A or B, run_by == independent), or when a vendor's own table favours its
+    COMPETITOR -- against-interest evidence. A vendor row that favours its own
+    vendor, an aggregate, and anything not comparable never counts.
+    """
+    if not cell["comparable"] or _sign(cell["gap"]) is None:
+        return False
+    if cell["evidence_class"] in ("model_intrinsic", "ecosystem_end_to_end"):
+        return cell["run_by"] == "independent" and cell["source_tier"] in AB_TIERS
+    if cell["evidence_class"] == "vendor_relative":
+        toward = _sign(cell["gap"])
+        return ((cell["run_by"] == "openai" and toward == CLAUDE)
+                or (cell["run_by"] == "anthropic" and toward == CODEX))
+    return False
+
+
+def badge_hint(cells: list) -> dict:
+    """What the evidence licenses for the RECOMMENDED AI badge, mechanically.
+
+    A published interval is not the only thing that can set a direction for a
+    badge (Step 6 ranks by provenance), but a single unresolved row must not
+    decide one either. The rule: a direction needs at least TWO admissible
+    measurements that agree, at least one of them tier A/B, and none that disagree.
+    A measurement is a (benchmark, kind) pair, kind being `independent` or
+    `against_interest`: the same evaluator re-publishing one benchmark on a second
+    page is ONE measurement, while an independent run and a rival vendor's table
+    of the same benchmark are two. Anything else is `efficiency` (the tie-break
+    the router already runs); `contested` when admissible rows point both ways --
+    which the router also resolves by efficiency, but says so.
+
+    Zero-gap comparable cells are counted as ties. A tie is not opposition.
+
+    `lean` is the side a SINGLE admissible measurement points to when no direction
+    is licensed and nothing points the other way. It is not a direction -- one row
+    cannot be -- but at R=3 SKILL.md widens the bar for calling parity ("when
+    genuinely unsure, take the stronger candidate"), and a lean is not parity.
+    """
+    rows = [c for c in cells if _admissible(c)]
+    ties = sorted(c["cell"] for c in cells if c["comparable"] and c["gap"] == 0)
+    by_sign: dict[str, list] = {CLAUDE: [], CODEX: []}
+    for c in rows:
+        by_sign[_sign(c["gap"])].append(c)
+    out = {"admissible_rows": {k: sorted(c["cell"] for c in v) for k, v in by_sign.items()},
+           "ties": ties}
+    if by_sign[CLAUDE] and by_sign[CODEX]:
+        out.update(basis="contested", toward=None, lean=None)
+        return out
+    for eco, v in by_sign.items():
+        kinds = {(c["benchmark"], "against_interest" if c["evidence_class"] == "vendor_relative"
+                  else "independent") for c in v}
+        if len(kinds) >= 2 and any(c["source_tier"] in AB_TIERS for c in v):
+            out.update(basis="direction_rows", toward=eco, lean=None)
+            return out
+    sole = [eco for eco, v in by_sign.items() if v]
+    out.update(basis="efficiency", toward=None, lean=sole[0] if len(sole) == 1 else None)
+    return out
+
+
 def compile_by_codex_model(cap: str, cells: dict, meta: dict) -> list:
     """The same roll-up, but conditioned on WHICH Codex model is on the line.
 
@@ -314,7 +392,10 @@ def compile_by_codex_model(cap: str, cells: dict, meta: dict) -> list:
             c = compare_group(subset, gmeta, eco_map, rule,
                               spread_override=full_spread(rows), excluded=excluded)
             used.append({"cell": c["cell"], "direction": c["direction"], "reason": c["reason"],
-                         "best": c.get("best")})
+                         "best": c.get("best"), "comparable": c["comparable"],
+                         "gap": c.get("gap_claude_minus_codex"), "benchmark": c["benchmark"],
+                         "evidence_class": c["evidence_class"], "source_tier": c["source_tier"],
+                         "run_by": gmeta.get("run_by", "unknown")})
             if c["direction"] == UNRESOLVED:
                 continue
             tally[c["direction"]] = tally.get(c["direction"], 0) + precedence_weight(
@@ -335,6 +416,7 @@ def compile_by_codex_model(cap: str, cells: dict, meta: dict) -> list:
             "preferred": preferred,
             "confidence": confidence,
             "tally": dict(sorted(tally.items())),
+            "badge_hint": badge_hint(used),
             "cells": used,
         })
     return out
@@ -426,6 +508,74 @@ def compile_effort_curves(records: list, meta: dict) -> list:
     return curves
 
 
+def compile_pareto(records: list, meta: dict) -> list:
+    """Cost/score dominance across MODELS, inside one comparison cell.
+
+    `compile_effort_curves` answers "is a higher rung of THIS model worth it".
+    This answers the question Rules E1-E3 and every roster swap actually turn on:
+    "is there ANOTHER configuration that scores at least as much for no more?"
+
+    A configuration (model x effort) is dominated when some other configuration in
+    the same (group, benchmark, version) cell scores >= and costs <= with at least
+    one of the two strictly better. That needs no equivalence band, for the same
+    reason a "no gain at higher cost" rung needs none: "not worse and cheaper" is a
+    fact about two numbers, not an inference about how precisely either was
+    measured. Two identical (score, cost) points do not dominate each other.
+
+    Only rows that carry BOTH a score and a cost/task are considered, and never
+    across cells, so an AA-index cost is never set against a DeepSWE cost. Rows of
+    models outside the current roster are kept in the output flagged
+    `on_roster: false` -- a roster model that dominates a retired one is the
+    evidence for the retirement -- but a benchmark declared excluded or a group
+    declared saturated is skipped outright.
+    """
+    roster = set(meta["model_ecosystem"]["current_roster"])
+    groups_meta = meta["comparability_groups"]
+    order = meta["effort_rung_order"]
+    excluded = meta.get("excluded_from_direction", [])
+
+    cells: dict[tuple, list] = {}
+    for r in records:
+        if r.get("score") is None or r.get("cost_per_task_usd") is None or not r.get("model"):
+            continue
+        if r.get("effort") not in order:
+            continue
+        gmeta = groups_meta.get(r["comparability_group"])
+        if gmeta is None or gmeta.get("saturated"):
+            continue
+        if excluded_reason(r["benchmark"], r.get("benchmark_version"), excluded):
+            continue
+        cells.setdefault((r["comparability_group"], r["benchmark"],
+                          r.get("benchmark_version") or ""), []).append(r)
+
+    out = []
+    for key in sorted(cells):
+        rows = cells[key]
+        if len(rows) < 2:
+            continue
+        gmeta = groups_meta[key[0]]
+        points = []
+        for r in rows:
+            doms = sorted(q["id"] for q in rows
+                          if q is not r
+                          and q["score"] >= r["score"] and q["cost_per_task_usd"] <= r["cost_per_task_usd"]
+                          and (q["score"] > r["score"] or q["cost_per_task_usd"] < r["cost_per_task_usd"]))
+            points.append({
+                "id": r["id"], "model": r["model"], "effort": r["effort"], "score": r["score"],
+                "cost_per_task_usd": r["cost_per_task_usd"], "on_roster": r["model"] in roster,
+                "status": "dominated" if doms else "frontier", "dominated_by": doms,
+            })
+        points.sort(key=lambda p: (p["cost_per_task_usd"], -p["score"], p["id"]))
+        out.append({
+            "cell": "%s | %s%s" % (key[0], key[1], " " + key[2] if key[2] else ""),
+            "group": key[0], "benchmark": key[1], "benchmark_version": key[2] or None,
+            "evidence_class": gmeta["evidence_class"], "source_tier": gmeta["source_tier"],
+            "frontier": [p["id"] for p in points if p["status"] == "frontier"],
+            "points": points,
+        })
+    return out
+
+
 def compile_rule_provenance(meta: dict, by_id: dict) -> list:
     out = []
     for rule in meta.get("routing_rules", {}).get("rules", []):
@@ -494,6 +644,7 @@ def build(raw: dict, digest: str, evidence_filter=None, filter_name: str = "full
         ),
         "capability_frontiers": frontiers,
         "effort_curves": compile_effort_curves(records, raw),
+        "pareto": compile_pareto(records, raw),
         "rule_provenance": compile_rule_provenance(raw, by_id),
     }
 
@@ -536,6 +687,7 @@ def main() -> int:
     print("  input_sha256      %s" % digest[:16])
     print("  capabilities      %d" % len(data["capability_frontiers"]))
     print("  effort curves     %d" % len(data["effort_curves"]))
+    print("  pareto cells      %d" % len(data["pareto"]))
     print("  rules traced      %d" % len(data["rule_provenance"]))
     for f in data["capability_frontiers"]:
         print("  %-24s %-11s %s" % (f["capability"], f["preferred"], f["confidence"]))

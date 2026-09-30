@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+Codex: Sol · effort: high
+Evidence: Against GPT-6.1 Sol, AA's AutomationBench-AA (70 / 71 vs 65) and OpenAI's own max-rung table (Opus 5.5 42.5 vs Sol 36.1, against-interest) both lean Claude on workflow automation; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

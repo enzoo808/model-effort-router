@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: max
+Codex: Sol · effort: max
+Evidence: One indivisible design decision at R=3 is the case max exists for; against GPT-6.1 Sol the deep-reasoning row has no interval (HLE 61 vs 53, CritPt 32 = 32), but at R=3 a lean is not parity and HLE leans Claude, so the badge is low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
+Do not apply without human review.

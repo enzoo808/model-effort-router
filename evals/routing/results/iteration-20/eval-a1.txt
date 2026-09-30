@@ -1,0 +1,5 @@
+Claude: Opus 4.8 · effort: ultracode
+Codex: ✅ RECOMMENDED AI · Astra · effort: xhigh
+Evidence: 180 services probed independently is terminal-tool plus parallel-independent; AA's Terminal-Bench 4.0 sets no interval against Astra, so tokens decide (~27k vs Opus's much larger footprint), and Astra's parallel-agent mechanism reinforces it; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).
+Do not apply without human review.

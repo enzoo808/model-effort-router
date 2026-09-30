@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: high
+Codex: ✅ RECOMMENDED AI · Sol · effort: high
+Evidence: AA's Terminal-Bench 4.0 has Sol 56 against Sonnet 5.5's 64 with no interval, and one row is not a direction, so token load decides — ~38k output tokens and $0.72 per task against ~193k and $7.60; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

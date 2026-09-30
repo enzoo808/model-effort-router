@@ -1,0 +1,4 @@
+Claude: Opus 5.5 · effort: xhigh
+Codex: ✅ RECOMMENDED AI · Sol · effort: xhigh
+Evidence: Environment-dependent debugging is D=3 terminal work, and against GPT-6.1 Sol neither row sets a direction (Terminal-Bench 60 vs 56 with no interval; HLE 61 vs 53 but CritPt 32 = 32), so token load decides — ~38k output tokens per task against ~119k; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota) · Claude /fast (2.5x faster, 2× price).

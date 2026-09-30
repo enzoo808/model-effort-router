@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: ultracode
+Codex: ✅ RECOMMENDED AI · Sol Ultra · effort: xhigh
+Evidence: 180 independent services each needing their own judgement is a parallelism problem, and Ultra runs ~4 collaborating agents against ultracode's single chain, while the terminal-tool row also reads Codex on token load (~38k vs ~193k output tokens per task).
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

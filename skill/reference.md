@@ -12,14 +12,23 @@
 > that report is not inherited by Opus 5** — a separate model, a separate
 > benchmark profile.
 >
-> **Latest research pass: 29 September 2026 — the Claude 5.5 generation
+> **Latest research pass: 30 September 2026 — the GPT-6.1 Sol generation
+> (iteration-20).** OpenAI replaced GPT-6 Sol with **GPT-6.1 Sol** seven days after
+> launching it ($2/$10, 1.05M, Codex default, "near-Astra") and Terra left the
+> recommended list. **§18** is the research record: the Codex arm is now
+> Luna / Sol / Astra; the Codex +1 notch (N1), Rule E4 and two Astra gates are
+> retired; the badge became a computed rule (BD1, MECH1); the compiler gained a
+> Pareto frontier and `badge_hint`; `benchmarks.json` grew 190 → 311 records. **§9 and
+> §10.6 below are dated records of the GPT-5.6 generation — read them through §18.**
+>
+> **Earlier: 29 September 2026 — the Claude 5.5 generation
 > (iteration-19).** Claude Opus 5.5 (22 Sep) and Claude Sonnet 5.5 (28 Sep)
 > replaced Opus 5 and Sonnet 5 on the roster. **§17** is the research record:
 > verified facts, the new AA v4.3.2 effort curve, the rules it changed (E1 and E3
 > restated; A1 narrowed; four badge cells now say `low-confidence`), two compiler
 > defects it exposed, and what was deliberately *not* changed. OpenAI's GPT-6 Sol
-> and Luna (22 Sep) are recorded but **not routed** — a Codex-arm iteration of
-> their own. The tables in §1, §3 and §4 below were updated for the new roster;
+> and Luna (22 Sep) were recorded but **not routed** in that pass — routed in
+> iteration-20, §18. The tables in §1, §3 and §4 below were updated for the new roster;
 > **every other section is a dated record and still names Opus 5 / Sonnet 5 where
 > that was true at the time.**
 >
@@ -759,6 +768,13 @@ rule is complete, one interpretation, concrete scope. Go straight to scoring.
 ---
 
 ## 9. Codex / ChatGPT ecosystem (dual-provider expansion, 5 August 2026)
+
+> **Iteration-20 note (30 Sep 2026):** §9.1–§9.6, §9.8 and §10.6 describe the
+> **GPT-5.6 generation** (Sol / Terra / Luna) plus Astra as they stood then. Terra,
+> GPT-5.6 Sol / Luna and GPT-6 Sol are **legacy**; the Codex roster is now GPT-6
+> Luna / GPT-6.1 Sol / GPT-6 Astra, and the +1 notch (§10.6), Rule E4 and the
+> computer-use / ≥1M-token Astra gates described below are **retired**. The record
+> is kept as written; §18 is the current state.
 
 > **Source status:** the user provided a "current Codex Plus models report" —
 > compiled from SEO/aggregator sites (gradually.ai, felloai.com, analyticsvidhya,
@@ -2599,15 +2615,213 @@ upper bound used).
 
 ### 17.8. Follow-ups, in priority order
 
-1. **Codex arm for GPT-6 Sol / Luna.** The router still names GPT-5.6 Sol/Terra/
-   Luna. If GPT-6 Sol is $2/$10 (Sonnet-priced) and "Astra-level reliability", the
-   `D=3 → Sol` pick, the E2/E4 dominance numbers, the N1 notch's Terminal-Bench
-   basis and the `Sonnet 5.5 vs Terra` price tie-break all need re-deriving. That
-   is a Codex iteration, not a footnote to this one.
-2. **Cold-agent routing eval** (64 cases) against the new SKILL.md, then the
-   trigger eval.
+1. ~~**Codex arm for GPT-6 Sol / Luna.**~~ **Done in iteration-20 (§18)** — and
+   larger than expected: GPT-6 Sol had been replaced by GPT-6.1 Sol by then.
+2. ~~**Cold-agent routing eval** against the new SKILL.md, then the trigger eval.~~
+   **Cold-agent eval done in iteration-20** (38/38, §18.9). The trigger eval is **still
+   outstanding** — the nested `claude -p` it needs could not authenticate in that session.
 3. **Haiku 5.5** when it ships — and a decision before **15 Oct 2026**, when
    Haiku 4.5's retirement floor passes.
 4. **Terminal-Bench 4.0 owner-leaderboard CI whiskers** — still the highest-value
    missing datum; it would settle `agentic-code` vs Astra on real uncertainty.
 5. **A benchmark at 1000+ files** for the Fable 5.1 scale gate (17.5).
+
+---
+
+## 18. The GPT-6.1 Sol generation — iteration-20 (30 September 2026)
+
+The Codex-arm iteration that §17.8 item 1 asked for, and a larger one than it
+expected: by the time it started, **GPT-6 Sol had already been replaced**. Research
+with WebSearch **and** WebFetch both working. Primary sources read directly:
+`developers.openai.com/api/docs/{changelog, guides/latest-model, models/gpt-6.1-sol}`,
+`learn.chatgpt.com/docs/{models, changelog}`, and OpenAI's **GPT-6.1 Sol system-card
+addendum** (`cdn.openai.com/pdf/…/oai_GPT_6_1_Sol.pdf`, downloaded and read). Independent:
+Artificial Analysis release / model / head-to-head comparison pages (read 30 Sep), Vals
+and Snorkel Terminal-Bench 4.0 pages. `openai.com` itself returned 403 throughout, so
+OpenAI's launch *tables* are known only through tier C relays that agree with each other.
+
+### 18.1. What shipped
+
+| Date | Event | Router consequence |
+|---|---|---|
+| 22 Sep | **GPT-6 Sol / GPT-6 Luna**, $2/$10 and $0.10/$0.50, 1.05M context, `none`…`max` | Luna replaces GPT-5.6 Luna. Sol lasted seven days. |
+| 25 Sep | Both added to Codex CLI 0.157.0 | — |
+| 29 Sep | **GPT-6.1 Sol** (`gpt-6.1-sol`), $2/$10, cached input halved to $0.10, 1.05M (922k in / 128k out), cutoff 30 Apr 2026. **Codex default.** learn.chatgpt.com: "near-Astra performance … at a lower cost". Same safeguards stack and the same Preparedness levels as Astra: **Critical** cyber, **High** bio/chem | Replaces GPT-5.6 Sol, Terra and GPT-6 Sol as the Codex mid tier. |
+| 29 Sep | **Ultrafast** (Astra now; 6.1 Sol "in the coming days") — ~6× standard price, up to 8× faster in Codex, Pro 500 / Enterprise | Not a Plus feature. The router's Fast Mode line is **unchanged**. |
+| 14 Oct | GPT-5.5 retires from ChatGPT and Codex | Irrelevant to routing. |
+| — | Terra is absent from learn.chatgpt.com's current-recommended list (Astra / GPT-6.1 Sol / GPT-6 Luna); downstream Codex tooling drops it (tier C). No OpenAI shutdown date found — **legacy, not retired**. | Terra is never selected. |
+
+### 18.2. Verified facts (Tier A unless stated)
+
+- **Roster.** `learn.chatgpt.com/docs/models`: Astra "most capable model"; GPT-6.1 Sol
+  "near-Astra performance for complex work at a lower cost", *Light to Ultra*; GPT-6 Luna
+  "most efficient … high-volume tasks", up to *Max, not Ultra*. `developers.openai.com`:
+  Astra and 6.1 Sol reject `none`; GPT-6 Sol / Luna accept it.
+- **Ultra** is listed by learn.chatgpt.com as an effort for 6.1 Sol and Astra. The router's
+  earlier finding stands — `effort:"ultra"` is a *product mode*, not an API effort value —
+  and the Codex model catalogue advertising `ultra` (tier C, a GitHub PR reading the
+  2026-09-30 cache) is the client surfacing that mode.
+- **Safety card, GPT-6.1 Sol:** Critical in cybersecurity, High in biological/chemical,
+  below High in self-improvement; "the same safeguards stack as GPT-6 Astra". Astra leads
+  it on **every** published offensive-cyber eval — ExploitBench 100 vs 99.7, ExploitBench
+  Internal Port 31.5 vs 21.5, ExploitGym 42.4 vs 35.1, SEC-Bench Pro 85.4 vs 78.8 — and on
+  TroubleshootingBench 63.46 vs 47.96. So the Daybreak candidate stays **Astra**, and the
+  biology gate stays `unverified`.
+
+### 18.3. The evidence
+
+**AA Intelligence Index v4.3.2** (one harness; rungs comparable within the group):
+
+| Model · effort | Index | Cost/task |
+|---|---|---|
+| GPT-6.1 Sol · low / medium / high / xhigh / max | 42 / 48 / 50 / 51 / **52** | $0.13 / $0.21 / $0.32 / $0.39 / **$0.72** |
+| GPT-6 Sol · low … max (superseded) | 34 / 40 / 43 / 44 / 48 | $0.13 / $0.25 / $0.38 / $0.52 / $1.05 |
+| GPT-6 Luna · low … max | 21 / 29 / 32 / 34 / 37 | $0.0045 … $0.07 (middle rungs unpublished) |
+| Astra · max (v4.3.2 head-to-head page) | 53 | $3.26 |
+| Opus 5.5 · low / medium / high / xhigh / max | 42 / 51 / 54 / 56 / 58 | $0.55 / $1.34 / $1.82 / $3.46 / $5.98 |
+| Sonnet 5.5 · max | 56 | $7.60 |
+
+Output tokens per task at `max`: **GPT-6.1 Sol ~38k** (25k reasoning), Astra ~27k (17k), Luna
+~50k (39k), Opus 5.5 ~119k (84k), Sonnet 5.5 ~193k (142k). AA on X, 29 Sep: GPT-6.1 Sol
+"scores 1 point below GPT-6 Astra … at less than one quarter of the Cost per Task".
+
+**AA head-to-head, `max`, one page read per pair** (`aa-benchmarks-2026-09-30`, model_intrinsic,
+tier B, no interval):
+
+| Benchmark | GPT-6.1 Sol | Opus 5.5 | Sonnet 5.5 | Astra | GPT-6 Luna |
+|---|---|---|---|---|---|
+| Terminal-Bench 4.0 | 56 | 60 | 64 | 59 | 13 |
+| GDPval-AA v2.1 | 1575 | 1846 | 1844 | 1542 | 1367 |
+| AA-Briefcase v1.1 | 1564 | 1822 | 1811 | 1569 | 1299 |
+| AutomationBench-AA | 65 | 70 | 71 | 68 | 53 |
+| SciCode | 54 | 67 | 61 | 56 | 55 |
+| HLE (tool access unstated) | 53 | 61 | 55 | 55 | 39 |
+| CritPt | **32** | **32** | 31 | 32 | 19 |
+| AA-Omniscience index | 42 | 46 | **32** | 43 | 1 |
+| AA-LCR v1.1 | **83** | 85 | **83** | 81 | 83 |
+| GDP.pdf | **31** | 26 | 26 | 31 | 20 |
+
+**OpenAI's own tables** (relayed, tier C, `openai-launch-relay-2026-09-29`): DeepSWE 1.1 high —
+Sol 6.1 75.2 @ $0.65, Astra 74.1 @ $4.43 (Vellum: 74.8 @ ~$1.50; conflict open); **`max` is
+*below* `high` on Sol 6.1: 71.9 vs 75.2.** OSWorld 2.0 max — 71.4 vs Astra 73.5 (2.1 points, one
+seventh of the cost). AutomationBench max — Opus 5.5 42.5 (**OpenAI's own run of its
+competitor**), Astra 41.4, Sol 6.1 36.1; OpenAI adds that Sol beats Opus 5.5 at low / medium /
+high (no figures extractable). TB-Science max — Astra 68.1, Opus 5.5 63.3, Sol 6.1 57.0 @ $5.47
+vs $23–24. GDP.pdf high — Sol 6.1 32.0 vs Opus 5.5 28.8 ("with fallbacks").
+
+**Other independent runs.** Vals (mini-swe-agent, avg@3, updated 29 Sep): Opus 5.5 65.15 · Sonnet
+5.5 64.14 · Astra 59.60 · Fable 5.1 58.08 — no GPT-6 Sol row. Snorkel's Terminal-Bench 4.0
+leaderboard (±, definition unstated; page predates Opus 5.5 and every GPT-6 Sol): Astra 58.2
+±2.8 · Fable 5.1 57.9 ±3.8 · GPT-5.6 Sol 37.3 ±3.8 — **the 37.3 Anthropic's Opus 5.5 table
+cites is this leaderboard's figure, not an independent one.**
+
+### 18.4. What changed in the router
+
+| Change | Where | Basis |
+|---|---|---|
+| Codex roster: **Luna / Sol / Astra**; Terra, GPT-5.6 and GPT-6 Sol legacy | SKILL.md rosters, Step 4 table, examples | 18.1 / ROSTER-6-1 |
+| **E2** rewritten: GPT-6.1 Sol dominates every older Sol and Terra | 5c | Pareto, AA v4.3.2 |
+| **E4 retired** — `Sol · max` no longer swaps to `Astra · xhigh` | 5c; rule block removed | 52 @ $0.72 vs 53 @ $3.26 |
+| **N1 retired** — no Codex +1 effort notch; both arms take the same effort | Arm modifiers; rule block removed | TB 4.0 gap 29 → 4–8; Sol's curve flat above `high` |
+| **Two Astra gates retired**: ≥1M-token corpus and computer use | Step 1 | Sol has the same 1.05M window; OSWorld 2.1-point margin, tier C |
+| `orchestration` tag; **MECH1** mechanism rows (Ultra → Codex, `ultracode`/`opusplan` → Claude) | Step 2, Step 6 | product mechanisms; symmetry |
+| **BD1** — a badge direction needs two independent measurements that agree; else efficiency; **at R=3 a single lean decides** | Step 6; rule block | compiled `badge_hint`; SKILL.md's standing "when unsure at R=3, take the stronger candidate" |
+| Badge table rebuilt against GPT-6.1 Sol | Step 6 | 18.3 |
+| Codex has **no rung 2** (Terra → Sol is gone); A1 unchanged | Step 4 | — |
+
+### 18.5. The new machinery
+
+**Pareto frontier** (`compile_pareto`, `benchmark_frontiers.json` → `pareto`). A configuration
+(model × effort) is dominated when another in the same comparison cell scores at least as much for
+no more cost and is strictly better on one. No equivalence band is needed — "not worse and cheaper"
+is a fact about two numbers. On AA v4.3.2 it says: GPT-6.1 Sol `xhigh` (51 @ $0.39) dominates Opus 5.5
+`medium` (51 @ $1.34); Opus 5.5 `low` (42 @ $0.55) is dominated by Sol `low` (42 @ $0.13); Astra `max`
+(53 @ $3.26) is dominated by Opus 5.5 `high` (54 @ $1.82); **Opus 5.5 `high` / `xhigh` / `max` are
+the only undominated configurations above 52.** The flagship is the way to buy the last few points,
+not the cheap way to reach the bar. Both Sonnet 5.5 `max` (E1) and every GPT-6 Sol rung come out of
+the same computation.
+
+**`badge_hint`** (`compile_by_codex_model` → per capability × Codex model). Admissible = an independent
+tier A/B run, or a vendor table that favours its *rival*. A direction needs two admissible measurements
+from two different (benchmark, kind) pairs, at least one tier A/B, none opposing. Otherwise `efficiency`
+(with a `lean` when exactly one side has an admissible row) or `contested`. Asserted by 28 new compiler
+tests; `test_reachability_tool.py` fails if the badge table in the reachability mirror drifts from it.
+
+**Ablation** (`scripts/ablate_evidence.py`, now on `badge_hint`). Against GPT-6.1 Sol the only Claude
+*directions* are `knowledge-work` (two AA rows — survives every filter), `science` and
+`workflow-automation` (both need OpenAI's own against-interest table; drop vendor-run rows and they
+fall to `efficiency/lean-claude`), and — against Astra — `deep-reasoning` (needs OpenAI's tooled HLE).
+Everything else was never a direction. The two eval prompts that ride on this are `z1` and `x2`.
+
+### 18.6. What did **not** change, and why
+
+- **The 1000+-file gate still routes to Astra**, now *purely* on OpenAI's positioning ("hardest
+  end-to-end work") — the window justification is gone. It is flagged beside the Claude equivalent as
+  the least-supported gates in the router.
+- **Offensive gate**: unchanged, and now covers GPT-6.1 Sol too (Critical, same safeguards). **Biology
+  gate**: unchanged. **Frontier rung A1**, **M1**, **UC1 / O1**, **P1**, the D → effort table, Fast Mode
+  line: nothing in the evidence touches them. (A **Fast Mode** price fact: API Fast is 2× standard on
+  6.1 Sol; Codex CLI's 1.5× stays user-reported.)
+- **Haiku 4.5** stays the only Haiku (5.5 still unreleased). Its retirement floor is **15 Oct 2026**.
+
+### 18.7. Conflicts, corrections and things left open
+
+- **Flip volume, stated plainly.** 91 of 154 corpus prompts flip. The badge histogram moves from
+  Claude 122 / Codex 28 / none 4 to **Claude 43 / Codex 107 / none 4.** Against GPT-6.1 Sol almost no
+  cell has a Claude *direction* under BD1, so at R ≤ 2 they fall to efficiency and efficiency favours a
+  model that uses ~⅓ the tokens at the same list price. At R=3 the lean keeps Claude where one row
+  points that way. That is the honest reading and it is large; it is the first thing to re-read.
+- **Vendors score the rival differently** (Opus 5.5: TB-Science 63.3 OpenAI vs 58.7 Anthropic;
+  AutomationBench 42.5 vs 40.0). Two tables, never pooled.
+- **Relay disagreement**: Astra DeepSWE 74.1 vs 74.8; Sol 6.1 cost/task $0.65 vs ~$1.50. The
+  higher-detail relay is recorded, the conflict named.
+- **Tier C rests**: the OSWorld gap that retires the computer-use gate, and every OpenAI-run row in
+  `openai-launch-relay-2026-09-29`. `openai.com` must be fetched before either is re-derived.
+- **Not verified**: Ultrafast for GPT-6.1 Sol (announced, undated, Pro 500 / Enterprise); Ultra's
+  behaviour on the mid tier at high effort; whether ChatGPT Plus quota is proportional to tokens.
+- **AA's HLE tool access** is unstated on the comparison pages.
+- **Snorkel's ±** has no stated confidence level; it is read as one SE (band = 2×) and the widest
+  value used, so the group can only under-claim.
+
+### 18.8. Follow-ups, in priority order
+
+1. **Terminal-Bench 4.0 CI whiskers for Opus 5.5, Sonnet 5.5 and GPT-6.1 Sol** — the owner leaderboard
+   has none of the three. It would decide `agentic-code` on real uncertainty and is now worth more than
+   any other datum, because that one cell drives ~60% of the Codex badges.
+2. **A benchmark at 1000+ files** for both frontier-scale gates.
+3. **Haiku 5.5** when it ships; the 15 Oct decision on Haiku 4.5 regardless.
+4. **OpenAI's launch tables from a primary page**, to lift the tier-C rows.
+5. **Sonnet 5.5's lower rungs** — its index below `max` is unpublished, so nothing yet says Sonnet 5.5
+   `high` is dominated by Sol `high`.
+
+### 18.9. The routing eval — iteration-20
+
+Five fresh agents, none of which had seen the skill, routed the 37 auto-graded prompts plus
+`d7` (Step 0 block) from `skill/SKILL.md` alone (one agent was stopped by a safety classifier
+on the penetration-test prompts and the batch was split; a rerun routed `d3` cleanly).
+**First pass 35/36 graded, one failure — `x1`**, then 38/38 after the fix below. A second
+fresh agent re-routed the six R=3 / window prompts after two small clarifications
+(6/6).
+
+- **What moved.** Every Codex line that named Terra now names Sol (11 evals); `d2` and `b1` drop
+  from `xhigh` to `high` (the notch); `e4p` from `Astra · xhigh` to `Sol · max`; `g1` and `a2`
+  from Astra to Sol. Badges: 21 of 35 evals with a `badge` field changed side; `m1`, `h1`, `q1`,
+  `o1` and `e4p` stayed on (or moved to) Claude *only* through BD1's R=3 clause.
+- **`x1` failed on the prompt, not the rule.** "Our 3,200-file monorepo stopped building … fix the
+  build files of the failing packages" did not say how many packages fail; W counts what you act
+  on, not what you read, so the agent scored `W=2` and dropped `ultracode`. The prompt now says
+  "about 400 packages now fail". Same pattern as `n2`, `x2`, `i1`, `j1`: **when cold agents split,
+  question the prompt before the rule.**
+- **Two clarifications, both from agent reports.** (1) At `R=3` the lean keeps its `†`, so the
+  Evidence line still says `low-confidence` (agents disagreed on whether it did). (2) Step 6 rule 1
+  ("an arm that lacks the window loses the badge") does not apply when *neither* window fits
+  (`a2`: a 1.2M-token repository is over both 1M and 1.05M).
+- **Self-reported guesses, none of which changed a result.** `w1`: D=1 vs D=2 for a board memo
+  (D=1 would skip the capability rows and flip the badge to Codex — the eval is deliberately a
+  D=2 case). `x2`: D=2 vs D=3. `o1`: whether the shared-key cutover order is an "indivisible
+  chain" (it is not, so `ultracode` stays open). `a1`: Sol Ultra layered on Astra behind a
+  deciding gate (it is not — a deciding gate bypasses Step 4).
+- **Ablation.** Two of the new evals ride on against-interest vendor rows: `x2`
+  (workflow-automation) and `z1` (science) both flip to `efficiency/lean-claude` when vendor-run
+  rows are dropped. That is not a defect; it is the reason they carry `low-confidence`.
+- **Not re-run:** the 28 legacy `format_outdated` evals (single-ecosystem format, never backfilled).

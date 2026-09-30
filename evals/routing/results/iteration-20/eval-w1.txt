@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+Codex: Sol · effort: high
+Evidence: Two AA rows agree against GPT-6.1 Sol on knowledge-work — GDPval-AA v2.1 1846 / 1844 vs 1575 and AA-Briefcase 1822 / 1811 vs 1564; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

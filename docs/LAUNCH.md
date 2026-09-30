@@ -63,25 +63,25 @@ buried.
 >
 > It's sourced from the official docs, every uncertain claim is labelled, and
 > there's a deterministic regression eval (cold agents read the rules fresh and
-> route a fixed prompt set; a regex grader checks the output). Currently 32/32, plus a
+> route a fixed prompt set; a regex grader checks the output). Currently 38/38, plus a
 > separate no-LLM evidence suite: schema validation, rule-provenance resolution,
-> frontier staleness and 26 compiler assertions.
+> frontier staleness and 80 compiler assertions.
 >
 > Repo: <link>
 
 Then a first comment from you with the concrete "here's what it does" example and
 the honest limitations (Turkish skill body, model-name/price data has a shelf
 life, Codex biology-R&D behaviour is still unverified so it punts to Claude;
-GPT-6 Astra is handled as a narrow gated pick, not the default).
+GPT-6 Astra is handled as a narrow gated pick, not the default; and against GPT-6.1 Sol the router leans Codex on most coding prompts because the evidence leaves it no Claude direction — that lean is documented, not hidden).
 
 ## r/ClaudeAI (and cross-post to r/LocalLLaMA, r/OpenAI)
 
 **Title:**
-`I built a skill that tells you which model + effort to use for a task (Claude + GPT-5.6)`
+`I built a skill that tells you which model + effort to use for a task (Claude + GPT-6.1 Sol)`
 
 **Body:**
 > Short version: paste a task, it replies with two lines —
-> `Claude: Sonnet 5.5 · effort: high` / `Codex: Terra · effort: high` — and doesn't
+> `Claude: Sonnet 5.5 · effort: high` / `Codex: Sol · effort: high` — and doesn't
 > run anything.
 >
 > It's built around one idea: the thing you're actually running out of is your

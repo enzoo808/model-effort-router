@@ -8,17 +8,17 @@
 > `SKILL.md` elle senkron tutulmalı.
 
 Bir promptu verdiğinde hangi modelle (Haiku 4.5 / Sonnet 5.5 / **Opus 5.5** /
-Opus 4.8 / Fable 5.1 / Mythos 5.1 / Luna / Terra / Sol / Sol Ultra / **Astra**)
+Opus 4.8 / Fable 5.1 / Mythos 5.1 / Luna / Sol / Sol Ultra / **Astra**)
 ve hangi efor seviyesiyle çalıştırman gerektiğini **her iki ekosistem için ayrı
 ayrı** söyleyen, sonra **bu görev için hangisinin daha uygun olduğunu**
 işaretleyen router.
 
 ```
-Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
-Codex: Terra · effort: xhigh
-Evidence: Agentic çok-dosyalı kodlama Claude'un en geniş yayımlanmış farkı
-          (Terminal-Bench 4.0: Opus 5.5 66.4 ve Sonnet 5.5 70.6 vs Sol 37.3); Codex +1 kademeyle
-          telafi ediyor.
+Claude: Sonnet 5.5 · effort: high
+Codex: ✅ RECOMMENDED AI · Sol · effort: high
+Evidence: AA'nın Terminal-Bench 4.0'ında Sol 56, Sonnet 5.5 64 — aralık yok ve tek
+          satır bir yön değildir; bu yüzden token yükü karar verir: görev başına
+          ~38k çıktı tokeni ve $0.72, karşısında ~193k ve $7.60 (low-confidence).
 ```
 
 Rozet **hesaplanır, alışkanlık değildir** — görev değişince yer değiştirir:
@@ -26,8 +26,8 @@ Rozet **hesaplanır, alışkanlık değildir** — görev değişince yer deği�
 ```
 Claude: Haiku 4.5
 Codex: ✅ RECOMMENDED AI · Luna · effort: low
-Evidence: İkisi de mekanik sınıflandırma barını aşıyor; Luna token başına
-          ~%30 daha hızlı ve görev başına biraz daha ucuz.
+Evidence: İkisi de mekanik sınıflandırma barını aşıyor; Luna (GPT-6)
+          $0.10/$0.50 — Haiku 4.5'in $1/$5'ine karşı.
 ```
 
 **Kalibrasyon: iki ayrı abonelik kotası (Pro/Max + ChatGPT Plus).** Korunan
@@ -42,7 +42,7 @@ sonra o ekosistemin kendi model+efor mantığına giriyor. Detay için
 
 ---
 
-## Model kadrosu (29 Eylül 2026 — Opus 5.5 / Sonnet 5.5 ile güncellendi; Fable 5.1 / Mythos 5.1 1 Eylül'den)
+## Model kadrosu (30 Eylül 2026 — Codex kolu GPT-6.1 Sol ile yeniden kuruldu; Claude tarafı 29 Eylül'den)
 
 | Model | Rol |
 |---|---|
@@ -67,21 +67,19 @@ için **hiç fallback yok** — direkt reddediyor. Bu yüzden router Fable 5.1
 Mythos 5.1. *(29 Eyl 2026: Opus 5.5'in biyoloji-Ar-Ge davranışı doğrulanmadı —
 kapı aynen duruyor.)*
 
-### Codex/ChatGPT kadrosu (GPT-5.6 ailesi + GPT-6 Astra, 8 Eylül 2026)
+### Codex/ChatGPT kadrosu (GPT-6 kuşağı, 30 Eylül 2026 — üç katman, Terra yok)
 
 | Model | Rol | Claude dengi (kaba) |
 |---|---|---|
-| Luna | Hız/hacim, en ucuz ($0.20/$1.20 MTok). Codex CLI varsayılanı | Haiku 4.5 |
-| Terra | Günlük iş, dengeli ($2/$12) — varsayılan | Sonnet 5.5 |
-| **Sol** | GPT-5.6 amiral gemisi — kod/bilim/güvenlik ($5/$30); D=3 seçimi | Opus 5.5 |
-| **Sol Ultra** | Sol'da açılan Codex ürün modu (Plus+): ~4 paralel işbirlikçi ajan. Efor değeri değil | Net dengi yok — `ultracode`'dan daha güçlü |
-| **Astra** | GPT-6 amiral gemisi (`gpt-6-astra`, $10/$50, 1.05M bağlam). **Yalnızca kapıyla seçilir**: saldırı-amaçlı siber *Daybreak erişimiyle*, 1000+ dosya, ≥1M-token bağlam, **GUI/bilgisayar kullanımı görevin kendisiyse**. Codex CLI v0.153.0+ | Opus 5 / Fable 5.1 (frontier) |
-| *Codex Spark 5.3* | Yalnızca-metin araştırma önizlemesi, anlık kodlama iterasyonu için. **Router bunu seçmez** — araştırma önizlemesi, yalnızca metin, benchmark kaydı yok | — |
+| Luna | **GPT-6 Luna**, $0.10/$0.50. Hacim, en ucuz — kayıttaki en zayıf ajanik model (Terminal-Bench 4.0: 13, Sol'un 56'sına karşı). **`D ≥ 1` işe asla gitmez** | Haiku 4.5 |
+| **Sol** | **GPT-6.1 Sol** (29 Eyl 2026), $2/$10, 1.05M bağlam, **Codex varsayılanı**, Astra'ya yakın. Günlük iş **ve** `D=3` seçimi — arada Terra yok | Sonnet 5.5 / Opus 5.5 |
+| **Sol Ultra** | Sol'da açılan Codex ürün modu (Plus+): ~4 paralel işbirlikçi ajan. Efor değeri değil. Astra'da da çalışır | Net dengi yok — `ultracode`'dan daha güçlü |
+| **Astra** | GPT-6 amiral gemisi, $10/$50. **Nadir seçilir:** saldırı-amaçlı siber *Daybreak erişimiyle* (yayımlanmış dört saldırı değerlendirmesinin hepsinde Sol'u geçiyor), 1000+ dosya (yalnızca konumlandırma — Sol'un da 1.05M penceresi var) ve belirtilmiş amiral-gemisi yetersizliği (A1) | Opus 5.5 / Fable 5.1 (frontier) |
+| *Legacy — asla seçilmez* | Terra, GPT-5.6 Sol / Luna, GPT-6 Sol (7 gün sonra değiştirildi), Codex Spark 5.3 | — |
 
-> **`max` Codex'te yalnızca Astra/Sol'da** (`learn.chatgpt.com/docs/models`,
-> 10 Eyl 2026). Terra ve Luna'da bu bir **capability limiti**, tercih değil —
-> router bir kural istese bile `Terra · max` üretemez. Çelişen tek kaynak için
-> `reference.md` §12.3.
+> **`max` yalnızca Kural M1 ile** (`D=3 ∧ R=3` + tek bölünemez karar, amiral
+> gemisinde: Sol veya Astra). Luna `max`'a kadar destekler (Ultra yok) ama router
+> onu yalnızca `D=0`'da seçer.
 
 **Biyoloji-bitişik** iş hâlâ **Claude'a** yönlendirilir (`unverified — use Claude`)
 — Astra'nın kartı yalnızca siber. **Saldırı-amaçlı siber güvenlikte** standart
@@ -202,6 +200,48 @@ evals/                          Regresyon eval seti (routing + trigger) + koşu 
    kullananlar için, ama hâlâ elle senkron tutuluyor.
 
 ---
+
+## Ne değişti — iteration-20 / GPT-6.1 Sol kuşağı (30 Eylül 2026)
+
+OpenAI 22 Eylül'de GPT-6 Sol ve Luna'yı çıkardı ve **yedi gün sonra Sol'u GPT-6.1
+Sol ile değiştirdi** ($2/$10, 1.05M bağlam, Codex varsayılanı, "Astra'ya yakın").
+Önceki iterasyon yalnızca kaydetmişti; bu iterasyon Codex kolunu kanıttan yeniden
+türetti. Tam kayıt: `skill/reference.md` §18.
+
+- **Codex kolu üç katman: Luna / Sol / Astra.** Terra'nın halefi yok ve OpenAI'ın
+  güncel-önerilen listesinde yok. GPT-6.1 Sol, her GPT-6 Sol kademesini domine ediyor
+  (48 @ $1.05 vs 50 @ $0.32) ve **52 @ $0.72, ~38k çıktı tokeni** veriyor; Astra 53 @
+  $3.26, ~27k (AA v4.3.2, aynı sayfa).
+- **Temeli çöken üç kural emekli:** **Codex +1 efor kademesi (N1)** — Terminal-Bench
+  4.0'daki Claude farkı ~29'dan 4–8 puana indi ve Sol'un kendi eğrisi `high`'ın
+  üstünde düz; **Kural E4** (`Sol · max` → `Astra · xhigh`); ve iki Astra kapısı
+  (**≥1M-token külliyat** — Sol aynı pencereyi taşıyor — ve **bilgisayar kullanımı** —
+  yedide bir maliyetle 2.1 OSWorld puanı, tier C). 1000+ dosya ve Daybreak kapıları kalıyor.
+- **Rozet artık hesaplanıyor.** Kural **BD1**: rozet yönü için birbirini doğrulayan iki
+  bağımsız ölçüm gerekir (bağımsız değerlendirici **veya** rakibi lehine olan vendor
+  tablosu), çelişen olmamalı; aksi hâlde verimlilik karar verir — **`R=3` hariç:**
+  orada tek ölçümün eğilimi karar verir ("emin değilsen güçlüyü al"). **MECH1:**
+  yalnızca bir arm'da olan mekanizma (Ultra; 3+ faz için `ultracode`; `opusplan`)
+  benchmark yönü yoksa kazanır. İpucu derleyiciden (`badge_hint`) geliyor ve testlerle
+  doğrulanıyor.
+- **Pareto sınırı** derlenen kanıttan: Sol `xhigh` (51 @ $0.39), Opus 5.5 `medium`'u
+  (51 @ $1.34) domine ediyor; Astra `max` Opus 5.5 `high` tarafından domine ediliyor;
+  **Sol'un 52'sinin üstündeki tek domine-edilmemiş konfigürasyonlar Opus 5.5 `high` /
+  `xhigh` / `max`.** Amiral gemisi son puanları satın alır, barı aşmanın ucuz yolu değil.
+- **Eğilim büyük ve açıkça yazıyor.** 154 külliyat promptunun 91'i değişiyor; rozet
+  **Claude 122 / Codex 28**'den **Claude 43 / Codex 107**'ye kayıyor. GPT-6.1 Sol
+  karşısında neredeyse hiçbir capability'de BD1 altında Claude *yönü* yok → `R ≤ 2`'de
+  verimlilik belirliyor ve verimlilik, aynı liste fiyatında ~⅓ token kullanan modeli
+  seçiyor. Yalnızca bilgi işi temiz Claude yönü taşıyor; bilim ve iş-akışı otomasyonu
+  yalnızca OpenAI'ın kendi against-interest tablosuyla (ablation bunu gösteriyor).
+- **Kanıt katmanı:** `benchmarks.json` 123 → **311 kayıt**, her gruba `run_by` (kimin
+  koşturduğu, çıkarılmaz beyan edilir); AA v4.3.2'de GPT-6.1 Sol / GPT-6 Sol / GPT-6 Luna
+  (beşer kademe) + Astra `max`; AA'nın baş-başa sayfalarından 10 benchmark × 5 model;
+  OpenAI'ın kendi tabloları (tier C, `openai.com` 403 verdi); sistem kartı (birincil,
+  siber/biyoloji seviyeleri); Vals + Snorkel Terminal-Bench 4.0. Derleyici testleri 52 →
+  **80**.
+- **Soğuk-ajan eval'i (canlı, 38 vaka): 38/38.** İlk turda tek sapma `x1` (belirsiz prompt
+  — kaç paket bozuk söylenmemişti; *prompt* netleştirildi, kural değil).
 
 ## Ne değişti — iteration-19 / Claude 5.5 kuşağı (29 Eylül 2026)
 
@@ -482,9 +522,9 @@ makine-okunur, tekrar koşturulabilir kopyası `evals/routing/evals.json`
 ile regresyon kontrolü yap (bkz. `evals/README.md`). **Taze/soğuk
 ajanlarla** (README'nin kendi bağlamını bilmeyen) koşturmak önemli — kural her
 değiştiğinde paralel cold agent'lar canlı eval'leri yeniden koşturuyor.
-**Son canlı soğuk-ajan koşusu: iteration-17 — 32/32.** iteration-19'un
-deterministik kontrolleri (derleyici, doğrulayıcı, politika senkronu, örnekler,
-erişilebilirlik) geçti; Opus 5.5 / Sonnet 5.5 kadrosuna karşı canlı koşu bekliyor. Grader artık Claude modeli · Claude eforu ·
+**Son canlı soğuk-ajan koşusu: iteration-20 — 38/38** (taze ajanlar; önceki: iteration-17 — 32/32).
+iteration-20'nin deterministik kontrolleri (derleyici, doğrulayıcı, politika senkronu, örnekler,
+erişilebilirlik) de geçti. Grader artık Claude modeli · Claude eforu ·
 Codex modeli · Codex eforu · **rozetin hangi tarafta olduğu**
 (`expected_recommended`) · tam olarak bir rozet olduğu · `Evidence:` satırının
 var ve dolu olduğunu kontrol ediyor. Evidence **metni** kasıtlı olarak
@@ -589,6 +629,14 @@ Tüm iterasyonların gerekçesi `evals/README.md`'de.
 > frontier-bağlam → `Astra`). Canlı regresyon seti 18 → **20**. Cold re-run —
 > **20/20**.
 >
+> **iteration-20 (30 Eyl 2026 — GPT-6.1 Sol):** Codex kolu yeniden türetildi; ayrıntı yukarıdaki
+> "Ne değişti — iteration-20" bölümünde. Canlı regresyon seti 35 → **37 otomatik + d7**
+> (`w1` bilgi-işi BD1 yönü, `z1` bilim iki-ölçüm; ikisi de BD1'in *olumlu* vakası — onlar olmadan
+> tablodaki her satır Codex okur ve BD1'in çalışmayı bıraktığını kimse fark etmez). Değişen golden
+> cevaplar: Terra → Sol (11 eval), +1 kademesi emekli (d2, b1: `xhigh` → `high`), E4 emekli (e4p:
+> `Astra · xhigh` → `Sol · max`, rozet Codex → Claude çünkü `R=3`), iki Astra kapısı emekli (g1, a2),
+> rozetler (Claude → Codex çoğu D≤1 ve agentic satırda). `x1` promptu netleştirildi. **38/38.**
+>
 > **iteration-14:** gerçek bir çıktı (`Claude: Sonnet 5 · max` / `Codex: Sol ·
 > max`, D=3∧R=3 inceleme işi) iki tutarsızlık gösterdi. **(1)** Codex kolunda
 > Claude'un Rule 3'ünün karşılığı yoktu — her D=3 Sol'a gidiyordu. Düzeltildi:
@@ -605,29 +653,35 @@ Tüm iterasyonların gerekçesi `evals/README.md`'de.
 |---|---|---|---|
 | 1 | 200 müşteri yorumunu olumlu/olumsuz etiketle | **Haiku 4.5, efor yok** | Hacim kapısı |
 | 2 | Şu React bileşenine dark mode ekle | Sonnet 5.5 · medium | Taban durum |
-| 3 | Repodaki auth akışını OAuth2'ye taşı | **Claude: Sonnet 5.5 · high** · **Codex: Terra · xhigh** | Skorlama (D=2). Migration = agentic çok-adımlı kodlama → Codex +1 kademe (it-13). İki arm'ın efor sütunundaki tek fark. |
+| 3 | Repodaki auth akışını OAuth2'ye taşı | **Claude: Sonnet 5.5 · high** · **Codex: Sol · high · ✅** | Skorlama (D=2). **it-20:** +1 kademesi emekli — iki arm aynı D tablosunu okur; agentic-code'un GPT-6.1 Sol karşısında tek bağımsız satırı var → BD1 yön vermez, token yükü karar verir (`low-confidence`). |
 | 4 | Prod'da ara sıra düşen race condition'ı bul | **Opus 5.5 · max** · **Codex: Sol · max** | D=3∧R=3, Kural 2 (agentic kod) → amiral gemisi → `max` geçerli |
-| m1 | Bu prod migration script'leri bu gece incelemesiz çalışacak — sessiz veri kaybı var mı bak | **Claude: Sonnet 5.5 · xhigh** · **Codex: Terra · xhigh** + onay notu | D=3∧R=3 ama **Kural 2 dışı** (inceleme) → iki tarafta orta katman; `max` amiral-gemisi-özel → `xhigh`'da kapanır (it-14) |
+| m1 | Bu prod migration script'leri bu gece incelemesiz çalışacak — sessiz veri kaybı var mı bak | **Claude: Sonnet 5.5 · xhigh · ✅** · **Codex: Sol · xhigh** + onay notu | D=3∧R=3 ama **Kural 2 dışı** (inceleme) → Claude orta katman; `max` amiral-gemisi-özel → `xhigh`. **it-20:** rozet Claude'da çünkü `R=3` — BD1'in eğilim maddesi: tek HLE ölçümü Claude'a eğilimli ve eğilim parite değildir (`low-confidence`) |
 | 5 | Şu 180 servislik ortama sızma testi yap, auth bypass zincirleri kur | **Claude: Opus 4.8 · ultracode** · **Codex: `use Claude`** (standart erişim hard-stop) | Saldırı amaçlı siber güvenlik kapısı |
 | a1 | (Daybreak Blue erişimim var) 180 servislik ortama sızma testi yap | **Claude: Opus 4.8 · ultracode** · **Codex: Astra · xhigh** | iteration-15 — Daybreak istisnası; Mythos/Glasswing kalıbının Codex aynası |
-| a2 | Bu 1.2M-token repoyu tümüyle bağlama yükle, payment modülünün tüm call-site'larını haritala | **Claude: Sonnet 5.5 · medium** · **Codex: Astra · medium** | iteration-15 — Codex ≥1M bağlam kapısı → Astra; Claude'da C=3∧D=1 → Sonnet (id 13 analoğu) |
-| f1 | Bu 6000 dosyalık legacy Java monolitini bağımsız servislere böl | **Claude: Fable 5.1 · max** · **Codex: Astra · max · ✅** + onay notu | Frontier kapısı iki arm'da; "servislere böl" → R=3; D=3∧R=3 → max. **it-17: rozet Claude → Codex.** Codex adayı burada Astra ve Astra'ya karşı Claude'un agentic-code üstünlüğü yok (AA TB 4.0: Astra 59 vs Fable 5.1 52); eşitlikte verimlilik karar veriyor (27k vs 78k output token) |
-| x1 | 3.200 dosyalık monorepo toolchain yükseltmesinden sonra build olmuyor; her paketi düzelt, `make all` yeşile dönsün | **Claude: Fable 5.1 · ultracode** · **Codex: Astra · high · ✅** | it-17 — rozetin **model-koşullu** olduğunu doğrudan test eder: aynı capability (terminal-tool) t1'de Claude'a, burada Codex'e gidiyor; tek fark Codex adayının Sol değil Astra olması |
-| x2 | Shopify + NetSuite + 3PL sipariş-karşılama otomasyonunu planla ve yapılandır; kod yazma | **Claude: Opus 5.5 · xhigh · ✅** · **Codex: Sol · xhigh** | it-17 — vendor-bağımlı capability (`workflow-automation`): tek kaynak iki vendor'ın kendi tablosu, bağımsız satır yok → Evidence satırı `low-confidence` demek **zorunda** |
-| 5b | Bu 180 servisin kodunu auth bypass açığı için denetle (exploit yazma) | **Claude: Sonnet 5.5 · ultracode** · **Codex: Sol Ultra · xhigh** | Savunma denetimi — offensive kapı **tetiklenmez** (Fable 5.1 sonrası). Adversarial zafiyet avı = D=3, 180 birim bağımsız = W=3 + Sol Ultra; efor D=3 → xhigh |
-| b1 | 40 dosyada payment modülünü yeni idempotency-key API'sine taşı, çağıranları güncelle, testleri geçir | **Claude: Sonnet 5.5 · high · ✅** · **Codex: Terra · xhigh** | it-16 — baskın capability `agentic-code`; rozet agregat indeksten değil Terminal-Bench 4.0'dan geliyor |
-| t1 | Container build yalnız release CI runner'da patlıyor; container içinde tekrarla, kök nedeni bul, Dockerfile + CI workflow'u düzelt | **Claude: Opus 5.5 · xhigh · ✅** · **Codex: Sol · xhigh** | it-16 — `terminal-tool`; +1 kademe YOK: zor kısım teşhis, düzeltme lokal |
-| p1 | Bu greedy scheduling sezgiselinin worst-case makespan'ının 4/3 içinde olduğunu ispatla ya da karşı örnek ver; kod yazma | **Claude: Opus 5.5 · xhigh · ✅** · **Codex: Sol · xhigh** | it-16 — `deep-reasoning`; **kodlama benchmark'larının ağırlığı sıfır**; +1 kademe yok |
-| e1 | 900 sayfa regülasyon dosyasını oku, 2023–2026 açıklama yükümlülüğü değişimini tek memo'ya yaz | **Claude: Sonnet 5.5 · high · ✅** · **Codex: Terra · high** | it-16 — `long-context` + `knowledge-work`; C=3 modeli yükseltmez, GDPval rozeti belirler |
-| g1 | Tedarikçinin masaüstü ERP istemcisini staging'de 14 adımlık ay-sonu kapanışında sür, doğrulama hatalarını çöz, mizanı dışa aktar | **Claude: Sonnet 5.5 · high** · **Codex: Astra · high · ✅** | it-16 — **Codex computer-use kapısı**; rozet Codex'te ve Evidence `low-confidence` demeli (OSWorld sürüm/skorlama uyuşmazlığı) |
-| h1 | Ödeme defterimizin çok-bölgeli failover ve veri tutarlılığı modelini sıfırdan tasarla; gelecek çeyrek canlıya çıkıyor, geri dönüşü yok | **Claude: Opus 5.5 · max · ✅** · **Codex: Sol · max** + onay notu | it-16 — token tasarrufu kaliteyi **ezmemeli**; E3 burada `max`'ı kısmıyor (tek parçalı özgün tasarım) |
+| a2 | Bu 1.2M-token repoyu tümüyle bağlama yükle, payment modülünün tüm call-site'larını haritala | **Claude: Sonnet 5.5 · medium** · **Codex: Sol · medium · ✅** | **it-20:** Codex ≥1M bağlam kapısı EMEKLİ (Sol aynı 1.05M pencereyi taşıyor) — normal skorlanır; `D=1` → verimlilik karar verir. **NEGATİF test: Astra çıkmamalı.** |
+| f1 | Bu 6000 dosyalık legacy Java monolitini bağımsız servislere böl | **Claude: Fable 5.1 · max** · **Codex: Astra · max · ✅** + onay notu | Frontier kapısı iki arm'da (Astra: yalnızca konumlandırma); "servislere böl" → R=3; D=3∧R=3 → max. Astra'ya karşı kodlama satırları çekişmeli (BD1) → verimlilik (~27k vs ~119k), `low-confidence` |
+| x1 | 3.200 dosyalık monorepo toolchain yükseltmesinden sonra build olmuyor ve ~400 paket bozuk; her paketi düzelt, `make all` yeşile dönsün | **Claude: Fable 5.1 · ultracode** · **Codex: Astra · high · ✅** | it-17 — rozetin **model-koşullu** olduğunu test eder. **it-20:** prompt netleştirildi (~400 bozuk paket → `W=3`); ilk soğuk koşuda ajan `W=2` okumuştu |
+| x2 | Shopify ve NetSuite arasındaki sipariş-karşılama otomasyonunu sandbox tenant'ımızda haritala ve yapılandır; yalnızca yapılandırma, kod yok, prod'a dokunma | **Claude: Sonnet 5.5 · high · ✅** · **Codex: Sol · high** | it-17 — vendor-bağımlı capability. **it-20:** BD1 altında Claude yönü var (AutomationBench-AA + OpenAI'ın kendi max-kademe tablosu, against-interest) ama ablation'da yalnızca vendor satırıyla ayakta kalıyor → `low-confidence` **zorunlu** |
+| w1 | Q3 yönetim kurulu memosunu bu notlardan ve finans paketinden hazırla | **Claude: Sonnet 5.5 · high · ✅** · **Codex: Sol · high** | **it-20 — BD1'in olumlu vakası:** bilgi-işi, GPT-6.1 Sol karşısında iki bağımsız AA satırının (GDPval-AA, AA-Briefcase) örtüştüğü tek capability; aralık yayımlanmadığı için `low-confidence` |
+| z1 | Bu astrofizik makalesindeki ölçekleme yasası uyumunu yayımlanan veri setinden yeniden üret; aykırı değerler çıkarılınca üssün sağ kalıp kalmadığına bak | **Claude: Sonnet 5.5 · high · ✅** · **Codex: Sol · high** | **it-20 — BD1, bilim:** OpenAI'ın kendi TB-Science tablosu (Opus 5.5 63.3 vs Sol 57.0, against-interest) + AA SciCode (67/61 vs 54). Ablation'da bu iki ölçüm vendor satırına bağımlı — z1 ve x2 tam bunu ölçüyor |
+| o1 | 150 servisi bu geceki sertifika rotasyonundan önce eski kripto kütüphanesinden çıkar; bazı servisler paylaşılan anahtarla ortak imzalıyor | **Claude: Opus 5.5 · ultracode · ✅** · **Codex: Sol · xhigh** | it-18 sınır eval'i; **it-20:** `R=3` → tek agentic-code ölçümünün eğilimi rozeti Claude'a verir |
+| sh1 | Bir denemede yanlış çıktı, kaynağı kısma; bu deploy'dan beri endpoint her istekte 500 veriyor — nedenini bul | **Claude: Opus 5.5 · high** · **Codex: Sol · high · ✅** | it-18 sınır — kademe 2 yalnızca Claude'da (Sonnet → Opus); **it-20:** Codex'te kademe 2 yok, `R=1` → rozet Codex |
+| e4p | Yeni servisler-arası işlem sınırını tasarla ve uygula; bu gece yayında, geri dönüşü yok | **Claude: Opus 5.5 · max · ✅** · **Codex: Sol · max** + onay notu | **it-20: E4 EMEKLİ** (`Sol · max` artık `Astra · xhigh` olmuyor); rozet Codex → Claude çünkü `R=3`. **NEGATİF test: Astra çıkmamalı** |
+| fr1 | Bunu her zamanki amiral gemimizde overnight max eforla çalıştırdık, hâlâ döngüyü kapatamadı; ~50 dosyalık otonom scheduler refactor'u | **Claude: Fable 5.1 · xhigh** · **Codex: Astra · xhigh · ✅** | it-18 — Kural A1: belirtilmiş amiral-gemisi yetersizliği Astra'ya çıkarır |
+| 5b | Bu 180 servisin kodunu auth bypass açığı için denetle (exploit yazma) | **Claude: Sonnet 5.5 · ultracode** · **Codex: Sol Ultra · xhigh · ✅** | Savunma denetimi — offensive kapı **tetiklenmez**. Adversarial zafiyet avı = D=3, 180 birim = W=3; **it-20:** terminal-tool Codex okur (verimlilik) ve Ultra mekanizması Codex'te → rozet Codex |
+| b1 | 40 dosyada payment modülünü yeni idempotency-key API'sine taşı, çağıranları güncelle, testleri geçir | **Claude: Sonnet 5.5 · high** · **Codex: Sol · high · ✅** | it-16 — baskın capability `agentic-code`. **it-20:** +1 kademe emekli; tek bağımsız TB 4.0 satırı yön değil → verimlilik (`low-confidence`) |
+| t1 | Container build yalnız release CI runner'da patlıyor; container içinde tekrarla, kök nedeni bul, Dockerfile + CI workflow'u düzelt | **Claude: Opus 5.5 · xhigh** · **Codex: Sol · xhigh · ✅** | it-16 — `terminal-tool`. **it-20:** rozet Claude → Codex (tek bağımsız TB 4.0 satırı, `R=1`) |
+| p1 | Bu greedy scheduling sezgiselinin worst-case makespan'ının 4/3 içinde olduğunu ispatla ya da karşı örnek ver; kod yazma | **Claude: Opus 5.5 · xhigh** · **Codex: Sol · xhigh · ✅** | it-16 — `deep-reasoning`; kodlama benchmark'larının ağırlığı sıfır. **it-20:** bir HLE satırı ve bir CritPt eşitliği yön değil → verimlilik (`low-confidence`) |
+| e1 | 900 sayfa regülasyon dosyasını oku, 2023–2026 açıklama yükümlülüğü değişimini tek memo'ya yaz | **Claude: Sonnet 5.5 · high · ✅** · **Codex: Sol · high** | it-16 — `long-context` + `knowledge-work`. **it-20:** knowledge-work'ün BD1 yönü var (GDPval-AA + AA-Briefcase), long-context'in yok → yön kazanır → Claude (`low-confidence`) |
+| g1 | Tedarikçinin masaüstü ERP istemcisini staging'de 14 adımlık ay-sonu kapanışında sür, doğrulama hatalarını çöz, mizanı dışa aktar | **Claude: Sonnet 5.5 · high** · **Codex: Sol · high · ✅** | it-16 — bilgisayar-kullanımı kapısı. **it-20: kapı EMEKLİ** (Sol 2.1 OSWorld puanı geride, yedide bir maliyet; tier C) → Sol, karşılaştırılabilir satır yok → verimlilik. **NEGATİF test: Astra çıkmamalı** |
+| h1 | Ödeme defterimizin çok-bölgeli failover ve veri tutarlılığı modelini sıfırdan tasarla; gelecek çeyrek canlıya çıkıyor, geri dönüşü yok | **Claude: Opus 5.5 · max · ✅** · **Codex: Sol · max** + onay notu | it-16 — token tasarrufu kaliteyi **ezmemeli**. **it-20:** hâlâ Claude, yeni nedenle: `R=3` → BD1 eğilim maddesi (tek HLE ölçümü Claude'a eğilimli) |
 | i1 | 120 ilgisiz tedarikçinin sub-processor şartlarını DPA'mızla uzlaştır, ihlal var mı karar ver; hukuk her flag'i inceliyor | **Claude: Sonnet 5.5 · ultracode** · **Codex: Sol Ultra · xhigh · ✅** | it-16 — `parallel-independent`; Claude'un kanıtlanmış üstünlüğü olmadığı yerde Ultra mekanizması rozeti alır |
-| j1 | 60 taranmış faturayı defter dökümüyle uzlaştır; kalemler farklı yazılmış, bazıları birden çok kayda bölünmüş | **Claude: Sonnet 5.5 · high · ✅** · **Codex: Terra · high** | it-16 — **kanıt fakiri**; sahte üstünlük iddia edilmemeli, Evidence `low-confidence` demeli |
-| k1 | Bu CLI komutuna, yapacağını yapmak yerine yazdıran bir `--dry-run` bayrağı ekle | **Claude: Sonnet 5.5 · medium · ✅** · **Codex: Terra · medium** | it-16 — en pahalı model refleksi yok; D=1 → capability satırları atlanır, verimlilik karar verir |
-| q1 | **Kritik, eksik kaynakla yapılmasın:** bu prod migration script'leri bu gece incelemesiz çalışacak — sessiz veri kaybı var mı bak | **Claude: Opus 5.5 · xhigh · ✅** · **Codex: Sol · xhigh** + onay notu | it-16 — m1 ile aynı profil + açık yükseltme talebi. **Yükseltme MODEL değişimi, efor değişimi değil**; `max` yine çıkmaz (E3) |
+| j1 | 60 taranmış faturayı defter dökümüyle uzlaştır; kalemler farklı yazılmış, bazıları birden çok kayda bölünmüş | **Claude: Sonnet 5.5 · high** · **Codex: Sol · high · ✅** | it-16 — kanıt fakiri. **it-20:** tek bağımsız belge-anlama satırı (AA GDP.pdf, Sol 31 vs 26) Codex'e eğilimli → rozet Codex, `low-confidence` |
+| k1 | Bu CLI komutuna, yapacağını yapmak yerine yazdıran bir `--dry-run` bayrağı ekle | **Claude: Sonnet 5.5 · medium** · **Codex: Sol · medium · ✅** | it-16 — `D=1` → capability satırları atlanır, verimlilik karar verir; **it-20:** Sonnet 5.5 vs Sol → Codex † (aynı $2/$10, Sol'un düşük token yükü yalnızca `max`'ta ölçüldü) |
+| q1 | **Kritik, eksik kaynakla yapılmasın:** bu prod migration script'leri bu gece incelemesiz çalışacak — sessiz veri kaybı var mı bak | **Claude: Opus 5.5 · xhigh · ✅** · **Codex: Sol · xhigh** + onay notu | it-16 — m1 ile aynı profil + açık yükseltme talebi. Yükseltme MODEL değişimi (Claude'da); **Codex'in kademe 2'si yok** — Sol zaten günlük sürücü. `max` yine çıkmaz (E3) |
 | 6 | Şu kodu düzelt | Model önerme, netleştir | Adım 0 (hedef somut değil) |
 | 6b | "Bir günde 1000 üretim olursa 500'ü aynı güne, 500'ü ertesi güne yansısın" | Model önerme, netleştir | Adım 0 (kural örnekle anlatılmış, genellenmemiş — canlı kullanıcı testi) |
-| 7 | Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek | **Sonnet 5.5 · low** + insan onayı notu | R=3∧D=0 — model/efor **değişmez** (D takip eder), sadece onay notu eklenir |
+| 7 | Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek | **Claude: Sonnet 5.5 · low** · **Codex: Sol · low · ✅** + insan onayı notu | R=3∧D=0 — model/efor **değişmez** (D takip eder), sadece onay notu eklenir; `D≤1` → verimlilik karar verir (`low-confidence`) |
 | 8 | 4000 dosyalık legacy monolitini modüllere ayır | **Fable 5.1 · ultracode** | Frontier-ölçek kapısı + W=3 |
 | 9 | Prod'daki 200 servisin auth mimarisini baştan tasarla | **opusplan · plan: max · uygulama: medium** | Mimari karar ön-yüklü (bir kez tasarlanır, 200 servise mekanik uygulanır), W=3, R=3∧Kural2a — opusplan'ın flagship senaryosu |
 | 9b | 40 mikroservisi ortak bir auth middleware'e geçir, tasarımı bir kez belirle | **opusplan · plan: xhigh · uygulama: medium** | Aynı örüntü, R=2 (geri alınabilir) — plan eforu `xhigh` kalır, `max`'a çıkmaz |

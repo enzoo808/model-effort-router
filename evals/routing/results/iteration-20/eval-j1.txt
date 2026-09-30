@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: high
+Codex: ✅ RECOMMENDED AI · Sol · effort: high
+Evidence: Scanned-invoice extraction is doc-data-understanding, where AA's GDP.pdf has Sol 31 against Sonnet 5.5 and Opus 5.5 at 26 / 26 — the one independent row, so not a certified direction; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

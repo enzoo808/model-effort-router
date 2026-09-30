@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Measure how much of the router's ecosystem preference rests on vendor-run evidence.
 
-Phase 1 produced 24 Claude badges against 5 Codex. That is not automatically a
-bug -- a 50/50 split is not the goal -- but it is worth knowing *why*. If most of
-the Claude lead comes from Anthropic measuring GPT models in Anthropic's own
-harness, that is a finding, not a capability.
+Phase 1 produced 24 Claude badges against 5 Codex; iteration-20 (GPT-6.1 Sol) turned
+that round. Neither split is a goal -- but it is worth knowing *why*. If a badge
+direction comes from a vendor measuring a competitor in its own harness, that is a
+finding, not a capability, and this script says which directions survive without it.
 
 Three passes over the same evidence:
 
@@ -32,7 +32,7 @@ import compile_benchmark_frontiers as C  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 EVALS = ROOT / "evals" / "routing" / "evals.json"
 
-CODEX_MODELS = ["Astra", "GPT-5.6 Sol", "GPT-5.6 Terra", "GPT-5.6 Luna"]
+CODEX_MODELS = ["Astra", "GPT-6.1 Sol", "GPT-6 Luna"]
 
 
 def filters(raw: dict) -> dict:
@@ -58,13 +58,22 @@ def filters(raw: dict) -> dict:
     }
 
 
+def state(m: dict) -> str:
+    """What Step 6 rule BD1 licenses for one (capability, codex model): a direction,
+    or the efficiency fall-through (with the R=3 lean, when there is one)."""
+    h = m["badge_hint"]
+    if h["basis"] == "direction_rows":
+        return h["toward"]
+    return "efficiency" + ("/lean-" + h["lean"] if h.get("lean") else "")
+
+
 def codex_view(frontier: dict) -> dict:
-    """capability -> {codex_model -> preferred}."""
+    """capability -> {codex_model -> BD1 state}."""
     out: dict[str, dict] = {}
     for f in frontier["capability_frontiers"]:
         out[f["capability"]] = {"__overall__": f["preferred"]}
         for m in f["by_codex_model"]:
-            out[f["capability"]][m["codex_model"]] = m["preferred"]
+            out[f["capability"]][m["codex_model"]] = state(m)
     return out
 
 
@@ -82,7 +91,7 @@ def main() -> int:
     print("=" * 92)
     print("PER-CAPABILITY FRONTIER UNDER EACH EVIDENCE VIEW")
     print("=" * 92)
-    print("%-22s %-11s %-28s %-28s" % ("capability", "codex model", "full -> independent_only",
+    print("%-22s %-11s %-34s %-34s" % ("capability", "codex model", "full -> independent_only",
                                        "full -> no_cross_vendor"))
     flips = collections.defaultdict(list)
     for cap in caps:
@@ -98,8 +107,8 @@ def main() -> int:
                 flips["independent_only"].append((cap, model, f_, i_))
             if n_ != f_:
                 flips["no_cross_vendor"].append((cap, model, f_, n_))
-            label = "overall" if model == "__overall__" else model.replace("GPT-5.6 ", "")
-            print("%-22s %-11s %-28s %-28s" % (
+            label = "overall" if model == "__overall__" else model.replace("GPT-", "")
+            print("%-22s %-11s %-34s %-34s" % (
                 cap, label, "%s -> %s%s" % (f_, i_, mark_i), "%s -> %s%s" % (f_, n_, mark_n)))
 
     print()
@@ -130,8 +139,9 @@ def main() -> int:
             if pref in ("claude", "codex"):
                 counts[name][pref] += 1
             else:
-                # equivalent / UNRESOLVED -> the router falls through to the
-                # efficiency tie-break, which this ablation does not re-derive.
+                # No BD1 direction -> the router falls through to the efficiency
+                # tie-break (or, at R=3, the lean), which this ablation does not
+                # re-derive.
                 counts[name]["efficiency-decides"] += 1
         if driver == "capability" and cap:
             f_ = views["full"].get(cap, {}).get(codex_model)
@@ -147,7 +157,7 @@ def main() -> int:
     print()
     print("badge drivers: " + ", ".join("%s=%d" % kv for kv in sorted(driver_counts.items())))
     print("  only 'capability' evals can move when evidence is filtered; the rest are")
-    print("  decided by a hard gate, a D<=1 efficiency tie-break, or a product mechanism.")
+    print("  decided by a hard gate, an efficiency fall-through, the R=3 lean, or a product mechanism.")
 
     print()
     if changed:

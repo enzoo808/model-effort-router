@@ -74,9 +74,12 @@ def row(rid, model, score, group="g", bench="B", ver="1", **extra):
     return r
 
 
-def group(cls="model_intrinsic", tier="B", saturated=False, band=None):
-    return {"description": "", "evidence_class": cls, "source_tier": tier,
-            "saturated": saturated, "equivalence_band": band or {"kind": "none"}}
+def group(cls="model_intrinsic", tier="B", saturated=False, band=None, run_by=None):
+    g = {"description": "", "evidence_class": cls, "source_tier": tier,
+         "saturated": saturated, "equivalence_band": band or {"kind": "none"}}
+    if run_by is not None:
+        g["run_by"] = run_by
+    return g
 
 
 def ci(v):
@@ -403,6 +406,152 @@ check("two benchmarks in one group give ONE multi-rung curve (X) and never pool 
       [("X", ["high", "max"])])
 check("  ...X's higher rung is dominated (lower score, higher cost), untouched by Y's 90",
       [d["rung"] for d in curves[0]["dominated_rungs"]], ["max"])
+
+# =====================================================================
+# PARETO -- cross-model cost/score dominance inside one cell
+# =====================================================================
+
+def prow(rid, model, score, cost, effort="high", **kw):
+    return row(rid, model, score, effort=effort, cost_per_task_usd=cost, **kw)
+
+
+def status(pareto_cell):
+    return {p["id"]: p["status"] for p in pareto_cell["points"]}
+
+
+m = base_meta()
+m["comparability_groups"] = {"g": group()}
+m["records"] = [prow("a", "Opus 5", 50.0, 2.0), prow("b", "Astra", 60.0, 1.0)]
+pc = C.compile_pareto(m["records"], m)[0]
+check("higher score AND lower cost dominates", status(pc), {"a": "dominated", "b": "frontier"})
+check("  ...and names its dominator", pc["points"][1]["dominated_by"], ["b"])
+
+m["records"] = [prow("a", "Opus 5", 50.0, 2.0), prow("b", "Astra", 50.0, 1.0)]
+check("EQUAL score at lower cost dominates (the 'same score, cheaper' case)",
+      status(C.compile_pareto(m["records"], m)[0]), {"a": "dominated", "b": "frontier"})
+
+m["records"] = [prow("a", "Opus 5", 50.0, 1.0), prow("b", "Astra", 60.0, 1.0)]
+check("EQUAL cost at a higher score dominates",
+      status(C.compile_pareto(m["records"], m)[0]), {"a": "dominated", "b": "frontier"})
+
+m["records"] = [prow("a", "Opus 5", 50.0, 1.0), prow("b", "Astra", 50.0, 1.0)]
+check("identical (score, cost) points do NOT dominate each other",
+      status(C.compile_pareto(m["records"], m)[0]), {"a": "frontier", "b": "frontier"})
+
+m["records"] = [prow("a", "Opus 5", 50.0, 1.0), prow("b", "Astra", 60.0, 3.0)]
+check("a better score at a HIGHER cost is a trade-off, not dominance",
+      status(C.compile_pareto(m["records"], m)[0]), {"a": "frontier", "b": "frontier"})
+
+m["records"] = [prow("a", "Opus 5", 50.0, 2.0), prow("b", "Astra", 60.0, 1.0),
+                row("c", "Fable 5.1", 99.0, effort="high")]
+check("a row with no cost/task is left out, never estimated",
+      sorted(p["id"] for p in C.compile_pareto(m["records"], m)[0]["points"]), ["a", "b"])
+
+m["records"] = [prow("a", "Opus 5", 50.0, 2.0, bench="X"), prow("b", "Astra", 60.0, 1.0, bench="Y")]
+check("two benchmarks are two cells; a cost is never set against another benchmark's",
+      C.compile_pareto(m["records"], m), [])
+
+m["records"] = [prow("a", "Opus 5", 50.0, 2.0), prow("b", "Astra", 60.0, 1.0, effort=None)]
+check("a row with no stated effort rung is not a configuration",
+      C.compile_pareto(m["records"], m), [])
+
+m["model_ecosystem"]["current_roster"] = ["Astra"]
+m["records"] = [prow("old", "Opus 5", 50.0, 2.0), prow("new", "Astra", 60.0, 1.0)]
+pc = C.compile_pareto(m["records"], m)[0]
+check("a retired model stays in the output, flagged off-roster, with its dominator named",
+      [(p["id"], p["on_roster"], p["dominated_by"]) for p in pc["points"]],
+      [("new", True, []), ("old", False, ["new"])])
+
+m = base_meta()
+m["comparability_groups"] = {"g": group(saturated=True)}
+m["records"] = [prow("a", "Opus 5", 50.0, 2.0), prow("b", "Astra", 60.0, 1.0)]
+check("a saturated group is skipped", C.compile_pareto(m["records"], m), [])
+m["comparability_groups"] = {"g": group()}
+m["excluded_from_direction"] = [{"benchmark": "B", "benchmark_version": None, "reason": "test"}]
+check("a benchmark declared excluded is skipped", C.compile_pareto(m["records"], m), [])
+
+m = base_meta()
+m["comparability_groups"] = {"g": group()}
+m["records"] = [prow("a", "Opus 5", 50.0, 2.0), prow("b", "Astra", 60.0, 1.0),
+                prow("c", "Fable 5.1", 55.0, 5.0)]
+pc = C.compile_pareto(m["records"], m)[0]
+check("the frontier list is exactly the undominated points, cheapest first",
+      pc["frontier"], ["b"])
+
+# =====================================================================
+# BADGE HINT -- what the evidence licenses when no interval is published
+# =====================================================================
+
+def hint_for(rows, groups):
+    m = base_meta()
+    m["comparability_groups"] = groups
+    m["records"] = rows
+    return C.compile_capability("cap", m["records"], m)["by_codex_model"][0]["badge_hint"]
+
+
+def pair(prefix, claude, codex, bench, grp, cm="Opus 5", xm="Astra", **kw):
+    return [row(prefix + "c", cm, claude, group=grp, bench=bench, **kw),
+            row(prefix + "x", xm, codex, group=grp, bench=bench, **kw)]
+
+
+ind = {"g": group(run_by="independent")}
+h = hint_for(pair("1", 70, 60, "B1", "g"), ind)
+check("ONE independent row pointing one way is not a direction -> efficiency",
+      (h["basis"], h["toward"]), ("efficiency", None))
+
+h = hint_for(pair("1", 70, 60, "B1", "g") + pair("2", 80, 70, "B2", "g"), ind)
+check("two independent benchmarks agreeing, tier B -> a direction (toward claude)",
+      (h["basis"], h["toward"]), ("direction_rows", "claude"))
+
+ind2 = {"g": group(run_by="independent"), "h": group(run_by="independent")}
+h = hint_for(pair("1", 70, 60, "B1", "g") + pair("2", 70, 60, "B1", "h"), ind2)
+check("the SAME benchmark re-published on a second page is ONE measurement -> efficiency",
+      (h["basis"], h["toward"]), ("efficiency", None))
+
+mixed = {"g": group(run_by="independent"), "v": group("vendor_relative", "A", run_by="openai")}
+h = hint_for(pair("1", 70, 60, "B1", "g") + pair("2", 80, 70, "B2", "v"), mixed)
+check("independent row + a vendor table that favours its RIVAL (against-interest) -> a direction",
+      (h["basis"], h["toward"]), ("direction_rows", "claude"))
+
+h = hint_for(pair("1", 70, 60, "B1", "g") + pair("2", 60, 70, "B2", "v"), mixed)
+check("a vendor table favouring its OWN vendor is not admissible -> efficiency",
+      (h["basis"], h["toward"]), ("efficiency", None))
+check("  ...and it is not counted against the other row either",
+      h["admissible_rows"]["codex"], [])
+
+h = hint_for(pair("1", 70, 60, "B1", "g") + pair("2", 60, 70, "B2", "g"), ind)
+check("admissible rows pointing BOTH ways -> contested, no direction",
+      (h["basis"], h["toward"]), ("contested", None))
+
+tc = {"v": group("vendor_relative", "C", run_by="openai")}
+h = hint_for(pair("1", 70, 60, "B1", "v") + pair("2", 80, 70, "B2", "v"), tc)
+check("two against-interest rows that are BOTH tier C never set a direction alone",
+      (h["basis"], h["toward"]), ("efficiency", None))
+
+h = hint_for(pair("1", 70, 60, "B1", "g") + pair("2", 70, 70, "B2", "g"), ind)
+check("a tie is recorded as a tie and is not treated as opposition",
+      (h["basis"], h["ties"]), ("efficiency", ["g | B2 1"]))
+
+h = hint_for(pair("1", 70, 60, "B1", "g"), ind)
+check("a single admissible row is recorded as a LEAN toward its side",
+      (h["basis"], h["lean"]), ("efficiency", "claude"))
+h = hint_for(pair("1", 70, 60, "B1", "g") + pair("2", 60, 70, "B2", "g"), ind)
+check("  ...contested rows have no lean", (h["basis"], h["lean"]), ("contested", None))
+h = hint_for(pair("1", 70, 70, "B1", "g"), ind)
+check("  ...a tie has no lean", (h["basis"], h["lean"]), ("efficiency", None))
+h = hint_for(pair("1", 70, 60, "B1", "g") + pair("2", 80, 70, "B2", "g"), ind)
+check("  ...and a direction has none either (it is a direction)",
+      (h["basis"], h["toward"], h["lean"]), ("direction_rows", "claude", None))
+
+agg = {"g": group("aggregate", "B", run_by="independent")}
+h = hint_for(pair("1", 70, 60, "B1", "g") + pair("2", 80, 70, "B2", "g"), agg)
+check("an aggregate never counts as a direction row", (h["basis"], h["toward"]), ("efficiency", None))
+
+h = hint_for([row("a", "Opus 5", 70, group="g", bench="B1", effort="xhigh"),
+              row("b", "Astra", 60, group="g", bench="B1", effort="high")]
+             + pair("2", 80, 70, "B2", "g"), ind)
+check("a cell at UNMATCHED efforts is not comparable and is never a direction row",
+      (h["basis"], h["toward"]), ("efficiency", None))
 
 # =====================================================================
 # DETERMINISM

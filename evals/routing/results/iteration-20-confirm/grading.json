@@ -1,0 +1,406 @@
+{
+  "results": [
+    {
+      "id": 1,
+      "eval_name": "hacim-kapisi-haiku",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 2,
+      "eval_name": "taban-durum-sonnet-medium",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 3,
+      "eval_name": "skorlama-sonnet-high",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 4,
+      "eval_name": "derin-ajanik-opus-max",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 5,
+      "eval_name": "siber-guvenlik-kapisi-saldiri-amacli",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "5b",
+      "eval_name": "savunma-denetimi-kapi-yok",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-5b.txt"
+    },
+    {
+      "id": "f1",
+      "eval_name": "frontier-kapisi-fable-5-1-servis-bolme-r3",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-f1.txt"
+    },
+    {
+      "id": "f2",
+      "eval_name": "savunma-denetimi-kucuk-kapsam",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-f2.txt"
+    },
+    {
+      "id": "m1",
+      "eval_name": "d3-r3-kural2-disi-orta-katman-xhigh",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=xhigh; Codex: Sol correct, effort=xhigh; recommended=claude (correct); evidence ok; notes ok (shared note)"
+    },
+    {
+      "id": 6,
+      "eval_name": "adim0-hedef-somut-degil",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 7,
+      "eval_name": "adim0-kural-genellenmemis",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 8,
+      "eval_name": "risk-eforu-degistirmiyor",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 9,
+      "eval_name": "frontier-kapisi-fable-5-1",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 10,
+      "eval_name": "opusplan-flagship",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 11,
+      "eval_name": "opusplan-r2-xhigh",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 12,
+      "eval_name": "kural3-kanitsiz-sonnet-xhigh",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 13,
+      "eval_name": "ultracode-model-kisitsiz",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 14,
+      "eval_name": "biyoloji-kapisi-fable-5-1-opus-degil",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 15,
+      "eval_name": "c-tek-basina-opus-tetiklemiyor",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 16,
+      "eval_name": "kural2a-kod-disi-mimari-opus-xhigh-no-opusplan",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 17,
+      "eval_name": "kural2b-matematik-ispat",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 18,
+      "eval_name": "kural2c-aracsiz-akil-yurutme",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 19,
+      "eval_name": "adim0-sessiz-yanlis-varsayim",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 20,
+      "eval_name": "adim0-iki-yorum",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": 21,
+      "eval_name": "opusplan-ultracode-gelismis-kombinasyon-gozlemsel",
+      "passed": "manual",
+      "evidence": "subjective/observational eval -- can't be checked deterministically, review by hand"
+    },
+    {
+      "id": 22,
+      "eval_name": "200k-eleyici-kapi-sonnet",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "c1",
+      "eval_name": "ekosistem-acik-belirtim-codex",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "c2",
+      "eval_name": "ekosistem-gercek-paralel-ultra-ama-derinlik-dusuk",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "c3",
+      "eval_name": "ekosistem-varsayilan-claude-hacim-kapisi",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "c4",
+      "eval_name": "ekosistem-varsayilan-claude-taban-durum",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "c5",
+      "eval_name": "ekosistem-sahte-paralel-karsi-ornek",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "v1",
+      "eval_name": "opusplan-ekosistem-oneki-tutarliligi",
+      "passed": "manual",
+      "evidence": "old (single-ecosystem) format -- dual-output expectation not added, needs backfill"
+    },
+    {
+      "id": "d1",
+      "eval_name": "dual-hacim-kapisi",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-d1.txt"
+    },
+    {
+      "id": "d2",
+      "eval_name": "dual-taban-durum",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-d2.txt"
+    },
+    {
+      "id": "d3",
+      "eval_name": "dual-siber-guvenlik-codex-standart-erisim-durur",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-d3.txt"
+    },
+    {
+      "id": "a1",
+      "eval_name": "codex-offensive-daybreak-astra",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-a1.txt"
+    },
+    {
+      "id": "a2",
+      "eval_name": "codex-frontier-context-astra",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=medium; Codex: Sol correct, effort=medium; recommended=codex (correct); evidence ok"
+    },
+    {
+      "id": "d4",
+      "eval_name": "dual-biyoloji-codex-dogrulanmadi",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-d4.txt"
+    },
+    {
+      "id": "d5",
+      "eval_name": "dual-r3-paylasilan-not",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-d5.txt"
+    },
+    {
+      "id": "d6",
+      "eval_name": "dual-opusplan-codex-bagimsiz",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-d6.txt"
+    },
+    {
+      "id": "d7",
+      "eval_name": "dual-adim0-blok",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-d7.txt"
+    },
+    {
+      "id": "n1",
+      "eval_name": "dual-novel-sahte-bagimsizlik-decoy",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-n1.txt"
+    },
+    {
+      "id": "n2",
+      "eval_name": "dual-novel-savunma-vs-saldiri-guvenlik-ayrimi",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-n2.txt"
+    },
+    {
+      "id": "n3",
+      "eval_name": "dual-novel-basit-nullable-migration",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-n3.txt"
+    },
+    {
+      "id": "r1",
+      "eval_name": "d1-vs-d2-belgelenmis-kalip-pagination",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-r1.txt"
+    },
+    {
+      "id": "r2",
+      "eval_name": "d0-vs-d1-mekanik-cok-paragraf-yeniden-yazim",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-r2.txt"
+    },
+    {
+      "id": "s1",
+      "eval_name": "r-ekseni-kod-degisikligi-vs-operasyonel-deger",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-s1.txt"
+    },
+    {
+      "id": "s3",
+      "eval_name": "r-ekseni-gercek-operasyonel-deger-r2",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-s3.txt"
+    },
+    {
+      "id": "b1",
+      "eval_name": "capability-agentic-cok-dosyali-kodlama",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-b1.txt"
+    },
+    {
+      "id": "t1",
+      "eval_name": "capability-terminal-agir-kok-neden",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-t1.txt"
+    },
+    {
+      "id": "p1",
+      "eval_name": "capability-derin-akil-yurutme-kodlama-benchmarki-sifir",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-p1.txt"
+    },
+    {
+      "id": "e1",
+      "eval_name": "capability-uzun-baglam-sentez-memo",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-e1.txt"
+    },
+    {
+      "id": "g1",
+      "eval_name": "capability-computer-use-codex-kapisi",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-g1.txt"
+    },
+    {
+      "id": "h1",
+      "eval_name": "yuksek-risk-mimari-verimlilik-kaliteyi-ezmemeli",
+      "passed": true,
+      "evidence": "Claude: Opus 5.5 correct, effort=max; Codex: Sol correct, effort=max; recommended=claude (correct); evidence ok; notes ok (shared note)"
+    },
+    {
+      "id": "i1",
+      "eval_name": "paralel-bagimsiz-is-codex-ultra",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-i1.txt"
+    },
+    {
+      "id": "j1",
+      "eval_name": "kanit-fakiri-karsilastirma-dusuk-guven",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-j1.txt"
+    },
+    {
+      "id": "k1",
+      "eval_name": "basit-kodlama-en-pahali-model-refleksi-yok",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-k1.txt"
+    },
+    {
+      "id": "q1",
+      "eval_name": "dominance-yukseltme-model-degistirir-efor-degil",
+      "passed": true,
+      "evidence": "Claude: Opus 5.5 correct, effort=xhigh; Codex: Sol correct, effort=xhigh; recommended=claude (correct); evidence ok; notes ok (shared note)"
+    },
+    {
+      "id": "x1",
+      "eval_name": "terminal-tool-astra-sutunu-rozet-codexe-gecer",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-x1.txt"
+    },
+    {
+      "id": "x2",
+      "eval_name": "vendor-bagimli-capability-hedge-zorunlu",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-x2.txt"
+    },
+    {
+      "id": "o1",
+      "eval_name": "boundary-opus-ultracode-multiphase",
+      "passed": true,
+      "evidence": "Claude: Opus 5.5 correct, effort=ultracode; Codex: Sol correct, effort=xhigh; recommended=claude (correct); evidence ok"
+    },
+    {
+      "id": "sh1",
+      "eval_name": "boundary-sol-high-escalation",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-sh1.txt"
+    },
+    {
+      "id": "e4p",
+      "eval_name": "boundary-astra-e4-positive",
+      "passed": true,
+      "evidence": "Claude: Opus 5.5 correct, effort=max; Codex: Sol correct, effort=max; recommended=claude (correct); evidence ok; notes ok (shared note)"
+    },
+    {
+      "id": "fr1",
+      "eval_name": "boundary-fable-frontier-escalation",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-fr1.txt"
+    },
+    {
+      "id": "w1",
+      "eval_name": "kanit-bd1-knowledge-work-yon-claude",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-w1.txt"
+    },
+    {
+      "id": "z1",
+      "eval_name": "kanit-bd1-science-iki-olcum-claude",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-20-confirm\\eval-z1.txt"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 0,
+    "skipped": 32,
+    "total": 66
+  }
+}

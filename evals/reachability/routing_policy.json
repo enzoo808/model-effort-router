@@ -1,12 +1,12 @@
 {
   "schema_version": "1.1",
-  "policy_version": "iteration-19",
-  "compiled": "2026-09-29",
+  "policy_version": "iteration-20",
+  "compiled": "2026-09-30",
   "purpose": "Machine-readable mirror of the decision rules in skill/SKILL.md, used by scripts/check_routing_reachability.py to audit which model x effort x mode combinations the rules can and cannot produce, and by scripts/check_policy_sync.py to prove this mirror and the shipped SKILL.md still describe the SAME rules. Nothing reads this at runtime; skill/SKILL.md remains the single source of truth for routing.",
   "drift_guard": "Every entry under `rules` carries `skill_md_assertion` (substrings that MUST appear in skill/SKILL.md) and, where a rule replaced an older one, `skill_md_must_not_appear` (the superseded wording). `scripts/check_policy_sync.py` fails if the marker version, the assertions or the negative assertions disagree with skill/SKILL.md. Change a rule here without changing SKILL.md and it fails; change SKILL.md's rule text without updating this file and it fails too. This exists because the audit once spent a whole pass validating iteration-18 while the shipped skill still implemented iteration-17.",
   "not_shipped": "Deliberately lives under evals/, not skill/. build-claude-ai-zip.ps1 ships only SKILL.md, reference.md, benchmarks.json and benchmark_frontiers.json, so this file adds nothing to the runtime package.",
   "support_matrix": {
-    "note": "What the PRODUCT supports, verified against the sources recorded in reference.md 3 (Claude effort support), 9.3 (Codex effort mechanics) and 9.8 (Astra). 'unsupported' here is a capability limit, never a routing preference -- the router may not emit an unsupported cell even if a rule asked for it.",
+    "note": "What the PRODUCT supports, verified against the sources recorded in reference.md 3 (Claude effort support), 9.3 (Codex effort mechanics), 9.8 (Astra) and 18 (GPT-6.1 Sol). 'unsupported' here is a capability limit, never a routing preference -- the router may not emit an unsupported cell even if a rule asked for it.",
     "claude": {
       "Haiku 4.5": {
         "efforts": [],
@@ -84,20 +84,11 @@
           "low",
           "medium",
           "high",
-          "xhigh"
+          "xhigh",
+          "max"
         ],
         "modes": [],
-        "note": "max and Ultra are Astra/Sol only (learn.chatgpt.com, 10 Sep 2026)"
-      },
-      "Terra": {
-        "efforts": [
-          "low",
-          "medium",
-          "high",
-          "xhigh"
-        ],
-        "modes": [],
-        "note": "max unsupported -- capability limit, not preference; one conflicting AA row, see reference.md 12.3"
+        "note": "GPT-6 Luna. learn.chatgpt.com (30 Sep 2026): 'up to Max (not Ultra)'. The router only ever emits low (D=0); max needs a flagship (Rule M1)."
       },
       "Sol": {
         "efforts": [
@@ -109,7 +100,8 @@
         ],
         "modes": [
           "ultra"
-        ]
+        ],
+        "note": "GPT-6.1 Sol (gpt-6.1-sol, 29 Sep 2026): low..max, `none` and `minimal` rejected; learn.chatgpt.com lists 'Light to Ultra'. Terra and every GPT-5.6 model are legacy and not routed."
       },
       "Astra": {
         "efforts": [
@@ -198,18 +190,17 @@
     "workflow-automation"
   ],
   "escalation_ladders": {
-    "note": "A model change, never an effort change (Step 7 Rule 2). Each rung has its own trigger; the ladder is not climbed by difficulty alone.",
+    "note": "A model change, never an effort change (Step 7 Rule 2). Each rung has its own trigger; the ladder is not climbed by difficulty alone. Iteration-20: Codex has no rung 2 -- Terra is gone and Sol is already the daily driver -- so its ladder is Sol -> Astra, reached only through rung 3.",
     "claude": [
       "Sonnet 5.5",
       "Opus 5.5",
       "Fable 5.1"
     ],
     "codex": [
-      "Terra",
       "Sol",
       "Astra"
     ],
-    "rung_2_trigger": "user states the work is critical / must not be under-resourced / an earlier run fell short",
+    "rung_2_trigger": "Claude only: user states the work is critical / must not be under-resourced / an earlier run fell short (Sonnet 5.5 -> Opus 5.5).",
     "rung_3_trigger": "A=high AND the dominant capability is on the flagship list AND the user states a flagship-tier run at xhigh or max already fell short. (iteration-19: 'or the session is an hours-long unattended agentic run' removed.)"
   },
   "rules": {
@@ -226,20 +217,29 @@
       "why_changed": "Parallelism is not target count. Strands of work inside one job count too -- three candidate designs investigated or prototyped side by side is the same primitive as three independent services. The D==3 floor is kept on purpose: Ultra runs ~4 agents, so it costs ~4x, and at D<=2 the mid tier already clears the bar."
     },
     "codex_notch": {
-      "version": "iteration-18",
-      "expr": "agentic_multistep_write AND model in [Terra, Sol] -> +1 rung, capped at xhigh, and NEVER downward",
-      "previous": "agentic_multistep_write AND model in [Terra, Sol] -> +1 rung, capped at max on Sol / xhigh on Terra",
-      "why_changed": "The notch compensates for a MODEL-tier gap. Letting it reach the last rung contradicts Step 7 Rule 2 (escalation is a model change, not an effort change) and Rule E3. The 'never downward' half is a bug fix found by this audit: a cap applied to a rung that Rule E3 had already raised to max was silently pulling it back to xhigh, which broke the indivisible-novel-design case the top rung exists for."
+      "version": "iteration-20",
+      "retired": {
+        "rule_text": "**N1 · Codex +1 notch.** When the task is writing or restructuring code across multiple dependent steps and the model is Terra or Sol, raise the Codex effort one rung, capped at `xhigh` on both models, and never lower a rung that another rule already set higher. Never on Astra. Claude is untouched.",
+        "previous_expr": "agentic_multistep_write AND model in [Terra, Sol] -> +1 rung, capped at xhigh, and NEVER downward",
+        "revert": "Restore the N1 block in skill/SKILL.md, the rule_blocks.N1 entry, and delete `notch` from check_routing_reachability.AFTER."
+      },
+      "expr": "none -- Codex takes the same effort as Claude from the shared D table",
+      "why_retired": "The notch compensated for a MODEL-tier gap. Its basis was Terminal-Bench 4.0: GPT-5.6 Sol 37.3 vs Opus 5.5 66.4, ~29 points. On AA's same-page run GPT-6.1 Sol scores 56 against Opus 5.5's 60 and Sonnet 5.5's 64 -- 4-8 points, no interval. Independently, GPT-6.1 Sol's own curve is nearly flat above high (50 / 51 / 52 on AA v4.3.2, and OpenAI's DeepSWE has max BELOW high, 71.9 vs 75.2), so one more rung buys about a point at +22% cost, the shape Rule E3 already rejects. The rule was described as 'loosely, not strongly' benchmark-backed when it was introduced; with its basis gone it has none.",
+      "previous": "agentic_multistep_write AND model in [Terra, Sol] -> +1 rung, capped at max on Sol / xhigh on Terra"
     },
     "max": {
       "expr": "D == 3 AND R == 3 AND model in flagship_models AND indivisible_single_chain",
       "unchanged": true
     },
     "E4": {
-      "version": "iteration-18",
-      "expr": "dominant capability in [agentic-code, terminal-tool] AND the rules would emit Sol max -> emit Astra xhigh instead",
-      "why": "AA Intelligence Index v4.3: Astra xhigh 53 @ $2.31 vs Sol max 47 @ $1.99. AA Terminal-Bench 4.0 (independent harness): Astra 59 vs Sol 40. Astra is ~70% more token-efficient, and output tokens outrank cost/task in the 5c ordering. Capability-scoped on purpose: HLE puts Astra BEHIND on deep-reasoning and GDPval shows a regression on knowledge-work, so E4 must not fire there.",
-      "why_not_wider": "Widening E4 below max would mean comparing Astra xhigh against Sol xhigh, and AA publishes Sol only at high and max. Estimating the missing rung is exactly the interpolation Step 5a forbids, so the rule stops where the published rungs stop. That, not a frequency target, is what keeps Astra rare."
+      "version": "iteration-20",
+      "retired": {
+        "rule_text": "**E4 · Astra swap.** When the dominant capability is agentic-code or terminal-tool and the rules would emit `Sol · max`, emit `Astra · xhigh` instead.",
+        "previous_expr": "dominant capability in [agentic-code, terminal-tool] AND the rules would emit Sol max -> emit Astra xhigh instead",
+        "revert": "Restore the E4 block in skill/SKILL.md, the rule_blocks.E4 entry, and delete `e4` from check_routing_reachability.AFTER."
+      },
+      "expr": "none -- Sol max stays Sol max",
+      "why_retired": "E4 swapped `Sol max` for `Astra xhigh` on agentic-code / terminal-tool because AA v4.3 had Astra xhigh 53 @ $2.31 vs GPT-5.6 Sol max 47 @ $1.99 and ~27k vs ~78k output tokens. GPT-6.1 Sol max is 52 @ $0.72 at ~38k tokens against Astra's 53 @ $3.26 at ~27k (AA v4.3.2, same page): a point apart, 4.5x cheaper. Astra still leads Terminal-Bench 4.0 by 3 points (59 vs 56, no interval), so the swap is removed by the EFFICIENCY step, not because Sol wins on capability."
     },
     "frontier_escalation": {
       "version": "iteration-19",
@@ -258,6 +258,24 @@
       "version": "iteration-19",
       "expr": "NEVER emit Sonnet 5.5 max; escalation is Sonnet 5.5 -> Opus 5.5 at the same rung",
       "why": "AA v4.3.2: Sonnet 5.5 max 56 @ $7.60 (~193k output tokens/task) vs Opus 5.5 xhigh 56 @ $3.46 -- same score, 2.2x the cost. Anthropic footnote: Sonnet 5.5 scores lower at max than xhigh on FrontierCode. Sonnet 5.5's lower rungs are unpublished, so E1 claims nothing about them."
+    },
+    "codex_tier": {
+      "version": "iteration-20",
+      "expr": "D=0 AND W=0 AND C<=1 AND R<=1 -> Luna; otherwise Sol (Sol Ultra when P=high AND D=3); Astra only through the Daybreak gate, the 1000+ file gate, or rung 3 (A1)",
+      "previous": "Luna / Terra (D<=2, or D=3 outside the flagship list) / Sol (D=3 on the flagship list); Astra through five gates plus E4",
+      "why_changed": "GPT-6.1 Sol (29 Sep 2026, $2/$10, 1.05M context) is the Codex default, scores 52 @ $0.72 on AA v4.3.2 at ~38k output tokens, and dominates every GPT-6 Sol rung. Terra has no successor and is absent from OpenAI's current-recommended list. Two Astra gates lost their basis: the >=1M-token gate ('only Codex model with a verified >=1M window' -- Sol has 1.05M) and the computer-use gate (OSWorld 2.0 73.5 vs 71.4, 2.1 points on a tier C relay, at 7x the cost). The 1000+ file gate stays as a positioning call, flagged least-supported."
+    },
+    "badge_direction": {
+      "version": "iteration-20",
+      "expr": "BD1: >=2 independent measurements agree (>=1 tier A/B), none disagree; else efficiency -- except at R=3, where a single admissible measurement (a lean) decides",
+      "previous": "the badge table was hand-authored from the compiler's UNRESOLVED cells with a provenance judgement",
+      "why_changed": "Every cross-ecosystem cell against GPT-6.1 Sol is UNRESOLVED, so 'the direction of the strongest provenance' had become a judgement call that flipped whole rows. BD1 makes it a computed hint: scripts/compile_benchmark_frontiers.py badge_hint, asserted by test_frontier_compiler.py, cross-checked against the BADGE20 table here by test_reachability_tool.py. The R=3 clause keeps SKILL.md's standing instruction that at R=3 the bar for calling parity is widened and 'when genuinely unsure, take the stronger candidate': without it a cost tie-break would hand every high-risk architecture task to the cheaper arm on the strength of one Terminal-Bench row that points the other way."
+    },
+    "mechanism_rows": {
+      "version": "iteration-20",
+      "expr": "MECH1: Ultra -> Codex; ultracode (O=high) or opusplan -> Claude; a BD1 benchmark direction beats a mechanism; two mechanisms cancel",
+      "previous": "only parallel-independent (Ultra) was a mechanism row; orchestration and opusplan were carried by the agentic-code / deep-reasoning rows that happened to favour Claude",
+      "why_changed": "Those two rows now read Codex (efficiency) against GPT-6.1 Sol, which would have handed the badge to the arm with no orchestration mode on a task the router itself sends to ultracode. Symmetry: a mechanism the router puts on one arm's line is a capability only that arm has."
     }
   },
   "rule_blocks": {
@@ -270,9 +288,9 @@
       "A1": "**A1 · frontier rung.** Opus 5.5 becomes Fable 5.1 and Sol becomes Astra only when the dominant capability is on the flagship list and `A = high`, where `A = high` means the user states that an earlier flagship-tier run at `xhigh` or `max` already fell short. A long or unattended session is not that statement.",
       "O1": "**O1 · orchestration load.** `O = high` when the session must run three or more distinct phases, where a phase is a stretch of work that produces a different kind of deliverable and whose output is consumed by a later phase. The phases that count are research, implementation, independent verification, packaging, data or schema migration, documentation, and triage. The whole edit-run-repair implementation loop is one phase, and tests you write for your own change are inside it.",
       "UC1": "**UC1 · `ultracode`.** Emit `ultracode` when the estimated duration is over 30 minutes and either `O = high` or (`W = 3` and `D >= 2`) and the difficulty is not one indivisible chain. Write `ultracode` in the effort field. Every model except Haiku 4.5.",
-      "N1": "**N1 · Codex +1 notch.** When the task is writing or restructuring code across multiple dependent steps and the model is Terra or Sol, raise the Codex effort one rung, capped at `xhigh` on both models, and never lower a rung that another rule already set higher. Never on Astra. Claude is untouched.",
-      "E4": "**E4 · Astra swap.** When the dominant capability is agentic-code or terminal-tool and the rules would emit `Sol · max`, emit `Astra · xhigh` instead.",
-      "B1": "**B1 · evidence applicability.** A benchmark row takes part in the badge decision only if the capability it measures is one of the dominant tags named for this prompt in Step 2. Applicability is checked before evidence quality and before any tie-break, and a row that is not applicable does not enter the comparison at all, however strong its number."
+      "B1": "**B1 · evidence applicability.** A benchmark row takes part in the badge decision only if the capability it measures is one of the dominant tags named for this prompt in Step 2. Applicability is checked before evidence quality and before any tie-break, and a row that is not applicable does not enter the comparison at all, however strong its number.",
+      "BD1": "**BD1 · direction without an interval.** A badge direction needs at least two independent measurements that agree — an independent evaluator's run, or a vendor's table that favours its rival — at least one of them tier A or B, and none that disagree. The same benchmark re-published on a second page is one measurement, a tie is not opposition, and an aggregate never counts. Otherwise the cell is decided by efficiency, except at R = 3, where a single admissible measurement still decides it: a lean is not parity.",
+      "MECH1": "**MECH1 · mechanism rows.** Ultra on the Codex line, and `ultracode` driven by `O = high` or `opusplan` on the Claude line, each name something only one arm has, so each decides the badge for the arm that has it, unless the other capability row carries a benchmark direction under BD1, which wins. Two mechanisms on one task cancel, and the capability rows decide."
     }
   },
   "skill_md_must_not_appear": [
@@ -280,6 +298,13 @@
     "large relative to the benchmark's own spread",
     "the dominant capability is structured design/architecture",
     "hours of unattended agentic execution or the user states",
-    "**E1 — `Sonnet 5 · max` is dominated.**"
+    "**E1 — `Sonnet 5 · max` is dominated.**",
+    "**N1 · Codex +1 notch.**",
+    "**E4 · Astra swap.**",
+    "Codex: Terra ·",
+    "**Terra → Sol**",
+    "| Terra |",
+    "Sonnet 5.5 vs\n  Terra",
+    "≥ ~1M-token corpus / \"load the whole repo at once\""
   ]
 }

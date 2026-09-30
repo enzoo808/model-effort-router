@@ -1,0 +1,4 @@
+Claude: Fable 5.1 · effort: ultracode
+Codex: ✅ RECOMMENDED AI · Astra · effort: high
+Evidence: Both arms gate to frontier scale at 3,200 files; agentic-code and terminal-tool both read Codex against Astra (Terminal-Bench 4.0 near-tie, Astra's ~27k tokens/task vs Fable's much larger footprint), so the badge is low-confidence, while ultracode fires on Claude via the width limb (W=3 ∧ D=2), not orchestration.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

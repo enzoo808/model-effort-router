@@ -1,145 +1,753 @@
 {
-  "schema_version": "1.0",
-  "reviewed": "2026-09-11 (iteration-18 stabilization)",
-  "purpose": "Hand-maintained sign-off on every decision flip between the rules at commit 35ff226 and the iteration-18 rules. scripts/check_routing_reachability.py joins this onto the generated flip table and FAILS on any flip that is not reviewed here, on any entry that no longer corresponds to a flip, and on any verdict of REJECT. A flip count on its own is not a review; this file is the review.",
+  "schema_version": "1.1",
+  "reviewed": "2026-09-30 (iteration-20)",
+  "purpose": "Hand-maintained sign-off on every decision flip between the iteration-19 rules (commit 8a2050d) and the iteration-20 rules. scripts/check_routing_reachability.py joins this onto the generated flip table and FAILS on any flip that is not reviewed here, on any entry that no longer corresponds to a flip, and on any verdict of REJECT. A flip count on its own is not a review; this file is the review.",
   "verdicts": {
     "ACCEPT": "the new route is better for this task, not merely consistent with the new rule",
     "REJECT": "the new route is worse -- fix the rule or the label, do not record the flip",
     "UNCERTAIN": "defensible either way; recorded so it is re-read next time the rule moves"
   },
-  "how_the_rule_column_is_produced": "Not by hand. scripts/check_routing_reachability.py switches exactly one iteration-18 delta off at a time and reports which one restores the old route, so the attribution cannot rot when a rule changes.",
+  "how_the_rule_column_is_produced": "Not by hand. scripts/check_routing_reachability.py switches exactly one iteration-20 delta (tier, notch, e4, gates, badge) off at a time and reports which one restores the old route, so the attribution cannot rot when a rule changes.",
+  "headline": "91 of 154 corpus prompts flip. 82 involve the Terra -> Sol tier merge, 22 the retired notch (the two overlap), 6 the retired Astra gates, 2 E4. The badge histogram moves from Claude 122 / Codex 28 / none 4 to Claude 43 / Codex 107 / none 4. Against GPT-6.1 Sol no agentic-code, terminal-tool, deep-reasoning, long-context, research-synthesis, doc-data-understanding or computer-use row licenses a Claude DIRECTION under BD1, so at R<=2 those fall to efficiency and efficiency favours Sol; at R=3 a single-row lean still decides (BD1's R=3 clause), which is why the high-risk architecture prompts stay on Claude. The lean is large and it is recorded here so it is re-read, not because anyone found it wrong.",
   "rejected_during_review": {
-    "_note": "These flipped under the first iteration-18 draft, were reviewed, and were REJECTED. Each was fixed at the source -- the rule or the corpus label -- so none of them is a flip any more. Kept because a review that silently deletes its own failures is not a review.",
-    "rc-044": "Sol max -> Sol xhigh. REJECTED: 'Redesign the auth architecture of 200 prod services from scratch' is the canonical indivisible novel-design decision at D=3 AND R=3, which Rule E3 explicitly allows max for -- and it is shipped golden d6, which expects Sol max. Root cause was a bug, not a rule: the +1 agentic notch, newly capped at xhigh, was pulling an already-max rung DOWN. bump() now never lowers a rung.",
-    "rc-120": "Sol max -> Sol xhigh. REJECTED for the same notch-downgrade bug. 'Rewrite the query planner's join ordering' is indivisible at D=3 AND R=3.",
-    "rc-042": "Sonnet 5 high -> Sonnet 5 ultracode. REJECTED: driving a portal to pull each invoice and file it is ONE step repeated across many units, which is W, not orchestration. Corpus label O corrected to low. Shipped golden g1 (drive the ERP client through 14 close steps) routes to Sonnet 5 high, and the two must agree.",
-    "rc-051": "Sonnet 5 high -> Sonnet 5 ultracode. REJECTED: wiring an integration with retries and a dead-letter path is implement-only; no verification loop feeds back. Corpus label O corrected to low, matching shipped golden x2.",
-    "rc-110": "Sonnet 5 high -> Sonnet 5 ultracode. REJECTED: the four named steps are the AUTOMATION's stages, not the session's. O is about the session. Label corrected to low.",
-    "rc-128": "Sonnet 5 high -> Sonnet 5 ultracode. REJECTED: one procedure repeated across 95 PRs is width. Label corrected to low.",
-    "rc-061": "Sonnet 5 high -> Sonnet 5 ultracode. REJECTED: profile / change / re-measure is one kind of step iterated, with no test-authoring, build or docs phase. Label corrected to low.",
-    "rc-072": "Opus 5 xhigh -> Opus 5 ultracode. REJECTED: a root-cause hunt is an investigation loop, not workflow orchestration. Label corrected to low. SKILL.md's own race-condition example routes this shape to xhigh.",
-    "rc-081": "Opus 5 xhigh -> Opus 5 ultracode. REJECTED for the same reason; benchmark / find / fix is measure-change-measure.",
-    "rc-112": "Opus 5 xhigh -> Opus 5 ultracode. REJECTED: the prompt asks only to FIND the bug. Pure diagnosis. Label corrected to low, keeping shipped golden t1 valid.",
-    "rc-138": "Sonnet 5 xhigh -> Sonnet 5 ultracode. REJECTED: reconciling two engines' behaviour is analysis. Label corrected to low.",
-    "rc-073": "Terra xhigh -> Sol Ultra xhigh. REJECTED: 'investigate the node side and the app side in parallel' is TWO strands. P=high means 3+. Corpus label P corrected to low. This was the Ultra rule's only false positive."
+    "_note": "Nothing was REJECTed in iteration-20. The first draft of the badge table put research-synthesis and doc-data-understanding on Claude by default; the compiled badge_hint found one measurement (or none) for each against GPT-6.1 Sol and the rows were changed to Codex with a low-confidence flag before any flip was recorded."
   },
   "flips": {
+    "rc-005": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-006": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-007": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-008": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-009": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-010": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-011": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-012": [
+      "UNCERTAIN",
+      "Terra -> Sol at the same D. Badge Claude -> Codex on a deep-reasoning prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+    ],
+    "rc-013": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-014": [
+      "UNCERTAIN",
+      "Terra -> Sol at the same D. Badge Claude -> Codex on a research-synthesis prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+    ],
+    "rc-016": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-017": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-018": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-019": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
     "rc-020": [
       "ACCEPT",
-      "ultracode OFF. 150 files of userId -> accountId is one mechanical edit repeated; D=1. Buying workflow orchestration for it was a long-standing false positive in the OLD rule, surfaced by this audit."
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
     ],
     "rc-021": [
       "ACCEPT",
-      "ultracode OFF, same mechanical-width false positive. 300 files, D=1, behaviour must not change."
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
     ],
-    "rc-045": [
+    "rc-022": [
       "ACCEPT",
-      "Codex max -> xhigh. The rung came from the +1 agentic notch, not from E3. Migrating 40 services onto shared middleware is breadth-driven, which E3 sends to xhigh, and Step 7 Rule 2 says escalation is a model change, not an effort change."
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
     ],
-    "rc-046": [
-      "ACCEPT",
-      "Same as rc-045 at 150 services. Breadth, not an indivisible decision."
+    "rc-026": [
+      "UNCERTAIN",
+      "Terra -> Sol at the same D. Badge Claude -> Codex on a deep-reasoning prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
     ],
-    "rc-049": [
-      "ACCEPT",
-      "Ultra ON from strands. Three candidate event-bus designs investigated independently and compared at the end is the textbook parallel case; the old rule saw only already-independent TARGETS and missed it. Claude correctly stays Sonnet 5 xhigh -- D=3 analysis is off the flagship list, and ultracode is one chain, not four agents."
+    "rc-028": [
+      "UNCERTAIN",
+      "Terra -> Sol at the same D. Badge Claude -> Codex on a deep-reasoning prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
     ],
-    "rc-050": [
+    "rc-029": [
       "ACCEPT",
-      "Codex max -> xhigh, notch cap. Note the task IS indivisible, but R=2, so E3's max condition never applied; the max came from the notch alone."
+      "Terra -> Sol at the same D. Badge unchanged (claude)."
+    ],
+    "rc-040": [
+      "UNCERTAIN",
+      "Astra -> Sol: the 1M-token gate is retired. GPT-6.1 Sol has the same 1.05M window at a fifth of the price, and is 2.1 OSWorld points behind Astra at one seventh of the cost. But the OSWorld figures are a tier C relay of OpenAI's own table, so the gate's removal rests on evidence no better than the evidence that created it. Re-read when OpenAI's page can be fetched."
+    ],
+    "rc-041": [
+      "UNCERTAIN",
+      "Terra -> Sol at the same D. Badge Claude -> Codex on a long-context prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+    ],
+    "rc-042": [
+      "UNCERTAIN",
+      "Astra -> Sol: the computer-use gate is retired. GPT-6.1 Sol has the same 1.05M window at a fifth of the price, and is 2.1 OSWorld points behind Astra at one seventh of the cost. But the OSWorld figures are a tier C relay of OpenAI's own table, so the gate's removal rests on evidence no better than the evidence that created it. Re-read when OpenAI's page can be fetched."
+    ],
+    "rc-043": [
+      "UNCERTAIN",
+      "Astra -> Sol: the computer-use gate is retired. GPT-6.1 Sol has the same 1.05M window at a fifth of the price, and is 2.1 OSWorld points behind Astra at one seventh of the cost. But the OSWorld figures are a tier C relay of OpenAI's own table, so the gate's removal rests on evidence no better than the evidence that created it. Re-read when OpenAI's page can be fetched."
+    ],
+    "rc-048": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge unchanged (codex)."
+    ],
+    "rc-051": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge unchanged (claude)."
+    ],
+    "rc-053": [
+      "UNCERTAIN",
+      "Terra -> Sol at the same D. Badge Claude -> Codex on a research-synthesis prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+    ],
+    "rc-054": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge unchanged (claude)."
+    ],
+    "rc-055": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge unchanged (claude)."
+    ],
+    "rc-056": [
+      "UNCERTAIN",
+      "Terra -> Sol at the same D. Badge Claude -> Codex on a doc-data-understanding prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+    ],
+    "rc-057": [
+      "UNCERTAIN",
+      "Terra -> Sol at the same D. Badge Claude -> Codex on a doc-data-understanding prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+    ],
+    "rc-058": [
+      "UNCERTAIN",
+      "Terra -> Sol at the same D. Badge Claude -> Codex on a deep-reasoning prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+    ],
+    "rc-059": [
+      "UNCERTAIN",
+      "Terra -> Sol at the same D. Badge Claude -> Codex on a doc-data-understanding prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+    ],
+    "rc-060": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-061": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
     ],
     "rc-062": [
       "ACCEPT",
-      "ultracode ON at W=2. Fix breaking changes, update the lockfile, run, repair, rebuild the image, verify it boots. Implement + verify + package."
-    ],
-    "rc-063": [
-      "ACCEPT",
-      "Claude ultracode ON (read the vendor docs, implement, write golden-image tests, run, repair); Codex max -> xhigh from the notch cap. Both halves are the same judgement: orchestration is a mode, and the top rung is not a substitute for it."
-    ],
-    "rc-064": [
-      "ACCEPT",
-      "Claude ultracode ON: the old rule's dead zone. D=3 AND R=3 blocked ultracode while E3 independently refused max, so a 300-service re-key with no rollback got a bare xhigh and no orchestration. Codex Sol Ultra max -> xhigh: the notch, not E3, had produced max on breadth-driven work."
-    ],
-    "rc-065": [
-      "ACCEPT",
-      "Same dead zone at 400 services. The replacement guard is the indivisible test, which is the same test E3 uses, so ultracode and max can no longer both be refused for contradictory reasons."
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge unchanged (claude)."
     ],
     "rc-066": [
       "ACCEPT",
-      "E4: Sol max -> Astra xhigh, and the badge moves with it. AA Index v4.3 puts Astra xhigh at 53 for $2.31 against Sol max at 47 for $1.99, and AA Terminal-Bench 4.0 -- the only independent source covering both ecosystems -- has Astra 59 against Sol 40. The badge flip is the iteration-17 model-conditional rule, already shipped on golden f1: Claude's agentic-code lead is a lead over Sol, not over Astra."
+      "Sol max replaces Astra xhigh (E4 retired). The badge moves to Claude because this prompt routes to opusplan, a mechanism only the Claude arm has (MECH1), and agentic-code carries no benchmark direction against Sol."
     ],
-    "rc-068": [
+    "rc-070": [
       "ACCEPT",
-      "Rung-3 frontier escalation (A1): the user states a flagship-tier run at max already fell short on a long unattended agentic refactor, the published condition for Opus 5 -> Fable 5.1 / Sol -> Astra. Effort stays xhigh -- W=2 and one implementation phase, so no ultracode after the O1 tightening."
+      "The +1 notch is retired: Sol is one rung lower than Sol was. The badge moves to Codex because agentic-code has no benchmark direction against GPT-6.1 Sol (BD1) and Sol's token load is a quarter of Opus 5.5's."
     ],
-    "rc-069": [
+    "rc-073": [
       "ACCEPT",
-      "Codex max -> xhigh from the notch cap (N1); Claude unchanged at Opus 5 xhigh. An overnight backlog run is the implementation loop repeated, which is one phase under O1, so no ultracode."
+      "Terra -> Sol at the same D. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
     ],
-    "rc-082": [
+    "rc-074": [
       "ACCEPT",
-      "Codex max -> xhigh from the notch cap (N1); Claude unchanged at Opus 5 xhigh. Implement the pass, run the suite, regenerate goldens is implementation plus one data artefact -- two phases, not orchestration."
+      "Terra -> Sol at the same D. Badge unchanged (claude)."
+    ],
+    "rc-075": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-076": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-077": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-078": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-083": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-084": [
+      "UNCERTAIN",
+      "Terra -> Sol at the same D. Badge Claude -> Codex on a deep-reasoning prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+    ],
+    "rc-085": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-086": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
     ],
     "rc-087": [
       "ACCEPT",
-      "ultracode OFF. Enumerating 240 Helm charts for one pattern and reporting is mechanical at D=1 -- SKILL.md already rules mechanical enumeration D=1, and the effort table then gives medium."
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-088": [
+      "UNCERTAIN",
+      "Terra -> Sol at the same D. Badge Claude -> Codex on a research-synthesis prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
     ],
     "rc-089": [
       "ACCEPT",
-      "ultracode ON at W=2. Define checks, implement, wire into Airflow, backfill a week, alert on breaches. The backfill is a real run whose failures feed back. The thinnest accepted case alongside rc-122."
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge unchanged (claude)."
     ],
-    "rc-090": [
+    "rc-092": [
       "ACCEPT",
-      "Codex max -> xhigh. A 900-file REST-to-gRPC port is the definition of breadth-driven; E3 stops at xhigh and the R=3 review note carries the stakes. Claude was already on ultracode via width."
+      "Terra -> Sol at the same D. Badge unchanged (claude)."
+    ],
+    "rc-093": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge unchanged (claude)."
+    ],
+    "rc-094": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-095": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-096": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
     ],
     "rc-097": [
       "ACCEPT",
-      "E4. Decomposing a service into separately deployed processes at R=3 is indivisible, so E3 does allow max here -- and at that exact point the published rungs favour Astra xhigh over Sol max on score, output tokens and index together. Shipped golden f1 already sends monolith decomposition to Astra at scale."
+      "Sol max replaces Astra xhigh (E4 retired). The badge moves to Claude because this prompt routes to opusplan, a mechanism only the Claude arm has (MECH1), and agentic-code carries no benchmark direction against Sol."
+    ],
+    "rc-098": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-099": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge unchanged (claude)."
+    ],
+    "rc-100": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge unchanged (claude)."
+    ],
+    "rc-101": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-102": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-104": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge unchanged (codex)."
     ],
     "rc-106": [
       "ACCEPT",
-      "ultracode OFF. Finding and fixing a leaked key across 200 notebooks is one edit repeated; D=1."
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-107": [
+      "UNCERTAIN",
+      "Terra -> Sol at the same D. Badge Claude -> Codex on a long-context prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+    ],
+    "rc-108": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-109": [
+      "UNCERTAIN",
+      "Astra -> Sol: the computer-use gate is retired. GPT-6.1 Sol has the same 1.05M window at a fifth of the price, and is 2.1 OSWorld points behind Astra at one seventh of the cost. But the OSWorld figures are a tier C relay of OpenAI's own table, so the gate's removal rests on evidence no better than the evidence that created it. Re-read when OpenAI's page can be fetched."
+    ],
+    "rc-110": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge unchanged (claude)."
+    ],
+    "rc-111": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge unchanged (claude)."
+    ],
+    "rc-114": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-116": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
     ],
     "rc-118": [
       "ACCEPT",
-      "ultracode OFF. 110 dashboards, one retired metric, D=1."
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
     ],
-    "rc-124": [
+    "rc-119": [
       "ACCEPT",
-      "Three deltas interact and all three are right: Ultra fires on strands (three caching designs prototyped independently against one traffic replay), the notch cap holds the rung at xhigh, and ultracode turns on for the Claude arm's own prototype/run/compare loop."
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
     ],
-    "rc-133": [
-      "ACCEPT",
-      "ultracode ON: write the harness, run it for an hour, triage crashes, file them -- four kinds. Codex max -> xhigh from the notch cap."
+    "rc-121": [
+      "UNCERTAIN",
+      "Terra -> Sol at the same D. Badge Claude -> Codex on a research-synthesis prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
     ],
-    "rc-136": [
+    "rc-122": [
       "ACCEPT",
-      "Codex max -> xhigh from the notch cap (N1); Claude unchanged at Opus 5 xhigh. Investigate then instrument is research + implementation, two phases, so no ultracode under O1."
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-123": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-125": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-128": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge unchanged (codex)."
+    ],
+    "rc-129": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-130": [
+      "UNCERTAIN",
+      "Terra -> Sol at the same D. Badge Claude -> Codex on a long-context prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+    ],
+    "rc-132": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-135": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-137": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge unchanged (claude)."
+    ],
+    "rc-138": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge unchanged (claude)."
     ],
     "rc-139": [
       "ACCEPT",
-      "ultracode ON at W=2. Terraform, deploy 12 services, seed, run the smoke suite, repair what does not come up."
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge unchanged (claude)."
     ],
-    "rc-147": [
+    "rc-140": [
       "ACCEPT",
-      "Codex max -> xhigh from the notch cap (N1); Claude unchanged at Opus 5 xhigh. Research existing behaviour then implement across the platform is two phases; the RFC work is one implementation loop, so no ultracode."
+      "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
     ],
-    "rc-148": [
+    "rc-141": [
+      "UNCERTAIN",
+      "Astra -> Sol: the 1M-token gate is retired. GPT-6.1 Sol has the same 1.05M window at a fifth of the price, and is 2.1 OSWorld points behind Astra at one seventh of the cost. But the OSWorld figures are a tier C relay of OpenAI's own table, so the gate's removal rests on evidence no better than the evidence that created it. Re-read when OpenAI's page can be fetched."
+    ],
+    "rc-142": [
       "ACCEPT",
-      "Rung-3 escalation, same as rc-068: two stated flagship-tier failures at xhigh on a long-tailed 80-file migration. This is the published condition for the frontier rung, not difficulty on its own."
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-143": [
+      "ACCEPT",
+      "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-144": [
+      "ACCEPT",
+      "Terra -> Sol at the same D. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+    ],
+    "rc-146": [
+      "UNCERTAIN",
+      "Astra -> Sol: the computer-use gate is retired. GPT-6.1 Sol has the same 1.05M window at a fifth of the price, and is 2.1 OSWorld points behind Astra at one seventh of the cost. But the OSWorld figures are a tier C relay of OpenAI's own table, so the gate's removal rests on evidence no better than the evidence that created it. Re-read when OpenAI's page can be fetched."
     ]
   },
-  "no_longer_flips_after_O1_tightening": {
-    "_note": "These fired ultracode under the first iteration-18 draft's loose orchestration count (edit/test/fix read as 3+ 'kinds of step'). Rule O1 was rewritten during stabilization so the implementation loop is ONE phase; each of these is a 2-phase job, so it now stays at its D-driven rung and no longer differs from the pre-iteration-18 route. Recorded here rather than deleted: the b1 cold-routing failure is exactly this class, and this list is the fix's footprint.",
-    "rc-018": "was ACCEPT (ultracode); now no flip under O1 — ultracode ON at W=2. Implement, author tests, run lint and the build, repair the fallout -",
-    "rc-019": "was ACCEPT (ultracode); now no flip under O1 — ultracode ON at W=1. Discover existing behaviour, implement, generate tests, run, repair. ",
-    "rc-035": "was ACCEPT (ultracode); now no flip under O1 — ultracode ON. Build the variant-calling pipeline, run it, validate against the GIAB truth ",
-    "rc-060": "was ACCEPT (ultracode); now no flip under O1 — ultracode ON at W=1. Lint, test, build the container, push, gate the merge -- you cannot a",
-    "rc-078": "was ACCEPT (ultracode); now no flip under O1 — ultracode ON at W=2 (Turkish). Check each of 80 services, add what is missing, write tests",
-    "rc-093": "was ACCEPT (ultracode); now no flip under O1 — ultracode ON at W=1. Build the harness, sweep the grid, report instability -- implement, r",
-    "rc-101": "was ACCEPT (ultracode); now no flip under O1 — ultracode ON at W=2. Instrument 70 files, add span tests, run, repair, update the runbook ",
-    "rc-116": "was ACCEPT (ultracode); now no flip under O1 — ultracode ON at W=2. Scaffold, wire, add e2e tests, run headless, repair, ship a preview b",
-    "rc-122": "was ACCEPT (ultracode); now no flip under O1 — ultracode ON at W=1 -- the narrowest accepted case in the set, kept deliberately as the bo",
-    "rc-131": "was ACCEPT (ultracode); now no flip under O1 — ultracode ON. Build the annotation pipeline, run it over 40 FASTQs, QC the output."
+  "archive_iteration_18": {
+    "reviewed": "2026-09-30 (iteration-20)",
+    "rejected_during_review": {
+      "_note": "Nothing was REJECTed in iteration-20. The first draft of the badge table put research-synthesis and doc-data-understanding on Claude by default; the compiled badge_hint found one measurement (or none) for each against GPT-6.1 Sol and the rows were changed to Codex with a low-confidence flag before any flip was recorded."
+    },
+    "flips": {
+      "rc-005": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-006": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-007": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-008": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-009": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-010": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-011": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-012": [
+        "UNCERTAIN",
+        "Terra -> Sol at the same D. Badge Claude -> Codex on a deep-reasoning prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+      ],
+      "rc-013": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-014": [
+        "UNCERTAIN",
+        "Terra -> Sol at the same D. Badge Claude -> Codex on a research-synthesis prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+      ],
+      "rc-016": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-017": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-018": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-019": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-020": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-021": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-022": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-026": [
+        "UNCERTAIN",
+        "Terra -> Sol at the same D. Badge Claude -> Codex on a deep-reasoning prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+      ],
+      "rc-028": [
+        "UNCERTAIN",
+        "Terra -> Sol at the same D. Badge Claude -> Codex on a deep-reasoning prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+      ],
+      "rc-029": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge unchanged (claude)."
+      ],
+      "rc-040": [
+        "UNCERTAIN",
+        "Astra -> Sol: the 1M-token gate is retired. GPT-6.1 Sol has the same 1.05M window at a fifth of the price, and is 2.1 OSWorld points behind Astra at one seventh of the cost. But the OSWorld figures are a tier C relay of OpenAI's own table, so the gate's removal rests on evidence no better than the evidence that created it. Re-read when OpenAI's page can be fetched."
+      ],
+      "rc-041": [
+        "UNCERTAIN",
+        "Terra -> Sol at the same D. Badge Claude -> Codex on a long-context prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+      ],
+      "rc-042": [
+        "UNCERTAIN",
+        "Astra -> Sol: the computer-use gate is retired. GPT-6.1 Sol has the same 1.05M window at a fifth of the price, and is 2.1 OSWorld points behind Astra at one seventh of the cost. But the OSWorld figures are a tier C relay of OpenAI's own table, so the gate's removal rests on evidence no better than the evidence that created it. Re-read when OpenAI's page can be fetched."
+      ],
+      "rc-043": [
+        "UNCERTAIN",
+        "Astra -> Sol: the computer-use gate is retired. GPT-6.1 Sol has the same 1.05M window at a fifth of the price, and is 2.1 OSWorld points behind Astra at one seventh of the cost. But the OSWorld figures are a tier C relay of OpenAI's own table, so the gate's removal rests on evidence no better than the evidence that created it. Re-read when OpenAI's page can be fetched."
+      ],
+      "rc-048": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge unchanged (codex)."
+      ],
+      "rc-051": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge unchanged (claude)."
+      ],
+      "rc-053": [
+        "UNCERTAIN",
+        "Terra -> Sol at the same D. Badge Claude -> Codex on a research-synthesis prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+      ],
+      "rc-054": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge unchanged (claude)."
+      ],
+      "rc-055": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge unchanged (claude)."
+      ],
+      "rc-056": [
+        "UNCERTAIN",
+        "Terra -> Sol at the same D. Badge Claude -> Codex on a doc-data-understanding prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+      ],
+      "rc-057": [
+        "UNCERTAIN",
+        "Terra -> Sol at the same D. Badge Claude -> Codex on a doc-data-understanding prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+      ],
+      "rc-058": [
+        "UNCERTAIN",
+        "Terra -> Sol at the same D. Badge Claude -> Codex on a deep-reasoning prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+      ],
+      "rc-059": [
+        "UNCERTAIN",
+        "Terra -> Sol at the same D. Badge Claude -> Codex on a doc-data-understanding prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+      ],
+      "rc-060": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-061": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-062": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge unchanged (claude)."
+      ],
+      "rc-066": [
+        "ACCEPT",
+        "Sol max replaces Astra xhigh (E4 retired). The badge moves to Claude because this prompt routes to opusplan, a mechanism only the Claude arm has (MECH1), and agentic-code carries no benchmark direction against Sol."
+      ],
+      "rc-070": [
+        "ACCEPT",
+        "The +1 notch is retired: Sol is one rung lower than Sol was. The badge moves to Codex because agentic-code has no benchmark direction against GPT-6.1 Sol (BD1) and Sol's token load is a quarter of Opus 5.5's."
+      ],
+      "rc-073": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-074": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge unchanged (claude)."
+      ],
+      "rc-075": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-076": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-077": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-078": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-083": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-084": [
+        "UNCERTAIN",
+        "Terra -> Sol at the same D. Badge Claude -> Codex on a deep-reasoning prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+      ],
+      "rc-085": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-086": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-087": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-088": [
+        "UNCERTAIN",
+        "Terra -> Sol at the same D. Badge Claude -> Codex on a research-synthesis prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+      ],
+      "rc-089": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge unchanged (claude)."
+      ],
+      "rc-092": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge unchanged (claude)."
+      ],
+      "rc-093": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge unchanged (claude)."
+      ],
+      "rc-094": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-095": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-096": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-097": [
+        "ACCEPT",
+        "Sol max replaces Astra xhigh (E4 retired). The badge moves to Claude because this prompt routes to opusplan, a mechanism only the Claude arm has (MECH1), and agentic-code carries no benchmark direction against Sol."
+      ],
+      "rc-098": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-099": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge unchanged (claude)."
+      ],
+      "rc-100": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge unchanged (claude)."
+      ],
+      "rc-101": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-102": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-104": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge unchanged (codex)."
+      ],
+      "rc-106": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-107": [
+        "UNCERTAIN",
+        "Terra -> Sol at the same D. Badge Claude -> Codex on a long-context prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+      ],
+      "rc-108": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-109": [
+        "UNCERTAIN",
+        "Astra -> Sol: the computer-use gate is retired. GPT-6.1 Sol has the same 1.05M window at a fifth of the price, and is 2.1 OSWorld points behind Astra at one seventh of the cost. But the OSWorld figures are a tier C relay of OpenAI's own table, so the gate's removal rests on evidence no better than the evidence that created it. Re-read when OpenAI's page can be fetched."
+      ],
+      "rc-110": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge unchanged (claude)."
+      ],
+      "rc-111": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge unchanged (claude)."
+      ],
+      "rc-114": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-116": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-118": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-119": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-121": [
+        "UNCERTAIN",
+        "Terra -> Sol at the same D. Badge Claude -> Codex on a research-synthesis prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+      ],
+      "rc-122": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-123": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-125": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-128": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge unchanged (codex)."
+      ],
+      "rc-129": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-130": [
+        "UNCERTAIN",
+        "Terra -> Sol at the same D. Badge Claude -> Codex on a long-context prompt: the row has one measurement (or a tie) against GPT-6.1 Sol, so it falls to efficiency with a low-confidence flag -- defensible, and thin."
+      ],
+      "rc-132": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-135": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-137": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge unchanged (claude)."
+      ],
+      "rc-138": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge unchanged (claude)."
+      ],
+      "rc-139": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge unchanged (claude)."
+      ],
+      "rc-140": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: D<=1 skips the capability rows, so efficiency decides. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-141": [
+        "UNCERTAIN",
+        "Astra -> Sol: the 1M-token gate is retired. GPT-6.1 Sol has the same 1.05M window at a fifth of the price, and is 2.1 OSWorld points behind Astra at one seventh of the cost. But the OSWorld figures are a tier C relay of OpenAI's own table, so the gate's removal rests on evidence no better than the evidence that created it. Re-read when OpenAI's page can be fetched."
+      ],
+      "rc-142": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-143": [
+        "ACCEPT",
+        "Terra -> Sol, and one rung LOWER (xhigh -> high): the +1 agentic notch is retired, so both arms now read the same D table. Badge Claude -> Codex: agentic-code. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-144": [
+        "ACCEPT",
+        "Terra -> Sol at the same D. Badge Claude -> Codex: terminal-tool. Against GPT-6.1 Sol the agentic rows do not set a direction (BD1), so token load decides (~38k vs ~119k / ~193k output tokens per task)."
+      ],
+      "rc-146": [
+        "UNCERTAIN",
+        "Astra -> Sol: the computer-use gate is retired. GPT-6.1 Sol has the same 1.05M window at a fifth of the price, and is 2.1 OSWorld points behind Astra at one seventh of the cost. But the OSWorld figures are a tier C relay of OpenAI's own table, so the gate's removal rests on evidence no better than the evidence that created it. Re-read when OpenAI's page can be fetched."
+      ]
+    }
   }
 }

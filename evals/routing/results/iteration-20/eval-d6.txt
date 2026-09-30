@@ -1,0 +1,6 @@
+Claude: ✅ RECOMMENDED AI · opusplan · plan: max · execute: medium
+⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.
+Codex: Sol · effort: max
+Evidence: Front-loaded architecture design at D=3∧R=3 is opusplan on Claude — the flagship is spent only on a max plan phase and execution drops to Sonnet 5.5 — while Codex has no plan/execute split and takes the same indivisible decision whole as Sol · max.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
+Do not apply without human review.

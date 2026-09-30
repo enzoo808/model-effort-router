@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: low
+Codex: ✅ RECOMMENDED AI · Sol · effort: low
+Evidence: D=0 work at R=2 rules out Haiku and Luna, and both remaining tiers are far past the bar at the same $2/$10, with Sol's ~38k output tokens per task against Sonnet 5.5's ~193k measured only at max, not at the rung emitted; low-confidence.
+⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).

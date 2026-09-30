@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: medium
+Codex: ✅ RECOMMENDED AI · Sol · effort: medium
+Evidence: D≤1 clears both bars at the same $2/$10, and Sol's token efficiency is only measured at max, not the medium rung emitted; low-confidence.
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

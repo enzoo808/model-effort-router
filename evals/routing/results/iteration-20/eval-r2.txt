@@ -1,0 +1,4 @@
+Claude: Haiku 4.5
+Codex: ✅ RECOMMENDED AI · Luna · effort: low
+Evidence: Both clear the bar for a pure tone rewrite, and Luna (GPT-6) costs $0.10/$0.50 per MTok against Haiku 4.5's $1/$5 while streaming 124–145 tok/s.
+⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.
