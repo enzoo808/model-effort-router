@@ -42,20 +42,20 @@ recommendation lines plus `Evidence:`. Show workings only if asked "why?".
 | Model | Role |
 |---|---|
 | Haiku 4.5 | Speed/volume. **No effort parameter.** 200k context. Retirement "not sooner than 15 Oct 2026"; Haiku 5.5 is announced, **not released — the router does not select it** |
-| Sonnet 5.5 | Daily work. **Default starting point.** $2/$10, 1M context. Replaces Sonnet 5 (28 Sep) |
-| **Opus 5.5** | **Flagship.** Complex agentic code, enterprise work. $4/$20, 1M context, **API default effort `medium`**. Replaces Opus 5 (22 Sep) |
+| Sonnet 5.5 | Daily work. **Default starting point.** USD 2/USD 10, 1M context. Replaces Sonnet 5 (28 Sep) |
+| **Opus 5.5** | **Flagship.** Complex agentic code, enterprise work. USD 4/USD 20, 1M context, **API default effort `medium`**. Replaces Opus 5 (22 Sep) |
 | Opus 4.8 | Legacy — the **only** lasting role is the offensive-security gate |
-| **Fable 5.1** | Frontier scale: long-horizon autonomy, extreme breadth, **biology-adjacent R&D**. $10/$50 |
+| **Fable 5.1** | Frontier scale: long-horizon autonomy, extreme breadth, **biology-adjacent R&D**. USD 10/USD 50 |
 | Mythos 5.1 | = Fable 5.1 with permissive safeguards. **Project Glasswing invite only** |
 
 Codex/ChatGPT (GPT-6 generation — three tiers, **Terra is gone**):
 
 | Model | Role | Claude analogue |
 |---|---|---|
-| Luna | **GPT-6 Luna**, $0.10/$0.50. Volume, cheapest — and the weakest agentic model in the record (Terminal-Bench 4.0 13 vs Sol's 56): never for `D ≥ 1` | Haiku 4.5 |
-| **Sol** | **GPT-6.1 Sol** (29 Sep), $2/$10, 1.05M context, **Codex default**, near-Astra. The daily driver **and** the `D=3` pick — there is no Terra between | Sonnet 5.5 / Opus 5.5 |
+| Luna | **GPT-6 Luna**, USD 0.10/USD 0.50. Volume, cheapest — and the weakest agentic model in the record (Terminal-Bench 4.0 13 vs Sol's 56): never for `D ≥ 1` | Haiku 4.5 |
+| **Sol** | **GPT-6.1 Sol** (29 Sep), USD 2/USD 10, 1.05M context, **Codex default**, near-Astra. The daily driver **and** the `D=3` pick — there is no Terra between | Sonnet 5.5 / Opus 5.5 |
 | **Sol Ultra** | A Codex *mode* on Sol (Plus+): ~4 collaborating agents. Not a model; `effort:"ultra"` → HTTP 400. Also runs on Astra | — |
-| **Astra** | **GPT-6 flagship**, $10/$50. **Rare:** the Daybreak gate, the 1000+ file gate and Rule A1. ~1 index point and 3 TB 4.0 points above Sol at 4.5× the cost/task | Opus 5.5 / Fable 5.1 |
+| **Astra** | **GPT-6 flagship**, USD 10/USD 50. **Rare:** the Daybreak gate, the 1000+ file gate and Rule A1. ~1 index point and 3 TB 4.0 points above Sol at 4.5× the cost/task | Opus 5.5 / Fable 5.1 |
 | *Legacy, never selected* | Terra, GPT-5.6 Sol / Luna, GPT-6 Sol, Codex Spark 5.3. Never call a legacy model just "Sol" in evidence | — |
 
 > **Codex model-picker names:** `Luna` = **GPT-6 Luna**, `Sol` = **GPT-6.1 Sol**,
@@ -543,25 +543,25 @@ Pareto frontier of model × effort configurations (`benchmark_frontiers.json` �
 `pareto`) and needs no equivalence band — *"not worse and cheaper"* is a fact
 about two numbers.
 
-- **E1 — `Sonnet 5.5 · max` is dominated.** AA v4.3.2: 56 @ $7.60 (~193k output
-  tokens/task, the most AA has measured) vs Opus 5.5 `xhigh` 56 @ $3.46 — the
+- **E1 — `Sonnet 5.5 · max` is dominated.** AA v4.3.2: 56 @ USD 7.60 (~193k output
+  tokens/task, the most AA has measured) vs Opus 5.5 `xhigh` 56 @ USD 3.46 — the
   same score for 2.2× the cost. Anthropic's own footnote adds that Sonnet 5.5
   scores *lower* at `max` than at `xhigh` on FrontierCode. → the router **never**
   emits `Sonnet 5.5 · max`; the escalation target is `Opus 5.5 · xhigh`. *(The
-  Sonnet 5 / Opus 5 generation showed the identical shape: 38 @ $5.09 vs 50 @
-  $4.88.)* Sonnet 5.5's lower rungs are unpublished — E1 says nothing about them.
+  Sonnet 5 / Opus 5 generation showed the identical shape: 38 @ USD 5.09 vs 50 @
+  USD 4.88.)* Sonnet 5.5's lower rungs are unpublished — E1 says nothing about them.
 - **E2 — GPT-6.1 Sol dominates every older Sol and Terra** (GPT-6 Sol `max` 48 @
-  $1.05 vs 6.1 `high` 50 @ $0.32). → they are **never** emitted.
+  USD 1.05 vs 6.1 `high` 50 @ USD 0.32). → they are **never** emitted.
 - **E3 — `max` over `xhigh` buys little.** Fable 5.1 and Astra 53 at both rungs;
   **GPT-6.1 Sol 52 vs 51 (+1 for +85% cost) and, on OpenAI's DeepSWE, `max` below
   `high` (71.9 vs 75.2)**; Opus 5.5 58 vs 56 (+2 for +73%, unresolved). → `max`
   needs M1 in full. *(Dominance holds only where `max` ties or loses.)*
 - **E4 — retired.** The `Sol · max` → `Astra · xhigh` swap rested on GPT-5.6 Sol
-  (47 @ $1.99). GPT-6.1 Sol `max` is **52 @ $0.72 (~38k tokens) against Astra's 53
-  @ $3.26 (~27k)**: a point apart at a quarter of the cost. `Sol · max` stays.
-- **The frontier.** On AA v4.3.2 Sol `xhigh` (51 @ $0.39) dominates Opus 5.5
-  `medium` (51 @ $1.34), and Astra `max` (53 @ $3.26) is dominated by Opus 5.5
-  `high` (54 @ $1.82). Opus 5.5 `high` / `xhigh` / `max` are the only undominated
+  (47 @ USD 1.99). GPT-6.1 Sol `max` is **52 @ USD 0.72 (~38k tokens) against Astra's 53
+  @ USD 3.26 (~27k)**: a point apart at a quarter of the cost. `Sol · max` stays.
+- **The frontier.** On AA v4.3.2 Sol `xhigh` (51 @ USD 0.39) dominates Opus 5.5
+  `medium` (51 @ USD 1.34), and Astra `max` (53 @ USD 3.26) is dominated by Opus 5.5
+  `high` (54 @ USD 1.82). Opus 5.5 `high` / `xhigh` / `max` are the only undominated
   configurations above Sol's 52 — the flagship buys the last points, it is not the
   cheap way to reach the bar.
 
@@ -617,9 +617,9 @@ Decision order:
 reason to pick Claude, and the mirror-image claim is not a reason to pick Codex.
 
 **Who wins on efficiency?** Against **Sol / Luna**, Codex: Sol uses ~38k output
-tokens and $0.72 per AA task against Opus 5.5's ~119k / $5.98 and Sonnet 5.5's
-~193k / $7.60 (`max`, the one rung published for all), at Sonnet's $2/$10.
-Against **Astra**, Claude on price ($10/$50) — *except* `agentic-code`,
+tokens and USD 0.72 per AA task against Opus 5.5's ~119k / USD 5.98 and Sonnet 5.5's
+~193k / USD 7.60 (`max`, the one rung published for all), at Sonnet's USD 2/USD 10.
+Against **Astra**, Claude on price (USD 10/USD 50) — *except* `agentic-code`,
 `terminal-tool`, `science`, `workflow-automation`, where Astra's ~27k tokens vs
 Opus 5.5's ~119k tip it to Codex.
 
@@ -630,16 +630,16 @@ Claude against Sol and not against Astra.
 
 | Dominant capability | vs **Sol** | vs **Astra** | Evidence to name |
 |---|---|---|---|
-| `agentic-code` | **Codex** † | **Codex** † | AA TB 4.0: Sol 56 vs Opus 5.5 60 / Sonnet 5.5 64, one row, no interval → tokens: ~38k output tokens and $0.72/task vs ~119k / $5.98 (Opus), ~193k / $7.60 (Sonnet). Vs Astra a tie (59 vs 59.6; Coding Agent Index 62 = 62), Astra ~27k |
+| `agentic-code` | **Codex** † | **Codex** † | AA TB 4.0: Sol 56 vs Opus 5.5 60 / Sonnet 5.5 64, one row, no interval → tokens: ~38k output tokens and USD 0.72/task vs ~119k / USD 5.98 (Opus), ~193k / USD 7.60 (Sonnet). Vs Astra a tie (59 vs 59.6; Coding Agent Index 62 = 62), Astra ~27k |
 | `terminal-tool` | **Codex** † | **Codex** † | same TB 4.0 row |
 | `science` | **Claude** † | **Codex** † | vs Sol two agree: AA SciCode 67 / 61 vs 54 and OpenAI's own TB-Science, Opus 5.5 63.3 vs Sol 57.0 (against-interest). Vs Astra 58.7 vs 64.6 is inside the ±5 band |
 | `knowledge-work` | **Claude** † | **Claude** † | GDPval-AA v2.1 1846 / 1844 vs Sol 1575 (Astra 1542) and AA-Briefcase 1822 / 1811 vs 1564 — two AA rows agree |
 | `workflow-automation` | **Claude** † | **Codex** † | vs Sol: AutomationBench-AA 70 / 71 vs 65 and OpenAI's own max-rung table, Opus 5.5 42.5 vs Sol 36.1 (against-interest); OpenAI also says Sol leads at ≤ `high`, without figures — a caveat, not a row. Vs Astra the rows split → tokens |
 | `computer-use` | **Codex** † | **Claude** † | no comparable row (Claude's OSWorld is 2.1, OpenAI's 2.0) → the lighter configuration |
-| `latency-volume` | **Codex** | **Codex** | Luna 124–145 tok/s at $0.10/$0.50 vs Haiku 4.5's $1/$5 |
+| `latency-volume` | **Codex** | **Codex** | Luna 124–145 tok/s at USD 0.10/USD 0.50 vs Haiku 4.5's USD 1/USD 5 |
 | `parallel-independent` | **Codex** | **Codex** | Ultra runs ~4 collaborating agents; `ultracode` is one chain |
 | `orchestration`, or a task routed to `opusplan` | **Claude** | **Claude** | `ultracode` sequences phases, `opusplan` spends the flagship only on the plan; Codex has neither |
-| `long-context` (shallow) | **Codex** † | **Claude** | AA-LCR v1.1 Sol 83 = Sonnet 5.5 83 (Opus 85): a tie → 25k vs 142k reasoning tokens. Vs Astra the price: $2/$10 vs $10/$50 |
+| `long-context` (shallow) | **Codex** † | **Claude** | AA-LCR v1.1 Sol 83 = Sonnet 5.5 83 (Opus 85): a tie → 25k vs 142k reasoning tokens. Vs Astra the price: USD 2/USD 10 vs USD 10/USD 50 |
 | `deep-reasoning` | **Codex** † | **Claude** † | vs Sol one row and a tie (HLE 61 vs 53, CritPt 32 = 32) → tokens. Vs Astra two agree: AA HLE 61 vs 55 and OpenAI's own tooled HLE, Opus 5.5 67.7 · Fable 5.1 65.0 vs **Astra 57.2** |
 | `research-synthesis` | **Codex** † | **Claude** † | AA-Omniscience index Sol 42 vs Sonnet 5.5 32 (Opus 46): one measurement, and the Claude line here is Sonnet |
 | `doc-data-understanding` | **Codex** † | **Claude** † | AA GDP.pdf Sol 31 vs 26 / 26, the one independent row; OpenAI's own 32.0 vs 28.8 favours OpenAI, not counted |
@@ -662,8 +662,8 @@ Claude against Sol and not against Astra.
 **Tie-breaks**
 
 - **`D ≤ 1` → skip the capability rows entirely; efficiency decides.** Both arms
-  clear the bar by construction. **Haiku 4.5 vs Luna → Codex** ($1/$5 vs
-  $0.10/$0.50); **Sonnet 5.5 vs Sol → Codex †** — the same $2/$10, and Sol's
+  clear the bar by construction. **Haiku 4.5 vs Luna → Codex** (USD 1/USD 5 vs
+  USD 0.10/USD 0.50); **Sonnet 5.5 vs Sol → Codex †** — the same USD 2/USD 10, and Sol's
   ~38k output tokens/task against ~193k is measured only at `max`, not at the
   rung emitted, so say `low-confidence`. `R` doesn't change this.
 - **Two *dominant* capability rows conflict** → the one backed by a
@@ -763,7 +763,7 @@ unprompted.
 ```
 Claude: Haiku 4.5
 Codex: ✅ RECOMMENDED AI · Luna · effort: low
-Evidence: Both clear the bar for mechanical classification, and Luna (GPT-6) costs $0.10/$0.50 per MTok against Haiku 4.5's $1/$5 while streaming 124–145 tok/s.
+Evidence: Both clear the bar for mechanical classification, and Luna (GPT-6) costs USD 0.10/USD 0.50 per MTok against Haiku 4.5's USD 1/USD 5 while streaming 124–145 tok/s.
 ⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.
 ```
 
@@ -778,7 +778,7 @@ Clarify: which file or function is broken, what does it do now, and what should 
 ```
 Claude: Sonnet 5.5 · effort: high
 Codex: ✅ RECOMMENDED AI · Sol · effort: high
-Evidence: AA's Terminal-Bench 4.0 has Sol 56 against Sonnet 5.5's 64 with no interval, and one row is not a direction, so token load decides — ~38k output tokens and $0.72 per task against ~193k and $7.60; low-confidence.
+Evidence: AA's Terminal-Bench 4.0 has Sol 56 against Sonnet 5.5's 64 with no interval, and one row is not a direction, so token load decides — ~38k output tokens and USD 0.72 per task against ~193k and USD 7.60; low-confidence.
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
 ```
 > **One phase, not four.** Locate the callers, edit, run the existing suite, fix
@@ -837,7 +837,7 @@ Do not apply without human review.
 ```
 Claude: Sonnet 5.5 · effort: low
 Codex: ✅ RECOMMENDED AI · Sol · effort: low
-Evidence: D=0 work — both are far past the bar at the same $2/$10, and Sol's ~38k output tokens per task against Sonnet 5.5's ~193k is measured only at max, not at the rung emitted; low-confidence.
+Evidence: D=0 work — both are far past the bar at the same USD 2/USD 10, and Sol's ~38k output tokens per task against Sonnet 5.5's ~193k is measured only at max, not at the rung emitted; low-confidence.
 ⚡ Fast Mode available: Codex Fast Mode (1.5x faster, 1.5x quota).
 Do not apply without human review.
 ```

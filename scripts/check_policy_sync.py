@@ -93,6 +93,16 @@ def main() -> int:
             errors.append("skill/SKILL.md still contains superseded wording that routing_policy.json "
                           "records as replaced:\n        %r" % needle)
 
+    # Claude Code substitutes `$0`..`$9` / `$ARGUMENTS` in a skill body with the words
+    # of the invocation, so a price like "$2/$10" reaches the model as "GATE-F01/a".
+    # Found in the field on 2026-10-01 (iteration-20). Write USD amounts as "USD 2".
+    import re as _re
+    for m3 in _re.finditer(r"\$(\d|ARGUMENTS|\{)", skill):
+        errors.append("skill/SKILL.md contains %r near %r; Claude Code would substitute it with "
+                      "invocation arguments. Write 'USD 2' instead of '$2'."
+                      % (m3.group(0), skill[max(0, m3.start() - 25):m3.end() + 15]))
+        break
+
     if not checked:
         errors.append("routing_policy.json declares no assertions at all, so this guard would "
                       "pass against any SKILL.md.")
