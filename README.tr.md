@@ -45,6 +45,8 @@ Evidence: AA'nın Terminal-Bench 4.0'ında Sonnet 5.5 64, GLM-5.3 42, MiMo-V2.6-
   kademe seçmek için kullanılır, ekosistemler-arası yön için asla. AA yalnız `low`/`max` ölçtü
   (GLM-5.3 34 → 45, Kimi K3 30 → 44) ve DeepSeek V4.1 Flash non-reasoning'i (25, `max`'ta 39).
   `GLM-5.3 · low`, GLM-5.3-Flash tarafından domine → Pro katmanı asla düşük çıkmaz. İnterpolasyon yok.
+- **Çift sırası derinliğe bağlı (Kural PO1).** `D ≤ 2` ve `R ≤ 2`'de `#1` verimli model (genelde MiMo-V2.6-Pro), `#2` benchmark lideri; `D = 3` veya `R = 3`'te yer değiştirirler — kodlamada GLM-5.3, araştırma/uzun bağlam/belgede Kimi K3 önce. Yalnız çifti sıralar; rozet yine BD1'e göre.
+- **Token maliyeti düşürüldü.** `SKILL.md` 60 KB'tan 44 KB'a indi (roster, Adım 5/6 anlatımı ve örnekler sıkıştırıldı; Claude istisnaları ve kural blokları korundu); `Evidence:` tek cümle ve ≤ 30 kelime.
 - **Varsayılan: gizli.** Grok 4.7 ve GPT 6 Luna promptu 30 gün saklar, Muse Spark
   Contributor promptlarınla eğitilir → kullanıcı "gizli değil" demedikçe havuz dışı (Kural NC1).
   DeepSeek'in sıfır-saklama anlaşması 31 Ekim 2026'ya kadar geçerli, aylık yenileniyor.
@@ -59,7 +61,7 @@ Evidence: AA'nın Terminal-Bench 4.0'ında Sonnet 5.5 64, GLM-5.3 42, MiMo-V2.6-
   yalnız iki bağımsız AA satırının uyuştuğu **knowledge-work** ve **deep-reasoning**'de, ürün
   mekanizmalarında (`ultracode`, `opusplan`) ve OpenCode'un reddettiği kapılarda (saldırgan
   güvenlik, biyoloji, bilgisayar-kullanımı) temiz rozet alır.
-- **Doğrulama durumu:** `evals/routing/evals.json` 22 prompt (kurallardan türetilmiş
+- **Doğrulama durumu:** `evals/routing/evals.json` 23 prompt (kurallardan türetilmiş
   altın cevaplar); `grade_routing.py --selftest`, `check_policy_sync.py`,
   `check_opencode_pool.py`, `check_examples.py` yeşil. **Soğuk-ajan koşusu ve tetik eval'i
   iteration-21 için YAPILMADI** (canlı ajan gerekir).

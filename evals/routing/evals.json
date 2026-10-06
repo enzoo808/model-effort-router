@@ -292,6 +292,20 @@
         "Luna",
         "Data:"
       ]
+    },
+    {
+      "id": "v1",
+      "eval_name": "Env-dependent build failure at depth (terminal-tool, D=3, R<=2): leader first (PO1)",
+      "prompt": "The nightly build passes locally but fails only on the CI runner — reproduce it inside the container and fix it",
+      "expected_claude": "Opus 5.5 · effort: xhigh",
+      "expected_opencode": "#1 GLM-5.3 · effort: max · #2 MiMo-V2.6-Pro · effort: default",
+      "expected_recommended": "opencode",
+      "expected_low_confidence": true,
+      "tests_rule": "PO1: at D=3 the anchor-benchmark leader (GLM-5.3) goes first on the coding row; max at D=3; badge still efficiency (BD1)",
+      "golden_output": "Claude: Opus 5.5 · effort: xhigh\nOpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3 · effort: max · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Terminal-Bench 4.0 (Sonnet 5.5 64, GLM-5.3 42) has no interval, so cap and tokens decide the badge; at D=3 the TB leader GLM-5.3 goes first; low-confidence.\n⚡ Claude /fast available (2.5x faster, 2× price).",
+      "expected_notes": [
+        "/fast available"
+      ]
     }
   ]
 }

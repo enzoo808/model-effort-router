@@ -99,7 +99,7 @@ Luna havuzda kalır; Muse Spark 1.3 `deep-reasoning`, `science`, `research-synth
 
 **Adım 4-OC — iki modeli seç** (gizli varsayım; `D ≤ 1` ise ilk satır):
 
-| Baskın capability | `R ≤ 2` → `#1` · `#2` | `R = 3` → `#1` · `#2` | Kanıt |
+| Baskın capability | `R ≤ 2` → `#1` · `#2` | `D = 3` veya `R = 3` → `#1` · `#2` | Kanıt |
 |---|---|---|---|
 | **herhangi, `D ≤ 1`** | GLM-5.3-Flash · MiMo-V2.6-Flash | aynı | USD 60 tavanlı Flash; TB 33 vs 35 — ikisi de `D ≤ 1` çıtasını aşar, fiyat ve tavan karar verir |
 | `agentic-code`, `terminal-tool` | MiMo-V2.6-Pro · GLM-5.3 | **GLM-5.3 · MiMo-V2.6-Pro** | TB 4.0 GLM 42 vs MiMo 35, tek satır → cap baskısı (USD 0.13 vs 2.01); `R=3`'te tek ölçüm GLM'ye eğilir † |
@@ -111,6 +111,8 @@ Luna havuzda kalır; Muse Spark 1.3 `deep-reasoning`, `science`, `research-synth
 | `latency-volume` | DeepSeek V4.1 Flash · MiMo-V2.6-Flash | aynı | 222 / 62 t/s (NC1: GPT 6 Luna #2) |
 | `orchestration` | altta yatan etikete göre | | `ultracode` Claude satırında |
 | başka her şey | MiMo-V2.6-Pro · GLM-5.3-Flash | aynı | kanıt yok † |
+
+**PO1 (çift sırası).** `D ≤ 2` ve `R ≤ 2`'de verimli model önce; `D = 3` veya `R = 3`'te baskın capability'nin anchor benchmark lideri önce (sağ sütun). Yalnız çifti sıralar, rozet yine BD1'e göre.
 
 İki baskın etiket varsa: `#1` rozeti belirleyen etiketin satırından (yoksa ilk adlandırılandan),
 `#2` diğer satırın `#1`'i (aynı modelse o satırın `#2`'si).
@@ -513,7 +515,7 @@ Evidence: <tek cümle>
 ```
 
 - Rozet **ekosistem etiketinden hemen sonra**, `#1`'den önce durur; çıktıda **tam bir** rozet.
-- `Evidence:` **tek cümle**, en fazla **1–2** benchmark/verimlilik sinyali. **Rozet satırı † ise ya da "başka her
+- `Evidence:` **tek cümle, ≤ 30 kelime**, en fazla **1–2** benchmark/verimlilik sinyali. **Rozet satırı † ise ya da "başka her
   şey" satırı kullanıldıysa cümle `low-confidence` içermek ZORUNDA.**
 - Haiku 4.5 için efor yazma; her OpenCode modeli efor alır (varyantı olmayan MiMo-V2.6 için `default`). OpenCode kapıdan reddederse:
   `OpenCode: use Claude — <neden>` (model yok, `#` yok).

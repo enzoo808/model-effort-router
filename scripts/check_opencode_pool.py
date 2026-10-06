@@ -73,7 +73,7 @@ def main() -> int:
     roster = table_after(skill, "**OpenCode Go pool — the 15 main models**")
     roster_caps = {}
     for r in roster:
-        if len(r) < 10 or not r[0].isdigit():
+        if len(r) < 7 or not r[0].isdigit():
             continue
         roster_caps[strip_md(r[1])] = int(re.sub(r"\D", "", strip_md(r[5])) or 0)
     if set(roster_caps) != set(names):

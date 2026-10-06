@@ -86,6 +86,8 @@ and `archive/iteration-20-codex/`.
   measured only `low`/`max` (GLM-5.3 34 → 45, Kimi K3 30 → 44) and DeepSeek V4.1 Flash
   non-reasoning (25 vs 39 at `max`). `GLM-5.3 · low` is dominated by GLM-5.3-Flash (42 at a
   quarter of the cost), so the Pro tier is never emitted low. No interpolation.
+- **Pair order follows depth (Rule PO1).** At `D ≤ 2` and `R ≤ 2` `#1` is the efficient model (usually MiMo-V2.6-Pro) and `#2` the benchmark leader; at `D = 3` or `R = 3` they swap — GLM-5.3 first for coding, Kimi K3 first for research / long-context / documents. It orders the pair only; the badge still follows BD1.
+- **Token cost kept low.** `SKILL.md` was cut from 60 KB to 44 KB (rosters, Step 5/6 prose and examples compressed; every Claude carve-out and rule block kept) and `Evidence:` is capped at one sentence of ≤ 30 words. Details live in `skill/opencode-benchmarks.md`, which is never loaded to route.
 - **Confidential by default.** Grok 4.7 and GPT 6 Luna keep prompts 30 days and Muse Spark
   Contributor trains on them, so all three are out of the pool unless you say the work is
   non-confidential (Rule NC1). DeepSeek's zero-retention agreement is valid through
@@ -241,7 +243,7 @@ Two design choices carried over: **risk raises human oversight, not model tier**
 
 ## Validation
 
-`evals/routing/evals.json` is a deterministic regression set (22 prompts) graded by
+`evals/routing/evals.json` is a deterministic regression set (23 prompts) graded by
 `evals/routing/grade_routing.py` (pure regex, no LLM): Claude model + effort, **both OpenCode
 picks (model, effort, order)**, which side carries the badge, a non-trivial `Evidence:` line
 (whose `low-confidence` flag must match the row's dagger), plus required / forbidden text

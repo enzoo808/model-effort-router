@@ -6,7 +6,7 @@
 >
 > | Path | What it is |
 > |---|---|
-> | `routing/evals.json` | **22 prompts** (2 blocked), each with `expected_claude`, `expected_opencode` (`#1 … · #2 …`, or a decline), `expected_recommended` (`claude` \| `opencode`), `expected_low_confidence`, optional `expected_notes` / `forbidden` and a `golden_output` |
+> | `routing/evals.json` | **23 prompts** (2 blocked), each with `expected_claude`, `expected_opencode` (`#1 … · #2 …`, or a decline), `expected_recommended` (`claude` \| `opencode`), `expected_low_confidence`, optional `expected_notes` / `forbidden` and a `golden_output` |
 > | `routing/grade_routing.py` | grades the Claude line, **both OpenCode picks (model, effort, order)**, the badge side, the Evidence line (its `low-confidence` flag must match the row's dagger), required/forbidden text. `--selftest` grades each eval's own `golden_output` |
 > | `policy/routing_policy.json` | the machine-readable mirror: the 15-model pool (cap, status, retention), the Step 4-OC rows, the badge table, the rule blocks |
 > | `trigger/` | the trigger eval (description changed in iteration-21 — **not re-run**; needs a logged-in terminal) |
