@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Prove that the machine-readable routing policy and the SHIPPED skill agree.
 
-    MIRROR   evals/reachability/routing_policy.json    audited by the reachability tool
+    MIRROR   evals/policy/routing_policy.json          machine-readable mirror of the rules
     RUNTIME  skill/SKILL.md                            the only file the router reads
 
 The reachability audit reads the mirror. The product reads SKILL.md. Nothing
@@ -38,7 +38,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-POLICY = ROOT / "evals" / "reachability" / "routing_policy.json"
+POLICY = ROOT / "evals" / "policy" / "routing_policy.json"
 SKILL = ROOT / "skill" / "SKILL.md"
 MARKER = re.compile(r"<!--\s*routing-policy-version:\s*(\S+?)\s*-->")
 

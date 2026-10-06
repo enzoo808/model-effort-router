@@ -57,44 +57,42 @@ Higher bar, because the whole point of the project is a stable, tested decision
 procedure.
 
 1. State the rule change and the real prompt(s) that motivated it.
-2. Add or update the relevant eval in `evals/routing/evals.json` (dual-format:
-   `expected_claude` / `expected_codex` / `expected_recommended`, plus
-   `expected_low_confidence` where the rules require a hedge, or `blocked: true`).
+2. Add or update the relevant eval in `evals/routing/evals.json`
+   (`expected_claude` / `expected_opencode` — `#1 <model> · effort: <e> · #2 <model> · effort: <e>`,
+   or a decline — / `expected_recommended` (`claude` | `opencode`), plus
+   `expected_low_confidence` where the row carries a dagger, `expected_notes` /
+   `forbidden` for the auto-added lines, a `golden_output`, or `blocked: true`).
 3. Run it with **fresh/cold agents** (a subagent or a new conversation that
    reads `skill/SKILL.md` directly — *not* the `Skill` tool, which caches) and
    save the raw outputs under `evals/routing/results/iteration-<N>/`.
 4. `python evals/routing/grade_routing.py --results-dir evals/routing/results/iteration-<N>`
-   must be green.
-5. **Mirror the rule into `evals/reachability/routing_policy.json` in the same
-   commit**, including its `skill_md_assertion` quotations, and bump
-   `policy_version` + the `<!-- routing-policy-version: ... -->` marker in
+   must be green (`--selftest` first, to prove the grader and goldens agree).
+5. **Mirror the rule into `evals/policy/routing_policy.json` in the same commit** —
+   the rule block text (verbatim), the pool, the Step 4-OC rows, the badge table —
+   and bump `policy_version` + the `<!-- routing-policy-version: ... -->` marker in
    `skill/SKILL.md` if the rule set is a new iteration. Then run:
    ```
    python scripts/check_policy_sync.py
+   python scripts/check_opencode_pool.py
    python scripts/check_examples.py
-   python scripts/check_routing_reachability.py --check --report
-   python scripts/test_reachability_tool.py
    ```
    `check_examples.py` fails if a worked example in `SKILL.md` contradicts the
    golden it matches (a shipped example missing a required `low-confidence`
    marker, wrong badge side, wrong effort). `check_policy_sync.py` verifies each
    `<!-- rule:ID -->` block in `SKILL.md` matches the canonical text in
    `routing_policy.json` `rule_blocks` **verbatim** — edit the block and the
-   mirror together.
-   `check_policy_sync.py` exists because the mirror and the shipped skill once
-   drifted a whole iteration apart, which meant an audit was certifying a policy
-   nobody could run. It fails if either file moves without the other.
+   mirror together — and rejects any `$<digit>` / `$ARGUMENTS` in `SKILL.md`
+   (Claude Code substitutes them: write `USD 2`, never `$2`).
+   `check_opencode_pool.py` fails if the roster, a Step 4-OC row, a badge row or an
+   example OpenCode line stops matching the mirror, if a dominated model is
+   emitted, or if a USD 15-cap model is emitted at `low` (Rule CAP1).
+   The mirror and the shipped skill once drifted a whole iteration apart, which
+   meant an audit was certifying a policy nobody could run — these guards fail if
+   either file moves without the other.
 
-   The reachability run must end **0 errors**. Two rules about reading it:
-   - **A zero is allowed when zero is correct.** If a cell becomes unreachable,
-     decide which it is — a real routing bug, a corpus gap, or a combination with
-     no natural workload — and for the third, write the rationale into the
-     script's `INTENTIONAL` table. Never add a prompt whose only purpose is to
-     turn a cell green.
-   - **Every decision flip needs a verdict** in
-     `evals/reachability/flip-review.json`, and `REJECT` fails the run. Ask
-     whether the *new* recommendation is better for the task — "it matches the
-     new rule" is not a review.
+   *(The Codex-era reachability audit — corpus, matrix, flip review — is archived
+   under `archive/iteration-20-codex/`; it simulated the retired Codex arm. An
+   OpenCode reachability audit is open work.)*
 6. If the rule is benchmark-derived, add or update its entry in
    `skill/benchmarks.json` → `routing_rules` with the `evidence_ids` it rests on.
    The validator fails on a dangling id, which is what stops a rule outliving the
@@ -108,7 +106,7 @@ procedure.
    once vendor-run rows are dropped, the rule needs a `low-confidence` marker,
    not a stronger claim.
 7. Mirror the change into `claude-ai/instructions.tr.md` (the no-code-execution
-   fallback), except the Claude Code-only parts (`opusplan`, the `⚡ Fast Mode`
+   fallback), except the Claude Code-only parts (`opusplan`, the `⚡ Claude /fast`
    speed line, the `/model opus` alias rule) — that file has a footer listing its
    deliberate differences.
 8. Re-run `.\build-claude-ai-zip.ps1`.

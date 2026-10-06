@@ -1,5 +1,39 @@
 # model-secici eval set
 
+> **iteration-21 (6 Oct 2026) — the Codex arm is retired; this directory now tests Claude + OpenCode Go.**
+> Everything below the "iteration-20 history" marker describes the Codex-era set, which is archived
+> verbatim under `archive/iteration-20-codex/` (git tag `iteration-20-codex`). What is live:
+>
+> | Path | What it is |
+> |---|---|
+> | `routing/evals.json` | **22 prompts** (2 blocked), each with `expected_claude`, `expected_opencode` (`#1 … · #2 …`, or a decline), `expected_recommended` (`claude` \| `opencode`), `expected_low_confidence`, optional `expected_notes` / `forbidden` and a `golden_output` |
+> | `routing/grade_routing.py` | grades the Claude line, **both OpenCode picks (model, effort, order)**, the badge side, the Evidence line (its `low-confidence` flag must match the row's dagger), required/forbidden text. `--selftest` grades each eval's own `golden_output` |
+> | `policy/routing_policy.json` | the machine-readable mirror: the 15-model pool (cap, status, retention), the Step 4-OC rows, the badge table, the rule blocks |
+> | `trigger/` | the trigger eval (description changed in iteration-21 — **not re-run**; needs a logged-in terminal) |
+>
+> ```bash
+> python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # grader vs goldens (no agents)
+> python scripts/check_policy_sync.py        # SKILL.md rule blocks == policy mirror, `$<digit>` guard, retired wording gone
+> python scripts/check_opencode_pool.py      # pool, Step 4-OC rows, badge table, example efforts/caps vs the mirror
+> python scripts/check_examples.py           # every SKILL.md worked example agrees with its golden
+> ```
+>
+> **Not done for iteration-21:** the cold-agent run (`routing/results/iteration-21/`) and the trigger
+> eval. Both need live agents. The goldens are derived from the rules by hand, so a passing
+> `--selftest` proves the grader and goldens agree — **not** that a fresh agent reading `SKILL.md`
+> reaches them. Run the cold eval (4 parallel fresh agents, as in earlier iterations) before
+> trusting a golden, and expect to sharpen an ambiguous *prompt* rather than the rule when agents
+> split (the `n2` / `x2` / `i1` / `j1` / `x1` pattern).
+>
+> The Codex-era **reachability audit** (a 154-prompt corpus + a Python re-implementation of the
+> router that proved every model × effort cell reachable) is archived under
+> `archive/iteration-20-codex/` — it simulated the retired Codex arm and cannot audit this one.
+> An OpenCode equivalent is open work; `check_opencode_pool.py` is the cheap substitute.
+
+---
+
+## iteration-20 history (Codex era — kept for the reasoning behind each rule)
+
 Use these instead of tracking `skill/SKILL.md` (+ `skill/reference.md`) changes
 by hand.
 

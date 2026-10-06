@@ -1,0 +1,362 @@
+{
+  "schema_version": "6",
+  "policy_version": "iteration-21",
+  "compiled": "2026-10-06",
+  "purpose": "Machine-readable mirror of skill/SKILL.md for the OpenCode Go arm. Read by scripts/check_policy_sync.py (rule blocks must equal SKILL.md verbatim) and scripts/check_opencode_pool.py (the 15-model pool, the Step 4-OC rows and the badge table must match SKILL.md). Not read by the router.",
+  "drift_guard": "Change a rule block here and forget SKILL.md, or the reverse, and check_policy_sync.py fails. The iteration-20 mirror, reachability corpus and matrix are frozen under archive/iteration-20-codex/ — they audit the retired Codex arm.",
+  "pool": {
+    "plan": "OpenCode Go, USD 10/month; limits are per model (5-hour 20%, weekly 50%, monthly 100% of the cap).",
+    "models": {
+      "MiMo-V2.6-Pro": {
+        "cap_usd": 15,
+        "status": "routable",
+        "retention": "0d"
+      },
+      "GLM-5.3": {
+        "cap_usd": 15,
+        "status": "routable",
+        "retention": "0d"
+      },
+      "Kimi K3": {
+        "cap_usd": 15,
+        "status": "routable",
+        "retention": "0d"
+      },
+      "Grok 4.7": {
+        "cap_usd": 15,
+        "status": "routable-nc1",
+        "retention": "30d"
+      },
+      "Muse Spark 1.3 Contributor": {
+        "cap_usd": 60,
+        "status": "routable-nc1",
+        "retention": "trains"
+      },
+      "GLM-5.3-Flash": {
+        "cap_usd": 60,
+        "status": "routable",
+        "retention": "0d"
+      },
+      "MiMo-V2.6-Flash": {
+        "cap_usd": 60,
+        "status": "routable",
+        "retention": "0d"
+      },
+      "DeepSeek V4.1 Flash": {
+        "cap_usd": 60,
+        "status": "routable",
+        "retention": "0d"
+      },
+      "GPT 6 Luna": {
+        "cap_usd": 15,
+        "status": "routable-nc1",
+        "retention": "30d"
+      },
+      "Qwen3.8 Flash": {
+        "cap_usd": 30,
+        "status": "routable",
+        "retention": "0d"
+      },
+      "Qwen3.8 Max": {
+        "cap_usd": 15,
+        "status": "escalation-only",
+        "retention": "0d"
+      },
+      "DeepSeek V4 Pro": {
+        "cap_usd": 15,
+        "status": "dominated",
+        "retention": "0d"
+      },
+      "MiniMax M3": {
+        "cap_usd": 60,
+        "status": "dominated",
+        "retention": "0d"
+      },
+      "Kimi K2.7 Code": {
+        "cap_usd": 60,
+        "status": "dominated",
+        "retention": "0d"
+      },
+      "Qwen3.7 Plus": {
+        "cap_usd": 60,
+        "status": "dominated",
+        "retention": "0d"
+      }
+    },
+    "statuses": {
+      "routable": "emitted by at least one row of the Step 4-OC table",
+      "routable-nc1": "emitted only after Rule NC1 (user says the work is non-confidential)",
+      "escalation-only": "emitted only through Rule A1-OC",
+      "dominated": "rated and kept in the pool; no routing row emits it (Rule E6)"
+    },
+    "outside_main_pool": [
+      "Grok 4.6",
+      "GPT 5.6 Luna",
+      "GLM-5.2",
+      "Kimi K2.6",
+      "MiMo-V2.5",
+      "MiMo-V2.5-Pro",
+      "Muse Spark 1.2",
+      "MiniMax M2.7",
+      "DeepSeek V4 Flash",
+      "DeepSeek V4 Flash Vision Exp",
+      "Hy4 Preview",
+      "LongCat 2.5 Preview",
+      "LongCat-2.0",
+      "Hy3",
+      "Space Bunny"
+    ]
+  },
+  "effort": {
+    "claude_from_D": {
+      "0": "low",
+      "1": "medium",
+      "2": "high",
+      "3": "xhigh"
+    },
+    "opencode_from_D": {
+      "0": "low",
+      "1": "low",
+      "2": "max",
+      "3": "max"
+    },
+    "opencode_rungs": [
+      "low",
+      "max",
+      "xhigh"
+    ],
+    "xhigh_only_for": [
+      "Grok 4.7"
+    ],
+    "never_emitted": [
+      "GLM-5.3 · low",
+      "Kimi K3 · low",
+      "Sonnet 5.5 · max"
+    ]
+  },
+  "step4_oc_rows": {
+    "D<=1": {
+      "r_le_2": [
+        "GLM-5.3-Flash",
+        "MiMo-V2.6-Flash"
+      ],
+      "r_eq_3": [
+        "GLM-5.3-Flash",
+        "MiMo-V2.6-Flash"
+      ]
+    },
+    "agentic-code": {
+      "r_le_2": [
+        "MiMo-V2.6-Pro",
+        "GLM-5.3"
+      ],
+      "r_eq_3": [
+        "GLM-5.3",
+        "MiMo-V2.6-Pro"
+      ]
+    },
+    "terminal-tool": {
+      "r_le_2": [
+        "MiMo-V2.6-Pro",
+        "GLM-5.3"
+      ],
+      "r_eq_3": [
+        "GLM-5.3",
+        "MiMo-V2.6-Pro"
+      ]
+    },
+    "deep-reasoning": {
+      "r_le_2": [
+        "MiMo-V2.6-Pro",
+        "Kimi K3"
+      ],
+      "r_eq_3": [
+        "MiMo-V2.6-Pro",
+        "Kimi K3"
+      ]
+    },
+    "knowledge-work": {
+      "r_le_2": [
+        "MiMo-V2.6-Pro",
+        "Qwen3.8 Flash"
+      ],
+      "r_eq_3": [
+        "MiMo-V2.6-Pro",
+        "Qwen3.8 Flash"
+      ]
+    },
+    "knowledge-work+NC1": {
+      "r_le_2": [
+        "Grok 4.7",
+        "MiMo-V2.6-Pro"
+      ],
+      "r_eq_3": [
+        "Grok 4.7",
+        "MiMo-V2.6-Pro"
+      ]
+    },
+    "workflow-automation": {
+      "r_le_2": [
+        "DeepSeek V4.1 Flash",
+        "GLM-5.3"
+      ],
+      "r_eq_3": [
+        "DeepSeek V4.1 Flash",
+        "GLM-5.3"
+      ]
+    },
+    "long-context": {
+      "r_le_2": [
+        "MiMo-V2.6-Pro",
+        "Kimi K3"
+      ],
+      "r_eq_3": [
+        "Kimi K3",
+        "MiMo-V2.6-Pro"
+      ]
+    },
+    "research-synthesis": {
+      "r_le_2": [
+        "MiMo-V2.6-Pro",
+        "Kimi K3"
+      ],
+      "r_eq_3": [
+        "Kimi K3",
+        "MiMo-V2.6-Pro"
+      ]
+    },
+    "doc-data-understanding": {
+      "r_le_2": [
+        "MiMo-V2.6-Pro",
+        "Kimi K3"
+      ],
+      "r_eq_3": [
+        "Kimi K3",
+        "MiMo-V2.6-Pro"
+      ]
+    },
+    "science": {
+      "r_le_2": [
+        "MiMo-V2.6-Pro",
+        "Kimi K3"
+      ],
+      "r_eq_3": [
+        "MiMo-V2.6-Pro",
+        "Kimi K3"
+      ]
+    },
+    "latency-volume": {
+      "r_le_2": [
+        "DeepSeek V4.1 Flash",
+        "MiMo-V2.6-Flash"
+      ],
+      "r_eq_3": [
+        "DeepSeek V4.1 Flash",
+        "MiMo-V2.6-Flash"
+      ]
+    },
+    "latency-volume+NC1": {
+      "r_le_2": [
+        "DeepSeek V4.1 Flash",
+        "GPT 6 Luna"
+      ],
+      "r_eq_3": [
+        "DeepSeek V4.1 Flash",
+        "GPT 6 Luna"
+      ]
+    },
+    "other": {
+      "r_le_2": [
+        "MiMo-V2.6-Pro",
+        "GLM-5.3-Flash"
+      ],
+      "r_eq_3": [
+        "MiMo-V2.6-Pro",
+        "GLM-5.3-Flash"
+      ]
+    }
+  },
+  "badge_table": {
+    "agentic-code": {
+      "r_le_2": "opencode",
+      "r_eq_3": "claude",
+      "low_confidence": true
+    },
+    "terminal-tool": {
+      "r_le_2": "opencode",
+      "r_eq_3": "claude",
+      "low_confidence": true
+    },
+    "knowledge-work": {
+      "r_le_2": "claude",
+      "r_eq_3": "claude",
+      "low_confidence": false
+    },
+    "deep-reasoning": {
+      "r_le_2": "claude",
+      "r_eq_3": "claude",
+      "low_confidence": false
+    },
+    "workflow-automation": {
+      "r_le_2": "opencode",
+      "r_eq_3": "claude",
+      "low_confidence": true
+    },
+    "science": {
+      "r_le_2": "opencode",
+      "r_eq_3": "claude",
+      "low_confidence": true
+    },
+    "long-context": {
+      "r_le_2": "opencode",
+      "r_eq_3": "opencode",
+      "low_confidence": true
+    },
+    "research-synthesis": {
+      "r_le_2": "opencode",
+      "r_eq_3": "claude",
+      "low_confidence": true
+    },
+    "doc-data-understanding": {
+      "r_le_2": "opencode",
+      "r_eq_3": "claude",
+      "low_confidence": true
+    },
+    "latency-volume": {
+      "r_le_2": "opencode",
+      "r_eq_3": "opencode",
+      "low_confidence": false
+    },
+    "orchestration": {
+      "r_le_2": "claude",
+      "r_eq_3": "claude",
+      "low_confidence": false
+    }
+  },
+  "rule_blocks": {
+    "note": "Each body must equal the text between <!-- rule:ID --> and <!-- /rule:ID --> in skill/SKILL.md, verbatim.",
+    "blocks": {
+      "S0": "**S0 · blocked output.** A prompt blocked at Step 0 emits exactly one line, a `Clarify:` line naming the missing information as a question, and no `Claude:`, `OpenCode:`, `Evidence:` or badge line at all.",
+      "D3DIAG": "**D3DIAG · diagnosis.** The coding column is written for building, so debugging scores on its own test: bounded diagnosis is `D=2`, and adversarial diagnosis is `D=3` when at least two of these hold — the root cause is non-local or depends on timing or ordering; reproduction is intermittent or environment-dependent; several plausible causes must be ruled out by constructing competing hypotheses; a local-looking fix could mask a deeper invariant violation.",
+      "M1": "**M1 · `max`.** Emit `max` only when `D = 3` and `R = 3` and the model is a flagship (Opus 5.5 / Opus 4.8 / Fable 5.1 / Mythos 5.1) and the difficulty is one indivisible novel-design or formal decision. Otherwise `xhigh`.",
+      "A1": "**A1 · frontier rung.** Opus 5.5 becomes Fable 5.1 only when the dominant capability is on the flagship list and `A = high`, where `A = high` means the user states that an earlier flagship-tier run at `xhigh` or `max` already fell short. A long or unattended session is not that statement.",
+      "O1": "**O1 · orchestration load.** `O = high` when the session must run three or more distinct phases, where a phase is a stretch of work that produces a different kind of deliverable and whose output is consumed by a later phase. The phases that count are research, implementation, independent verification, packaging, data or schema migration, documentation, and triage. The whole edit-run-repair implementation loop is one phase, and tests you write for your own change are inside it.",
+      "UC1": "**UC1 · `ultracode`.** Emit `ultracode` when the estimated duration is over 30 minutes and either `O = high` or (`W = 3` and `D >= 2`) and the difficulty is not one indivisible chain. Write `ultracode` in the effort field. Every model except Haiku 4.5.",
+      "B1": "**B1 · evidence applicability.** A benchmark row takes part in the badge decision only if the capability it measures is one of the dominant tags named for this prompt in Step 2. Applicability is checked before evidence quality and before any tie-break, and a row that is not applicable does not enter the comparison at all, however strong its number.",
+      "BD1": "**BD1 · direction without an interval.** A badge direction needs at least two independent measurements that agree — an independent evaluator's run, or a vendor's table that favours its rival — at least one of them tier A or B, and none that disagree. The same benchmark re-published on a second page is one measurement, a tie is not opposition, and an aggregate never counts. Otherwise the cell is decided by efficiency, except at R = 3, where a single admissible measurement still decides it: a lean is not parity.",
+      "MECH1": "**MECH1 · mechanism rows.** `ultracode` driven by `O = high`, or a task routed to `opusplan`, names something OpenCode does not have, so it decides the badge for Claude unless the other capability row carries a benchmark direction under BD1, which wins.",
+      "NC1": "**NC1 · non-confidential unlock.** Only when the user says the work is non-confidential or personal: Grok 4.7 and GPT 6 Luna stay in the pool (30-day retention is accepted), and Muse Spark 1.3 Contributor may take `#2` on `deep-reasoning`, `science` and `research-synthesis` rows (HLE 49 = MiMo-V2.6-Pro, AA-Omniscience 25 vs Kimi K3 20, USD 60 cap against USD 15). Never infer non-confidentiality from the prompt's tone.",
+      "CAP1": "**CAP1 · cap rule.** The USD 15-cap models (MiMo-V2.6-Pro, GLM-5.3, Kimi K3, Grok 4.7, Qwen3.8 Max, GPT 6 Luna) are reserved for `D ≥ 2`; `D ≤ 1` goes to the USD 60-cap Flash tier (the `latency-volume` row is exempt — GPT 6 Luna's USD 0.10/0.50 prices make its cap ample). Caps are **per model**, the 5-hour window is 20% of the monthly cap and the weekly 50%: when the user says a model's window is exhausted, name the next model of its tier chain in `Evidence:` only — Pro tier **MiMo-V2.6-Pro → GLM-5.3 → Kimi K3 → Qwen3.8 Max**; Flash tier **GLM-5.3-Flash → MiMo-V2.6-Flash → DeepSeek V4.1 Flash → Qwen3.8 Flash**.",
+      "A1-OC": "**A1-OC · escalation rung.** When the user states that an earlier pool run fell short, `#2` becomes **Grok 4.7** (work is non-confidential, NC1) or **Qwen3.8 Max** (confidential), only for `agentic-code`, `terminal-tool` and `knowledge-work`, with `low-confidence`. Qwen3.8 Max is TB 39 and Briefcase 1621, the second-best coding and knowledge numbers in the pool, but USD 5.41 per task, 37 tok/s and 108k tokens per task. Grok 4.7 has the strongest coding-agent harness number (56.3 in AA's Coding Agent Index with Grok Build, an aggregate that is not counted) but TB 26, USD 3.74 per task and 30-day retention. If the shortfall was at `D=3`, also say that the Claude line is the stronger option."
+    }
+  },
+  "skill_md_must_not_appear": [
+    "Codex Fast Mode",
+    "Sol Ultra",
+    "GPT-6 Astra",
+    "rule:P1",
+    "Claude & Codex model",
+    "Codex: ✅ RECOMMENDED AI",
+    "$2/$10"
+  ]
+}

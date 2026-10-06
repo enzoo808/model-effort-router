@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 """Fail if a worked example in skill/SKILL.md contradicts the rule it illustrates.
 
-The m1 cold-routing failure was a runtime example that omitted the mandatory
-`low-confidence` marker its own badge row requires — so a cold agent copied the
-shipped example verbatim and failed the eval. An example that disagrees with the
-rules is worse than no example, because readers calibrate off examples.
+The m1 cold-routing failure (iteration-16) was a runtime example that omitted the
+mandatory `low-confidence` marker its own badge row requires — so a cold agent
+copied the shipped example verbatim and failed the eval. An example that disagrees
+with the rules is worse than no example, because readers calibrate off examples.
 
 Two checks, both mechanical:
 
   1. **Well-formed.** Every fenced example block is either a `Clarify:` block
      (no model/badge/Evidence lines) or a full recommendation (a `Claude:` line,
-     a `Codex:` line, an `Evidence:` line, exactly one `RECOMMENDED AI` badge).
+     an `OpenCode:` line, an `Evidence:` line, exactly one `RECOMMENDED AI` badge,
+     and — unless the OpenCode arm declined — exactly a `#1` and a `#2` pick).
   2. **Consistent with the goldens.** When an example's prompt matches an eval in
      evals/routing/evals.json, the example's models, efforts, badge side,
      `low-confidence` presence and human-review note must match that golden.
-     This is what would have caught m1.
 
     python scripts/check_examples.py
 """
@@ -29,9 +29,9 @@ ROOT = Path(__file__).resolve().parent.parent
 SKILL = ROOT / "skill" / "SKILL.md"
 EVALS = ROOT / "evals" / "routing" / "evals.json"
 
-MODELS = ["Haiku 4.5", "Sonnet 5.5", "Opus 4.8", "Opus 5.5", "Fable 5.1", "Mythos 5.1",
-          "Sol Ultra", "Sol", "Terra", "Luna", "Astra", "opusplan"]
+CLAUDE_MODELS = ["Haiku 4.5", "Sonnet 5.5", "Opus 4.8", "Opus 5.5", "Fable 5.1", "Mythos 5.1", "opusplan"]
 BADGE = "recommended ai"
+DECLINE = ("unverified", "use claude")
 
 
 def norm(s: str) -> str:
@@ -46,8 +46,8 @@ def line(block: str, label: str) -> str | None:
     return None
 
 
-def model_in(text: str) -> str | None:
-    for m in MODELS:
+def claude_model(text: str) -> str | None:
+    for m in CLAUDE_MODELS:
         if m in text:
             return m
     return None
@@ -58,11 +58,19 @@ def effort_in(text: str) -> str | None:
     return m.group(1).lower() if m else None
 
 
+def picks(text: str) -> list[tuple[str, str | None]]:
+    """'#1 X · effort: a · #2 Y · effort: b' -> [('X','a'), ('Y','b')]"""
+    parts = re.split(r"#\s*[12]\b", text)[1:]
+    out = []
+    for p in parts:
+        name = p.split("·")[0].strip().replace("✅ RECOMMENDED AI", "").strip()
+        out.append((name, effort_in(p)))
+    return out
+
+
 def examples(skill: str) -> list[tuple[str, str]]:
     """(prompt-ish label, fenced block body). The label is the nearest italic
     line above the fence, if any."""
-    # Pair fence lines by index (every line that is exactly ```), so nested blank
-    # lines and adjacent blocks can't cause the regex mis-pairing.
     lines = skill.split("\n")
     fences = [i for i, ln in enumerate(lines) if ln.strip() == "```"]
     out = []
@@ -70,7 +78,7 @@ def examples(skill: str) -> list[tuple[str, str]]:
         block = "\n".join(lines[a + 1:b])
         starts = block.lstrip()
         if not (starts.startswith("Claude:") or starts.startswith("Clarify:")):
-            continue  # speed-line snippets, format stubs, etc.
+            continue  # format stubs, etc.
         if "<" in block:
             continue  # a format template, not an example
         label = ""
@@ -92,32 +100,39 @@ def main() -> int:
         print("ERROR [examples] no worked examples found in SKILL.md — the parser or the file broke")
         return 1
 
-    # Index evals by a normalised prompt for fuzzy matching.
     eval_by_prompt = [(norm(e["prompt"]), e) for e in evals if e.get("prompt")]
 
     matched = 0
     for label, block in ex:
         is_clarify = "Clarify:" in block and "Claude:" not in block
-        # ---- well-formedness ----
         if is_clarify:
-            if "RECOMMENDED AI" in block or "Claude:" in block or "Codex:" in block \
+            if "RECOMMENDED AI" in block or "Claude:" in block or "OpenCode:" in block \
                     or "Evidence:" in block:
                 errors.append("blocked example is not clean: %r" % block[:60])
             if "?" not in block:
                 errors.append("blocked example has no clarifying question: %r" % block[:60])
             continue
-        cl, cx, ev = line(block, "Claude"), line(block, "Codex"), line(block, "Evidence")
-        if cl is None or cx is None:
-            errors.append("example missing a Claude:/Codex: line: %r" % block[:60])
+        cl, oc, ev = line(block, "Claude"), line(block, "OpenCode"), line(block, "Evidence")
+        if cl is None or oc is None:
+            errors.append("example missing a Claude:/OpenCode: line: %r" % block[:60])
             continue
         if ev is None:
             errors.append("example missing an Evidence: line: %r" % block[:60])
-        badges = sum(1 for t in (cl, cx) if BADGE in t.lower())
+        badges = sum(1 for t in (cl, oc) if BADGE in t.lower())
         if badges != 1:
             errors.append("example must carry exactly one RECOMMENDED AI badge, found %d: %r"
                           % (badges, (label or block[:50])))
+        declined = any(m in oc.lower() for m in DECLINE) and "#1" not in oc
+        if not declined:
+            pk = picks(oc)
+            if len(pk) != 2:
+                errors.append("OpenCode line must name exactly #1 and #2: %r" % oc[:80])
+            for name, eff in pk:
+                if not eff:
+                    errors.append("OpenCode pick %r has no effort: %r" % (name, oc[:80]))
+        if "opusplan" in cl and "⚠️" not in block:
+            errors.append("opusplan example is missing the ⚠️ effort warning: %r" % (label or block[:50]))
 
-        # ---- consistency with a matching golden ----
         nlabel = norm(label)
         golden = None
         for np, e in eval_by_prompt:
@@ -132,36 +147,49 @@ def main() -> int:
         matched += 1
         eid = golden["id"]
         if golden.get("blocked"):
-            if not is_clarify:
-                errors.append("%s: golden is blocked but the example produces recommendation lines" % eid)
+            errors.append("%s: golden is blocked but the example produces recommendation lines" % eid)
             continue
-        # models + efforts per side
-        for side, exline in (("claude", cl), ("codex", cx)):
-            exp = golden["expected_" + side]
-            if exp.strip().lower().startswith(("unverified", "use claude")):
-                continue
-            wm = model_in(exp)
-            if wm and wm not in exline:
-                errors.append("%s %s: example says %r, golden expects %s" % (eid, side, exline, wm))
-            we = effort_in(exp)
-            xe = effort_in(exline)
-            if we and we != xe:
-                errors.append("%s %s: example effort %r, golden %r" % (eid, side, xe, we))
-        # badge side
+
+        # Claude side
+        exp_c = golden["expected_claude"]
+        wm = claude_model(exp_c)
+        if wm and wm not in cl:
+            errors.append("%s claude: example says %r, golden expects %s" % (eid, cl, wm))
+        we, xe = effort_in(exp_c), effort_in(cl)
+        if we and we != xe:
+            errors.append("%s claude: example effort %r, golden %r" % (eid, xe, we))
+
+        # OpenCode side
+        exp_o = golden["expected_opencode"]
+        if exp_o.strip().lower().startswith(DECLINE):
+            if not declined:
+                errors.append("%s opencode: golden declines but the example names models: %r" % (eid, oc[:80]))
+        elif declined:
+            errors.append("%s opencode: example declines but the golden expects models" % eid)
+        else:
+            for rank, ((en, ee), (an, ae)) in enumerate(zip(picks(exp_o), picks(oc)), start=1):
+                if en not in an:
+                    errors.append("%s opencode #%d: example says %r, golden expects %r" % (eid, rank, an, en))
+                if ee != ae:
+                    errors.append("%s opencode #%d: example effort %r, golden %r" % (eid, rank, ae, ee))
+
         want = golden.get("expected_recommended")
         if want:
-            got = "claude" if BADGE in cl.lower() else "codex" if BADGE in cx.lower() else None
+            got = "claude" if BADGE in cl.lower() else "opencode" if BADGE in oc.lower() else None
             if got != want:
                 errors.append("%s: example badge on %r, golden expects %r" % (eid, got, want))
-        # low-confidence
-        if golden.get("expected_low_confidence"):
-            if ev is None or "low-confidence" not in ev.lower().replace(" ", "-"):
-                errors.append("%s: golden requires low-confidence but the example Evidence omits it: %r"
-                              % (eid, ev))
-        # human-review note
+        low = ev is not None and "low-confidence" in ev.lower().replace(" ", "-")
+        if golden.get("expected_low_confidence") and not low:
+            errors.append("%s: golden requires low-confidence but the example Evidence omits it: %r" % (eid, ev))
+        if not golden.get("expected_low_confidence") and low:
+            errors.append("%s: example Evidence says low-confidence but the golden's row carries no dagger: %r"
+                          % (eid, ev))
         if "human review" in (golden.get("expected_shared_note") or "").lower():
             if "do not apply without human review" not in block.lower():
                 errors.append("%s: golden requires the human-review note but the example omits it" % eid)
+        for needle in golden.get("expected_notes", []):
+            if needle.lower() not in block.lower():
+                errors.append("%s: golden requires %r but the example omits it" % (eid, needle))
 
     for e in errors:
         print("ERROR [examples] %s" % e)

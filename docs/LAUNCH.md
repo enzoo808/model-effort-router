@@ -31,9 +31,9 @@ bilingual", which is a small credibility signal, not a barrier.
 ## GitHub repo settings
 
 **Description:**
-> Routes a task to the cheapest Claude *and* Codex/ChatGPT model + effort level that clears the bar — protects your rate-limit windows, not your wallet.
+> Routes a task to the cheapest Claude *and* OpenCode Go model + effort level that clears the bar — protects your 5-hour window and your per-model Go caps, not your wallet.
 
-**Topics:** `claude` `claude-code` `anthropic` `chatgpt` `codex` `llm` `ai-agents`
+**Topics:** `claude` `claude-code` `anthropic` `opencode` `open-weight` `llm` `ai-agents`
 `prompt-engineering` `developer-tools` `model-routing` `skill`
 
 ## Timing
@@ -51,7 +51,7 @@ buried.
 
 **Body:**
 > I kept reflexively running everything on the most expensive model and burning
-> my Claude 5-hour window (and ChatGPT Plus's), so I wrote a decision procedure
+> my Claude 5-hour window (and my OpenCode Go per-model caps), so I wrote a decision procedure
 > that scores a task on four axes — risk, depth, breadth, context — and outputs
 > which model and effort level to use, for both ecosystems, in two lines. It
 > doesn't run the task, it just routes it.
@@ -63,7 +63,7 @@ buried.
 >
 > It's sourced from the official docs, every uncertain claim is labelled, and
 > there's a deterministic regression eval (cold agents read the rules fresh and
-> route a fixed prompt set; a regex grader checks the output). Currently 38/38, plus a
+> route a fixed prompt set; a regex grader checks the output). Currently a 22-prompt set (the iteration-21 cold-agent run is still pending), plus a
 > separate no-LLM evidence suite: schema validation, rule-provenance resolution,
 > frontier staleness and 80 compiler assertions.
 >
@@ -71,17 +71,17 @@ buried.
 
 Then a first comment from you with the concrete "here's what it does" example and
 the honest limitations (Turkish skill body, model-name/price data has a shelf
-life, Codex biology-R&D behaviour is still unverified so it punts to Claude;
-GPT-6 Astra is handled as a narrow gated pick, not the default; and against GPT-6.1 Sol the router leans Codex on most coding prompts because the evidence leaves it no Claude direction — that lean is documented, not hidden).
+life, no open model has verified biology / offensive-security / computer-use evidence so the OpenCode arm punts to Claude there;
+AA publishes no confidence intervals, so even a 22-point Terminal-Bench lead for Sonnet 5.5 is a *lean* and the badge reads OpenCode (low-confidence) on most coding prompts unless R=3 — that lean is documented, not hidden).
 
 ## r/ClaudeAI (and cross-post to r/LocalLLaMA, r/OpenAI)
 
 **Title:**
-`I built a skill that tells you which model + effort to use for a task (Claude + GPT-6.1 Sol)`
+`I built a skill that tells you which model + effort to use for a task (Claude + OpenCode Go)`
 
 **Body:**
 > Short version: paste a task, it replies with two lines —
-> `Claude: Sonnet 5.5 · effort: high` / `Codex: Sol · effort: high` — and doesn't
+> `Claude: Sonnet 5.5 · effort: high` / `OpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max` — and doesn't
 > run anything.
 >
 > It's built around one idea: the thing you're actually running out of is your
@@ -98,11 +98,11 @@ GPT-6 Astra is handled as a narrow gated pick, not the default; and against GPT-
 
 ## X / Bluesky thread
 
-1. You don't run out of money on Claude/ChatGPT. You run out of your 5-hour
+1. You don't run out of money on Claude/OpenCode Go. You run out of your 5-hour
    window. And you burn it by reaching for the biggest model by reflex.
    I built a router for that. 🧵
 2. Paste a task → it tells you the cheapest model + effort that clears the bar,
-   for Claude *and* Codex/ChatGPT, in two lines. It doesn't run the task.
+   for Claude *and* OpenCode Go (two models, each with an effort), in a few lines. It doesn't run the task.
    [GIF of the two-line output]
 3. Design choice I'm happiest with: risk raises the *human-review note*, not the
    model tier. Forcing risky work onto the flagship and walking it back is what

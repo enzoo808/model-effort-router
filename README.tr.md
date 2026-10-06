@@ -1,44 +1,66 @@
-# Claude & Codex Model / Ekosistem / Efor Seçici
+# Claude & OpenCode Go — Model / Ekosistem / Efor Seçici
 
 > 🇬🇧 **English:** [README.md](README.md) · Bu, Türkçe ayrıntılı sürümdür.
-> **Not:** 2 Eyl 2026'da skill gövdesi (`skill/SKILL.md` + `reference.md`)
-> İngilizce'ye taşındı — çıktı artık `effort:` / `unverified — use Claude` /
-> `Do not apply without human review.` yazıyor. Bu Türkçe README karar
-> mantığının ayrıntılı anlatımı olarak korunuyor; kural değişiminde bununla
-> `SKILL.md` elle senkron tutulmalı.
+> **6 Ekim 2026 (iteration-21):** Codex üyeliği bittiği için ikinci kol
+> **OpenCode Go (USD 10/ay)** ile sıfırdan yeniden kuruldu. Bu dosyanın **en üstündeki
+> bölüm güncel**; "Doğrulama" tablosu dahil geri kalanı **Codex dönemi
+> (iteration-20 ve öncesi) geçmişidir** ve git etiketi `iteration-20-codex` ile
+> `archive/iteration-20-codex/` altında saklanır. Skill gövdesi (`skill/SKILL.md`)
+> İngilizcedir.
 
-Bir promptu verdiğinde hangi modelle (Haiku 4.5 / Sonnet 5.5 / **Opus 5.5** /
-Opus 4.8 / Fable 5.1 / Mythos 5.1 / Luna / Sol / Sol Ultra / **Astra**)
-ve hangi efor seviyesiyle çalıştırman gerektiğini **her iki ekosistem için ayrı
-ayrı** söyleyen, sonra **bu görev için hangisinin daha uygun olduğunu**
-işaretleyen router.
+Bir promptu verdiğinde **Claude** (Haiku 4.5 / Sonnet 5.5 / **Opus 5.5** / Opus 4.8 /
+Fable 5.1 / Mythos 5.1) için model + efor önerir; **OpenCode Go** için ise havuzdaki
+**15 ana modelden görev için en iyi İKİ modeli sırayla** (`#1`, `#2`) seçer — her birinin
+kendi eforuyla — ve **bu görev için hangi ekosistemin daha uygun olduğunu** `✅ RECOMMENDED AI`
+ile işaretler. Promptu çalıştırmaz, yalnızca yönlendirir.
 
 ```
 Claude: Sonnet 5.5 · effort: high
-Codex: ✅ RECOMMENDED AI · Sol · effort: high
-Evidence: AA'nın Terminal-Bench 4.0'ında Sol 56, Sonnet 5.5 64 — aralık yok ve tek
-          satır bir yön değildir; bu yüzden token yükü karar verir: görev başına
-          ~38k çıktı tokeni ve $0.72, karşısında ~193k ve $7.60 (low-confidence).
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max
+Evidence: AA'nın Terminal-Bench 4.0'ında Sonnet 5.5 64, GLM-5.3 42, MiMo-V2.6-Pro 35 —
+          aralık yok ve tek satır yön değildir; bu yüzden cap baskısı karar verir:
+          görev başına USD 0.13 / 64k çıktı tokeni, karşısında USD 7.67 / 193k (low-confidence).
 ```
 
-Rozet **hesaplanır, alışkanlık değildir** — görev değişince yer değiştirir:
+## iteration-21 — ne değişti
 
-```
-Claude: Haiku 4.5
-Codex: ✅ RECOMMENDED AI · Luna · effort: low
-Evidence: İkisi de mekanik sınıflandırma barını aşıyor; Luna (GPT-6)
-          $0.10/$0.50 — Haiku 4.5'in $1/$5'ine karşı.
-```
+- **İki model, sırayla, her biri kendi eforuyla.** Önce görev için iki model **seçilir**
+  (Adım 4-OC), sonra her birinin **eforu** belirlenir. Claude kolu aynen duruyor.
+- **15 ana model** (Go sayfasındaki 30'dan; kalan 15 eski/önizleme/ücretsiz/vision-deneysel/
+  ölçümsüz): MiMo-V2.6-Pro · GLM-5.3 · Kimi K3 · Grok 4.7 · Muse Spark 1.3 Contributor ·
+  GLM-5.3-Flash · MiMo-V2.6-Flash · DeepSeek V4.1 Flash · GPT 6 Luna · Qwen3.8 Flash ·
+  Qwen3.8 Max · DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus.
+  Son dördü **domine edilmiş** (puanlandı, havuzda duruyor, hiçbir satır onları üretmez).
+- **Kota per-model.** Her modelin kendi aylık dolar tavanı var (pahalılar USD 15, ucuzlar
+  30–60); 5 saatlik pencere tavanın %20'si, haftalık %50'si. Bu yüzden USD 15'lik modeller
+  yalnız `D ≥ 2`'ye ayrılır, `D ≤ 1` USD 60'lık Flash katmanına gider.
+- **Efor kaba ve veriye bağlı.** Açık modeller için yalnız `low` ve `max` yayımlanmış
+  (GLM-5.3 34 → 45, Kimi K3 30 → 44). `GLM-5.3 · low` GLM-5.3-Flash tarafından domine
+  (42 puan, dörtte bir maliyet) → Pro katmanı yalnız `max` çıkar; daha düşük derinlik =
+  başka (Flash) **model**, daha düşük kademe değil. İnterpolasyon yok.
+- **Varsayılan: gizli.** Grok 4.7 ve GPT 6 Luna promptu 30 gün saklar, Muse Spark
+  Contributor promptlarınla eğitilir → kullanıcı "gizli değil" demedikçe havuz dışı (Kural NC1).
+  DeepSeek'in sıfır-saklama anlaşması 31 Ekim 2026'ya kadar geçerli, aylık yenileniyor.
+- **Taze kanıt bazı eski varsayımları çürüttü:** Kimi K3 bilgi-işi benchmark'larında **son**
+  sırada; Grok 4.7'nin AA Terminal-Bench'i 26 (DeepSeek V4.1 Flash'ın 27'sinin altında);
+  en güçlü ölçülmüş kodlayıcı GLM-5.3 (TB 42). Tüm veri ve kaynaklar:
+  [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.md).
+- **Dürüst sonuç:** AA hiçbir satır için güven aralığı yayımlamıyor ve kuralımız "aralık yok ⇒
+  `UNRESOLVED`, fark ne kadar büyük görünürse görünsün". Bu yüzden Sonnet 5.5'in GLM-5.3'e 22
+  puanlık TB üstünlüğü bile bir *eğilim*: `R ≤ 2`'de kodlama verimliliğe düşer ve rozet
+  **OpenCode (low-confidence)** olur; `R = 3`'te tek ölçüm karar verir → **Claude**. Claude
+  yalnız iki bağımsız AA satırının uyuştuğu **knowledge-work** ve **deep-reasoning**'de, ürün
+  mekanizmalarında (`ultracode`, `opusplan`) ve OpenCode'un reddettiği kapılarda (saldırgan
+  güvenlik, biyoloji, bilgisayar-kullanımı) temiz rozet alır.
+- **Doğrulama durumu:** `evals/routing/evals.json` 22 prompt (kurallardan türetilmiş
+  altın cevaplar); `grade_routing.py --selftest`, `check_policy_sync.py`,
+  `check_opencode_pool.py`, `check_examples.py` yeşil. **Soğuk-ajan koşusu ve tetik eval'i
+  iteration-21 için YAPILMADI** (canlı ajan gerekir).
 
-**Kalibrasyon: iki ayrı abonelik kotası (Pro/Max + ChatGPT Plus).** Korunan
-kaynak dolar değil — Claude'un 5 saatlik penceresi **ve** ChatGPT Plus'ın
-3 saatlik/haftalık pencereleri. Router'ın asıl işi seni "en pahalı modeli/
-yanlış ekosistemi seç" refleksinden kurtarmak.
+---
 
-**5 Ağustos 2026'da eklendi:** Router artık Claude-only değil. Önce hangi
-ekosistemin kotasından harcanacağına karar veriyor (bkz. "Ekosistem Seçimi"),
-sonra o ekosistemin kendi model+efor mantığına giriyor. Detay için
-`skill/SKILL.md`'deki "Ekosistem Seçimi" ve "Codex Kolu" bölümlerine bak.
+> **⬇ Aşağısı Codex dönemi (iteration-20 ve öncesi) geçmişidir — güncel kurallar için
+> yukarıya ve `skill/SKILL.md`'ye bak.**
 
 ---
 
