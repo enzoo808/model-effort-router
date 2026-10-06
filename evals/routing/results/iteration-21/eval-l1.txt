@@ -1,0 +1,3 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: medium
+OpenCode: use Claude — unverified, no pool model has a published OSWorld row.
+Evidence: Computer-use is a deciding gate on the OpenCode arm (no pool model has an OSWorld row), so the other arm gets the badge.

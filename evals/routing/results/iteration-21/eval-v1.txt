@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
+OpenCode: #1 GLM-5.3 · effort: max · #2 DeepSeek V4.1 Flash · effort: max
+Evidence: Three independent rows agree for Claude (AA TB 4.0 Sonnet 5.5 64 / Opus 5.5 60 vs best open 42; FrontierSWE v2 62 vs 30); DeepSWE ±7 is a tie.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+⚡ Claude /fast available (2.5x faster, 2× price).

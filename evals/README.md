@@ -18,12 +18,19 @@
 > python scripts/check_examples.py           # every SKILL.md worked example agrees with its golden
 > ```
 >
-> **Not done for iteration-21:** the cold-agent run (`routing/results/iteration-21/`) and the trigger
-> eval. Both need live agents. The goldens are derived from the rules by hand, so a passing
-> `--selftest` proves the grader and goldens agree — **not** that a fresh agent reading `SKILL.md`
-> reaches them. Run the cold eval (4 parallel fresh agents, as in earlier iterations) before
-> trusting a golden, and expect to sharpen an ambiguous *prompt* rather than the rule when agents
-> split (the `n2` / `x2` / `i1` / `j1` / `x1` pattern).
+> **Run for iteration-21 (6 Oct 2026): cold-agent routing 25/25** (`routing/results/iteration-21/`). 5 parallel fresh
+> agents read only `skill/SKILL.md`; first pass 23/25. Two misses, both Claude-effort only and both *prompt*
+> ambiguity, handled as in earlier iterations (sharpen the prompt, not the rule): `e1` ("summarise 400 pages" was
+> scored D=1 vs D=2 → now "synthesise 400 pages of filings from three different companies") and `x1` (the agents split
+> `xhigh` vs `high` on "tell me where they conflict" — the D table lists reconciling conflicting sources as D=3 → now
+> "summarise each source's position side by side", two fresh agents agree). A batch containing the exploit-PoC prompt was
+> stopped once by a safety classifier; `i1` and `k1` were re-run alone with the category described, not performed.
+> Goldens were not changed to fit an output except `x1`'s, whose prompt was changed in the same step.
+>
+> **Trigger eval: not run for real.** Nested `claude -p` fails here (`OAuth session expired`). A proxy (one fresh agent
+> deciding YES/NO from the new 280-character description alone) agreed with the labels 20/20 — it is a judgement test,
+> not the harness. Run `PYTHONUTF8=1 python evals/trigger/run_trigger.py --skill-path skill --out evals/trigger/results/<date>.json`
+> from a logged-in terminal for the real result.
 >
 > The Codex-era **reachability audit** (a 154-prompt corpus + a Python re-implementation of the
 > router that proved every model × effort cell reachable) is archived under

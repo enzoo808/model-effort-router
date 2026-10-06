@@ -1,0 +1,160 @@
+{
+  "results": [
+    {
+      "id": "a1",
+      "eval_name": "Bulk classification (latency-volume gate)",
+      "passed": true,
+      "evidence": "Claude: Haiku 4.5 correct; OpenCode: #1 DeepSeek V4.1 Flash low, #2 MiMo-V2.6-Flash default; recommended=opencode (correct); evidence ok; notes ok (peak hours cost 2×)"
+    },
+    {
+      "id": "s0a",
+      "eval_name": "Blocked: vague bug report",
+      "passed": true,
+      "evidence": "no model recommended, no badge, clarifying question present"
+    },
+    {
+      "id": "s0b",
+      "eval_name": "Blocked: ambiguous delete rule",
+      "passed": true,
+      "evidence": "no model recommended, no badge, clarifying question present"
+    },
+    {
+      "id": "b1",
+      "eval_name": "Refactor across 40 files (agentic-code, D=2, R=1): Claude direction from independent rows",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 DeepSeek V4.1 Flash high, #2 GLM-5.3 high; recommended=claude (correct); evidence ok; notes ok (peak hours cost 2×)"
+    },
+    {
+      "id": "c1",
+      "eval_name": "Three-phase environment build (orchestration mechanism)",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=ultracode; OpenCode: #1 DeepSeek V4.1 Flash high, #2 GLM-5.3 high; recommended=claude (correct); evidence ok; notes ok (peak hours cost 2×)"
+    },
+    {
+      "id": "d1",
+      "eval_name": "Adversarial debugging (D3DIAG; deep-reasoning direction beats terminal efficiency row)",
+      "passed": true,
+      "evidence": "Claude: Opus 5.5 correct, effort=xhigh; OpenCode: #1 MiMo-V2.6-Pro default, #2 GLM-5.3 max; recommended=claude (correct); evidence ok; notes ok (/fast available)"
+    },
+    {
+      "id": "e1",
+      "eval_name": "400 pages into one memo (knowledge-work direction beats long-context dagger)",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 MiMo-V2.6-Pro default, #2 Kimi K3 max; recommended=claude (correct); evidence ok"
+    },
+    {
+      "id": "f1",
+      "eval_name": "Non-confidential deck (NC1 unlocks Grok 4.7)",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 Grok 4.7 xhigh, #2 MiMo-V2.6-Pro default; recommended=claude (correct); evidence ok; notes ok (keeps prompts for 30 days)"
+    },
+    {
+      "id": "g1",
+      "eval_name": "Irreversible central boundary (M1, R=3)",
+      "passed": true,
+      "evidence": "Claude: Opus 5.5 correct, effort=max; OpenCode: #1 MiMo-V2.6-Pro default, #2 GLM-5.3 max; recommended=claude (correct); evidence ok; notes ok (review note)"
+    },
+    {
+      "id": "h1",
+      "eval_name": "One-line prod config (R=3 by blast radius, D=0)",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=low; OpenCode: #1 DeepSeek V4.1 Flash low, #2 GLM-5.3-Flash low; recommended=opencode (correct); evidence ok; notes ok (review note, peak hours cost 2×)"
+    },
+    {
+      "id": "i1",
+      "eval_name": "Offensive security gate",
+      "passed": true,
+      "evidence": "Claude: Opus 4.8 correct, effort=xhigh; OpenCode: decline (correct); recommended=claude (correct); evidence ok"
+    },
+    {
+      "id": "j1",
+      "eval_name": "Front-loaded architecture (opusplan)",
+      "passed": true,
+      "evidence": "Claude: opusplan correct (plan=max, execute=medium); OpenCode: #1 MiMo-V2.6-Pro default, #2 Kimi K3 max; recommended=claude (correct); evidence ok; notes ok (review note)"
+    },
+    {
+      "id": "k1",
+      "eval_name": "Biology-adjacent gate",
+      "passed": true,
+      "evidence": "Claude: Fable 5.1 correct, effort=high; OpenCode: decline (correct); recommended=claude (correct); evidence ok"
+    },
+    {
+      "id": "l1",
+      "eval_name": "GUI driving (computer-use gate)",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=medium; OpenCode: decline (correct); recommended=claude (correct); evidence ok"
+    },
+    {
+      "id": "m1",
+      "eval_name": "Workflow wiring (workflow-automation row, Flash #1)",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 DeepSeek V4.1 Flash high, #2 GLM-5.3 high; recommended=opencode (correct); evidence ok; notes ok (peak hours cost 2×)"
+    },
+    {
+      "id": "n1",
+      "eval_name": "Domain audit (science row)",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 MiMo-V2.6-Pro default, #2 Kimi K3 max; recommended=opencode (correct); evidence ok"
+    },
+    {
+      "id": "o1",
+      "eval_name": "Shallow long-context list (D=1, C=3)",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=medium; OpenCode: #1 DeepSeek V4.1 Flash low, #2 GLM-5.3-Flash low; recommended=opencode (correct); evidence ok; notes ok (peak hours cost 2×)"
+    },
+    {
+      "id": "p1",
+      "eval_name": "Escalation after an OpenCode shortfall (A1-OC, confidential)",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 DeepSeek V4.1 Flash high, #2 Kimi K3 max; recommended=claude (correct); evidence ok; notes ok (peak hours cost 2×)"
+    },
+    {
+      "id": "q1",
+      "eval_name": "Bulk classification, stated non-confidential (NC1 unlocks Luna)",
+      "passed": true,
+      "evidence": "Claude: Haiku 4.5 correct; OpenCode: #1 DeepSeek V4.1 Flash low, #2 GPT 6 Luna low; recommended=opencode (correct); evidence ok; notes ok (keeps prompts for 30 days, peak hours cost 2×)"
+    },
+    {
+      "id": "r1",
+      "eval_name": "Scanned receipts (image input, doc-data-understanding)",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 Kimi K3 max, #2 Qwen3.8 Flash xhigh; recommended=opencode (correct); evidence ok"
+    },
+    {
+      "id": "t1",
+      "eval_name": "New algorithm from scratch (deep-reasoning, D=3, R<=2)",
+      "passed": true,
+      "evidence": "Claude: Opus 5.5 correct, effort=xhigh; OpenCode: #1 MiMo-V2.6-Pro default, #2 Kimi K3 max; recommended=claude (correct); evidence ok; notes ok (/fast available)"
+    },
+    {
+      "id": "u1",
+      "eval_name": "Confidential memo (default confidentiality removes Grok/Luna/Muse)",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 MiMo-V2.6-Pro default, #2 Qwen3.8 Flash xhigh; recommended=claude (correct); evidence ok"
+    },
+    {
+      "id": "v1",
+      "eval_name": "Env-dependent build failure at depth (terminal-tool, D=3, R<=2): leader first (PO1)",
+      "passed": true,
+      "evidence": "Claude: Opus 5.5 correct, effort=xhigh; OpenCode: #1 GLM-5.3 max, #2 DeepSeek V4.1 Flash max; recommended=claude (correct); evidence ok; notes ok (/fast available, peak hours cost 2×)"
+    },
+    {
+      "id": "x1",
+      "eval_name": "Research reconciliation (research-synthesis, D=2): DeepSeek gated out",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 GLM-5.3 high, #2 MiMo-V2.6-Pro default; recommended=opencode (correct); evidence ok"
+    },
+    {
+      "id": "y1",
+      "eval_name": "Single-fact lookup (D=0 research-synthesis): DeepSeek gated out of the Flash pair",
+      "passed": true,
+      "evidence": "Claude: Haiku 4.5 correct; OpenCode: #1 GLM-5.3-Flash low, #2 MiMo-V2.6-Flash default; recommended=opencode (correct); evidence ok"
+    }
+  ],
+  "summary": {
+    "passed": 25,
+    "failed": 0,
+    "skipped": 0,
+    "total": 25
+  }
+}

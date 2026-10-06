@@ -1,0 +1,1 @@
+Clarify: what defines an "inactive" user (an is_active flag, or no login for N days, and if so how many), and should the delete be a hard DELETE or a soft-delete?

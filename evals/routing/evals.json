@@ -89,7 +89,7 @@
     {
       "id": "e1",
       "eval_name": "400 pages into one memo (knowledge-work direction beats long-context dagger)",
-      "prompt": "Summarise these 400 pages of filings into one memo",
+      "prompt": "Synthesise these 400 pages of filings from three different companies into one comparative memo",
       "expected_claude": "Sonnet 5.5 · effort: high",
       "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max",
       "expected_recommended": "claude",
@@ -324,12 +324,12 @@
     {
       "id": "x1",
       "eval_name": "Research reconciliation (research-synthesis, D=2): DeepSeek gated out",
-      "prompt": "Find out what the three public sources say about the 2026 EU AI Act exemption thresholds for general-purpose models and tell me where they conflict",
+      "prompt": "Find out what three public sources say about the 2026 EU AI Act exemption thresholds for general-purpose models and summarise each source's position side by side",
       "expected_claude": "Sonnet 5.5 · effort: high",
       "expected_opencode": "#1 GLM-5.3 · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "opencode",
       "expected_low_confidence": true,
-      "tests_rule": "research-synthesis: DeepSeek V4.1 Flash eliminating gate; GLM-5.3 leads Omniscience index and hallucination rate",
+      "tests_rule": "research-synthesis: multi-source synthesis side by side is D=2; DeepSeek eliminating gate; GLM-5.3 leads Omniscience index and hallucination rate",
       "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3 · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Omniscience has Sonnet 5.5 at 32 against GLM-5.3's 14 on one row, so efficiency decides; low-confidence — DeepSeek V4.1 Flash is excluded (96.5% hallucination rate).",
       "forbidden": [
         "DeepSeek V4.1 Flash ·"

@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: ultracode
+OpenCode: #1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3 · effort: high
+Evidence: Orchestration: ultracode sequences the Terraform, deploy, seed and smoke phases, which OpenCode lacks; the terminal-tool row also favours Claude (TB 4.0 64 vs 42).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).

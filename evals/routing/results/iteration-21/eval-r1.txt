@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Kimi K3 · effort: max · #2 Qwen3.8 Flash · effort: xhigh
+Evidence: Document understanding with image input (GLM-5.3 is text-only): one AA row (GDP.pdf Opus/Sonnet 26 vs Kimi 22) sets no direction, so efficiency decides; low-confidence.

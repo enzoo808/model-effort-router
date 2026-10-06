@@ -1,0 +1,3 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Qwen3.8 Flash · effort: xhigh
+Evidence: Knowledge-work: three agreeing AA rows favour Claude (GDPval-AA 1866/1839 vs MiMo 1686, Briefcase 1807/1823 vs 1516, AnalystAgent 56/58 vs Kimi 39).

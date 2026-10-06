@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max
+Evidence: Science: one AA row (SciCode Opus 67 / Sonnet 61 vs MiMo 61) is a tie with Sonnet, so efficiency decides; low-confidence.

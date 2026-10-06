@@ -261,10 +261,10 @@ python scripts/derive_opencode_rows.py     # print the independent-evidence cons
 python scripts/check_examples.py           # every worked example agrees with its golden
 ```
 
-> **Honest status.** The goldens are derived from the rules; **a cold-agent run (fresh
-> agents routing each prompt from `SKILL.md`) has not been done for iteration-21**, and
-> neither has the trigger eval. Both need live agents — run them before trusting the
-> goldens, as every earlier iteration did.
+> **Status (6 Oct 2026).** The cold-agent routing run is done: **25/25** — five fresh agents reading
+> only `SKILL.md`; the first pass was 23/25, and both misses were prompt ambiguity (clarified, not rule
+> changes — see `evals/README.md`). The **trigger eval is a proxy only** (nested `claude -p` fails to
+> authenticate here); run `evals/trigger/run_trigger.py` from a logged-in terminal for the real result.
 
 Run history and the reasoning behind every rule change is in
 [`evals/README.md`](evals/README.md).

@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · opusplan · plan: max · execute: medium
+⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max
+Evidence: Deep-reasoning: two agreeing AA rows favour Claude (HLE 61 vs 49, CritPt 32 vs 27), and opusplan spends the flagship on the plan, which OpenCode lacks.
+Do not apply without human review.

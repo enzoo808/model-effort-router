@@ -1,0 +1,3 @@
+Claude: ✅ RECOMMENDED AI · Opus 4.8 · effort: xhigh
+OpenCode: use Claude — the only open-model offensive evidence is vendor-reported and no pool model's safeguards are verified.
+Evidence: Offensive security is a deciding gate on both arms; only Opus 4.8 carries it, so the other arm declines.

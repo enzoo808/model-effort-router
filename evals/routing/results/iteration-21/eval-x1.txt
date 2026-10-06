@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3 · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Research-synthesis has one AA-Omniscience row (Sonnet 32 vs GLM-5.3 14, MiMo 8), no BD1 direction, so efficiency decides; low-confidence.

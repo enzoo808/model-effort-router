@@ -1,0 +1,4 @@
+Claude: Haiku 4.5
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: Both clear the bar; DeepSeek V4.1 Flash streams 222 tok/s at USD 0.27 per task on a USD 60 cap against Haiku 4.5's USD 1/USD 5.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
