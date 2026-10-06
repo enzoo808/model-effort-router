@@ -16,7 +16,7 @@ ile işaretler. Promptu çalıştırmaz, yalnızca yönlendirir.
 
 ```
 Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: high
 Evidence: AA'nın Terminal-Bench 4.0'ında Sonnet 5.5 64, GLM-5.3 42, MiMo-V2.6-Pro 35 —
           aralık yok ve tek satır yön değildir; bu yüzden cap baskısı karar verir:
           görev başına USD 0.13 / 64k çıktı tokeni, karşısında USD 7.67 / 193k (low-confidence).
@@ -34,10 +34,17 @@ Evidence: AA'nın Terminal-Bench 4.0'ında Sonnet 5.5 64, GLM-5.3 42, MiMo-V2.6-
 - **Kota per-model.** Her modelin kendi aylık dolar tavanı var (pahalılar USD 15, ucuzlar
   30–60); 5 saatlik pencere tavanın %20'si, haftalık %50'si. Bu yüzden USD 15'lik modeller
   yalnız `D ≥ 2`'ye ayrılır, `D ≤ 1` USD 60'lık Flash katmanına gider.
-- **Efor kaba ve veriye bağlı.** Açık modeller için yalnız `low` ve `max` yayımlanmış
-  (GLM-5.3 34 → 45, Kimi K3 30 → 44). `GLM-5.3 · low` GLM-5.3-Flash tarafından domine
-  (42 puan, dörtte bir maliyet) → Pro katmanı yalnız `max` çıkar; daha düşük derinlik =
-  başka (Flash) **model**, daha düşük kademe değil. İnterpolasyon yok.
+- **Efor = OpenCode'un o model için gerçekten sunduğu varyant.** models.dev'den araştırıldı:
+  GLM-5.3, GLM-5.3-Flash ve DeepSeek V4.1 Flash `low`/`high`/`max` sunar; **MiMo-V2.6 hiç varyant
+  sunmaz** (düşünme hep açık → router `default` yazar); Kimi K3 yalnız `max`; Grok 4.7 `low`…`xhigh`;
+  Qwen3.8 `low`/`medium`/`xhigh`. `low/high/max` modellerinde `medium` ve `xhigh` **reddedilir**,
+  asla yazılmaz. Bu üç modelde `D ≤ 1 → low`, **`D = 2 → high`, `D = 3 → max`**: DeepSeek'in kendi
+  makalesi 60–80 eforunun `max`'ın doğruluğunun çoğunu yarıdan az tokenla yakaladığını (ve `max`'ın
+  agent token'ını marjinal kazanç için 1.6–1.8× artırdığını) gösteriyor; Z.ai'nin Code Bench'inde
+  GLM-5.3 `high` %31.4 @ ~50k token, `max` %34.5 @ ~75k — vendor-raporlu, kendi-modeli içi eğriler:
+  kademe seçmek için kullanılır, ekosistemler-arası yön için asla. AA yalnız `low`/`max` ölçtü
+  (GLM-5.3 34 → 45, Kimi K3 30 → 44) ve DeepSeek V4.1 Flash non-reasoning'i (25, `max`'ta 39).
+  `GLM-5.3 · low`, GLM-5.3-Flash tarafından domine → Pro katmanı asla düşük çıkmaz. İnterpolasyon yok.
 - **Varsayılan: gizli.** Grok 4.7 ve GPT 6 Luna promptu 30 gün saklar, Muse Spark
   Contributor promptlarınla eğitilir → kullanıcı "gizli değil" demedikçe havuz dışı (Kural NC1).
   DeepSeek'in sıfır-saklama anlaşması 31 Ekim 2026'ya kadar geçerli, aylık yenileniyor.

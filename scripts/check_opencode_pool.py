@@ -10,8 +10,8 @@ Checks (all mechanical, all fail loudly):
   2. Every Step 4-OC row (R<=2 pair, R=3 pair, NC1 variants) equals the mirror,
      and no row ever emits a model whose status is `dominated`.
   3. The badge table (side at R<=2, side at R=3, dagger) equals the mirror.
-  4. Every OpenCode line in a worked example names only routable pool models, a
-     valid effort rung, never `GLM-5.3 · low` / `Kimi K3 · low`, and never a
+  4. Every OpenCode line in a worked example names only routable pool models, an
+     effort that OpenCode actually offers for that model (policy `opencode_variants`), never `GLM-5.3 · low` / `Kimi K3 · low`, and never a
      USD 15-cap model at `low` (only the latency row's GPT 6 Luna is exempt).
   5. No model outside the 15 appears in a Step 4-OC row or an example.
 
@@ -178,7 +178,6 @@ def main() -> int:
     lines = skill.split("\n")
     fences = [i for i, ln in enumerate(lines) if ln.strip() == "```"]
     n_ex = 0
-    rungs = set(policy["effort"]["opencode_rungs"])
     for a, b in zip(fences[0::2], fences[1::2]):
         block = "\n".join(lines[a + 1:b])
         oc = next((ln.strip()[len("OpenCode:"):].strip() for ln in block.split("\n")
@@ -203,10 +202,11 @@ def main() -> int:
                 errors.append("example emits dominated model %s" % model)
             em = re.search(r"effort:\s*(\w+)", p)
             eff = em.group(1) if em else None
-            if eff not in rungs:
-                errors.append("example effort %r for %s is not one of %s" % (eff, model, sorted(rungs)))
-            if eff == "xhigh" and model != "Grok 4.7":
-                errors.append("xhigh is Grok 4.7's rung only, example gives it to %s" % model)
+            allowed = policy["effort"]["opencode_variants"].get(model)
+            if allowed is None:
+                errors.append("no OpenCode variant list in the policy for %s" % model)
+            elif eff not in allowed:
+                errors.append("effort %r for %s is not an OpenCode variant of that model %s" % (eff, model, allowed))
             if eff == "low" and model in ("GLM-5.3", "Kimi K3"):
                 errors.append("%s · low is dominated (Rule E6) and must never be emitted" % model)
             if eff == "low" and pool[model]["cap_usd"] == 15 and model != "GPT 6 Luna":

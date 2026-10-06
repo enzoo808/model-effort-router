@@ -8,11 +8,11 @@
       "eval_name": "Bulk classification (latency-volume gate)",
       "prompt": "Label these 200 customer reviews as positive/negative",
       "expected_claude": "Haiku 4.5",
-      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: low",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default",
       "expected_recommended": "opencode",
       "expected_low_confidence": false,
       "tests_rule": "Step 1 latency gate; confidential default removes Luna so #2 is MiMo-V2.6-Flash; latency row carries no dagger; DeepSeek auto-line",
-      "golden_output": "Claude: Haiku 4.5\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: low\nEvidence: Both arms clear the bar for mechanical classification, and DeepSeek V4.1 Flash streams 222 tok/s at USD 0.27 per index task on a USD 60 cap against Haiku 4.5's USD 1/USD 5 pricing.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "golden_output": "Claude: Haiku 4.5\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default\nEvidence: Both arms clear the bar for mechanical classification, and DeepSeek V4.1 Flash streams 222 tok/s at USD 0.27 per index task on a USD 60 cap against Haiku 4.5's USD 1/USD 5 pricing.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
       "expected_notes": [
         "peak hours cost 2×"
       ],
@@ -49,33 +49,33 @@
       "eval_name": "Refactor across 40 files (agentic-code, D=2, R=1)",
       "prompt": "Refactor the payment module across these 40 files to use the new idempotency-key API, update every caller, and make the test suite pass.",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: high",
       "expected_recommended": "opencode",
       "expected_low_confidence": true,
       "tests_rule": "coding row falls to efficiency (OpenCode dagger); one implementation phase -> no ultracode; Pro tier at max",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max\nEvidence: AA's Terminal-Bench 4.0 has Sonnet 5.5 at 64 against GLM-5.3 at 42 and MiMo-V2.6-Pro at 35 with no interval, and one row is not a direction, so cap pressure decides — USD 0.13 and 64k output tokens per task against USD 7.67 and 193k; low-confidence."
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: high\nEvidence: AA's Terminal-Bench 4.0 has Sonnet 5.5 at 64 against GLM-5.3 at 42 and MiMo-V2.6-Pro at 35 with no interval, and one row is not a direction, so cap pressure decides — USD 0.13 and 64k output tokens per task against USD 7.67 and 193k; low-confidence."
     },
     {
       "id": "c1",
       "eval_name": "Three-phase environment build (orchestration mechanism)",
       "prompt": "Stand up the new staging environment from scratch: Terraform it, deploy the 12 services, seed the data, run the smoke suite, and fix whatever does not come up.",
       "expected_claude": "Sonnet 5.5 · effort: ultracode",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: high",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
       "tests_rule": "O1 three phases -> ultracode; MECH1 beats an efficiency fall-through",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: ultracode\nOpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max\nEvidence: Implementation, a data-seeding phase and a smoke run against a deployed environment are three distinct phases feeding each other, which is what ultracode's orchestration sequences and OpenCode has no mode for."
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: ultracode\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: high\nEvidence: Implementation, a data-seeding phase and a smoke run against a deployed environment are three distinct phases feeding each other, which is what ultracode's orchestration sequences and OpenCode has no mode for."
     },
     {
       "id": "d1",
       "eval_name": "Adversarial debugging (D3DIAG; deep-reasoning direction beats terminal efficiency row)",
       "prompt": "Find the race condition that flakes in prod sometimes",
       "expected_claude": "Opus 5.5 · effort: xhigh",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: max",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
       "tests_rule": "two dominant tags; direction beats efficiency; two-tag pick rule (#2 from the other row)",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max\nEvidence: Adversarial debugging is deep-reasoning plus terminal work, and the reasoning half has two agreeing AA rows (HLE 61 vs 49, CritPt 32 vs 27) while the terminal half sets no direction, so the direction decides.\n⚡ Claude /fast available (2.5x faster, 2× price).",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: max\nEvidence: Adversarial debugging is deep-reasoning plus terminal work, and the reasoning half has two agreeing AA rows (HLE 61 vs 49, CritPt 32 vs 27) while the terminal half sets no direction, so the direction decides.\n⚡ Claude /fast available (2.5x faster, 2× price).",
       "expected_notes": [
         "/fast available"
       ]
@@ -85,22 +85,22 @@
       "eval_name": "400 pages into one memo (knowledge-work direction beats long-context dagger)",
       "prompt": "Summarise these 400 pages of filings into one memo",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: max · #2 Kimi K3 · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
       "tests_rule": "C=3 D=2 -> Sonnet; knowledge-work BD1 direction; two-tag pick (Kimi K3 comes from the long-context row)",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 Kimi K3 · effort: max\nEvidence: The finished memo is knowledge-work, where two AA rows agree for Claude (GDPval-AA 1839 vs 1686, AA-Briefcase 1823 vs 1516), and that direction outranks the long-context half, where AA-LCR has the open models ahead on one row."
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max\nEvidence: The finished memo is knowledge-work, where two AA rows agree for Claude (GDPval-AA 1839 vs 1686, AA-Briefcase 1823 vs 1516), and that direction outranks the long-context half, where AA-LCR has the open models ahead on one row."
     },
     {
       "id": "f1",
       "eval_name": "Non-confidential deck (NC1 unlocks Grok 4.7)",
       "prompt": "I'm preparing a non-confidential competitor-pricing deck for a conference — research, structure and write the 12 slides",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 Grok 4.7 · effort: xhigh · #2 MiMo-V2.6-Pro · effort: max",
+      "expected_opencode": "#1 Grok 4.7 · effort: xhigh · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
       "tests_rule": "NC1; Grok effort xhigh; data-policy auto-line",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 Grok 4.7 · effort: xhigh · #2 MiMo-V2.6-Pro · effort: max\nEvidence: Finished-deliverable work is knowledge-work, where Claude leads on two agreeing AA rows (GDPval-AA 1839 vs Grok 4.7's 1715, AA-Briefcase 1823 vs 1644), and Grok 4.7 is the best open model on both of them.\nData: Grok 4.7 keeps prompts for 30 days.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 Grok 4.7 · effort: xhigh · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Finished-deliverable work is knowledge-work, where Claude leads on two agreeing AA rows (GDPval-AA 1839 vs Grok 4.7's 1715, AA-Briefcase 1823 vs 1644), and Grok 4.7 is the best open model on both of them.\nData: Grok 4.7 keeps prompts for 30 days.",
       "expected_notes": [
         "keeps prompts for 30 days"
       ]
@@ -110,11 +110,11 @@
       "eval_name": "Irreversible central boundary (M1, R=3)",
       "prompt": "Design and implement the new cross-service transaction boundary. It ships tonight and cannot be rolled back.",
       "expected_claude": "Opus 5.5 · effort: max",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: max",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
       "tests_rule": "M1 max; R=3 flips the coding row's #1 to GLM-5.3 but the badge-deciding tag supplies #1",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: max\nOpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max\nEvidence: One indivisible boundary decision at R=3 is the case max exists for, and the reasoning half has two agreeing AA rows for Claude (HLE 61 vs 49, CritPt 32 vs 27), with the coding half leaning the same way (Terminal-Bench 60 vs 42).\n⚡ Claude /fast available (2.5x faster, 2× price).\nDo not apply without human review.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: max\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: max\nEvidence: One indivisible boundary decision at R=3 is the case max exists for, and the reasoning half has two agreeing AA rows for Claude (HLE 61 vs 49, CritPt 32 vs 27), with the coding half leaning the same way (Terminal-Bench 60 vs 42).\n⚡ Claude /fast available (2.5x faster, 2× price).\nDo not apply without human review.",
       "expected_shared_note": "Do not apply without human review."
     },
     {
@@ -122,11 +122,11 @@
       "eval_name": "One-line prod config (R=3 by blast radius, D=0)",
       "prompt": "Bump `MAX_RETRIES` from 3 to 5 in the prod config",
       "expected_claude": "Sonnet 5.5 · effort: low",
-      "expected_opencode": "#1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: low",
+      "expected_opencode": "#1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default",
       "expected_recommended": "opencode",
-      "expected_low_confidence": true,
+      "expected_low_confidence": false,
       "tests_rule": "D<=1 row; CAP1 (no USD 15 models); Haiku out at R=3; human-review note",
-      "golden_output": "Claude: Sonnet 5.5 · effort: low\nOpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: low\nEvidence: D=0 work — both arms are far past the bar, and the Flash models run on USD 60 Go caps against Claude's 5-hour window, but the low rung of a Flash model is unmeasured; low-confidence.\nDo not apply without human review.",
+      "golden_output": "Claude: Sonnet 5.5 · effort: low\nOpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default\nEvidence: D=0 work — both arms are far past the bar, so price and cap decide: the Flash models run on USD 60 Go caps at USD 0.25 and 0.06 per index task against Claude's 5-hour window.\nDo not apply without human review.",
       "expected_shared_note": "Do not apply without human review.",
       "forbidden": [
         "MiMo-V2.6-Pro"
@@ -148,11 +148,11 @@
       "eval_name": "Front-loaded architecture (opusplan)",
       "prompt": "Redesign the auth architecture of 200 prod services from scratch",
       "expected_claude": "opusplan · plan: max · execute: medium",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: max · #2 Kimi K3 · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
       "tests_rule": "opusplan; MECH1; no speed line on opusplan; deep-reasoning row at R=3",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · opusplan · plan: max · execute: medium\n⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.\nOpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 Kimi K3 · effort: max\nEvidence: Front-loaded architecture design at D=3∧R=3 is opusplan on Claude — the flagship is spent only on a max plan phase and execution drops to Sonnet 5.5 — and OpenCode has no plan/execute split.\nDo not apply without human review.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · opusplan · plan: max · execute: medium\n⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max\nEvidence: Front-loaded architecture design at D=3∧R=3 is opusplan on Claude — the flagship is spent only on a max plan phase and execution drops to Sonnet 5.5 — and OpenCode has no plan/execute split.\nDo not apply without human review.",
       "expected_shared_note": "Do not apply without human review.",
       "forbidden": [
         "/fast"
@@ -185,11 +185,11 @@
       "eval_name": "Workflow wiring (workflow-automation row, Flash #1)",
       "prompt": "Set up an n8n flow: when a Jira ticket with the label 'urgent' is created, open a Slack thread, assign the on-call engineer from the rota sheet, and update the ticket if nobody acknowledges within 30 minutes",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: max · #2 GLM-5.3 · effort: max",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3 · effort: high",
       "expected_recommended": "opencode",
       "expected_low_confidence": true,
       "tests_rule": "workflow row: Flash model emitted at max for D>=2; dagger; DeepSeek auto-line",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 GLM-5.3 · effort: max\nEvidence: Integration wiring is workflow-automation, where AutomationBench-AA has DeepSeek V4.1 Flash at 69 against Sonnet 5.5's 72 — one row, three points, no interval — so cap pressure decides; low-confidence.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3 · effort: high\nEvidence: Integration wiring is workflow-automation, where AutomationBench-AA has DeepSeek V4.1 Flash at 69 against Sonnet 5.5's 72 — one row, three points, no interval — so cap pressure decides; low-confidence.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
       "expected_notes": [
         "peak hours cost 2×"
       ]
@@ -199,27 +199,24 @@
       "eval_name": "Domain audit (science row)",
       "prompt": "Check whether the error estimator in this finite-element mesh-convergence study is implemented correctly and tell me where it deviates from the theory",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: max · #2 Kimi K3 · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max",
       "expected_recommended": "opencode",
       "expected_low_confidence": true,
       "tests_rule": "domain audit = D=2 not D=3; science row dagger",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: max · #2 Kimi K3 · effort: max\nEvidence: Scientific-code work is judged on SciCode, where Sonnet 5.5 and MiMo-V2.6-Pro tie at 61 on one row with no interval, so cap pressure decides; low-confidence."
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max\nEvidence: Scientific-code work is judged on SciCode, where Sonnet 5.5 and MiMo-V2.6-Pro tie at 61 on one row with no interval, so cap pressure decides; low-confidence."
     },
     {
       "id": "o1",
-      "eval_name": "Shallow long-context list (context gate removes MiMo-V2.6-Flash)",
+      "eval_name": "Shallow long-context list (D=1, C=3)",
       "prompt": "Read this 600-page contract bundle and list every termination clause with its page number",
       "expected_claude": "Sonnet 5.5 · effort: medium",
-      "expected_opencode": "#1 GLM-5.3-Flash · effort: low · #2 DeepSeek V4.1 Flash · effort: low",
+      "expected_opencode": "#1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default",
       "expected_recommended": "opencode",
-      "expected_low_confidence": true,
-      "tests_rule": "D<=1 with context > 200k: MiMo-V2.6-Flash eliminated (window not published); C=3 D=1 -> Sonnet 5.5 medium",
-      "golden_output": "Claude: Sonnet 5.5 · effort: medium\nOpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 DeepSeek V4.1 Flash · effort: low\nEvidence: Mechanical enumeration is D=1 so efficiency decides, and the Flash models carry 1M windows on USD 60 caps, but the low rung of a Flash model is unmeasured; low-confidence.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
-      "expected_notes": [
-        "peak hours cost 2×"
-      ],
+      "expected_low_confidence": false,
+      "tests_rule": "D<=1 with C=3: Sonnet 5.5 medium; Flash tier, no dagger (price/cap facts); MiMo-V2.6-Flash has a published 1M window",
+      "golden_output": "Claude: Sonnet 5.5 · effort: medium\nOpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default\nEvidence: Mechanical enumeration is D=1, so price and cap decide, and both Flash models carry 1M windows on USD 60 caps against Claude's 5-hour window.\n",
       "forbidden": [
-        "MiMo-V2.6-Flash"
+        "DeepSeek"
       ]
     },
     {
@@ -227,11 +224,11 @@
       "eval_name": "Escalation after an OpenCode shortfall (A1-OC, confidential)",
       "prompt": "The first OpenCode attempt at migrating these 30 files from the logging API v1 to v2 fell short — redo it and make the test suite pass",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: max · #2 Qwen3.8 Max · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Qwen3.8 Max · effort: xhigh",
       "expected_recommended": "opencode",
       "expected_low_confidence": true,
       "tests_rule": "A1-OC replaces #2; a shortfall on an OpenCode run does not escalate the Claude line",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: max · #2 Qwen3.8 Max · effort: max\nEvidence: An earlier pool run fell short, so #2 becomes Qwen3.8 Max (confidential work, Terminal-Bench 4.0 39 against GLM-5.3's 42), and the coding row still has no interval so cap pressure keeps MiMo-V2.6-Pro first; low-confidence.",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 Qwen3.8 Max · effort: xhigh\nEvidence: An earlier pool run fell short, so #2 becomes Qwen3.8 Max (confidential work, Terminal-Bench 4.0 39 against GLM-5.3's 42), and the coding row still has no interval so cap pressure keeps MiMo-V2.6-Pro first; low-confidence.",
       "forbidden": [
         "Grok"
       ]
@@ -256,11 +253,11 @@
       "eval_name": "Scanned receipts (image input, doc-data-understanding)",
       "prompt": "Read these 30 scanned receipt photos and produce one reconciliation table against the bank export",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: max · #2 Kimi K3 · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max",
       "expected_recommended": "opencode",
       "expected_low_confidence": true,
       "tests_rule": "image-input eliminating gate (GLM-5.3 text-only); doc-data row dagger",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: max · #2 Kimi K3 · effort: max\nEvidence: Extraction from scans is doc-data-understanding, where AA's GDP.pdf has Claude at 26 against Kimi K3's 22 and MiMo-V2.6-Pro's 19 on one row, so cap pressure decides; low-confidence, and GLM-5.3 is excluded because it takes no image input.",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max\nEvidence: Extraction from scans is doc-data-understanding, where AA's GDP.pdf has Claude at 26 against Kimi K3's 22 and MiMo-V2.6-Pro's 19 on one row, so cap pressure decides; low-confidence, and GLM-5.3 is excluded because it takes no image input.",
       "forbidden": [
         "GLM-5.3 ·"
       ]
@@ -270,11 +267,11 @@
       "eval_name": "New algorithm from scratch (deep-reasoning, D=3, R<=2)",
       "prompt": "Design a conflict-free ordering scheme for our multi-writer job queue — it is a new algorithm and we have no prior design to start from",
       "expected_claude": "Opus 5.5 · effort: xhigh",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: max · #2 Kimi K3 · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
       "tests_rule": "flagship at D=3; xhigh not max at R<=2 (M1); no opusplan for new-algorithm design",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 Kimi K3 · effort: max\nEvidence: New-algorithm design is deep-reasoning, where two AA rows agree for Claude (HLE 61 vs 49, CritPt 32 vs 27); it is not opusplan because the difficulty persists through implementation.\n⚡ Claude /fast available (2.5x faster, 2× price).",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max\nEvidence: New-algorithm design is deep-reasoning, where two AA rows agree for Claude (HLE 61 vs 49, CritPt 32 vs 27); it is not opusplan because the difficulty persists through implementation.\n⚡ Claude /fast available (2.5x faster, 2× price).",
       "expected_notes": [
         "/fast available"
       ]
@@ -284,11 +281,11 @@
       "eval_name": "Confidential memo (default confidentiality removes Grok/Luna/Muse)",
       "prompt": "Write the Q3 supplier-risk memo for the board from our internal spend data",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: max · #2 Qwen3.8 Flash · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Qwen3.8 Flash · effort: xhigh",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
       "tests_rule": "confidential default; knowledge-work row #2 = Qwen3.8 Flash; no data-policy line",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 Qwen3.8 Flash · effort: max\nEvidence: The finished memo is knowledge-work, where two AA rows agree for Claude (GDPval-AA 1839 vs 1686, AA-Briefcase 1823 vs 1516), and internal spend data is confidential so the 30-day-retention and training models are out of the pool.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Qwen3.8 Flash · effort: xhigh\nEvidence: The finished memo is knowledge-work, where two AA rows agree for Claude (GDPval-AA 1839 vs 1686, AA-Briefcase 1823 vs 1516), and internal spend data is confidential so the 30-day-retention and training models are out of the pool.",
       "forbidden": [
         "Grok",
         "Muse",

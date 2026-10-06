@@ -26,10 +26,9 @@ Source: `opencode.ai/docs/go/`.
 - **Peak pricing (DeepSeek only):** Mon–Fri 01:00–04:00 and 06:00–10:00 UTC = 04–07
   and 09–13 Turkish time; double price.
 - **Context-tiered pricing:** Qwen3.7 Plus > 256K, Grok > 200K, GPT 6 Luna > 272K.
-- The page says **nothing** about reasoning-effort variants. OpenCode's own docs
-  (`opencode.ai/docs/models/`) describe `variant_cycle` and per-provider variants
-  (Anthropic high/max; OpenAI none…xhigh; Google low/high) — no per-model list for
-  the Go models. Hence the router's two-rung vocabulary (§4).
+- The Go page says **nothing** about effort variants, and OpenCode's docs give no per-model
+  list. The authoritative list is the model catalogue OpenCode reads, **models.dev**
+  (`providers/opencode-go/models/<id>.toml`, dev branch, read 6 Oct 2026) — see §4.
 
 ## 2. The 15 main models
 
@@ -91,12 +90,12 @@ input-dominated, where MiMo's USD 0.0036 cached read is the standout.
 Context windows: MiMo-V2.6-Pro 1M · GLM-5.3 1M · Kimi K3 1M · **Grok 4.7 500k** ·
 Muse Spark 1.3 1M · GLM-5.3-Flash 1M · DeepSeek V4.1 Flash 1M · GPT 6 Luna 1M ·
 **Qwen3.8 Flash 256k** · Qwen3.8 Max 984k · DeepSeek V4 Pro 1M · MiniMax M3 1M ·
-MiMo-V2.6-Flash, Kimi K2.7 Code `n/p` · Qwen3.7 Plus ≥ 256k (tier boundary).
+Kimi K2.7 Code `n/p` · MiMo-V2.6-Flash **1M** (AA) · Qwen3.7 Plus ≥ 256k (tier boundary).
 
 Input modalities (AA): **text-only GLM-5.3**; text+image Kimi K3, GLM-5.3-Flash,
 Grok 4.7, GPT 6 Luna, Qwen3.8 Max; text+image+video Qwen3.8 Flash, MiniMax M3, Muse
 Spark 1.3; MiMo-V2.6-Pro takes text, image, speech and video. Only *DeepSeek V4 Flash
-Vision Exp* is marked vision on the Go page. MiMo-V2.6-Flash `n/p`.
+Vision Exp* is marked vision on the Go page. MiMo-V2.6-Flash takes text+image (AA).
 
 ## 3. Findings the numbers force (several contradict the earlier draft)
 
@@ -132,23 +131,68 @@ Vision Exp* is marked vision on the Go page. MiMo-V2.6-Flash `n/p`.
     V4.1 Flash; **open models lead or tie AA-LCR** (Kimi 89, MiMo 86 vs 85/83) and tie
     SciCode (MiMo 61 = Sonnet 61).
 
-## 4. Effort evidence
+## 4. Effort evidence and the variants OpenCode actually offers
+
+### 4a. Variants (models.dev, `providers/opencode-go/models/*.toml`, read 6 Oct 2026)
+
+| Model | `reasoning_options` | Note |
+|---|---|---|
+| GLM-5.3 · GLM-5.3-Flash | effort `low` `high` `max` | Z.ai: thinking cannot be disabled; server default `max` |
+| DeepSeek V4.1 Flash | effort `low` `high` `max` | DeepSeek API: default `high`; `none` (non-thinking) exists in the API but not as an OpenCode variant |
+| DeepSeek V4 Pro | effort `high` `max` | |
+| Kimi K3 | effort `max` **only** | Moonshot's API has `low`/`high`/`max` (default `max`) but OpenCode lists only `max` |
+| MiMo-V2.6-Pro · MiMo-V2.6-Flash | **`[]` — none** | Xiaomi docs: only `thinking.type` enabled/disabled, on by default. A pull request (anomalyco/models.dev #7680) proposing `none/low/medium/high` was flagged by a review bot as unsupported by Xiaomi's docs; its probe showed `xhigh`/`max` → HTTP 400 |
+| Grok 4.7 | effort `low` `medium` `high` `xhigh` | xAI default `high` |
+| Qwen3.8 Flash · Qwen3.8 Max | toggle · effort `low` `medium` `xhigh` · token budget (≤ 262,144) | API default `xhigh`; `low` ≈ 4,096-token cap, `medium` ≈ 16,384 |
+| GPT 6 Luna | effort `none` `low` `medium` `high` `xhigh` `max` | |
+| Muse Spark 1.3 Contributor | effort `minimal` `low` `medium` `high` `xhigh` | capability metadata copied from Muse Spark 1.2 "pending public 1.3 specifications" |
+
+Independent confirmation that OpenCode-Go rejects `medium`/`xhigh` on the `low`/`high`/`max`
+models: pingdotgg/t3code #15645 (*"Variant unavailable for opencode-go/deepseek-v4.1-flash:
+medium"*) and NousResearch/hermes-agent #107495. Caveat: the dev branch may be newer or older
+than the OpenCode build in use — if `variant_cycle` shows a different list, trust it.
+
+### 4b. Measured rungs (AA, v4.3.2)
 
 | Model | Rung | II | cost/task | tokens (index run) |
 |---|---|---|---|---|
 | GLM-5.3 | Max | 45 | $2.01 | 210M out (verbose) |
 | GLM-5.3 | Low | 34 | $0.85 | 88M |
 | Kimi K3 | Max | 44 | $2.00 | 160M |
-| Kimi K3 | Low | 30 | $1.15 | 22M |
+| Kimi K3 | Low | 30 (Coding Index 72.0, GPQA 84.2 vs 93.5 at max) | $1.15 | 22M |
 | Grok 4.7 | xhigh | 46 | $3.74 | 240M |
-| DeepSeek V4.1 Flash | Max | 39 | $0.27 | 250M |
-| MiMo-V2.6-Pro | (single reasoning version; AA notes a non-reasoning variant "may exist") | 46 | $0.13 | 140M |
+| DeepSeek V4.1 Flash | Max | 39 (AutoBench 69, TB 27, HLE 39, LCR 84) | $0.27 | 250M · 89k/task |
+| **DeepSeek V4.1 Flash** | **Non-reasoning** | **25** (AutoBench 48, TB 6, HLE 11, LCR 55) | **$0.15** | 45M · 34k/task |
+| MiMo-V2.6-Pro | single reasoning version (AA: "a non-reasoning variant may also exist") | 46 | $0.13 | 140M |
+| GLM-5.3-Flash · MiMo-V2.6-Flash | reasoning version, rung unlabelled | 42 · 38 | $0.25 · $0.06 | 180M · — |
 | GPT 6 Luna | Max | 38 | $0.07 | — |
 
-No `medium` / `high` rung is published for any open model. → **never interpolate.**
-Claude's own curve (Opus 5.5: low 42 @ $0.55 · medium 51 @ $1.34 · high 54 @ $1.82 ·
-xhigh 56 @ $3.46 · max 58 @ $5.98; Sonnet 5.5 max 56 @ $7.60) is from the
-iteration-19 pass and is unchanged.
+No AA `high` rung exists for any open model, and no AA `low` rung for any Flash model (the
+`…-low` / `…-high` / `…-max` slugs for GLM-5.3-Flash and DeepSeek V4.1 Flash return 404).
+
+### 4c. Vendor rung curves (own-model, tier C — they choose a rung, never a cross-ecosystem direction)
+
+- **DeepSeek V4.1 Flash** (arXiv 2609.19969, §5.1.4 / §5.3.2 / Table 2, Fig. 9–12): API tiers
+  `low` = effort 50, `high` = 75, `max` = 100. Effort 25 → 100 lifts the average Pass@1 of eight
+  reasoning benchmarks **67.1 → 76.3**, DeepSWE v1.1 **66.0 → 74.2** and Terminal-Bench 2.1
+  **82.4 → 90.6** for ~2.5× the output tokens. *"The gains are front-loaded: the 60–80 range already
+  recovers most of the accuracy of the maximum setting at less than half of its token budget,
+  whereas the final step to effort 100 lengthens agent trajectories by 1.6–1.8× for only marginal
+  improvements. The maximum tier is thus best reserved for the most challenging tasks."* AIME 2026
+  4.6k → 11.4k tokens, MathArena Apex 29.1k → 86.1k. Every model-card table is at effort 100.
+- **GLM-5.3** (Z.ai private Code Bench, via explainx.ai and atoms.dev; not reproducible): `max`
+  **34.5%** at ~75k output tokens, `high` **31.4%** at ~50k, GLM-5.2 `max` 23.4% at ~96k, Claude
+  Opus 4.8 29.5% at ~120k. No `low` figure published.
+- **Kimi K3 `low`:** GPQA Diamond 84.2% vs 93.5% at `max`; AA Intelligence Index 30 vs 44.
+- **MiMo-V2.6-Flash:** a third-party gateway test found the three effort values spanned 17
+  reasoning tokens — they do nothing, which is consistent with models.dev listing no variants.
+- **Qwen3.8:** `low`/`medium`/`xhigh` are token caps (4,096 / 16,384 / unbounded); `high`,
+  `xhigh` and `max` all behave as unbounded.
+
+→ Router rule E7: **`D=2` takes `high`, `D=3` takes `max`** on the three `low`/`high`/`max`
+models; every other pool model has a single rung to write. Claude's own curve (Opus 5.5:
+low 42 @ $0.55 · medium 51 @ $1.34 · high 54 @ $1.82 · xhigh 56 @ $3.46 · max 58 @ $5.98;
+Sonnet 5.5 max 56 @ $7.60) is from the iteration-19 pass and is unchanged.
 
 ## 5. Claude Code harness context (not admissible under BD1)
 
@@ -214,7 +258,9 @@ GLM-5.3 53.4 · Grok 4.6 53.4 · Kimi K3 50.6 · DeepSeek V4 Pro 49.6 · MiMo-V2
   Intelligence Index's TB 4.0 run, no trial count.
 - No OSWorld row for any pool model → computer-use is gated.
 - No independent offensive-security row for any open model → gated.
-- MiMo-V2.6-Pro on the Coding Agent Index; MiMo-V2.6-Flash context window and
-  modalities; effort rungs between `low` and `max`.
+- MiMo-V2.6-Pro on the Coding Agent Index; an AA `high` rung for any open model; an AA `low`
+  rung for GLM-5.3-Flash / DeepSeek V4.1 Flash / MiMo-V2.6 (no page exists); the zentor.ai
+  GLM-5.3 effort article (a TLS-intercepting proxy blocked the fetch — its Code Bench numbers
+  were confirmed on two other sites instead).
 - The cold-agent routing eval and the trigger eval have **not** been run for
   iteration-21 (they need live agents).

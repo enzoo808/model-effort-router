@@ -114,20 +114,83 @@
       "2": "high",
       "3": "xhigh"
     },
-    "opencode_from_D": {
+    "opencode_from_D_for_low_high_max_models": {
       "0": "low",
       "1": "low",
-      "2": "max",
+      "2": "high",
       "3": "max"
     },
-    "opencode_rungs": [
-      "low",
-      "max",
-      "xhigh"
-    ],
-    "xhigh_only_for": [
-      "Grok 4.7"
-    ],
+    "opencode_variants": {
+      "GLM-5.3": [
+        "low",
+        "high",
+        "max"
+      ],
+      "GLM-5.3-Flash": [
+        "low",
+        "high",
+        "max"
+      ],
+      "DeepSeek V4.1 Flash": [
+        "low",
+        "high",
+        "max"
+      ],
+      "MiMo-V2.6-Pro": [
+        "default"
+      ],
+      "MiMo-V2.6-Flash": [
+        "default"
+      ],
+      "Kimi K3": [
+        "max"
+      ],
+      "Grok 4.7": [
+        "low",
+        "medium",
+        "high",
+        "xhigh"
+      ],
+      "Qwen3.8 Flash": [
+        "low",
+        "medium",
+        "xhigh"
+      ],
+      "Qwen3.8 Max": [
+        "low",
+        "medium",
+        "xhigh"
+      ],
+      "GPT 6 Luna": [
+        "none",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "Muse Spark 1.3 Contributor": [
+        "minimal",
+        "low",
+        "medium",
+        "high",
+        "xhigh"
+      ]
+    },
+    "opencode_variants_source": "models.dev providers/opencode-go/models/*.toml (dev branch), read 2026-10-06; MiMo has reasoning_options = []",
+    "opencode_emit": {
+      "GLM-5.3": "by D: low/high/max",
+      "GLM-5.3-Flash": "by D: low/high/max",
+      "DeepSeek V4.1 Flash": "by D: low/high/max",
+      "MiMo-V2.6-Pro": "default",
+      "MiMo-V2.6-Flash": "default",
+      "Kimi K3": "max",
+      "Grok 4.7": "xhigh",
+      "Qwen3.8 Flash": "xhigh",
+      "Qwen3.8 Max": "xhigh",
+      "GPT 6 Luna": "low",
+      "Muse Spark 1.3 Contributor": "xhigh"
+    },
     "never_emitted": [
       "GLM-5.3 · low",
       "Kimi K3 · low",

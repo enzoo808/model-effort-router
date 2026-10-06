@@ -60,13 +60,13 @@ AA'nın görev başına maliyeti, `tavan` = Go'nun model başına aylık tavanı
 
 | Model | AA | TB | maliyet/görev | tavan | Rol |
 |---|---|---|---|---|---|
-| **MiMo-V2.6-Pro** | **46** | 35 | **USD 0.13** | 15 | **Varsayılan #1**: dolar başına en iyi indeks; HLE/CritPt/SciCode lideri; yavaş (45 t/s). Görüntü alır |
+| **MiMo-V2.6-Pro** | **46** | 35 | **USD 0.13** | 15 | **Varsayılan #1**: dolar başına en iyi indeks; HLE/CritPt/SciCode lideri; yavaş (45 t/s). Görüntü alır; **OpenCode'ta efor varyantı yok** |
 | **GLM-5.3** | 45 max · 34 low | **42** | 2.01 · 0.85 | 15 | Ölçülmüş en güçlü kodlayıcı; yalnız metin; max'ta çok konuşkan |
 | **Kimi K3** | 44 max · 30 low | 13 | 2.00 · 1.15 | 15 | AA-LCR 89, Omniscience 20, GDP.pdf 22; **ajanik zayıf**; çıktı fiyatı USD 15 → en sıkı tavan |
 | **Grok 4.7** | 46 xhigh | 26 | 3.74 | 15 | GDPval/Briefcase lideri — **yalnız gizli olmayan iş** (30 gün saklama); 500k bağlam |
 | **Muse Spark 1.3 Contributor** | **48** | 33 | ~0.10 (Go fiyatıyla) | 60 | **Promptlarınla eğitilir** → yalnız NC1; Meta erişimi coğrafi kısıtlı olabilir |
 | **GLM-5.3-Flash** | 42 | 33 | 0.25 | **60** | **`D ≤ 1` #1**; TB 33 ≈ MiMo-Pro'nun 35'i; metin+görüntü |
-| **MiMo-V2.6-Flash** | 38 | 23 | **0.06** | **60** | En ucuz; AutomationBench 64; toplu iş. Bağlam penceresi yayımlanmamış |
+| **MiMo-V2.6-Flash** | 38 | 23 | **0.06** | **60** | En ucuz; AutomationBench 64; toplu iş; 1M bağlam, metin+görüntü; efor varyantı yok |
 | **DeepSeek V4.1 Flash** | 39 max | 27 | 0.27 | **60** | **222 t/s, TTFT 1.1 s; AutomationBench-AA 69 (havuzda en iyi)**; yoğun saatlerde 2× fiyat |
 | **GPT 6 Luna** | 38 | 13 | 0.07 | 15 | Hızlı toplu iş (147 t/s); 30 gün saklama; asla ajanik |
 | **Qwen3.8 Flash** | 40 | 25 | 0.37 | 30 | Briefcase 1583 → bilgi-işi #2; 256k bağlam |
@@ -88,7 +88,7 @@ geçerli, aylık yenileniyor.**
 vendor-raporlu, güvenlikleri doğrulanmamış; OpenCode satırında model yok). Biyoloji-bitişik →
 `unverified — use Claude`. Bilgisayar-kullanımı (GUI) → `unverified — use Claude` (hiçbir havuz
 modelinin yayımlanmış OSWorld satırı yok). Bağlam > 500k → Grok elenir; > 256k → Qwen3.8 Flash;
-> 200k → MiMo-V2.6-Flash (pencere yayımlanmamış). Görüntü girişi gerekiyorsa GLM-5.3 elenir (yalnız
+Görüntü girişi gerekiyorsa GLM-5.3 elenir (yalnız
 metin). **İş gizliyse (bu kullanıcı için varsayılan)** Muse Spark Contributor (eğitir), Grok 4.7 ve
 GPT 6 Luna (30 gün saklama) elenir. Saniye altı/toplu iş → **DeepSeek V4.1 Flash #1 · MiMo-V2.6-Flash #2**,
 efor `low`.
@@ -101,7 +101,7 @@ Luna havuzda kalır; Muse Spark 1.3 `deep-reasoning`, `science`, `research-synth
 
 | Baskın capability | `R ≤ 2` → `#1` · `#2` | `R = 3` → `#1` · `#2` | Kanıt |
 |---|---|---|---|
-| **herhangi, `D ≤ 1`** | GLM-5.3-Flash · MiMo-V2.6-Flash | aynı | USD 60 tavanlı Flash; TB 33 vs 35 † |
+| **herhangi, `D ≤ 1`** | GLM-5.3-Flash · MiMo-V2.6-Flash | aynı | USD 60 tavanlı Flash; TB 33 vs 35 — ikisi de `D ≤ 1` çıtasını aşar, fiyat ve tavan karar verir |
 | `agentic-code`, `terminal-tool` | MiMo-V2.6-Pro · GLM-5.3 | **GLM-5.3 · MiMo-V2.6-Pro** | TB 4.0 GLM 42 vs MiMo 35, tek satır → cap baskısı (USD 0.13 vs 2.01); `R=3`'te tek ölçüm GLM'ye eğilir † |
 | `deep-reasoning` | MiMo-V2.6-Pro · Kimi K3 | aynı | HLE 49/47/42, CritPt 27/23/19: **iki AA satırı örtüşür** |
 | `knowledge-work` | MiMo-V2.6-Pro · Qwen3.8 Flash | aynı | GDPval MiMo, Briefcase Qwen Flash → satırlar ayrışır → verimlilik; Kimi K3 burada **son**. **NC1: Grok 4.7 · MiMo-V2.6-Pro** (iki AA satırı Grok'ta örtüşür) † |
@@ -125,12 +125,26 @@ MiMo-V2.6-Flash → DeepSeek V4.1 Flash → Qwen3.8 Flash**.
 **Grok 4.7** (iş gizli değil) veya **Qwen3.8 Max** (gizli), yalnız `agentic-code`, `terminal-tool`,
 `knowledge-work`'te, `low-confidence` ile. Bir arm'daki yetersizlik yalnız o arm'ı yükseltir.
 
-**Efor (OpenCode).** `D 0–1 → low` · `D 2–3 → max` (her AA rakamının ölçüldüğü kademe) ·
-Grok 4.7 → `xhigh` (`D ≥ 2`), `low` (`D ≤ 1`). Yalnız `low` ve `max` için yayımlanmış açık-model
-verisi var → **interpolasyon yok, `medium` uydurma.** **`GLM-5.3 · low` ve `Kimi K3 · low` asla
-çıkmaz** (GLM-5.3-Flash / MiMo-V2.6-Flash tarafından domine, Kural E6): daha düşük derinlik = Flash
-**model**, daha düşük kademe değil. `max` burada aşırı-düşünme değil (GLM 34→45, Kimi 30→44), bedeli
-konuşkanlık = tavan maliyeti.
+**Efor (OpenCode) = OpenCode'un o model için sunduğu varyant** (models.dev, 6 Ekim 2026):
+
+| Model | OpenCode varyantları | Yaz |
+|---|---|---|
+| GLM-5.3 · GLM-5.3-Flash · DeepSeek V4.1 Flash | `low` · `high` · `max` | `D ≤ 1` `low` · `D = 2` `high` · `D = 3` `max` |
+| MiMo-V2.6-Pro · MiMo-V2.6-Flash | **yok** (düşünme hep açık) | `default` |
+| Kimi K3 | yalnız `max` | `max` |
+| Grok 4.7 | `low` `medium` `high` `xhigh` | `xhigh` (AA'nın ölçtüğü) |
+| Qwen3.8 Flash · Max | `low` `medium` `xhigh` | `xhigh` (API varsayılanı) |
+| GPT 6 Luna | `none` … `max` | `low` (yalnız latency satırı) |
+| Muse Spark 1.3 | `minimal` … `xhigh` | `xhigh` (yalnız NC1) |
+
+`low/high/max` modellerinde `medium` ve `xhigh` **reddedilir**; Grok/Qwen'de `max` yok — modelin
+listelemediği kademeyi asla yazma. **`D=2 → high` (Kural E7):** DeepSeek'in kendi makalesi 60–80
+eforunun `max`'ın doğruluğunun çoğunu yarıdan az tokenla yakaladığını, son adımın agent
+token'ını marjinal kazanç için 1.6–1.8× artırdığını söyler; Z.ai Code Bench'inde GLM-5.3 `high`
+%31.4 @ ~50k token, `max` %34.5 @ ~75k (vendor-raporlu kendi-modeli eğrileri: kademe seçer,
+ekosistemler-arası yön belirlemez). **`D=3 → max`:** AA'da GLM-5.3 `low` 34 → `max` 45, Kimi K3 30 → 44
+(Kural E5). `GLM-5.3 · low` GLM-5.3-Flash tarafından domine (E6) → `D ≤ 1` Flash katmanına gider.
+Hiç interpolasyon yapma.
 
 ## Efor seviyeleri (Claude Code `/effort` menüsü)
 
@@ -435,7 +449,7 @@ token → output token → gecikme.**
 - **E1:** `Sonnet 5.5 · max` (56, USD 7.60, ~193k token) `Opus 5.5 · xhigh` (56, USD 3.46) ile AYNI skoru 2.2×
   maliyetle veriyor → router `Sonnet 5.5 · max` **üretmez**.
 - **E3:** `max`, `xhigh`'ın üstüne Claude'da az şey katar (Fable 5.1 53=53; Opus 5.5 58 vs 56 = +2 için +%73).
-- **E5:** açık modeller E3'ün istisnası: `max` +11 (GLM-5.3) ve +14 (Kimi K3) puan satın alır → `D ≥ 2 → max`.
+- **E5:** açık modeller E3'ün istisnası: `max` +11 (GLM-5.3) ve +14 (Kimi K3) puan satın alır → `D = 3 → max`; `D = 2` `high` alır (E7).
 - **E6 (domine, asla çıkmaz):** `GLM-5.3 · low` → GLM-5.3-Flash; `Kimi K3 · low` → MiMo-V2.6-Flash; DeepSeek
   V4 Pro → V4.1 Flash; MiniMax M3 / Kimi K2.7 Code / Qwen3.7 Plus → her Flash modeli; Qwen3.8 Max → MiMo-V2.6-Pro
   (yalnız A1-OC onu adlandırır). Grok 4.7 ve GPT 6 Luna domine değil, saklama yüzünden *elenmiş*.
@@ -483,9 +497,8 @@ yani verimliliğe düşen satır **OpenCode †** okur; rozeti Claude'a taşıya
 `latency-volume` satırlarında † yok.** `R=3`'te verimliliğe düşen satır, tek kabul edilebilir ölçümün
 eğilimini izler (`†` kalır).
 
-**Eşitlik bozucular.** `D ≤ 1` ise capability satırlarını atla, **verimlilik karar verir → OpenCode**:
-Haiku 4.5 vs Flash katmanı → OpenCode; Sonnet 5.5 vs Flash katmanı → **OpenCode †** (Flash `low` kademesi
-ölçülmemiş). İki *baskın* capability satırı çakışırsa benchmark **yönü** taşıyan, yalnız mekanizmaya veya
+**Eşitlik bozucular.** `D ≤ 1` ise capability satırlarını atla, **verimlilik karar verir → OpenCode**
+(fiyat ve tavan gerçeği — `latency-volume` gibi † yok): Haiku 4.5 vs Flash katmanı → OpenCode; Sonnet 5.5 vs Flash katmanı → OpenCode. İki *baskın* capability satırı çakışırsa benchmark **yönü** taşıyan, yalnız mekanizmaya veya
 verimliliğe dayananı yener. Her iki arm aynı sonuca kapılandıysa ya da Adım 0 blokladıysa rozet yok. Kanıt
 yetersizse mantıklı default + `low-confidence`. **Sahte kesinlik üretme.**
 
@@ -502,7 +515,7 @@ Evidence: <tek cümle>
 - Rozet **ekosistem etiketinden hemen sonra**, `#1`'den önce durur; çıktıda **tam bir** rozet.
 - `Evidence:` **tek cümle**, en fazla **1–2** benchmark/verimlilik sinyali. **Rozet satırı † ise ya da "başka her
   şey" satırı kullanıldıysa cümle `low-confidence` içermek ZORUNDA.**
-- Haiku 4.5 için efor yazma; her OpenCode modeli efor alır. OpenCode kapıdan reddederse:
+- Haiku 4.5 için efor yazma; her OpenCode modeli efor alır (varyantı olmayan MiMo-V2.6 için `default`). OpenCode kapıdan reddederse:
   `OpenCode: use Claude — <neden>` (model yok, `#` yok).
 
 **Otomatik eklenen satırlar (bu sırayla):** (1) veri politikası ve DeepSeek satırları (Adım 4 kural 9–10);
@@ -525,7 +538,7 @@ Evidence: <tek cümle>
 *"200 müşteri yorumunu olumlu/olumsuz etiketle"*
 ```
 Claude: Haiku 4.5
-OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: low
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
 Evidence: Both arms clear the bar for mechanical classification, and DeepSeek V4.1 Flash streams 222 tok/s at USD 0.27 per index task on a USD 60 cap against Haiku 4.5's USD 1/USD 5 pricing.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
 ```
@@ -533,29 +546,29 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 *"Ödeme modülünü 40 dosyada yeni idempotency-key API'sine geçir, tüm çağıranları güncelle, testler geçsin"* (D=2, tek faz)
 ```
 Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: high
 Evidence: AA's Terminal-Bench 4.0 has Sonnet 5.5 at 64 against GLM-5.3 at 42 and MiMo-V2.6-Pro at 35 with no interval, and one row is not a direction, so cap pressure decides; low-confidence.
 ```
 
 *"Prod'da ara sıra düşen race condition'ı bul"* (D3DIAG → D=3, Kural 2 → amiral gemisi)
 ```
 Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
-OpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: max
 Evidence: Adversarial debugging is deep-reasoning plus terminal work, and the reasoning half has two agreeing AA rows (HLE 61 vs 49, CritPt 32 vs 27) while the terminal half sets no direction, so the direction decides.
 ```
 
 *"Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek"* (R=3 sistem-geneli, D=0)
 ```
 Claude: Sonnet 5.5 · effort: low
-OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: low
-Evidence: D=0 work — both arms are far past the bar, and the Flash models run on USD 60 Go caps against Claude's 5-hour window, but the low rung of a Flash model is unmeasured; low-confidence.
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: D=0 work — both arms are far past the bar, so price and cap decide: the Flash models run on USD 60 Go caps at USD 0.25 and 0.06 per index task against Claude's 5-hour window.
 Do not apply without human review.
 ```
 
 *"Bu yönetim kurulu memosunu iç harcama verisinden yaz"* (gizli varsayım → Grok/Luna/Muse yok)
 ```
 Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
-OpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 Qwen3.8 Flash · effort: max
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Qwen3.8 Flash · effort: xhigh
 Evidence: The finished memo is knowledge-work, where two AA rows agree for Claude (GDPval-AA 1839 vs 1686, AA-Briefcase 1823 vs 1516), and internal spend data is confidential so the 30-day-retention and training models are out of the pool.
 ```
 

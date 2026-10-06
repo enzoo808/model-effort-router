@@ -67,13 +67,13 @@ upper bound); `ret` = retention.
 
 | # | Model | II | TB | cost/task | cap | 5h out | Ctx | ret | Role |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 | **MiMo-V2.6-Pro** | **46** | 35 | **USD 0.13** | 15 | 3.4M | 1M | 0 d | **Default #1.** Best index per dollar, tops HLE / CritPt / SciCode; slow (45 t/s, TTFT 4.8 s). Takes image/speech/video |
+| 1 | **MiMo-V2.6-Pro** | **46** | 35 | **USD 0.13** | 15 | 3.4M | 1M | 0 d | **Default #1.** Best index per dollar, tops HLE / CritPt / SciCode; slow (45 t/s, TTFT 4.8 s). Takes image/speech/video. **No effort variant on OpenCode** (thinking always on) |
 | 2 | **GLM-5.3** | 45 max · 34 low | **42** | 2.01 · 0.85 | 15 | 0.7M | 1M | 0 d | Strongest measured coder in the pool; text-only; verbose at max (210M vs 88M tokens) |
 | 3 | **Kimi K3** | 44 max · 30 low | 13 | 2.00 · 1.15 | 15 | **0.2M** | 1M | 0 d | Best AA-LCR (89), AA-Omniscience (20), GDP.pdf (22); **weak agentic** (TB 13); output price USD 15 makes its cap the tightest |
 | 4 | **Grok 4.7** | 46 xhigh | 26 | 3.74 | 15 | 0.5M | **500k** | **30 d** | Leads GDPval-AA 1715 / Briefcase 1644 / AutomationBench 66 / Omniscience 32 — **non-confidential work only**; 48 s TTFT, 81k tokens/task |
 | 5 | **Muse Spark 1.3 Contributor** | **48** | 33 | 1.60 (AA) · ~0.10 at Go prices | **60** | 60M | 1M | **trains on your prompts** | Highest index in the pool; **only under NC1**; Meta says availability is geo-restricted |
 | 6 | **GLM-5.3-Flash** | 42 | 33 | 0.25 | **60** | 24M | 1M | 0 d | **D ≤ 1 #1**; TB 33 ≈ MiMo-Pro's 35; text + image |
-| 7 | **MiMo-V2.6-Flash** | 38 | 23 | **0.06** | **60** | 43M | n/p | 0 d | Cheapest per task; AutomationBench 64; bulk work |
+| 7 | **MiMo-V2.6-Flash** | 38 | 23 | **0.06** | **60** | 43M | 1M | 0 d | Cheapest per task; AutomationBench 64; bulk work; text + image; no effort variant |
 | 8 | **DeepSeek V4.1 Flash** | 39 max | 27 | 0.27 | **60** | 20M (10M peak) | 1M | 0 d † | **222 t/s, TTFT 1.1 s**; **AutomationBench-AA 69, the pool's best**; peak hours cost 2× |
 | 9 | **GPT 6 Luna** | 38 | 13 | **0.07** | 15 | 6M | 1M | **30 d** | Fast bulk (147 t/s, TTFT 96 s); never agentic. Latency #2 under NC1 |
 | 10 | **Qwen3.8 Flash** | 40 | 25 | 0.37 | 30 | 12.8M | 256k | 0 d | Briefcase 1583 (3rd in the pool) at a USD 30 cap → knowledge-work #2. AA lists it as *Qwen3.8-Flash-Next*, matched to Go's name by price and date |
@@ -126,12 +126,22 @@ replaces it.
 
 ### OpenCode Go
 
-OpenCode switches variants with the `variant_cycle` keybind; the list differs per
-model. **Only two rungs have published open-model data — `low` and `max`**
-(GLM-5.3 34 vs 45, Kimi K3 30 vs 44); Grok 4.7 was measured at `xhigh`. So the
-OpenCode effort field is one of `low` · `max` · `xhigh` (Grok only). If the model
-shows a different variant list, take the nearest rung and say so. **Never
-interpolate; never invent a `medium`.**
+OpenCode shows only the effort **variants its model catalogue (models.dev, `opencode-go`
+provider, read 6 Oct 2026) lists for each model** — and they differ:
+
+| Model | Variants OpenCode offers | Emit |
+|---|---|---|
+| GLM-5.3 · GLM-5.3-Flash · DeepSeek V4.1 Flash | `low` · `high` · `max` | `D ≤ 1` `low` · `D = 2` `high` · `D = 3` `max` |
+| MiMo-V2.6-Pro · MiMo-V2.6-Flash | **none** — thinking is always on | `default` |
+| Kimi K3 | `max` only | `max` |
+| Grok 4.7 | `low` · `medium` · `high` · `xhigh` | `xhigh` (the rung AA measured) |
+| Qwen3.8 Flash · Qwen3.8 Max | `low` · `medium` · `xhigh` (+ toggle, token budget) | `xhigh` (the API default) |
+| GPT 6 Luna | `none` … `max` | `low` (latency row only) |
+| Muse Spark 1.3 Contributor | `minimal` … `xhigh` | `xhigh` (NC1 only) |
+
+`medium` and `xhigh` are **rejected** on the `low`/`high`/`max` models, and `max` does not
+exist on Grok or Qwen — never write a rung the model does not list. OpenCode cycles
+variants with `variant_cycle`. **Never interpolate a rung between two measured ones.**
 
 ---
 
@@ -196,7 +206,6 @@ availability do not trade against efficiency.
 | **Computer-use (GUI driving)** | Deciding | **"unverified — use Claude"** — no pool model has a published OSWorld row |
 | Context > 500k tokens | Eliminating | **Grok 4.7 removed** |
 | Context > 256k tokens | Eliminating | **Qwen3.8 Flash removed** |
-| Context > 200k tokens | Eliminating | **MiMo-V2.6-Flash removed** (window not published); the `D ≤ 1` pair becomes GLM-5.3-Flash · DeepSeek V4.1 Flash |
 | Task needs **image input** | Eliminating | **GLM-5.3 removed** (text-only) |
 | Work is **confidential** — the default for this user (company code, data, plans) | Eliminating | **Muse Spark 1.3 Contributor removed** (trains on prompts); **Grok 4.7 and GPT 6 Luna removed** (30-day retention; every other pool model is 0-day). Lifted only by Rule NC1 |
 | Sub-second latency / high-volume bulk | Deciding | **DeepSeek V4.1 Flash #1 · MiMo-V2.6-Flash #2** (NC1: **GPT 6 Luna** #2), effort `low` |
@@ -491,7 +500,7 @@ goes immediately after `Claude:` as usual.
 
 | Dominant capability | `R ≤ 2` → `#1` · `#2` | `R = 3` → `#1` · `#2` | Evidence (AA v4.3.2, one scale) |
 |---|---|---|---|
-| **any tag, `D ≤ 1`** | GLM-5.3-Flash · MiMo-V2.6-Flash | same | II 42 / 38 at USD 0.25 / 0.06 per task on **USD 60 caps**; TB 33 vs MiMo-V2.6-Pro's 35 † |
+| **any tag, `D ≤ 1`** | GLM-5.3-Flash · MiMo-V2.6-Flash | same | II 42 / 38 at USD 0.25 / 0.06 per task on **USD 60 caps**; TB 33 vs MiMo-V2.6-Pro's 35 — both models clear a `D ≤ 1` bar, so price and cap decide |
 | `agentic-code`, `terminal-tool` | MiMo-V2.6-Pro · GLM-5.3 | **GLM-5.3 · MiMo-V2.6-Pro** | TB 4.0: GLM-5.3 42 vs MiMo-V2.6-Pro 35, one row, no interval → cap pressure (USD 0.13 vs 2.01 per task; 3.4M vs 0.7M output tokens per 5-hour window). At `R=3` the single measurement leans GLM-5.3 † |
 | `deep-reasoning` | MiMo-V2.6-Pro · Kimi K3 | same | HLE 49 vs 47 vs 42 (GLM-5.3) and CritPt 27 vs 23 vs 19: **two AA rows agree** (BD1) |
 | `knowledge-work` | MiMo-V2.6-Pro · Qwen3.8 Flash | same | GDPval-AA 1686 vs 1633 but AA-Briefcase 1516 vs 1583: the rows split → efficiency; Kimi K3 is **last** here (1537 / 1501). **NC1: Grok 4.7 · MiMo-V2.6-Pro** — Grok leads both (1715 / 1644), two AA rows agree † |
@@ -523,19 +532,37 @@ same model — that row's `#2`.
 
 #### OpenCode Go — effort for each model
 
-| D | Effort |
+Use the table in *Effort levels → OpenCode Go*. For the three `low`/`high`/`max` models
+(GLM-5.3, GLM-5.3-Flash, DeepSeek V4.1 Flash) the rung follows `D`; every other pool
+model has one rung to write (`default`, `max` or `xhigh`).
+
+| D | `low`/`high`/`max` models |
 |---|---|
 | 0–1 | `low` |
-| 2–3 | `max` — the rung every index figure above was measured at |
-| Grok 4.7 | `xhigh` (the measured rung) at `D ≥ 2`; `low` at `D ≤ 1` |
+| 2 | `high` |
+| 3 | `max` |
 
-> **`max` is not over-thinking here.** Unlike Claude (E3), an open model's `max`
-> buys a great deal: GLM-5.3 34 → 45, Kimi K3 30 → 44 (Rule E5). The price is
-> verbosity (GLM-5.3 210M vs 88M tokens, DeepSeek V4.1 Flash 250M) — a **cap**
-> cost on Go, which is why `D ≤ 1` is pinned to `low` and routed to the Flash
-> tier, never to `GLM-5.3 · low` (dominated, Rule E6). `low` on a Flash model at
-> `D ≤ 1` is unmeasured; that is acceptable only because the bar is far below
-> the model — never use an unmeasured rung at `D ≥ 2`.
+> **Why `high` at `D=2` (Rule E7).** DeepSeek's own V4.1-Flash paper (its API tiers
+> `low`/`high`/`max` are effort 50/75/100) finds the gains front-loaded: effort 25 → 100 lifts
+> eight reasoning benchmarks 67.1 → 76.3 and DeepSWE 66.0 → 74.2 for ~2.5× the tokens, effort
+> 60–80 "already recovers most of the accuracy of the maximum setting at less than half of
+> its token budget", and the last step to 100 lengthens agent trajectories 1.6–1.8× "for only
+> marginal improvements" — `max` "best reserved for the most challenging tasks". Z.ai's own
+> Code Bench has GLM-5.3 `high` 31.4% at ~50k output tokens against `max` 34.5% at ~75k.
+> Both are **vendor-reported rung comparisons within one model**: they choose a rung, they
+> never set a cross-ecosystem direction. AA's index figures were measured at `max` (and
+> `low` for GLM-5.3 / Kimi K3), so `high` has no AA number.
+>
+> **`max` still pays at `D=3`** — AA: GLM-5.3 `low` 34 → `max` 45, Kimi K3 `low` 30 → `max` 44
+> (Rule E5). The price is verbosity (GLM-5.3 210M vs 88M tokens, DeepSeek V4.1 Flash 250M),
+> a **cap** cost on Go, which is why `D ≤ 1` is pinned to `low` on the Flash tier and never
+> goes to `GLM-5.3 · low` (dominated, Rule E6). `low` on GLM-5.3-Flash has no published
+> number at all; it is used only where the bar is far below the model (`D ≤ 1`) — never at
+> `D ≥ 2`.
+>
+> **AA's non-reasoning rung is not an OpenCode variant.** DeepSeek V4.1 Flash non-reasoning
+> scores 25 @ USD 0.15 (34k tokens) against 39 @ USD 0.27 at `max` (89k): TB 6 vs 27,
+> AutomationBench 48 vs 69. OpenCode's lowest DeepSeek rung is `low`, which keeps thinking on.
 
 ---
 
@@ -626,10 +653,12 @@ Settled results (AA Index v4.3.2, one harness):
   Opus 5.5 58 vs 56 (+2 for +73%, unresolved). → `max` needs M1 in full.
   *(Dominance holds only where `max` ties or loses.)*
 - **E5 — open models are the exception to E3.** `max` buys +11 (GLM-5.3 34 → 45)
-  and +14 (Kimi K3 30 → 44) over `low`, so `D ≥ 2 → max` stands.
+  and +14 (Kimi K3 30 → 44) over `low`, so `D = 3 → max` stands.
+- **E7 — `D=2` takes `high`, not `max`.** See the note under *effort for each model*: the
+  vendors' own rung curves put most of `max`'s accuracy at half to two-thirds of its tokens.
 - **E6 — dominated pool members, never emitted.** `GLM-5.3 · low` (34 @ USD 0.85,
   cap 15) is dominated by **GLM-5.3-Flash** (42 @ USD 0.25, cap 60); `Kimi K3 · low`
-  (30 @ USD 1.15) by **MiMo-V2.6-Flash** (38 @ USD 0.06). **DeepSeek V4 Pro** (36 @
+  (30 @ USD 1.15) by **MiMo-V2.6-Flash** (38 @ USD 0.06) — and OpenCode does not even offer it (`max` only). **DeepSeek V4 Pro** (36 @
   USD 0.67, cap 15) by **V4.1 Flash** (39 @ USD 0.27, cap 60); **Qwen3.8 Max** (45
   @ USD 5.41) by MiMo-V2.6-Pro (46 @ USD 0.13) except where Rule A1-OC names it;
   **MiniMax M3, Kimi K2.7 Code, Qwen3.7 Plus** (TB 2 / 1 / 1) by every Flash model.
@@ -723,9 +752,9 @@ direction, a mechanism, or `R=3`.
 - **`D ≤ 1` → skip the capability rows entirely; efficiency decides → OpenCode.**
   Both arms clear the bar by construction. **Haiku 4.5 vs GLM-5.3-Flash /
   MiMo-V2.6-Flash → OpenCode** (USD 1/USD 5 vs USD 0.15/USD 0.50 and 0.14/0.28, on
-  USD 60 caps); **Sonnet 5.5 vs the Flash tier → OpenCode †** — cheaper per task and a
-  separate cap, but the `low` rung of a Flash model is unmeasured, so say
-  `low-confidence`. `R` doesn't change this.
+  USD 60 caps); **Sonnet 5.5 vs the Flash tier → OpenCode** — cheaper per task and a
+  separate cap; like the latency row this rests on price and cap facts, not a
+  benchmark score, so it carries no †. `R` doesn't change this.
 - **Two *dominant* capability rows conflict** → the one backed by a
   task-specific benchmark **direction** (Step 6 rule 4) beats one backed only by a
   product mechanism *or by efficiency*. A row that fell through to efficiency has
@@ -787,7 +816,7 @@ Evidence: <one sentence>
   signals — the ones that actually decided it. Not a leaderboard dump.
 - **If the badge row you used is marked †, or you used the "anything else" row,
   the sentence must say `low-confidence`.**
-- No effort for Haiku 4.5; every OpenCode model takes an effort.
+- No effort for Haiku 4.5; every OpenCode model takes an effort — write `default` where OpenCode offers no variant (MiMo-V2.6).
 - OpenCode gated: `OpenCode: use Claude — <reason>` (no model, no `#`).
 
 **Auto-added extras**, each on its own line, in this order:
@@ -806,7 +835,7 @@ If the user asks "why?", *then* expand from `reference.md` §11–§14 and
 *"Label these 200 customer reviews as positive/negative"*
 ```
 Claude: Haiku 4.5
-OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: low
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
 Evidence: Both arms clear the bar for mechanical classification, and DeepSeek V4.1 Flash streams 222 tok/s at USD 0.27 per index task on a USD 60 cap against Haiku 4.5's USD 1/USD 5 pricing.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
 ```
@@ -821,7 +850,7 @@ Clarify: which file or function is broken, what does it do now, and what should 
 *"Refactor the payment module across these 40 files to use the new idempotency-key API, update every caller, and make the test suite pass."*
 ```
 Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: high
 Evidence: AA's Terminal-Bench 4.0 has Sonnet 5.5 at 64 against GLM-5.3 at 42 and MiMo-V2.6-Pro at 35 with no interval, and one row is not a direction, so cap pressure decides — USD 0.13 and 64k output tokens per task against USD 7.67 and 193k; low-confidence.
 ```
 > **One phase, not four.** Locate the callers, edit, run the existing suite, fix
@@ -832,7 +861,7 @@ Evidence: AA's Terminal-Bench 4.0 has Sonnet 5.5 at 64 against GLM-5.3 at 42 and
 *"Stand up the new staging environment from scratch: Terraform it, deploy the 12 services, seed the data, run the smoke suite, and fix whatever does not come up."*
 ```
 Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: ultracode
-OpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: high
 Evidence: Implementation, a data-seeding phase and a smoke run against a deployed environment are three distinct phases feeding each other, which is what ultracode's orchestration sequences and OpenCode has no mode for.
 ```
 > Three phases at `W=2` — orchestration is not a width question. The coding row
@@ -842,7 +871,7 @@ Evidence: Implementation, a data-seeding phase and a smoke run against a deploye
 *"Find the race condition that flakes in prod sometimes"*
 ```
 Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
-OpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: max
 Evidence: Adversarial debugging is deep-reasoning plus terminal work, and the reasoning half has two agreeing AA rows (HLE 61 vs 49, CritPt 32 vs 27) while the terminal half sets no direction, so the direction decides.
 ⚡ Claude /fast available (2.5x faster, 2× price).
 ```
@@ -855,7 +884,7 @@ Evidence: Adversarial debugging is deep-reasoning plus terminal work, and the re
 *"Summarise these 400 pages of filings into one memo"*
 ```
 Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
-OpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 Kimi K3 · effort: max
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max
 Evidence: The finished memo is knowledge-work, where two AA rows agree for Claude (GDPval-AA 1839 vs 1686, AA-Briefcase 1823 vs 1516), and that direction outranks the long-context half, where AA-LCR has the open models ahead on one row.
 ```
 > `C=3, W≤1, D=2` — Sonnet 5.5, not the flagship. Two dominant tags conflict: a
@@ -865,7 +894,7 @@ Evidence: The finished memo is knowledge-work, where two AA rows agree for Claud
 *"I'm preparing a non-confidential competitor-pricing deck for a conference — research, structure and write the 12 slides"*
 ```
 Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
-OpenCode: #1 Grok 4.7 · effort: xhigh · #2 MiMo-V2.6-Pro · effort: max
+OpenCode: #1 Grok 4.7 · effort: xhigh · #2 MiMo-V2.6-Pro · effort: default
 Evidence: Finished-deliverable work is knowledge-work, where Claude leads on two agreeing AA rows (GDPval-AA 1839 vs Grok 4.7's 1715, AA-Briefcase 1823 vs 1644), and Grok 4.7 is the best open model on both of them.
 Data: Grok 4.7 keeps prompts for 30 days.
 ```
@@ -876,7 +905,7 @@ Data: Grok 4.7 keeps prompts for 30 days.
 *"Design and implement the new cross-service transaction boundary. It ships tonight and cannot be rolled back."*
 ```
 Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: max
-OpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: max
 Evidence: One indivisible boundary decision at R=3 is the case max exists for, and the reasoning half has two agreeing AA rows for Claude (HLE 61 vs 49, CritPt 32 vs 27), with the coding half leaning the same way (Terminal-Bench 60 vs 42).
 ⚡ Claude /fast available (2.5x faster, 2× price).
 Do not apply without human review.
@@ -887,8 +916,8 @@ Do not apply without human review.
 *"Bump `MAX_RETRIES` from 3 to 5 in the prod config"*
 ```
 Claude: Sonnet 5.5 · effort: low
-OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: low
-Evidence: D=0 work — both arms are far past the bar, and the Flash models run on USD 60 Go caps against Claude's 5-hour window, but the low rung of a Flash model is unmeasured; low-confidence.
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: D=0 work — both arms are far past the bar, so price and cap decide: the Flash models run on USD 60 Go caps at USD 0.25 and 0.06 per index task against Claude's 5-hour window.
 Do not apply without human review.
 ```
 > `R=3` by blast radius, not line length — which is also why Haiku is out.
@@ -904,7 +933,7 @@ Evidence: Offensive security is a deciding gate on both arms; only Opus 4.8 (or 
 ```
 Claude: ✅ RECOMMENDED AI · opusplan · plan: max · execute: medium
 ⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.
-OpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 Kimi K3 · effort: max
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max
 Evidence: Front-loaded architecture design at D=3∧R=3 is opusplan on Claude — the flagship is spent only on a max plan phase and execution drops to Sonnet 5.5 — and OpenCode has no plan/execute split.
 Do not apply without human review.
 ```
