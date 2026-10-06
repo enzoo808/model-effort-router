@@ -15,11 +15,11 @@ kendi eforuyla — ve **bu görev için hangi ekosistemin daha uygun olduğunu**
 ile işaretler. Promptu çalıştırmaz, yalnızca yönlendirir.
 
 ```
-Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: high
-Evidence: AA'nın Terminal-Bench 4.0'ında Sonnet 5.5 64, GLM-5.3 42, MiMo-V2.6-Pro 35 —
-          aralık yok ve tek satır yön değildir; bu yüzden cap baskısı karar verir:
-          görev başına USD 0.13 / 64k çıktı tokeni, karşısında USD 7.67 / 193k (low-confidence).
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+OpenCode: #1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3 · effort: high
+Evidence: Üç bağımsız satır Claude'da örtüşüyor (TB 4.0 64 vs 42, FrontierSWE v2 62 vs 30,
+          Agent Arena 12.5 vs 4.2); DeepSWE ±7 eşit.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
 ```
 
 ## iteration-21 — ne değişti
@@ -47,21 +47,27 @@ Evidence: AA'nın Terminal-Bench 4.0'ında Sonnet 5.5 64, GLM-5.3 42, MiMo-V2.6-
   `GLM-5.3 · low`, GLM-5.3-Flash tarafından domine → Pro katmanı asla düşük çıkmaz. İnterpolasyon yok.
 - **Çift sırası derinliğe bağlı (Kural PO1).** `D ≤ 2` ve `R ≤ 2`'de `#1` verimli model (genelde MiMo-V2.6-Pro), `#2` benchmark lideri; `D = 3` veya `R = 3`'te yer değiştirirler — kodlamada GLM-5.3, araştırma/uzun bağlam/belgede Kimi K3 önce. Yalnız çifti sıralar; rozet yine BD1'e göre.
 - **Token maliyeti düşürüldü.** `SKILL.md` 60 KB'tan 44 KB'a indi (roster, Adım 5/6 anlatımı ve örnekler sıkıştırıldı; Claude istisnaları ve kural blokları korundu); `Evidence:` tek cümle ve ≤ 30 kelime.
-- **Varsayılan: gizli.** Grok 4.7 ve GPT 6 Luna promptu 30 gün saklar, Muse Spark
-  Contributor promptlarınla eğitilir → kullanıcı "gizli değil" demedikçe havuz dışı (Kural NC1).
-  DeepSeek'in sıfır-saklama anlaşması 31 Ekim 2026'ya kadar geçerli, aylık yenileniyor.
-- **Taze kanıt bazı eski varsayımları çürüttü:** Kimi K3 bilgi-işi benchmark'larında **son**
-  sırada; Grok 4.7'nin AA Terminal-Bench'i 26 (DeepSeek V4.1 Flash'ın 27'sinin altında);
-  en güçlü ölçülmüş kodlayıcı GLM-5.3 (TB 42). Tüm veri ve kaynaklar:
-  [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.md).
-- **Dürüst sonuç:** AA hiçbir satır için güven aralığı yayımlamıyor ve kuralımız "aralık yok ⇒
-  `UNRESOLVED`, fark ne kadar büyük görünürse görünsün". Bu yüzden Sonnet 5.5'in GLM-5.3'e 22
-  puanlık TB üstünlüğü bile bir *eğilim*: `R ≤ 2`'de kodlama verimliliğe düşer ve rozet
-  **OpenCode (low-confidence)** olur; `R = 3`'te tek ölçüm karar verir → **Claude**. Claude
-  yalnız iki bağımsız AA satırının uyuştuğu **knowledge-work** ve **deep-reasoning**'de, ürün
-  mekanizmalarında (`ultracode`, `opusplan`) ve OpenCode'un reddettiği kapılarda (saldırgan
-  güvenlik, biyoloji, bilgisayar-kullanımı) temiz rozet alır.
-- **Doğrulama durumu:** `evals/routing/evals.json` 23 prompt (kurallardan türetilmiş
+- **Varsayılan: gizli.** Grok 4.7 ve GPT 6 Luna promptu 30 gün saklar, Muse Spark Contributor promptlarınla
+  eğitilir → kullanıcı "gizli değil" demedikçe havuz dışı (Kural NC1). DeepSeek'in sıfır-saklama anlaşması
+  31 Ekim 2026'ya kadar geçerli, aylık yenileniyor.
+- **Tek kaynak yetmedi — çoklu kaynak (6 Ekim, 2. geçiş).** İlk geçiş yalnız Artificial Analysis'e dayanıyordu ve
+  MiMo-V2.6-Pro'yu fazla öne çıkarıyordu. Artık havuzu yayımlayan her bağımsız kaynak kullanılıyor: AA (13 bileşen),
+  **DeepSWE v1.1 (Mercor/Datacurve, yayımlanmış hata payıyla)**, **Arena (Agent / Code / Text)**, Vals, FrontierSWE v2,
+  ARC-AGI, Gray Swan → `skill/opencode-evidence.json`; `scripts/derive_opencode_rows.py` her capability'nin
+  konsensüsünü yeniden üretir, `check_opencode_pool.py` bir satır ilk-4 dışına çıkarsa fail eder. Bulgular:
+  **DeepSeek V4.1 Flash havuzun en iyi kodlama konsensüsü** (DeepSWE 71.7 ±6.3 — Opus/Sonnet/GLM ile eşit bant;
+  Agent Arena 4.02 @ USD 0.12; USD 60 tavan; OpenCode'ta token'a göre 3.) ama **halüsinasyon oranı %96.5** →
+  olgusal bilgiden elenir; MiMo-V2.6-Pro'nun bağımsız kodlama kanıtı neredeyse yok; Kimi K3 **tartışmalı** kodlayıcı
+  (TB 4.0 13, ama Agent Arena'da açıkların 1.'si ve Vals TB 2.1 81) ve prompt-injection direnci zayıf; GLM-5.3 en zor
+  kodlama çıtalarında lider. Ayrıntı: `skill/opencode-benchmarks.md` §10.
+- **Rozet şimdi:** `agentic-code`/`terminal-tool` her `R`'de **Claude** (üç bağımsız satır örtüşüyor: AA TB 4.0,
+  FrontierSWE v2, Agent Arena; DeepSWE yalnız eşitlik). Claude ayrıca knowledge-work, deep-reasoning, mekanizmalar ve
+  OpenCode'un reddettiği kapılarda temiz rozet alır. OpenCode: `D ≤ 1`, latency ve *çelişkili* satırlar
+  (workflow-automation, long-context) ile ince kanıtlı satırlar (bilim, araştırma, belge) — hepsi low-confidence.
+- **Çift sırası (PO1):** `D ≤ 2 ∧ R ≤ 2`'de lider bandın içindeki en kota-verimli model önce; `D = 3` veya `R = 3`'te en
+  zor çıtaların lideri (kodlamada GLM-5.3) önce.
+- **Token maliyeti:** `SKILL.md` 60 KB'tan ~46 KB'a indi; `Evidence:` tek cümle, ≤ 30 kelime.
+- **Doğrulama durumu:** `evals/routing/evals.json` 25 prompt (kurallardan türetilmiş
   altın cevaplar); `grade_routing.py --selftest`, `check_policy_sync.py`,
   `check_opencode_pool.py`, `check_examples.py` yeşil. **Soğuk-ajan koşusu ve tetik eval'i
   iteration-21 için YAPILMADI** (canlı ajan gerekir).

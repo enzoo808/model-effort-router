@@ -8,12 +8,11 @@ Installed as a Claude Code / claude.ai skill invoked with `/model-secici`.
 You:    /model-secici  Refactor the payment module across these 40 files to use the new idempotency-key API, update every caller, and make the test suite pass.
 
 model-secici:
-  Claude:   Sonnet 5.5 · effort: high
-  OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: high
-  Evidence: AA's Terminal-Bench 4.0 has Sonnet 5.5 at 64 against GLM-5.3 at 42 and
-            MiMo-V2.6-Pro at 35 with no interval, and one row is not a direction,
-            so cap pressure decides — USD 0.13 and 64k output tokens per task
-            against USD 7.67 and 193k; low-confidence.
+  Claude:   ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+  OpenCode: #1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3 · effort: high
+  Evidence: Three independent rows agree for Claude (TB 4.0 64 vs 42, FrontierSWE v2
+            62 vs 30, Agent Arena 12.5 vs 4.2); DeepSWE ±7 is a tie.
+  DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
 ```
 
 The badge is **computed, not habitual** — swap the task and it moves:
@@ -61,12 +60,13 @@ and `archive/iteration-20-codex/`.
 
   | Role | Models |
   |---|---|
-  | Default / reasoning | **MiMo-V2.6-Pro** (AA 46 at USD 0.13/task — best index per dollar) |
-  | Coding | **GLM-5.3** (Terminal-Bench 4.0 **42**, the pool's best) · GLM-5.3-Flash (TB 33, USD 60 cap) |
-  | Factual / long context / images | **Kimi K3** (AA-LCR 89, Omniscience 20, GDP.pdf 22) |
-  | Workflow / latency / bulk | **DeepSeek V4.1 Flash** (AutomationBench-AA **69**, 222 tok/s) · MiMo-V2.6-Flash |
-  | Knowledge-work | **Grok 4.7** (non-confidential only) · Qwen3.8 Flash |
-  | Escalation | Qwen3.8 Max |
+  | Coding (consensus of 5 independent anchors) | **DeepSeek V4.1 Flash** (DeepSWE 71.7 ±6.3, Agent Arena 4.02 at USD 0.12) · **GLM-5.3** (leads the hardest anchors: TB 4.0, FrontierSWE v2) |
+  | Reasoning / science | **MiMo-V2.6-Pro** (HLE 49, CritPt 27 — thin coding evidence) · **Kimi K3** |
+  | Factual research | **GLM-5.3** (lowest hallucination) — **never DeepSeek (96.5% hallucination rate)** |
+  | Long context / documents / images | **Kimi K3** (AA-LCR 89, MMMU-Pro 81) · Qwen3.8 Flash |
+  | Workflow / latency / bulk | **DeepSeek V4.1 Flash** (AutomationBench-AA 69, 222 tok/s) · GLM-5.3-Flash · MiMo-V2.6-Flash |
+  | Knowledge-work | MiMo-V2.6-Pro · Qwen3.8 Flash · **Grok 4.7** (non-confidential only) |
+  | Escalation | Kimi K3 (coding) · Qwen3.8 Max (knowledge-work) |
   | Opt-in, non-confidential | Muse Spark 1.3 Contributor (AA 48, but **trains on your prompts**) · GPT 6 Luna (30-day retention) |
   | Rated, **dominated**, never emitted | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus |
 
@@ -86,30 +86,34 @@ and `archive/iteration-20-codex/`.
   measured only `low`/`max` (GLM-5.3 34 → 45, Kimi K3 30 → 44) and DeepSeek V4.1 Flash
   non-reasoning (25 vs 39 at `max`). `GLM-5.3 · low` is dominated by GLM-5.3-Flash (42 at a
   quarter of the cost), so the Pro tier is never emitted low. No interpolation.
-- **Pair order follows depth (Rule PO1).** At `D ≤ 2` and `R ≤ 2` `#1` is the efficient model (usually MiMo-V2.6-Pro) and `#2` the benchmark leader; at `D = 3` or `R = 3` they swap — GLM-5.3 first for coding, Kimi K3 first for research / long-context / documents. It orders the pair only; the badge still follows BD1.
+- **Pair order follows depth (Rule PO1).** At `D ≤ 2` and `R ≤ 2` `#1` is the most cap-efficient model inside the leading consensus band; at `D = 3` or `R = 3` the leader on the hardest anchors goes first (GLM-5.3 for coding). It orders the pair only; the badge still follows BD1.
 - **Token cost kept low.** `SKILL.md` was cut from 60 KB to 44 KB (rosters, Step 5/6 prose and examples compressed; every Claude carve-out and rule block kept) and `Evidence:` is capped at one sentence of ≤ 30 words. Details live in `skill/opencode-benchmarks.md`, which is never loaded to route.
 - **Confidential by default.** Grok 4.7 and GPT 6 Luna keep prompts 30 days and Muse Spark
   Contributor trains on them, so all three are out of the pool unless you say the work is
   non-confidential (Rule NC1). DeepSeek's zero-retention agreement is valid through
   31 Oct 2026 and renewed monthly — the router prints that caveat.
-- **The evidence is fresh and several earlier assumptions did not survive it:** Kimi K3 is
-  *last* (not first) on knowledge-work benchmarks; Grok 4.7's AA Terminal-Bench is 26
-  (below DeepSeek V4.1 Flash's 27); GLM-5.3 — not Grok — is the strongest measured coder;
-  four of the 15 are dominated outright. Everything is in
-  **[`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.md)** with sources.
+- **Multi-source, not one benchmark.** A first pass used only Artificial Analysis and over-ranked
+  MiMo-V2.6-Pro. The router now rests on every independent source that publishes the pool —
+  AA (13 components), DeepSWE v1.1 (Mercor/Datacurve, with error margins), Arena (Agent / Code /
+  Text), Vals, FrontierSWE v2, ARC-AGI, Gray Swan — compiled into `skill/opencode-evidence.json`;
+  `scripts/derive_opencode_rows.py` reproduces each capability's consensus and
+  `check_opencode_pool.py` fails if a routing row leaves the top 4. Findings: **DeepSeek V4.1
+  Flash is the best coding consensus** and sits on a USD 60 cap (and is #3 by tokens on OpenCode),
+  but hallucinates (96.5%); MiMo-V2.6-Pro has almost no independent coding evidence; Kimi K3 is a
+  *contested* coder (TB 4.0 13, yet Agent Arena #1 open and Vals TB 2.1 81) with weak
+  prompt-injection resistance; GLM-5.3 leads the hardest coding anchors. Details and quirks:
+  **[`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.md) §10**.
 
-### The honest consequence
+### What the badge says now
 
-AA publishes no confidence interval for any row, and this router's rule is that *no
-interval ⇒ `UNRESOLVED`, however large the gap looks*. So even Sonnet 5.5's 22-point
-Terminal-Bench lead over GLM-5.3 is a **lean, not a certified direction**: at `R ≤ 2`
-coding falls to efficiency and reads **OpenCode (low-confidence)**; at `R = 3` the single
-measurement decides and reads **Claude**. Claude keeps a clean badge only where two
-independent AA rows agree — **knowledge-work** and **deep-reasoning** — and on the product
-mechanisms OpenCode lacks (`ultracode`, `opusplan`), plus every gate OpenCode declines
-(offensive security, biology, computer-use). If you would rather certify the coding lead
-with a binomial interval from AA's published 66-task count, that is one rule (see
-`skill/opencode-benchmarks.md` §5) and it would flip the coding rows to Claude.
+With three independent coding rows agreeing (AA TB 4.0, FrontierSWE v2, Agent Arena — DeepSWE is
+a certified tie, not opposition), **`agentic-code` / `terminal-tool` read Claude** at every `R`
+(the earlier "OpenCode (low-confidence)" came from a single AA row). Claude also holds clean
+badges on **knowledge-work**, **deep-reasoning**, the product mechanisms OpenCode lacks
+(`ultracode`, `opusplan`) and every gate OpenCode declines (offensive security, biology,
+computer-use). OpenCode wins `D ≤ 1`, latency, and the *contested* rows — workflow-automation
+(open models lead ITBench) and long-context (AA-LCR vs MLCR-AA disagree) — plus the thin ones
+(science, research, documents), all marked low-confidence.
 
 ---
 
@@ -224,17 +228,17 @@ Two design choices carried over: **risk raises human oversight, not model tier**
 | Task | Claude | OpenCode `#1` · `#2` | Recommended |
 |---|---|---|---|
 | Label 200 reviews positive/negative | `Haiku 4.5` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — latency row, a USD 60 cap |
-| Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5.5 · low` + review note | GLM-5.3-Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0`, both clear the bar, price and cap decide |
-| Refactor the payment module across 40 files | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · GLM-5.3 `high` | **OpenCode**, low-confidence — one Terminal-Bench row is not a direction |
-| Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · ultracode` | MiMo-V2.6-Pro `default` · GLM-5.3 `high` | **Claude** — three phases; `ultracode` has no OpenCode equivalent (MECH1) |
+| Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5.5 · low` + review note | DeepSeek V4.1 Flash `low` · GLM-5.3-Flash `low` | **OpenCode** — `D=0`, both clear the bar, price and cap decide |
+| Refactor the payment module across 40 files | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · GLM-5.3 `high` | **Claude** — three independent coding rows agree |
+| Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · ultracode` | DeepSeek V4.1 Flash `high` · GLM-5.3 `high` | **Claude** — three phases; `ultracode` has no OpenCode equivalent (MECH1) |
 | Find the race condition that flakes in prod | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · GLM-5.3 `max` | **Claude** — two agreeing AA rows on the reasoning half |
 | Design and implement the irreversible transaction boundary | `Opus 5.5 · max` + review note | MiMo-V2.6-Pro `default` · GLM-5.3 `max` | **Claude** — `R=3` and a reasoning direction |
 | Redesign auth for 200 services from scratch | `opusplan · plan: max · execute: medium` | MiMo-V2.6-Pro `default` · Kimi K3 `max` | **Claude** — `opusplan` mechanism |
-| Wire a Jira → Slack → on-call n8n flow | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · GLM-5.3 `high` | **OpenCode**, low-confidence — AutomationBench 69 vs 72 |
+| Wire a Jira → Slack → on-call n8n flow | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · GLM-5.3 `high` | **OpenCode**, low-confidence — AutomationBench is a tie and ITBench favours the open models |
 | Summarise 400 pages of filings into one memo | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · Kimi K3 `max` | **Claude** — knowledge-work has a direction, long-context does not |
-| Read 30 scanned receipts into a reconciliation table | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · Kimi K3 `max` | **OpenCode**, low-confidence — GLM-5.3 is text-only so it is out |
+| Read 30 scanned receipts into a reconciliation table | `Sonnet 5.5 · high` | Kimi K3 `max` · Qwen3.8 Flash `xhigh` | **OpenCode**, low-confidence — GLM-5.3 is text-only so it is out |
 | Non-confidential conference pricing deck | `Sonnet 5.5 · high` | **Grok 4.7 `xhigh`** · MiMo-V2.6-Pro `default` + data line | **Claude** — NC1 re-admits Grok |
-| An earlier OpenCode attempt at a 30-file migration fell short | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · **Qwen3.8 Max** `xhigh` | **OpenCode**, low-confidence — Rule A1-OC |
+| An earlier OpenCode attempt at a 30-file migration fell short | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · **Kimi K3** `max` | **Claude** — Rule A1-OC swaps `#2` |
 | Exploit PoC for a CVE | `Opus 4.8 · xhigh` | `use Claude` | **Claude** — the other arm declines |
 | Call somatic variants from tumour/normal exomes | `Fable 5.1 · high` | `unverified — use Claude` | **Claude** — availability gate |
 | "Fix this code" | *(no model, no badge — asks: which code? broken how? done = ?)* | | |
@@ -243,7 +247,7 @@ Two design choices carried over: **risk raises human oversight, not model tier**
 
 ## Validation
 
-`evals/routing/evals.json` is a deterministic regression set (23 prompts) graded by
+`evals/routing/evals.json` is a deterministic regression set (25 prompts) graded by
 `evals/routing/grade_routing.py` (pure regex, no LLM): Claude model + effort, **both OpenCode
 picks (model, effort, order)**, which side carries the badge, a non-trivial `Evidence:` line
 (whose `low-confidence` flag must match the row's dagger), plus required / forbidden text
@@ -252,7 +256,8 @@ for the auto-added lines and the confidentiality default.
 ```bash
 python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # goldens vs grader
 python scripts/check_policy_sync.py        # SKILL.md rule blocks == evals/policy/routing_policy.json
-python scripts/check_opencode_pool.py      # the 15-model pool, Step 4-OC rows, badge table, examples
+python scripts/check_opencode_pool.py      # pool, Step 4-OC rows, badge table, examples, per-model variants, consensus top-4
+python scripts/derive_opencode_rows.py     # print the independent-evidence consensus per capability
 python scripts/check_examples.py           # every worked example agrees with its golden
 ```
 

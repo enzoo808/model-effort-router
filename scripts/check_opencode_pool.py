@@ -147,6 +147,23 @@ def main() -> int:
             if len(r) >= 3 and (o in r[1] or o in r[2]):
                 errors.append("Step 4-OC emits %s, which is outside the 15-model pool" % o)
 
+    # 2b -- every Step 4-OC pair must sit near the top of the independent-evidence consensus
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import derive_opencode_rows as dr
+    ev = json.loads((ROOT / "skill" / "opencode-evidence.json").read_text(encoding="utf-8"))
+    for tag in dr.TAGS:
+        w = want.get(tag) or want.get({"agentic-code": "agentic-code"}.get(tag, tag))
+        if not w:
+            continue
+        rank = [r[0] for r in dr.consensus(ev, tag, dr.ROUTABLE)]   # routable models, best first
+        for col in ("r_le_2", "r_eq_3"):
+            for m in w[col]:
+                if m not in rank:
+                    errors.append("consensus: %s has no independent evidence for %r but row %r emits it" % (m, tag, tag))
+                elif rank.index(m) > 3:
+                    errors.append("consensus: %s is #%d of %d for %r (top-4 required) but row %r emits it"
+                                  % (m, rank.index(m) + 1, len(rank), tag, tag))
+
     # 3 -- badge table ------------------------------------------------------------
     brow = table_after(skill, "| Dominant capability | `R ≤ 2` | `R = 3` | Evidence to name |", True)
     wantb = policy["badge_table"]

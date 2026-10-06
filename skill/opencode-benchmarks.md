@@ -97,7 +97,7 @@ Grok 4.7, GPT 6 Luna, Qwen3.8 Max; text+image+video Qwen3.8 Flash, MiniMax M3, M
 Spark 1.3; MiMo-V2.6-Pro takes text, image, speech and video. Only *DeepSeek V4 Flash
 Vision Exp* is marked vision on the Go page. MiMo-V2.6-Flash takes text+image (AA).
 
-## 3. Findings the numbers force (several contradict the earlier draft)
+## 3. Findings from the AA-only pass (**superseded in part by §10** — read §10 first)
 
 1. **MiMo-V2.6-Pro dominates the pool on the index per dollar** (46 @ $0.13; the next
    cheapest 40+ model is Qwen3.8 Flash at $0.37). It also tops HLE (49, tied with Muse
@@ -264,3 +264,88 @@ GLM-5.3 53.4 · Grok 4.6 53.4 · Kimi K3 50.6 · DeepSeek V4 Pro 49.6 · MiMo-V2
   were confirmed on two other sites instead).
 - The cold-agent routing eval and the trigger eval have **not** been run for
   iteration-21 (they need live agents).
+
+## 10. Multi-source re-analysis (6 Oct 2026) — supersedes the AA-only conclusions
+
+§1–§9 used one independent evaluator (Artificial Analysis). That under-weighted several
+models, so every routable model was re-checked against every independent source that
+publishes it. **Machine-readable evidence: `opencode-evidence.json`; consensus:
+`python scripts/derive_opencode_rows.py`** (mean percentile rank over ≥ 2 independent anchors
+per capability; `scripts/check_opencode_pool.py` fails if a routing row emits a model outside
+the top 4 of that consensus).
+
+### 10a. Sources added
+- **DeepSWE v1.1 (Mercor/Datacurve)** via `benchlm.ai/benchmarks/mercordeepswe11` — 47
+  configurations, **published error margins ±6.3 to ±8.8**: Opus 5.5 72.3 ±7.3 · DeepSeek
+  V4.1 Flash 71.7 ±6.3 · Sonnet 5.5 70.5 ±7.7 · GLM-5.3 70.5 ±6.3 · GPT 6 Luna 67.0 · Kimi
+  K3 66.4 ±8.8 · DeepSeek V4 Pro 56.3 · Qwen3.8 Max 53.1 · Kimi K2.7 Code 30.1 · MiniMax M3
+  9.1. **MiMo-V2.6-Pro, Muse Spark 1.3, GLM-5.3-Flash and Qwen3.8 Flash are not on it**
+  (vendor-reported only: MiMo 71.9, Muse 75.4). Every pair within ~±7 is a *tie* — the first
+  published interval this router has been able to use.
+- **Arena** (`arena.ai/leaderboard/{agent,code,text}`, Oct 1–2): Agent Arena (millions of real
+  long-horizon agent tasks; net outcome vs the average model), Code Arena WebDev, Text Arena.
+- **Vals AI** rows via benchlm (Terminal-Bench 2.1, SWE-bench, LiveCodeBench, MMLU-Pro, GPQA) and
+  further AA components not used before (MLCR-AA, ITBench, EnterpriseOps-Gym, Tau3 Banking,
+  AnalystAgent, Harvey LAB, MMMU-Pro), ARC-AGI, FrontierSWE v2, CursorBench 4.0, Gray Swan IPI.
+- **OpenCode usage** (`opencode.ai/data`): 7-day tokens — Muse Spark 1.3 #2 (32T), **DeepSeek V4.1
+  Flash #3 (32T)**, MiMo-V2.6-Flash #4 (9.4T), GLM-5.3-Flash #8, GPT 6 Luna #13, DeepSeek V4 Pro
+  #14, MiMo-V2.6-Pro #15 (439B), MiniMax M3 #18; Kimi K3, Grok 4.7, Qwen3.8 outside the top 18.
+  Two-month retention: MiMo-V2.6-Pro 59.3% (60K users), GLM-5.3 52.3% (341K). Usage follows
+  price and caps as much as quality — a popularity signal, not a capability one.
+- `benchlm.ai` per-model pages carry **Independent / Self-reported provenance** per row; only
+  independent rows enter the evidence file.
+
+### 10b. What changed
+1. **DeepSeek V4.1 Flash is the best coding consensus of the pool**, not a weak model: DeepSWE
+   71.7 ±6.3 (a tie with Opus 5.5 / Sonnet 5.5 / GLM-5.3), Agent Arena 4.02 at USD 0.12 per task
+   (MiMo-V2.6-Pro 3.28 at 0.10), Vals Terminal-Bench 2.1 74.5. Its AA Terminal-Bench 4.0 (27) is
+   the one anchor where it lags GLM-5.3 (42) and MiMo (35). It also costs the same as
+   MiMo-V2.6-Pro per task on a **USD 60 cap instead of USD 15**, and leads AutomationBench-AA (69).
+   **Its flaw is factual:** AA-Omniscience hallucination rate **96.5%**, index −5.3 → gated out
+   of `research-synthesis` and of the `D ≤ 1` pair for factual recall.
+2. **MiMo-V2.6-Pro is not the coding default.** Independent coding rows: AA TB 4.0 (35) and Agent
+   Arena (3.28); nothing else (no DeepSWE or Vals row; its 71.9 DeepSWE is vendor-reported).
+   Its strength is reasoning/science (HLE 49.4, CritPt 26.6, SciCode 60.9).
+3. **Kimi K3 is a contested coder, not a weak one.** AA TB 4.0 12.6 but Vals TB 2.1 **80.9
+   (top)**, Agent Arena **4.18 (top open)**, AA Coding Index 76.2 (top), DeepSWE 66.4 ±8.8. The
+   evaluators disagree and the router no longer treats TB 4.0 as the whole story. Kimi also leads
+   AA-LCR (88.7), MMMU-Pro (80.5), Harvey LAB (94.6) and AnalystAgent (38.8) — and has the worst
+   prompt-injection resistance measured (Gray Swan IPI 52.7% attack success vs Opus 5.5 1.0%,
+   Muse 15.9, GLM-5.3 31.5).
+4. **GLM-5.3 leads the hardest coding anchors** (TB 4.0 41.9, FrontierSWE v2 30.2) and the
+   factual rows (Omniscience index 14.3 with hallucination 29.6%), but is weak in Agent Arena
+   (2.36).
+5. **Claude's coding lead is now corroborated:** AA TB 4.0 (59.6 / 63.6 vs best open 41.9),
+   **FrontierSWE v2 (62.3 / 61.9 vs 30.2)**, **Agent Arena (13.82 / 12.52 vs 4.18)**. DeepSWE is
+   a certified tie (not opposition). → BD1 now licenses a Claude direction for `agentic-code` /
+   `terminal-tool`; the earlier "OpenCode †" badge there rested on a single AA row.
+6. **Rows that went the other way:** `workflow-automation` (ITBench has open models ahead of Opus
+   5.5: GLM-5.3-Flash 51.2 vs 38.2; AutomationBench is a tie) and `long-context` (AA-LCR open
+   ahead, MLCR-AA Claude 67 / 75 vs best open 51) are *contested* → efficiency, OpenCode †.
+7. **Knowledge-work:** Claude's direction stands on GDPval-AA, Briefcase and AnalystAgent;
+   Harvey LAB (legal) is a tie (Kimi 94.6 vs Sonnet 93.1 / Opus 91.2).
+
+### 10c. Consensus (output of `derive_opencode_rows.py`, routable models only, best first)
+| Capability | Ranking (mean percentile, n anchors) |
+|---|---|
+| agentic-code / terminal-tool | DeepSeek V4.1 Flash 0.82 (4) · GLM-5.3 0.76 (5) · MiMo-V2.6-Pro 0.73 (2) · Kimi K3 0.63 (5) · Qwen3.8 Max 0.40 · Qwen3.8 Flash 0.30 · GLM-5.3-Flash 0.29 · MiMo-V2.6-Flash 0.21 (NC1: Grok 0.73, Muse 0.70) |
+| deep-reasoning | MiMo-V2.6-Pro 1.00 · Kimi K3 0.71 · GLM-5.3 0.64 (NC1: Muse 0.91) |
+| knowledge-work | Qwen3.8 Max 0.82 · MiMo-V2.6-Pro 0.77 · Qwen3.8 Flash 0.68 · Kimi K3 0.66 · GLM-5.3 0.59 (NC1: Grok 1.00) |
+| workflow-automation | DeepSeek V4.1 Flash 0.80 · GLM-5.3-Flash 0.60 · GLM-5.3 0.59 · Kimi K3 0.56 |
+| long-context | Kimi K3 0.81 · GLM-5.3-Flash 0.68 · DeepSeek V4.1 Flash 0.66 · MiMo-V2.6-Pro 0.64 · GLM-5.3 0.57 |
+| research-synthesis | GLM-5.3 0.76 · MiMo-V2.6-Pro 0.62 · Kimi K3 0.61 · … · DeepSeek V4.1 Flash 0.09 (NC1: Grok 0.95) |
+| science | MiMo-V2.6-Pro 1.00 · Kimi K3 0.86 · GLM-5.3 0.73 |
+| doc-data-understanding | Kimi K3 0.88 (2) · Qwen3.8 Flash 0.80 (1) · MiMo-V2.6-Pro 0.50 (1) |
+
+### 10d. Data quirks and gaps (not resolved)
+- **Kimi K3: TB 4.0 12.6 (AA) vs TB 2.1 80.9 (Vals)** — different versions/harnesses; both independent.
+- **Agent Arena** lists MiniMax M3 at rank 43 with 6.87% — inconsistent with its neighbours, excluded.
+  Scores are *relative to the average model*, not absolute pass rates.
+- **MiMo-V2.6-Pro OSWorld-Verified 82%, Qwen3.8 Max 86.1%** are vendor-reported; the only independent
+  open-model OSWorld 2.0 row is MiniMax M3 at 4.6% — the computer-use gate stays.
+- Scale's SWE-bench Pro page (TLS-intercepted), Vals' own site and the Arena per-model pages were not
+  fetchable; Vals/Arena values come through benchlm or the leaderboard pages. SWE-bench Pro numbers
+  found are vendor-reported and 30% of its public tasks are reportedly broken — unused.
+- Gray Swan IPI exists for only four models; prompt-injection resistance is unknown for DeepSeek, MiMo, Qwen.
+- Qwen3.8 Flash = AA/Arena "Qwen3.8-Flash-Next" by price and date, not by name.
+

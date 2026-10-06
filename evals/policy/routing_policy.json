@@ -200,32 +200,32 @@
   "step4_oc_rows": {
     "D<=1": {
       "r_le_2": [
-        "GLM-5.3-Flash",
-        "MiMo-V2.6-Flash"
+        "DeepSeek V4.1 Flash",
+        "GLM-5.3-Flash"
       ],
       "r_eq_3": [
-        "GLM-5.3-Flash",
-        "MiMo-V2.6-Flash"
+        "DeepSeek V4.1 Flash",
+        "GLM-5.3-Flash"
       ]
     },
     "agentic-code": {
       "r_le_2": [
-        "MiMo-V2.6-Pro",
+        "DeepSeek V4.1 Flash",
         "GLM-5.3"
       ],
       "r_eq_3": [
         "GLM-5.3",
-        "MiMo-V2.6-Pro"
+        "DeepSeek V4.1 Flash"
       ]
     },
     "terminal-tool": {
       "r_le_2": [
-        "MiMo-V2.6-Pro",
+        "DeepSeek V4.1 Flash",
         "GLM-5.3"
       ],
       "r_eq_3": [
         "GLM-5.3",
-        "MiMo-V2.6-Pro"
+        "DeepSeek V4.1 Flash"
       ]
     },
     "deep-reasoning": {
@@ -270,32 +270,32 @@
     },
     "long-context": {
       "r_le_2": [
-        "MiMo-V2.6-Pro",
-        "Kimi K3"
+        "Kimi K3",
+        "DeepSeek V4.1 Flash"
       ],
       "r_eq_3": [
         "Kimi K3",
-        "MiMo-V2.6-Pro"
+        "DeepSeek V4.1 Flash"
       ]
     },
     "research-synthesis": {
       "r_le_2": [
-        "MiMo-V2.6-Pro",
-        "Kimi K3"
+        "GLM-5.3",
+        "MiMo-V2.6-Pro"
       ],
       "r_eq_3": [
-        "Kimi K3",
+        "GLM-5.3",
         "MiMo-V2.6-Pro"
       ]
     },
     "doc-data-understanding": {
       "r_le_2": [
-        "MiMo-V2.6-Pro",
-        "Kimi K3"
+        "Kimi K3",
+        "Qwen3.8 Flash"
       ],
       "r_eq_3": [
         "Kimi K3",
-        "MiMo-V2.6-Pro"
+        "Qwen3.8 Flash"
       ]
     },
     "science": {
@@ -341,14 +341,14 @@
   },
   "badge_table": {
     "agentic-code": {
-      "r_le_2": "opencode",
+      "r_le_2": "claude",
       "r_eq_3": "claude",
-      "low_confidence": true
+      "low_confidence": false
     },
     "terminal-tool": {
-      "r_le_2": "opencode",
+      "r_le_2": "claude",
       "r_eq_3": "claude",
-      "low_confidence": true
+      "low_confidence": false
     },
     "knowledge-work": {
       "r_le_2": "claude",
@@ -362,7 +362,7 @@
     },
     "workflow-automation": {
       "r_le_2": "opencode",
-      "r_eq_3": "claude",
+      "r_eq_3": "opencode",
       "low_confidence": true
     },
     "science": {
@@ -409,9 +409,9 @@
       "BD1": "**BD1 · direction without an interval.** A badge direction needs at least two independent measurements that agree — an independent evaluator's run, or a vendor's table that favours its rival — at least one of them tier A or B, and none that disagree. The same benchmark re-published on a second page is one measurement, a tie is not opposition, and an aggregate never counts. Otherwise the cell is decided by efficiency, except at R = 3, where a single admissible measurement still decides it: a lean is not parity.",
       "MECH1": "**MECH1 · mechanism rows.** `ultracode` driven by `O = high`, or a task routed to `opusplan`, names something OpenCode does not have, so it decides the badge for Claude unless the other capability row carries a benchmark direction under BD1, which wins.",
       "NC1": "**NC1 · non-confidential unlock.** Only when the user says the work is non-confidential or personal: Grok 4.7 and GPT 6 Luna stay in the pool (30-day retention is accepted), and Muse Spark 1.3 Contributor may take `#2` on `deep-reasoning`, `science` and `research-synthesis` rows (HLE 49 = MiMo-V2.6-Pro, AA-Omniscience 25 vs Kimi K3 20, USD 60 cap against USD 15). Never infer non-confidentiality from the prompt's tone.",
-      "PO1": "**PO1 · pair order.** At `D ≤ 2` and `R ≤ 2` the efficient model goes first; at `D = 3` or `R = 3` the leader on the dominant capability's anchor benchmark goes first (the right-hand column). This orders the pair only — the badge still follows BD1.",
-      "CAP1": "**CAP1 · cap rule.** The USD 15-cap models (MiMo-V2.6-Pro, GLM-5.3, Kimi K3, Grok 4.7, Qwen3.8 Max, GPT 6 Luna) are reserved for `D ≥ 2`; `D ≤ 1` goes to the USD 60-cap Flash tier (the `latency-volume` row is exempt). Caps are per model: when the user says a model's window is exhausted, name the next model of its chain in `Evidence:` only — Pro **MiMo-V2.6-Pro → GLM-5.3 → Kimi K3 → Qwen3.8 Max**; Flash **GLM-5.3-Flash → MiMo-V2.6-Flash → DeepSeek V4.1 Flash → Qwen3.8 Flash**.",
-      "A1-OC": "**A1-OC · escalation rung.** When the user states that an earlier OpenCode run fell short, `#2` becomes **Grok 4.7** (non-confidential, NC1) or **Qwen3.8 Max** (confidential), only for `agentic-code`, `terminal-tool` and `knowledge-work`, with `low-confidence` (Qwen3.8 Max: TB 39, Briefcase 1621, USD 5.41 per task; Grok 4.7: TB 26, USD 3.74 per task, 30-day retention). If the shortfall was at `D=3`, also say the Claude line is stronger."
+      "PO1": "**PO1 · pair order.** At `D ≤ 2` and `R ≤ 2` the most cap-efficient model inside the leading consensus band goes first; at `D = 3` or `R = 3` the leader on the hardest anchors goes first (the right-hand column). This orders the pair only — the badge still follows BD1.",
+      "CAP1": "**CAP1 · cap rule.** The USD 15-cap models (MiMo-V2.6-Pro, GLM-5.3, Kimi K3, Grok 4.7, Qwen3.8 Max, GPT 6 Luna) are reserved for `D ≥ 2`; `D ≤ 1` goes to the USD 60-cap Flash tier (the `latency-volume` row is exempt). Caps are per model: when the user says a model's window is exhausted, name the next model of its chain in `Evidence:` only — Pro **MiMo-V2.6-Pro → GLM-5.3 → Kimi K3 → Qwen3.8 Max**; Flash **DeepSeek V4.1 Flash → GLM-5.3-Flash → MiMo-V2.6-Flash → Qwen3.8 Flash**.",
+      "A1-OC": "**A1-OC · escalation rung.** When the user states that an earlier OpenCode run fell short, `#2` becomes **Grok 4.7** (non-confidential, NC1), else **Kimi K3** for `agentic-code` / `terminal-tool` (Agent Arena #1 open, Vals TB 2.1 81, AA Coding Index 76) or **Qwen3.8 Max** for `knowledge-work` (consensus 0.82, USD 5.41 per task). If the shortfall was at `D=3`, also say the Claude line is stronger."
     }
   },
   "skill_md_must_not_appear": [
