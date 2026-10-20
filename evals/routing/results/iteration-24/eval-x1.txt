@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: high
+Evidence: low-confidence — multi-source research at D=2 (AA-Omniscience 8.4 vs 7.5, hallucination 41%); DeepSeek is gated out of recall work, and Claude's lead is not measured here.

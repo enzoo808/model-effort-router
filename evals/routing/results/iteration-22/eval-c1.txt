@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: ultracode
+OpenCode: #1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3 · effort: high
+Evidence: Orchestration decides the badge: provisioning, seeding and smoke verification are three phases over 30 minutes, and only Claude's ultracode sequences phases; OpenCode has no equivalent.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).

@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Haiku 5.5 · effort: low
+OpenCode: #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: Both clear the bar for labelling, so price decides: Haiku 5.5 is USD 0.10/USD 0.50 per MTok and USD 0.21 per AA task at Max against DeepSeek V4.1 Flash's USD 0.27.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).

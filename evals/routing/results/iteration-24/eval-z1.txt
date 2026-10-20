@@ -1,0 +1,5 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: R=3 and AA-Omniscience has Argon ahead of Sonnet 5.5 on index (42 vs 32) and hallucination rate (15% vs 47%); low-confidence — one benchmark, and Claude without a Google key.
+Gemini 4 Argon: google/gemini-4-argon on your paid Google key (AI Pro adds USD 10/month of credits); USD 2/10 per MTok until 30 Nov, USD 4/20 after. A 503 is Google-side capacity — retry, then Gemini 3.8 Flash; a 429 "limit: 0" means a free-tier key.
+Do not apply without human review.

@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: max
+Evidence: Reasoning half has two agreeing AA rows (HLE 61 vs 49, CritPt 32 vs 27); the terminal half sets no direction, so the direction decides.
+⚡ Claude /fast available (2.5x faster, 2× price).

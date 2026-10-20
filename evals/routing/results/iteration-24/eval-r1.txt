@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 MiniMax M3.1 Flash Free · effort: high · #2 Qwen3.8 Flash · effort: xhigh
+Evidence: Scanned-receipt extraction is doc-data-understanding at D=2: both models take images and tie on MMMU-Pro (79 vs 80); low-confidence — one GDP.pdf row (21 vs 19), and the free model has zero retention.

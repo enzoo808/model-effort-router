@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: medium
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
+Evidence: Extraction is D=1 over a large corpus (C=3), so Haiku 5.5 is out and price decides: Flash models on USD 60 caps against Sonnet 5.5's USD 2/USD 10.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).

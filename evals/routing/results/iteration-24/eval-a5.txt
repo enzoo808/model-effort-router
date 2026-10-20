@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: medium
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: The Haiku 5.5 shortfall escalates only the Claude line (H2); the 200-item relabel is still bulk labelling at D=1, so the OpenCode Flash pair runs it unchanged.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).

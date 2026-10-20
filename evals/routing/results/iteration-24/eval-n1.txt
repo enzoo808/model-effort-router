@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 MiniMax M3.1 Flash Free · effort: high
+Evidence: A domain-correctness audit of well-specified logic is D=2: MiMo-V2.6-Pro leads the budget tier on SciCode 61 and HLE 49, and Claude's lead only shows at D=3; low-confidence — one SciCode row, tied with Sonnet.

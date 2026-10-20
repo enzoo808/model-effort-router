@@ -1,6 +1,8 @@
 # Claude & OpenCode Go — Model / Ekosistem / Efor Seçici
 
 > 🇬🇧 **English:** [README.md](README.md) · Bu, Türkçe ayrıntılı sürümdür.
+> **20 Ekim 2026 (iteration-24):** **ücretsiz modeller** ve **Gemini 4 Argon** eklendi — bkz. "iteration-24" bölümü. Önceki not: **14 Ekim 2026 (iteration-23):** OpenCode artık **varsayılan**, havuz **fiyat-performans katmanına** daraltıldı —
+> bkz. "iteration-23" bölümü. Önceki not: **8 Ekim 2026 (iteration-22):** **Claude Haiku 5.5** geldi. Önceki not:
 > **6 Ekim 2026 (iteration-21):** Codex üyeliği bittiği için ikinci kol
 > **OpenCode Go (USD 10/ay)** ile sıfırdan yeniden kuruldu. Bu dosyanın **en üstündeki
 > bölüm güncel**; "Doğrulama" tablosu dahil geri kalanı **Codex dönemi
@@ -8,19 +10,97 @@
 > `archive/iteration-20-codex/` altında saklanır. Skill gövdesi (`skill/SKILL.md`)
 > İngilizcedir.
 
-Bir promptu verdiğinde **Claude** (Haiku 4.5 / Sonnet 5.5 / **Opus 5.5** / Opus 4.8 /
+Bir promptu verdiğinde **Claude** (Haiku 5.5 / Sonnet 5.5 / **Opus 5.5** / Opus 4.8 /
 Fable 5.1 / Mythos 5.1) için model + efor önerir; **OpenCode Go** için ise havuzdaki
-**15 ana modelden görev için en iyi İKİ modeli sırayla** (`#1`, `#2`) seçer — her birinin
-kendi eforuyla — ve **bu görev için hangi ekosistemin daha uygun olduğunu** `✅ RECOMMENDED AI`
-ile işaretler. Promptu çalıştırmaz, yalnızca yönlendirir.
+**puanladığı 19 modelden (Go bütçe katmanı, bir ücretsiz Go modeli ve Gemini 4 Argon) en iyi İKİ modeli sırayla** (`#1`, `#2`) seçer — her birinin
+kendi eforuyla — ve `✅ RECOMMENDED AI` rozetini verir: **varsayılan OpenCode; Claude yalnızca ciddi fark yarattığı yerde.**
+Promptu çalıştırmaz, yalnızca yönlendirir.
 
 ```
-Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
-OpenCode: #1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3 · effort: high
-Evidence: Üç bağımsız satır Claude'da örtüşüyor (TB 4.0 64 vs 42, FrontierSWE v2 62 vs 30,
-          Agent Arena 12.5 vs 4.2); DeepSWE ±7 eşit.
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Orta zorlukta özellik işi bağımsız DeepSWE'de eşit (DeepSeek 71.7 vs Sonnet 5.5 70.5, ±7);
+          agent görevi başına USD 0.13 vs Opus 5.5'in 1.67'si. Claude'un önü D=3'te başlıyor.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
 ```
+
+## iteration-24 — ne değişti (20 Ekim 2026): ücretsiz modeller ve Gemini 4 Argon
+
+İki istek vardı: ücretsiz OpenCode modellerini uygun yerde kullanmak ve Google üyeliğinin getirdiği Gemini hakkını öne çıktığı yerde devreye almak. Havuz artık **19 puanlı model**
+(tüm sayılar ve kaynaklar: `skill/opencode-benchmarks.md` §13).
+
+- **Ücretsiz hat (Kural FR1).** Zen'deki 14 ücretsiz modelden yalnızca **MiniMax M3.1 Flash Free** hem v4.3.2 puanına hem gizli işe uygun veri politikasına sahip (sıfır saklama, Go'da sınırsız):
+  AA indeksi 43; Flash katmanında AutomationBench-AA (73), HLE (48), CritPt (22) ve SciCode'da (53) önde. Artık `deep-reasoning` / `science` satırlarında `#2`, `doc-data-understanding` satırında `#1`;
+  olgusal bilgi işlerinden çıkarıldı (halüsinasyon oranı %92.8 — DeepSeek ile aynı kusur). GLM-5.3-Flash ve DeepSeek V4.1 Flash'ın ücretsiz ikizleri, ücretli pencere bitince ilk yedek — asla seçim değil.
+  Nemotron 3 Ultra 23 puan alıyor (bütçe modelleri 38–46) ve istemleri kaydediyor; Big Pickle, LL Alpha, Exo, Beam, LongCat 2.5 Preview ve Jev'in bağımsız puanı yok ya da istemlerle eğitim yapıyor — hiçbiri seçilmez.
+  Ücretsizlik "sınırlı süre": ücretsiz modeli kullanan satırlar, süre bitince neye döneceğini kayıtlı tutuyor.
+- **Gemini yuvası (Kural GM1).** Gemini 4 Argon, bir Google modelinin ilk kez yuva hak ettiği an: AA indeksi 53, değerlendirilen her model içinde **en düşük halüsinasyon oranı (%15)** ve 42 Omniscience, en yüksek
+  AutomationBench-AA (77.5), HLE 57, ARC-AGI-2 91.3. Öte yandan ilk token 48 sn, AA görevi başına USD 1.99 (1 Aralık'tan sonra USD 3.98), Terminal-Bench'te ve bitmiş doküman işlerinde Claude'un gerisinde.
+  Bu yüzden **ölçülü, varsayılan değil**: OpenCode satırında yalnızca `D = 3` veya `R = 3` iken `agentic-code`, `terminal-tool`, `deep-reasoning`, `research-synthesis`, `workflow-automation` satırlarında `#1`; OpenCode başarısızlığından sonra `#2`.
+  Sonuç: `R = 3` olgusal güvenilirlik işi artık OpenCode'a gidiyor (Argon, iki Omniscience ölçümünde de Sonnet 5.5'i geçiyor); zor kodlama ve muhakemede rozet Claude'da kalıyor.
+- **Üyelik.** Google AI Pro API anahtarı vermez — ama Gemini API'de kullanılabilen **aylık USD 10 Google Cloud kredisi** getirir (developers.google.com/program/my-benefits'ten etkinleştirilir; ücretli katman anahtarları eğitimde kullanılmaz).
+  OpenCode'a Google hesabıyla (OAuth/Antigravity) girmek Google'ın şartlarının yasakladığı yoldur (askıya alma raporları var), bu yüzden router API anahtarı önerir. 503 Google tarafı kapasitedir (yeniden dene, sonra Gemini 3.8 Flash);
+  Argon'da `429 "limit: 0"` ücretsiz-katman anahtarı demektir. Ayrıntı: `opencode-benchmarks.md` §13.4.
+- **Ayrıca:** DeepSeek V4.1 Flash'ın Go sınırı USD 80'e çıktı; Argon'un Go içindeki *Contributor* yolu istemlerle eğitim yaptığından yalnızca "gizli değil" dediğiniz işlerde önerilir.
+- **Kontroller:** `grade_routing.py --selftest` 34/34 (30 → 34 eval: d1, g1, j1, t1, v1, z1, p1, n1, r1 değişti; `w1`–`w4` yeni); politika senkronu (42 blok), havuz denetimi (mutasyon testli), örnekler — hepsi yeşil.
+  **Soğuk-ajan koşusu (6 taze Sonnet ajanı, `evals/routing/results/iteration-24/`): yönlendirilen 33 eval'in 33'ü geçti** — önce iki düzeltme: `w2` gerçek bir belirsizliği ortaya çıkardı (NC1, Muse Spark'a deep-reasoning/science'ta `#2` "olabilir" diyordu; artık yalnız `research-synthesis`'te `#2` olur), `r1` belirsiz bir istemdi (netleştirildi, kural aynı). `i1` (exploit PoC) ajanı tarafından yalnız-yönlendirme olarak bile reddedildi, tekrar koşulmadı; o kapıya dokunulmadı. Yapılmadı: tetikleme eval'i. `SKILL.md` kırpıldıktan sonra 54.7 → 60.0 KB.
+
+## iteration-23 — ne değişti (14 Ekim 2026): bütçe-öncelikli OpenCode, varsayılan OpenCode
+
+İki istek vardı: bazı Go modelleri kotayı birkaç görevde bitiriyor; ve Claude varsayılan değil istisna olmalı.
+
+- **Bütçe-öncelikli havuz (Kural BUD1).** Her Go modelinin kendi aylık dolar kotası var; önemli olan, o kotanın
+  *gerçek* kaç görev aldığı (kota ÷ Arena p50 görev maliyeti):
+
+  | Katman | Modeller | Aylık görev |
+  |---|---|---|
+  | **Bütçe** (varsayılan çiftler) | MiMo-V2.6-Flash 1500 · GLM-5.3-Flash 600 · DeepSeek V4.1 Flash 462 · Qwen3.8 Flash 200 · MiMo-V2.6-Pro 150 | 150–1500 |
+  | Yalnız gizli-olmayan iş | GPT 6 Luna 214 · Muse Spark 1.3 140 (prompt'larla eğitilir) | — |
+  | **Premium** (yalnız eskalasyon) | Qwen3.8 Max 33 · GLM-5.3 23 · Kimi K3 21 · Grok 4.7 10 | 10–33 |
+
+  AA'nın indeks-görevi maliyeti aynı ayrımı veriyor (premium: görev başına kotanın %6–36'sı; bütçe: %0.1–1.2). Dört premium
+  model **hiçbir zaman** rutin çiftte `#1`/`#2` değildir; yalnız "önceki OpenCode denemesi yetmedi" dediğinde Kural A1-OC ile
+  `#2` olarak gelir. GLM-5.3 ve Kimi K3 varsayılan çiftlerden çıktı; çiftler bütçe katmanı içindeki bağımsız-kanıt
+  uzlaşmasından yeniden kuruldu (`scripts/derive_opencode_rows.py`). "Gizli değil" demek artık Grok 4.7'yi geri getirmiyor.
+- **Varsayılan OpenCode (Kural SM1).** Ayak işi ve OpenCode'un iyi yapabildiği her şey OpenCode'a gider. Rozet Claude'a yalnız şu
+  durumlarda geçer: sert kapı veya bağlam sınırı, ürün mekanizması (`ultracode`, `opusplan`), `D = 3` kodlama / derin muhakeme
+  (AA Terminal-Bench 4.0: Claude 64 / 60, en iyi bütçe modeli 35; FrontierSWE v2 62'ye 18; HLE 61'e 49), `D = 2`'den itibaren bitmiş
+  teslimat (GDPval-AA, Briefcase, AnalystAgent aynı yönde) veya Claude eğilimi olan `R = 3`. **Her `D ≤ 1` görev OpenCode'tur —
+  Haiku 5.5 dahil** — ve `D = 2` kodlama da: bağımsız DeepSWE v1.1 (±7) DeepSeek V4.1 Flash 71.7'yi Opus 5.5 72.3 ve Sonnet 5.5 70.5 ile
+  eşit tutuyor; görev başına USD 0.13 vs Opus 5.5'in 1.67'si.
+- **Neyden vazgeçildiği, açıkça.** `D = 2`'de kodlama artık OpenCode'a gidiyor; oysa Claude AA Terminal-Bench 4.0'da orada da önde. Ayrım,
+  DeepSWE'nin (orta zorluk) eşit çıkmasına, Claude'un önünün ise en zor çıtalarda olmasına dayanıyor. `D = 2` kodlamada Claude'a para
+  vermek istersen bu, `skill/SKILL.md`'deki rozet tablosunda (ve `evals/policy/routing_policy.json`'daki aynasında) tek satırdır.
+- **Efor değişmedi.** Flash katmanında `D = 3`'te `max` AA görevi başına ≈ USD 0.25–0.27 (USD 60 kotanın %0.4'ü) — ucuz kalıyor; pahalı
+  `max` koşuları GLM-5.3 ve Kimi K3'tü (USD 15 kotada görev başına USD 2).
+- 30 eval (yeni: `z1`, `R = 3` mevzuat okuması); not edici artık, `allow_premium` olmayan bir evalde OpenCode satırında premium model görürse
+  başarısız sayıyor (yalnız yetmeme durumu `p1` bunu açar).
+- **Doğrulama durumu:** notlayıcı öz-testi 30/30, politika senkronu, havuz/rozet tablosu ve örnek kontrolleri yeşil. Altın cevaplar kuraldan
+  türetildi; **soğuk-ajan koşusu henüz yapılmadı** (canlı ajan gerekir).
+
+## iteration-22 — ne değişti (8 Ekim 2026): Claude Haiku 5.5
+
+Haiku 5.5, 7 Ekim'de **USD 0.10 / 0.50 per MTok** (100k token'a kadar; üstünde USD 0.50 / 2.50), 1M bağlam ve bir Haiku
+için ilk kez **efor seviyeleriyle** çıktı. Router artık onu **maliyet seçimi** sayıyor ve nedenini söylüyor:
+
+- **Haiku 5.5, Claude satırında Haiku 4.5'in yerini aldı (Kural H1).** `D=0` işi ve — yeni — `D=1` *okuma/dönüştürme* işi
+  (özet, etiket, yeniden yazım, çeviri, kullanıcının verdiği metinden cevap) `low` / `medium` ile ona gider. Sınırı AA'nın aynı-sayfa
+  sayıları çiziyor: okuma anlama Sonnet 5.5 ile eşit (AA-LCR 77 vs 78); fark tam agentic ve bilgi-işi çıtalarında büyük
+  (Terminal-Bench 22 vs 44, AutomationBench 34 vs 59, GDPval-AA 1420 vs 1551, Omniscience 6 vs 21). Onlar Sonnet 5.5'te kalır;
+  tek-olgu sorusu da (olgusal bilgi = `research-synthesis`).
+- **Claude'daki en ucuz seçenek, açık farkla:** AA görev maliyeti High'da USD 0.08, Max'ta 0.21; Sonnet 5.5 High USD 0.88 — −9 indeks
+  puanına karşılık ~11× ucuz. `xhigh`/`max` hiç üretilmez (Max görev başına 162k token yakıyor ve yine Sonnet 5.5 High'ın altında, Kural E8).
+- **Rozet de onunla hareket eder.** `D ≤ 1`'de fiyat eşitlik bozucusu, Haiku 4.5 USD 1/5 olduğu için OpenCode'a giderdi. Haiku 5.5 ile
+  **Claude**'a gidiyor (toplu etiketleme, kısa özet); Claude seçimi Sonnet 5.5 ise ve **ilk-token şartı** belirtildiyse OpenCode'ta kalıyor
+  (`latency-volume` artık yalnız bunu ifade eder — kimsenin beklemediği toplu iş fiyat meselesidir).
+- **Haiku yetersiz kalırsa Sonnet 5.5'e çıkılır** (Kural H2); Haiku'nun eforu asla yükseltilmez.
+- **OpenCode:** Claude Haiku 5.5 Go'da da var (tavan USD 15, 30 gün saklama). 16. model olarak puanlandı ve orada **domine** (Kural E9):
+  bağımsız her çıtada orta sıra, aynı indeks ve maliyette MiMo-V2.6-Flash / GLM-5.3-Flash cap baskısında onu geçiyor. Yeri Claude satırı.
+- **Ayrıca düzeltildi:** Sonnet 5.5 cache okuması 7 Ekim'de yarıya indi → AA'nın Sonnet 5.5 Max maliyeti USD 5.46 (eskiden 7.60); E1 hâlâ geçerli
+  (2.2× yerine 1.6×). Agent Arena maliyetleri tazelendi. `/model haiku` Claude Code v2.1.293+'ta Haiku 5.5'e çözülür.
+- **Dürüst sınırlar.** AA yalnız High ve Max'ı ölçtü — router'ın yazdığı `low`/`medium` ölçülmedi; maliyet iddiaları High'ı üst sınır alır.
+  Taze ajanlarla 29 eval koşuldu: **29/29** — ilk geçişte 25/27 (biri golden hatası, biri prompt belirsizliği; ayrıntı `evals/README.md`), ikisi güvenlik sınıflandırıcısı yüzünden ayrı koşuldu. Kanıt:
+  `skill/opencode-benchmarks.md` §11, `skill/reference.md` §19.
 
 ## iteration-21 — ne değişti
 

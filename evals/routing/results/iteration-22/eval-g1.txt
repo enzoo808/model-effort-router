@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: max
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: max
+Evidence: Reasoning and coding rows both favour Claude: HLE 61 vs 49 and CritPt 32 vs 27 (deep-reasoning), TB 4.0 60 vs 42 (agentic-code).
+⚡ Claude /fast available (2.5x faster, 2× price).
+Do not apply without human review.

@@ -44,10 +44,18 @@ TAGS = {
     "doc-data-understanding": ["GDP.pdf", "AA-MMMU-Pro (multimodal)"],
 }
 
-ROUTABLE = ["MiMo-V2.6-Pro", "GLM-5.3", "Kimi K3", "GLM-5.3-Flash", "MiMo-V2.6-Flash",
-            "DeepSeek V4.1 Flash", "Qwen3.8 Flash", "Qwen3.8 Max"]
-NC1_ONLY = ["Grok 4.7", "Muse Spark 1.3", "GPT 6 Luna"]
-DOMINATED = ["DeepSeek V4 Pro", "MiniMax M3"]
+# iteration-23 (Rule BUD1): the pair is chosen inside the BUDGET tier. The premium four
+# burn 4-10% of their monthly Go cap per real agent task (Arena p50), the budget tier
+# 0.1-0.7% -- see tasks_per_month in evals/policy/routing_policy.json.
+# iteration-24: MiniMax M3.1 Flash Free joins the budget tier (Go: unlimited, zero-retention, so
+# cap pressure is nil); the Gemini line is metered by Google credits, not by a Go cap, and is
+# reported next to the premium four (Rule GM1) instead of competing for the budget slot.
+ROUTABLE = ["MiMo-V2.6-Pro", "GLM-5.3-Flash", "MiMo-V2.6-Flash", "DeepSeek V4.1 Flash", "Qwen3.8 Flash",
+            "MiniMax M3.1 Flash"]
+GEMINI = ["Gemini 4 Argon", "Gemini 3.8 Flash"]
+NC1_ONLY = ["Muse Spark 1.3", "GPT 6 Luna"]
+PREMIUM = ["GLM-5.3", "Kimi K3", "Grok 4.7", "Qwen3.8 Max"]   # A1-OC only; reported, never led with
+DOMINATED = ["DeepSeek V4 Pro", "MiniMax M3", "Claude Haiku 5.5"]
 
 
 def percentiles(values: dict[str, float], higher_better: bool, models: list[str]) -> dict[str, float]:
@@ -84,13 +92,20 @@ def claude_gap(data: dict, tag: str) -> list[str]:
         opus, sonnet = v.get("Claude Opus 5.5"), v.get("Claude Sonnet 5.5")
         if opus is None and sonnet is None:
             continue
-        pool = {m: x for m, x in v.items() if not m.startswith("Claude")}
+        pool = {m: x for m, x in v.items() if m in ROUTABLE or m in NC1_ONLY}
         if not pool:
             continue
-        best_m = (max if anc["higher_better"] else min)(pool, key=pool.get)
+        pick = max if anc["higher_better"] else min
+        best_m = pick(pool, key=pool.get)
         ci = anc.get("ci_pm", {})
-        out.append(f"{a}: Claude {opus}/{sonnet} vs best open {best_m} {pool[best_m]}"
-                   + (f" (published +-{ci.get(best_m)})" if ci.get(best_m) else ""))
+        prem = {m: x for m, x in v.items() if m in PREMIUM}
+        prem_txt = ""
+        if prem:
+            pm = pick(prem, key=prem.get)
+            if (prem[pm] > pool[best_m]) == anc["higher_better"] and prem[pm] != pool[best_m]:
+                prem_txt = f"; premium {pm} {prem[pm]}"
+        out.append(f"{a}: Claude {opus}/{sonnet} vs best budget {best_m} {pool[best_m]}"
+                   + (f" (published +-{ci.get(best_m)})" if ci.get(best_m) else "") + prem_txt)
     return out
 
 
@@ -99,7 +114,8 @@ def main() -> int:
     as_json = "--json" in sys.argv
     result = {}
     for tag in TAGS:
-        eligible = ROUTABLE + NC1_ONLY + DOMINATED
+        # the budget tier competes for the slot: percentiles are taken inside it (+ NC1 models)
+        eligible = ROUTABLE + NC1_ONLY
         rows = consensus(data, tag, eligible)
         lead_pool = [r for r in rows if r[0] in ROUTABLE and r[2] >= MIN_ANCHORS]
         top = lead_pool[0][1] if lead_pool else 0.0
@@ -110,8 +126,14 @@ def main() -> int:
             print(f"\n== {tag}  (anchors: {len(TAGS[tag])}, band = within {TIE:.2f} of the top eligible)")
             for m, s, n, d in rows:
                 mark = "*" if m in band else " "
-                tier = "" if m in ROUTABLE else ("  [NC1]" if m in NC1_ONLY else "  [dominated]")
+                tier = "" if m in ROUTABLE else "  [NC1]"
                 print(f" {mark} {m:22s} {s:.2f}  n={n}  {' '.join(d)}{tier}")
+            ref = consensus(data, tag, ROUTABLE + NC1_ONLY + PREMIUM + DOMINATED)
+            prem = [f"{m} {sc:.2f}" for m, sc, _n, _d in ref if m in PREMIUM][:4]
+            print("    premium reference (A1-OC only, percentiles over the full pool):", ", ".join(prem))
+            gem = consensus(data, tag, ROUTABLE + NC1_ONLY + GEMINI)
+            gtxt = [f"{m} {sc:.2f} (n={n})" for m, sc, n, _d in gem if m in GEMINI]
+            print("    gemini reference (Rule GM1, percentiles with the budget tier):", ", ".join(gtxt) or "no row")
             for line in result[tag]["claude"]:
                 print("    claude>", line)
     if as_json:

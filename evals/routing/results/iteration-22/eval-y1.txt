@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: low
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: Factual recall is D=0 but keeps Haiku 5.5 out (AA-Omniscience 6 vs Sonnet 21) and gates DeepSeek out (96.5% hallucination); price and cap decide for OpenCode.

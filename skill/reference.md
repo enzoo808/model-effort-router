@@ -2825,3 +2825,99 @@ fresh agent re-routed the six R=3 / window prompts after two small clarification
   (workflow-automation) and `z1` (science) both flip to `efficiency/lean-claude` when vendor-run
   rows are dropped. That is not a defect; it is the reason they carry `low-confidence`.
 - **Not re-run:** the 28 legacy `format_outdated` evals (single-ecosystem format, never backfilled).
+
+## 19. The Haiku 5.5 generation — iteration-22 (8 October 2026)
+
+Haiku 5.5 shipped on **7 Oct 2026** (the "pending" row of §17.1). Evidence, same-page AA tables, specs and
+the open items are in `opencode-benchmarks.md` §11 and `opencode-evidence.json` → `haiku_5_5`; this section
+records only *why the rules changed*. Primary sources: Anthropic's launch page, the Haiku 5.5 model, prompting and
+migration pages, the models overview, the deprecations table, Claude Code's model-config page, AA's comparison pages.
+
+### 19.1. What changed in the routing
+
+| Rule | Before | After | Reason |
+|---|---|---|---|
+| Claude roster | Haiku 4.5, 200k, **no effort** | **Haiku 5.5**, 1M, effort `low`…`max`; Haiku 4.5 legacy, never selected | Released; Anthropic's replacement for 4.5 |
+| **H1** (new) | `D=0 ∧ W=0 ∧ C≤1 ∧ R≤1` → Haiku | Same pick, plus a **D=1 branch** for reading/transform work with no dominant capability, `instruction-following` or `latency-volume`; `research-synthesis` excluded in both branches | AA-LCR 77 vs 78 (tie); the exclusions are where the same-page gap to Sonnet is large (§19.2) |
+| Haiku effort | none | `low` at D=0, `medium` at D=1 | Anthropic: `low` = chat / short tool tasks / simple volume, `medium` = default; AA measured only High and Max |
+| **E8** (new) | — | `Haiku 5.5 · xhigh/max` never emitted | Max: 43 @ USD 0.21 but 162k tokens; Sonnet 5.5 High 47 @ 0.88 and 37k; Anthropic says to compare with Sonnet at those rungs |
+| **H2** (new) | — | A Haiku shortfall → Sonnet 5.5 at its own D rung, never a higher Haiku rung | Mirrors the Sonnet → Opus rule; also overrides the Step 1 Haiku gate |
+| `latency-volume` | sub-second **or** bulk | **First-token requirement only**; bulk labelling/parsing has no dominant tag | Bulk work nobody waits on is a price question, not a latency one |
+| `D ≤ 1` badge tie-break | always OpenCode | **Claude when the Claude pick is Haiku 5.5**, OpenCode when it is Sonnet 5.5 | The old premise ("Haiku is USD 1/USD 5, the Flash tier is a tenth of that") no longer holds: Haiku is USD 0.10/USD 0.50 |
+| **E9** (new) | — | Claude Haiku 5.5 is **dominated on Go** | USD 15 cap + 30-day retention vs the USD 60 / 0-day Flash tier at equal index and cost |
+| E1 numbers | Sonnet 5.5 Max USD 7.60 | USD 5.46 | Sonnet 5.5 cache reads halved on 7 Oct (§19.4); dominance unchanged |
+| Single-fact lookup (eval y1) | Haiku 4.5 | **Sonnet 5.5 · low** | Factual recall is `research-synthesis`; AA-Omniscience Haiku 5.5 11 (Max) / 6 (High) vs Sonnet 5.5 32 / 21 |
+
+### 19.2. Why the D=1 branch stops where it does
+
+Same-page AA, Haiku 5.5 High vs Sonnet 5.5 High: II 38 vs 47, TB 4.0 22 vs 44, AutomationBench 34 vs 59,
+GDPval-AA 1420 vs 1551, Briefcase 1443 vs 1639, Omniscience 6 vs 21, GDP.pdf 17 vs 25, SciCode 49 vs 54,
+HLE 37 vs 46; **AA-LCR 77 vs 78**. Anthropic's own table adds Chartography 46.4 vs 61.6 and OSWorld 72.4 vs 83.9.
+So the Haiku family is: summaries, labels, reformatting, translation, rewriting, answers from text the user
+supplies. A finished memo or deck at the same depth is `knowledge-work` and goes to Sonnet (eval a3). AA publishes
+no intervals, so these are directions the router can act on only because the *exclusion* is conservative: the
+rule sends work to the stronger model when in doubt.
+
+### 19.3. The honest consequences
+
+1. **The badge flips for bulk labelling** (evals a1, q1): the Claude line now carries it. The evidence is
+   price: USD 0.10/USD 0.50 list, USD 0.21 per AA task at Max against DeepSeek V4.1 Flash's USD 0.27 (matched Max
+   rungs), no per-model cap. It is **not** a quality claim, and it does not survive a first-token requirement (eval a4).
+2. **Haiku 5.5 is not a pool star.** On the OpenCode side it is mid-pack on every independent anchor and is dominated
+   by Flash models on cap pressure. Its value is the Claude line, where it replaces a USD 1/USD 5 model.
+3. **The `low`/`medium` rungs are unmeasured.** Everything quantitative uses the lowest measured rung (High) as an upper
+   bound. The monotonicity assumption (fewer thinking tokens ⇒ lower cost) is Anthropic's own guidance, not AA's data.
+4. **Anthropic warns about its own `low`:** with long agent prompts it may stop early or skip a check, and
+   `medium` roughly halves early stopping at 2× the tokens. The router never routes agentic work to Haiku (H1), which is
+   the other half of that warning.
+5. Tokenizer: the same text counts ~30% more tokens than on Haiku 4.5, and the 100k-token price step is 5×.
+   "−90%" is a per-token statement; real savings are nearer −75% (DataCamp, Anthropic's own "around 75%").
+
+### 19.4. Price drift observed on the same pass
+
+Sonnet 5.5's cache reads dropped from USD 0.20 to USD 0.10 per MTok on 7 Oct (Anthropic launch page), cutting AA's
+cost per task at Max from USD 7.60–7.67 to USD 5.46 (§17 and `opencode-benchmarks.md` §3 carry the old figure for
+history). Opus 5.5 did not move. Agent Arena's p50 cost per task also drifted: Opus 5.5 1.57 → 1.67, Sonnet 5.5 2.99 →
+3.04, DeepSeek V4.1 Flash 0.12 → 0.13, Luna 0.05 → 0.07; net-outcome scores were unchanged.
+
+### 19.5. Verification and what is still open
+
+- **Cold-agent run: 29/29** (6 fresh agents, `evals/routing/results/iteration-22/`). First pass 25 of 27 routed:
+  `a3` was a golden error (at `D ≤ 1` capability rows are skipped, so a Sonnet 5.5 pick loses the price tie-break —
+  the agent was right), `a5` split on OpenCode `#2` (relabelling read as D≤1 instead of the bulk gate). Fix: prompt
+  sharpened, and the OpenCode bulk-gate row now names "one labelling or parsing job applied to hundreds of items — redoing
+  such a batch included"; a5 3/3 afterwards, and the six prompts that wording could touch re-ran 6/6.
+- `i1` / `k1` were stopped by a safety classifier when batched and re-run alone; `i1` was a copy of the shipped worked
+  example, so it proves little.
+- **Still open:** trigger eval (needs a logged-in terminal); `benchmarks.json` / `benchmark_frontiers.json` were left
+  alone on purpose (Codex-era compiled data; the runtime reads `opencode-evidence.json`); AA has not measured Haiku
+  5.5 at `low`/`medium`; the D=1 branch of H1 rests on one reading-comprehension tie.
+
+---
+
+## 20. Budget-first pool and the OpenCode-default badge — iteration-23 (14 October 2026)
+
+Two user requests, one rule each (full rationale, tables and the open items: `opencode-benchmarks.md` §12):
+
+- **BUD1 — budget-first pool.** Some Go models burn their per-model dollar cap in a handful of real tasks (cap ÷ Arena p50 cost
+  per agent task: GLM-5.3 23, Kimi K3 21, Qwen3.8 Max 33, Grok 4.7 10 tasks a month, against 150–1500 for MiMo-V2.6-Pro, DeepSeek V4.1
+  Flash, GLM-5.3-Flash, Qwen3.8 Flash, MiMo-V2.6-Flash). The four premium models are never `#1`/`#2` of a routed pair and appear only as
+  `#2` through A1-OC. Pairs are the independent-evidence consensus inside the budget tier. `check_opencode_pool.py` recomputes the
+  tasks-per-month column from `opencode-evidence.json` and fails a premium model above 35 or a budget model below 140.
+- **SM1 — OpenCode by default.** The badge asks "is Claude's lead serious *at this depth*?" instead of "does Claude lead?". Claude keeps it on gates,
+  mechanisms (MECH1), `D = 3` agentic-code / terminal-tool / deep-reasoning, knowledge-work from `D = 2`, and `R = 3` with a Claude lean; every
+  `D ≤ 1` task (Haiku 5.5 included) and every other `D = 2` task is OpenCode. The D=2 / D=3 coding split reads DeepSWE v1.1 (±6–9, ties) as
+  mid-difficulty work and Terminal-Bench 4.0 / FrontierSWE v2 as the hardest work — an interpretation, flagged as the softest step.
+
+**Superseded here:** the iteration-22 `D ≤ 1` tie-break that gave the badge to Claude when the pick was Haiku 5.5 (§19.1); the iteration-21 coding / knowledge-work
+Claude badge at every depth; A1-OC's `Kimi K3` default for coding (now GLM-5.3, since GLM-5.3 is no longer in the default pair); NC1's re-admission of Grok 4.7.
+**Unchanged:** the Claude arm, gates, retention and NC1 for Luna / Muse Spark, effort rules (`max` on the Flash tier is USD 0.25–0.27 per AA task).
+
+**Verification:** `grade_routing.py --selftest` 30/30; policy sync (36 blocks); pool check (mutation-tested: swapping GLM-5.3 into a row or flipping a badge cell fails
+it); example check. **Not done:** the cold-agent routing run and the trigger eval.
+
+## 21. Free models and the Gemini line (iteration-24, 20 October 2026)
+
+Rules **FR1** (free lane: MiniMax M3.1 Flash Free joins the pool; Zen free twins are spill-over only; every other free model is never selected) and **GM1** (Gemini 4 Argon is metered by the user's Google credits and
+goes first only in the right-hand column of `agentic-code`, `terminal-tool`, `deep-reasoning`, `research-synthesis` and `workflow-automation`) were added to `SKILL.md`. The evidence, the per-model verdicts, the Google-membership
+facts (USD 10/month of credits, paid vs free tier terms, the third-party-login warning) and the 503 / 429 diagnosis are in `opencode-benchmarks.md` §13. This file's Codex material (§9, §18) is still the retired arm.

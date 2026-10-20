@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+OpenCode: #1 Grok 4.7 · effort: xhigh · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Knowledge-work: two agreeing AA rows favour Claude (GDPval-AA 1839 vs 1715, Briefcase 1823 vs 1644); Grok 4.7 is the best open model on both.
+Data: Grok 4.7 keeps prompts for 30 days.

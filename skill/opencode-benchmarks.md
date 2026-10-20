@@ -1,7 +1,7 @@
-# OpenCode Go evidence — iteration-21
+# OpenCode Go evidence — iteration-23
 
 **Audit data for the OpenCode arm of `SKILL.md`. Never load this to route a prompt;
-every rule needed is in `SKILL.md`.** Verified **6 October 2026**. Everything below
+every rule needed is in `SKILL.md`.** Verified **6 October 2026** (§11, Claude Haiku 5.5: **8 October 2026**). Everything below
 was fetched in this pass from the sources in §8; anything not fetched is marked
 `n/p` (not published / not retrieved) and was **not** filled in from memory.
 
@@ -15,7 +15,7 @@ Source: `opencode.ai/docs/go/`.
   can be spent on that one model per month. So a USD 15 model allows USD 3 per
   5 hours and USD 7.50 per week; a USD 60 model allows USD 12 / USD 30.
 - Model ids are `opencode-go/<model-id>` (e.g. `opencode-go/kimi-k3`).
-- Page lists **30 models**. The 15 "main" models are in §2; the other 15 are in §7.
+- Page lists **31 models** (30 on 6 Oct + **Claude Haiku 5.5**, added 7 Oct). The 16 rated models are in §2 and §11; the other 15 are in §7.
 - **Retention (page text):** 0 days for most models; **Grok 4.7 / 4.6: 30 days**
   (ZDR limits stateful Responses API and Files); **GPT 6 Luna / 5.6 Luna: 30 days**
   (abuse-monitoring logs); **DeepSeek (V4.1 Flash, V4 Pro, V4 Flash, V4 Flash Vision
@@ -30,7 +30,7 @@ Source: `opencode.ai/docs/go/`.
   list. The authoritative list is the model catalogue OpenCode reads, **models.dev**
   (`providers/opencode-go/models/<id>.toml`, dev branch, read 6 Oct 2026) — see §4.
 
-## 2. The 15 main models
+## 2. The 15 original main models (Claude Haiku 5.5 is the 16th — §11)
 
 AA = Artificial Analysis Intelligence Index **v4.3.2**, "Max" unless stated. All
 benchmark columns are **AA same-page comparison values** (`artificialanalysis.ai/
@@ -349,3 +349,232 @@ the top 4 of that consensus).
 - Gray Swan IPI exists for only four models; prompt-injection resistance is unknown for DeepSeek, MiMo, Qwen.
 - Qwen3.8 Flash = AA/Arena "Qwen3.8-Flash-Next" by price and date, not by name.
 
+## 11. Claude Haiku 5.5 — the first Claude model on Go (8 October 2026)
+
+Released 7 Oct 2026 (`claude-haiku-5-5`), the same day it appeared on `opencode.ai/docs/go/`
+as **`opencode-go/claude-haiku-5-5`**: cap **USD 15** (Go Plus USD 60), **30-day retention**
+(abuse monitoring, like Grok / Luna), two token-price brackets at 100K. models.dev lists
+effort `low · medium · high · xhigh · max` and an adaptive/disabled toggle. Machine-readable
+copy: `opencode-evidence.json` → `haiku_5_5`.
+
+**Specs (Anthropic docs, primary).** USD 0.10 / USD 0.50 per MTok up to 100k tokens,
+USD 0.50 / USD 2.50 above; cache read USD 0.01; batch −50%. 1M context, 128K output, Jun 2026
+cutoff, text+image in. Default effort `medium`. Tokenizer counts ~30% more than Haiku 4.5, so
+the headline "−90%" is about −75% in practice (and the 100k step is a 5× jump). Thinking cannot be
+disabled in Claude Code. Retirement not sooner than 7 Oct 2027; **Haiku 4.5 not sooner than 15 Oct 2026**.
+Claude Code: alias `haiku` → Haiku 5.5 on the Anthropic API from **v2.1.293**; `ultracode` supported.
+New safeguard classifiers (`cyber`, `bio`, `frontier_llm`, `general_harms`) can refuse — consistent with
+the bio and offensive-security gates, neither of which Haiku carries.
+
+**AA v4.3.2, same-page comparisons.** AA measured two rungs only:
+
+| | Haiku 5.5 High | Haiku 5.5 Max | Sonnet 5.5 High | Sonnet 5.5 Max |
+|---|---|---|---|---|
+| Intelligence Index | 38 | 43 | 47 | 56 |
+| cost / task | USD 0.08 | USD 0.21 | USD 0.88 | USD 5.46 |
+| output tokens / task | 55k | 162k | 37k | 197k |
+| Terminal-Bench 4.0 | 22 | 33 | 44 | 64 |
+| GDPval-AA / Briefcase | 1420 / 1443 | 1620 / 1578 | 1551 / 1639 | 1839 / 1823 |
+| AutomationBench | 34 | 35 | 59 | 72 |
+| SciCode / HLE / CritPt | 49 / 37 / 19 | 55 / 44 / 19 | 54 / 46 / 25 | 61 / 55 / 31 |
+| Omniscience / AA-LCR / GDP.pdf | 6 / 77 / 17 | 11 / 83 / 21 | 21 / 78 / 25 | 32 / 83 / 26 |
+
+Anthropic launch table (vendor, tier A, Terminal-Bench at max): Haiku 5.5 vs Sonnet 5.5 — GDPval-AA 1620 vs 1840,
+Briefcase 1578 vs 1824, OSWorld 2.1 72.4 vs 83.9 (partial credit; 37.1 for full tasks), HLE 45.9 vs 56.9,
+TB 4.0 39.2 vs 70.6, Chartography 46.4 vs 61.6. Haiku 4.5 was 735 / 614 / 15.7 / 10.2 / 0.0 / 6.4.
+
+**Against the Flash tier (AA Max vs Max).** Haiku 5.5 43 @ USD 0.21 vs GLM-5.3-Flash 42 @ 0.25,
+DeepSeek V4.1 Flash 39 @ 0.27, Qwen3.8 Flash 40 @ 0.37, GPT 6 Luna 38 @ 0.07, MiMo-V2.6-Flash 38 @ 0.06. It
+leads the tier on HLE (44), CritPt (19), SciCode (55), GDP.pdf (21), Briefcase (1578) and
+AA-Omniscience (11), ties TB 4.0 with GLM-5.3-Flash (33) and **is last on AutomationBench (35 vs 53–69)**.
+It also streams the fastest (243 tok/s). On output volume it is the heaviest: 162k tokens vs DeepSeek 89k.
+
+**Findings.**
+1. **On the Claude line Haiku 5.5 is a real cost pick.** List USD 0.10 / USD 0.50 sits at or below the Go
+   Flash tier (DeepSeek USD 0.15–0.30 / 0.60–1.20, GLM-5.3-Flash 0.15 / 0.50, MiMo-V2.6-Flash 0.14 / 0.28)
+   with no dollar cap to burn, and at High it is **11× cheaper than Sonnet 5.5 High for −9 index points**.
+   Reading comprehension is a tie (AA-LCR 77 vs 78 High, 83 = 83 Max). → Rule H1.
+2. **Its gaps are exactly the agentic and knowledge-work anchors** (TB −22, AutomationBench −25,
+   GDPval −131, Omniscience −15, GDP.pdf −8 at High) → H1's exclusion list. Anthropic itself recommends
+   Sonnet 5.5 / Opus 5.5 for "demanding coding assignments".
+3. **`xhigh` / `max` do not pay.** Max buys +5 index for 2.6× the cost and 2.9× the tokens, and still sits 4
+   points under Sonnet 5.5 High, which uses 37k tokens → E8, Haiku stops at `medium`.
+4. **On Go it is dominated** (E9): High 38 @ 0.08 (cap 15, 30-day retention) vs MiMo-V2.6-Flash 38 @ 0.06
+   (cap 60, 0-day); Max 43 @ 0.21 vs GLM-5.3-Flash 42 @ 0.25 — cap pressure 0.014 vs 0.0042 of the cap per
+   task. `derive_opencode_rows.py` puts it mid-pack (0.53–0.67) on every capability it has ≥ 2 anchors for.
+5. **No independent coding evidence beyond AA TB 4.0.** Not on Arena's Agent leaderboard; no DeepSWE,
+   Vals, FrontierSWE, MLCR or MMMU-Pro row. benchlm's overall rank (#28 of 887) is a different field size
+   from the pool's 784-model ranks and was not mixed in.
+
+**Not resolved.**
+- The **`low` and `medium` rungs — the only ones Rule H1 emits — are unmeasured by AA.** The cost claims
+  use High (the lowest measured rung) as an upper bound by monotonicity, not as a measurement.
+- **First-token time:** AA shows 26 s (High) and 415 s (Max) because hidden thinking counts; DeepSeek V4.1
+  Flash streams its reasoning and shows 1.1 s. The two are not comparable, no sub-second Haiku figure exists,
+  and Anthropic positions Haiku 5.5 at `low` for chat and voice agents. The `latency-volume` badge row therefore
+  stays OpenCode on a measured fact and says so.
+- AA's "Non-Hallucination 83%" for Haiku 5.5 (vs 84% for DeepSeek, whose hallucination rate AA elsewhere
+  gives as 96.5%) is a different quantity and was not used.
+- Cold-agent routing evals for the new rules have not been run (goldens are rule-derived; `--selftest` only
+  proves grader ≈ goldens).
+
+**Price drift found on the same pass.** Sonnet 5.5's cache reads were halved on 7 Oct (USD 0.20 → 0.10), so AA's
+Sonnet 5.5 Max cost/task fell from USD 7.60–7.67 to **5.46**; Opus 5.5 (USD 5.98 at Max) did not move.
+E1 (`Sonnet 5.5 · max` dominated by `Opus 5.5 · xhigh`, 56 @ 3.46) still holds at 1.6× instead of 2.2×.
+Agent Arena cost/task refreshed: Opus 5.5 1.67, Sonnet 5.5 3.04, DeepSeek V4.1 Flash 0.13, Luna 0.07.
+
+**Sources (fetched 8 Oct 2026).** `platform.claude.com/docs/en/models/haiku-5-5/overview`, `.../models/overview`,
+`.../model-deprecations`, `.../prompting-claude-haiku-5-5`; `code.claude.com/docs/en/model-config`;
+`anthropic.com/claude-haiku-5-5`; `artificialanalysis.ai/models/comparisons/claude-haiku-5-5{,-high}-vs-{claude-sonnet-5-5,deepseek-v4-1-flash,gpt-6-luna}`;
+`opencode.ai/docs/go/`; models.dev `providers/opencode-go/models/claude-haiku-5-5.toml`; `arena.ai/leaderboard/agent`;
+`benchlm.ai/models/claude-haiku-5-5`; kingy.ai, venturebeat.com, datacamp.com (secondary, for the Luna cross-rows).
+
+## 12. Budget-first tiering and the OpenCode-default badge (14 October 2026, iteration-23)
+
+**Why.** The user reported that some Go models burn their quota in a handful of tasks and asked for price-performance pairs
+with as much performance as that allows; and that OpenCode should take everything up to where it stops being good enough, with
+Claude recommended only where it makes a serious difference.
+
+**Measuring burn.** Go caps are per model (§1). Two independent per-task cost figures exist for the pool:
+
+| Model | cap | AA USD/task (Max) | % of cap per AA task | Arena p50 USD/real agent task | agent tasks per month of cap | tier |
+|---|---|---|---|---|---|---|
+| MiMo-V2.6-Flash | 60 | 0.06 | 0.1% | 0.04 | 1500 | B |
+| GLM-5.3-Flash | 60 | 0.25 | 0.4% | 0.10 | 600 | B |
+| DeepSeek V4.1 Flash | 60 | 0.27 | 0.5% | 0.13 | 462 | B |
+| GPT 6 Luna | 15 | 0.07 | 0.5% | 0.07 | 214 | N |
+| Qwen3.8 Flash | 30 | 0.37 | 1.2% | 0.15 | 200 | B |
+| MiMo-V2.6-Pro | 15 | 0.13 | 0.9% | 0.10 | 150 | B |
+| Muse Spark 1.3 | 60 | ~0.10 | 0.2% | 0.43 | 140 | N |
+| DeepSeek V4 Pro | 15 | 0.67 | 4.5% | 0.32 | 47 | D |
+| Qwen3.8 Max | 15 | 5.41 | 36% | 0.45 | 33 | **P** |
+| GLM-5.3 | 15 | 2.01 (Low 0.85) | 13% (6%) | 0.66 | 23 | **P** |
+| Kimi K3 | 15 | 2.00 (Low 1.15) | 13% (8%) | 0.72 | 21 | **P** |
+| Grok 4.7 | 15 | 3.74 | 25% | 1.54 | 10 | **P** |
+
+Both columns split the pool the same way, with a wide gap (35 → 140 tasks per month; 1.2% → 5.7% of the cap per task), so the tier boundary
+is not sensitive to which cost figure is used. The 5-hour window is 20% of the cap: one GLM-5.3 AA task at Max uses ~67% of it, one DeepSeek V4.1 Flash
+task ~2%. Arena p50 costs are list-price token costs on real agent traces; they are an order of magnitude, not a quote.
+
+**What the tiering changes.** Premium models leave every routed pair (Rule BUD1) and return only as `#2` through A1-OC. Pairs are the
+consensus *inside* the budget tier (`scripts/derive_opencode_rows.py`, percentiles taken among budget + NC1 models; the premium consensus is
+printed beside it for reference). Where the budget tier is weak, it is weak: the deep-reasoning `#2` is GLM-5.3-Flash (HLE 40, CritPt 15) because the
+rest of the tier is lower still (HLE 35–39), and the knowledge-work pair is a three-way tie at 0.83 (MiMo-V2.6-Pro, Qwen3.8 Flash, and Muse Spark under NC1).
+Only one budget model (MiMo-V2.6-Pro) has strong reasoning evidence, which is why it leads four rows.
+
+**The badge threshold (Rule SM1).** The earlier badge asked "does Claude lead on independent evidence?" — and for coding and knowledge-work the answer was
+yes at every depth. The new question is "is the lead serious *at this depth*?":
+
+- Claude's lead on coding sits on the hardest anchors — AA Terminal-Bench 4.0 (Sonnet 5.5 64, Opus 5.5 60 vs best budget 35), FrontierSWE v2 (62 vs 18),
+  Agent Arena (13.8 / 12.5 vs 4.0). On DeepSWE v1.1, which publishes ±6–9 per row, DeepSeek V4.1 Flash 71.7 ties Opus 5.5 72.3 and Sonnet 5.5 70.5.
+  Reading DeepSWE as mid-difficulty work and TB 4.0 / FrontierSWE as the hardest work gives the `D = 2` → OpenCode, `D = 3` → Claude split.
+  This is an interpretation of which task depth each benchmark represents, not a measured crossover, and it is the single softest step in the rule.
+- Deep reasoning (HLE 61 / 55 vs 49, CritPt 32 / 31 vs 27, ARC-AGI-2 92 vs 61) bites at `D = 3`.
+- Finished deliverables (GDPval-AA 1866 / 1839 vs 1686, Briefcase 1807 / 1823 vs 1583, AnalystAgent 56 / 58 vs 39) are wide and consistent across
+  three AA rows, so `knowledge-work` stays Claude from `D = 2`.
+- Every `D ≤ 1` task is OpenCode, including the ones Haiku 5.5 handles (the Claude line still names Haiku). This reverses iteration-22's
+  Haiku tie-break on purpose: the user's priority is Claude quota, and DeepSeek V4.1 Flash costs about the same per task as Haiku 5.5 at Max (USD 0.27 vs 0.21 per AA task).
+- After a stated OpenCode shortfall at `D ≥ 2` the badge goes to Claude whenever the dominant capability has a BD1 direction (A1-OC).
+
+**Not changed.** Efforts (the `max` that was expensive was GLM-5.3 / Kimi K3; on the Flash tier it is USD 0.25–0.27 per AA task), gates, retention rules,
+the Claude arm and all Claude-side evidence. `benchmarks.json` / frontiers are untouched.
+
+**Open.** (1) No cold-agent run of the 30 goldens yet. (2) The D=2 / D=3 split above is policy on top of the evidence; if it should move, change one row
+of the badge table in `SKILL.md` and its mirror in `evals/policy/routing_policy.json`. (3) MiMo-V2.6-Pro now appears in the `agentic-code` pair on two AA/Arena
+anchors only (it has no DeepSWE or Vals row) — the weakest-evidenced pick in the new coding pairs.
+
+## 13. Free models and the Gemini line (20 October 2026, iteration-24)
+
+Trigger: the user wanted (a) the free OpenCode models benchmarked and used where they fit, and (b) the Gemini entitlement from their Google membership
+used where Gemini stands out. Everything below was read from the cited page on 2026-10-20; `skill/opencode-evidence.json` → `iteration_24` holds the numbers.
+
+### 13.1 What the Go page looks like now (opencode.ai/docs/go, 29 models)
+
+New against the 8 Oct list: **Gemini 4 Argon Contributor** (USD 60 / 240, *Not ZDR — prompts may be used to train Google models*, 2× promo), **MiniMax M3.1 Flash Free**
+(Unlimited / Unlimited, 0 days, limited time), **Beam Free** (Unlimited, 30 days, limited regions), **LongCat 2.5 Preview Free**, **Step 5 Preview** (USD 60, 4× promo).
+**DeepSeek V4.1 Flash's cap rose USD 60 → 80** (tasks/month 462 → 615, still budget). No longer listed: DeepSeek V4 Flash, its Vision Exp, Space Bunny.
+
+### 13.2 The Zen free list, model by model
+
+The page gives no rate limits and no end dates ("limited time"). A third-party probe of the free tier (12 Oct, one run per cell, harness bugs documented by its author — low weight)
+saw no 429 at 12 concurrent calls, found `exo-free` returning HTTP 410, and scored `longcat-2.5-preview-free` 3/4 (it mis-summed a structured-output task).
+
+| Free model | What it is | Data | Independent evidence | Verdict |
+|---|---|---|---|---|
+| **MiniMax M3.1 Flash Free** | `minimax/MiniMax-M3.1-Flash` (models.dev base), Go + Zen | zero retention, no training | **AA II 43**, AutomationBench-AA 73, TB 4.0 26, HLE 48, CritPt 22, SciCode 53, AA-LCR 80, GDP.pdf 21, MMMU-Pro 79.1, USD 0.22/task, 116 tok/s, TTFT 1.2 s; **hallucination rate 92.8%** (index 15.6) | **Routed (tier F)** — FR1 |
+| GLM-5.3-Flash Free | twin of paid `zhipuai/glm-5.3-flash` | zero retention | = the paid model (II 42) | Twin: named as spill-over, never a pick |
+| DeepSeek V4.1 Flash Free | twin of paid `deepseek/deepseek-v4.1-flash`, **200k context / 32k output** | zero retention | = the paid model (II 39) | Twin (same) |
+| MiMo-V2.6-Flash Free | twin of `xiaomi/mimo-v2.6-flash` | **may be used to improve the model** | = the paid model (II 38) | Twin, NC1 only |
+| LongCat 2.5 Preview Free | Meituan preview, 1M context | zero retention | none (AA page 404; vendor figures only) | Unmeasured — never selected |
+| Beam Free | unknown | 30 days, **region-restricted** | none found | Unmeasured |
+| Big Pickle / LL Alpha Free / Exo Free | stealth models (identity undisclosed) | **trains** (LL Alpha: 30 days) | Big Pickle's SWE Atlas 50.8 is self-reported, single trial | Unmeasured; Exo is HTTP 410 |
+| MiMo-V2.5 Free | older MiMo generation | trains | none at v4.3.2 | Never selected |
+| Nemotron 3 Ultra Free | NVIDIA 550B-A55B | **logged; "do not submit confidential data"** | **AA II 23 at v4.3.2** (TB 4.0 1, AutomationBench 3) | Dominated by every budget model |
+| Nemotron 3.5 Lightning / Super VL Free | NVIDIA | same | Lightning II 24 at *v4.1.1* — not comparable | Never selected |
+| Jev 1.13 Free | TypeSafe AI, `/v1/systemone` | — | not a text generator ("structured-decision model") | Not applicable |
+
+**Why only M3.1 Flash joined the pool.** It is the only free model that has both a v4.3.2 row and a data policy compatible with the user's confidential default. On the
+Flash tier it leads AutomationBench-AA (73 vs DeepSeek 69), HLE (48 vs 39–40), CritPt (22 vs 14–15) and SciCode (53 vs 51–52) and ties MMMU-Pro, with no cap pressure.
+It has **no** DeepSWE / Agent Arena / Vals row, so it cannot lead `agentic-code` (the consensus needs ≥ 2 anchors) — its place is `deep-reasoning` / `science` as `#2` and
+`doc-data-understanding` as `#1`. Its hallucination rate (92.8%) is the same failure as DeepSeek V4.1 Flash (96.5%), so the factual-recall gate removes both. It is limited-time:
+FR1 records the rows it replaced (GLM-5.3-Flash as `#2`; Qwen3.8 Flash · MiMo-V2.6-Pro for doc-data) so delisting is a one-line revert.
+
+### 13.3 Gemini 4 Argon
+
+Model card 13 Oct 2026 (announced 30 Sep); natively multimodal (text, image, audio, video in; text out); 1,048,576 tokens combined; knowledge cutoff March 2026; **API is paid-tier only
+(Tier 1 = billing linked); a free-tier key gets `429 "limit: 0"`**; `thinking_level` `low`/`medium`/`high`, default `medium`, `max` → HTTP 400; USD 2 / 10 per MTok through 30 Nov, **4 / 20 from 1 Dec**.
+
+| Measure (AA v4.3.2 unless noted) | Gemini 4 Argon (High) | MiMo-V2.6-Pro | Sonnet 5.5 | Opus 5.5 |
+|---|---|---|---|---|
+| Intelligence Index / USD per task | **53** / 1.99 | 46 / 0.13 | 56 (Max) / 5.46 | 58 (Max) / 5.98 |
+| Terminal-Bench 4.0 | 57.1 (Vals 57.6) | 35 | 63.6 | 59.6 |
+| FrontierSWE v2 (Proximal) | 55.0 | — (GLM-5.3: 30) | 61.9 | 62.3 |
+| HLE / CritPt / ARC-AGI-2 | 57.1 / 27.1 / 91.3 | 49 / 27 / — | 55.0 / 31.4 / — | 61.4 / 31.7 / 91.7 |
+| **AutomationBench-AA** | **77.5** | 59 | 71.8 | 69.5 |
+| **AA-Omniscience index / hallucination rate** | **42.4 / 15.1%** | 8.4 / 40.6% | 32.3 / 47.0% | 46.4 / 58.6% |
+| GDPval-AA / Briefcase / AnalystAgent | 1623 / 1486 / 48.8 | 1686 / 1516 / — | 1839 / 1823 / 57.5 | 1866 / 1807 / 56.3 |
+| AA-LCR / GDP.pdf / SciCode | 79.7 / 21.8 / 61.8 | 86.3 / 19.2 / 60.9 | 82.7 / 25.8 / 61.0 | 84.7 / 26.2 / 66.9 |
+| Speed / TTFT | 84 tok/s / **48.6 s** | 49 / 3.2 s | — | — |
+
+**Where it stands out (and so where GM1 uses it):** factual reliability (the lowest hallucination rate and, bar Opus 5.5, the highest Omniscience index of any model rated here),
+AutomationBench-AA (highest of all), deep-reasoning parity with Opus on ARC-AGI-2 (independent), and the far-best non-Claude option on terminal / agentic coding.
+**Where it does not:** finished deliverables (GDPval / Briefcase / AnalystAgent are *below* MiMo-V2.6-Pro or Claude), the Claude coding lead (TB 4.0, FrontierSWE v2, and Google's
+own table has Opus 5.5 66.4 vs 57.4), long-context reading (AA-LCR 79.7), TTFT (48.6 s at High), and price (USD 1.99 per AA task, 3.98 from 1 Dec).
+Vendor-only rows (Google's DeepSWE 77.9, GraphWalks 84.2, OSWorld-2.0 69.2, Gray Swan 0.7) are tier A *vendor_relative* and enter no rule. Independent Kubernetes-manifest
+test of one blog (n = 12): none served HTTP 200 (Opus 5.5 3/3) — noted, not weighted.
+
+**Cost reality.** At AA's USD 1.99 per index task, one month of AI Pro's USD 10 credit buys about five such tasks (about half that after 1 Dec); a real agent task is cheaper (Arena p50
+runs 0.33–0.77× AA cost for the other models; Argon has no Arena row). That is premium-tier arithmetic, which is why BUD1 keeps Argon out of `D ≤ 2 ∧ R ≤ 2` pairs and GM1 spends it
+only on the five rows where it leads, at `D = 3` / `R = 3`.
+
+### 13.4 The Google membership, and the "server load" error
+
+- **The subscription does not include an API key or API quota.** Google AI Pro (USD 19.99) carries Google Developer Program premium benefits: **USD 10/month of Google Cloud credits**
+  usable on the Gemini API (AI Ultra: USD 100). They are *not automatic* — activate at developers.google.com/program/my-benefits and choose a billing account; credits expire after
+  12 months; one source says a positive prepaid balance may still be required (unverified). Attaching billing moves the key to the **paid tier**.
+- **Paid tier:** content is not used to improve Google products; prompts and responses are logged "for a limited period" (unspecified) for misuse detection. **Free tier:** used to improve
+  products, human reviewers may read it. The user chose to treat the paid tier like Claude (confidential work allowed) — see the Step 1 confidential row.
+- **Third-party login is the risky route.** Google's Antigravity FAQ calls using third-party software with an Antigravity login a Terms-of-Service violation that "can result in suspension or
+  termination"; a forum report (19 Feb 2026) has an AI Pro account suspended after one day of OpenCode + Gemini CLI use (no Google reply on the page; outcome unknown). Google recommends an
+  AI Studio / Enterprise API key for third-party agents. The router never recommends the OAuth route (Step 7 rule 11).
+- **The overload error.** Not reproducible from here (no Gemini key). Two different failures look alike: a **503** is Google-side capacity (retry with exponential backoff, or switch Pro → Flash — Google's own
+  advice), and a **429 `limit: 0`** on Argon means the key is free-tier (Argon has none). One independent 9-call test on a paid key saw no 503 and no capacity error; the model card lists
+  "hallucinations, occasional slowness, and timeouts" as known limitations and Google suggests 15-minute client timeouts for hard prompts. Rule 11 therefore names both.
+- **Gemini 3.8 Flash** (41 @ USD 1.24 per AA task; USD 0.75 / 3.75 through 31 Dec, 1.50 / 7.50 after; has a free tier that trains) is dominated by MiMo-V2.6-Pro on index per dollar (E10); it stays as Argon's fallback.
+
+### 13.5 What changed in the rules
+
+FR1 (free lane) and GM1 (Gemini slot) are new; BUD1, NC1, CAP1 and A1-OC were reworded; badge row `research-synthesis` at `R = 3` flipped Claude † → OpenCode † (with Argon the OpenCode line beats the
+Claude pick on both Omniscience measures); the DeepSeek cap is USD 80; the pool is 19. Mirror: `evals/policy/routing_policy.json` (`gm1_rows`, `free_lane`, `pool.models`). Goldens: 34 evals
+(d1/g1/j1/t1/v1/z1/p1/n1/r1 moved; w1–w4 new). `grade_routing.py` rejects a Gemini model on the OpenCode line unless the eval sets `allow_gemini`, and rejects any free model other than M3.1 Flash Free.
+
+**Cold-agent run.** 6 fresh agents read only `SKILL.md`: 33/33 routed evals pass after two corrections (`w2`: NC1 ambiguity → Muse Spark `#2` on `research-synthesis` only; `r1`: prompt sharpened). `i1` was refused by its agent and not re-run; `k1`/`l1` were routed by an agent that had seen other result files (gates are deterministic).
+
+**Open.** (1) `i1` not cold-tested this iteration. (2) Argon's `medium` rung (the default) has no independent figure. (3) M3.1 Flash Free has no
+independent coding row and its free status is time-limited. (4) The Antigravity ban report is one forum post. (5) Whether the AI Pro credit needs a prepaid balance is one blog's claim.
+
+**Sources (read 2026-10-20).** opencode.ai/docs/go · opencode.ai/docs/zen · opencode.ai/v2/docs/console/models · opencode.ai/docs/providers · models.dev (`providers/opencode-go/models/gemini-4-argon-contributor.toml`,
+`minimax-m3.1-flash-free.toml`; `providers/google/models/gemini-4-argon.toml`; `providers/opencode/models/{glm-5.3,deepseek-v4.1,mimo-v2.6}-flash-free.toml`) · deepmind.google/models/model-cards/gemini-4-argon ·
+artificialanalysis.ai (Argon page; comparisons vs MiMo-V2.6-Pro for Argon, Gemini 3.8 Flash, Nemotron 3 Ultra, MiniMax M3.1 Flash) · benchlm.ai/models/{gemini-4-argon,minimax-m3-1-flash} ·
+ai.google.dev/gemini-api/{pricing,terms} · blog.google …/gdp-premium-ai-pro-ultra · developersdigest.tech and smartscope.blog (credits) · discuss.ai.google.dev (suspension thread; 429/503 handling) ·
+computingforgeeks.com and eesel.ai (Argon API hands-on) · github.com/digithings-ai/digithings PR 5494 (free-tier probe).

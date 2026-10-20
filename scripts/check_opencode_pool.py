@@ -1,19 +1,25 @@
 #!/usr/bin/env python3
 """Prove that skill/SKILL.md's OpenCode arm matches the machine-readable policy.
 
-    MIRROR   evals/policy/routing_policy.json   the 15-model pool, Step 4-OC rows, badge table
+    MIRROR   evals/policy/routing_policy.json   the 19-model pool, Step 4-OC rows, badge table
     RUNTIME  skill/SKILL.md                      the only file the router reads
 
 Checks (all mechanical, all fail loudly):
 
-  1. The roster table names exactly the 15 pool models, with the same Go cap.
+  1. The roster table names exactly the 19 pool models, with the same Go cap, tier
+     (B budget / F free / P premium / G Gemini / N non-confidential / D dominated) and
+     tasks-per-month.
   2. Every Step 4-OC row (R<=2 pair, R=3 pair, NC1 variants) equals the mirror,
      and no row ever emits a model whose status is `dominated`.
-  3. The badge table (side at R<=2, side at R=3, dagger) equals the mirror.
+  3. The badge table (side at D=2, at D=3 and at R=3, dagger) equals the mirror, and no
+     Step 4-OC row ever emits a premium model (Rule BUD1).
   4. Every OpenCode line in a worked example names only routable pool models, an
      effort that OpenCode actually offers for that model (policy `opencode_variants`), never `GLM-5.3 · low` / `Kimi K3 · low`, and never a
      USD 15-cap model at `low` (only the latency row's GPT 6 Luna is exempt).
-  5. No model outside the 15 appears in a Step 4-OC row or an example.
+  5. No model outside the 19 appears in a Step 4-OC row or an example.
+  6. Rule GM1: Gemini 4 Argon appears only in the right-hand column of the policy's
+     `gm1_rows`, first, and in no left-hand column; an example that names it carries the
+     auto-added Gemini line (Step 7 rule 11).
 
     python scripts/check_opencode_pool.py
 """
@@ -57,6 +63,12 @@ def models_in(text: str, names: list[str]) -> list[str]:
     return re.findall(pat, text)
 
 
+def mentions(model: str, text: str) -> bool:
+    """Whole-name match: `MiniMax M3` must not fire inside `MiniMax M3.1 Flash Free`, nor `GLM-5.3`
+    inside `GLM-5.3-Flash`."""
+    return re.search(re.escape(model) + r"(?![-\w]|\.\d)", text) is not None
+
+
 def strip_md(s: str) -> str:
     return re.sub(r"[*`]", "", s).strip()
 
@@ -70,20 +82,45 @@ def main() -> int:
     errors: list[str] = []
 
     # 1 -- roster -----------------------------------------------------------------
-    roster = table_after(skill, "**OpenCode Go pool — the 15 main models**")
+    roster = table_after(skill, "**OpenCode pool — the 19 rated models**")
     roster_caps = {}
     for r in roster:
-        if len(r) < 7 or not r[0].isdigit():
+        if len(r) < 9 or not r[0].isdigit():
             continue
         roster_caps[strip_md(r[1])] = int(re.sub(r"\D", "", strip_md(r[5])) or 0)
+        name_ = strip_md(r[1])
+        if name_ in pool:
+            tier_ = strip_md(r[7])
+            if tier_ != pool[name_]["tier"]:
+                errors.append("roster tier for %s is %r, policy says %r" % (name_, tier_, pool[name_]["tier"]))
+            tpm_txt = strip_md(r[6])
+            tpm_ = int(tpm_txt) if tpm_txt.isdigit() else None
+            if tpm_ != pool[name_]["tasks_per_month"]:
+                errors.append("roster tasks/mo for %s is %r, policy says %r"
+                              % (name_, tpm_, pool[name_]["tasks_per_month"]))
     if set(roster_caps) != set(names):
         errors.append("roster table names %s; policy pool is %s" %
                       (sorted(set(roster_caps) ^ set(names)), len(names)))
     for m, cap in roster_caps.items():
         if m in pool and pool[m]["cap_usd"] != cap:
             errors.append("roster cap for %s is USD %d, policy says USD %d" % (m, cap, pool[m]["cap_usd"]))
-    if len(roster_caps) != 15:
-        errors.append("roster must hold exactly 15 models, found %d" % len(roster_caps))
+    if len(roster_caps) != 19:
+        errors.append("roster must hold exactly 19 models, found %d" % len(roster_caps))
+
+    # 1b -- tier boundaries and tasks/month recomputed from the evidence (Rule BUD1) -----------
+    evid = json.loads((ROOT / "skill" / "opencode-evidence.json").read_text(encoding="utf-8"))
+    arena = evid["anchors"]["Arena Agent Arena (net outcome vs avg model, %)"]["cost_per_task_p50_usd"]
+    alias = {"Muse Spark 1.3 Contributor": "Muse Spark 1.3"}
+    for m, meta in pool.items():
+        key = alias.get(m, m)
+        if key in arena:
+            calc = round(meta["cap_usd"] / arena[key])
+            if calc != meta["tasks_per_month"]:
+                errors.append("tasks/month for %s: policy %s, cap / Arena p50 = %s" % (m, meta["tasks_per_month"], calc))
+        if meta["tier"] == "P" and meta["tasks_per_month"] > 35:
+            errors.append("premium model %s buys %s tasks/month (> 35)" % (m, meta["tasks_per_month"]))
+        if meta["tier"] == "B" and meta["tasks_per_month"] < 140:
+            errors.append("budget model %s buys only %s tasks/month (< 140)" % (m, meta["tasks_per_month"]))
 
     # 2 -- Step 4-OC rows ---------------------------------------------------------
     rows = table_after(skill, "| Dominant capability | `R ≤ 2` → `#1` · `#2` |", True)
@@ -134,18 +171,42 @@ def main() -> int:
         if t not in seen:
             errors.append("policy row %r is missing from the Step 4-OC table" % t)
 
+    # Rule GM1 -- Gemini 4 Argon only in the right-hand column of the listed rows, and first
+    gm1 = set(policy.get("gm1_rows", []))
+    for r in rows:
+        if len(r) < 4:
+            continue
+        tags = [t for t in re.findall(r"`([a-z-]+)`", r[0]) if t in want]
+        left = r[1]
+        right = r[2] if strip_md(r[2]) != "same" else r[1]
+        if mentions("Gemini 4 Argon", left):
+            errors.append("GM1: Gemini 4 Argon is in the left-hand column of row %r" % r[0][:40])
+        in_right = mentions("Gemini 4 Argon", r[2])
+        for t in tags:
+            if t in gm1 and not in_right:
+                errors.append("GM1: row %r is listed in the policy but its right-hand column has no Gemini 4 Argon" % t)
+            if in_right and t not in gm1:
+                errors.append("GM1: row %r names Gemini 4 Argon but the policy does not list it in gm1_rows" % t)
+        if in_right and models_in(right, names)[:1] != ["Gemini 4 Argon"]:
+            errors.append("GM1: Gemini 4 Argon must be #1 in row %r, got %s" % (r[0][:40], models_in(right, names)))
+
     # no emitted row may name a dominated or outside model
     oc_text = skill[skill.find("### OpenCode Go — Step 4-OC"):skill.find("#### OpenCode Go — effort")]
     table_only = "\n".join(ln for ln in oc_text.split("\n") if ln.strip().startswith("|"))
     for m, meta in pool.items():
         if meta["status"] == "dominated":
             for r in rows:
-                if len(r) >= 3 and (m in r[1] or m in r[2]):
+                if len(r) >= 3 and (mentions(m, r[1]) or mentions(m, r[2])):
                     errors.append("Step 4-OC emits dominated model %s in row %r" % (m, r[0][:40]))
     for o in outside:
         for r in rows:
-            if len(r) >= 3 and (o in r[1] or o in r[2]):
-                errors.append("Step 4-OC emits %s, which is outside the 15-model pool" % o)
+            if len(r) >= 3 and (mentions(o, r[1]) or mentions(o, r[2])):
+                errors.append("Step 4-OC emits %s, which is outside the 19-model pool" % o)
+    for m, meta in pool.items():
+        if meta["status"] == "premium":
+            for r in rows:
+                if len(r) >= 3 and re.search(re.escape(m) + r"(?!-)", r[1] + " " + r[2]):
+                    errors.append("Step 4-OC emits premium model %s in row %r (Rule BUD1)" % (m, r[0][:40]))
 
     # 2b -- every Step 4-OC pair must sit near the top of the independent-evidence consensus
     sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -156,8 +217,15 @@ def main() -> int:
         if not w:
             continue
         rank = [r[0] for r in dr.consensus(ev, tag, dr.ROUTABLE)]   # routable models, best first
+        grank = [r[0] for r in dr.consensus(ev, tag, dr.ROUTABLE + dr.GEMINI)]
+        alias = {"MiniMax M3.1 Flash Free": "MiniMax M3.1 Flash"}
         for col in ("r_le_2", "r_eq_3"):
             for m in w[col]:
+                if m in dr.GEMINI:
+                    if grank[:1] != [m]:
+                        errors.append("consensus: %s is not the top model for %r (GM1) but row %r emits it" % (m, tag, tag))
+                    continue
+                m = alias.get(m, m)
                 if m not in rank:
                     errors.append("consensus: %s has no independent evidence for %r but row %r emits it" % (m, tag, tag))
                 elif rank.index(m) > 3:
@@ -165,28 +233,29 @@ def main() -> int:
                                   % (m, rank.index(m) + 1, len(rank), tag, tag))
 
     # 3 -- badge table ------------------------------------------------------------
-    brow = table_after(skill, "| Dominant capability | `R ≤ 2` | `R = 3` | Evidence to name |", True)
+    brow = table_after(skill, "| Dominant capability | `D = 2`, `R ≤ 2` | `D = 3`, `R ≤ 2` | `D ≥ 2`, `R = 3` | Evidence to name |", True)
     wantb = policy["badge_table"]
     seenb = set()
+
+    def side(cell):
+        return "opencode" if "OpenCode" in cell else "claude" if "Claude" in cell else None
+
     for r in brow:
-        if len(r) < 4:
+        if len(r) < 5:
             continue
         tags = [t for t in re.findall(r"`([a-z-]+)`", r[0]) if t in wantb]
+        if "anything else" in r[0]:
+            tags = ["other"]
         for t in tags:
             seenb.add(t)
             w = wantb[t]
-            s2 = "opencode" if "OpenCode" in r[1] else "claude" if "Claude" in r[1] else None
-            s3 = "opencode" if "OpenCode" in r[2] else "claude" if "Claude" in r[2] else None
-            dag = "†" in r[1] or "†" in r[2]
-            if s2 != w["r_le_2"] or s3 != w["r_eq_3"]:
-                errors.append("badge row %r: SKILL.md (%s, %s), policy (%s, %s)" %
-                              (t, s2, s3, w["r_le_2"], w["r_eq_3"]))
+            got = (side(r[1]), side(r[2]), side(r[3]))
+            want_ = (w["d2_r_le_2"], w["d3_r_le_2"], w["d_ge_2_r3"])
+            if got != want_:
+                errors.append("badge row %r: SKILL.md %s, policy %s" % (t, got, want_))
+            dag = "†" in r[1] or "†" in r[2] or "†" in r[3]
             if dag != w["low_confidence"]:
                 errors.append("badge row %r dagger: SKILL.md %s, policy %s" % (t, dag, w["low_confidence"]))
-        if "orchestration" in r[0] and "orchestration" in wantb:
-            seenb.add("orchestration")
-            if "Claude" not in r[1] or "Claude" not in r[2]:
-                errors.append("badge row orchestration must read Claude at both R levels")
     for t in wantb:
         if t not in seenb:
             errors.append("policy badge row %r is missing from SKILL.md" % t)
@@ -204,6 +273,8 @@ def main() -> int:
         n_ex += 1
         if oc.lower().startswith(("use claude", "unverified")):
             continue
+        if "Gemini 4 Argon" in oc and "Gemini 4 Argon: google/gemini-4-argon" not in block:
+            errors.append("example names Gemini 4 Argon without the auto-added Gemini line (Step 7 rule 11)")
         parts = re.split(r"#\s*[12]\b", oc)[1:]
         for p in parts:
             used = models_in(p, names + outside)
@@ -212,11 +283,13 @@ def main() -> int:
                 continue
             model = used[0]
             if model in outside:
-                errors.append("example names %s, outside the 15-model pool" % model)
+                errors.append("example names %s, outside the 19-model pool" % model)
                 continue
             st = pool[model]["status"]
             if st == "dominated":
                 errors.append("example emits dominated model %s" % model)
+            if st == "premium" and "fell short" not in block:
+                errors.append("example emits premium model %s without a stated OpenCode shortfall (Rule BUD1)" % model)
             em = re.search(r"effort:\s*(\w+)", p)
             eff = em.group(1) if em else None
             allowed = policy["effort"]["opencode_variants"].get(model)

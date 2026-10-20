@@ -1,0 +1,5 @@
+Claude: Haiku 5.5 · effort: low
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GPT 6 Luna · effort: low
+Evidence: Topic labelling of 5,000 tickets is bulk D<=1 work, so the Flash tier runs it on a USD 80 cap at USD 0.27 per task and spares Claude's quota; non-confidential lets Luna take #2.
+Data: GPT 6 Luna keeps prompts for 30 days.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).

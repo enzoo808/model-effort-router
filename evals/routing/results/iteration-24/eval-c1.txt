@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: ultracode
+OpenCode: #1 DeepSeek V4.1 Flash · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Provisioning, data seeding and a smoke run against the deployed environment are three distinct phases, so ultracode's workflow orchestration decides the badge; OpenCode has no equivalent mechanism.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).

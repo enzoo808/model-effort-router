@@ -1,18 +1,18 @@
 {
   "skill_name": "model-secici",
-  "source_of_truth": "README.tr.md 'Doğrulama' table for the legacy ids; this file for iteration-21",
-  "note": "Iteration-21 live regression set (Claude + OpenCode Go). The goldens are derived from SKILL.md's rules, NOT yet confirmed by cold agents — run them with fresh agents and grade with grade_routing.py. `golden_output` is the output the rules should produce; `python grade_routing.py --selftest --results-dir /tmp/x` proves the grader and the goldens agree. The iteration-20 (Codex) set is archived under archive/iteration-20-codex/routing/.",
+  "source_of_truth": "README.tr.md 'Doğrulama' table for the legacy ids; this file for iteration-24",
+  "note": "Iteration-24 live regression set (Claude + OpenCode; budget-first pool BUD1, OpenCode-by-default badge SM1, free lane FR1, Gemini slot GM1). The goldens are derived from SKILL.md's rules and were confirmed by a cold-agent run (iteration-24: 33/33, i1 not run) — re-run with fresh agents and grade with grade_routing.py after any rule change. `golden_output` is the output the rules should produce; `python grade_routing.py --selftest --results-dir /tmp/x` proves the grader and the goldens agree. `allow_gemini: true` marks the evals where Rule GM1 lets Gemini 4 Argon onto the OpenCode line. The iteration-20 (Codex) set is archived under archive/iteration-20-codex/routing/.",
   "evals": [
     {
       "id": "a1",
-      "eval_name": "Bulk classification (latency-volume gate)",
+      "eval_name": "Bulk classification (errand work: OpenCode by default even though Haiku 5.5 would do it)",
       "prompt": "Label these 200 customer reviews as positive/negative",
-      "expected_claude": "Haiku 4.5",
+      "expected_claude": "Haiku 5.5 · effort: low",
       "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default",
       "expected_recommended": "opencode",
       "expected_low_confidence": false,
-      "tests_rule": "Step 1 latency gate; confidential default removes Luna so #2 is MiMo-V2.6-Flash; latency row carries no dagger; DeepSeek auto-line",
-      "golden_output": "Claude: Haiku 4.5\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default\nEvidence: Both arms clear the bar for mechanical classification, and DeepSeek V4.1 Flash streams 222 tok/s at USD 0.27 per index task on a USD 60 cap against Haiku 4.5's USD 1/USD 5 pricing.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "tests_rule": "Step 1 high-volume gate -> Haiku 5.5 low; nobody waits on a first token so it is NOT latency-volume; SM1: every D<=1 task is OpenCode whatever the Claude pick; confidential default removes Luna so #2 is MiMo-V2.6-Flash; DeepSeek auto-line",
+      "golden_output": "Claude: Haiku 5.5 · effort: low\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default\nEvidence: Labelling is D=0 bulk work, so OpenCode runs it: the Flash tier buys hundreds of such batches a month on USD 60–80 caps (USD 0.13–0.27 per task) and keeps Claude's quota for harder work.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
       "expected_notes": [
         "peak hours cost 2×"
       ],
@@ -33,6 +33,68 @@
       "blocked": true
     },
     {
+      "id": "a2",
+      "eval_name": "Short summary (D=1 reading work): Haiku 5.5 at medium on Claude, OpenCode by default",
+      "prompt": "Summarise this 2-page meeting transcript into five bullet points",
+      "expected_claude": "Haiku 5.5 · effort: medium",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low",
+      "expected_recommended": "opencode",
+      "expected_low_confidence": false,
+      "tests_rule": "H1 D=1 branch -> Haiku 5.5 medium on the Claude line; SM1: D<=1 -> OpenCode; OpenCode D<=1 first row; DeepSeek auto-line",
+      "golden_output": "Claude: Haiku 5.5 · effort: medium\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low\nEvidence: A short summary is D=1 reading work (AA-LCR has Haiku 5.5 at 77 and Sonnet 5.5 at 78), so the Flash tier on USD 60–80 caps handles it and Claude's quota is kept.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "expected_notes": [
+        "peak hours cost 2×"
+      ]
+    },
+    {
+      "id": "a3",
+      "eval_name": "Short status memo (D=1 knowledge-work): H1 excludes Haiku, Sonnet 5.5 at medium; D<=1 -> OpenCode",
+      "prompt": "Draft the one-page weekly status memo for the steering committee from these bullet notes",
+      "expected_claude": "Sonnet 5.5 · effort: medium",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low",
+      "expected_recommended": "opencode",
+      "expected_low_confidence": false,
+      "tests_rule": "H1 boundary: a finished memo is knowledge-work, so Haiku 5.5 is out (GDPval-AA 1620 vs 1839) even at D=1; SM1: D<=1 is OpenCode whatever the Claude pick",
+      "golden_output": "Claude: Sonnet 5.5 · effort: medium\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low\nEvidence: A finished memo is knowledge-work, so Haiku 5.5 is out; at D=1 price and cap decide, and Sonnet 5.5 (USD 2/USD 10) loses to the Flash tier on USD 60–80 caps at USD 0.27 and 0.25 per task.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "expected_notes": [
+        "peak hours cost 2×"
+      ],
+      "forbidden": [
+        "Haiku 5.5 ·"
+      ]
+    },
+    {
+      "id": "a4",
+      "eval_name": "First-token-bound reply (latency-volume): OpenCode keeps the badge",
+      "prompt": "Write a one-line reply to this live-chat message for the support widget — the first words must appear within about a second",
+      "expected_claude": "Haiku 5.5 · effort: low",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default",
+      "expected_recommended": "opencode",
+      "expected_low_confidence": false,
+      "tests_rule": "Step 1 sub-second gate -> Haiku 5.5 low; latency-volume IS the dominant tag here -> OpenCode (DeepSeek's measured 1.1 s first token; no measured figure for Haiku 5.5 at low); no dagger",
+      "golden_output": "Claude: Haiku 5.5 · effort: low\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default\nEvidence: The first-token requirement is latency-volume, where DeepSeek V4.1 Flash has a measured 1.1 s first token and Haiku 5.5 has no measured figure at low effort.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "expected_notes": [
+        "peak hours cost 2×"
+      ]
+    },
+    {
+      "id": "a5",
+      "eval_name": "Escalation after a Haiku shortfall (H2): Sonnet 5.5, OpenCode unchanged",
+      "prompt": "The Haiku 5.5 run missed the sarcasm in about a fifth of these 200 reviews — relabel the whole batch of 200 as positive/negative, reading each one for tone",
+      "expected_claude": "Sonnet 5.5 · effort: medium",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default",
+      "expected_recommended": "opencode",
+      "expected_low_confidence": false,
+      "tests_rule": "H2 overrides the Haiku gate -> Sonnet 5.5 at its D=1 rung; the OpenCode pair still comes from the high-volume bulk gate (DeepSeek · MiMo-V2.6-Flash) because the work is the same 200-review batch; a Claude shortfall does not change it. First cold run gave GLM-5.3-Flash as #2 on the shorter prompt — prompt sharpened, rule unchanged",
+      "golden_output": "Claude: Sonnet 5.5 · effort: medium\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default\nEvidence: The earlier Haiku 5.5 run fell short, so the Claude line moves up to Sonnet 5.5 (USD 2/USD 10) and price and cap decide against the Flash tier on USD 60–80 caps.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "expected_notes": [
+        "peak hours cost 2×"
+      ],
+      "forbidden": [
+        "Haiku 5.5 ·"
+      ]
+    },
+    {
       "id": "s0b",
       "eval_name": "Blocked: ambiguous delete rule",
       "prompt": "Delete the inactive users from the customer database",
@@ -46,16 +108,20 @@
     },
     {
       "id": "b1",
-      "eval_name": "Refactor across 40 files (agentic-code, D=2, R=1): Claude direction from independent rows",
+      "eval_name": "Refactor across 40 files (agentic-code, D=2, R=1): DeepSWE tie -> OpenCode",
       "prompt": "Refactor the payment module across these 40 files to use the new idempotency-key API, update every caller, and make the test suite pass.",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3 · effort: high",
-      "expected_recommended": "claude",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: high · #2 MiMo-V2.6-Pro · effort: default",
+      "expected_recommended": "opencode",
       "expected_low_confidence": false,
-      "tests_rule": "agentic-code: BD1 direction for Claude (no dagger); OpenCode pair = coding consensus; one phase -> no ultracode",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3 · effort: high\nEvidence: Three independent rows agree for Claude (TB 4.0 64 vs 42, FrontierSWE v2 62 vs 30, Agent Arena 12.5 vs 4.2); DeepSWE ±7 is a tie.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "tests_rule": "SM1: agentic-code at D=2 is OpenCode (the Claude lead lives on the D=3 anchors; DeepSWE v1.1 ties); no dagger; budget pair (BUD1); one phase -> no ultracode",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Mid-difficulty feature work is a tie on the independent DeepSWE (DeepSeek 71.7 vs Sonnet 5.5 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task; Claude's lead starts at D=3.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
       "expected_notes": [
         "peak hours cost 2×"
+      ],
+      "forbidden": [
+        "GLM-5.3 ·",
+        "Kimi K3"
       ]
     },
     {
@@ -63,11 +129,11 @@
       "eval_name": "Three-phase environment build (orchestration mechanism)",
       "prompt": "Stand up the new staging environment from scratch: Terraform it, deploy the 12 services, seed the data, run the smoke suite, and fix whatever does not come up.",
       "expected_claude": "Sonnet 5.5 · effort: ultracode",
-      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3 · effort: high",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "O1 three phases -> ultracode; MECH1; coding consensus pair",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: ultracode\nOpenCode: #1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3 · effort: high\nEvidence: Implementation, a data-seeding phase and a smoke run against a deployed environment are three distinct phases feeding each other, which is what ultracode's orchestration sequences and OpenCode has no mode for.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "tests_rule": "O1 three phases -> ultracode; MECH1 beats SM1's OpenCode default; budget coding pair",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: ultracode\nOpenCode: #1 DeepSeek V4.1 Flash · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Implementation, a data-seeding phase and a smoke run against a deployed environment are three distinct phases feeding each other, which is what ultracode's orchestration sequences and OpenCode has no mode for.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
       "expected_notes": [
         "peak hours cost 2×"
       ]
@@ -77,38 +143,45 @@
       "eval_name": "Adversarial debugging (D3DIAG; deep-reasoning direction beats terminal efficiency row)",
       "prompt": "Find the race condition that flakes in prod sometimes",
       "expected_claude": "Opus 5.5 · effort: xhigh",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: max",
+      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "two dominant tags; direction beats efficiency; two-tag pick rule (#2 from the other row)",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: max\nEvidence: Adversarial debugging is deep-reasoning plus terminal work, and the reasoning half has two agreeing AA rows (HLE 61 vs 49, CritPt 32 vs 27) while the terminal half sets no direction, so the direction decides.\n⚡ Claude /fast available (2.5x faster, 2× price).",
+      "tests_rule": "two dominant tags; SM1 D=3 deep-reasoning -> Claude; GM1: at D=3 Gemini 4 Argon is #1 on both rows, so #2 is the other row's #1 when that is Argon itself, i.e. its #2 (MiMo-V2.6-Pro); Gemini auto-line then speed line; no DeepSeek on the line, so no DeepSeek auto-line",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Both halves lean Claude on agreeing AA rows — reasoning HLE 61 vs Argon's 57 and CritPt 32 vs 27, terminal TB 4.0 60–64 vs 57 — so the direction decides.\nGemini 4 Argon: google/gemini-4-argon on your paid Google key (AI Pro adds USD 10/month of credits); USD 2/10 per MTok until 30 Nov, USD 4/20 after. A 503 is Google-side capacity — retry, then Gemini 3.8 Flash; a 429 \"limit: 0\" means a free-tier key.\n⚡ Claude /fast available (2.5x faster, 2× price).",
       "expected_notes": [
-        "/fast available"
-      ]
+        "/fast available",
+        "google/gemini-4-argon"
+      ],
+      "allow_gemini": true
     },
     {
       "id": "e1",
       "eval_name": "400 pages into one memo (knowledge-work direction beats long-context dagger)",
       "prompt": "Synthesise these 400 pages of filings from three different companies into one comparative memo",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: high",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "C=3 D=2 -> Sonnet; knowledge-work BD1 direction; two-tag pick (Kimi K3 comes from the long-context row)",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max\nEvidence: The finished memo is knowledge-work, where two AA rows agree for Claude (GDPval-AA 1839 vs 1686, AA-Briefcase 1823 vs 1516), and that direction outranks the long-context half, where AA-LCR has the open models ahead on one row."
+      "tests_rule": "C=3 D=2 -> Sonnet; SM1 knowledge-work at D>=2 -> Claude; two-tag pick (DeepSeek V4.1 Flash comes from the long-context row, high at D=2); DeepSeek auto-line",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: high\nEvidence: The finished memo is knowledge-work, where two AA rows agree for Claude (GDPval-AA 1839 vs 1686, AA-Briefcase 1823 vs 1516), and that direction outranks the long-context half, where the rows disagree.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "expected_notes": [
+        "peak hours cost 2×"
+      ]
     },
     {
       "id": "f1",
-      "eval_name": "Non-confidential deck (NC1 unlocks Grok 4.7)",
+      "eval_name": "Non-confidential deck (NC1 does NOT unlock Grok 4.7: premium, BUD1)",
       "prompt": "I'm preparing a non-confidential competitor-pricing deck for a conference — research, structure and write the 12 slides",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 Grok 4.7 · effort: xhigh · #2 MiMo-V2.6-Pro · effort: default",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Qwen3.8 Flash · effort: xhigh",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "NC1; Grok effort xhigh; data-policy auto-line",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 Grok 4.7 · effort: xhigh · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Finished-deliverable work is knowledge-work, where Claude leads on two agreeing AA rows (GDPval-AA 1839 vs Grok 4.7's 1715, AA-Briefcase 1823 vs 1644), and Grok 4.7 is the best open model on both of them.\nData: Grok 4.7 keeps prompts for 30 days.",
-      "expected_notes": [
-        "keeps prompts for 30 days"
+      "tests_rule": "BUD1: Grok 4.7 stays out of the pair even when NC1 lifts its retention gate; SM1 knowledge-work at D>=2 -> Claude; no data-policy line",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Qwen3.8 Flash · effort: xhigh\nEvidence: Finished-deliverable work is knowledge-work, where two agreeing AA rows favour Claude (GDPval-AA 1839 vs 1686, Briefcase 1823 vs 1583); Grok 4.7 stays premium and out of the pair.",
+      "expected_notes": [],
+      "forbidden": [
+        "Grok 4.7 ·",
+        "Data:"
       ]
     },
     {
@@ -116,12 +189,16 @@
       "eval_name": "Irreversible central boundary (M1, R=3)",
       "prompt": "Design and implement the new cross-service transaction boundary. It ships tonight and cannot be rolled back.",
       "expected_claude": "Opus 5.5 · effort: max",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: max",
+      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "M1 max; R=3 flips the coding row's #1 to GLM-5.3 but the badge-deciding tag supplies #1",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: max\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3 · effort: max\nEvidence: One indivisible boundary decision at R=3 is the case max exists for, and the reasoning half has two agreeing AA rows for Claude (HLE 61 vs 49, CritPt 32 vs 27), with the coding half leaning the same way (Terminal-Bench 60 vs 42).\n⚡ Claude /fast available (2.5x faster, 2× price).\nDo not apply without human review.",
-      "expected_shared_note": "Do not apply without human review."
+      "tests_rule": "M1 max; R=3; GM1: Argon first on the deep-reasoning row at R=3, the coding row's #1 is Argon too so #2 is its #2; Gemini line before speed line, review note last",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: max\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: One indivisible boundary decision at R=3 is the case max exists for, and the reasoning half has two agreeing AA rows for Claude (HLE 61 vs Argon's 57, CritPt 32 vs 27), with the coding half leaning the same way (Terminal-Bench 60–64 vs 57).\nGemini 4 Argon: google/gemini-4-argon on your paid Google key (AI Pro adds USD 10/month of credits); USD 2/10 per MTok until 30 Nov, USD 4/20 after. A 503 is Google-side capacity — retry, then Gemini 3.8 Flash; a 429 \"limit: 0\" means a free-tier key.\n⚡ Claude /fast available (2.5x faster, 2× price).\nDo not apply without human review.",
+      "expected_shared_note": "Do not apply without human review.",
+      "expected_notes": [
+        "google/gemini-4-argon"
+      ],
+      "allow_gemini": true
     },
     {
       "id": "h1",
@@ -132,7 +209,7 @@
       "expected_recommended": "opencode",
       "expected_low_confidence": false,
       "tests_rule": "D<=1 row (DeepSeek is the USD 60-tier all-rounder); CAP1 (no USD 15 models); Haiku out at R=3; review note last",
-      "golden_output": "Claude: Sonnet 5.5 · effort: low\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low\nEvidence: D=0 — both clear the bar, so price and cap decide: Flash models on USD 60 caps at USD 0.27 and 0.25 per task.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).\nDo not apply without human review.",
+      "golden_output": "Claude: Sonnet 5.5 · effort: low\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low\nEvidence: D=0 — both clear the bar, so price and cap decide: Flash models on USD 80 and 60 caps at USD 0.27 and 0.25 per task.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).\nDo not apply without human review.",
       "expected_shared_note": "Do not apply without human review.",
       "expected_notes": [
         "peak hours cost 2×"
@@ -157,15 +234,19 @@
       "eval_name": "Front-loaded architecture (opusplan)",
       "prompt": "Redesign the auth architecture of 200 prod services from scratch",
       "expected_claude": "opusplan · plan: max · execute: medium",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max",
+      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "opusplan; MECH1; no speed line on opusplan; deep-reasoning row at R=3",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · opusplan · plan: max · execute: medium\n⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max\nEvidence: Front-loaded architecture design at D=3∧R=3 is opusplan on Claude — the flagship is spent only on a max plan phase and execution drops to Sonnet 5.5 — and OpenCode has no plan/execute split.\nDo not apply without human review.",
+      "tests_rule": "opusplan; MECH1; no speed line on opusplan; deep-reasoning row at R=3: Gemini 4 Argon first (GM1), MiMo-V2.6-Pro second; Gemini line then review note",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · opusplan · plan: max · execute: medium\n⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Front-loaded architecture design at D=3∧R=3 is opusplan on Claude — the flagship is spent only on a max plan phase and execution drops to Sonnet 5.5 — and OpenCode has no plan/execute split.\nGemini 4 Argon: google/gemini-4-argon on your paid Google key (AI Pro adds USD 10/month of credits); USD 2/10 per MTok until 30 Nov, USD 4/20 after. A 503 is Google-side capacity — retry, then Gemini 3.8 Flash; a 429 \"limit: 0\" means a free-tier key.\nDo not apply without human review.",
       "expected_shared_note": "Do not apply without human review.",
       "forbidden": [
         "/fast"
-      ]
+      ],
+      "expected_notes": [
+        "google/gemini-4-argon"
+      ],
+      "allow_gemini": true
     },
     {
       "id": "k1",
@@ -191,14 +272,14 @@
     },
     {
       "id": "m1",
-      "eval_name": "Workflow wiring (workflow-automation row, Flash #1)",
+      "eval_name": "Workflow wiring (workflow-automation row, Flash pair, dagger)",
       "prompt": "Set up an n8n flow: when a Jira ticket with the label 'urgent' is created, open a Slack thread, assign the on-call engineer from the rota sheet, and update the ticket if nobody acknowledges within 30 minutes",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3 · effort: high",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3-Flash · effort: high",
       "expected_recommended": "opencode",
       "expected_low_confidence": true,
-      "tests_rule": "workflow row: Flash model emitted at max for D>=2; dagger; DeepSeek auto-line",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3 · effort: high\nEvidence: Integration wiring is workflow-automation, where AutomationBench-AA has DeepSeek V4.1 Flash at 69 against Sonnet 5.5's 72 — one row, three points, no interval — so cap pressure decides; low-confidence.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "tests_rule": "workflow row: budget Flash pair at D=2; no Claude direction -> OpenCode with dagger; DeepSeek auto-line",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3-Flash · effort: high\nEvidence: Integration wiring is workflow-automation, where AutomationBench-AA has DeepSeek V4.1 Flash at 69 against Sonnet 5.5's 72 — one row, three points, no interval — so OpenCode runs it; low-confidence.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
       "expected_notes": [
         "peak hours cost 2×"
       ]
@@ -208,11 +289,14 @@
       "eval_name": "Domain audit (science row)",
       "prompt": "Check whether the error estimator in this finite-element mesh-convergence study is implemented correctly and tell me where it deviates from the theory",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 MiniMax M3.1 Flash Free · effort: high",
       "expected_recommended": "opencode",
       "expected_low_confidence": true,
-      "tests_rule": "domain audit = D=2 not D=3; science row dagger",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max\nEvidence: Scientific-code work is judged on SciCode, where Sonnet 5.5 and MiMo-V2.6-Pro tie at 61 on one row with no interval, so cap pressure decides; low-confidence."
+      "tests_rule": "domain audit = D=2 not D=3; science row dagger; FR1: MiniMax M3.1 Flash Free (free, zero retention) is #2 (SciCode 53 / CritPt 22 lead the Flash tier); GM1 does not list science, so no Gemini at D=2; Kimi K3 is premium",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 MiniMax M3.1 Flash Free · effort: high\nEvidence: Scientific-code work is judged on SciCode, where Sonnet 5.5 and MiMo-V2.6-Pro tie at 61 on one row with no interval, so OpenCode runs it; low-confidence, and the second pick is free.",
+      "forbidden": [
+        "Kimi K3"
+      ]
     },
     {
       "id": "o1",
@@ -223,39 +307,43 @@
       "expected_recommended": "opencode",
       "expected_low_confidence": false,
       "tests_rule": "D<=1 with C=3: Sonnet 5.5 medium; extraction from a provided corpus is not factual recall, so DeepSeek stays; no dagger",
-      "golden_output": "Claude: Sonnet 5.5 · effort: medium\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low\nEvidence: Mechanical enumeration is D=1, so price and cap decide; both Flash models carry 1M windows on USD 60 caps against Claude's 5-hour window.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "golden_output": "Claude: Sonnet 5.5 · effort: medium\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low\nEvidence: Mechanical enumeration is D=1, so price and cap decide; both Flash models carry 1M windows on USD 60–80 caps against Claude's 5-hour window.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
       "expected_notes": [
         "peak hours cost 2×"
       ]
     },
     {
       "id": "p1",
-      "eval_name": "Escalation after an OpenCode shortfall (A1-OC, confidential)",
+      "eval_name": "Escalation after an OpenCode shortfall (A1-OC: Gemini 4 Argon #2, badge to Claude)",
       "prompt": "The first OpenCode attempt at migrating these 30 files from the logging API v1 to v2 fell short — redo it and make the test suite pass",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: high · #2 Kimi K3 · effort: max",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: high · #2 Gemini 4 Argon · effort: high",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "A1-OC: confidential agentic-code -> #2 = Kimi K3 (not Qwen3.8 Max, not Grok); a shortfall on OpenCode does not escalate the Claude line",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 DeepSeek V4.1 Flash · effort: high · #2 Kimi K3 · effort: max\nEvidence: Claude leads the coding rows (TB 4.0 64 vs 42, FrontierSWE v2 62 vs 30, Agent Arena 12.5 vs 4.2); the earlier OpenCode run fell short, so #2 becomes Kimi K3.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "tests_rule": "A1-OC + GM1: confidential agentic-code -> #2 = Gemini 4 Argon at high (the paid key); after a shortfall at D>=2 the badge goes to Claude because agentic-code has a BD1 direction; a shortfall on OpenCode does not escalate the Claude line; Gemini line follows the DeepSeek line",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 DeepSeek V4.1 Flash · effort: high · #2 Gemini 4 Argon · effort: high\nEvidence: The earlier OpenCode run fell short, so #2 becomes Gemini 4 Argon (about USD 1–4 of credits per heavy task) and Claude takes the badge, since it still leads the coding rows (TB 4.0 64 vs 57, FrontierSWE v2 62 vs 55).\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).\nGemini 4 Argon: google/gemini-4-argon on your paid Google key (AI Pro adds USD 10/month of credits); USD 2/10 per MTok until 30 Nov, USD 4/20 after. A 503 is Google-side capacity — retry, then Gemini 3.8 Flash; a 429 \"limit: 0\" means a free-tier key.",
       "expected_notes": [
-        "peak hours cost 2×"
+        "peak hours cost 2×",
+        "google/gemini-4-argon"
       ],
       "forbidden": [
         "Grok",
-        "Qwen3.8 Max"
-      ]
+        "Qwen3.8 Max",
+        "Kimi K3",
+        "GLM-5.3 ·"
+      ],
+      "allow_gemini": true
     },
     {
       "id": "q1",
-      "eval_name": "Bulk classification, stated non-confidential (NC1 unlocks Luna)",
+      "eval_name": "Bulk classification, stated non-confidential (NC1 unlocks Luna; OpenCode badge)",
       "prompt": "Classify these 5,000 support tickets by topic — they come from our public FAQ forum, nothing confidential",
-      "expected_claude": "Haiku 4.5",
+      "expected_claude": "Haiku 5.5 · effort: low",
       "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: low · #2 GPT 6 Luna · effort: low",
       "expected_recommended": "opencode",
       "expected_low_confidence": false,
-      "tests_rule": "NC1 on the latency row; two auto-lines in order",
-      "golden_output": "Claude: Haiku 4.5\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GPT 6 Luna · effort: low\nEvidence: Bulk labelling is latency-volume, where DeepSeek V4.1 Flash streams 222 tok/s with a 1.1 s first token on a USD 60 cap against Haiku 4.5's USD 1/USD 5, and the work is non-confidential so GPT 6 Luna is allowed as the second.\nData: GPT 6 Luna keeps prompts for 30 days.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "tests_rule": "NC1 on the latency row's pair (Luna #2); Haiku 5.5 gate; SM1 D<=1 -> OpenCode; two auto-lines in order",
+      "golden_output": "Claude: Haiku 5.5 · effort: low\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GPT 6 Luna · effort: low\nEvidence: Topic labelling is bulk work nobody waits on, so OpenCode runs it at USD 0.13–0.27 per task, and the non-confidential forum lets GPT 6 Luna be the second.\nData: GPT 6 Luna keeps prompts for 30 days.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
       "expected_notes": [
         "keeps prompts for 30 days",
         "peak hours cost 2×"
@@ -264,15 +352,16 @@
     {
       "id": "r1",
       "eval_name": "Scanned receipts (image input, doc-data-understanding)",
-      "prompt": "Read these 30 scanned receipt photos and produce one reconciliation table against the bank export",
+      "prompt": "Read these 30 scanned receipt photos and produce one reconciliation table against the bank export; line items are spelled differently on the two sides and some receipts are split across several ledger entries",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 Kimi K3 · effort: max · #2 Qwen3.8 Flash · effort: xhigh",
+      "expected_opencode": "#1 MiniMax M3.1 Flash Free · effort: high · #2 Qwen3.8 Flash · effort: xhigh",
       "expected_recommended": "opencode",
       "expected_low_confidence": true,
-      "tests_rule": "image-input gate (GLM-5.3 text-only); doc-data row dagger; Kimi K3 leads the consensus",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 Kimi K3 · effort: max · #2 Qwen3.8 Flash · effort: xhigh\nEvidence: Extraction from scans is doc-data-understanding, where GDP.pdf has Claude 26 against Kimi K3's 22 on one row, so efficiency decides; low-confidence, and GLM-5.3 is out because it takes no image input.",
+      "tests_rule": "doc-data row dagger; FR1: the free model goes first (PO1: no cap pressure) because MMMU-Pro 79 vs 80 is a tie and its GDP.pdf 21 beats MiMo-V2.6-Pro's 19; both take images; GLM-5.3 absent; no Gemini at D=2. First cold run scored the shorter prompt D<=1 (receipts then routed to the text-only-looking D<=1 pair) - prompt sharpened to make the matching judgement explicit (D=2), rule unchanged",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiniMax M3.1 Flash Free · effort: high · #2 Qwen3.8 Flash · effort: xhigh\nEvidence: Extraction from scans is doc-data-understanding, where GDP.pdf has Claude 26 against the free model's 21 on one row, so OpenCode runs it; low-confidence, and both picks take image input.",
       "forbidden": [
-        "GLM-5.3 ·"
+        "GLM-5.3 ·",
+        "Kimi K3"
       ]
     },
     {
@@ -280,14 +369,16 @@
       "eval_name": "New algorithm from scratch (deep-reasoning, D=3, R<=2)",
       "prompt": "Design a conflict-free ordering scheme for our multi-writer job queue — it is a new algorithm and we have no prior design to start from",
       "expected_claude": "Opus 5.5 · effort: xhigh",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max",
+      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "flagship at D=3; xhigh not max at R<=2 (M1); no opusplan for new-algorithm design",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3 · effort: max\nEvidence: New-algorithm design is deep-reasoning, where two AA rows agree for Claude (HLE 61 vs 49, CritPt 32 vs 27); it is not opusplan because the difficulty persists through implementation.\n⚡ Claude /fast available (2.5x faster, 2× price).",
+      "tests_rule": "flagship at D=3; xhigh not max at R<=2 (M1); no opusplan for new-algorithm design; SM1 D=3 deep-reasoning -> Claude; GM1 Argon first at D=3",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: New-algorithm design is deep-reasoning at D=3, where two AA rows agree for Claude (HLE 61 vs Argon's 57, CritPt 32 vs 27); it is not opusplan because the difficulty persists through implementation.\nGemini 4 Argon: google/gemini-4-argon on your paid Google key (AI Pro adds USD 10/month of credits); USD 2/10 per MTok until 30 Nov, USD 4/20 after. A 503 is Google-side capacity — retry, then Gemini 3.8 Flash; a 429 \"limit: 0\" means a free-tier key.\n⚡ Claude /fast available (2.5x faster, 2× price).",
       "expected_notes": [
-        "/fast available"
-      ]
+        "/fast available",
+        "google/gemini-4-argon"
+      ],
+      "allow_gemini": true
     },
     {
       "id": "u1",
@@ -297,7 +388,7 @@
       "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Qwen3.8 Flash · effort: xhigh",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "confidential default; knowledge-work row #2 = Qwen3.8 Flash; no data-policy line",
+      "tests_rule": "confidential default; SM1 knowledge-work at D>=2 -> Claude; knowledge-work row #2 = Qwen3.8 Flash; no data-policy line",
       "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Qwen3.8 Flash · effort: xhigh\nEvidence: The finished memo is knowledge-work, where two AA rows agree for Claude (GDPval-AA 1839 vs 1686, AA-Briefcase 1823 vs 1516), and internal spend data is confidential so the 30-day-retention and training models are out of the pool.",
       "forbidden": [
         "Grok",
@@ -308,45 +399,136 @@
     },
     {
       "id": "v1",
-      "eval_name": "Env-dependent build failure at depth (terminal-tool, D=3, R<=2): leader first (PO1)",
+      "eval_name": "Env-dependent build failure at depth (terminal-tool, D=3, R<=2): Claude, MiMo-V2.6-Pro first (PO1)",
       "prompt": "The nightly build passes locally but fails only on the CI runner — reproduce it inside the container and fix it",
       "expected_claude": "Opus 5.5 · effort: xhigh",
-      "expected_opencode": "#1 GLM-5.3 · effort: max · #2 DeepSeek V4.1 Flash · effort: max",
+      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "PO1: at D=3 GLM-5.3 (TB 4.0, FrontierSWE v2 leader) goes first on the coding row; max at D=3; data line before speed line",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 GLM-5.3 · effort: max · #2 DeepSeek V4.1 Flash · effort: max\nEvidence: Three independent rows favour Claude (TB 4.0 60 vs 42, FrontierSWE v2 62 vs 30, Agent Arena 13.8 vs 4.2); at D=3 the hardest-anchor leader GLM-5.3 goes first.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).\n⚡ Claude /fast available (2.5x faster, 2× price).",
+      "tests_rule": "GM1: at D=3 Gemini 4 Argon goes first on the coding row (AA TB 4.0 57, Vals 58 against 35); SM1 D=3 terminal-tool -> Claude (TB 4.0 60–64, Google's own table 66 vs 57); Gemini line before speed line",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Three independent rows still favour Claude at depth (TB 4.0 60–64 vs Argon's 57, FrontierSWE v2 62 vs 55, Google's own table 66 vs 57); Argon is the best non-Claude option and goes first.\nGemini 4 Argon: google/gemini-4-argon on your paid Google key (AI Pro adds USD 10/month of credits); USD 2/10 per MTok until 30 Nov, USD 4/20 after. A 503 is Google-side capacity — retry, then Gemini 3.8 Flash; a 429 \"limit: 0\" means a free-tier key.\n⚡ Claude /fast available (2.5x faster, 2× price).",
       "expected_notes": [
         "/fast available",
-        "peak hours cost 2×"
-      ]
+        "google/gemini-4-argon"
+      ],
+      "allow_gemini": true
     },
     {
       "id": "x1",
       "eval_name": "Research reconciliation (research-synthesis, D=2): DeepSeek gated out",
       "prompt": "Find out what three public sources say about the 2026 EU AI Act exemption thresholds for general-purpose models and summarise each source's position side by side",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 GLM-5.3 · effort: high · #2 MiMo-V2.6-Pro · effort: default",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: high",
       "expected_recommended": "opencode",
       "expected_low_confidence": true,
-      "tests_rule": "research-synthesis: multi-source synthesis side by side is D=2; DeepSeek eliminating gate; GLM-5.3 leads Omniscience index and hallucination rate",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3 · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Omniscience has Sonnet 5.5 at 32 against GLM-5.3's 14 on one row, so efficiency decides; low-confidence — DeepSeek V4.1 Flash is excluded (96.5% hallucination rate).",
+      "tests_rule": "research-synthesis: multi-source synthesis side by side is D=2; DeepSeek eliminating gate; MiMo-V2.6-Pro leads the budget tier on Omniscience; SM1 -> OpenCode with dagger",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: high\nEvidence: Omniscience has Sonnet 5.5 at 32 against MiMo-V2.6-Pro's 8 on one row, so OpenCode runs it; low-confidence — DeepSeek V4.1 Flash is excluded (96.5% hallucination rate).",
       "forbidden": [
-        "DeepSeek V4.1 Flash ·"
+        "DeepSeek V4.1 Flash ·",
+        "MiniMax M3.1 Flash Free ·"
       ]
     },
     {
       "id": "y1",
-      "eval_name": "Single-fact lookup (D=0 research-synthesis): DeepSeek gated out of the Flash pair",
+      "eval_name": "Single-fact lookup (D=0 research-synthesis): H1 excludes it from Haiku; DeepSeek gated out of the Flash pair",
       "prompt": "Which year did the EU AI Act's obligations for general-purpose AI models start to apply?",
-      "expected_claude": "Haiku 4.5",
+      "expected_claude": "Sonnet 5.5 · effort: low",
       "expected_opencode": "#1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default",
       "expected_recommended": "opencode",
       "expected_low_confidence": false,
-      "tests_rule": "D<=1 first row with the factual-recall gate removing DeepSeek -> GLM-5.3-Flash · MiMo-V2.6-Flash",
-      "golden_output": "Claude: Haiku 4.5\nOpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default\nEvidence: D=0 — both clear the bar, so price and cap decide; DeepSeek V4.1 Flash is excluded from factual recall (96.5% hallucination rate).",
+      "tests_rule": "H1: factual recall is research-synthesis (AA-Omniscience Haiku 5.5 11 vs Sonnet 5.5 32) -> Sonnet 5.5 low; D<=1 tie-break with a Sonnet pick -> OpenCode; factual-recall gate removes DeepSeek -> GLM-5.3-Flash · MiMo-V2.6-Flash",
+      "golden_output": "Claude: Sonnet 5.5 · effort: low\nOpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default\nEvidence: D=0 — both clear the bar, so price and cap decide; Haiku 5.5 is out of factual recall (AA-Omniscience 11 vs Sonnet 5.5's 32) and DeepSeek V4.1 Flash is excluded too (96.5% hallucination rate).",
       "forbidden": [
-        "DeepSeek V4.1 Flash ·"
+        "DeepSeek V4.1 Flash ·",
+        "Haiku 5.5 ·",
+        "MiniMax M3.1 Flash Free ·"
+      ]
+    },
+    {
+      "id": "z1",
+      "eval_name": "Irreversible regulatory read (research-synthesis, D=2, R=3): GM1 puts Gemini 4 Argon first and the badge goes to OpenCode (dagger)",
+      "prompt": "Read these three public EU regulator pages and tell me what each one says about home-compostable claims on packaging labels — we send the labels to print tonight and cannot reprint them",
+      "expected_claude": "Sonnet 5.5 · effort: high",
+      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default",
+      "expected_recommended": "opencode",
+      "expected_low_confidence": true,
+      "tests_rule": "research-synthesis at R=3: GM1 right-hand column -> Argon first; with Argon the OpenCode line beats the Claude pick (Sonnet 5.5) on both AA-Omniscience measures (index 42 vs 32, hallucination 15% vs 47%), so the badge cell is OpenCode with a dagger; DeepSeek and MiniMax M3.1 gated out; Gemini line then review note",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: R=3 and AA-Omniscience has Argon ahead of Sonnet 5.5 on index (42 vs 32) and hallucination rate (15% vs 47%); low-confidence — one benchmark, and Claude without a Google key.\nGemini 4 Argon: google/gemini-4-argon on your paid Google key (AI Pro adds USD 10/month of credits); USD 2/10 per MTok until 30 Nov, USD 4/20 after. A 503 is Google-side capacity — retry, then Gemini 3.8 Flash; a 429 \"limit: 0\" means a free-tier key.\nDo not apply without human review.",
+      "expected_shared_note": "Do not apply without human review.",
+      "forbidden": [
+        "DeepSeek V4.1 Flash ·",
+        "MiniMax M3.1 Flash Free ·"
+      ],
+      "expected_notes": [
+        "google/gemini-4-argon"
+      ],
+      "allow_gemini": true
+    },
+    {
+      "id": "w1",
+      "eval_name": "Workflow wiring at R=3 (workflow-automation, D=2, R=3): Gemini 4 Argon first, OpenCode badge with dagger",
+      "prompt": "Wire the production payment-reconciliation workflow: when a bank webhook arrives, match it to the open invoice in the ERP, post the journal entry and email the customer a receipt — it moves real money and we cannot reverse a posted entry",
+      "expected_claude": "Sonnet 5.5 · effort: high",
+      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 DeepSeek V4.1 Flash · effort: high",
+      "expected_recommended": "opencode",
+      "expected_low_confidence": true,
+      "tests_rule": "GM1: workflow-automation at R=3 -> right-hand column, Argon first (AutomationBench-AA 77.5, the highest of any rated model), DeepSeek second at high (D=2); the row's dagger holds; Gemini line, DeepSeek line, review note last",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 DeepSeek V4.1 Flash · effort: high\nEvidence: Workflow wiring is AutomationBench-AA, where Argon scores 77.5 against Sonnet 5.5's 72 on one row with no interval, so OpenCode leads; low-confidence.\nGemini 4 Argon: google/gemini-4-argon on your paid Google key (AI Pro adds USD 10/month of credits); USD 2/10 per MTok until 30 Nov, USD 4/20 after. A 503 is Google-side capacity — retry, then Gemini 3.8 Flash; a 429 \"limit: 0\" means a free-tier key.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).\nDo not apply without human review.",
+      "expected_shared_note": "Do not apply without human review.",
+      "expected_notes": [
+        "google/gemini-4-argon",
+        "peak hours cost 2×"
+      ],
+      "allow_gemini": true
+    },
+    {
+      "id": "w2",
+      "eval_name": "Non-confidential new algorithm (NC1 + GM1): Gemini 4 Argon on Go's Contributor route",
+      "prompt": "For my open-source side project: design a new lock-free ordering scheme for a multi-writer queue — it is a new algorithm and there is no prior design to start from; nothing here is confidential",
+      "expected_claude": "Opus 5.5 · effort: xhigh",
+      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default",
+      "expected_recommended": "claude",
+      "expected_low_confidence": false,
+      "tests_rule": "GM1 under NC1: the line is the same as for confidential work, but the Gemini auto-line adds the Contributor route (inside Go, trains on prompts); SM1 D=3 deep-reasoning -> Claude; speed line",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: New-algorithm design is deep-reasoning at D=3, where two AA rows agree for Claude (HLE 61 vs Argon's 57, CritPt 32 vs 27); the work is non-confidential, so Argon may also run on Go's Contributor route.\nGemini 4 Argon: google/gemini-4-argon on your paid Google key (AI Pro adds USD 10/month of credits); USD 2/10 per MTok until 30 Nov, USD 4/20 after. A 503 is Google-side capacity — retry, then Gemini 3.8 Flash; a 429 \"limit: 0\" means a free-tier key. Non-confidential work may use opencode-go/gemini-4-argon-contributor instead (inside the Go plan; Google trains on prompts).\n⚡ Claude /fast available (2.5x faster, 2× price).",
+      "expected_notes": [
+        "/fast available",
+        "google/gemini-4-argon",
+        "opencode-go/gemini-4-argon-contributor"
+      ],
+      "allow_gemini": true
+    },
+    {
+      "id": "w3",
+      "eval_name": "Hard coding task, user has no Google key (GM1 dropped)",
+      "prompt": "I have no Google key or credits. Find the race condition that flakes in prod sometimes in our order matcher",
+      "expected_claude": "Opus 5.5 · effort: xhigh",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max",
+      "expected_recommended": "claude",
+      "expected_low_confidence": false,
+      "tests_rule": "GM1 last sentence: no Google key -> Argon dropped and the rows read as without it (deep-reasoning R=3 column's old pair MiMo-V2.6-Pro first, DeepSeek as the coding row's #2 at max); no Gemini line; DeepSeek line then speed line",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max\nEvidence: D=3 reasoning half has two agreeing AA rows (HLE 61 vs 49, CritPt 32 vs 27); with no Google key the budget pair is all OpenCode has, and the terminal half sets no direction.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).\n⚡ Claude /fast available (2.5x faster, 2× price).",
+      "expected_notes": [
+        "/fast available",
+        "peak hours cost 2×"
+      ],
+      "forbidden": [
+        "Gemini"
+      ]
+    },
+    {
+      "id": "w4",
+      "eval_name": "Paid Flash window used up (FR1): the Zen free twin is named in Evidence, never as a pick",
+      "prompt": "DeepSeek's Go window is used up for this month — label these 300 support tickets as bug / feature / question",
+      "expected_claude": "Haiku 5.5 · effort: low",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default",
+      "expected_recommended": "opencode",
+      "expected_low_confidence": false,
+      "tests_rule": "FR1 + CAP1: the pair stays the bulk-gate pair; Evidence names deepseek-v4.1-flash-free (same base model, zero retention, 200k window) as the first spill-over before the CAP1 chain, and never writes it as #1/#2; DeepSeek auto-line",
+      "golden_output": "Claude: Haiku 5.5 · effort: low\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default\nEvidence: Bulk labelling is D=0 so OpenCode runs it; with DeepSeek's window spent, use its Zen twin opencode/deepseek-v4.1-flash-free first, then GLM-5.3-Flash.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "expected_notes": [
+        "peak hours cost 2×",
+        "deepseek-v4.1-flash-free"
       ]
     }
   ]

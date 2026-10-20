@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
+OpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Adversarial diagnosis (D=3) on terminal-tool and agentic-code: agreeing AA rows lean Claude over Argon — TB 4.0 64 / 60 vs 57, FrontierSWE v2 62 vs 55 — so the direction decides.
+Gemini 4 Argon: google/gemini-4-argon on your paid Google key (AI Pro adds USD 10/month of credits); USD 2/10 per MTok until 30 Nov, USD 4/20 after. A 503 is Google-side capacity — retry, then Gemini 3.8 Flash; a 429 "limit: 0" means a free-tier key.
+⚡ Claude /fast available (2.5x faster, 2× price).

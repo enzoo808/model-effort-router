@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Haiku 5.5 · effort: medium
+OpenCode: #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
+Evidence: A short summary is D=1 reading work, where AA-LCR has Haiku 5.5 at 77 and Sonnet 5.5 at 78, so price decides: USD 0.10/USD 0.50 per MTok against USD 2/USD 10.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).

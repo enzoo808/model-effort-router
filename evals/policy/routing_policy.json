@@ -1,93 +1,152 @@
 {
   "schema_version": "6",
-  "policy_version": "iteration-21",
-  "compiled": "2026-10-06",
-  "purpose": "Machine-readable mirror of skill/SKILL.md for the OpenCode Go arm. Read by scripts/check_policy_sync.py (rule blocks must equal SKILL.md verbatim) and scripts/check_opencode_pool.py (the 15-model pool, the Step 4-OC rows and the badge table must match SKILL.md). Not read by the router.",
+  "policy_version": "iteration-24",
+  "compiled": "2026-10-20",
+  "purpose": "Machine-readable mirror of skill/SKILL.md for the OpenCode arm. Read by scripts/check_policy_sync.py (rule blocks must equal SKILL.md verbatim) and scripts/check_opencode_pool.py (the 19-model pool with its budget/free/premium/Gemini tiers, the Step 4-OC rows and the badge table must match SKILL.md). Not read by the router.",
   "drift_guard": "Change a rule block here and forget SKILL.md, or the reverse, and check_policy_sync.py fails. The iteration-20 mirror, reachability corpus and matrix are frozen under archive/iteration-20-codex/ — they audit the retired Codex arm.",
   "pool": {
-    "plan": "OpenCode Go, USD 10/month; limits are per model (5-hour 20%, weekly 50%, monthly 100% of the cap).",
+    "plan": "OpenCode Go, USD 10/month; limits are per model (5-hour 20%, weekly 50%, monthly 100% of the cap). Gemini 4 Argon is reached with the user's own paid Google API key (or Go's Contributor route).",
     "models": {
       "MiMo-V2.6-Pro": {
         "cap_usd": 15,
         "status": "routable",
-        "retention": "0d"
+        "retention": "0d",
+        "tier": "B",
+        "tasks_per_month": 150
       },
       "GLM-5.3": {
         "cap_usd": 15,
-        "status": "routable",
-        "retention": "0d"
+        "status": "premium",
+        "retention": "0d",
+        "tier": "P",
+        "tasks_per_month": 23
       },
       "Kimi K3": {
         "cap_usd": 15,
-        "status": "routable",
-        "retention": "0d"
+        "status": "premium",
+        "retention": "0d",
+        "tier": "P",
+        "tasks_per_month": 21
       },
       "Grok 4.7": {
         "cap_usd": 15,
-        "status": "routable-nc1",
-        "retention": "30d"
+        "status": "premium",
+        "retention": "30d",
+        "tier": "P",
+        "tasks_per_month": 10
       },
       "Muse Spark 1.3 Contributor": {
         "cap_usd": 60,
         "status": "routable-nc1",
-        "retention": "trains"
+        "retention": "trains",
+        "tier": "N",
+        "tasks_per_month": 140
       },
       "GLM-5.3-Flash": {
         "cap_usd": 60,
         "status": "routable",
-        "retention": "0d"
+        "retention": "0d",
+        "tier": "B",
+        "tasks_per_month": 600
       },
       "MiMo-V2.6-Flash": {
         "cap_usd": 60,
         "status": "routable",
-        "retention": "0d"
+        "retention": "0d",
+        "tier": "B",
+        "tasks_per_month": 1500
       },
       "DeepSeek V4.1 Flash": {
-        "cap_usd": 60,
+        "cap_usd": 80,
         "status": "routable",
-        "retention": "0d"
+        "retention": "0d",
+        "tier": "B",
+        "tasks_per_month": 615
       },
       "GPT 6 Luna": {
         "cap_usd": 15,
         "status": "routable-nc1",
-        "retention": "30d"
+        "retention": "30d",
+        "tier": "N",
+        "tasks_per_month": 214
       },
       "Qwen3.8 Flash": {
         "cap_usd": 30,
         "status": "routable",
-        "retention": "0d"
+        "retention": "0d",
+        "tier": "B",
+        "tasks_per_month": 200
       },
       "Qwen3.8 Max": {
         "cap_usd": 15,
-        "status": "escalation-only",
-        "retention": "0d"
+        "status": "premium",
+        "retention": "0d",
+        "tier": "P",
+        "tasks_per_month": 33
       },
       "DeepSeek V4 Pro": {
         "cap_usd": 15,
         "status": "dominated",
-        "retention": "0d"
+        "retention": "0d",
+        "tier": "D",
+        "tasks_per_month": 47
       },
       "MiniMax M3": {
         "cap_usd": 60,
         "status": "dominated",
-        "retention": "0d"
+        "retention": "0d",
+        "tier": "D",
+        "tasks_per_month": null
       },
       "Kimi K2.7 Code": {
         "cap_usd": 60,
         "status": "dominated",
-        "retention": "0d"
+        "retention": "0d",
+        "tier": "D",
+        "tasks_per_month": null
       },
       "Qwen3.7 Plus": {
         "cap_usd": 60,
         "status": "dominated",
-        "retention": "0d"
+        "retention": "0d",
+        "tier": "D",
+        "tasks_per_month": null
+      },
+      "Claude Haiku 5.5": {
+        "cap_usd": 15,
+        "status": "dominated",
+        "retention": "30d",
+        "tier": "D",
+        "tasks_per_month": null
+      },
+      "Gemini 4 Argon": {
+        "cap_usd": 0,
+        "status": "metered",
+        "retention": "paid key: not trained on, abuse-monitoring logs; Go Contributor route trains",
+        "tier": "G",
+        "tasks_per_month": null
+      },
+      "Gemini 3.8 Flash": {
+        "cap_usd": 0,
+        "status": "dominated",
+        "retention": "paid: not trained on; free tier trains",
+        "tier": "D",
+        "tasks_per_month": null
+      },
+      "MiniMax M3.1 Flash Free": {
+        "cap_usd": 0,
+        "status": "routable",
+        "retention": "0d",
+        "tier": "F",
+        "tasks_per_month": null
       }
     },
     "statuses": {
-      "routable": "emitted by at least one row of the Step 4-OC table",
+      "routable": "budget or free tier: emitted by at least one row of the Step 4-OC table (MiniMax M3.1 Flash Free has no Go cap and is a tier-F member)",
       "routable-nc1": "emitted only after Rule NC1 (user says the work is non-confidential)",
-      "escalation-only": "emitted only through Rule A1-OC",
-      "dominated": "rated and kept in the pool; no routing row emits it (Rule E6)"
+      "premium": "never in a routed pair (Rule BUD1); emitted only as #2 through Rule A1-OC after a stated OpenCode shortfall",
+      "dominated": "rated and kept in the pool; no routing row emits it (Rules E6, E9)",
+      "metered": "Gemini 4 Argon: paid by the user's Google credits, not by a Go cap; emitted only through Rule GM1 (right-hand column of the listed rows, and #2 through A1-OC)"
     },
     "outside_main_pool": [
       "Grok 4.6",
@@ -104,8 +163,28 @@
       "LongCat 2.5 Preview",
       "LongCat-2.0",
       "Hy3",
-      "Space Bunny"
-    ]
+      "Space Bunny",
+      "Step 5 Preview",
+      "Beam Free",
+      "LongCat 2.5 Preview Free",
+      "Big Pickle",
+      "LL Alpha Free",
+      "Exo Free",
+      "Jev 1.13",
+      "MiMo-V2.5 Free",
+      "Nemotron 3 Ultra Free",
+      "Nemotron 3.5 Lightning Free",
+      "Nemotron 3.5 Super VL Free"
+    ],
+    "tiers": {
+      "B": "budget: at least 140 real agent tasks per month of its Go cap (cap / Arena p50 cost per task)",
+      "P": "premium: at most 35 tasks per month - GLM-5.3 23, Kimi K3 21, Qwen3.8 Max 33, Grok 4.7 10",
+      "N": "non-confidential only (NC1)",
+      "D": "dominated",
+      "F": "free (Rule FR1): MiniMax M3.1 Flash Free, unlimited on Go, zero retention, limited time; routed like tier B with no cap pressure",
+      "G": "Gemini (Rule GM1): metered by the user's Google credits (AI Pro adds USD 10/month); never at D<=2 with R<=2"
+    },
+    "tasks_per_month_source": "cap_usd / cost_per_task_p50_usd from skill/opencode-evidence.json (Arena Agent Arena, refreshed 2026-10-08); order of magnitude only. AA cost per index task gives the same split (premium 5.7-36% of the cap per task, budget 0.1-1.2%). Gemini 4 Argon has no Arena row: AA cost per index task is USD 1.99 (3.98 from 1 Dec 2026), 3.3% of Go's USD 60 Contributor promo cap per AA task, so it is metered rather than tiered."
   },
   "effort": {
     "claude_from_D": {
@@ -175,9 +254,31 @@
         "medium",
         "high",
         "xhigh"
+      ],
+      "Claude Haiku 5.5": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "MiniMax M3.1 Flash Free": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "Gemini 4 Argon": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "Gemini 3.8 Flash": [
+        "high"
       ]
     },
-    "opencode_variants_source": "models.dev providers/opencode-go/models/*.toml (dev branch), read 2026-10-06; MiMo has reasoning_options = []",
+    "opencode_variants_source": "models.dev providers/opencode-go/models/*.toml (dev branch), read 2026-10-06; MiMo has reasoning_options = []; claude-haiku-5-5.toml read 2026-10-08; gemini-4-argon-contributor.toml and minimax-m3.1-flash-free.toml read 2026-10-20; google/gemini-4-argon.toml: low/medium/high, default medium, max rejected (HTTP 400)",
     "opencode_emit": {
       "GLM-5.3": "by D: low/high/max",
       "GLM-5.3-Flash": "by D: low/high/max",
@@ -189,13 +290,33 @@
       "Qwen3.8 Flash": "xhigh",
       "Qwen3.8 Max": "xhigh",
       "GPT 6 Luna": "low",
-      "Muse Spark 1.3 Contributor": "xhigh"
+      "Muse Spark 1.3 Contributor": "xhigh",
+      "Claude Haiku 5.5": "never emitted (E9)",
+      "MiniMax M3.1 Flash Free": "by D: low/high/max (E7 convention, curve unmeasured)",
+      "Gemini 4 Argon": "high (E11)",
+      "Gemini 3.8 Flash": "never emitted (E10)"
     },
     "never_emitted": [
       "GLM-5.3 · low",
       "Kimi K3 · low",
-      "Sonnet 5.5 · max"
-    ]
+      "Sonnet 5.5 · max",
+      "Haiku 5.5 · xhigh",
+      "Haiku 5.5 · max",
+      "Haiku 5.5 · ultracode",
+      "Claude Haiku 5.5 (OpenCode line)",
+      "Gemini 3.8 Flash (OpenCode line)",
+      "Gemini 4 Argon · max",
+      "Gemini 4 Argon · medium"
+    ],
+    "claude_haiku_5_5": {
+      "0": "low",
+      "1": "medium",
+      "never": [
+        "xhigh",
+        "max",
+        "ultracode"
+      ]
+    }
   },
   "step4_oc_rows": {
     "D<=1": {
@@ -211,31 +332,31 @@
     "agentic-code": {
       "r_le_2": [
         "DeepSeek V4.1 Flash",
-        "GLM-5.3"
+        "MiMo-V2.6-Pro"
       ],
       "r_eq_3": [
-        "GLM-5.3",
-        "DeepSeek V4.1 Flash"
+        "Gemini 4 Argon",
+        "MiMo-V2.6-Pro"
       ]
     },
     "terminal-tool": {
       "r_le_2": [
         "DeepSeek V4.1 Flash",
-        "GLM-5.3"
+        "MiMo-V2.6-Pro"
       ],
       "r_eq_3": [
-        "GLM-5.3",
-        "DeepSeek V4.1 Flash"
+        "Gemini 4 Argon",
+        "MiMo-V2.6-Pro"
       ]
     },
     "deep-reasoning": {
       "r_le_2": [
         "MiMo-V2.6-Pro",
-        "Kimi K3"
+        "MiniMax M3.1 Flash Free"
       ],
       "r_eq_3": [
-        "MiMo-V2.6-Pro",
-        "Kimi K3"
+        "Gemini 4 Argon",
+        "MiMo-V2.6-Pro"
       ]
     },
     "knowledge-work": {
@@ -248,64 +369,54 @@
         "Qwen3.8 Flash"
       ]
     },
-    "knowledge-work+NC1": {
-      "r_le_2": [
-        "Grok 4.7",
-        "MiMo-V2.6-Pro"
-      ],
-      "r_eq_3": [
-        "Grok 4.7",
-        "MiMo-V2.6-Pro"
-      ]
-    },
     "workflow-automation": {
       "r_le_2": [
         "DeepSeek V4.1 Flash",
-        "GLM-5.3"
+        "GLM-5.3-Flash"
       ],
       "r_eq_3": [
-        "DeepSeek V4.1 Flash",
-        "GLM-5.3"
+        "Gemini 4 Argon",
+        "DeepSeek V4.1 Flash"
       ]
     },
     "long-context": {
       "r_le_2": [
-        "Kimi K3",
-        "DeepSeek V4.1 Flash"
+        "DeepSeek V4.1 Flash",
+        "GLM-5.3-Flash"
       ],
       "r_eq_3": [
-        "Kimi K3",
-        "DeepSeek V4.1 Flash"
+        "DeepSeek V4.1 Flash",
+        "GLM-5.3-Flash"
       ]
     },
     "research-synthesis": {
       "r_le_2": [
-        "GLM-5.3",
-        "MiMo-V2.6-Pro"
+        "MiMo-V2.6-Pro",
+        "GLM-5.3-Flash"
       ],
       "r_eq_3": [
-        "GLM-5.3",
+        "Gemini 4 Argon",
         "MiMo-V2.6-Pro"
       ]
     },
     "doc-data-understanding": {
       "r_le_2": [
-        "Kimi K3",
+        "MiniMax M3.1 Flash Free",
         "Qwen3.8 Flash"
       ],
       "r_eq_3": [
-        "Kimi K3",
+        "MiniMax M3.1 Flash Free",
         "Qwen3.8 Flash"
       ]
     },
     "science": {
       "r_le_2": [
         "MiMo-V2.6-Pro",
-        "Kimi K3"
+        "MiniMax M3.1 Flash Free"
       ],
       "r_eq_3": [
         "MiMo-V2.6-Pro",
-        "Kimi K3"
+        "MiniMax M3.1 Flash Free"
       ]
     },
     "latency-volume": {
@@ -341,59 +452,76 @@
   },
   "badge_table": {
     "agentic-code": {
-      "r_le_2": "claude",
-      "r_eq_3": "claude",
+      "d2_r_le_2": "opencode",
+      "d3_r_le_2": "claude",
+      "d_ge_2_r3": "claude",
       "low_confidence": false
     },
     "terminal-tool": {
-      "r_le_2": "claude",
-      "r_eq_3": "claude",
-      "low_confidence": false
-    },
-    "knowledge-work": {
-      "r_le_2": "claude",
-      "r_eq_3": "claude",
+      "d2_r_le_2": "opencode",
+      "d3_r_le_2": "claude",
+      "d_ge_2_r3": "claude",
       "low_confidence": false
     },
     "deep-reasoning": {
-      "r_le_2": "claude",
-      "r_eq_3": "claude",
+      "d2_r_le_2": "opencode",
+      "d3_r_le_2": "claude",
+      "d_ge_2_r3": "claude",
+      "low_confidence": false
+    },
+    "knowledge-work": {
+      "d2_r_le_2": "claude",
+      "d3_r_le_2": "claude",
+      "d_ge_2_r3": "claude",
       "low_confidence": false
     },
     "workflow-automation": {
-      "r_le_2": "opencode",
-      "r_eq_3": "opencode",
+      "d2_r_le_2": "opencode",
+      "d3_r_le_2": "opencode",
+      "d_ge_2_r3": "opencode",
       "low_confidence": true
     },
     "science": {
-      "r_le_2": "opencode",
-      "r_eq_3": "claude",
+      "d2_r_le_2": "opencode",
+      "d3_r_le_2": "opencode",
+      "d_ge_2_r3": "claude",
       "low_confidence": true
     },
     "long-context": {
-      "r_le_2": "opencode",
-      "r_eq_3": "opencode",
+      "d2_r_le_2": "opencode",
+      "d3_r_le_2": "opencode",
+      "d_ge_2_r3": "opencode",
       "low_confidence": true
     },
     "research-synthesis": {
-      "r_le_2": "opencode",
-      "r_eq_3": "claude",
+      "d2_r_le_2": "opencode",
+      "d3_r_le_2": "opencode",
+      "d_ge_2_r3": "opencode",
       "low_confidence": true
     },
     "doc-data-understanding": {
-      "r_le_2": "opencode",
-      "r_eq_3": "claude",
+      "d2_r_le_2": "opencode",
+      "d3_r_le_2": "opencode",
+      "d_ge_2_r3": "claude",
       "low_confidence": true
     },
     "latency-volume": {
-      "r_le_2": "opencode",
-      "r_eq_3": "opencode",
+      "d2_r_le_2": "opencode",
+      "d3_r_le_2": "opencode",
+      "d_ge_2_r3": "opencode",
       "low_confidence": false
     },
     "orchestration": {
-      "r_le_2": "claude",
-      "r_eq_3": "claude",
+      "d2_r_le_2": "claude",
+      "d3_r_le_2": "claude",
+      "d_ge_2_r3": "claude",
       "low_confidence": false
+    },
+    "other": {
+      "d2_r_le_2": "opencode",
+      "d3_r_le_2": "opencode",
+      "d_ge_2_r3": "opencode",
+      "low_confidence": true
     }
   },
   "rule_blocks": {
@@ -404,14 +532,20 @@
       "M1": "**M1 · `max`.** Emit `max` only when `D = 3` and `R = 3` and the model is a flagship (Opus 5.5 / Opus 4.8 / Fable 5.1 / Mythos 5.1) and the difficulty is one indivisible novel-design or formal decision. Otherwise `xhigh`.",
       "A1": "**A1 · frontier rung.** Opus 5.5 becomes Fable 5.1 only when the dominant capability is on the flagship list and `A = high`, where `A = high` means the user states that an earlier flagship-tier run at `xhigh` or `max` already fell short. A long or unattended session is not that statement.",
       "O1": "**O1 · orchestration load.** `O = high` when the session must run three or more distinct phases, where a phase is a stretch of work that produces a different kind of deliverable and whose output is consumed by a later phase. The phases that count are research, implementation, independent verification, packaging, data or schema migration, documentation, and triage. The whole edit-run-repair implementation loop is one phase, and tests you write for your own change are inside it.",
-      "UC1": "**UC1 · `ultracode`.** Emit `ultracode` when the estimated duration is over 30 minutes and either `O = high` or (`W = 3` and `D >= 2`) and the difficulty is not one indivisible chain. Write `ultracode` in the effort field. Every model except Haiku 4.5.",
+      "UC1": "**UC1 · `ultracode`.** Emit `ultracode` when the estimated duration is over 30 minutes and either `O = high` or (`W = 3` and `D >= 2`) and the difficulty is not one indivisible chain. Write `ultracode` in the effort field. Never on Haiku 5.5.",
       "B1": "**B1 · evidence applicability.** A benchmark row takes part in the badge decision only if the capability it measures is one of the dominant tags named for this prompt in Step 2. Applicability is checked before evidence quality and before any tie-break, and a row that is not applicable does not enter the comparison at all, however strong its number.",
       "BD1": "**BD1 · direction without an interval.** A badge direction needs at least two independent measurements that agree — an independent evaluator's run, or a vendor's table that favours its rival — at least one of them tier A or B, and none that disagree. The same benchmark re-published on a second page is one measurement, a tie is not opposition, and an aggregate never counts. Otherwise the cell is decided by efficiency, except at R = 3, where a single admissible measurement still decides it: a lean is not parity.",
       "MECH1": "**MECH1 · mechanism rows.** `ultracode` driven by `O = high`, or a task routed to `opusplan`, names something OpenCode does not have, so it decides the badge for Claude unless the other capability row carries a benchmark direction under BD1, which wins.",
-      "NC1": "**NC1 · non-confidential unlock.** Only when the user says the work is non-confidential or personal: Grok 4.7 and GPT 6 Luna stay in the pool (30-day retention is accepted), and Muse Spark 1.3 Contributor may take `#2` on `deep-reasoning`, `science` and `research-synthesis` rows (HLE 49 = MiMo-V2.6-Pro, AA-Omniscience 25 vs Kimi K3 20, USD 60 cap against USD 15). Never infer non-confidentiality from the prompt's tone.",
-      "PO1": "**PO1 · pair order.** At `D ≤ 2` and `R ≤ 2` the most cap-efficient model inside the leading consensus band goes first; at `D = 3` or `R = 3` the leader on the hardest anchors goes first (the right-hand column). This orders the pair only — the badge still follows BD1.",
-      "CAP1": "**CAP1 · cap rule.** The USD 15-cap models (MiMo-V2.6-Pro, GLM-5.3, Kimi K3, Grok 4.7, Qwen3.8 Max, GPT 6 Luna) are reserved for `D ≥ 2`; `D ≤ 1` goes to the USD 60-cap Flash tier (the `latency-volume` row is exempt). Caps are per model: when the user says a model's window is exhausted, name the next model of its chain in `Evidence:` only — Pro **MiMo-V2.6-Pro → GLM-5.3 → Kimi K3 → Qwen3.8 Max**; Flash **DeepSeek V4.1 Flash → GLM-5.3-Flash → MiMo-V2.6-Flash → Qwen3.8 Flash**.",
-      "A1-OC": "**A1-OC · escalation rung.** When the user states that an earlier OpenCode run fell short, `#2` becomes **Grok 4.7** (non-confidential, NC1), else **Kimi K3** for `agentic-code` / `terminal-tool` (Agent Arena #1 open, Vals TB 2.1 81, AA Coding Index 76) or **Qwen3.8 Max** for `knowledge-work` (consensus 0.82, USD 5.41 per task). If the shortfall was at `D=3`, also say the Claude line is stronger."
+      "NC1": "**NC1 · non-confidential unlock.** Only when the user says the work is non-confidential or personal: GPT 6 Luna stays in the pool (30-day retention is accepted; Grok 4.7 stays premium under BUD1 and does not return), and Muse Spark 1.3 Contributor takes `#2` on `research-synthesis` rows only (AA-Omniscience 25 vs MiMo-V2.6-Pro 8, USD 60 cap against USD 15; `deep-reasoning` and `science` already carry the free model, or Argon, so it adds nothing there), and Gemini 4 Argon may run on Go's *Contributor* route instead of the paid key. Never infer non-confidentiality from the prompt's tone.",
+      "PO1": "**PO1 · pair order.** At `D ≤ 2` and `R ≤ 2` the most cap-efficient model inside the leading consensus band goes first; at `D = 3` or `R = 3` the leader on the hardest anchors goes first (the right-hand column). This orders the pair only — the badge still follows SM1.",
+      "CAP1": "**CAP1 · cap rule.** The USD 15-cap budget models (MiMo-V2.6-Pro, GPT 6 Luna) are reserved for `D ≥ 2`; `D ≤ 1` goes to the USD 60–80-cap Flash tier (the `latency-volume` row is exempt). Caps are per model: when the user says a model's window is exhausted, name the next model of its chain in `Evidence:` only — Pro **MiMo-V2.6-Pro → DeepSeek V4.1 Flash → GLM-5.3-Flash → Qwen3.8 Flash**; Flash **DeepSeek V4.1 Flash → GLM-5.3-Flash → MiMo-V2.6-Flash → Qwen3.8 Flash**.",
+      "A1-OC": "**A1-OC · escalation rung.** When the user states that an earlier OpenCode run fell short, `#2` becomes the premium model with the best consensus for the dominant capability — **Gemini 4 Argon** (Rule GM1) for `agentic-code`, `terminal-tool`, `deep-reasoning`, `research-synthesis` and `workflow-automation` at any `D ≥ 2`, **Kimi K3** for `science`, `long-context` and `doc-data-understanding`, **Qwen3.8 Max** for `knowledge-work`, and **GLM-5.3** wherever the user has no Google key or credits — or **Grok 4.7** when the work is non-confidential (NC1), and `Evidence:` names its cost (Gemini 4 Argon about USD 1–4 per heavy task from the credits; the Go premium models about 3–5% of their monthly cap per real agent task, Grok 10%). After a shortfall at `D ≥ 2` the badge goes to Claude whenever the dominant capability has a Claude direction under BD1; at `D = 3` also say the Claude line is stronger.",
+      "H1": "**H1 · Haiku 5.5.** Haiku 5.5 is the Claude pick when `R ≤ 1` and `C ≤ 1` and the dominant capability is not `research-synthesis` and one of these holds: `D = 0` and `W = 0`; or `D = 1` and `W ≤ 1` and the dominant capability is `instruction-following`, `latency-volume`, or none of the tags fits (a summary, a reformat, a translation, a label, a rewrite or an answer from text the user provides). Effort is `low` at `D = 0` and `medium` at `D = 1`, never higher.",
+      "H2": "**H2 · Haiku escalation.** When the user says an earlier Haiku 5.5 run fell short, or asks for more care on work H1 would give Haiku, the Claude line becomes Sonnet 5.5 at its own `D` rung. Haiku's effort is never raised instead.",
+      "BUD1": "**BUD1 · budget-first pool.** The four premium models — GLM-5.3, Kimi K3, Grok 4.7 and Qwen3.8 Max, each buying at most 35 real agent tasks per month of its Go cap — are never `#1` or `#2` of a routed pair. They reach the OpenCode line only through Rule A1-OC, after the user states that an earlier OpenCode run fell short. Every other pair is built from the budget tier (140 or more tasks per month), the free Go model (Rule FR1), Gemini 4 Argon where Rule GM1 allows it, and, under NC1, GPT 6 Luna and Muse Spark 1.3 Contributor.",
+      "SM1": "**SM1 · OpenCode by default.** The badge goes to OpenCode unless Claude clears a serious margin. Claude takes it only when a hard gate or the context window puts OpenCode out, or MECH1 applies, or `D = 3` and the dominant capability is `agentic-code`, `terminal-tool` or `deep-reasoning` and BD1 gives Claude a direction, or the dominant capability is `knowledge-work` at `D ≥ 2` with a BD1 direction, or `R = 3` and `D ≥ 2` and the dominant row leans to Claude. Every `D ≤ 1` task and every other `D = 2` task is OpenCode: the budget pair clears the bar there, and a Claude direction that only shows on harder tasks is not a reason to spend Claude's quota.",
+      "FR1": "**FR1 · free lane.** MiniMax M3.1 Flash Free (Go, unlimited, zero retention) is a budget-tier model with no cap pressure: it takes `#2` of the `deep-reasoning` and `science` rows and `#1` of the `doc-data-understanding` row, where its AA scores lead the Flash tier, and is gated out of factual recall like DeepSeek. Free is limited-time: if it errors or is delisted, the rows revert to GLM-5.3-Flash (`#2`) and Qwen3.8 Flash · MiMo-V2.6-Pro. Zen's free twins of paid Flash models (`glm-5.3-flash-free`, `deepseek-v4.1-flash-free`: same base models, zero retention, no training; the DeepSeek twin has a 200k window) are never `#1` or `#2` — when the user says a paid Flash window is exhausted, `Evidence:` names the twin before the CAP1 chain. `mimo-v2.6-flash-free` trains on prompts (NC1 spill-over only). Every other free model is never selected.",
+      "GM1": "**GM1 · Gemini slot.** Gemini 4 Argon is metered by the user's Google credits, so it never takes a slot at `D ≤ 2` with `R ≤ 2`. In the right-hand column of Step 4-OC (`D = 3` or `R = 3`) it is `#1`, effort `high`, on `agentic-code`, `terminal-tool`, `deep-reasoning`, `research-synthesis` and `workflow-automation` — the rows where independent evidence puts it above the budget tier — and the row's former `#1` becomes `#2`. After an OpenCode shortfall at `D ≥ 2` it is `#2` on the same rows (Rule A1-OC). Confidential work uses the paid Google key (`google/gemini-4-argon`); only work the user calls non-confidential may use `opencode-go/gemini-4-argon-contributor`. If the user says there is no Google key or the credits are spent, drop it and read the rows as without it."
     }
   },
   "skill_md_must_not_appear": [
@@ -421,6 +555,89 @@
     "rule:P1",
     "Claude & Codex model",
     "Codex: ✅ RECOMMENDED AI",
-    "$2/$10"
-  ]
+    "$2/$10",
+    "Haiku 4.5 removed",
+    "**Haiku 4.5.** No effort",
+    "Haiku 5.5 is announced",
+    "No effort for Haiku",
+    "the 15 main models",
+    "Every model except Haiku 4.5",
+    "**Claude** when the Claude pick is **Haiku 5.5**",
+    "MiMo-V2.6-Pro → GLM-5.3 → Kimi K3 → Qwen3.8 Max",
+    "NC1: Grok 4.7 · MiMo-V2.6-Pro",
+    "the badge still follows BD1",
+    "Kimi K3 for `agentic-code` / `terminal-tool`",
+    "A higher general index (Claude 58/56 vs 46)",
+    "OpenCode Go pool — the 16 rated models",
+    "| 8 | **DeepSeek V4.1 Flash** | 39 | 27 | 0.27 | 60 | 462 |",
+    "the 16-model evidence",
+    "iteration-23 -->"
+  ],
+  "haiku_5_5": {
+    "claude_pick_rule": "H1",
+    "claude_effort": {
+      "D=0": "low",
+      "D=1": "medium"
+    },
+    "d1_allowed_dominant_capabilities": [
+      "instruction-following",
+      "latency-volume",
+      "none"
+    ],
+    "excluded_dominant_capabilities": [
+      "research-synthesis (both branches)",
+      "agentic-code",
+      "terminal-tool",
+      "workflow-automation",
+      "knowledge-work",
+      "computer-use",
+      "deep-reasoning",
+      "science",
+      "long-context",
+      "doc-data-understanding"
+    ],
+    "badge_tie_break_D_le_1": {
+      "haiku_5_5_pick": "opencode",
+      "sonnet_5_5_pick": "opencode",
+      "note": "iteration-23: SM1 sends every D<=1 task to OpenCode"
+    },
+    "opencode_status": "dominated (E9)"
+  },
+  "badge_default": {
+    "rule": "SM1",
+    "d_le_1": "opencode",
+    "note": "Every D<=1 task is OpenCode, whatever the Claude pick (Haiku 5.5 included); gates and MECH1 still decide first."
+  },
+  "gm1_rows": [
+    "agentic-code",
+    "terminal-tool",
+    "deep-reasoning",
+    "research-synthesis",
+    "workflow-automation"
+  ],
+  "free_lane": {
+    "fr1_fallback": {
+      "deep-reasoning": [
+        "MiMo-V2.6-Pro",
+        "GLM-5.3-Flash"
+      ],
+      "science": [
+        "MiMo-V2.6-Pro",
+        "GLM-5.3-Flash"
+      ],
+      "doc-data-understanding": [
+        "Qwen3.8 Flash",
+        "MiMo-V2.6-Pro"
+      ]
+    },
+    "twins": {
+      "glm-5.3-flash-free": "zhipuai/glm-5.3-flash",
+      "deepseek-v4.1-flash-free": "deepseek/deepseek-v4.1-flash (200k context)",
+      "mimo-v2.6-flash-free": "xiaomi/mimo-v2.6-flash (trains on prompts)"
+    },
+    "factual_gate": [
+      "DeepSeek V4.1 Flash",
+      "MiniMax M3.1 Flash Free"
+    ]
+  }
 }

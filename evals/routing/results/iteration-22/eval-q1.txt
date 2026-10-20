@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Haiku 5.5 · effort: low
+OpenCode: #1 DeepSeek V4.1 Flash · effort: low · #2 GPT 6 Luna · effort: low
+Evidence: High-volume classification is D=1 and nobody waits on a first token, so price decides: Haiku 5.5 USD 0.10/USD 0.50 per MTok with no dollar cap to spend.
+Data: GPT 6 Luna keeps prompts for 30 days.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).

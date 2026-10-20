@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Grade model-secici routing outputs against evals.json (iteration-21: Claude + OpenCode Go).
+"""Grade model-secici routing outputs against evals.json (iteration-24: Claude + OpenCode, budget-first, free lane, Gemini slot).
 
 Usage:
     python grade_routing.py --results-dir results/iteration-21
@@ -35,11 +35,13 @@ import sys
 from pathlib import Path
 
 # Longer names that contain a shorter one must come first.
-CLAUDE_MODELS = ["Haiku 4.5", "Sonnet 5.5", "Opus 4.8", "Opus 5.5",
+CLAUDE_MODELS = ["Haiku 5.5", "Haiku 4.5", "Sonnet 5.5", "Opus 4.8", "Opus 5.5",
                  "Fable 5.1", "Fable 5", "Mythos 5.1"]
 
-# All 30 models on the OpenCode Go page. The 15 main ones are routable; any of the
-# other 15 appearing on an OpenCode line is a regression this list exists to catch.
+# Every model the router rates or knowingly skips on the OpenCode side (Go page of 20 Oct 2026
+# plus the Gemini line and the Zen free models). The 13 with a routing role are routable; any
+# of the others -- dominated or unrated -- appearing on an OpenCode line is a regression this
+# list exists to catch.
 OPENCODE_MODELS = sorted([
     "MiMo-V2.6-Pro", "MiMo-V2.6-Flash", "MiMo-V2.5-Pro", "MiMo-V2.5",
     "GLM-5.3-Flash", "GLM-5.3", "GLM-5.2",
@@ -49,11 +51,23 @@ OPENCODE_MODELS = sorted([
     "DeepSeek V4.1 Flash", "DeepSeek V4 Pro", "DeepSeek V4 Flash Vision", "DeepSeek V4 Flash",
     "GPT 6 Luna", "GPT 5.6 Luna",
     "Qwen3.8 Flash", "Qwen3.8 Max", "Qwen3.7 Plus",
+    "Claude Haiku 5.5",
     "MiniMax M3", "MiniMax M2.7",
     "LongCat 2.5 Preview", "LongCat-2.0", "Hy4 Preview", "Hy3", "Space Bunny",
+    "MiniMax M3.1 Flash Free", "Gemini 4 Argon Contributor", "Gemini 4 Argon", "Gemini 3.8 Flash",
+    "Step 5 Preview", "Beam Free", "Big Pickle", "LL Alpha Free", "Exo Free", "Jev 1.13",
+    "Nemotron 3 Ultra", "Nemotron 3.5 Lightning", "Nemotron 3.5 Super VL",
 ], key=len, reverse=True)
 
 DECLINE_MARKERS = ("unverified", "use claude")
+# Rule BUD1 (iteration-23): the four premium models appear on an OpenCode line only through
+# A1-OC, i.e. in evals that set "allow_premium": true.
+PREMIUM_PATTERNS = (r"GLM-5\.3(?!-Flash)", r"Kimi K3", r"Grok 4\.7", r"Qwen3\.8 Max")
+# Rule GM1 (iteration-24): Gemini 4 Argon is metered; it may be #1 (or, after a shortfall, #2)
+# only in an eval that sets "allow_gemini": true. Everywhere else it is a regression.
+GEMINI_PATTERN = r"Gemini"
+# Rule FR1: the free Go model may appear; no Zen free twin or other free model ever may.
+NEVER_ON_LINE = (r"-free\b", r"Free(?<!MiniMax M3\.1 Flash Free)", r"Beam", r"Big Pickle", r"Nemotron")
 BADGE_TEXT = "recommended ai"
 MIN_EVIDENCE_CHARS = 20
 
@@ -83,7 +97,7 @@ def check_effort(expected: str, actual: str, side: str, allow_none: bool = False
         if om.group(1).lower() != em.group(1).lower():
             return False, f"{side}: effort '{om.group(1)}', expected '{em.group(1)}'"
     elif om and not allow_none:
-        return False, f"{side}: there should be no effort field (Haiku) but the output has one"
+        return False, f"{side}: the expected line has no effort field but the output has one"
     return True, ""
 
 
@@ -224,6 +238,18 @@ def grade_one(item: dict, output: str) -> tuple[bool, str]:
     ok_o, msg_o = grade_opencode(item["expected_opencode"], extract_line(output, "OpenCode"))
     if not ok_o:
         return False, msg_o
+    if not item.get("allow_premium"):
+        oc_line = extract_line(output, "OpenCode") or ""
+        for pat in PREMIUM_PATTERNS:
+            if re.search(pat, oc_line):
+                return False, f"OpenCode line names a premium model ({pat}) without a stated shortfall (Rule BUD1): '{oc_line}'"
+
+    oc_line = extract_line(output, "OpenCode") or ""
+    if not item.get("allow_gemini") and re.search(GEMINI_PATTERN, oc_line):
+        return False, f"OpenCode line names a Gemini model without Rule GM1 applying (D=3 / R=3 rows, or a shortfall): '{oc_line}'"
+    for pat in NEVER_ON_LINE:
+        if re.search(pat, oc_line):
+            return False, f"OpenCode line names a free model that is never selected (Rule FR1, pattern {pat}): '{oc_line}'"
 
     sides = badge_sides(output)
     if len(sides) > 1:

@@ -63,7 +63,7 @@ buried.
 >
 > It's sourced from the official docs, every uncertain claim is labelled, and
 > there's a deterministic regression eval (cold agents read the rules fresh and
-> route a fixed prompt set; a regex grader checks the output). Currently a 22-prompt set (the iteration-21 cold-agent run is still pending), plus a
+> route a fixed prompt set; a regex grader checks the output). Currently a 34-prompt set (iteration-22 cold-agent run: 29/29 after two corrections; iteration-24 cold-agent run: 33/33 routed evals after two corrections), plus a
 > separate no-LLM evidence suite: schema validation, rule-provenance resolution,
 > frontier staleness and 80 compiler assertions.
 >
@@ -72,16 +72,16 @@ buried.
 Then a first comment from you with the concrete "here's what it does" example and
 the honest limitations (Turkish skill body, model-name/price data has a shelf
 life, no open model has verified biology / offensive-security / computer-use evidence so the OpenCode arm punts to Claude there;
-AA publishes no confidence intervals, so even a 22-point Terminal-Bench lead for Sonnet 5.5 is a *lean* and the badge reads OpenCode (low-confidence) on most coding prompts unless R=3 — that lean is documented, not hidden).
+AA publishes no confidence intervals, so a Terminal-Bench lead for Sonnet 5.5 is a *lean*: since iteration-23 the router sends errands and mid-difficulty (D≤2) coding to OpenCode's budget tier and keeps the Claude badge for D=3 coding/reasoning, finished deliverables, gates, mechanisms and R=3 — that threshold is a policy choice, documented in SKILL.md Rule SM1, not hidden).
 
 ## r/ClaudeAI (and cross-post to r/LocalLLaMA, r/OpenAI)
 
 **Title:**
-`I built a skill that tells you which model + effort to use for a task (Claude + OpenCode Go)`
+`I built a skill that tells you which model + effort to use for a task (Claude + OpenCode Go + Gemini)`
 
 **Body:**
 > Short version: paste a task, it replies with two lines —
-> `Claude: Sonnet 5.5 · effort: high` / `OpenCode: #1 MiMo-V2.6-Pro · effort: max · #2 GLM-5.3 · effort: max` — and doesn't
+> `Claude: Sonnet 5.5 · effort: high` / `OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: high · #2 MiMo-V2.6-Pro · effort: default` — and doesn't
 > run anything.
 >
 > It's built around one idea: the thing you're actually running out of is your

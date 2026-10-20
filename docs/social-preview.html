@@ -47,12 +47,12 @@
     border: 1px solid #30363d;
     border-radius: 14px;
     padding: 22px 28px;
-    max-width: 930px;
+    max-width: 1112px;
     box-shadow: 0 24px 60px -20px rgba(0,0,0,0.7);
   }
   .card .prompt { color: #7d8590; font-size: 21px; margin-bottom: 14px; }
   .card .prompt .cmd { color: #58a6ff; }
-  .row { font-size: 24px; line-height: 1.52; white-space: pre; }
+  .row { font-size: 22px; line-height: 1.52; white-space: pre; }
   .lbl { color: #7d8590; }
   .badge { color: #3fb950; font-weight: 600; }
   .ev {
@@ -84,24 +84,24 @@
 </style>
 </head>
 <body>
-  <div class="kicker">Claude Code · claude.ai · Codex CLI skill</div>
+  <div class="kicker">Claude Code · claude.ai · OpenCode Go skill</div>
   <h1>model<span class="slash">-</span>effort<span class="slash">-</span>router</h1>
   <div class="tag">
     Paste a task &rarr; get the <b>lowest-quota model + effort that still clears the
-    bar</b>, for Claude <b>and</b> Codex/ChatGPT &mdash; and which of the two actually
-    fits the task. It routes, it doesn't run.
+    bar</b>, for Claude <b>and</b> your OpenCode Go plan &mdash; <b>OpenCode by default</b>,
+    Claude where it makes a serious difference. It routes, it doesn't run.
   </div>
 
   <div class="card">
-    <div class="prompt"><span class="cmd">/model-secici</span>  move the repo's auth flow to OAuth2</div>
-    <div class="row"><span class="lbl">Claude:</span> <span class="claude">Sonnet 5.5</span> <span class="dim">·</span> effort: high</div>
-    <div class="row"><span class="lbl">Codex:</span>  <span class="badge">&#10003; RECOMMENDED AI</span> <span class="dim">·</span> <span class="codex">Sol</span> <span class="dim">·</span> effort: high</div>
-    <div class="ev"><span class="k">Evidence:</span> One Terminal-Bench 4.0 row (Sol 56 vs Sonnet 5.5 64, no interval) is not a direction, so token load decides &mdash; ~38k output tokens/task vs ~193k (low-confidence).</div>
+    <div class="prompt"><span class="cmd">/model-secici</span>  label these 200 customer reviews positive/negative</div>
+    <div class="row"><span class="lbl">Claude:</span>   <span class="claude">Haiku 5.5</span> <span class="dim">·</span> effort: low</div>
+    <div class="row"><span class="lbl">OpenCode:</span> <span class="badge">&#10003; RECOMMENDED AI</span> <span class="dim">· #1</span> <span class="codex">DeepSeek V4.1 Flash</span> <span class="dim">·</span> low <span class="dim">· #2</span> <span class="codex">MiMo-V2.6-Flash</span></div>
+    <div class="ev"><span class="k">Evidence:</span> Labelling is D=0 bulk work, so OpenCode runs it &mdash; the Flash tier buys hundreds of such batches a month on USD 60 caps and keeps Claude&rsquo;s quota for harder work.</div>
   </div>
 
   <div class="foot">
     <span>Protects your rate-limit windows &mdash; not your wallet.</span>
-    <span class="r">MIT · sourced from the docs · 38/38 regression evals</span>
+    <span class="r">MIT · sourced from the docs · 30 regression evals</span>
   </div>
 </body>
 </html>

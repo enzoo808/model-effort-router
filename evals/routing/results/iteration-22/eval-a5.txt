@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: medium
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: D=1 batch labelling, so price and cap decide: Haiku fell short so Claude escalates to Sonnet 5.5 (USD 2/USD 10 per MTok), against Flash models on USD 60 caps.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
