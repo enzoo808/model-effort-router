@@ -18,7 +18,7 @@ Promptu çalıştırmaz, yalnızca yönlendirir.
 
 ```
 Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: high · #2 MiMo-V2.6-Pro · effort: default
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
 Evidence: Orta zorlukta özellik işi bağımsız DeepSWE'de eşit (DeepSeek 71.7 vs Sonnet 5.5 70.5, ±7);
           agent görevi başına USD 0.13 vs Opus 5.5'in 1.67'si. Claude'un önü D=3'te başlıyor.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
@@ -41,6 +41,7 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 - **Üyelik.** Google AI Pro API anahtarı vermez — ama Gemini API'de kullanılabilen **aylık USD 10 Google Cloud kredisi** getirir (developers.google.com/program/my-benefits'ten etkinleştirilir; ücretli katman anahtarları eğitimde kullanılmaz).
   OpenCode'a Google hesabıyla (OAuth/Antigravity) girmek Google'ın şartlarının yasakladığı yoldur (askıya alma raporları var), bu yüzden router API anahtarı önerir. 503 Google tarafı kapasitedir (yeniden dene, sonra Gemini 3.8 Flash);
   Argon'da `429 "limit: 0"` ücretsiz-katman anahtarı demektir. Ayrıntı: `opencode-benchmarks.md` §13.4.
+- **Efor (21 Ekim):** DeepSeek V4.1 Flash, GLM-5.3-Flash ve MiniMax M3.1 Flash Free için `D ≥ 2 → max` (eskiden `D = 2 → high`) — AA DeepSeek'i yalnız `max`'ta ölçtü, `high`'ın yalnız vendor eğrisi vardı, `max` görev başına tavanın ~%0,3'ü.
 - **Ayrıca:** DeepSeek V4.1 Flash'ın Go sınırı USD 80'e çıktı; Argon'un Go içindeki *Contributor* yolu istemlerle eğitim yaptığından yalnızca "gizli değil" dediğiniz işlerde önerilir.
 - **Kontroller:** `grade_routing.py --selftest` 34/34 (30 → 34 eval: d1, g1, j1, t1, v1, z1, p1, n1, r1 değişti; `w1`–`w4` yeni); politika senkronu (42 blok), havuz denetimi (mutasyon testli), örnekler — hepsi yeşil.
   **Soğuk-ajan koşusu (6 taze Sonnet ajanı, `evals/routing/results/iteration-24/`): yönlendirilen 33 eval'in 33'ü geçti** — önce iki düzeltme: `w2` gerçek bir belirsizliği ortaya çıkardı (NC1, Muse Spark'a deep-reasoning/science'ta `#2` "olabilir" diyordu; artık yalnız `research-synthesis`'te `#2` olur), `r1` belirsiz bir istemdi (netleştirildi, kural aynı). `i1` (exploit PoC) ajanı tarafından yalnız-yönlendirme olarak bile reddedildi, tekrar koşulmadı; o kapıya dokunulmadı. Yapılmadı: tetikleme eval'i. `SKILL.md` kırpıldıktan sonra 54.7 → 60.0 KB.

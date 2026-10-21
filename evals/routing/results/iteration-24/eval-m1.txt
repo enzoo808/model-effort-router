@@ -1,4 +1,4 @@
 Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3-Flash · effort: high
-Evidence: Workflow wiring is D=2; AutomationBench-AA has DeepSeek 69 against Sonnet 5.5 72, a tie with no Claude direction, so price decides; low-confidence — thin evidence for n8n-style flows.
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 GLM-5.3-Flash · effort: max
+Evidence: Workflow wiring at D=2 is AutomationBench-AA Sonnet 72 / Opus 70 vs DeepSeek 69, a tie with no Claude direction, so the cheaper arm wins; low-confidence.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).

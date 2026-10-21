@@ -151,23 +151,18 @@ BD1 altında Claude yönü varsa rozet Claude'a geçer; `D = 3`'te ayrıca Claud
 
 | Model | OpenCode varyantları | Yaz |
 |---|---|---|
-| GLM-5.3 · GLM-5.3-Flash · DeepSeek V4.1 Flash | `low` · `high` · `max` | `D ≤ 1` `low` · `D = 2` `high` · `D = 3` `max` |
+| GLM-5.3 · GLM-5.3-Flash · DeepSeek V4.1 Flash | `low` · `high` · `max` | `D ≤ 1` `low` · `D ≥ 2` `max` |
 | MiMo-V2.6-Pro · MiMo-V2.6-Flash | **yok** (düşünme hep açık) | `default` |
 | Kimi K3 | yalnız `max` | `max` |
 | Grok 4.7 | `low` `medium` `high` `xhigh` | `xhigh` (AA'nın ölçtüğü) |
 | Qwen3.8 Flash · Max | `low` `medium` `xhigh` | `xhigh` (API varsayılanı) |
 | GPT 6 Luna | `none` … `max` | `low` (yalnız latency satırı) |
 | Muse Spark 1.3 | `minimal` … `xhigh` | `xhigh` (yalnız NC1) |
-| MiniMax M3.1 Flash Free | `low` … `max` | `D ≤ 1` `low` · `D = 2` `high` · `D = 3` `max` (E7 geleneği; eğri ölçülmemiş, ücretsiz olduğundan yalnız gecikme öder) |
+| MiniMax M3.1 Flash Free | `low` … `max` | `D ≤ 1` `low` · `D ≥ 2` `max` (E7 geleneği; eğri ölçülmemiş, ücretsiz olduğundan yalnız gecikme öder) |
 | Gemini 4 Argon | `low` `medium` `high` (`max` HTTP 400) | `high` (AA `high`'ı ölçtü; varsayılan `medium` ölçülmemiş) |
 
 `low/high/max` modellerinde `medium` ve `xhigh` **reddedilir**; Grok/Qwen'de `max` yok — modelin
-listelemediği kademeyi asla yazma. **`D=2 → high` (Kural E7):** DeepSeek'in kendi makalesi 60–80
-eforunun `max`'ın doğruluğunun çoğunu yarıdan az tokenla yakaladığını, son adımın agent
-token'ını marjinal kazanç için 1.6–1.8× artırdığını söyler; Z.ai Code Bench'inde GLM-5.3 `high`
-%31.4 @ ~50k token, `max` %34.5 @ ~75k (vendor-raporlu kendi-modeli eğrileri: kademe seçer,
-ekosistemler-arası yön belirlemez). **`D=3 → max`:** AA'da GLM-5.3 `low` 34 → `max` 45, Kimi K3 30 → 44, DeepSeek V4.1 Flash 25 → 39
-(Kural E5; premium ikili yalnız A1-OC'de). Flash katmanında `max` görev başına USD 0.25–0.27 — USD 60 tavanın %0.4'ü — ucuz kalır. `GLM-5.3 · low` GLM-5.3-Flash tarafından domine (E6) → `D ≤ 1` Flash katmanına gider.
+listelemediği kademeyi asla yazma. **`D ≥ 2 → max` (Kural E7):** AA, DeepSeek V4.1 Flash'ı yalnız `max`'ta ölçtü (reasoning'siz 25 → `max` 39), GLM-5.3 `low` 34 → `max` 45, Kimi K3 30 → 44 (Kural E5): bağımsız kanıt `max`'ta, `high`'ın bağımsız puanı yok. Flash katmanında `max` AA görevi başına USD 0.25–0.27 — USD 80 tavanın ~%0.3'ü — kota gerekçesi yok. (DeepSeek ve Z.ai'nin kendi-modeli vendor eğrileri `high`'ı daha ucuz gösterir; kademe seçer, yön belirlemez.) `GLM-5.3 · low` GLM-5.3-Flash tarafından domine (E6) → `D ≤ 1` Flash katmanına gider.
 Hiç interpolasyon yapma.
 
 ## Efor seviyeleri (Claude Code `/effort` menüsü)
@@ -480,7 +475,7 @@ token → output token → gecikme.**
 - **E1:** `Sonnet 5.5 · max` (56, USD 5.46 — Sonnet'in cache okuması 7 Eki'de yarıya inmeden önce USD 7.60 —, ~197k token)
   `Opus 5.5 · xhigh` (56, USD 3.46) ile AYNI skoru 1.6× maliyetle veriyor → router `Sonnet 5.5 · max` **üretmez**.
 - **E3:** `max`, `xhigh`'ın üstüne Claude'da az şey katar (Fable 5.1 53=53; Opus 5.5 58 vs 56 = +2 için +%73).
-- **E5:** açık modeller E3'ün istisnası: `max` +11 (GLM-5.3) ve +14 (Kimi K3) puan satın alır → `D = 3 → max`; `D = 2` `high` alır (E7).
+- **E5:** açık modeller E3'ün istisnası: `max` +11 (GLM-5.3) ve +14 (Kimi K3) puan satın alır → `D ≥ 2 → max` (E7).
 - **E6 (domine, asla çıkmaz):** `GLM-5.3 · low` → GLM-5.3-Flash; `Kimi K3 · low` → MiMo-V2.6-Flash; DeepSeek
   V4 Pro → V4.1 Flash; MiniMax M3 / Kimi K2.7 Code / Qwen3.7 Plus → her Flash modeli; Qwen3.8 Max → MiMo-V2.6-Pro
   (yalnız A1-OC onu adlandırır). Grok 4.7 ve GPT 6 Luna domine değil, saklama yüzünden *elenmiş*.
@@ -599,7 +594,7 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 *"Ödeme modülünü 40 dosyada yeni idempotency-key API'sine geçir, tüm çağıranları güncelle, testler geçsin"* (D=2, tek faz)
 ```
 Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: high · #2 MiMo-V2.6-Pro · effort: default
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
 Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (DeepSeek 71.7 vs Sonnet 5.5 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task; Claude's lead starts at D=3.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
 ```

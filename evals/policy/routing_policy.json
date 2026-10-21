@@ -196,7 +196,7 @@
     "opencode_from_D_for_low_high_max_models": {
       "0": "low",
       "1": "low",
-      "2": "high",
+      "2": "max",
       "3": "max"
     },
     "opencode_variants": {
@@ -280,9 +280,9 @@
     },
     "opencode_variants_source": "models.dev providers/opencode-go/models/*.toml (dev branch), read 2026-10-06; MiMo has reasoning_options = []; claude-haiku-5-5.toml read 2026-10-08; gemini-4-argon-contributor.toml and minimax-m3.1-flash-free.toml read 2026-10-20; google/gemini-4-argon.toml: low/medium/high, default medium, max rejected (HTTP 400)",
     "opencode_emit": {
-      "GLM-5.3": "by D: low/high/max",
-      "GLM-5.3-Flash": "by D: low/high/max",
-      "DeepSeek V4.1 Flash": "by D: low/high/max",
+      "GLM-5.3": "by D: low (D<=1) / max (D>=2)",
+      "GLM-5.3-Flash": "by D: low (D<=1) / max (D>=2)",
+      "DeepSeek V4.1 Flash": "by D: low (D<=1) / max (D>=2)",
       "MiMo-V2.6-Pro": "default",
       "MiMo-V2.6-Flash": "default",
       "Kimi K3": "max",
@@ -292,7 +292,7 @@
       "GPT 6 Luna": "low",
       "Muse Spark 1.3 Contributor": "xhigh",
       "Claude Haiku 5.5": "never emitted (E9)",
-      "MiniMax M3.1 Flash Free": "by D: low/high/max (E7 convention, curve unmeasured)",
+      "MiniMax M3.1 Flash Free": "by D: low (D<=1) / max (D>=2) (E7, curve unmeasured)",
       "Gemini 4 Argon": "high (E11)",
       "Gemini 3.8 Flash": "never emitted (E10)"
     },

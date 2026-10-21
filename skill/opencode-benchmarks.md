@@ -564,6 +564,8 @@ only on the five rows where it leads, at `D = 3` / `R = 3`.
 
 ### 13.5 What changed in the rules
 
+**21 Oct follow-up (effort):** the user noticed DeepSeek V4.1 Flash `max` almost never appeared (16 golden DeepSeek picks: 9 `low`, 6 `high`, 1 `max`) — `max` only fired at `D = 3`, and GM1 had moved `D = 3` to Argon. E7 is now `D ≥ 2 → max` on DeepSeek V4.1 Flash, GLM-5.3-Flash and MiniMax M3.1 Flash Free: the only independent measurement of these models is at `max` (DeepSeek non-reasoning 25 → 39 at `max`), `high` had only vendor curves, and `max` costs USD 0.25–0.27 per AA task (about 0.3% of the USD 80 cap). `D ≤ 1` stays `low`.
+
 FR1 (free lane) and GM1 (Gemini slot) are new; BUD1, NC1, CAP1 and A1-OC were reworded; badge row `research-synthesis` at `R = 3` flipped Claude † → OpenCode † (with Argon the OpenCode line beats the
 Claude pick on both Omniscience measures); the DeepSeek cap is USD 80; the pool is 19. Mirror: `evals/policy/routing_policy.json` (`gm1_rows`, `free_lane`, `pool.models`). Goldens: 34 evals
 (d1/g1/j1/t1/v1/z1/p1/n1/r1 moved; w1–w4 new). `grade_routing.py` rejects a Gemini model on the OpenCode line unless the eval sets `allow_gemini`, and rejects any free model other than M3.1 Flash Free.

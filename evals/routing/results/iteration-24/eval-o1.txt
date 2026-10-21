@@ -1,4 +1,4 @@
 Claude: Sonnet 5.5 · effort: medium
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
-Evidence: Listing clauses is mechanical enumeration (D=1) over a large corpus, so price and cap decide: both Flash models have 1M windows (AA-LCR 84 vs 80) at USD 0.27 and 0.25 per task.
+Evidence: Clause extraction is D=1 long-context work: AA-LCR DeepSeek 84 vs Sonnet 83 is a tie with a 1M window at USD 0.27 per task, so price and cap decide.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).

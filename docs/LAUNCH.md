@@ -81,7 +81,7 @@ AA publishes no confidence intervals, so a Terminal-Bench lead for Sonnet 5.5 is
 
 **Body:**
 > Short version: paste a task, it replies with two lines —
-> `Claude: Sonnet 5.5 · effort: high` / `OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: high · #2 MiMo-V2.6-Pro · effort: default` — and doesn't
+> `Claude: Sonnet 5.5 · effort: high` / `OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default` — and doesn't
 > run anything.
 >
 > It's built around one idea: the thing you're actually running out of is your

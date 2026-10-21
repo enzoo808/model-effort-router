@@ -9,7 +9,7 @@ You:    /model-secici  Refactor the payment module across these 40 files to use 
 
 model-secici:
   Claude:   Sonnet 5.5 · effort: high
-  OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: high · #2 MiMo-V2.6-Pro · effort: default
+  OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
   Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (DeepSeek 71.7
             vs Sonnet 5.5 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task;
             Claude's lead starts at D=3.
@@ -63,6 +63,7 @@ Two requests: try the *free* OpenCode models where they fit, and use the Gemini 
 - **The membership.** Google AI Pro gives no API key — but it carries **USD 10/month of Google Cloud credits** for the Gemini API (activate them under developers.google.com/program/my-benefits; paid-tier keys are not
   trained on). Logging in to OpenCode with the Google account itself is the route Google's terms prohibit (suspension reports exist), so the router tells you to use an API key. A 503 is Google-side capacity (retry, then Gemini 3.8 Flash);
   a `429 "limit: 0"` on Argon means a free-tier key. Details: `opencode-benchmarks.md` §13.4.
+- **Effort (21 Oct):** `D ≥ 2 → max` (was `D = 2 → high`) on DeepSeek V4.1 Flash, GLM-5.3-Flash and MiniMax M3.1 Flash Free — AA measured DeepSeek only at `max`, `high` had only a vendor curve, and `max` costs about 0.3% of the cap per task.
 - **Also:** DeepSeek V4.1 Flash's Go cap rose to USD 80; Go's *Contributor* route for Argon (inside the USD 10 plan) trains on prompts, so it is offered only for work you call non-confidential.
 - **Checks:** `grade_routing.py --selftest` 34/34 (30 → 34 evals: d1, g1, j1, t1, v1, z1, p1, n1, r1 moved; `w1`–`w4` new); policy sync (42 blocks), pool check (mutation-tested), examples — all green.
   **Cold-agent run (6 fresh Sonnet agents, `evals/routing/results/iteration-24/`): 33/33 routed evals pass** — two corrections first: `w2` exposed a real ambiguity (NC1 said Muse Spark "may" take `#2` on deep-reasoning/science; now it takes `#2` on `research-synthesis` only) and `r1` was an ambiguous prompt (sharpened, rule unchanged). `i1` (exploit PoC) was declined by its agent as a routing-only task and not re-run; that gate is untouched. Not done: the trigger eval. `SKILL.md` 54.7 → 60.0 KB after trimming.

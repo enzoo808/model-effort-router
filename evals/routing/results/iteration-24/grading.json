@@ -46,13 +46,13 @@
       "id": "b1",
       "eval_name": "Refactor across 40 files (agentic-code, D=2, R=1): DeepSWE tie -> OpenCode",
       "passed": true,
-      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 DeepSeek V4.1 Flash high, #2 MiMo-V2.6-Pro default; recommended=opencode (correct); evidence ok; notes ok (peak hours cost 2×)"
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 DeepSeek V4.1 Flash max, #2 MiMo-V2.6-Pro default; recommended=opencode (correct); evidence ok; notes ok (peak hours cost 2×)"
     },
     {
       "id": "c1",
       "eval_name": "Three-phase environment build (orchestration mechanism)",
       "passed": true,
-      "evidence": "Claude: Sonnet 5.5 correct, effort=ultracode; OpenCode: #1 DeepSeek V4.1 Flash high, #2 MiMo-V2.6-Pro default; recommended=claude (correct); evidence ok; notes ok (peak hours cost 2×)"
+      "evidence": "Claude: Sonnet 5.5 correct, effort=ultracode; OpenCode: #1 DeepSeek V4.1 Flash max, #2 MiMo-V2.6-Pro default; recommended=claude (correct); evidence ok; notes ok (peak hours cost 2×)"
     },
     {
       "id": "d1",
@@ -64,7 +64,7 @@
       "id": "e1",
       "eval_name": "400 pages into one memo (knowledge-work direction beats long-context dagger)",
       "passed": true,
-      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 MiMo-V2.6-Pro default, #2 DeepSeek V4.1 Flash high; recommended=claude (correct); evidence ok; notes ok (peak hours cost 2×)"
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 MiMo-V2.6-Pro default, #2 DeepSeek V4.1 Flash max; recommended=claude (correct); evidence ok; notes ok (peak hours cost 2×)"
     },
     {
       "id": "f1",
@@ -112,13 +112,13 @@
       "id": "m1",
       "eval_name": "Workflow wiring (workflow-automation row, Flash pair, dagger)",
       "passed": true,
-      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 DeepSeek V4.1 Flash high, #2 GLM-5.3-Flash high; recommended=opencode (correct); evidence ok; notes ok (peak hours cost 2×)"
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 DeepSeek V4.1 Flash max, #2 GLM-5.3-Flash max; recommended=opencode (correct); evidence ok; notes ok (peak hours cost 2×)"
     },
     {
       "id": "n1",
       "eval_name": "Domain audit (science row)",
       "passed": true,
-      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 MiMo-V2.6-Pro default, #2 MiniMax M3.1 Flash Free high; recommended=opencode (correct); evidence ok"
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 MiMo-V2.6-Pro default, #2 MiniMax M3.1 Flash Free max; recommended=opencode (correct); evidence ok"
     },
     {
       "id": "o1",
@@ -130,7 +130,7 @@
       "id": "p1",
       "eval_name": "Escalation after an OpenCode shortfall (A1-OC: Gemini 4 Argon #2, badge to Claude)",
       "passed": true,
-      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 DeepSeek V4.1 Flash high, #2 Gemini 4 Argon high; recommended=claude (correct); evidence ok; notes ok (peak hours cost 2×, google/gemini-4-argon)"
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 DeepSeek V4.1 Flash max, #2 Gemini 4 Argon high; recommended=claude (correct); evidence ok; notes ok (peak hours cost 2×, google/gemini-4-argon)"
     },
     {
       "id": "q1",
@@ -142,7 +142,7 @@
       "id": "r1",
       "eval_name": "Scanned receipts (image input, doc-data-understanding)",
       "passed": true,
-      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 MiniMax M3.1 Flash Free high, #2 Qwen3.8 Flash xhigh; recommended=opencode (correct); evidence ok"
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 MiniMax M3.1 Flash Free max, #2 Qwen3.8 Flash xhigh; recommended=opencode (correct); evidence ok"
     },
     {
       "id": "t1",
@@ -166,7 +166,7 @@
       "id": "x1",
       "eval_name": "Research reconciliation (research-synthesis, D=2): DeepSeek gated out",
       "passed": true,
-      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 MiMo-V2.6-Pro default, #2 GLM-5.3-Flash high; recommended=opencode (correct); evidence ok"
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 MiMo-V2.6-Pro default, #2 GLM-5.3-Flash max; recommended=opencode (correct); evidence ok"
     },
     {
       "id": "y1",
@@ -184,7 +184,7 @@
       "id": "w1",
       "eval_name": "Workflow wiring at R=3 (workflow-automation, D=2, R=3): Gemini 4 Argon first, OpenCode badge with dagger",
       "passed": true,
-      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 Gemini 4 Argon high, #2 DeepSeek V4.1 Flash high; recommended=opencode (correct); evidence ok; notes ok (review note, google/gemini-4-argon, peak hours cost 2×)"
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 Gemini 4 Argon high, #2 DeepSeek V4.1 Flash max; recommended=opencode (correct); evidence ok; notes ok (review note, google/gemini-4-argon, peak hours cost 2×)"
     },
     {
       "id": "w2",

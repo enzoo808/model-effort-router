@@ -129,7 +129,7 @@ provider, read 6 Oct 2026; Claude Haiku 5.5 added 8 Oct, Gemini 4 Argon and Mini
 
 | Model | Variants OpenCode offers | Emit |
 |---|---|---|
-| GLM-5.3 · GLM-5.3-Flash · DeepSeek V4.1 Flash | `low` · `high` · `max` | `D ≤ 1` `low` · `D = 2` `high` · `D = 3` `max` |
+| GLM-5.3 · GLM-5.3-Flash · DeepSeek V4.1 Flash | `low` · `high` · `max` | `D ≤ 1` `low` · `D ≥ 2` `max` |
 | MiMo-V2.6-Pro · MiMo-V2.6-Flash | **none** — thinking is always on | `default` |
 | Kimi K3 | `max` only | `max` |
 | Grok 4.7 | `low` · `medium` · `high` · `xhigh` | `xhigh` (the rung AA measured) |
@@ -137,7 +137,7 @@ provider, read 6 Oct 2026; Claude Haiku 5.5 added 8 Oct, Gemini 4 Argon and Mini
 | GPT 6 Luna | `none` … `max` | `low` (latency row only) |
 | Muse Spark 1.3 Contributor | `minimal` … `xhigh` | `xhigh` (NC1 only) |
 | Claude Haiku 5.5 | `low` … `max` | never emitted (Rule E9) |
-| MiniMax M3.1 Flash Free | `low` … `max` | `D ≤ 1` `low` · `D = 2` `high` · `D = 3` `max` (E7 convention, curve unmeasured) |
+| MiniMax M3.1 Flash Free | `low` … `max` | `D ≤ 1` `low` · `D ≥ 2` `max` (E7 convention, curve unmeasured) |
 | Gemini 4 Argon | `low` · `medium` · `high` (`max` → HTTP 400) | `high` (the rung AA measured) |
 | Gemini 3.8 Flash | — | never emitted (Rule E10) |
 
@@ -542,16 +542,14 @@ named); `#2` = the other row's `#1`, or its `#2` if that is the same model.
 #### OpenCode Go — effort for each model
 
 Use the variants table under *Effort levels*. On the three `low`/`high`/`max`
-models and MiniMax M3.1 Flash Free: `D ≤ 1` `low` · `D = 2` `high` · `D = 3` `max`. Every
+models and MiniMax M3.1 Flash Free: `D ≤ 1` `low` · `D ≥ 2` `max`. Every
 other model has one rung to write (Gemini 4 Argon: `high`).
 
-> **E7.** On the budget Flash tier `max` costs USD 0.25–0.27 per AA task — 0.4% of a
-> USD 60 cap — so `D=3 → max` stays cheap there. `high` at `D=2`: DeepSeek's V4.1-Flash paper has effort 60–80 recovering
-> most of `max`'s accuracy at under half its tokens (the last step adds 1.6–1.8×
-> agent tokens for marginal gains); Z.ai's Code Bench has GLM-5.3 `high` 31.4% at
-> ~50k tokens vs `max` 34.5% at ~75k. Vendor, own-model curves: they pick a rung,
-> never a direction. `max` at `D=3`: AA GLM-5.3 `low` 34 → `max` 45, Kimi K3 30 → 44
-> (E5), at a verbosity cost on a per-model cap. `GLM-5.3 · low` is dominated (E6);
+> **E7.** `D ≥ 2 → max` on the Flash tier. AA measured DeepSeek V4.1 Flash only at `max` (non-reasoning 25 → 39 at
+> `max`), GLM-5.3 `low` 34 → `max` 45 and Kimi K3 30 → 44 (E5): the independent evidence sits at `max`, `high` has no
+> independent figure. `max` costs USD 0.25–0.27 per AA task on this tier — about 0.3% of a USD 80 cap — so there is no
+> quota reason to hold back. (DeepSeek's V4.1-Flash paper has effort 60–80 recovering most of `max` at under half the
+> tokens, and Z.ai's Code Bench has GLM-5.3 `high` 31.4% vs `max` 34.5% — vendor, own-model curves that pick a rung, never a direction.) `GLM-5.3 · low` is dominated (E6);
 > `low` on a Flash model has no number and is used only at `D ≤ 1`. MiniMax M3.1 Flash Free
 > has no rung curve at all; it borrows the same convention because, being free, a higher rung
 > costs only latency.
@@ -585,7 +583,7 @@ pressure** (cost/task ÷ cap, then the 5-hour output-token budget) → reasoning
 
 - **E1** `Sonnet 5.5 · max` (56 @ USD 5.46, ~197k tokens) is dominated by `Opus 5.5 · xhigh` (56 @ USD 3.46); Anthropic's footnote: Sonnet scores *lower* at `max` on FrontierCode. Never emit it; escalate to `Opus 5.5 · xhigh`.
 - **E3** `max` over `xhigh` buys little on Claude (Fable 5.1 53 = 53; Opus 5.5 58 vs 56, +73% cost) → `max` needs M1.
-- **E5** open models are the exception: `max` buys +11 (GLM-5.3 34 → 45) and +14 (Kimi K3 30 → 44) — the premium pair, reached only through A1-OC — and DeepSeek V4.1 Flash non-reasoning 25 → 39 at `max`, so `D = 3 → max` on the Flash tier; `D = 2 → high` (E7).
+- **E5** open models are the exception: `max` buys +11 (GLM-5.3 34 → 45) and +14 (Kimi K3 30 → 44) — the premium pair, reached only through A1-OC — and DeepSeek V4.1 Flash non-reasoning 25 → 39 at `max`, so `D ≥ 2 → max` on the Flash tier (E7).
 - **E6** dominated, never emitted: `GLM-5.3 · low` (→ GLM-5.3-Flash 42 @ 0.25), `Kimi K3 · low` (→ MiMo-V2.6-Flash; OpenCode offers Kimi `max` only), DeepSeek V4 Pro (→ V4.1 Flash), MiniMax M3 / Kimi K2.7 Code / Qwen3.7 Plus (TB 2/1/1), Qwen3.8 Max (→ MiMo-V2.6-Pro) except via A1-OC. Grok 4.7 and GPT 6 Luna are not dominated — retention *eliminates* them; Grok 4.7 is premium (BUD1).
 - **E8** `Haiku 5.5 · xhigh` / `max` is never emitted: AA Max is 43 @ USD 0.21 but 162k output tokens per task against Sonnet 5.5 High 47 @ USD 0.88 and 37k. Haiku stops at `medium` (H1); needing more makes it a Sonnet 5.5 task.
 - **E9** Claude Haiku 5.5 is rated on Go but never emitted there: High 38 @ USD 0.08 on a USD 15 cap with 30-day retention is dominated by MiMo-V2.6-Flash (38 @ 0.06, USD 60 cap, 0-day), Max 43 @ 0.21 by GLM-5.3-Flash (42 @ 0.25, USD 60 cap). Use it on the Claude line, where no dollar cap applies.
@@ -733,7 +731,7 @@ Clarify: which file or function is broken, what does it do now, and what should 
 *"Refactor the payment module across these 40 files to use the new idempotency-key API, update every caller, and make the test suite pass."*
 ```
 Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: high · #2 MiMo-V2.6-Pro · effort: default
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
 Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (DeepSeek 71.7 vs Sonnet 5.5 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task; Claude's lead starts at D=3.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
 ```
