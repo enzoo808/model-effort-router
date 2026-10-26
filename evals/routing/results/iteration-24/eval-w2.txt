@@ -1,5 +1,5 @@
 Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
 OpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default
-Evidence: Designing a new algorithm is D=3 deep-reasoning, where three agreeing AA rows lean Claude (HLE 61 vs Argon's 57, CritPt 32 vs 27, ARC-AGI-2 92 vs 61), so the direction decides.
-Gemini 4 Argon: google/gemini-4-argon on your paid Google key (AI Pro adds USD 10/month of credits); USD 2/10 per MTok until 30 Nov, USD 4/20 after. A 503 is Google-side capacity — retry, then Gemini 3.8 Flash; a 429 "limit: 0" means a free-tier key. Non-confidential work may use opencode-go/gemini-4-argon-contributor instead (inside the Go plan; Google trains on prompts).
+Evidence: D=3 deep-reasoning still favours Claude over Argon on HLE and CritPt (61 / 32 vs 57 / 27), so the badge stays; non-confidential, Argon is the strongest OpenCode pick.
+Gemini 4 Argon: opencode-go/gemini-4-argon-contributor — Google trains on your prompts; Go cap USD 60 during the 2× promo (30 after). If it errors or is overloaded, run the row's other model.
 ⚡ Claude /fast available (2.5x faster, 2× price).

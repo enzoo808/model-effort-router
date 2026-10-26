@@ -58,7 +58,7 @@
       "id": "d1",
       "eval_name": "Adversarial debugging (D3DIAG; deep-reasoning direction beats terminal efficiency row)",
       "passed": true,
-      "evidence": "Claude: Opus 5.5 correct, effort=xhigh; OpenCode: #1 Gemini 4 Argon high, #2 MiMo-V2.6-Pro default; recommended=claude (correct); evidence ok; notes ok (/fast available, google/gemini-4-argon)"
+      "evidence": "Claude: Opus 5.5 correct, effort=xhigh; OpenCode: #1 MiMo-V2.6-Pro default, #2 DeepSeek V4.1 Flash max; recommended=claude (correct); evidence ok; notes ok (/fast available, peak hours cost 2×)"
     },
     {
       "id": "e1",
@@ -76,7 +76,7 @@
       "id": "g1",
       "eval_name": "Irreversible central boundary (M1, R=3)",
       "passed": true,
-      "evidence": "Claude: Opus 5.5 correct, effort=max; OpenCode: #1 Gemini 4 Argon high, #2 MiMo-V2.6-Pro default; recommended=claude (correct); evidence ok; notes ok (review note, google/gemini-4-argon)"
+      "evidence": "Claude: Opus 5.5 correct, effort=max; OpenCode: #1 MiMo-V2.6-Pro default, #2 MiniMax M3.1 Flash Free max; recommended=claude (correct); evidence ok; notes ok (review note)"
     },
     {
       "id": "h1",
@@ -94,7 +94,7 @@
       "id": "j1",
       "eval_name": "Front-loaded architecture (opusplan)",
       "passed": true,
-      "evidence": "Claude: opusplan correct (plan=max, execute=medium); OpenCode: #1 Gemini 4 Argon high, #2 MiMo-V2.6-Pro default; recommended=claude (correct); evidence ok; notes ok (review note, google/gemini-4-argon)"
+      "evidence": "Claude: opusplan correct (plan=max, execute=medium); OpenCode: #1 MiMo-V2.6-Pro default, #2 MiniMax M3.1 Flash Free max; recommended=claude (correct); evidence ok; notes ok (review note)"
     },
     {
       "id": "k1",
@@ -128,9 +128,9 @@
     },
     {
       "id": "p1",
-      "eval_name": "Escalation after an OpenCode shortfall (A1-OC: Gemini 4 Argon #2, badge to Claude)",
+      "eval_name": "Escalation after an OpenCode shortfall (A1-OC: premium #2 GLM-5.3, badge to Claude)",
       "passed": true,
-      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 DeepSeek V4.1 Flash max, #2 Gemini 4 Argon high; recommended=claude (correct); evidence ok; notes ok (peak hours cost 2×, google/gemini-4-argon)"
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 DeepSeek V4.1 Flash max, #2 GLM-5.3 max; recommended=claude (correct); evidence ok; notes ok (peak hours cost 2×)"
     },
     {
       "id": "q1",
@@ -148,7 +148,7 @@
       "id": "t1",
       "eval_name": "New algorithm from scratch (deep-reasoning, D=3, R<=2)",
       "passed": true,
-      "evidence": "Claude: Opus 5.5 correct, effort=xhigh; OpenCode: #1 Gemini 4 Argon high, #2 MiMo-V2.6-Pro default; recommended=claude (correct); evidence ok; notes ok (/fast available, google/gemini-4-argon)"
+      "evidence": "Claude: Opus 5.5 correct, effort=xhigh; OpenCode: #1 MiMo-V2.6-Pro default, #2 MiniMax M3.1 Flash Free max; recommended=claude (correct); evidence ok; notes ok (/fast available)"
     },
     {
       "id": "u1",
@@ -160,7 +160,7 @@
       "id": "v1",
       "eval_name": "Env-dependent build failure at depth (terminal-tool, D=3, R<=2): Claude, MiMo-V2.6-Pro first (PO1)",
       "passed": true,
-      "evidence": "Claude: Opus 5.5 correct, effort=xhigh; OpenCode: #1 Gemini 4 Argon high, #2 MiMo-V2.6-Pro default; recommended=claude (correct); evidence ok; notes ok (/fast available, google/gemini-4-argon)"
+      "evidence": "Claude: Opus 5.5 correct, effort=xhigh; OpenCode: #1 MiMo-V2.6-Pro default, #2 DeepSeek V4.1 Flash max; recommended=claude (correct); evidence ok; notes ok (/fast available, peak hours cost 2×)"
     },
     {
       "id": "x1",
@@ -176,27 +176,27 @@
     },
     {
       "id": "z1",
-      "eval_name": "Irreversible regulatory read (research-synthesis, D=2, R=3): GM1 puts Gemini 4 Argon first and the badge goes to OpenCode (dagger)",
+      "eval_name": "Irreversible regulatory read (research-synthesis, D=2, R=3): confidential default, no Gemini, Claude dagger",
       "passed": true,
-      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 Gemini 4 Argon high, #2 MiMo-V2.6-Pro default; recommended=opencode (correct); evidence ok; notes ok (review note, google/gemini-4-argon)"
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 MiMo-V2.6-Pro default, #2 GLM-5.3-Flash max; recommended=claude (correct); evidence ok; notes ok (review note)"
     },
     {
       "id": "w1",
-      "eval_name": "Workflow wiring at R=3 (workflow-automation, D=2, R=3): Gemini 4 Argon first, OpenCode badge with dagger",
+      "eval_name": "Workflow wiring at R=3 (workflow-automation, D=2, R=3): confidential default, OpenCode badge with dagger",
       "passed": true,
-      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 Gemini 4 Argon high, #2 DeepSeek V4.1 Flash max; recommended=opencode (correct); evidence ok; notes ok (review note, google/gemini-4-argon, peak hours cost 2×)"
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 DeepSeek V4.1 Flash max, #2 GLM-5.3-Flash max; recommended=opencode (correct); evidence ok; notes ok (review note, peak hours cost 2×)"
     },
     {
       "id": "w2",
       "eval_name": "Non-confidential new algorithm (NC1 + GM1): Gemini 4 Argon on Go's Contributor route",
       "passed": true,
-      "evidence": "Claude: Opus 5.5 correct, effort=xhigh; OpenCode: #1 Gemini 4 Argon high, #2 MiMo-V2.6-Pro default; recommended=claude (correct); evidence ok; notes ok (/fast available, google/gemini-4-argon, opencode-go/gemini-4-argon-contributor)"
+      "evidence": "Claude: Opus 5.5 correct, effort=xhigh; OpenCode: #1 Gemini 4 Argon high, #2 MiMo-V2.6-Pro default; recommended=claude (correct); evidence ok; notes ok (/fast available, opencode-go/gemini-4-argon-contributor)"
     },
     {
       "id": "w3",
-      "eval_name": "Hard coding task, user has no Google key (GM1 dropped)",
+      "eval_name": "Non-confidential research at R=3 (research-synthesis): Gemini 4 Argon #1, badge flips to OpenCode (dagger)",
       "passed": true,
-      "evidence": "Claude: Opus 5.5 correct, effort=xhigh; OpenCode: #1 MiMo-V2.6-Pro default, #2 DeepSeek V4.1 Flash max; recommended=claude (correct); evidence ok; notes ok (/fast available, peak hours cost 2×)"
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 Gemini 4 Argon high, #2 MiMo-V2.6-Pro default; recommended=opencode (correct); evidence ok; notes ok (review note, opencode-go/gemini-4-argon-contributor)"
     },
     {
       "id": "w4",

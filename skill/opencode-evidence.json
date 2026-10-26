@@ -1,42 +1,1007 @@
 {
   "_about": "Independent multi-source evidence for the OpenCode Go pool (+ Claude reference rows). Audit data only — never loaded to route. Values are as published on the source page on 2026-10-06 (Claude Haiku 5.5 rows and the Arena cost refresh: 2026-10-08); null/absent = not published. 'indep' = run by an evaluator that is not the model's vendor. Sources are listed per anchor. Compiled into rows by scripts/derive_opencode_rows.py.",
-  "models": ["MiMo-V2.6-Pro", "GLM-5.3", "Kimi K3", "Grok 4.7", "Muse Spark 1.3", "GLM-5.3-Flash", "MiMo-V2.6-Flash", "DeepSeek V4.1 Flash", "GPT 6 Luna", "Qwen3.8 Flash", "Qwen3.8 Max", "DeepSeek V4 Pro", "MiniMax M3", "Claude Opus 5.5", "Claude Sonnet 5.5", "Claude Haiku 5.5", "MiniMax M3.1 Flash", "Gemini 4 Argon", "Gemini 3.8 Flash"],
+  "models": [
+    "MiMo-V2.6-Pro",
+    "GLM-5.3",
+    "Kimi K3",
+    "Grok 4.7",
+    "Muse Spark 1.3",
+    "GLM-5.3-Flash",
+    "MiMo-V2.6-Flash",
+    "DeepSeek V4.1 Flash",
+    "GPT 6 Luna",
+    "Qwen3.8 Flash",
+    "Qwen3.8 Max",
+    "DeepSeek V4 Pro",
+    "MiniMax M3",
+    "Claude Opus 5.5",
+    "Claude Sonnet 5.5",
+    "Claude Haiku 5.5",
+    "MiniMax M3.1 Flash",
+    "Gemini 4 Argon",
+    "Gemini 3.8 Flash"
+  ],
   "anchors": {
-    "AA Terminal-Bench 4.0": {"tags": ["agentic-code", "terminal-tool"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "n_tasks": "66 (per AA Coding Agent Index page)", "values": {"Gemini 4 Argon": 57.1, "Gemini 3.8 Flash": 20.0, "MiniMax M3.1 Flash": 25.8, "GLM-5.3": 41.9, "Qwen3.8 Max": 39.0, "MiMo-V2.6-Pro": 34.8, "Muse Spark 1.3": 33.3, "GLM-5.3-Flash": 32.8, "DeepSeek V4.1 Flash": 26.8, "Grok 4.7": 25.8, "Qwen3.8 Flash": 25.0, "MiMo-V2.6-Flash": 23.0, "DeepSeek V4 Pro": 14.0, "Kimi K3": 12.6, "GPT 6 Luna": 12.6, "MiniMax M3": 2.0, "Claude Opus 5.5": 59.6, "Claude Sonnet 5.5": 63.6, "Claude Haiku 5.5": 32.8}},
-    "DeepSWE v1.1 (Mercor/Datacurve)": {"tags": ["agentic-code"], "higher_better": true, "evaluator": "Mercor/Datacurve leaderboard via benchlm.ai", "indep": true, "ci": "published, +-6.3 to +-8.8 per row", "values": {"DeepSeek V4.1 Flash": 71.7, "GLM-5.3": 70.5, "GPT 6 Luna": 67.0, "Kimi K3": 66.4, "DeepSeek V4 Pro": 56.3, "Qwen3.8 Max": 53.1, "MiniMax M3": 9.1, "Claude Opus 5.5": 72.3, "Claude Sonnet 5.5": 70.5}, "ci_pm": {"DeepSeek V4.1 Flash": 6.3, "GLM-5.3": 6.3, "GPT 6 Luna": 6.8, "Kimi K3": 8.8, "DeepSeek V4 Pro": 7.2, "Qwen3.8 Max": 8.8, "MiniMax M3": 3.1, "Claude Opus 5.5": 7.3, "Claude Sonnet 5.5": 7.7}},
-    "Arena Agent Arena (net outcome vs avg model, %)": {"tags": ["agentic-code", "terminal-tool", "workflow-automation"], "higher_better": true, "evaluator": "Arena (millions of real-world long-horizon agent tasks)", "indep": true, "ci": null, "values": {"Kimi K3": 4.18, "Grok 4.7": 4.04, "DeepSeek V4.1 Flash": 4.02, "Muse Spark 1.3": 4.0, "MiMo-V2.6-Pro": 3.28, "Qwen3.8 Max": 2.51, "GLM-5.3": 2.36, "GPT 6 Luna": 1.35, "DeepSeek V4 Pro": 1.19, "Qwen3.8 Flash": 0.73, "MiMo-V2.6-Flash": 0.57, "GLM-5.3-Flash": 0.44, "Claude Opus 5.5": 13.82, "Claude Sonnet 5.5": 12.52}, "cost_per_task_p50_usd": {"Kimi K3": 0.72, "Grok 4.7": 1.54, "DeepSeek V4.1 Flash": 0.13, "Muse Spark 1.3": 0.43, "MiMo-V2.6-Pro": 0.1, "Qwen3.8 Max": 0.45, "GLM-5.3": 0.66, "GPT 6 Luna": 0.07, "DeepSeek V4 Pro": 0.32, "Qwen3.8 Flash": 0.15, "MiMo-V2.6-Flash": 0.04, "GLM-5.3-Flash": 0.1, "Claude Opus 5.5": 1.67, "Claude Sonnet 5.5": 3.04}, "note": "MiniMax M3 row (rank 43, 6.87%) is internally inconsistent in the extraction and is excluded. Cost/task refreshed 2026-10-08 (Opus 5.5 High 1.67, Sonnet 5.5 Max 3.04, DeepSeek 0.13, Luna 0.07). Claude Haiku 5.5 is not on the Agent Arena leaderboard."},
-    "Terminal-Bench 2.1 (Vals)": {"tags": ["agentic-code", "terminal-tool"], "higher_better": true, "evaluator": "Vals AI", "indep": true, "ci": null, "values": {"Kimi K3": 80.9, "DeepSeek V4.1 Flash": 74.5, "Grok 4.7": 73.4, "Muse Spark 1.3": 72.3, "GLM-5.3": 71.5, "Qwen3.8 Max": 67.4, "GLM-5.3-Flash": 62.9, "DeepSeek V4 Pro": 54.7, "MiniMax M3": 53.6}},
-    "AA Coding Index": {"tags": ["agentic-code"], "higher_better": true, "evaluator": "Artificial Analysis (aggregate)", "indep": true, "ci": null, "aggregate": true, "values": {"Kimi K3": 76.2, "Muse Spark 1.3": 75.8, "GLM-5.3": 74.8, "Qwen3.8 Flash": 73.0, "DeepSeek V4 Pro": 68.8, "MiniMax M3": 58.6}},
-    "FrontierSWE v2": {"tags": ["agentic-code"], "higher_better": true, "evaluator": "independent (benchlm provenance)", "indep": true, "ci": null, "values": {"Gemini 4 Argon": 55.0, "GLM-5.3": 30.2, "Grok 4.7": 29.5, "Kimi K3": 25.9, "GLM-5.3-Flash": 18.1, "Qwen3.8 Max": 15.8, "Claude Opus 5.5": 62.3, "Claude Sonnet 5.5": 61.9}},
-    "CursorBench 4.0": {"tags": ["agentic-code"], "higher_better": true, "evaluator": "independent (benchlm provenance)", "indep": true, "ci": null, "values": {"Grok 4.7": 46.3, "Muse Spark 1.3": 41.6, "Claude Opus 5.5": 57.8, "Claude Sonnet 5.5": 55.5}, "note": "Kimi K3's 60.8 is CursorBench 3.2 — a different version, not comparable."},
-    "Code Arena WebDev (frontend, Elo)": {"tags": ["agentic-code"], "higher_better": true, "evaluator": "Arena human votes", "indep": true, "ci": null, "scope": "frontend/design only", "values": {"Kimi K3": 1658, "Muse Spark 1.3": 1657, "Qwen3.8 Flash": 1637, "MiMo-V2.6-Pro": 1628, "GLM-5.3": 1623, "DeepSeek V4.1 Flash": 1620, "GLM-5.3-Flash": 1616, "GPT 6 Luna": 1579, "MiniMax M3": 1482, "DeepSeek V4 Pro": 1446, "Claude Opus 5.5": 1815, "Claude Sonnet 5.5": 1786}},
-    "AA-HLE": {"tags": ["deep-reasoning"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"Gemini 4 Argon": 57.1, "Gemini 3.8 Flash": 48.0, "MiniMax M3.1 Flash": 48.0, "MiMo-V2.6-Pro": 49.4, "Muse Spark 1.3": 48.7, "Kimi K3": 46.9, "Grok 4.7": 43.1, "GLM-5.3": 42.3, "DeepSeek V4 Pro": 41.0, "GLM-5.3-Flash": 39.9, "DeepSeek V4.1 Flash": 39.2, "MiniMax M3": 39.0, "GPT 6 Luna": 38.5, "Qwen3.8 Flash": 38.0, "MiMo-V2.6-Flash": 35.1, "Claude Opus 5.5": 61.4, "Claude Sonnet 5.5": 55.0, "Claude Haiku 5.5": 44.4}},
-    "CritPt": {"tags": ["deep-reasoning", "science"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"Gemini 4 Argon": 27.1, "Gemini 3.8 Flash": 18.0, "MiniMax M3.1 Flash": 22.3, "MiMo-V2.6-Pro": 26.6, "Muse Spark 1.3": 24.9, "Kimi K3": 23.4, "GPT 6 Luna": 19.4, "GLM-5.3": 19.1, "DeepSeek V4 Pro": 18.0, "Grok 4.7": 17.7, "GLM-5.3-Flash": 15.4, "DeepSeek V4.1 Flash": 14.3, "MiMo-V2.6-Flash": 12.0, "Qwen3.8 Flash": 11.1, "MiniMax M3": 3.7, "Claude Opus 5.5": 31.7, "Claude Sonnet 5.5": 31.4, "Claude Haiku 5.5": 18.9}},
-    "ARC-AGI-2": {"tags": ["deep-reasoning"], "higher_better": true, "evaluator": "ARC Prize (independent)", "indep": true, "ci": null, "values": {"Gemini 4 Argon": 91.3, "DeepSeek V4 Pro": 61.3, "Kimi K3": 60.4, "GPT 6 Luna": 59.3, "Claude Opus 5.5": 91.7}},
-    "GDPval-AA (Elo)": {"tags": ["knowledge-work"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"Gemini 4 Argon": 1623, "Gemini 3.8 Flash": 1436, "MiniMax M3.1 Flash": 1458, "Grok 4.7": 1715, "MiMo-V2.6-Pro": 1686, "Muse Spark 1.3": 1684, "Qwen3.8 Max": 1671, "GLM-5.3": 1653, "Qwen3.8 Flash": 1648, "GLM-5.3-Flash": 1647, "MiMo-V2.6-Flash": 1611, "DeepSeek V4.1 Flash": 1600, "Kimi K3": 1537, "GPT 6 Luna": 1437, "MiniMax M3": 1245, "Claude Opus 5.5": 1866, "Claude Sonnet 5.5": 1839, "Claude Haiku 5.5": 1620}},
-    "AA-Briefcase": {"tags": ["knowledge-work"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"Gemini 4 Argon": 1486, "Gemini 3.8 Flash": 1203, "MiniMax M3.1 Flash": 1474, "Grok 4.7": 1644, "Qwen3.8 Max": 1621, "Muse Spark 1.3": 1583, "Qwen3.8 Flash": 1583, "MiMo-V2.6-Pro": 1516, "GLM-5.3": 1510, "Kimi K3": 1501, "MiMo-V2.6-Flash": 1495, "GLM-5.3-Flash": 1454, "DeepSeek V4.1 Flash": 1420, "GPT 6 Luna": 1336, "MiniMax M3": 1091, "Claude Opus 5.5": 1807, "Claude Sonnet 5.5": 1823, "Claude Haiku 5.5": 1578}},
-    "AA-AnalystAgent": {"tags": ["knowledge-work"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"Gemini 4 Argon": 48.8, "Kimi K3": 38.8, "MiniMax M3": 10.0, "Claude Opus 5.5": 56.3, "Claude Sonnet 5.5": 57.5}},
-    "AA Harvey LAB (legal)": {"tags": ["knowledge-work"], "higher_better": true, "evaluator": "Artificial Analysis / Harvey", "indep": true, "ci": null, "values": {"Kimi K3": 94.6, "MiniMax M3": 88.4, "Claude Opus 5.5": 91.2, "Claude Sonnet 5.5": 93.1, "Claude Haiku 5.5": 89.9}},
-    "AA EnterpriseOps-Gym": {"tags": ["workflow-automation", "knowledge-work"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"DeepSeek V4 Pro": 49.6, "Kimi K3": 45.3, "GLM-5.3": 36.4, "GLM-5.3-Flash": 33.2, "MiniMax M3": 32.1}},
-    "AA AutomationBench": {"tags": ["workflow-automation"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"Gemini 4 Argon": 77.5, "Gemini 3.8 Flash": 60.0, "MiniMax M3.1 Flash": 72.5, "DeepSeek V4.1 Flash": 68.9, "Grok 4.7": 65.6, "MiMo-V2.6-Flash": 64.0, "GLM-5.3": 62.2, "GLM-5.3-Flash": 60.4, "MiMo-V2.6-Pro": 58.6, "Kimi K3": 58.3, "Muse Spark 1.3": 57.9, "Qwen3.8 Max": 56.0, "Qwen3.8 Flash": 56.0, "GPT 6 Luna": 53.2, "MiniMax M3": 21.3, "Claude Opus 5.5": 69.5, "Claude Sonnet 5.5": 71.8, "Claude Haiku 5.5": 35.4}},
-    "AA Tau3 Banking": {"tags": ["workflow-automation"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"Muse Spark 1.3": 50.5, "GLM-5.3": 50.3, "GLM-5.3-Flash": 47.2, "Kimi K3": 46.0, "MiniMax M3": 15.3}},
-    "AA ITBench": {"tags": ["workflow-automation"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"GLM-5.3-Flash": 51.2, "Kimi K3": 47.7, "DeepSeek V4.1 Flash": 46.9, "GLM-5.3": 46.1, "Grok 4.7": 42.1, "Muse Spark 1.3": 33.2, "Claude Opus 5.5": 38.2}},
-    "tau2-bench": {"tags": ["workflow-automation"], "higher_better": true, "evaluator": "independent (benchlm provenance)", "indep": true, "ci": null, "values": {"DeepSeek V4 Pro": 96.2, "MiniMax M3": 88.9}},
-    "AA-LCR": {"tags": ["long-context"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"Gemini 4 Argon": 79.7, "Gemini 3.8 Flash": 81.0, "MiniMax M3.1 Flash": 79.7, "Kimi K3": 88.7, "MiMo-V2.6-Pro": 86.3, "DeepSeek V4.1 Flash": 84.0, "GPT 6 Luna": 83.3, "Muse Spark 1.3": 83.0, "MiniMax M3": 83.0, "DeepSeek V4 Pro": 80.3, "GLM-5.3-Flash": 80.0, "GLM-5.3": 79.7, "Qwen3.8 Flash": 79.7, "Grok 4.7": 76.7, "MiMo-V2.6-Flash": 74.3, "Claude Opus 5.5": 84.7, "Claude Sonnet 5.5": 82.7, "Claude Haiku 5.5": 82.7}},
-    "MLCR-AA": {"tags": ["long-context"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"GLM-5.3-Flash": 51.1, "GLM-5.3": 48.3, "Muse Spark 1.3": 43.3, "Kimi K3": 38.3, "DeepSeek V4.1 Flash": 22.8, "MiMo-V2.6-Pro": 18.3, "MiniMax M3": 17.2, "GPT 6 Luna": 16.1, "Grok 4.7": 15.0, "Claude Opus 5.5": 66.7, "Claude Sonnet 5.5": 75.0}},
-    "AA-Omniscience Index": {"tags": ["research-synthesis"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"Gemini 4 Argon": 42.4, "Gemini 3.8 Flash": 30.0, "MiniMax M3.1 Flash": 15.6, "Grok 4.7": 32.0, "Muse Spark 1.3": 25.0, "Kimi K3": 19.7, "GLM-5.3": 14.3, "MiMo-V2.6-Pro": 8.4, "GLM-5.3-Flash": 7.5, "MiniMax M3": 1.4, "DeepSeek V4 Pro": 0.8, "GPT 6 Luna": 0.7, "Qwen3.8 Flash": -9.7, "DeepSeek V4.1 Flash": -5.3, "MiMo-V2.6-Flash": -12.7, "Claude Opus 5.5": 46.4, "Claude Sonnet 5.5": 32.3, "Claude Haiku 5.5": 10.7}},
-    "AA-Omniscience hallucination rate (lower better)": {"tags": ["research-synthesis"], "higher_better": false, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"Gemini 4 Argon": 15.1, "MiniMax M3.1 Flash": 92.8, "MiniMax M3": 18.4, "Grok 4.7": 29.3, "GLM-5.3": 29.6, "Muse Spark 1.3": 32.9, "MiMo-V2.6-Pro": 40.6, "Qwen3.8 Flash": 45.3, "Kimi K3": 53.2, "MiMo-V2.6-Flash": 54.4, "GPT 6 Luna": 76.7, "DeepSeek V4 Pro": 94.1, "DeepSeek V4.1 Flash": 96.5, "Claude Opus 5.5": 58.6, "Claude Sonnet 5.5": 47.0}},
-    "AA-SciCode": {"tags": ["science"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"Gemini 4 Argon": 61.8, "Gemini 3.8 Flash": 57.0, "MiniMax M3.1 Flash": 53.4, "MiMo-V2.6-Pro": 60.9, "Kimi K3": 59.5, "GLM-5.3": 59.0, "Muse Spark 1.3": 58.8, "Grok 4.7": 57.4, "GPT 6 Luna": 54.6, "DeepSeek V4.1 Flash": 51.9, "GLM-5.3-Flash": 51.6, "MiMo-V2.6-Flash": 51.3, "Qwen3.8 Flash": 50.6, "DeepSeek V4 Pro": 51.0, "MiniMax M3": 47.1, "Claude Opus 5.5": 66.9, "Claude Sonnet 5.5": 61.0, "Claude Haiku 5.5": 55.0}},
-    "GDP.pdf": {"tags": ["doc-data-understanding"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"Gemini 4 Argon": 21.8, "Gemini 3.8 Flash": 21.0, "MiniMax M3.1 Flash": 20.8, "Muse Spark 1.3": 26.6, "GPT 6 Luna": 22.8, "Kimi K3": 22.0, "Grok 4.7": 20.0, "MiMo-V2.6-Pro": 19.2, "GLM-5.3-Flash": 15.4, "DeepSeek V4.1 Flash": 12.8, "GLM-5.3": 11.2, "MiniMax M3": 9.8, "Claude Opus 5.5": 26.2, "Claude Sonnet 5.5": 25.8, "Claude Haiku 5.5": 20.8}},
-    "AA-MMMU-Pro (multimodal)": {"tags": ["doc-data-understanding"], "higher_better": true, "evaluator": "Artificial Analysis", "indep": true, "ci": null, "values": {"MiniMax M3.1 Flash": 79.1, "Kimi K3": 80.5, "Qwen3.8 Flash": 79.8, "GPT 6 Luna": 79.7, "MiniMax M3": 78.6, "DeepSeek V4.1 Flash": 77.0, "MiMo-V2.6-Flash": 73.1, "Claude Opus 5.5": 87.7}},
-    "Gray Swan IPI (prompt-injection attack success, 15 attempts; lower better)": {"tags": ["safety"], "higher_better": false, "evaluator": "Gray Swan (independent)", "indep": true, "ci": null, "values": {"Claude Opus 5.5": 1.0, "Muse Spark 1.3": 15.9, "GLM-5.3": 31.5, "Kimi K3": 52.7}}
+    "AA Terminal-Bench 4.0": {
+      "tags": [
+        "agentic-code",
+        "terminal-tool"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "n_tasks": "66 (per AA Coding Agent Index page)",
+      "values": {
+        "Gemini 4 Argon": 57.1,
+        "Gemini 3.8 Flash": 20.0,
+        "MiniMax M3.1 Flash": 25.8,
+        "GLM-5.3": 41.9,
+        "Qwen3.8 Max": 39.0,
+        "MiMo-V2.6-Pro": 34.8,
+        "Muse Spark 1.3": 33.3,
+        "GLM-5.3-Flash": 32.8,
+        "DeepSeek V4.1 Flash": 26.8,
+        "Grok 4.7": 25.8,
+        "Qwen3.8 Flash": 25.0,
+        "MiMo-V2.6-Flash": 23.0,
+        "DeepSeek V4 Pro": 14.0,
+        "Kimi K3": 12.6,
+        "GPT 6 Luna": 12.6,
+        "MiniMax M3": 2.0,
+        "Claude Opus 5.5": 59.6,
+        "Claude Sonnet 5.5": 63.6,
+        "Claude Haiku 5.5": 32.8
+      }
+    },
+    "DeepSWE v1.1 (Mercor/Datacurve)": {
+      "tags": [
+        "agentic-code"
+      ],
+      "higher_better": true,
+      "evaluator": "Mercor/Datacurve leaderboard via benchlm.ai",
+      "indep": true,
+      "ci": "published, +-6.3 to +-8.8 per row",
+      "values": {
+        "DeepSeek V4.1 Flash": 71.7,
+        "GLM-5.3": 70.5,
+        "GPT 6 Luna": 67.0,
+        "Kimi K3": 66.4,
+        "DeepSeek V4 Pro": 56.3,
+        "Qwen3.8 Max": 53.1,
+        "MiniMax M3": 9.1,
+        "Claude Opus 5.5": 72.3,
+        "Claude Sonnet 5.5": 70.5
+      },
+      "ci_pm": {
+        "DeepSeek V4.1 Flash": 6.3,
+        "GLM-5.3": 6.3,
+        "GPT 6 Luna": 6.8,
+        "Kimi K3": 8.8,
+        "DeepSeek V4 Pro": 7.2,
+        "Qwen3.8 Max": 8.8,
+        "MiniMax M3": 3.1,
+        "Claude Opus 5.5": 7.3,
+        "Claude Sonnet 5.5": 7.7
+      }
+    },
+    "Arena Agent Arena (net outcome vs avg model, %)": {
+      "tags": [
+        "agentic-code",
+        "terminal-tool",
+        "workflow-automation"
+      ],
+      "higher_better": true,
+      "evaluator": "Arena (millions of real-world long-horizon agent tasks)",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Kimi K3": 4.18,
+        "Grok 4.7": 4.04,
+        "DeepSeek V4.1 Flash": 4.02,
+        "Muse Spark 1.3": 4.0,
+        "MiMo-V2.6-Pro": 3.28,
+        "Qwen3.8 Max": 2.51,
+        "GLM-5.3": 2.36,
+        "GPT 6 Luna": 1.35,
+        "DeepSeek V4 Pro": 1.19,
+        "Qwen3.8 Flash": 0.73,
+        "MiMo-V2.6-Flash": 0.57,
+        "GLM-5.3-Flash": 0.44,
+        "Claude Opus 5.5": 13.82,
+        "Claude Sonnet 5.5": 12.52
+      },
+      "cost_per_task_p50_usd": {
+        "Kimi K3": 0.72,
+        "Grok 4.7": 1.54,
+        "DeepSeek V4.1 Flash": 0.13,
+        "Muse Spark 1.3": 0.43,
+        "MiMo-V2.6-Pro": 0.1,
+        "Qwen3.8 Max": 0.45,
+        "GLM-5.3": 0.66,
+        "GPT 6 Luna": 0.07,
+        "DeepSeek V4 Pro": 0.32,
+        "Qwen3.8 Flash": 0.15,
+        "MiMo-V2.6-Flash": 0.04,
+        "GLM-5.3-Flash": 0.1,
+        "Claude Opus 5.5": 1.67,
+        "Claude Sonnet 5.5": 3.04
+      },
+      "note": "MiniMax M3 row (rank 43, 6.87%) is internally inconsistent in the extraction and is excluded. Cost/task refreshed 2026-10-08 (Opus 5.5 High 1.67, Sonnet 5.5 Max 3.04, DeepSeek 0.13, Luna 0.07). Claude Haiku 5.5 is not on the Agent Arena leaderboard."
+    },
+    "Terminal-Bench 2.1 (Vals)": {
+      "tags": [
+        "agentic-code",
+        "terminal-tool"
+      ],
+      "higher_better": true,
+      "evaluator": "Vals AI",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Kimi K3": 80.9,
+        "DeepSeek V4.1 Flash": 74.5,
+        "Grok 4.7": 73.4,
+        "Muse Spark 1.3": 72.3,
+        "GLM-5.3": 71.5,
+        "Qwen3.8 Max": 67.4,
+        "GLM-5.3-Flash": 62.9,
+        "DeepSeek V4 Pro": 54.7,
+        "MiniMax M3": 53.6
+      }
+    },
+    "AA Coding Index": {
+      "tags": [
+        "agentic-code"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis (aggregate)",
+      "indep": true,
+      "ci": null,
+      "aggregate": true,
+      "values": {
+        "Kimi K3": 76.2,
+        "Muse Spark 1.3": 75.8,
+        "GLM-5.3": 74.8,
+        "Qwen3.8 Flash": 73.0,
+        "DeepSeek V4 Pro": 68.8,
+        "MiniMax M3": 58.6
+      }
+    },
+    "FrontierSWE v2": {
+      "tags": [
+        "agentic-code"
+      ],
+      "higher_better": true,
+      "evaluator": "independent (benchlm provenance)",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Gemini 4 Argon": 55.0,
+        "GLM-5.3": 30.2,
+        "Grok 4.7": 29.5,
+        "Kimi K3": 25.9,
+        "GLM-5.3-Flash": 18.1,
+        "Qwen3.8 Max": 15.8,
+        "Claude Opus 5.5": 62.3,
+        "Claude Sonnet 5.5": 61.9
+      }
+    },
+    "CursorBench 4.0": {
+      "tags": [
+        "agentic-code"
+      ],
+      "higher_better": true,
+      "evaluator": "independent (benchlm provenance)",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Grok 4.7": 46.3,
+        "Muse Spark 1.3": 41.6,
+        "Claude Opus 5.5": 57.8,
+        "Claude Sonnet 5.5": 55.5
+      },
+      "note": "Kimi K3's 60.8 is CursorBench 3.2 — a different version, not comparable."
+    },
+    "Code Arena WebDev (frontend, Elo)": {
+      "tags": [
+        "agentic-code"
+      ],
+      "higher_better": true,
+      "evaluator": "Arena human votes",
+      "indep": true,
+      "ci": null,
+      "scope": "frontend/design only",
+      "values": {
+        "Kimi K3": 1658,
+        "Muse Spark 1.3": 1657,
+        "Qwen3.8 Flash": 1637,
+        "MiMo-V2.6-Pro": 1628,
+        "GLM-5.3": 1623,
+        "DeepSeek V4.1 Flash": 1620,
+        "GLM-5.3-Flash": 1616,
+        "GPT 6 Luna": 1579,
+        "MiniMax M3": 1482,
+        "DeepSeek V4 Pro": 1446,
+        "Claude Opus 5.5": 1815,
+        "Claude Sonnet 5.5": 1786
+      }
+    },
+    "AA-HLE": {
+      "tags": [
+        "deep-reasoning"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Gemini 4 Argon": 57.1,
+        "Gemini 3.8 Flash": 48.0,
+        "MiniMax M3.1 Flash": 48.0,
+        "MiMo-V2.6-Pro": 49.4,
+        "Muse Spark 1.3": 48.7,
+        "Kimi K3": 46.9,
+        "Grok 4.7": 43.1,
+        "GLM-5.3": 42.3,
+        "DeepSeek V4 Pro": 41.0,
+        "GLM-5.3-Flash": 39.9,
+        "DeepSeek V4.1 Flash": 39.2,
+        "MiniMax M3": 39.0,
+        "GPT 6 Luna": 38.5,
+        "Qwen3.8 Flash": 38.0,
+        "MiMo-V2.6-Flash": 35.1,
+        "Claude Opus 5.5": 61.4,
+        "Claude Sonnet 5.5": 55.0,
+        "Claude Haiku 5.5": 44.4
+      }
+    },
+    "CritPt": {
+      "tags": [
+        "deep-reasoning",
+        "science"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Gemini 4 Argon": 27.1,
+        "Gemini 3.8 Flash": 18.0,
+        "MiniMax M3.1 Flash": 22.3,
+        "MiMo-V2.6-Pro": 26.6,
+        "Muse Spark 1.3": 24.9,
+        "Kimi K3": 23.4,
+        "GPT 6 Luna": 19.4,
+        "GLM-5.3": 19.1,
+        "DeepSeek V4 Pro": 18.0,
+        "Grok 4.7": 17.7,
+        "GLM-5.3-Flash": 15.4,
+        "DeepSeek V4.1 Flash": 14.3,
+        "MiMo-V2.6-Flash": 12.0,
+        "Qwen3.8 Flash": 11.1,
+        "MiniMax M3": 3.7,
+        "Claude Opus 5.5": 31.7,
+        "Claude Sonnet 5.5": 31.4,
+        "Claude Haiku 5.5": 18.9
+      }
+    },
+    "ARC-AGI-2": {
+      "tags": [
+        "deep-reasoning"
+      ],
+      "higher_better": true,
+      "evaluator": "ARC Prize (independent)",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Gemini 4 Argon": 91.3,
+        "DeepSeek V4 Pro": 61.3,
+        "Kimi K3": 60.4,
+        "GPT 6 Luna": 59.3,
+        "Claude Opus 5.5": 91.7
+      }
+    },
+    "GDPval-AA (Elo)": {
+      "tags": [
+        "knowledge-work"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Gemini 4 Argon": 1623,
+        "Gemini 3.8 Flash": 1436,
+        "MiniMax M3.1 Flash": 1458,
+        "Grok 4.7": 1715,
+        "MiMo-V2.6-Pro": 1686,
+        "Muse Spark 1.3": 1684,
+        "Qwen3.8 Max": 1671,
+        "GLM-5.3": 1653,
+        "Qwen3.8 Flash": 1648,
+        "GLM-5.3-Flash": 1647,
+        "MiMo-V2.6-Flash": 1611,
+        "DeepSeek V4.1 Flash": 1600,
+        "Kimi K3": 1537,
+        "GPT 6 Luna": 1437,
+        "MiniMax M3": 1245,
+        "Claude Opus 5.5": 1866,
+        "Claude Sonnet 5.5": 1839,
+        "Claude Haiku 5.5": 1620
+      }
+    },
+    "AA-Briefcase": {
+      "tags": [
+        "knowledge-work"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Gemini 4 Argon": 1486,
+        "Gemini 3.8 Flash": 1203,
+        "MiniMax M3.1 Flash": 1474,
+        "Grok 4.7": 1644,
+        "Qwen3.8 Max": 1621,
+        "Muse Spark 1.3": 1583,
+        "Qwen3.8 Flash": 1583,
+        "MiMo-V2.6-Pro": 1516,
+        "GLM-5.3": 1510,
+        "Kimi K3": 1501,
+        "MiMo-V2.6-Flash": 1495,
+        "GLM-5.3-Flash": 1454,
+        "DeepSeek V4.1 Flash": 1420,
+        "GPT 6 Luna": 1336,
+        "MiniMax M3": 1091,
+        "Claude Opus 5.5": 1807,
+        "Claude Sonnet 5.5": 1823,
+        "Claude Haiku 5.5": 1578
+      }
+    },
+    "AA-AnalystAgent": {
+      "tags": [
+        "knowledge-work"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Gemini 4 Argon": 48.8,
+        "Kimi K3": 38.8,
+        "MiniMax M3": 10.0,
+        "Claude Opus 5.5": 56.3,
+        "Claude Sonnet 5.5": 57.5
+      }
+    },
+    "AA Harvey LAB (legal)": {
+      "tags": [
+        "knowledge-work"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis / Harvey",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Kimi K3": 94.6,
+        "MiniMax M3": 88.4,
+        "Claude Opus 5.5": 91.2,
+        "Claude Sonnet 5.5": 93.1,
+        "Claude Haiku 5.5": 89.9
+      }
+    },
+    "AA EnterpriseOps-Gym": {
+      "tags": [
+        "workflow-automation",
+        "knowledge-work"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "DeepSeek V4 Pro": 49.6,
+        "Kimi K3": 45.3,
+        "GLM-5.3": 36.4,
+        "GLM-5.3-Flash": 33.2,
+        "MiniMax M3": 32.1
+      }
+    },
+    "AA AutomationBench": {
+      "tags": [
+        "workflow-automation"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Gemini 4 Argon": 77.5,
+        "Gemini 3.8 Flash": 60.0,
+        "MiniMax M3.1 Flash": 72.5,
+        "DeepSeek V4.1 Flash": 68.9,
+        "Grok 4.7": 65.6,
+        "MiMo-V2.6-Flash": 64.0,
+        "GLM-5.3": 62.2,
+        "GLM-5.3-Flash": 60.4,
+        "MiMo-V2.6-Pro": 58.6,
+        "Kimi K3": 58.3,
+        "Muse Spark 1.3": 57.9,
+        "Qwen3.8 Max": 56.0,
+        "Qwen3.8 Flash": 56.0,
+        "GPT 6 Luna": 53.2,
+        "MiniMax M3": 21.3,
+        "Claude Opus 5.5": 69.5,
+        "Claude Sonnet 5.5": 71.8,
+        "Claude Haiku 5.5": 35.4
+      }
+    },
+    "AA Tau3 Banking": {
+      "tags": [
+        "workflow-automation"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Muse Spark 1.3": 50.5,
+        "GLM-5.3": 50.3,
+        "GLM-5.3-Flash": 47.2,
+        "Kimi K3": 46.0,
+        "MiniMax M3": 15.3
+      }
+    },
+    "AA ITBench": {
+      "tags": [
+        "workflow-automation"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "GLM-5.3-Flash": 51.2,
+        "Kimi K3": 47.7,
+        "DeepSeek V4.1 Flash": 46.9,
+        "GLM-5.3": 46.1,
+        "Grok 4.7": 42.1,
+        "Muse Spark 1.3": 33.2,
+        "Claude Opus 5.5": 38.2
+      }
+    },
+    "tau2-bench": {
+      "tags": [
+        "workflow-automation"
+      ],
+      "higher_better": true,
+      "evaluator": "independent (benchlm provenance)",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "DeepSeek V4 Pro": 96.2,
+        "MiniMax M3": 88.9
+      }
+    },
+    "AA-LCR": {
+      "tags": [
+        "long-context"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Gemini 4 Argon": 79.7,
+        "Gemini 3.8 Flash": 81.0,
+        "MiniMax M3.1 Flash": 79.7,
+        "Kimi K3": 88.7,
+        "MiMo-V2.6-Pro": 86.3,
+        "DeepSeek V4.1 Flash": 84.0,
+        "GPT 6 Luna": 83.3,
+        "Muse Spark 1.3": 83.0,
+        "MiniMax M3": 83.0,
+        "DeepSeek V4 Pro": 80.3,
+        "GLM-5.3-Flash": 80.0,
+        "GLM-5.3": 79.7,
+        "Qwen3.8 Flash": 79.7,
+        "Grok 4.7": 76.7,
+        "MiMo-V2.6-Flash": 74.3,
+        "Claude Opus 5.5": 84.7,
+        "Claude Sonnet 5.5": 82.7,
+        "Claude Haiku 5.5": 82.7
+      }
+    },
+    "MLCR-AA": {
+      "tags": [
+        "long-context"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "GLM-5.3-Flash": 51.1,
+        "GLM-5.3": 48.3,
+        "Muse Spark 1.3": 43.3,
+        "Kimi K3": 38.3,
+        "DeepSeek V4.1 Flash": 22.8,
+        "MiMo-V2.6-Pro": 18.3,
+        "MiniMax M3": 17.2,
+        "GPT 6 Luna": 16.1,
+        "Grok 4.7": 15.0,
+        "Claude Opus 5.5": 66.7,
+        "Claude Sonnet 5.5": 75.0
+      }
+    },
+    "AA-Omniscience Index": {
+      "tags": [
+        "research-synthesis"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Gemini 4 Argon": 42.4,
+        "Gemini 3.8 Flash": 30.0,
+        "MiniMax M3.1 Flash": 15.6,
+        "Grok 4.7": 32.0,
+        "Muse Spark 1.3": 25.0,
+        "Kimi K3": 19.7,
+        "GLM-5.3": 14.3,
+        "MiMo-V2.6-Pro": 8.4,
+        "GLM-5.3-Flash": 7.5,
+        "MiniMax M3": 1.4,
+        "DeepSeek V4 Pro": 0.8,
+        "GPT 6 Luna": 0.7,
+        "Qwen3.8 Flash": -9.7,
+        "DeepSeek V4.1 Flash": -5.3,
+        "MiMo-V2.6-Flash": -12.7,
+        "Claude Opus 5.5": 46.4,
+        "Claude Sonnet 5.5": 32.3,
+        "Claude Haiku 5.5": 10.7
+      }
+    },
+    "AA-Omniscience hallucination rate (lower better)": {
+      "tags": [
+        "research-synthesis"
+      ],
+      "higher_better": false,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Gemini 4 Argon": 15.1,
+        "MiniMax M3.1 Flash": 92.8,
+        "MiniMax M3": 18.4,
+        "Grok 4.7": 29.3,
+        "GLM-5.3": 29.6,
+        "Muse Spark 1.3": 32.9,
+        "MiMo-V2.6-Pro": 40.6,
+        "Qwen3.8 Flash": 45.3,
+        "Kimi K3": 53.2,
+        "MiMo-V2.6-Flash": 54.4,
+        "GPT 6 Luna": 76.7,
+        "DeepSeek V4 Pro": 94.1,
+        "DeepSeek V4.1 Flash": 96.5,
+        "Claude Opus 5.5": 58.6,
+        "Claude Sonnet 5.5": 47.0
+      }
+    },
+    "AA-SciCode": {
+      "tags": [
+        "science"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Gemini 4 Argon": 61.8,
+        "Gemini 3.8 Flash": 57.0,
+        "MiniMax M3.1 Flash": 53.4,
+        "MiMo-V2.6-Pro": 60.9,
+        "Kimi K3": 59.5,
+        "GLM-5.3": 59.0,
+        "Muse Spark 1.3": 58.8,
+        "Grok 4.7": 57.4,
+        "GPT 6 Luna": 54.6,
+        "DeepSeek V4.1 Flash": 51.9,
+        "GLM-5.3-Flash": 51.6,
+        "MiMo-V2.6-Flash": 51.3,
+        "Qwen3.8 Flash": 50.6,
+        "DeepSeek V4 Pro": 51.0,
+        "MiniMax M3": 47.1,
+        "Claude Opus 5.5": 66.9,
+        "Claude Sonnet 5.5": 61.0,
+        "Claude Haiku 5.5": 55.0
+      }
+    },
+    "GDP.pdf": {
+      "tags": [
+        "doc-data-understanding"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Gemini 4 Argon": 21.8,
+        "Gemini 3.8 Flash": 21.0,
+        "MiniMax M3.1 Flash": 20.8,
+        "Muse Spark 1.3": 26.6,
+        "GPT 6 Luna": 22.8,
+        "Kimi K3": 22.0,
+        "Grok 4.7": 20.0,
+        "MiMo-V2.6-Pro": 19.2,
+        "GLM-5.3-Flash": 15.4,
+        "DeepSeek V4.1 Flash": 12.8,
+        "GLM-5.3": 11.2,
+        "MiniMax M3": 9.8,
+        "Claude Opus 5.5": 26.2,
+        "Claude Sonnet 5.5": 25.8,
+        "Claude Haiku 5.5": 20.8
+      }
+    },
+    "AA-MMMU-Pro (multimodal)": {
+      "tags": [
+        "doc-data-understanding"
+      ],
+      "higher_better": true,
+      "evaluator": "Artificial Analysis",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "MiniMax M3.1 Flash": 79.1,
+        "Kimi K3": 80.5,
+        "Qwen3.8 Flash": 79.8,
+        "GPT 6 Luna": 79.7,
+        "MiniMax M3": 78.6,
+        "DeepSeek V4.1 Flash": 77.0,
+        "MiMo-V2.6-Flash": 73.1,
+        "Claude Opus 5.5": 87.7
+      }
+    },
+    "Gray Swan IPI (prompt-injection attack success, 15 attempts; lower better)": {
+      "tags": [
+        "safety"
+      ],
+      "higher_better": false,
+      "evaluator": "Gray Swan (independent)",
+      "indep": true,
+      "ci": null,
+      "values": {
+        "Claude Opus 5.5": 1.0,
+        "Muse Spark 1.3": 15.9,
+        "GLM-5.3": 31.5,
+        "Kimi K3": 52.7
+      }
+    }
   },
-  "usage": {"source": "opencode.ai/data (OpenCode platform tracking), 2026-10-06 12:37 UTC", "tokens_7d_rank": {"Muse Spark 1.3": [2, "32T"], "DeepSeek V4.1 Flash": [3, "32T"], "MiMo-V2.6-Flash": [4, "9.4T"], "GLM-5.3-Flash": [8, "1.8T"], "GPT 6 Luna": [13, "498B"], "DeepSeek V4 Pro": [14, "450B"], "MiMo-V2.6-Pro": [15, "439B"], "MiniMax M3": [18, "183B"]}, "two_month_compare": {"MiMo-V2.6-Pro": {"tokens": "1.1T", "users": "60K", "weekly_retention_pct": 59.3, "rank": 15}, "GLM-5.3": {"tokens": "1.5T", "users": "341K", "weekly_retention_pct": 52.3, "rank": 21}}, "note": "Kimi K3, Grok 4.7 and Qwen3.8 are not in the top 18. Usage tracks price and caps as much as quality."},
-  "self_reported_only": {"OSWorld-Verified (vendor)": {"Qwen3.8 Max": 86.1, "MiMo-V2.6-Pro": 82.0, "MiMo-V2.6-Flash": 80.8, "MiniMax M3": 70.1}, "OSWorld 2.0": {"MiniMax M3 (independent)": 4.6, "Qwen3.8 Max (vendor)": 19.4, "Muse Spark 1.3 (vendor)": 66.9, "Claude Opus 5.5 (vendor)": 48.7}, "DeepSWE (vendor)": {"Muse Spark 1.3": 75.4, "DeepSeek V4.1 Flash": 74.2, "MiMo-V2.6-Pro": 71.9, "Grok 4.7": 71.0, "MiMo-V2.6-Flash": 67.9, "GLM-5.3": 66.9, "GLM-5.3-Flash": 63.4, "Qwen3.8 Flash": 58.7}, "SWE-bench Pro (vendor)": {"Qwen3.8 Max": 67.7, "Qwen3.8 Flash": 62.5, "DeepSeek V4 Pro": 55.4, "MiniMax M3": 59.0, "Claude Opus 5.5": 89.9, "Claude Sonnet 5.5": 81.3}},
-  "benchlm_overall_rank_of_784": {"MiMo-V2.6-Pro": 11, "Kimi K3": 15, "Qwen3.8 Max": 16, "GLM-5.3": 20, "DeepSeek V4.1 Flash": 24, "GPT 6 Luna": 32, "MiMo-V2.6-Flash": 33, "Qwen3.8 Flash": 35, "DeepSeek V4 Pro": 38, "GLM-5.3-Flash": 53, "MiniMax M3": 62, "Claude Opus 5.5": 1, "Claude Sonnet 5.5": 3},
-  "sources": ["benchlm.ai/models/<slug> (per-model benchmark tables with Independent / Self-reported provenance)", "benchlm.ai/benchmarks/mercordeepswe11 (DeepSWE v1.1, 47 configs, published error margins)", "arena.ai/leaderboard/{agent,code,text} (Agent Arena, Code Arena WebDev, Text Arena)", "opencode.ai/data (usage and retention)", "artificialanalysis.ai same-page comparisons (earlier pass; see opencode-benchmarks.md)", "anthropic.com/claude-haiku-5-5 and platform.claude.com/docs/en/models/haiku-5-5/overview (2026-10-08)", "artificialanalysis.ai/models/comparisons/claude-haiku-5-5-vs-{claude-sonnet-5-5,deepseek-v4-1-flash,gpt-6-luna}, ...-high-vs-... (2026-10-08)", "opencode.ai/docs/go (31 models incl. Claude Haiku 5.5, 2026-10-08)"],
-  "haiku_5_5": {"released": "2026-10-07", "role": "Claude-arm cost pick (Rule H1). On Go it is a rated-but-dominated pool model (Rule E9).", "anthropic_docs": {"id": "claude-haiku-5-5", "context": "1M", "max_output": "128K", "price_per_mtok_up_to_100k": [0.1, 0.5], "price_per_mtok_over_100k": [0.5, 2.5], "cache_read_per_mtok": [0.01, 0.05], "batch": "50% off", "effort": ["low", "medium", "high", "xhigh", "max"], "default_effort": "medium", "thinking": "adaptive; cannot be disabled in Claude Code; API disables only at low/medium/high", "tokenizer": "same as Claude 4.7+, about 30% more tokens than Haiku 4.5 for the same text", "retirement": "not sooner than 2027-10-07", "haiku_4_5_retirement": "not sooner than 2026-10-15", "claude_code": "alias `haiku` -> Haiku 5.5 on the Anthropic API, Claude Code v2.1.293+; `ultracode` supported", "refusal_classifiers": ["cyber", "bio", "frontier_llm", "general_harms"], "source": "platform.claude.com/docs/en/models/haiku-5-5/overview, models/overview, prompting-claude-haiku-5-5, code.claude.com/docs/en/model-config"}, "anthropic_launch_table_vendor": {"tier": "A vendor_relative; max effort for Terminal-Bench", "GDPval-AA v2.1": {"Haiku 5.5": 1620, "Haiku 4.5": 735, "Sonnet 5.5": 1840}, "AA-Briefcase v1.1": {"Haiku 5.5": 1578, "Haiku 4.5": 614, "Sonnet 5.5": 1824}, "OSWorld 2.1": {"Haiku 5.5": 72.4, "Haiku 4.5": 15.7, "Sonnet 5.5": 83.9, "note": "partial credit; full-task success 37.1 for Haiku 5.5 (kingy.ai); GPT-6 Luna 48.9"}, "HLE no tools": {"Haiku 5.5": 45.9, "Haiku 4.5": 10.2, "Sonnet 5.5": 56.9}, "Terminal-Bench 4.0": {"Haiku 5.5": 39.2, "Haiku 4.5": 0.0, "Sonnet 5.5": 70.6}, "Chartography no tools": {"Haiku 5.5": 46.4, "Haiku 4.5": 6.4, "Sonnet 5.5": 61.6}, "FrontierCode 1.1": {"Haiku 5.5": 46.4, "note": "Sonnet 5.5 max 46.2 / Opus 5.5 max 54.4 in the iteration-19 vendor table; the Haiku effort is not stated, so no pairing is made"}, "source": "anthropic.com/claude-haiku-5-5 (2026-10-08); kingy.ai and venturebeat.com for the Luna cross-vendor rows"}, "aa_v4_3_2": {"evaluator": "Artificial Analysis (independent), same-page comparisons fetched 2026-10-08", "rungs_measured": ["high", "max"], "high": {"II": 38, "usd_per_task": 0.08, "cost_to_run_index_usd": 94, "out_tok_per_task": 55000, "TB4.0": 22, "GDPval-AA": 1420, "Briefcase": 1443, "AutomationBench": 34, "SciCode": 49, "HLE": 37, "CritPt": 19, "Omniscience": 6, "AA-LCR": 77, "GDP.pdf": 17, "ttft_s": 26.15, "tok_s": 173}, "max": {"II": 43, "usd_per_task": 0.21, "cost_to_run_index_usd": 330, "out_tok_per_task": 162000, "reasoning_tok_per_task": 129000, "TB4.0": 33, "GDPval-AA": 1620, "Briefcase": 1578, "AutomationBench": 35, "SciCode": 55, "HLE": 44, "CritPt": 19, "Omniscience": 11, "AA-LCR": 83, "GDP.pdf": 21, "ttft_s": 415.3, "tok_s": 243}, "sonnet_5_5_high_same_page": {"II": 47, "usd_per_task": 0.88, "out_tok_per_task": 37000, "TB4.0": 44, "GDPval-AA": 1551, "Briefcase": 1639, "AutomationBench": 59, "SciCode": 54, "HLE": 46, "CritPt": 25, "Omniscience": 21, "AA-LCR": 78, "GDP.pdf": 25}, "sonnet_5_5_max_same_page": {"II": 56, "usd_per_task": 5.46, "out_tok_per_task": 197000, "TB4.0": 64, "note": "was USD 7.60-7.67 before Sonnet 5.5 cache reads were halved (7 Oct 2026)"}, "not_measured": "low and medium rungs (the ones Rule H1 emits); no DeepSWE, Agent Arena, Vals, FrontierSWE, MLCR or MMMU-Pro row exists for Haiku 5.5", "ttft_caveat": "AA TTFT counts hidden thinking for Haiku 5.5 (26 s High, 415 s Max); DeepSeek V4.1 Flash streams its reasoning (1.1 s). The two are not comparable, and no sub-second Haiku 5.5 figure exists."}, "go_page": {"cap_usd": 15, "go_plus_cap_usd": 60, "retention": "30 days", "pricing": "two token brackets (100K)", "models_dev_variants": ["low", "medium", "high", "xhigh", "max"], "id": "opencode-go/claude-haiku-5-5", "source": "opencode.ai/docs/go (2026-10-08); models.dev providers/opencode-go/models/claude-haiku-5-5.toml"}, "dominance_on_go": {"high_vs_MiMo-V2.6-Flash": "38 @ USD 0.08 (cap 15, 30-day retention) vs 38 @ USD 0.06 (cap 60, 0-day)", "max_vs_GLM-5.3-Flash": "43 @ USD 0.21 (cap 15) vs 42 @ USD 0.25 (cap 60): cost/task / cap = 0.014 vs 0.0042, three times the cap pressure", "verdict": "dominated on the OpenCode line by Go cap pressure then retention (Rule E9); kept on the Claude line, where there is no dollar cap"}},
-  "tiering_iteration_23": {"rule": "BUD1: premium (<=35 real agent tasks per month of the Go cap) never in a routed pair; only A1-OC adds one as #2", "tasks_per_month_formula": "cap_usd / Arena p50 cost_per_task_usd (anchor 'Arena Agent Arena', refreshed 2026-10-08)", "tasks_per_month": {"MiMo-V2.6-Pro": 150, "GLM-5.3": 23, "Kimi K3": 21, "Grok 4.7": 10, "Muse Spark 1.3": 140, "GLM-5.3-Flash": 600, "MiMo-V2.6-Flash": 1500, "DeepSeek V4.1 Flash": 462, "GPT 6 Luna": 214, "Qwen3.8 Flash": 200, "Qwen3.8 Max": 33, "DeepSeek V4 Pro": 47}, "tiers": {"budget": ["MiMo-V2.6-Flash", "GLM-5.3-Flash", "DeepSeek V4.1 Flash", "Qwen3.8 Flash", "MiMo-V2.6-Pro"], "nc1_only": ["GPT 6 Luna", "Muse Spark 1.3"], "premium": ["Qwen3.8 Max", "GLM-5.3", "Kimi K3", "Grok 4.7"], "dominated": ["DeepSeek V4 Pro", "MiniMax M3", "Claude Haiku 5.5"]}, "note": "Order of magnitude only. AA cost per index task gives the same split (premium 6-36% of the cap per task, budget 0.1-1.2%)."},
+  "usage": {
+    "source": "opencode.ai/data (OpenCode platform tracking), 2026-10-06 12:37 UTC",
+    "tokens_7d_rank": {
+      "Muse Spark 1.3": [
+        2,
+        "32T"
+      ],
+      "DeepSeek V4.1 Flash": [
+        3,
+        "32T"
+      ],
+      "MiMo-V2.6-Flash": [
+        4,
+        "9.4T"
+      ],
+      "GLM-5.3-Flash": [
+        8,
+        "1.8T"
+      ],
+      "GPT 6 Luna": [
+        13,
+        "498B"
+      ],
+      "DeepSeek V4 Pro": [
+        14,
+        "450B"
+      ],
+      "MiMo-V2.6-Pro": [
+        15,
+        "439B"
+      ],
+      "MiniMax M3": [
+        18,
+        "183B"
+      ]
+    },
+    "two_month_compare": {
+      "MiMo-V2.6-Pro": {
+        "tokens": "1.1T",
+        "users": "60K",
+        "weekly_retention_pct": 59.3,
+        "rank": 15
+      },
+      "GLM-5.3": {
+        "tokens": "1.5T",
+        "users": "341K",
+        "weekly_retention_pct": 52.3,
+        "rank": 21
+      }
+    },
+    "note": "Kimi K3, Grok 4.7 and Qwen3.8 are not in the top 18. Usage tracks price and caps as much as quality."
+  },
+  "self_reported_only": {
+    "OSWorld-Verified (vendor)": {
+      "Qwen3.8 Max": 86.1,
+      "MiMo-V2.6-Pro": 82.0,
+      "MiMo-V2.6-Flash": 80.8,
+      "MiniMax M3": 70.1
+    },
+    "OSWorld 2.0": {
+      "MiniMax M3 (independent)": 4.6,
+      "Qwen3.8 Max (vendor)": 19.4,
+      "Muse Spark 1.3 (vendor)": 66.9,
+      "Claude Opus 5.5 (vendor)": 48.7
+    },
+    "DeepSWE (vendor)": {
+      "Muse Spark 1.3": 75.4,
+      "DeepSeek V4.1 Flash": 74.2,
+      "MiMo-V2.6-Pro": 71.9,
+      "Grok 4.7": 71.0,
+      "MiMo-V2.6-Flash": 67.9,
+      "GLM-5.3": 66.9,
+      "GLM-5.3-Flash": 63.4,
+      "Qwen3.8 Flash": 58.7
+    },
+    "SWE-bench Pro (vendor)": {
+      "Qwen3.8 Max": 67.7,
+      "Qwen3.8 Flash": 62.5,
+      "DeepSeek V4 Pro": 55.4,
+      "MiniMax M3": 59.0,
+      "Claude Opus 5.5": 89.9,
+      "Claude Sonnet 5.5": 81.3
+    }
+  },
+  "benchlm_overall_rank_of_784": {
+    "MiMo-V2.6-Pro": 11,
+    "Kimi K3": 15,
+    "Qwen3.8 Max": 16,
+    "GLM-5.3": 20,
+    "DeepSeek V4.1 Flash": 24,
+    "GPT 6 Luna": 32,
+    "MiMo-V2.6-Flash": 33,
+    "Qwen3.8 Flash": 35,
+    "DeepSeek V4 Pro": 38,
+    "GLM-5.3-Flash": 53,
+    "MiniMax M3": 62,
+    "Claude Opus 5.5": 1,
+    "Claude Sonnet 5.5": 3
+  },
+  "sources": [
+    "benchlm.ai/models/<slug> (per-model benchmark tables with Independent / Self-reported provenance)",
+    "benchlm.ai/benchmarks/mercordeepswe11 (DeepSWE v1.1, 47 configs, published error margins)",
+    "arena.ai/leaderboard/{agent,code,text} (Agent Arena, Code Arena WebDev, Text Arena)",
+    "opencode.ai/data (usage and retention)",
+    "artificialanalysis.ai same-page comparisons (earlier pass; see opencode-benchmarks.md)",
+    "anthropic.com/claude-haiku-5-5 and platform.claude.com/docs/en/models/haiku-5-5/overview (2026-10-08)",
+    "artificialanalysis.ai/models/comparisons/claude-haiku-5-5-vs-{claude-sonnet-5-5,deepseek-v4-1-flash,gpt-6-luna}, ...-high-vs-... (2026-10-08)",
+    "opencode.ai/docs/go (31 models incl. Claude Haiku 5.5, 2026-10-08)"
+  ],
+  "haiku_5_5": {
+    "released": "2026-10-07",
+    "role": "Claude-arm cost pick (Rule H1). On Go it is a rated-but-dominated pool model (Rule E9).",
+    "anthropic_docs": {
+      "id": "claude-haiku-5-5",
+      "context": "1M",
+      "max_output": "128K",
+      "price_per_mtok_up_to_100k": [
+        0.1,
+        0.5
+      ],
+      "price_per_mtok_over_100k": [
+        0.5,
+        2.5
+      ],
+      "cache_read_per_mtok": [
+        0.01,
+        0.05
+      ],
+      "batch": "50% off",
+      "effort": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "default_effort": "medium",
+      "thinking": "adaptive; cannot be disabled in Claude Code; API disables only at low/medium/high",
+      "tokenizer": "same as Claude 4.7+, about 30% more tokens than Haiku 4.5 for the same text",
+      "retirement": "not sooner than 2027-10-07",
+      "haiku_4_5_retirement": "not sooner than 2026-10-15",
+      "claude_code": "alias `haiku` -> Haiku 5.5 on the Anthropic API, Claude Code v2.1.293+; `ultracode` supported",
+      "refusal_classifiers": [
+        "cyber",
+        "bio",
+        "frontier_llm",
+        "general_harms"
+      ],
+      "source": "platform.claude.com/docs/en/models/haiku-5-5/overview, models/overview, prompting-claude-haiku-5-5, code.claude.com/docs/en/model-config"
+    },
+    "anthropic_launch_table_vendor": {
+      "tier": "A vendor_relative; max effort for Terminal-Bench",
+      "GDPval-AA v2.1": {
+        "Haiku 5.5": 1620,
+        "Haiku 4.5": 735,
+        "Sonnet 5.5": 1840
+      },
+      "AA-Briefcase v1.1": {
+        "Haiku 5.5": 1578,
+        "Haiku 4.5": 614,
+        "Sonnet 5.5": 1824
+      },
+      "OSWorld 2.1": {
+        "Haiku 5.5": 72.4,
+        "Haiku 4.5": 15.7,
+        "Sonnet 5.5": 83.9,
+        "note": "partial credit; full-task success 37.1 for Haiku 5.5 (kingy.ai); GPT-6 Luna 48.9"
+      },
+      "HLE no tools": {
+        "Haiku 5.5": 45.9,
+        "Haiku 4.5": 10.2,
+        "Sonnet 5.5": 56.9
+      },
+      "Terminal-Bench 4.0": {
+        "Haiku 5.5": 39.2,
+        "Haiku 4.5": 0.0,
+        "Sonnet 5.5": 70.6
+      },
+      "Chartography no tools": {
+        "Haiku 5.5": 46.4,
+        "Haiku 4.5": 6.4,
+        "Sonnet 5.5": 61.6
+      },
+      "FrontierCode 1.1": {
+        "Haiku 5.5": 46.4,
+        "note": "Sonnet 5.5 max 46.2 / Opus 5.5 max 54.4 in the iteration-19 vendor table; the Haiku effort is not stated, so no pairing is made"
+      },
+      "source": "anthropic.com/claude-haiku-5-5 (2026-10-08); kingy.ai and venturebeat.com for the Luna cross-vendor rows"
+    },
+    "aa_v4_3_2": {
+      "evaluator": "Artificial Analysis (independent), same-page comparisons fetched 2026-10-08",
+      "rungs_measured": [
+        "high",
+        "max"
+      ],
+      "high": {
+        "II": 38,
+        "usd_per_task": 0.08,
+        "cost_to_run_index_usd": 94,
+        "out_tok_per_task": 55000,
+        "TB4.0": 22,
+        "GDPval-AA": 1420,
+        "Briefcase": 1443,
+        "AutomationBench": 34,
+        "SciCode": 49,
+        "HLE": 37,
+        "CritPt": 19,
+        "Omniscience": 6,
+        "AA-LCR": 77,
+        "GDP.pdf": 17,
+        "ttft_s": 26.15,
+        "tok_s": 173
+      },
+      "max": {
+        "II": 43,
+        "usd_per_task": 0.21,
+        "cost_to_run_index_usd": 330,
+        "out_tok_per_task": 162000,
+        "reasoning_tok_per_task": 129000,
+        "TB4.0": 33,
+        "GDPval-AA": 1620,
+        "Briefcase": 1578,
+        "AutomationBench": 35,
+        "SciCode": 55,
+        "HLE": 44,
+        "CritPt": 19,
+        "Omniscience": 11,
+        "AA-LCR": 83,
+        "GDP.pdf": 21,
+        "ttft_s": 415.3,
+        "tok_s": 243
+      },
+      "sonnet_5_5_high_same_page": {
+        "II": 47,
+        "usd_per_task": 0.88,
+        "out_tok_per_task": 37000,
+        "TB4.0": 44,
+        "GDPval-AA": 1551,
+        "Briefcase": 1639,
+        "AutomationBench": 59,
+        "SciCode": 54,
+        "HLE": 46,
+        "CritPt": 25,
+        "Omniscience": 21,
+        "AA-LCR": 78,
+        "GDP.pdf": 25
+      },
+      "sonnet_5_5_max_same_page": {
+        "II": 56,
+        "usd_per_task": 5.46,
+        "out_tok_per_task": 197000,
+        "TB4.0": 64,
+        "note": "was USD 7.60-7.67 before Sonnet 5.5 cache reads were halved (7 Oct 2026)"
+      },
+      "not_measured": "low and medium rungs (the ones Rule H1 emits); no DeepSWE, Agent Arena, Vals, FrontierSWE, MLCR or MMMU-Pro row exists for Haiku 5.5",
+      "ttft_caveat": "AA TTFT counts hidden thinking for Haiku 5.5 (26 s High, 415 s Max); DeepSeek V4.1 Flash streams its reasoning (1.1 s). The two are not comparable, and no sub-second Haiku 5.5 figure exists."
+    },
+    "go_page": {
+      "cap_usd": 15,
+      "go_plus_cap_usd": 60,
+      "retention": "30 days",
+      "pricing": "two token brackets (100K)",
+      "models_dev_variants": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "id": "opencode-go/claude-haiku-5-5",
+      "source": "opencode.ai/docs/go (2026-10-08); models.dev providers/opencode-go/models/claude-haiku-5-5.toml"
+    },
+    "dominance_on_go": {
+      "high_vs_MiMo-V2.6-Flash": "38 @ USD 0.08 (cap 15, 30-day retention) vs 38 @ USD 0.06 (cap 60, 0-day)",
+      "max_vs_GLM-5.3-Flash": "43 @ USD 0.21 (cap 15) vs 42 @ USD 0.25 (cap 60): cost/task / cap = 0.014 vs 0.0042, three times the cap pressure",
+      "verdict": "dominated on the OpenCode line by Go cap pressure then retention (Rule E9); kept on the Claude line, where there is no dollar cap"
+    }
+  },
+  "tiering_iteration_23": {
+    "rule": "BUD1: premium (<=35 real agent tasks per month of the Go cap) never in a routed pair; only A1-OC adds one as #2",
+    "tasks_per_month_formula": "cap_usd / Arena p50 cost_per_task_usd (anchor 'Arena Agent Arena', refreshed 2026-10-08)",
+    "tasks_per_month": {
+      "MiMo-V2.6-Pro": 150,
+      "GLM-5.3": 23,
+      "Kimi K3": 21,
+      "Grok 4.7": 10,
+      "Muse Spark 1.3": 140,
+      "GLM-5.3-Flash": 600,
+      "MiMo-V2.6-Flash": 1500,
+      "DeepSeek V4.1 Flash": 462,
+      "GPT 6 Luna": 214,
+      "Qwen3.8 Flash": 200,
+      "Qwen3.8 Max": 33,
+      "DeepSeek V4 Pro": 47
+    },
+    "tiers": {
+      "budget": [
+        "MiMo-V2.6-Flash",
+        "GLM-5.3-Flash",
+        "DeepSeek V4.1 Flash",
+        "Qwen3.8 Flash",
+        "MiMo-V2.6-Pro"
+      ],
+      "nc1_only": [
+        "GPT 6 Luna",
+        "Muse Spark 1.3"
+      ],
+      "premium": [
+        "Qwen3.8 Max",
+        "GLM-5.3",
+        "Kimi K3",
+        "Grok 4.7"
+      ],
+      "dominated": [
+        "DeepSeek V4 Pro",
+        "MiniMax M3",
+        "Claude Haiku 5.5"
+      ]
+    },
+    "note": "Order of magnitude only. AA cost per index task gives the same split (premium 6-36% of the cap per task, budget 0.1-1.2%)."
+  },
   "iteration_24": {
     "date": "2026-10-20",
     "scope": "Free OpenCode models and the Gemini line. Every number below was read from the cited page on 2026-10-20; null = not published.",
@@ -318,6 +1283,7 @@
       "cap_changes": {
         "DeepSeek V4.1 Flash": "USD 60 -> 80 on Go (160 on Go Plus)"
       }
-    }
+    },
+    "go_only_revision_2026_10_26": "User cannot use the Google membership in OpenCode: Gemini 4 Argon is reachable only as opencode-go/gemini-4-argon-contributor (USD 60 promo cap, trains on prompts) -> NC1-only overlay (Rule GM1). The google_membership / overload_errors blocks are background, not router inputs."
   }
 }

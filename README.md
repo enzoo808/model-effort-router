@@ -48,7 +48,7 @@ model-secici:
 
 ## What changed in iteration-24 (20 Oct 2026): free models and Gemini 4 Argon
 
-Two requests: try the *free* OpenCode models where they fit, and use the Gemini entitlement that comes with a Google membership where Gemini stands out. The pool is now **19 rated models**
+Two requests: try the *free* OpenCode models where they fit, and use Gemini where it stands out (first assumed reachable with a Google key; on 26 Oct the user clarified that only Go's Gemini route works). The pool is now **19 rated models**
 (`skill/opencode-benchmarks.md` §13 has every number and source).
 
 - **Free lane (Rule FR1).** Of the 14 free models on Zen, only **MiniMax M3.1 Flash Free** has a v4.3.2 score *and* a data policy fit for confidential work (zero retention, unlimited on Go):
@@ -56,17 +56,16 @@ Two requests: try the *free* OpenCode models where they fit, and use the Gemini 
   factual recall (hallucination rate 92.8%, the same failure as DeepSeek). The free twins of GLM-5.3-Flash and DeepSeek V4.1 Flash are the first spill-over when a paid window runs out — never a pick.
   Nemotron 3 Ultra scores 23 (budget models 38–46) and logs your prompts; Big Pickle, LL Alpha, Exo, Beam, LongCat 2.5 Preview and Jev have no independent score or train on prompts, so they are never selected.
   Free is "limited time": the rows that used the free model record what they revert to.
-- **Gemini slot (Rule GM1).** Gemini 4 Argon is the first Google model that is worth a slot: AA index 53, the **lowest hallucination rate (15%)** and a 42 Omniscience index of anything rated here, the highest
-  AutomationBench-AA (77.5), HLE 57, ARC-AGI-2 91.3. It also takes 48 s to a first token, costs USD 1.99 per AA task (USD 3.98 from 1 Dec) and trails Claude on Terminal-Bench and finished deliverables. So it is
-  **metered, not default**: first on the OpenCode line only at `D = 3` or `R = 3` for `agentic-code`, `terminal-tool`, `deep-reasoning`, `research-synthesis` and `workflow-automation`, and `#2` after an OpenCode shortfall.
-  Effects: factual-reliability work at `R = 3` now goes to OpenCode (Argon beats Sonnet 5.5 on both Omniscience measures); hard coding and reasoning keep the Claude badge.
-- **The membership.** Google AI Pro gives no API key — but it carries **USD 10/month of Google Cloud credits** for the Gemini API (activate them under developers.google.com/program/my-benefits; paid-tier keys are not
-  trained on). Logging in to OpenCode with the Google account itself is the route Google's terms prohibit (suspension reports exist), so the router tells you to use an API key. A 503 is Google-side capacity (retry, then Gemini 3.8 Flash);
-  a `429 "limit: 0"` on Argon means a free-tier key. Details: `opencode-benchmarks.md` §13.4.
+- **Gemini slot (Rule GM1) — Go's Contributor route only (26 Oct).** The Google membership cannot be used inside OpenCode, so Gemini 4 Argon is reachable only as
+  `opencode-go/gemini-4-argon-contributor` (USD 60 cap during a 2× promo, 30 after; **Google trains on prompts**). That makes it **non-confidential work only** (NC1). Argon is the first Google model worth a slot:
+  AA index 53, the **lowest hallucination rate (15%)** and a 42 Omniscience index of anything rated here, the highest AutomationBench-AA (77.5), HLE 57, ARC-AGI-2 91.3 — but 48 s to a first token, about 3% of its cap
+  per heavy task, and behind Claude on Terminal-Bench and finished deliverables. So, under NC1 only, it is `#1` at `D = 3` or `R = 3` on `agentic-code`, `terminal-tool`, `deep-reasoning`, `research-synthesis` and
+  `workflow-automation` (and `#2` after an OpenCode shortfall). Confidential work, the default, never sees it, and `research-synthesis` at `R = 3` stays with Claude unless you say the work is non-confidential.
+  Details, including the Google-membership facts (USD 10/month Cloud credits are API-only, third-party logins are against Google's terms): `opencode-benchmarks.md` §13.4.
 - **Effort (21 Oct):** `D ≥ 2 → max` (was `D = 2 → high`) on DeepSeek V4.1 Flash, GLM-5.3-Flash and MiniMax M3.1 Flash Free — AA measured DeepSeek only at `max`, `high` had only a vendor curve, and `max` costs about 0.3% of the cap per task.
 - **Also:** DeepSeek V4.1 Flash's Go cap rose to USD 80; Go's *Contributor* route for Argon (inside the USD 10 plan) trains on prompts, so it is offered only for work you call non-confidential.
 - **Checks:** `grade_routing.py --selftest` 34/34 (30 → 34 evals: d1, g1, j1, t1, v1, z1, p1, n1, r1 moved; `w1`–`w4` new); policy sync (42 blocks), pool check (mutation-tested), examples — all green.
-  **Cold-agent run (6 fresh Sonnet agents, `evals/routing/results/iteration-24/`): 33/33 routed evals pass** — two corrections first: `w2` exposed a real ambiguity (NC1 said Muse Spark "may" take `#2` on deep-reasoning/science; now it takes `#2` on `research-synthesis` only) and `r1` was an ambiguous prompt (sharpened, rule unchanged). `i1` (exploit PoC) was declined by its agent as a routing-only task and not re-run; that gate is untouched. Not done: the trigger eval. `SKILL.md` 54.7 → 60.0 KB after trimming.
+  **26 Oct Go-only revision, re-run by fresh agents: the 10 affected evals pass after two fixes (`p1`: A1-OC now says any Claude cell in the badge table moves the badge; `g1`: prompt sharpened to one indivisible decision, golden `#2` corrected).** Earlier cold run (6 fresh Sonnet agents, `evals/routing/results/iteration-24/`): 33/33 routed evals pass** — two corrections first: `w2` exposed a real ambiguity (NC1 said Muse Spark "may" take `#2` on deep-reasoning/science; now it takes `#2` on `research-synthesis` only) and `r1` was an ambiguous prompt (sharpened, rule unchanged). `i1` (exploit PoC) was declined by its agent as a routing-only task and not re-run; that gate is untouched. Not done: the trigger eval. `SKILL.md` 54.7 → 60.0 KB after trimming.
 
 ## What changed in iteration-23 (14 Oct 2026): budget-first OpenCode, OpenCode by default
 

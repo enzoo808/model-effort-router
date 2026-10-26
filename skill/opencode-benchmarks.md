@@ -549,6 +549,8 @@ only on the five rows where it leads, at `D = 3` / `R = 3`.
 
 ### 13.4 The Google membership, and the "server load" error
 
+*Background only since 26 Oct: the user cannot use the membership in OpenCode, so the router relies on Go's Contributor route alone.*
+
 - **The subscription does not include an API key or API quota.** Google AI Pro (USD 19.99) carries Google Developer Program premium benefits: **USD 10/month of Google Cloud credits**
   usable on the Gemini API (AI Ultra: USD 100). They are *not automatic* — activate at developers.google.com/program/my-benefits and choose a billing account; credits expire after
   12 months; one source says a positive prepaid balance may still be required (unverified). Attaching billing moves the key to the **paid tier**.
@@ -563,6 +565,8 @@ only on the five rows where it leads, at `D = 3` / `R = 3`.
 - **Gemini 3.8 Flash** (41 @ USD 1.24 per AA task; USD 0.75 / 3.75 through 31 Dec, 1.50 / 7.50 after; has a free tier that trains) is dominated by MiMo-V2.6-Pro on index per dollar (E10); it stays as Argon's fallback.
 
 ### 13.5 What changed in the rules
+
+**26 Oct revision — Go's Contributor route is the only Gemini route.** The user cannot use their Google membership inside OpenCode (no OAuth route, no API key in use), so the paid-API assumptions above (confidential work allowed, USD 10/month credits, 503/429 diagnosis, Gemini 3.8 Flash fallback) no longer apply to the router. Argon is `opencode-go/gemini-4-argon-contributor`: Google trains on prompts, so it is **NC1-only**; GM1 is an overlay (right-hand column at `D = 3` / `R = 3` on five rows, `#2` after a shortfall), not a table entry; the confidential default reverts to the pre-GM1 pairs; `research-synthesis` at `R = 3` is Claude † by default and OpenCode † under NC1+Argon. The §13.4 facts stay as background.
 
 **21 Oct follow-up (effort):** the user noticed DeepSeek V4.1 Flash `max` almost never appeared (16 golden DeepSeek picks: 9 `low`, 6 `high`, 1 `max`) — `max` only fired at `D = 3`, and GM1 had moved `D = 3` to Argon. E7 is now `D ≥ 2 → max` on DeepSeek V4.1 Flash, GLM-5.3-Flash and MiniMax M3.1 Flash Free: the only independent measurement of these models is at `max` (DeepSeek non-reasoning 25 → 39 at `max`), `high` had only vendor curves, and `max` costs USD 0.25–0.27 per AA task (about 0.3% of the USD 80 cap). `D ≤ 1` stays `low`.
 

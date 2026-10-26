@@ -1,6 +1,5 @@
 Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 DeepSeek V4.1 Flash · effort: max
-Evidence: Workflow-automation at R=3: AutomationBench-AA has Argon at 77.5 against Sonnet 5.5's 72 and no agreeing Claude direction; low-confidence, one benchmark.
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 GLM-5.3-Flash · effort: max
+Evidence: Workflow-automation has no Claude direction (AutomationBench-AA Sonnet 72 vs DeepSeek 69 is a tie), so the cheaper arm wins; low-confidence, and real money (R=3) needs review.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
-Gemini 4 Argon: google/gemini-4-argon on your paid Google key (AI Pro adds USD 10/month of credits); USD 2/10 per MTok until 30 Nov, USD 4/20 after. A 503 is Google-side capacity — retry, then Gemini 3.8 Flash; a 429 "limit: 0" means a free-tier key.
 Do not apply without human review.

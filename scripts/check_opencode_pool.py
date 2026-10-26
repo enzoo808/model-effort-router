@@ -17,9 +17,9 @@ Checks (all mechanical, all fail loudly):
      effort that OpenCode actually offers for that model (policy `opencode_variants`), never `GLM-5.3 · low` / `Kimi K3 · low`, and never a
      USD 15-cap model at `low` (only the latency row's GPT 6 Luna is exempt).
   5. No model outside the 19 appears in a Step 4-OC row or an example.
-  6. Rule GM1: Gemini 4 Argon appears only in the right-hand column of the policy's
-     `gm1_rows`, first, and in no left-hand column; an example that names it carries the
-     auto-added Gemini line (Step 7 rule 11).
+  6. Rule GM1: Gemini 4 Argon is an NC1-only overlay -- it appears in no Step 4-OC table
+     cell, the rule text names every policy `gm1_rows` row and requires NC1; an example
+     that names it carries the auto-added Gemini line (Step 7 rule 11).
 
     python scripts/check_opencode_pool.py
 """
@@ -171,24 +171,21 @@ def main() -> int:
         if t not in seen:
             errors.append("policy row %r is missing from the Step 4-OC table" % t)
 
-    # Rule GM1 -- Gemini 4 Argon only in the right-hand column of the listed rows, and first
-    gm1 = set(policy.get("gm1_rows", []))
+    # Rule GM1 -- Gemini 4 Argon is an NC1-only overlay: it is in NO Step 4-OC table cell, the GM1 rule
+    # names every policy gm1 row, and the rule requires NC1.
+    gm1 = list(policy.get("gm1_rows", []))
     for r in rows:
-        if len(r) < 4:
-            continue
-        tags = [t for t in re.findall(r"`([a-z-]+)`", r[0]) if t in want]
-        left = r[1]
-        right = r[2] if strip_md(r[2]) != "same" else r[1]
-        if mentions("Gemini 4 Argon", left):
-            errors.append("GM1: Gemini 4 Argon is in the left-hand column of row %r" % r[0][:40])
-        in_right = mentions("Gemini 4 Argon", r[2])
-        for t in tags:
-            if t in gm1 and not in_right:
-                errors.append("GM1: row %r is listed in the policy but its right-hand column has no Gemini 4 Argon" % t)
-            if in_right and t not in gm1:
-                errors.append("GM1: row %r names Gemini 4 Argon but the policy does not list it in gm1_rows" % t)
-        if in_right and models_in(right, names)[:1] != ["Gemini 4 Argon"]:
-            errors.append("GM1: Gemini 4 Argon must be #1 in row %r, got %s" % (r[0][:40], models_in(right, names)))
+        if len(r) >= 3 and (mentions("Gemini 4 Argon", r[1]) or mentions("Gemini 4 Argon", r[2])):
+            errors.append("GM1: Gemini 4 Argon sits in a Step 4-OC pair (row %r); it is an NC1-only overlay" % r[0][:40])
+    gm1_text = re.search(r"<!-- rule:GM1 -->\n(.*?)\n<!-- /rule:GM1 -->", skill, re.S)
+    if not gm1_text:
+        errors.append("GM1: rule block missing from SKILL.md")
+    else:
+        for t in gm1:
+            if "`%s`" % t not in gm1_text.group(1):
+                errors.append("GM1: the rule text does not name policy row %r" % t)
+        if "exists only under NC1" not in gm1_text.group(1):
+            errors.append("GM1: the rule text must say Gemini 4 Argon exists only under NC1")
 
     # no emitted row may name a dominated or outside model
     oc_text = skill[skill.find("### OpenCode Go — Step 4-OC"):skill.find("#### OpenCode Go — effort")]
@@ -221,10 +218,6 @@ def main() -> int:
         alias = {"MiniMax M3.1 Flash Free": "MiniMax M3.1 Flash"}
         for col in ("r_le_2", "r_eq_3"):
             for m in w[col]:
-                if m in dr.GEMINI:
-                    if grank[:1] != [m]:
-                        errors.append("consensus: %s is not the top model for %r (GM1) but row %r emits it" % (m, tag, tag))
-                    continue
                 m = alias.get(m, m)
                 if m not in rank:
                     errors.append("consensus: %s has no independent evidence for %r but row %r emits it" % (m, tag, tag))
@@ -273,7 +266,7 @@ def main() -> int:
         n_ex += 1
         if oc.lower().startswith(("use claude", "unverified")):
             continue
-        if "Gemini 4 Argon" in oc and "Gemini 4 Argon: google/gemini-4-argon" not in block:
+        if "Gemini 4 Argon" in oc and "Gemini 4 Argon: opencode-go/gemini-4-argon-contributor" not in block:
             errors.append("example names Gemini 4 Argon without the auto-added Gemini line (Step 7 rule 11)")
         parts = re.split(r"#\s*[12]\b", oc)[1:]
         for p in parts:

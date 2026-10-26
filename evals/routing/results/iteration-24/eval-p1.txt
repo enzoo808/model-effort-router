@@ -1,5 +1,4 @@
 Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
-OpenCode: #1 DeepSeek V4.1 Flash · effort: max · #2 Gemini 4 Argon · effort: high
-Evidence: The OpenCode run already fell short, so #2 steps up to Argon (about USD 1–4 per heavy task from credits) and Claude gets the badge on agentic-code.
+OpenCode: #1 DeepSeek V4.1 Flash · effort: max · #2 GLM-5.3 · effort: max
+Evidence: The earlier run fell short, so the task is harder than the budget pair handles; GLM-5.3 as #2 costs about 3–5% of its monthly cap per real agent task, so Claude takes the badge.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
-Gemini 4 Argon: google/gemini-4-argon on your paid Google key (AI Pro adds USD 10/month of credits); USD 2/10 per MTok until 30 Nov, USD 4/20 after. A 503 is Google-side capacity — retry, then Gemini 3.8 Flash; a 429 "limit: 0" means a free-tier key.
