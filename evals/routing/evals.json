@@ -1,7 +1,7 @@
 {
   "skill_name": "model-secici",
   "source_of_truth": "README.tr.md 'Doğrulama' table for the legacy ids; this file for iteration-25",
-  "note": "Iteration-25 live regression set (Claude + OpenCode; BUD1 budget-first pool, SM1 OpenCode default, FR1 empty free lane, GM1 Gemini overlay). Gemini 4 Argon is on Go as opencode-go/gemini-4-argon with its cap and data policy unread, so it appears only in evals where the prompt states the work is non-confidential (`allow_gemini: true`). The goldens are derived from SKILL.md's rules by hand; the iteration-24 cold-agent run (33/33) predates the 22-24 Oct roster change, and NO cold-agent run has been made on iteration-25 yet (g1, j1, n1, r1, t1, w2, w3 changed goldens; p2 is new). `python grade_routing.py --selftest --results-dir /tmp/x` proves the grader and the goldens agree. Effort rule: D>=2 -> max on DeepSeek V4.1 Flash / GLM-5.3-Flash. The iteration-20 (Codex) set is archived under archive/iteration-20-codex/routing/.",
+  "note": "Iteration-25 live regression set (Claude + OpenCode; BUD1 budget-first pool, SM1 OpenCode default, FR1 empty free lane, GM1 Gemini overlay). Gemini 4 Argon is on Go as opencode-go/gemini-4-argon with its cap and data policy unread, so it appears only in evals where the prompt states the work is non-confidential (`allow_gemini: true`). The goldens are derived from SKILL.md's rules by hand; the iteration-24 cold-agent run (33/33) predates the 22-24 Oct roster change, and the iteration-25 cold-agent run (6 fresh agents, 27 Oct) scored 35/36 on the first pass; e1 missed once (long-context tag dropped) and passed on two further fresh agents. g1, j1, n1, r1, t1, w2, w3 changed goldens; p2 and ef1 are new. `python grade_routing.py --selftest --results-dir /tmp/x` proves the grader and the goldens agree. Effort rule: D>=2 -> max on DeepSeek V4.1 Flash / GLM-5.3-Flash. The iteration-20 (Codex) set is archived under archive/iteration-20-codex/routing/.",
   "evals": [
     {
       "id": "a1",
@@ -116,6 +116,24 @@
       "expected_low_confidence": false,
       "tests_rule": "SM1: agentic-code at D=2 is OpenCode (the Claude lead lives on the D=3 anchors; DeepSWE v1.1 ties); no dagger; budget pair (BUD1); one phase -> no ultracode",
       "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Mid-difficulty feature work is a tie on the independent DeepSWE (DeepSeek 71.7 vs Sonnet 5.5 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task; Claude's lead starts at D=3.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
+      "expected_notes": [
+        "peak hours cost 2×"
+      ],
+      "forbidden": [
+        "GLM-5.3 ·",
+        "Kimi K3"
+      ]
+    },
+    {
+      "id": "ef1",
+      "eval_name": "Bounded feature, one module (agentic-code, D=2, W=1, R=1): Sonnet 5.5 starts at medium (EF1)",
+      "prompt": "Implement the refund flow in the orders module: the refund endpoint, the idempotent call to the payment provider's documented refund API, the state-machine transitions for partial and full refunds, and the tests — about four files, all in the orders module, the provider docs are in the repo",
+      "expected_claude": "Sonnet 5.5 · effort: medium",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default",
+      "expected_recommended": "opencode",
+      "expected_low_confidence": false,
+      "tests_rule": "EF1: agentic-code at D=2 with W=1 (four files, one module), R=1 and a short task -> Sonnet 5.5 medium, not high (b1 is the same dominant capability at W=2 and stays high); SM1 agentic-code at D=2 -> OpenCode, no dagger; D>=2 -> max on DeepSeek; DeepSeek auto-line; no ultracode (one phase)",
+      "golden_output": "Claude: Sonnet 5.5 · effort: medium\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Mid-difficulty feature work is a tie on the independent DeepSWE (DeepSeek 71.7 vs Sonnet 5.5 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task; Claude's lead starts at D=3.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).",
       "expected_notes": [
         "peak hours cost 2×"
       ],

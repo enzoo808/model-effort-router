@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max
+Evidence: Printing cannot be undone (R=3), and the one Omniscience row has Sonnet 5.5 at 32 against MiMo-V2.6-Pro's 8, so the single lean decides; low-confidence.
+Do not apply without human review.

@@ -414,6 +414,10 @@ risk does not raise the model, it raises human oversight.
 |---|---|
 | 0 | `low` · 1 `medium` · 2 `high` · 3 `xhigh` |
 
+<!-- rule:EF1 -->
+**EF1 · Sonnet start point.** On Sonnet 5.5 the effort at `D = 2` is `medium`, not `high`, when the dominant capability is `agentic-code` or `terminal-tool` and `W ≤ 1` and `R ≤ 2` and the estimated duration is under 30 minutes: Anthropic's Sonnet 5.5 guidance starts agentic coding at `medium` for well-specified tasks and moves harder or longer work to `high`, and these four observable limits are the router's reading of well-specified. Every other `D = 2` task keeps `high`. The rule rests on that vendor text alone; AA publishes no Sonnet 5.5 rung below `xhigh`.
+<!-- /rule:EF1 -->
+
 <!-- rule:M1 -->
 **M1 · `max`.** Emit `max` only when `D = 3` and `R = 3` and the model is a flagship (Opus 5.5 / Opus 4.8 / Fable 5.1 / Mythos 5.1) and the difficulty is one indivisible novel-design or formal decision. Otherwise `xhigh`.
 <!-- /rule:M1 -->

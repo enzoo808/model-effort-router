@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Qwen3.8 Flash · effort: xhigh · #2 MiMo-V2.6-Pro · effort: default
+Evidence: One independent row (GDP.pdf: Opus / Sonnet 26 vs MiMo-V2.6-Pro 19) sets no BD1 direction, and both OpenCode models take images, so the cheaper arm wins; low-confidence.

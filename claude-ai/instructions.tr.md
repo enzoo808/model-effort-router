@@ -351,6 +351,8 @@ için daha fazla özen isterse) Claude satırı kendi `D` kademesinde **Sonnet 5
 **R tabanı (genel):** `R=3` ise Haiku hiç seçilmez, taban Sonnet 5.5'tir; ayrıca
 çıktıya insan onayı notu eklenir.
 
+**EF1 · Sonnet başlangıç noktası.** Sonnet 5.5'te `D = 2` eforu, baskın capability `agentic-code` veya `terminal-tool` ve `W ≤ 1` ve `R ≤ 2` ve tahmini süre 30 dakikanın altındaysa `high` değil `medium`'dur: Anthropic'in Sonnet 5.5 yönergesi agentic kodlamada iyi tanımlı işe `medium` ile başlar, daha zor veya uzun işi `high`'a çıkarır; bu dört gözlemlenebilir sınır router'ın "iyi tanımlı" okumasıdır. Diğer her `D = 2` iş `high` kalır. Kural yalnız bu vendor metnine dayanır; AA Sonnet 5.5'in `xhigh` altı basamaklarını yayımlamıyor.
+
 **Efor ← D.** `0→low` · `1→medium` · `2→high` · `3→xhigh` · **`3 ∧ R=3 → max`
 yalnızca amiral gemisinde** (Opus 5.5 / Opus 4.8 / Fable 5.1 / Mythos 5.1). Orta
 katman modelde (Sonnet 5.5) `D=3 ∧ R=3 → xhigh`'da kapanır — model zaten "orta

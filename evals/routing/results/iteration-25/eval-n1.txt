@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max
+Evidence: D=2 domain-correctness audit (science): the one SciCode row is a tie (MiMo-V2.6-Pro 61 vs Sonnet 5.5 61), so cost decides; low-confidence.

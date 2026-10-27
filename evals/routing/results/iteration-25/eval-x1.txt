@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max
+Evidence: Research-synthesis has one AA-Omniscience row (Sonnet 5.5 32 vs MiMo-V2.6-Pro 8), too thin for a Claude direction at D=2, so the cheaper arm wins; low-confidence.

@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+OpenCode: #1 DeepSeek V4.1 Flash · effort: max · #2 GLM-5.3 · effort: max
+Evidence: OpenCode already fell short at D=2, so the badge goes to Claude and #2 escalates to GLM-5.3 (TB 4.0 42), about 3–5% of its monthly cap per agent task.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).

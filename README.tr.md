@@ -36,7 +36,9 @@ kontrol edildi: Haiku 5.5'ten (7 Ekim) beri yeni model çıkmadı, router'daki C
   MiMo-V2.6-Pro · GLM-5.3-Flash'a, `doc-data-understanding` Qwen3.8 Flash · MiMo-V2.6-Pro'ya döndü.
 - **Gemini 4 Argon artık `opencode-go/gemini-4-argon` (24 Ekim);** Contributor yolu kullanımdan kalktı. Okunan dosyalarda yeni yolun tavanı ve veri politikası yazmıyor → **yalnız NC1** (Kural GM1).
 - Aynalar ve korumalar: havuz 20; `check_opencode_pool.py` artık yönlendirilmeyen bir modelin çıkmasını reddeder ve Arena verisi olmayan premium modeli tanır; yeni eval `p2` (yetmezlik → Kimi K3.1 Pro),
-  `g1`/`j1`/`n1`/`r1`/`t1`/`w2`/`w3` golden'ları değişti. **iteration-25 için henüz taze-ajan koşusu yapılmadı** — grader öz-sınaması (35/35) golden'ların grader'la uyumunu gösterir, taze ajanların böyle yönlendireceğini değil.
+  `g1`/`j1`/`n1`/`r1`/`t1`/`w2`/`w3` golden'ları değişti. **Taze-ajan koşusu (27 Ekim, yalnız `skill/SKILL.md`'yi okuyan 6 ajan): ilk geçişte 35/36** (`evals/routing/results/iteration-25/`). Tek kaçan `e1`: bir ajan 400 sayfalık memoyu yalnız `knowledge-work` saydı, `long-context` etiketini düşürdü (`#2` DeepSeek yerine Qwen3.8 Flash); iki ek taze ajan (`iteration-25-e1-rerun-a/b`) golden ile eşleşti → `e1` 3'te 2; tekrar eden bir kural kusuru değil, sapma — yeşil sayılmadı.
+
+- **Efor, Kural EF1.** Anthropic'in Sonnet 5.5 sayfası agentic kodlamada iyi tanımlı işe `medium` ile başlar, daha zor/uzun işi `high`'a çıkarır. Router "iyi tanımlı"yı dört gözlemlenebilir sınıra çevirir — `D = 2`, baskın capability `agentic-code`/`terminal-tool`, `W ≤ 1`, `R ≤ 2`, 30 dakikadan kısa — ve orada `medium` yazar; diğer her `D = 2` iş `high` kalır. Yalnız vendor metni: AA'nın Sonnet 5.5 için `xhigh` altı basamağı yok, Opus 5.5 AA eğrisi (low…max için 42 / 51 / 54 / 56 / 58) toplu satır olduğundan yön belirlemez.
 
 **Açık (Go konsolunda birer bakış):** Kimi K3.1 Pro, MiniMax M3.1 Flash ve yeni Gemini 4 Argon yolunun aylık tavanı ve saklama politikası; DeepSeek'in sıfır-saklama anlaşmasının (31 Ekim'e kadar geçerli) yenilenip yenilenmediği.
 

@@ -1,0 +1,1 @@
+Clarify: what counts as an "inactive" user (an is_active flag, or no login for N days, and if so how many), which table in the customer database holds them, and should the rows be hard-deleted or soft-deleted?

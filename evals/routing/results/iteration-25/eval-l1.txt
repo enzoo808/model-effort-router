@@ -1,0 +1,3 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: medium
+OpenCode: use Claude — unverified, no independent OSWorld row exists for any pool model (Haiku 5.5's 72.4 is Anthropic's own, on Claude's harness).
+Evidence: Driving a browser GUI is computer-use, a deciding gate on the OpenCode arm, so only the Claude line can take it.

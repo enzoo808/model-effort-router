@@ -1,0 +1,4 @@
+Claude: Haiku 5.5 · effort: low
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: Labelling is D=0 bulk work, so OpenCode runs it: the Flash tier buys hundreds of such batches a month on USD 60–80 caps (USD 0.13–0.27 per task) and keeps Claude's quota for harder work.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
