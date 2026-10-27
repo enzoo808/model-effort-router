@@ -1,4 +1,4 @@
-# OpenCode Go evidence — iteration-23
+# OpenCode Go evidence — iteration-25
 
 **Audit data for the OpenCode arm of `SKILL.md`. Never load this to route a prompt;
 every rule needed is in `SKILL.md`.** Verified **6 October 2026** (§11, Claude Haiku 5.5: **8 October 2026**). Everything below
@@ -584,3 +584,74 @@ independent coding row and its free status is time-limited. (4) The Antigravity 
 artificialanalysis.ai (Argon page; comparisons vs MiMo-V2.6-Pro for Argon, Gemini 3.8 Flash, Nemotron 3 Ultra, MiniMax M3.1 Flash) · benchlm.ai/models/{gemini-4-argon,minimax-m3-1-flash} ·
 ai.google.dev/gemini-api/{pricing,terms} · blog.google …/gdp-premium-ai-pro-ultra · developersdigest.tech and smartscope.blog (credits) · discuss.ai.google.dev (suspension thread; 429/503 handling) ·
 computingforgeeks.com and eesel.ai (Argon API hands-on) · github.com/digithings-ai/digithings PR 5494 (free-tier probe).
+
+---
+
+## 14. The 22–24 Oct Go changes and Kimi K3.1 Pro (27 October 2026, iteration-25)
+
+**What was and was not readable.** `opencode.ai`, `models.dev` and `artificialanalysis.ai` do not resolve from the build environment (DNS), and `opencode.ai/docs/go` is not in the
+OpenCode repository either. What *was* readable: `raw.githubusercontent.com/sst/models.dev/dev/providers/opencode-go/{provider,models/*}.toml`, the models.dev commit log of
+`providers/opencode-go`, the PR pages #11258 and #11021, and search-result summaries of the AA, OpenRouter and Go pages. Every Go **cap** and **retention** figure below that
+comes only from a summary is marked *unverified*; the router treats it as such.
+
+### 14.1 What changed on Go (models.dev log, 14–26 Oct)
+
+| Date | Change | Router effect |
+|---|---|---|
+| 22 Oct | `minimax-m3.1-flash` added (paid, USD 0.15 in / 0.60 out per MTok, `reasoning_effort` low…max); `minimax-m3.1-flash-free` set `status = "deprecated"` (no removal date, no replacement named; PR #11021 gives no reason) | Free lane empty (FR1); MiniMax M3.1 Flash rated, **unrouted** — no Go cap read |
+| 23 Oct | `kimi-k3.1-pro` added (USD 2 in / 10 out / 0.20 cache read / 2 cache write per MTok; PR #11258) | 20th pool model, premium; Kimi K3 dominated |
+| 24 Oct | `gemini-4-argon` added (USD 2 / 10, promo of 50% off a list of USD 4 / 20 until 30 Nov, 2× from 1 Dec); `gemini-4-argon-contributor` set `deprecated` | GM1 route renamed; cap and data policy unread → stays NC1-only |
+| 24 Oct | `iceman-contributor-free` added (stealth, free, 262k, text only; no data policy stated) | Never selected |
+| 15 Oct | `step-5-preview` added to Go (USD 1 / 2.7 per MTok, effort low/medium/high); free preview deprecated | No independent score — never selected |
+
+The Contributor TOML lists USD 4 / 20 and says in a comment that prompts and completions may be used to train future Google models; the new route's TOML lists USD 2 / 10 (a promo of
+50% off a USD 4 / 20 list) and says nothing about training or a cap. **Do not read "not stated" as "does not train".**
+
+### 14.2 Kimi K3.1 Pro
+
+| Item | Value | Source / status |
+|---|---|---|
+| Go id, effort | `opencode-go/kimi-k3.1-pro`; `low` · `high` · `max`, default `max`, thinking always on | models.dev TOML, read 27 Oct |
+| Context, input | 1,048,576; text + image + video | models.dev TOML |
+| Go monthly cap, retention | USD 15; 0 days, no training | **unverified** — search summary of the Go docs; page unreachable |
+| AA Intelligence Index | **55** (aggregators 55.1; Opus 5.5 58, Sonnet 5.5 56, Kimi K3 44) | search summary of the AA page |
+| AA cost per index task | USD 2.11 (150M output tokens vs a median of 81–87M) | same |
+| AA Terminal-Bench 4.0 | **67.2** (mini-swe-agent). Moonshot's own 65.7 is a Claude Code run: two different runs, never pooled | AA via summaries; vendor figure in `self_reported_only` |
+| AA HLE · SciCode · GDPval-AA | 52.5 · 60.8 · 1846 (Opus 5.5 1866) | summaries of the AA page / Kingy |
+| CritPt | 24.6 | OpenRouter table citing AA — secondary |
+| AA-Omniscience | accuracy 51.0, non-hallucination 56.1 | OpenRouter only — **not entered** as an anchor |
+| DeepSWE | a 75.5 appears on one aggregator, attributed to another vendor's launch post | misattribution suspected — **not used** |
+| Weights | announced for 4 Nov 2026 | Moonshot |
+
+**Verdict.** Same Go cap (USD 15) and price as Kimi K3, +11 on the index, one more variant pair → K3 is dominated. At about 14% of its cap per AA task K3.1 Pro is premium by BUD1
+(`tasks_per_month` stays `null`: no Arena p50 exists yet, so the policy checker falls back to cap ÷ AA cost = 7).
+
+**Why it does not take `agentic-code` in A1-OC.** The router's own method needs a model to hold at least two anchors before it leads a row, and AA publishes no interval, so one AA
+Terminal-Bench 4.0 row (67 vs GLM-5.3's 42) is `UNRESOLVED` however wide it looks. K3.1 Pro leads the premium reference on `deep-reasoning` (HLE + CritPt, 0.92), `science` (SciCode + CritPt,
+0.88) and — with a single row — `knowledge-work`, `agentic-code`; it therefore inherits only Kimi K3's former A1-OC rows (`deep-reasoning`, `science`, `long-context`, `doc-data-understanding`).
+For `long-context` (AA-LCR, MLCR-AA) and `doc-data-understanding` (MMMU-Pro, GDP.pdf) it has **no row yet**: the inheritance is the successor assumption, flagged here, and both badge rows are
+already † (`low-confidence`). A second independent coding row (DeepSWE v1.1 with an interval, or Arena Agent Arena) would let it take `agentic-code` / `terminal-tool` from GLM-5.3.
+
+**What this does to the Claude comparison.** AA has K3.1 Pro (67.2) above Opus 5.5 (59.6 at max) and Sonnet 5.5 (63.6) on Terminal-Bench 4.0, and Opus 5.5 / Sonnet 5.5 ahead on the index and on HLE (61 / 55 vs 53); on GDPval-AA Opus 5.5 leads (1866) while
+Sonnet 5.5 (1839) trails K3.1 Pro's 1846. The badge table is unchanged because the badge compares Claude with OpenCode `#1`, which is budget-tier by BUD1; the premium four are reachable only
+after a stated shortfall, where the badge goes to Claude anyway (A1-OC). If the user wants K3.1 Pro as a default `#1` for hard coding, that is a BUD1 decision (cap), not an evidence one.
+
+### 14.3 MiniMax M3.1 Flash — free promo ended, paid model unrouted
+
+The base model is unchanged (`minimax/MiniMax-M3.1-Flash`), so every anchor in `opencode-evidence.json` (AutomationBench-AA 73, HLE 48, CritPt 22, SciCode 53; hallucination 92.8%) still describes it.
+What is gone is the **free** status that made it a zero-cap budget pick. Its Go cap was not read, so it cannot be given a `tasks_per_month`, and BUD1's budget tier (140+ tasks/month) cannot be
+checked. It is therefore rated (`U`, unrouted) and **no row emits it**. The `deep-reasoning` / `science` / `doc-data-understanding` rows are the FR1 fallbacks that iteration-24 already
+recorded. `derive_opencode_rows.py` keeps it in `UNROUTED` and prints its consensus as a reference line, so the day a cap is read the decision is one edit.
+
+### 14.4 Decisions that were *not* made
+
+- **Gemini 4 Argon confidential?** Not changed. The new route's TOML states neither a cap nor a data policy. Google's paid Gemini API does not train on prompts, but Go is a proxy with its own terms,
+  and the 20 Oct note about the Contributor route shows Go can attach a training clause. One look at the Go console settles it; until then the safe reading stands (NC1-only).
+- **DeepSeek's zero-retention agreement** was valid through 31 Oct 2026 at the 6 Oct reading. Its renewal was not read. The router's DeepSeek auto-line still says so.
+- **Claude side.** Nothing new shipped after Haiku 5.5 (7 Oct); Claude Code 2.1.293–2.1.299 only added the Haiku alias, an effort parameter for sub-agents and `/effort` in the agent view. Claude
+  figures in the router (Opus 5.5 TB 4.0 59.6 at max, Sonnet 5.5 63.6, index 58 / 56) agree with the AA values the search summaries quote; aggregator variants (BenchLM 57.6 for Opus 5.5, GPT-5.6 Sol 58.9) are
+  provider self-reports and were not used.
+
+**Sources (read 2026-10-27).** raw.githubusercontent.com/sst/models.dev/dev/providers/opencode-go/{provider.toml, models/{kimi-k3.1-pro,gemini-4-argon,gemini-4-argon-contributor,minimax-m3.1-flash,minimax-m3.1-flash-free,iceman-contributor-free,step-5-preview}.toml} ·
+github.com/sst/models.dev/commits/dev/providers/opencode-go · github.com/sst/models.dev/pull/{11258,11021} · github.com/anomalyco/opencode/releases (v1.19.0–v1.19.4, v2.2.0) · search summaries of
+artificialanalysis.ai/models/kimi-k3-1-pro, openrouter.ai/moonshotai/kimi-k3.1-pro, opencode.ai/go and opencode.ai/v2/docs/console/go, the-decoder.com, officechai.com, kingy.ai, benchlm.ai.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Grade model-secici routing outputs against evals.json (iteration-24: Claude + OpenCode, budget-first, free lane, Gemini slot).
+"""Grade model-secici routing outputs against evals.json (iteration-25: Claude + OpenCode, budget-first, empty free lane, Gemini slot).
 
 Usage:
     python grade_routing.py --results-dir results/iteration-21
@@ -45,7 +45,7 @@ CLAUDE_MODELS = ["Haiku 5.5", "Haiku 4.5", "Sonnet 5.5", "Opus 4.8", "Opus 5.5",
 OPENCODE_MODELS = sorted([
     "MiMo-V2.6-Pro", "MiMo-V2.6-Flash", "MiMo-V2.5-Pro", "MiMo-V2.5",
     "GLM-5.3-Flash", "GLM-5.3", "GLM-5.2",
-    "Kimi K3", "Kimi K2.7 Code", "Kimi K2.6",
+    "Kimi K3.1 Pro", "Kimi K3", "Kimi K2.7 Code", "Kimi K2.6",
     "Grok 4.7", "Grok 4.6",
     "Muse Spark 1.3 Contributor", "Muse Spark 1.2 Contributor", "Muse Spark",
     "DeepSeek V4.1 Flash", "DeepSeek V4 Pro", "DeepSeek V4 Flash Vision", "DeepSeek V4 Flash",
@@ -54,7 +54,7 @@ OPENCODE_MODELS = sorted([
     "Claude Haiku 5.5",
     "MiniMax M3", "MiniMax M2.7",
     "LongCat 2.5 Preview", "LongCat-2.0", "Hy4 Preview", "Hy3", "Space Bunny",
-    "MiniMax M3.1 Flash Free", "Gemini 4 Argon Contributor", "Gemini 4 Argon", "Gemini 3.8 Flash",
+    "MiniMax M3.1 Flash Free", "MiniMax M3.1 Flash", "Iceman Contributor Free", "Gemini 4 Argon Contributor", "Gemini 4 Argon", "Gemini 3.8 Flash",
     "Step 5 Preview", "Beam Free", "Big Pickle", "LL Alpha Free", "Exo Free", "Jev 1.13",
     "Nemotron 3 Ultra", "Nemotron 3.5 Lightning", "Nemotron 3.5 Super VL",
 ], key=len, reverse=True)
@@ -66,8 +66,9 @@ PREMIUM_PATTERNS = (r"GLM-5\.3(?!-Flash)", r"Kimi K3", r"Grok 4\.7", r"Qwen3\.8 
 # Rule GM1 (iteration-24): Gemini 4 Argon is metered; it may be #1 (or, after a shortfall, #2)
 # only in an eval that sets "allow_gemini": true. Everywhere else it is a regression.
 GEMINI_PATTERN = r"Gemini"
-# Rule FR1: the free Go model may appear; no Zen free twin or other free model ever may.
-NEVER_ON_LINE = (r"-free\b", r"Free(?<!MiniMax M3\.1 Flash Free)", r"Beam", r"Big Pickle", r"Nemotron")
+# Rule FR1 (iteration-25): the free lane is empty -- MiniMax M3.1 Flash Free is deprecated and the paid MiniMax M3.1 Flash is
+# unrouted (no Go cap read) -- so no MiniMax M3.1 Flash, Zen free twin or other free model ever may appear.
+NEVER_ON_LINE = (r"-free\b", r"Free", r"MiniMax M3\.1 Flash", r"Beam", r"Big Pickle", r"Nemotron", r"Iceman")
 BADGE_TEXT = "recommended ai"
 MIN_EVIDENCE_CHARS = 20
 

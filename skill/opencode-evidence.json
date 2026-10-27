@@ -19,7 +19,8 @@
     "Claude Haiku 5.5",
     "MiniMax M3.1 Flash",
     "Gemini 4 Argon",
-    "Gemini 3.8 Flash"
+    "Gemini 3.8 Flash",
+    "Kimi K3.1 Pro"
   ],
   "anchors": {
     "AA Terminal-Bench 4.0": {
@@ -51,7 +52,8 @@
         "MiniMax M3": 2.0,
         "Claude Opus 5.5": 59.6,
         "Claude Sonnet 5.5": 63.6,
-        "Claude Haiku 5.5": 32.8
+        "Claude Haiku 5.5": 32.8,
+        "Kimi K3.1 Pro": 67.2
       }
     },
     "DeepSWE v1.1 (Mercor/Datacurve)": {
@@ -253,7 +255,8 @@
         "MiMo-V2.6-Flash": 35.1,
         "Claude Opus 5.5": 61.4,
         "Claude Sonnet 5.5": 55.0,
-        "Claude Haiku 5.5": 44.4
+        "Claude Haiku 5.5": 44.4,
+        "Kimi K3.1 Pro": 52.5
       }
     },
     "CritPt": {
@@ -283,7 +286,8 @@
         "MiniMax M3": 3.7,
         "Claude Opus 5.5": 31.7,
         "Claude Sonnet 5.5": 31.4,
-        "Claude Haiku 5.5": 18.9
+        "Claude Haiku 5.5": 18.9,
+        "Kimi K3.1 Pro": 24.6
       }
     },
     "ARC-AGI-2": {
@@ -328,7 +332,8 @@
         "MiniMax M3": 1245,
         "Claude Opus 5.5": 1866,
         "Claude Sonnet 5.5": 1839,
-        "Claude Haiku 5.5": 1620
+        "Claude Haiku 5.5": 1620,
+        "Kimi K3.1 Pro": 1846
       }
     },
     "AA-Briefcase": {
@@ -617,7 +622,8 @@
         "MiniMax M3": 47.1,
         "Claude Opus 5.5": 66.9,
         "Claude Sonnet 5.5": 61.0,
-        "Claude Haiku 5.5": 55.0
+        "Claude Haiku 5.5": 55.0,
+        "Kimi K3.1 Pro": 60.8
       }
     },
     "GDP.pdf": {
@@ -763,6 +769,10 @@
       "MiniMax M3": 59.0,
       "Claude Opus 5.5": 89.9,
       "Claude Sonnet 5.5": 81.3
+    },
+    "Terminal-Bench 4.0 (vendor, Claude Code harness)": {
+      "Kimi K3.1 Pro (Moonshot)": 65.7,
+      "Claude Opus 5.5 (as listed by Moonshot)": 66.4
     }
   },
   "benchlm_overall_rank_of_784": {
@@ -1285,5 +1295,73 @@
       }
     },
     "go_only_revision_2026_10_26": "User cannot use the Google membership in OpenCode: Gemini 4 Argon is reachable only as opencode-go/gemini-4-argon-contributor (USD 60 promo cap, trains on prompts) -> NC1-only overlay (Rule GM1). The google_membership / overload_errors blocks are background, not router inputs."
+  },
+  "iteration_25": {
+    "date": "2026-10-27",
+    "scope": "Go roster changes 22-24 Oct (models.dev commit log of providers/opencode-go) and Kimi K3.1 Pro. opencode.ai, artificialanalysis.ai and models.dev are not reachable from the build environment (DNS), so every figure below comes from raw.githubusercontent.com (models.dev TOML files) or from search-result summaries of the cited pages. null = not read.",
+    "go_changes": {
+      "2026-10-22": [
+        "minimax-m3.1-flash added (paid, USD 0.15 in / 0.60 out per MTok, reasoning_effort low|medium|high|xhigh|max); minimax-m3.1-flash-free status = deprecated (no removal date, no replacement named)"
+      ],
+      "2026-10-23": [
+        "kimi-k3.1-pro added (USD 2 in / 10 out / 0.20 cache read / 2 cache write per MTok)"
+      ],
+      "2026-10-24": [
+        "gemini-4-argon added (USD 2 in / 10 out, promo 50% off list USD 4 / 20 until 30 Nov 2026, 2x multiplier from 1 Dec); gemini-4-argon-contributor status = deprecated; iceman-contributor-free added (stealth, free, 262k, text only, no data policy stated)"
+      ],
+      "2026-10-15": [
+        "step-5-preview added (USD 1 / 2.7 per MTok; no independent score)"
+      ]
+    },
+    "kimi_k3_1_pro": {
+      "go": {
+        "id": "opencode-go/kimi-k3.1-pro",
+        "cap_usd_monthly": 15,
+        "cap_source": "search-result summary of opencode.ai/v2/docs/console/go (page itself unreachable) -- unverified",
+        "retention": "0 days, no training (same summary) -- unverified",
+        "context": 1048576,
+        "modalities_in": "text, image, video (models.dev)",
+        "effort_variants": [
+          "low",
+          "high",
+          "max"
+        ],
+        "default_effort": "max",
+        "thinking": "always on"
+      },
+      "aa": {
+        "intelligence_index": 55,
+        "index_version_note": "55.1 on aggregators; same scale as Opus 5.5 58 / Sonnet 5.5 56",
+        "cost_per_index_task_usd": 2.11,
+        "output_tokens_for_index": "150M (median 81-87M)",
+        "terminal_bench_4_0": 67.2,
+        "hle": 52.5,
+        "scicode": 60.8,
+        "gdpval_aa_elo": 1846,
+        "critpt": "24.6 (OpenRouter table citing AA -- secondary)",
+        "omniscience": "accuracy 51.0 / non-hallucination 56.1 (OpenRouter table, no AA page read) -- not entered as an anchor",
+        "aa_run_effort": "not read"
+      },
+      "vendor": {
+        "terminal_bench_4_0_moonshot": 65.7,
+        "note": "Moonshot harness is Claude Code; AA uses mini-swe-agent. Two different runs, never pooled.",
+        "deepswe_listing": "75.5 on one aggregator, attributed to a Grok 4.5 launch post -- misattribution suspected, not used"
+      },
+      "weights": "announced for 4 Nov 2026",
+      "tier": "P (premium): about 14% of its USD 15 cap per AA index task; no Arena p50 yet, so tasks/month stays null",
+      "supersedes": "Kimi K3 (44): same cap and price, +11 index, adds low/high variants -> Kimi K3 becomes dominated (D)"
+    },
+    "minimax_m3_1_flash": {
+      "status": "unrouted",
+      "reason": "free promo deprecated 22 Oct; the paid successor is the same base model (minimax/MiniMax-M3.1-Flash) so the anchors above carry over, but its Go monthly cap was not read",
+      "reenter": "add a routable cap and tasks/month to routing_policy.json pool and move the model back into ROUTABLE in scripts/derive_opencode_rows.py"
+    },
+    "gemini_4_argon": {
+      "route": "opencode-go/gemini-4-argon",
+      "cap_usd_monthly": null,
+      "retention_or_training": null,
+      "status": "NC1-only overlay kept (cap and data policy of the non-Contributor route not read)"
+    },
+    "deepseek_zdr": "valid through 31 Oct 2026 per the 6 Oct reading; renewal not read"
   }
 }

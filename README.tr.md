@@ -1,7 +1,7 @@
 # Claude & OpenCode Go — Model / Ekosistem / Efor Seçici
 
 > 🇬🇧 **English:** [README.md](README.md) · Bu, Türkçe ayrıntılı sürümdür.
-> **20 Ekim 2026 (iteration-24):** **ücretsiz modeller** ve **Gemini 4 Argon** eklendi — bkz. "iteration-24" bölümü. Önceki not: **14 Ekim 2026 (iteration-23):** OpenCode artık **varsayılan**, havuz **fiyat-performans katmanına** daraltıldı —
+> **27 Ekim 2026 (iteration-25):** Go'daki 22–24 Ekim değişiklikleri işlendi: **Kimi K3.1 Pro** eklendi, **MiniMax M3.1 Flash Free kullanımdan kalktı**, **Gemini 4 Argon yeni Go yolunda** — bkz. "iteration-25" bölümü. Önceki not: **20 Ekim 2026 (iteration-24):** **ücretsiz modeller** ve **Gemini 4 Argon** eklendi. Önceki not: **14 Ekim 2026 (iteration-23):** OpenCode artık **varsayılan**, havuz **fiyat-performans katmanına** daraltıldı —
 > bkz. "iteration-23" bölümü. Önceki not: **8 Ekim 2026 (iteration-22):** **Claude Haiku 5.5** geldi. Önceki not:
 > **6 Ekim 2026 (iteration-21):** Codex üyeliği bittiği için ikinci kol
 > **OpenCode Go (USD 10/ay)** ile sıfırdan yeniden kuruldu. Bu dosyanın **en üstündeki
@@ -23,6 +23,22 @@ Evidence: Orta zorlukta özellik işi bağımsız DeepSWE'de eşit (DeepSeek 71.
           agent görevi başına USD 0.13 vs Opus 5.5'in 1.67'si. Claude'un önü D=3'te başlıyor.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
 ```
+
+## iteration-25 — ne değişti (27 Ekim 2026): Kimi K3.1 Pro, ücretsiz hat kapandı, Gemini 4 Argon yeni yolda
+
+Go'nun 20 Ekim'den sonraki kadrosu için araştırma turu (models.dev commit günlüğü, model TOML'leri, arama özetleri). `opencode.ai`, `models.dev` ve `artificialanalysis.ai` derleme ortamından
+erişilemedi; bu yüzden yeni yolların **Go tavanı ve veri saklama bilgisi doğrulanmadı** (`skill/opencode-benchmarks.md` §14 hangi sayının nereden geldiğini yazar). Claude tarafı da yeniden
+kontrol edildi: Haiku 5.5'ten (7 Ekim) beri yeni model çıkmadı, router'daki Claude değerleri AA'nın güncel sayfalarıyla uyumlu.
+
+- **Kimi K3.1 Pro (Go, 23 Ekim)** havuzun 20. modeli: AA indeksi 55 (Kimi K3 44), AA Terminal-Bench 4.0 67, tavan USD 15, `low`/`high`/`max`. **Premium** (AA görevi başına tavanın ~%14'ü);
+  A1-OC'de Kimi K3'ün satırlarını devralır (`deep-reasoning`, `science`, `long-context`, `doc-data-understanding`). Kimi K3 artık domine. `agentic-code`'u **almaz**: aralığı olmayan tek AA satırı yön belirlemez.
+- **MiniMax M3.1 Flash Free kullanımdan kalktı (22 Ekim).** Ücretsiz hat (FR1) boş; ücretli MiniMax M3.1 Flash puanlı ama Go tavanı okunana kadar **yönlendirilmez**. `deep-reasoning` ve `science`
+  MiMo-V2.6-Pro · GLM-5.3-Flash'a, `doc-data-understanding` Qwen3.8 Flash · MiMo-V2.6-Pro'ya döndü.
+- **Gemini 4 Argon artık `opencode-go/gemini-4-argon` (24 Ekim);** Contributor yolu kullanımdan kalktı. Okunan dosyalarda yeni yolun tavanı ve veri politikası yazmıyor → **yalnız NC1** (Kural GM1).
+- Aynalar ve korumalar: havuz 20; `check_opencode_pool.py` artık yönlendirilmeyen bir modelin çıkmasını reddeder ve Arena verisi olmayan premium modeli tanır; yeni eval `p2` (yetmezlik → Kimi K3.1 Pro),
+  `g1`/`j1`/`n1`/`r1`/`t1`/`w2`/`w3` golden'ları değişti. **iteration-25 için henüz taze-ajan koşusu yapılmadı** — grader öz-sınaması (35/35) golden'ların grader'la uyumunu gösterir, taze ajanların böyle yönlendireceğini değil.
+
+**Açık (Go konsolunda birer bakış):** Kimi K3.1 Pro, MiniMax M3.1 Flash ve yeni Gemini 4 Argon yolunun aylık tavanı ve saklama politikası; DeepSeek'in sıfır-saklama anlaşmasının (31 Ekim'e kadar geçerli) yenilenip yenilenmediği.
 
 ## iteration-24 — ne değişti (20 Ekim 2026): ücretsiz modeller ve Gemini 4 Argon
 

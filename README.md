@@ -1,6 +1,6 @@
 # model-effort-router
 
-**Paste a task. Get told which model and effort level to run it on — for Claude and for your OpenCode Go subscription (two models out of the 19 it rates — the Go budget tier, one free Go model and Gemini 4 Argon — in order, each with its own effort) — and which of the two to use.** OpenCode is the default; Claude is recommended where it makes a serious difference. It does *not* run the task; it routes it.
+**Paste a task. Get told which model and effort level to run it on — for Claude and for your OpenCode Go subscription (two models out of the 20 it rates — the Go budget tier and, for non-confidential work, Gemini 4 Argon — in order, each with its own effort) — and which of the two to use.** OpenCode is the default; Claude is recommended where it makes a serious difference. It does *not* run the task; it routes it.
 
 Installed as a Claude Code / claude.ai skill invoked with `/model-secici`.
 
@@ -45,6 +45,24 @@ model-secici:
 > Turkish walkthrough is in **[README.tr.md](README.tr.md)** (its iteration-21/22/23 sections are at the top; the rest is the Codex-era history).
 
 ---
+
+## What changed in iteration-25 (27 Oct 2026): Kimi K3.1 Pro, the free lane closes, Gemini 4 Argon moves
+
+A research pass over Go's roster since the 20 Oct reading (models.dev commit log, model TOMLs, search summaries — `opencode.ai`, `models.dev` and `artificialanalysis.ai` were not
+reachable from the build environment, so Go caps and retention for the new routes are **unverified**; `skill/opencode-benchmarks.md` §14 says which number comes from where).
+The Claude side was re-checked too: nothing has shipped since Haiku 5.5 (7 Oct) and the router's Claude figures agree with the AA values quoted on current pages.
+
+- **Kimi K3.1 Pro (Go, 23 Oct)** is the 20th rated model: AA index 55 (Kimi K3 44), AA Terminal-Bench 4.0 67, USD 15 cap, `low`/`high`/`max`. It is **premium** (about 14% of its cap per AA task) and
+  takes Kimi K3's escalation rows in Rule A1-OC (`deep-reasoning`, `science`, `long-context`, `doc-data-understanding`); Kimi K3 is now dominated. It does *not* take `agentic-code`: one AA row
+  without an interval sets no direction.
+- **MiniMax M3.1 Flash Free was deprecated (22 Oct).** The free lane (FR1) is empty; the paid MiniMax M3.1 Flash is rated but **unrouted** until its Go cap is read. `deep-reasoning` and
+  `science` go back to MiMo-V2.6-Pro · GLM-5.3-Flash, `doc-data-understanding` to Qwen3.8 Flash · MiMo-V2.6-Pro.
+- **Gemini 4 Argon is `opencode-go/gemini-4-argon` (24 Oct);** the Contributor route is deprecated. Its Go cap and data policy are not stated in the files read, so it **stays NC1-only** (Rule GM1).
+- Mirrors and guards: pool 20, `check_opencode_pool.py` now rejects an emitted *unrouted* model and handles a premium model without an Arena figure; eval `p2` (escalation → Kimi K3.1 Pro) is new, `g1`/`j1`/`n1`/`r1`/`t1`/`w2`/`w3`
+  goldens moved. **No cold-agent run has been made on iteration-25 yet** — the grader self-test (35/35) proves the goldens agree with the grader, not that fresh agents route this way.
+
+**Open (needs the Go console, one look each):** the monthly cap and retention of Kimi K3.1 Pro, MiniMax M3.1 Flash and the new Gemini 4 Argon route; whether DeepSeek's zero-retention agreement (valid through 31 Oct)
+was renewed.
 
 ## What changed in iteration-24 (20 Oct 2026): free models and Gemini 4 Argon
 

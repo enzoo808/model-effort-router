@@ -50,12 +50,16 @@ TAGS = {
 # iteration-24: MiniMax M3.1 Flash Free joins the budget tier (Go: unlimited, zero-retention, so
 # cap pressure is nil); the Gemini line is metered by Google credits, not by a Go cap, and is
 # reported next to the premium four (Rule GM1) instead of competing for the budget slot.
-ROUTABLE = ["MiMo-V2.6-Pro", "GLM-5.3-Flash", "MiMo-V2.6-Flash", "DeepSeek V4.1 Flash", "Qwen3.8 Flash",
-            "MiniMax M3.1 Flash"]
+# iteration-25: MiniMax M3.1 Flash leaves ROUTABLE. Its free promo was deprecated on 22 Oct and the paid
+# model's Go cap has not been read, so it is rated (UNROUTED) but no row may emit it. Re-add it here
+# once routing_policy.json carries a cap and tasks/month for it.
+ROUTABLE = ["MiMo-V2.6-Pro", "GLM-5.3-Flash", "MiMo-V2.6-Flash", "DeepSeek V4.1 Flash", "Qwen3.8 Flash"]
+UNROUTED = ["MiniMax M3.1 Flash"]
 GEMINI = ["Gemini 4 Argon", "Gemini 3.8 Flash"]
 NC1_ONLY = ["Muse Spark 1.3", "GPT 6 Luna"]
-PREMIUM = ["GLM-5.3", "Kimi K3", "Grok 4.7", "Qwen3.8 Max"]   # A1-OC only; reported, never led with
-DOMINATED = ["DeepSeek V4 Pro", "MiniMax M3", "Claude Haiku 5.5"]
+# iteration-25: Kimi K3.1 Pro (Go, 23 Oct) replaces Kimi K3 in the premium four; K3 is dominated by it.
+PREMIUM = ["GLM-5.3", "Kimi K3.1 Pro", "Grok 4.7", "Qwen3.8 Max"]   # A1-OC only; reported, never led with
+DOMINATED = ["DeepSeek V4 Pro", "MiniMax M3", "Claude Haiku 5.5", "Kimi K3"]
 
 
 def percentiles(values: dict[str, float], higher_better: bool, models: list[str]) -> dict[str, float]:
@@ -131,6 +135,9 @@ def main() -> int:
             ref = consensus(data, tag, ROUTABLE + NC1_ONLY + PREMIUM + DOMINATED)
             prem = [f"{m} {sc:.2f}" for m, sc, _n, _d in ref if m in PREMIUM][:4]
             print("    premium reference (A1-OC only, percentiles over the full pool):", ", ".join(prem))
+            unr = consensus(data, tag, ROUTABLE + NC1_ONLY + UNROUTED)
+            utxt = [f"{m} {sc:.2f} (n={n})" for m, sc, n, _d in unr if m in UNROUTED]
+            print("    unrouted reference (no Go cap read, never emitted):", ", ".join(utxt) or "no row")
             gem = consensus(data, tag, ROUTABLE + NC1_ONLY + GEMINI)
             gtxt = [f"{m} {sc:.2f} (n={n})" for m, sc, n, _d in gem if m in GEMINI]
             print("    gemini reference (Rule GM1, percentiles with the budget tier):", ", ".join(gtxt) or "no row")

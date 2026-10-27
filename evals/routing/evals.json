@@ -1,7 +1,7 @@
 {
   "skill_name": "model-secici",
-  "source_of_truth": "README.tr.md 'Doğrulama' table for the legacy ids; this file for iteration-24",
-  "note": "Iteration-24 live regression set (Claude + OpenCode; BUD1 budget-first pool, SM1 OpenCode default, FR1 free lane, GM1 Gemini overlay). The user cannot use a Google membership in OpenCode, so Gemini 4 Argon exists only on Go's prompt-training Contributor route: it appears only in evals where the prompt states the work is non-confidential (`allow_gemini: true`). The goldens are derived from SKILL.md's rules; the iteration-24 cold-agent run confirmed the earlier version (33/33) and the Go-only revision is re-run by fresh agents. `python grade_routing.py --selftest --results-dir /tmp/x` proves the grader and the goldens agree. Effort rule: D>=2 -> max on DeepSeek V4.1 Flash / GLM-5.3-Flash / MiniMax M3.1 Flash Free. The iteration-20 (Codex) set is archived under archive/iteration-20-codex/routing/.",
+  "source_of_truth": "README.tr.md 'Doğrulama' table for the legacy ids; this file for iteration-25",
+  "note": "Iteration-25 live regression set (Claude + OpenCode; BUD1 budget-first pool, SM1 OpenCode default, FR1 empty free lane, GM1 Gemini overlay). Gemini 4 Argon is on Go as opencode-go/gemini-4-argon with its cap and data policy unread, so it appears only in evals where the prompt states the work is non-confidential (`allow_gemini: true`). The goldens are derived from SKILL.md's rules by hand; the iteration-24 cold-agent run (33/33) predates the 22-24 Oct roster change, and NO cold-agent run has been made on iteration-25 yet (g1, j1, n1, r1, t1, w2, w3 changed goldens; p2 is new). `python grade_routing.py --selftest --results-dir /tmp/x` proves the grader and the goldens agree. Effort rule: D>=2 -> max on DeepSeek V4.1 Flash / GLM-5.3-Flash. The iteration-20 (Codex) set is archived under archive/iteration-20-codex/routing/.",
   "evals": [
     {
       "id": "a1",
@@ -188,11 +188,11 @@
       "eval_name": "Irreversible central boundary (M1, R=3)",
       "prompt": "Decide the new cross-service transaction boundary — the single commit protocol that the orders, payments and inventory services will all depend on. It ships tonight and cannot be rolled back.",
       "expected_claude": "Opus 5.5 · effort: max",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 MiniMax M3.1 Flash Free · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "M1 max; R=3; single dominant tag deep-reasoning (the prompt asks for one decision), so the pair is the deep-reasoning row: MiMo-V2.6-Pro first, the free model second (FR1); confidential default -> no Gemini; speed line then review note. The earlier two-tag wording ('design and implement') was split by a cold agent and sharpened; the golden's #2 was wrong for the single-tag prompt and is corrected here.",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: max\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 MiniMax M3.1 Flash Free · effort: max\nEvidence: One indivisible boundary decision at R=3 is the case max exists for, and the reasoning has three agreeing AA rows for Claude (HLE 61 vs 49, CritPt 32 vs 27, ARC-AGI-2 92 vs 61).\n⚡ Claude /fast available (2.5x faster, 2× price).\nDo not apply without human review.",
+      "tests_rule": "M1 max; R=3; single dominant tag deep-reasoning (the prompt asks for one decision), so the pair is the deep-reasoning row: MiMo-V2.6-Pro first, GLM-5.3-Flash second (FR1: the free model is gone since 22 Oct); confidential default -> no Gemini; speed line then review note. The earlier two-tag wording ('design and implement') was split by a cold agent and sharpened; the golden's #2 was wrong for the single-tag prompt and is corrected here.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: max\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max\nEvidence: One indivisible boundary decision at R=3 is the case max exists for, and the reasoning has three agreeing AA rows for Claude (HLE 61 vs 49, CritPt 32 vs 27, ARC-AGI-2 92 vs 61).\n⚡ Claude /fast available (2.5x faster, 2× price).\nDo not apply without human review.",
       "expected_shared_note": "Do not apply without human review.",
       "expected_notes": []
     },
@@ -230,11 +230,11 @@
       "eval_name": "Front-loaded architecture (opusplan)",
       "prompt": "Redesign the auth architecture of 200 prod services from scratch",
       "expected_claude": "opusplan · plan: max · execute: medium",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 MiniMax M3.1 Flash Free · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "opusplan; MECH1; no speed line on opusplan; deep-reasoning row at R=3: MiMo-V2.6-Pro first, the free model second (FR1); confidential default -> no Gemini; review note last",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · opusplan · plan: max · execute: medium\n⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 MiniMax M3.1 Flash Free · effort: max\nEvidence: Front-loaded architecture design at D=3∧R=3 is opusplan on Claude — the flagship is spent only on a max plan phase and execution drops to Sonnet 5.5 — and OpenCode has no plan/execute split.\nDo not apply without human review.",
+      "tests_rule": "opusplan; MECH1; no speed line on opusplan; deep-reasoning row at R=3: MiMo-V2.6-Pro first, GLM-5.3-Flash second (FR1: the free model is gone since 22 Oct); confidential default -> no Gemini; review note last",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · opusplan · plan: max · execute: medium\n⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max\nEvidence: Front-loaded architecture design at D=3∧R=3 is opusplan on Claude — the flagship is spent only on a max plan phase and execution drops to Sonnet 5.5 — and OpenCode has no plan/execute split.\nDo not apply without human review.",
       "expected_shared_note": "Do not apply without human review.",
       "forbidden": [
         "/fast"
@@ -282,11 +282,11 @@
       "eval_name": "Domain audit (science row)",
       "prompt": "Check whether the error estimator in this finite-element mesh-convergence study is implemented correctly and tell me where it deviates from the theory",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 MiniMax M3.1 Flash Free · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max",
       "expected_recommended": "opencode",
       "expected_low_confidence": true,
-      "tests_rule": "domain audit = D=2 not D=3; science row dagger; FR1: MiniMax M3.1 Flash Free (free, zero retention) is #2 (SciCode 53 / CritPt 22 lead the Flash tier); GM1 does not list science, so no Gemini at D=2; Kimi K3 is premium",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 MiniMax M3.1 Flash Free · effort: max\nEvidence: Scientific-code work is judged on SciCode, where Sonnet 5.5 and MiMo-V2.6-Pro tie at 61 on one row with no interval, so OpenCode runs it; low-confidence, and the second pick is free.",
+      "tests_rule": "domain audit = D=2 not D=3; science row dagger; FR1: the free lane is empty since 22 Oct, so #2 is GLM-5.3-Flash (SciCode 52 / CritPt 15; it ties DeepSeek V4.1 Flash, which has peak pricing); GM1 does not list science, so no Gemini at D=2; Kimi K3.1 Pro is premium",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max\nEvidence: Scientific-code work is judged on SciCode, where Sonnet 5.5 and MiMo-V2.6-Pro tie at 61 on one row with no interval, so OpenCode runs it; low-confidence.",
       "forbidden": [
         "Kimi K3"
       ]
@@ -327,6 +327,27 @@
       "allow_premium": true
     },
     {
+      "id": "p2",
+      "eval_name": "Escalation after an OpenCode shortfall on a proof (A1-OC: premium #2 Kimi K3.1 Pro, badge to Claude)",
+      "prompt": "The first OpenCode attempt at proving that this lock-free queue never loses an enqueued element fell short — redo the proof, more carefully",
+      "expected_claude": "Opus 5.5 · effort: xhigh",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3.1 Pro · effort: max",
+      "expected_recommended": "claude",
+      "expected_low_confidence": false,
+      "tests_rule": "A1-OC: confidential deep-reasoning proof at D=3 -> #2 = Kimi K3.1 Pro at max (the premium that took Kimi K3's rows, 22-24 Oct roster change; Gemini needs NC1); the pair is the deep-reasoning row (MiMo-V2.6-Pro first at D=3), not a table entry for Kimi; after a shortfall at D>=2 the badge goes to Claude (deep-reasoning has a Claude cell) and at D=3 the Evidence says the Claude line is stronger; formal proof is not opusplan; Opus 5.5 xhigh gets the speed line",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Kimi K3.1 Pro · effort: max\nEvidence: After the shortfall #2 becomes Kimi K3.1 Pro (about 14% of its cap per AA task) and the Claude line is stronger at D=3: HLE 61 vs 53.\n⚡ Claude /fast available (2.5x faster, 2× price).",
+      "expected_notes": [
+        "/fast available"
+      ],
+      "forbidden": [
+        "Grok",
+        "Qwen3.8 Max",
+        "GLM-5.3 ·",
+        "Gemini"
+      ],
+      "allow_premium": true
+    },
+    {
       "id": "q1",
       "eval_name": "Bulk classification, stated non-confidential (NC1 unlocks Luna; OpenCode badge)",
       "prompt": "Classify these 5,000 support tickets by topic — they come from our public FAQ forum, nothing confidential",
@@ -346,11 +367,11 @@
       "eval_name": "Scanned receipts (image input, doc-data-understanding)",
       "prompt": "Read these 30 scanned receipt photos and produce one reconciliation table against the bank export; line items are spelled differently on the two sides and some receipts are split across several ledger entries",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 MiniMax M3.1 Flash Free · effort: max · #2 Qwen3.8 Flash · effort: xhigh",
+      "expected_opencode": "#1 Qwen3.8 Flash · effort: xhigh · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "opencode",
       "expected_low_confidence": true,
-      "tests_rule": "doc-data row dagger; FR1: the free model goes first (PO1: no cap pressure) because MMMU-Pro 79 vs 80 is a tie and its GDP.pdf 21 beats MiMo-V2.6-Pro's 19; both take images; GLM-5.3 absent; no Gemini at D=2. First cold run scored the shorter prompt D<=1 (receipts then routed to the text-only-looking D<=1 pair) - prompt sharpened to make the matching judgement explicit (D=2), rule unchanged",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiniMax M3.1 Flash Free · effort: max · #2 Qwen3.8 Flash · effort: xhigh\nEvidence: Extraction from scans is doc-data-understanding, where GDP.pdf has Claude 26 against the free model's 21 on one row, so OpenCode runs it; low-confidence, and both picks take image input.",
+      "tests_rule": "doc-data row dagger; FR1: the free lane is empty since 22 Oct, so the row is Qwen3.8 Flash (MMMU-Pro 80) first and MiMo-V2.6-Pro (GDP.pdf 19) second - one row each, so they lead together; both take images; GLM-5.3 absent; no Gemini at D=2. First cold run scored the shorter prompt D<=1 (receipts then routed to the text-only-looking D<=1 pair) - prompt sharpened to make the matching judgement explicit (D=2), rule unchanged",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 Qwen3.8 Flash · effort: xhigh · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Extraction from scans is doc-data-understanding, where GDP.pdf has Claude 26 against MiMo-V2.6-Pro's 19 on one row, so OpenCode runs it; low-confidence, and both picks take image input.",
       "forbidden": [
         "GLM-5.3 ·",
         "Kimi K3"
@@ -361,11 +382,11 @@
       "eval_name": "New algorithm from scratch (deep-reasoning, D=3, R<=2)",
       "prompt": "Design a conflict-free ordering scheme for our multi-writer job queue — it is a new algorithm and we have no prior design to start from",
       "expected_claude": "Opus 5.5 · effort: xhigh",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 MiniMax M3.1 Flash Free · effort: max",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "flagship at D=3; xhigh not max at R<=2 (M1); no opusplan for new-algorithm design; SM1 D=3 deep-reasoning -> Claude; free model #2 (FR1); no Gemini on a confidential default",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 MiniMax M3.1 Flash Free · effort: max\nEvidence: New-algorithm design is deep-reasoning at D=3, where two AA rows agree for Claude (HLE 61 vs 49, CritPt 32 vs 27); it is not opusplan because the difficulty persists through implementation.\n⚡ Claude /fast available (2.5x faster, 2× price).",
+      "tests_rule": "flagship at D=3; xhigh not max at R<=2 (M1); no opusplan for new-algorithm design; SM1 D=3 deep-reasoning -> Claude; GLM-5.3-Flash #2 (FR1: the free model is gone since 22 Oct); no Gemini on a confidential default",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max\nEvidence: New-algorithm design is deep-reasoning at D=3, where two AA rows agree for Claude (HLE 61 vs 49, CritPt 32 vs 27); it is not opusplan because the difficulty persists through implementation.\n⚡ Claude /fast available (2.5x faster, 2× price).",
       "expected_notes": [
         "/fast available"
       ]
@@ -414,7 +435,7 @@
       "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max\nEvidence: Omniscience has Sonnet 5.5 at 32 against MiMo-V2.6-Pro's 8 on one row, so OpenCode runs it; low-confidence — DeepSeek V4.1 Flash is excluded (96.5% hallucination rate).",
       "forbidden": [
         "DeepSeek V4.1 Flash ·",
-        "MiniMax M3.1 Flash Free ·"
+        "MiniMax M3.1 Flash ·"
       ]
     },
     {
@@ -430,7 +451,7 @@
       "forbidden": [
         "DeepSeek V4.1 Flash ·",
         "Haiku 5.5 ·",
-        "MiniMax M3.1 Flash Free ·"
+        "MiniMax M3.1 Flash ·"
       ]
     },
     {
@@ -441,12 +462,12 @@
       "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max",
       "expected_recommended": "claude",
       "expected_low_confidence": true,
-      "tests_rule": "research-synthesis at D=2 is OpenCode at R<=2, but R=3 with D>=2 and a Claude lean on the dominant row (AA-Omniscience 32 vs 8, one row) moves the badge to Claude with a dagger; DeepSeek and MiniMax M3.1 gated out; the prompt does not say non-confidential, so no Gemini 4 Argon; review note last",
+      "tests_rule": "research-synthesis at D=2 is OpenCode at R<=2, but R=3 with D>=2 and a Claude lean on the dominant row (AA-Omniscience 32 vs 8, one row) moves the badge to Claude with a dagger; DeepSeek gated out (MiniMax M3.1 Flash is unrouted); the prompt does not say non-confidential, so no Gemini 4 Argon; review note last",
       "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max\nEvidence: Printing cannot be undone (R=3), and the one Omniscience row has Sonnet 5.5 at 32 against MiMo-V2.6-Pro's 8, so the single lean decides; low-confidence.\nDo not apply without human review.",
       "expected_shared_note": "Do not apply without human review.",
       "forbidden": [
         "DeepSeek V4.1 Flash ·",
-        "MiniMax M3.1 Flash Free ·"
+        "MiniMax M3.1 Flash ·"
       ],
       "expected_notes": []
     },
@@ -467,17 +488,17 @@
     },
     {
       "id": "w2",
-      "eval_name": "Non-confidential new algorithm (NC1 + GM1): Gemini 4 Argon on Go's Contributor route",
+      "eval_name": "Non-confidential new algorithm (NC1 + GM1): Gemini 4 Argon on Go's gemini-4-argon route",
       "prompt": "For my open-source side project: design a new lock-free ordering scheme for a multi-writer queue — it is a new algorithm and there is no prior design to start from; nothing here is confidential",
       "expected_claude": "Opus 5.5 · effort: xhigh",
       "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "GM1 under NC1: Argon first at D=3 on deep-reasoning (Contributor route, trains on prompts), MiMo-V2.6-Pro second; Muse Spark takes #2 only on research-synthesis; SM1 D=3 deep-reasoning -> Claude; Gemini line, speed line",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: New-algorithm design is deep-reasoning at D=3, where two AA rows agree for Claude (HLE 61 vs Argon's 57, CritPt 32 vs 27); the work is non-confidential, so Argon's Contributor route is open.\nGemini 4 Argon: opencode-go/gemini-4-argon-contributor — Google trains on your prompts; Go cap USD 60 during the 2× promo (30 after). If it errors or is overloaded, run the row's other model.\n⚡ Claude /fast available (2.5x faster, 2× price).",
+      "tests_rule": "GM1 under NC1: Argon first at D=3 on deep-reasoning (Go route opencode-go/gemini-4-argon, cap and data policy unread), MiMo-V2.6-Pro second; Muse Spark takes #2 only on research-synthesis; SM1 D=3 deep-reasoning -> Claude; Gemini line, speed line",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: New-algorithm design is deep-reasoning at D=3, where two AA rows agree for Claude (HLE 61 vs Argon's 57, CritPt 32 vs 27); the work is non-confidential, so Argon's route is open.\nGemini 4 Argon: opencode-go/gemini-4-argon — the Go cap and data policy of this route are unread (promo USD 2/10 per MTok to 30 Nov, then 4/20). If it errors or is overloaded, run the row's other model.\n⚡ Claude /fast available (2.5x faster, 2× price).",
       "expected_notes": [
         "/fast available",
-        "opencode-go/gemini-4-argon-contributor"
+        "opencode-go/gemini-4-argon —"
       ],
       "allow_gemini": true
     },
@@ -489,14 +510,14 @@
       "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "opencode",
       "expected_low_confidence": true,
-      "tests_rule": "GM1 under NC1: research-synthesis at R=3 -> Argon first (Omniscience 42 / hallucination 15% vs Sonnet 5.5 32 / 47%), MiMo-V2.6-Pro second; the badge cell reads OpenCode with a dagger; DeepSeek and MiniMax M3.1 gated out; Gemini line then review note. Contrast with z1 (same task, confidential default -> Claude)",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: R=3 and AA-Omniscience has Argon ahead of Sonnet 5.5 on index (42 vs 32) and hallucination rate (15% vs 47%); low-confidence — one benchmark, non-confidential work.\nGemini 4 Argon: opencode-go/gemini-4-argon-contributor — Google trains on your prompts; Go cap USD 60 during the 2× promo (30 after). If it errors or is overloaded, run the row's other model.\nDo not apply without human review.",
+      "tests_rule": "GM1 under NC1: research-synthesis at R=3 -> Argon first (Omniscience 42 / hallucination 15% vs Sonnet 5.5 32 / 47%), MiMo-V2.6-Pro second; the badge cell reads OpenCode with a dagger; DeepSeek gated out (MiniMax M3.1 Flash is unrouted); Gemini line then review note. Contrast with z1 (same task, confidential default -> Claude)",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: R=3 and AA-Omniscience has Argon ahead of Sonnet 5.5 on index (42 vs 32) and hallucination rate (15% vs 47%); low-confidence — one benchmark, non-confidential work.\nGemini 4 Argon: opencode-go/gemini-4-argon — the Go cap and data policy of this route are unread (promo USD 2/10 per MTok to 30 Nov, then 4/20). If it errors or is overloaded, run the row's other model.\nDo not apply without human review.",
       "expected_notes": [
-        "opencode-go/gemini-4-argon-contributor"
+        "opencode-go/gemini-4-argon —"
       ],
       "forbidden": [
         "DeepSeek V4.1 Flash ·",
-        "MiniMax M3.1 Flash Free ·"
+        "MiniMax M3.1 Flash ·"
       ],
       "expected_shared_note": "Do not apply without human review.",
       "allow_gemini": true
