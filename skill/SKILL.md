@@ -684,7 +684,7 @@ Rationale in `reference.md` §10.5. **Auto-added lines:** Rules 1, 9, 10 and 11.
    is on it (NC1 only): `Data: Muse Spark 1.3 Contributor trains on your prompts.`
    Never name Muse Spark when the work is confidential.
 10. **DeepSeek line (auto).** If **DeepSeek V4.1 Flash** is on the OpenCode line:
-    `DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).`
+    `DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (read as valid through 31 Oct 2026 — confirm on the Go page after that date).`
 11. **Gemini line (auto).** If **Gemini 4 Argon** is on the OpenCode line:
     `Gemini 4 Argon: opencode-go/gemini-4-argon — the Go cap and data policy of this route are unread (promo USD 2/10 per MTok to 30 Nov, then 4/20). If it errors or is overloaded, run the row's other model.`
 
@@ -722,7 +722,7 @@ Evidence: <one sentence, ≤ 30 words>
 Claude: Haiku 5.5 · effort: low
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
 Evidence: Labelling is D=0 bulk work, so OpenCode runs it: the Flash tier buys hundreds of such batches a month on USD 60–80 caps (USD 0.13–0.27 per task) and keeps Claude's quota for harder work.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (read as valid through 31 Oct 2026 — confirm on the Go page after that date).
 ```
 > Errand work goes to OpenCode even when Haiku 5.5 would do it. A finished memo or deck at `D ≥ 2` is `knowledge-work` and stays on Claude.
 
@@ -736,7 +736,7 @@ Clarify: which file or function is broken, what does it do now, and what should 
 Claude: Sonnet 5.5 · effort: high
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
 Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (DeepSeek 71.7 vs Sonnet 5.5 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task; Claude's lead starts at D=3.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (read as valid through 31 Oct 2026 — confirm on the Go page after that date).
 ```
 > One implementation phase → no `ultracode`. The same task at `D=3` (or after an OpenCode shortfall) flips the badge to Claude.
 
@@ -745,7 +745,7 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
 OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
 Evidence: D=3 reasoning half has two agreeing AA rows (HLE 61 vs 49, CritPt 32 vs 27); the terminal half sets no direction, so the direction decides.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (read as valid through 31 Oct 2026 — confirm on the Go page after that date).
 ⚡ Claude /fast available (2.5x faster, 2× price).
 ```
 > `D=3` (D3DIAG) but one phase → `xhigh`, not `ultracode`/`max`. `#1` from the badge-deciding tag (deep-reasoning); the terminal row's `#1` is the same model, so `#2` is its `#2`. Gemini 4 Argon is absent: the work is confidential by default (GM1).
@@ -772,7 +772,7 @@ Evidence: Finished-deliverable work is knowledge-work, where two agreeing AA row
 Claude: Sonnet 5.5 · effort: low
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
 Evidence: D=0 — both clear the bar, so price and cap decide: Flash models on USD 80 and 60 caps at USD 0.27 and 0.25 per task.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (read as valid through 31 Oct 2026 — confirm on the Go page after that date).
 Do not apply without human review.
 ```
 > `R=3` by blast radius, not line length — also why Haiku 5.5 is out.

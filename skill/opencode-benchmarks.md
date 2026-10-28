@@ -652,6 +652,14 @@ recorded. `derive_opencode_rows.py` keeps it in `UNROUTED` and prints its consen
   figures in the router (Opus 5.5 TB 4.0 59.6 at max, Sonnet 5.5 63.6, index 58 / 56) agree with the AA values the search summaries quote; aggregator variants (BenchLM 57.6 for Opus 5.5, GPT-5.6 Sol 58.9) are
   provider self-reports and were not used.
 
+### 14.5 Re-check of 28 October 2026
+
+Read again: the models.dev log of `providers/opencode-go` (nothing after 26 Oct that adds, removes, deprecates or reprices a Go model — only tool-capability backfills and a PDF-input fix for GLM-5.3-Flash),
+the same log for `providers/opencode` (Zen: 26 Oct *DeepSeek V4 Flash marked deprecated* — it is outside the pool and never selected; no commit reveals what Iceman Contributor Free is), `kimi-k3.1-pro.toml` (unchanged: no cap or
+retention field), and the OpenCode releases v1.19.5 (28 Oct) and v2.2.0 (27 Oct) — no Go or Zen model change; v2.2.0 only makes the console show budget limits and Go usage where they block you. A search for a DeepSeek
+zero-retention renewal found nothing, so the agreement stays "read as valid through 31 Oct". The one router change: the DeepSeek auto-line (Step 7 rule 10) now says *confirm on the Go page after that date*, so it cannot assert an expired
+date after 31 Oct.
+
 **Sources (read 2026-10-27).** raw.githubusercontent.com/sst/models.dev/dev/providers/opencode-go/{provider.toml, models/{kimi-k3.1-pro,gemini-4-argon,gemini-4-argon-contributor,minimax-m3.1-flash,minimax-m3.1-flash-free,iceman-contributor-free,step-5-preview}.toml} ·
 github.com/sst/models.dev/commits/dev/providers/opencode-go · github.com/sst/models.dev/pull/{11258,11021} · github.com/anomalyco/opencode/releases (v1.19.0–v1.19.4, v2.2.0) · search summaries of
 artificialanalysis.ai/models/kimi-k3-1-pro, openrouter.ai/moonshotai/kimi-k3.1-pro, opencode.ai/go and opencode.ai/v2/docs/console/go, the-decoder.com, officechai.com, kingy.ai, benchlm.ai.

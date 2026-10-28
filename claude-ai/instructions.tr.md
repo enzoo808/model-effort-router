@@ -447,7 +447,7 @@ NC1): `Data: Muse Spark 1.3 Contributor trains on your prompts.` İş gizliyse M
 adlandırma.
 
 **10. DeepSeek satırı (otomatik).** OpenCode satırında **DeepSeek V4.1 Flash** varsa:
-`DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).`
+`DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (read as valid through 31 Oct 2026 — confirm on the Go page after that date).`
 
 **11. Gemini satırı (otomatik).** OpenCode satırında **Gemini 4 Argon** varsa:
 `Gemini 4 Argon: opencode-go/gemini-4-argon — the Go cap and data policy of this route are unread (promo USD 2/10 per MTok to 30 Nov, then 4/20). If it errors or is overloaded, run the row's other model.`
@@ -584,7 +584,7 @@ Evidence: <tek cümle>
 Claude: Haiku 5.5 · effort: low
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
 Evidence: Labelling is D=0 bulk work, so OpenCode runs it: the Flash tier buys hundreds of such batches a month on USD 60–80 caps (USD 0.13–0.27 per task) and keeps Claude's quota for harder work.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (read as valid through 31 Oct 2026 — confirm on the Go page after that date).
 ```
 
 *"Bu 2 sayfalık toplantı transkriptini beş maddede özetle"*
@@ -592,7 +592,7 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 Claude: Haiku 5.5 · effort: medium
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
 Evidence: A short summary is D=1 reading work (AA-LCR has Haiku 5.5 at 77 and Sonnet 5.5 at 78), so the Flash tier on USD 60–80 caps handles it and Claude's quota is kept.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (read as valid through 31 Oct 2026 — confirm on the Go page after that date).
 ```
 
 *"Ödeme modülünü 40 dosyada yeni idempotency-key API'sine geçir, tüm çağıranları güncelle, testler geçsin"* (D=2, tek faz)
@@ -600,7 +600,7 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 Claude: Sonnet 5.5 · effort: high
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
 Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (DeepSeek 71.7 vs Sonnet 5.5 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task; Claude's lead starts at D=3.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (read as valid through 31 Oct 2026 — confirm on the Go page after that date).
 ```
 
 *"Prod'da ara sıra düşen race condition'ı bul"* (D3DIAG → D=3, Kural 2 → amiral gemisi)
@@ -608,7 +608,7 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
 OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
 Evidence: D=3 reasoning half has two agreeing AA rows (HLE 61 vs 49, CritPt 32 vs 27); the terminal half sets no direction, so the direction decides.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (read as valid through 31 Oct 2026 — confirm on the Go page after that date).
 ```
 
 *"Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek"* (R=3 sistem-geneli, D=0)
@@ -616,7 +616,7 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 Claude: Sonnet 5.5 · effort: low
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
 Evidence: D=0 — both clear the bar, so price and cap decide: Flash models on USD 80 and 60 caps at USD 0.27 and 0.25 per task.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (read as valid through 31 Oct 2026 — confirm on the Go page after that date).
 Do not apply without human review.
 ```
 
