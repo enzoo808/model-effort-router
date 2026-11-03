@@ -4418,7 +4418,7 @@
   "how_to_read": "GENERATED FILE -- do not hand-edit; run the compiler. 'preferred' is which ecosystem the declared evidence favours for that capability, or UNRESOLVED when the declared metadata does not settle it. UNRESOLVED and 'equivalent' both mean the router must fall through to the efficiency tie-break; they are not failures. A cell is UNRESOLVED whenever no confidence interval, standard error, repeated-trial dispersion or benchmark-owner significance threshold is published for it -- however large the gap looks; observed spread is not uncertainty. 'gap_over_observed_spread_diagnostic' shows which cells are worth chasing a real interval for and sets nothing. Nothing here is read at runtime -- SKILL.md carries the compact rules and this file is how those rules are audited.",
   "input_compiled": "2026-09-30",
   "input_file": "skill/benchmarks.json",
-  "input_sha256": "adb45592e783de0a6c1663bdcf2cec8fc189440717595bdbac38816c563a7b42",
+  "input_sha256": "0992ec8184a9d6d672c10790278236f6a61cf1820478d047c4ae45b489248154",
   "pareto": [
     {
       "benchmark": "AA Intelligence Index",
@@ -5626,7 +5626,7 @@
       "confidence": "low",
       "evidence_classes": [],
       "evidence_ids": [],
-      "last_verified": "2026-09-10",
+      "last_verified": "2026-11-03",
       "rule_id": "BADGE-parallel-independent",
       "source_tiers": [],
       "summary": "parallel-independent badge -> Codex (mechanism)"

@@ -1,7 +1,7 @@
 # Claude & OpenCode Go — Model / Ekosistem / Efor Seçici
 
 > 🇬🇧 **English:** [README.md](README.md) · Bu, Türkçe ayrıntılı sürümdür.
-> **20 Ekim 2026 (iteration-24):** **ücretsiz modeller** ve **Gemini 4 Argon** eklendi — bkz. "iteration-24" bölümü. Önceki not: **14 Ekim 2026 (iteration-23):** OpenCode artık **varsayılan**, havuz **fiyat-performans katmanına** daraltıldı —
+> **3 Kasım 2026 (iteration-25):** `ultracode` artık bir efor seviyesi değil, bağımsız bir Claude Code anahtarı — bkz. "iteration-25" bölümü. Önceki not: **20 Ekim 2026 (iteration-24):** **ücretsiz modeller** ve **Gemini 4 Argon** eklendi — bkz. "iteration-24" bölümü. Önceki not: **14 Ekim 2026 (iteration-23):** OpenCode artık **varsayılan**, havuz **fiyat-performans katmanına** daraltıldı —
 > bkz. "iteration-23" bölümü. Önceki not: **8 Ekim 2026 (iteration-22):** **Claude Haiku 5.5** geldi. Önceki not:
 > **6 Ekim 2026 (iteration-21):** Codex üyeliği bittiği için ikinci kol
 > **OpenCode Go (USD 10/ay)** ile sıfırdan yeniden kuruldu. Bu dosyanın **en üstündeki
@@ -23,6 +23,17 @@ Evidence: Orta zorlukta özellik işi bağımsız DeepSWE'de eşit (DeepSeek 71.
           agent görevi başına USD 0.13 vs Opus 5.5'in 1.67'si. Claude'un önü D=3'te başlıyor.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
 ```
+
+## iteration-25 — ne değişti (3 Kasım 2026): `ultracode` seviye değil, anahtar
+
+Claude Code v2.1.284'ten beri Ultracode kendi anahtarı: eforu **`xhigh`'a çekmiyor**, her efor seviyesinde açık kalıyor
+(`code.claude.com/docs/en/model-config`, `.../workflows`; kaynaklar ve sürüm tablosu: `skill/reference.md` §22). Router buna göre güncellendi:
+
+- **Çıktı artık bayrak, seviye değil:** `Claude: Sonnet 5.5 · effort: high · ultracode`. Eski `effort: ultracode`, `/effort ultracode` yazdırıyordu; bugün bu komut oturumu `xhigh`'a değil, kendi varsayılanına (`Sonnet 5.5`'te `medium`) bırakır.
+- **Seviyeyi zorluk belirler** (Kural UC1): `Efor ← D`, **taban `high`** (30 dk+ gözetimsiz koşuda Sonnet 5.5 `low`/`medium`'da sık durup soruyor), **tavan `xhigh`**. `max` ile `ultracode` hâlâ hiç eşlenmez.
+- **Oturum geneline uygulanır ve kotayı ağır yer.** Her kayda değer görev workflow'a döner, limitler daha hızlı erir. Otomatik `Ultracode:` satırı (Adım 7 kural 12), anahtarı açık bırakmak yerine prompt'u `ultracode:` ile başlatıp **yalnız o görevi** workflow olarak koşturmayı söyler.
+
+Değişmeyenler: tetikleyici (>30 dk ∧ `O=high` veya `W=3 ∧ D≥2`, tek bölünemez zincir değil), MECH1 (OpenCode'da karşılığı yok), Haiku 5.5'te `ultracode` yok (artık bir kapasite sınırı değil, router tercihi — Haiku 5.5 `xhigh` listeliyor). Doğrulandı: policy sync, örnek kontrolü, benchmark validator, grader self-test (36/36) ve **36 promptun taze ajanlarla koşusu: 34/36** (`results/iteration-25/`). `c1` (eski `ultracode` satırı) bir kez rozette şaştı, tekrar koşuda 3/3 geçti; `r1` (taranmış fişler, `ultracode` ile ilgisiz) koşular arasında 2/4 bölünüyor, açık bırakıldı. İki prompt eklendi: `c2` (D=3 × 180 servis → `xhigh · ultracode`) ve `c3` (beş fazlı göç → `high · ultracode`).
 
 ## iteration-24 — ne değişti (20 Ekim 2026): ücretsiz modeller ve Gemini 4 Argon
 
@@ -543,8 +554,8 @@ tutarsız, aşırı-düşünme riski). Router **`Sonnet 5.5 · max` / `Terra · 
 üretmez.** Sonra her arm kendi düzenleyicisini uygular:
 
 - **Claude:** `ultracode` ⇔ `>30dk ∧ (O=high ∨ (W=3 ∧ D≥2)) ∧ tek bölünemez
-  zincir değil` (model kısıtsız, Haiku hariç; efor alanı `xhigh` yerine
-  `ultracode` yazılır) · `opusplan` (aşağıda).
+  zincir değil` (Haiku hariç; **iteration-25:** efor alanı artık `ultracode` olmaz —
+  `effort: <D basamağı, taban high, tavan xhigh> · ultracode` yazılır) · `opusplan` (aşağıda).
   > **iteration-18 stabilizasyonu:** `O=high` = oturum **3+ ayrı FAZ** çalıştırır
   > (araştırma / uygulama / bağımsız doğrulama / paketleme / göç / doküman /
   > triyaj), her fazın çıktısı bir sonrakini besler. **uygula→çalıştır→onar
@@ -914,8 +925,9 @@ işte Sonnet 5'te kalmanın gerekçesini güçlendiriyor.
 **Diğer 10 Eylül düzeltmeleri** (ayrıntı: `reference.md` §12.2):
 - "Anthropic Sonnet 5 için `max` tavsiyesi yayımlamıyor" — **yayımlıyor**.
   `Sonnet 5 · max` yasağı duruyor ama gerekçesi artık ölçülmüş dominance.
-- `ultracode` yalnızca oturum-içi değil; settings anahtarı ve
-  `CLAUDE_CODE_EFFORT_LEVEL` var.
+- `ultracode` yalnızca oturum-içi değil; `ultracode` settings anahtarı var.
+  (**3 Kasım 2026 düzeltmesi:** `CLAUDE_CODE_EFFORT_LEVEL` ve `effortLevel` `ultracode`'u **kabul etmez** —
+  önceki satır yanlıştı.)
 - Codex `max` her katmanda değil, **Astra/Sol'a özel**.
 - Astra'da Ultra modu **belgeli** (eskiden "doğrulanmadı" idi).
 - Taşınan AA Index rakamları (66/63/62/60) farklı bir index sürümünden;

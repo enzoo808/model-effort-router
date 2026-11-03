@@ -296,7 +296,7 @@ otomatik olarak geçersiz kıldı.
 |---|---|---|
 | Sonnet 5 $3/$15 (promosyon 31 Ağu'da bitti) | **$2/$10 — zam iptal edildi, standart fiyat bu** | Opus/Sonnet kota oranı 1.67× → **2.5×**; Sonnet 5'te kalmanın gerekçesi güçlendi |
 | "Anthropic Sonnet 5 için `max` tavsiyesi yayımlamıyor" | Yayımlıyor — effort sayfasında açık madde | `Sonnet 5 · max` yasağının *gerekçesi* değişti: artık ölçülmüş dominance (E1), yanlış bir alıntı değil |
-| `ultracode` yalnızca oturum-içi, dosyaya yazılamaz | Settings anahtarı + `CLAUDE_CODE_EFFORT_LEVEL` var | Routing etkisi yok |
+| `ultracode` yalnızca oturum-içi, dosyaya yazılamaz | `ultracode` settings anahtarı var (`CLAUDE_CODE_EFFORT_LEVEL` **kabul etmez** — 3 Kas 2026'da düzeltildi); v2.1.284'ten beri `xhigh`'a bağlı da değil, bağımsız anahtar | İlk düzeltmede etki yoktu; 3 Kas 2026'da UC1 değişti (reference.md §22) |
 | Codex `max` her GPT-5.6 katmanında | **Astra/Sol'a özel** (`learn.chatgpt.com`) | `Terra · max` yasağı tercih değil **capability limiti** oldu |
 | "Astra'da Ultra modu belgelenmemiş" | Belgeli — "Astra and Sol additionally offer Max and Ultra modes" | Açık soru kapandı |
 | AA Index 66/63/62/60 | Farklı index sürümü; güncel v4.3'te 53/51/48 | Eski rakamlar §2.1'de tarihsel olarak işaretlendi |

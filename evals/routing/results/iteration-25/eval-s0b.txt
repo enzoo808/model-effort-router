@@ -1,0 +1,1 @@
+Clarify: Which users count as inactive — an is_active flag set to false, or no login for N days (and what is N) — and should they be hard-deleted or soft-deleted?

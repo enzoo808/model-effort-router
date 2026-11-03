@@ -402,36 +402,96 @@ below (e.g. `xhigh` → `high` on Opus 4.6).
   turn that needs fresh information (Fable 5.1 supports mid-conversation effort
   changes without busting the cache).
 
-### `ultracode` — a Claude Code level
+### `ultracode` — a Claude Code toggle, independent of effort
 
-There **is** an `ultracode` in the `/effort` menu. It's not a *model* effort
-level:
+⚠️ **Rewritten 3 Nov 2026 (iteration-25).** Until Claude Code v2.1.284 `ultracode`
+was `xhigh` + workflow orchestration. Since v2.1.284 it is **its own toggle** and
+no longer touches the effort level (changelog 2.1.284: "Changed Ultracode into its
+own toggle in `/effort` (Tab, or `/effort ultracode [on|off]`): it no longer forces
+xhigh effort and stays on at any effort level"). Source:
+`code.claude.com/docs/en/model-config`, `.../workflows`, `.../settings-reference`.
 
-> "Ultracode is a Claude Code setting rather than a model effort level: it sends
-> `xhigh` to the model and additionally has Claude orchestrate dynamic workflows
-> for substantive tasks. It applies to the current session only."
+> "Ultracode is a Claude Code setting rather than a model effort level: with it on,
+> Claude orchestrates dynamic workflows for substantive tasks, at whichever effort
+> level the session runs at."
 
-- **No model restriction** — it works on every model that supports `xhigh`: Fable
-  5.1, Sonnet 5, **Opus 5**, Opus 4.8, Opus 4.7. Doesn't work on Haiku 4.5. Opus
-  4.6/Sonnet 4.6 have no `xhigh` → `ultracode` falls to `high` if requested.
-- Ways to enable: `/effort ultracode` · `claude --effort ultracode` · `"ultracode":
-  true` via `--settings` · Agent SDK `effortLevel: "ultracode"`
-- ⚠️ **Corrected 10 Sep 2026:** it *can* be persisted. `code.claude.com/docs/en/model-config`
-  lists an `ultracode` settings key and `CLAUDE_CODE_EFFORT_LEVEL=<level>`
-  alongside `/effort ultracode` and `--effort ultracode` (the flag needs
-  v2.1.203+). The earlier "per-session only" claim was wrong. Routing behaviour
-  is unaffected.
-- If workflows are off, `--effort ultracode` applies `xhigh` only.
+**What it does.** Claude plans a dynamic workflow (a JavaScript script that runs
+subagents; up to 16 concurrent by default, 1,000 per run) for **every substantive
+task of the session** — "a single request can turn into several workflows in a row:
+one to understand the code, one to make the change, and one to verify it."
+
+**What it costs.** "Each request uses more tokens and takes longer than the same
+request without a workflow. On a subscription plan those tokens draw on your usage
+limits, so a session with ultracode on reaches a session or weekly limit sooner."
+Turning it on also switches off three guard-rails: the `Large workflow` warning, the
+concurrent-subagent limit for the Agent tool, and (auto mode) the first-launch
+approval. This is why the router treats it as a deliberate, quota-heavy choice.
+
+**Ways to turn it on** (all need dynamic workflows enabled):
+
+| Route | Scope | Effort level |
+|---|---|---|
+| `/effort ultracode` / `/effort ultracode off`; Tab on the `/effort` slider | current session | **unchanged** (v2.1.284+) |
+| `"ultracode": true` settings key (any settings file, `--settings`, SDK `apply_flag_settings`) | every session | unchanged |
+| `claude --effort ultracode` (v2.1.203+) · SDK `effortLevel: "ultracode"` | current session | **set to `xhigh`** |
+| the word `ultracode` in a prompt you type | **that one task** | unchanged |
+
+- `effortLevel` and `CLAUDE_CODE_EFFORT_LEVEL` **do not accept** `ultracode`
+  (⚠️ this file said the env var did until 3 Nov 2026 — wrong). If the env var or an
+  effort cap fixes the level, ultracode stays on at that level.
+- **Unavailable** when workflows are off (`disableWorkflows`, `CLAUDE_CODE_DISABLE_WORKFLOWS=1`,
+  the `/config` toggle, an org policy) **or the model has no `xhigh`** (Opus 4.6,
+  Sonnet 4.6). Haiku 5.5 *does* list `xhigh`, so it is technically available there;
+  the router still never pairs them (Rule UC1 — H1 sends only `D ≤ 1`, `W ≤ 1` work
+  to Haiku, which can never meet UC1's `O = high` / `W = 3 ∧ D ≥ 2`).
+- **The keyword is typed-input only.** It does nothing in `-p`, in an SDK prompt not
+  stamped `origin: human`, in scheduled tasks, or in a relayed webhook/PR comment.
+  `Option/Alt+W` dismisses the highlight; `/config` → *Ultracode keyword trigger*
+  turns the keyword off.
+- Before v2.1.284: turning it on set `xhigh`, picking another level turned it off,
+  an effort cap below `xhigh` made it unavailable, and `/effort ultracode off` failed.
+- v2.1.314 fixed background/cloud sessions that re-enabled a switched-off Ultracode
+  at their next start.
+- **Subagent effort** is a separate dial: `CLAUDE_CODE_SUBAGENT_EFFORT` (v2.1.316)
+  sets the level subagents run at when nothing else names one, and since v2.1.317
+  a subagent on a different model uses *that model's* saved or default effort
+  instead of the session's. Anthropic does not say which of these a workflow agent
+  follows, so the router makes no claim about workflow-agent effort.
+
+**What the router changed because of this** (Rule UC1, Step 7 rule 12):
+
+1. The output is `effort: <level> · ultracode` — a flag after a real level. The old
+   `effort: ultracode` told the user to run `/effort ultracode`, which since v2.1.284
+   leaves a Sonnet 5.5 session at its default `medium`, not at `xhigh`.
+2. The level follows `Effort ← D` with a **floor of `high`** and a **ceiling of
+   `xhigh`**. Old behaviour forced `xhigh` on every ultracode row, even a `D = 2`
+   task whose own rung is `high`. The floor is Anthropic's Sonnet 5.5 advice (`high`
+   for harder or longer work; at `low`/`medium` it is "more likely to stop and check in
+   on long agentic tasks"); UC1 is always over 30 minutes. *No benchmark measures
+   workflow agents against effort, so this is a quota-aware policy choice, not a
+   measured result.*
+3. `max` and `ultracode` stay apart. The old reason ("ultracode only sends `xhigh`")
+   is gone, the new one is that `max` is for one indivisible decision, which a
+   fan-out cannot split, and `max` ("prone to overthinking") under many agents
+   multiplies both the overthinking and the bill.
+4. An auto-added `Ultracode:` line says how to apply it: type `ultracode:` at the
+   start of the prompt for **this task only**, because `/effort ultracode` is
+   session-wide and drains the limits on every later request.
 
 ### `ultrathink` — one-off depth
 
-Write `ultrathink` into the prompt → deeper reasoning for that turn, **the effort
-level doesn't change**. Phrasings like "think", "think hard" are not recognised.
+Write `ultrathink` into the prompt → deeper reasoning for that turn; **the session's
+effort setting doesn't change**. Phrasings like "think", "think hard" are not
+recognised. ⚠️ Updated 3 Nov 2026: typed in the interactive terminal on Opus 5.5,
+Sonnet 5.5, Haiku 5.5 and Fable 5.1 (Anthropic API), the turn now runs at `xhigh`
+(v2.1.311; VS Code v2.1.316), and typed mid-task it raises the rest of that turn.
+`CLAUDE_CODE_DISABLE_ULTRATHINK` (v2.1.316) turns the keyword off. It is a different
+keyword from `ultracode`.
 
 ### When `ultracode` is used
 
 Iteration-18 moved the trigger from **width** to **orchestration** — see
-`SKILL.md` Step 4. `ultracode` sends `xhigh` *and* plans a workflow, so it pays
+`SKILL.md` Step 4. `ultracode` plans a workflow for every substantive task, so it pays
 off when the session has several kinds of step to sequence, not when it has many
 copies of one step.
 
@@ -442,10 +502,12 @@ copies of one step.
   mechanical rename, which is `W=3` but `D=1`: one step repeated is width, and
   orchestrating it buys nothing. Not a root-cause hunt either; measure →
   hypothesise → re-measure is one kind of step, so that is `xhigh`.
-- **Conflict:** `ultracode` only sends `xhigh` to the model; if you need `max`,
-  don't pick `ultracode`. The rule encodes this as *not one indivisible chain* —
-  the same test Rule E3 uses — so the two can never refuse a task for opposite
-  reasons, which is the dead zone the old `¬(D=3 ∧ R=3)` guard created.
+- **`max`:** the router never pairs `max` with `ultracode`. The rule encodes this as
+  *not one indivisible chain* — the same test Rule E3/M1 uses — so the two can never
+  refuse a task for opposite reasons, which is the dead zone the old `¬(D=3 ∧ R=3)`
+  guard created. (Before v2.1.284 the reason was that `ultracode` only sent `xhigh`;
+  now it can run at `max`, but stacking it under a fan-out is a cost choice the
+  router does not make for the user.)
 
 ### `opusplan` — plan/execute model split
 
@@ -603,8 +665,9 @@ individual.
   with `max_tokens`, it's wrong.
 - The two Terminal-Bench numbers (74.6%/82.7%) are a harness difference, not a
   contradiction.
-- `ultracode` is not in the API; it's the Claude Code CLI's `xhigh`+workflow
-  macro.
+- `ultracode` is not in the API; it's a Claude Code toggle (dynamic workflows at
+  the session's effort — see "`ultracode` — a Claude Code toggle" above). It was an
+  `xhigh`+workflow macro only until v2.1.284.
 
 ### ❌ Debunked — must not enter the router
 
@@ -731,7 +794,7 @@ Sonnet. This category shows Rule 2(a) also covers non-code.
 | "Find the flaky test in the CI pipeline" | 1,1,1,0 | Sonnet 5 · medium |
 | "Add the same health-check endpoint to 60 independent microservices" | 1,1,2,0 | Sonnet 5 · medium *(60 < 100 → W=2; and at D=1 even 600 would not fire ultracode — one step repeated is width)* |
 | "List which security-group rules allow 0.0.0.0/0 on ports other than 80/443" | 1,1,1,1 | Sonnet 5 · medium *(mechanical enumeration → D=1, not the D=3 adversarial case; defensive → no gate)* |
-| "Profile 180 services for performance regression" | 2,2,3,2 | Sonnet 5 · **ultracode** *(`W=3 ∧ D=2` — 180 services that each need judgement; the effort field says "ultracode", not D's `high`)* |
+| "Profile 180 services for performance regression" | 2,2,3,2 | Sonnet 5 · `high` · **ultracode** *(`W=3 ∧ D=2` — 180 services that each need judgement; iteration-25: the level stays D's `high`, `ultracode` is a flag on top)* |
 | "Find the deploy that caused the prod CPU spike, don't roll back yet" | 2,2,1,2 | Sonnet 5 · high |
 | "Migrate the Kubernetes cluster to multi-region HA from scratch" | 3,3,2,2 | Opus 5 · max |
 
@@ -1216,10 +1279,11 @@ Glasswing / Mythos 5.1. So: **standard → `use Claude`; stated Daybreak access 
 Code-only, Astra's own ceiling is `max`). Defensive work never gates on either
 arm.
 
-**`ultracode` can still rise above the `xhigh` floor.** The offensive gate is
+**`ultracode` can still be added on top of the `xhigh` floor.** The offensive gate is
 "deciding" but only fixes the **model**. After it fires, check
-`W=3 ∧ duration>30min ∧ ¬(D=3 ∧ R=3)` normally — if it holds, effort is
-`ultracode`, not `xhigh` (the "180-service penetration test" example).
+`W=3 ∧ duration>30min ∧ ¬(D=3 ∧ R=3)` normally — if it holds, the line is
+`effort: xhigh · ultracode` (the "180-service penetration test" example). Since
+iteration-25 `ultracode` no longer *raises* the effort — it rides on the floor.
 
 **Why biology-adjacent → Fable 5.1, not Opus 5.** On benign/educational
 biology-medical questions safeguards fire ~85% less — not a gate, normal
@@ -1412,7 +1476,9 @@ at D=3); this note is for the user running Opus 5 manually.
 
 **Rule 5 (`ultracode` ≥ 30 min).** It plans a workflow for every substantive
 task; on everyday work that's latency + quota, not quality. One-off depth →
-`ultrathink` in the prompt.
+`ultrathink` in the prompt. If the work does qualify, prefer the `ultracode:` prompt
+keyword over `/effort ultracode` — the keyword covers one task, the toggle every
+task until the session ends (Step 7 rule 12).
 
 **Rules 6–8** (MCP tool-schema load, auto-accept geometric cost, `/model opus`
 alias resolution) — see the one-liners in `SKILL.md` Step 4; full figures in §6
@@ -1574,7 +1640,7 @@ Full specs / benchmarks / cyber-tier detail in §9.8. Routing summary:
 | `science` | genomics, chemistry, physics, research engineering, lab pipelines | Terminal-Bench-Science 0.1 (publishes SE) · CritPt (via AA Index) | General coding benchmarks |
 | `workflow-automation` | wire up business workflows, integrations, multi-tool orchestration | AutomationBench | — |
 | `doc-data-understanding` | scanned documents, PDFs, dense charts, nested tables, multimodal extraction | *none cross-ecosystem* — vendor vision claims only | — |
-| `parallel-independent` | 3+ targets genuinely unaware of each other, merging at the end | *product mechanism, not a benchmark*: `ultracode` (one orchestrated chain) vs Ultra mode (~4 collaborating agents) | Any benchmark. This tag never outranks a benchmark-backed tag — see the tie-break in `SKILL.md` Step 6 |
+| `parallel-independent` | 3+ targets genuinely unaware of each other, merging at the end | *product mechanism, not a benchmark*: `ultracode` (script-driven workflow orchestration) vs Ultra mode (~4 collaborating agents) | Any benchmark. This tag never outranks a benchmark-backed tag — see the tie-break in `SKILL.md` Step 6 |
 | `latency-volume` | sub-second response, high-throughput bulk classification/parsing | AA Index output-speed and cost/task columns | Intelligence scores — the bar is "clears it", not "wins" |
 | `instruction-following` | rigid format/schema compliance | folded into the dominant tag | never dominant alone |
 
@@ -1635,7 +1701,7 @@ re-verification. A Tier C claim never becomes a routing rule on its own.
 | Fable 5.1's six named capability gains: agentic coding over long sessions · knowledge work with documents/spreadsheets/slides · research and search · vision · long-context · computer use | same | this is the backbone of the §11 tag list |
 | Anthropic model-selection matrix: Opus 5 for "multihour autonomous coding agents, large-scale refactoring, complex systems engineering, vision-heavy workflows, computer use" | `.../models/choosing-a-model` | supports flagship capability list in Step 4 |
 | Sonnet 5 **does** have published `max` guidance | `.../build-with-claude/effort` | falsified an earlier claim in §3 |
-| `ultracode` = `xhigh` + dynamic workflow orchestration; settable via `/effort`, `--effort` (v2.1.203+), settings key, `CLAUDE_CODE_EFFORT_LEVEL`; `opusplan` = Opus in plan mode → Sonnet in execution | `code.claude.com/docs/en/model-config` | both mechanisms re-validated; "per-session only" falsified |
+| `ultracode` = a toggle for dynamic workflow orchestration at the session's effort (**not** `xhigh`-bound since v2.1.284); settable via `/effort ultracode [off]`, `--effort ultracode` (v2.1.203+, also sets `xhigh`), the `ultracode` settings key, or the `ultracode` prompt keyword; **not** via `effortLevel` / `CLAUDE_CODE_EFFORT_LEVEL`; `opusplan` = Opus in plan mode → Sonnet in execution | `code.claude.com/docs/en/model-config` · `.../workflows` · `.../settings-reference` · changelog 2.1.284 | iteration-25: mechanism rewritten (§22); "per-session only" and the env-var claim both falsified |
 | Astra: `gpt-6-astra`, 1,050,000-token context (922k input / 128k output), cutoff 30 Apr 2026, $10/$50 (+2× above 272k), `reasoning.effort` `low…max`, **`none` rejected** | `developers.openai.com/api/docs/models/gpt-6-astra` | roster + gates unchanged |
 | Codex roster: **Astra**, **5.6 Sol** (premium); **5.6 Terra**, **5.6 Luna** (standard); **5.3 Codex Spark** (text-only research preview); legacy 5.5/5.4 | `learn.chatgpt.com/docs/models` | Codex Spark newly recorded; router does not select it |
 | **`max` and Ultra are Astra/Sol only**; Ultra therefore runs on Astra too | same | resolves an open question; hardens the Terra cap |
@@ -2921,3 +2987,37 @@ it); example check. **Not done:** the cold-agent routing run and the trigger eva
 Rules **FR1** (free lane: MiniMax M3.1 Flash Free joins the pool; Zen free twins are spill-over only; every other free model is never selected) and **GM1** (Gemini 4 Argon is metered by the user's Google credits and
 goes first only in the right-hand column of `agentic-code`, `terminal-tool`, `deep-reasoning`, `research-synthesis` and `workflow-automation`) were added to `SKILL.md`. The evidence, the per-model verdicts, the Google-membership
 facts (USD 10/month of credits, paid vs free tier terms, the third-party-login warning) and the 503 / 429 diagnosis are in `opencode-benchmarks.md` §13. This file's Codex material (§9, §18) is still the retired arm.
+
+## 22. `ultracode` becomes a toggle — iteration-25 (3 November 2026)
+
+**Trigger.** The user reported that Claude's `ultracode` effort logic had changed. Verified
+against Anthropic's Claude Code documentation (`model-config`, `workflows`, `settings-reference`)
+and the changelog (anthropics/claude-code `CHANGELOG.md`, read 3 Nov 2026, current version 2.1.317):
+
+| Version | Change |
+|---|---|
+| 2.1.203 | `--effort ultracode` and SDK `effortLevel: "ultracode"` accepted (before: `Unknown --effort value`) |
+| **2.1.284** | **Ultracode is its own toggle**: `/effort ultracode [on\|off]`, slider Tab; "no longer forces xhigh effort and stays on at any effort level"; an effort cap below `xhigh` no longer disables it; `ultracode` settings key no longer runs the session at `xhigh` |
+| 2.1.304 | `/effort status` / `/effort ultracode` no longer print a guessed level when `CLAUDE_CODE_EFFORT_LEVEL` is `auto`/`unset` |
+| 2.1.311 | `ultrathink` (terminal) runs its turn at `xhigh` on Opus 5.5 / Sonnet 5.5 / Haiku 5.5 / Fable 5.1 |
+| 2.1.314 | Background/cloud sessions no longer re-enable a switched-off Ultracode; org effort caps lower the level instead of failing |
+| 2.1.316 | `CLAUDE_CODE_SUBAGENT_EFFORT`; `CLAUDE_CODE_DISABLE_ULTRATHINK` |
+| 2.1.317 | A subagent on a different model uses that model's own saved/default effort |
+
+**What it changed in the router.** Rule UC1 now emits `effort: <level> · ultracode` (level =
+`Effort ← D`, floor `high`, ceiling `xhigh`) instead of `effort: ultracode`; Step 7 rule 12 adds the
+auto `Ultracode:` line (keyword for one task vs session-wide toggle); `M1`/`UC1` stay mutually
+exclusive but for a new reason; Step 1's offensive row says `ultracode` is *added* to the
+`xhigh` floor. Mechanism section: §3 "`ultracode` — a Claude Code toggle". Evals: `c1` re-expected
+(`Sonnet 5.5 · effort: high · ultracode` + the Ultracode line), the grader checks the flag both
+ways and rejects the old `effort: ultracode`.
+
+**What was deliberately not changed.** Trigger conditions (30 min, `O = high` or `W = 3 ∧ D ≥ 2`,
+not an indivisible chain), MECH1 (OpenCode still has no equivalent), and `Haiku 5.5 · ultracode`
+stays unemitted — now a routing choice, not a capability limit.
+
+**Open / unverified.** (1) Which effort a workflow's subagents run at is undocumented: the sub-agents page only says a subagent's `effort` frontmatter (or a per-invocation `effort`, v2.1.292+) overrides the session level, which implies — but never states — that an unset subagent follows the session; workflow agents are not covered (read 3 Nov 2026);
+(2) no benchmark compares workflow orchestration with a single agent, so UC1's trigger rests on
+the product mechanism alone (`benchmarks.json` → `routing_rules`, `product_mechanism`);
+(3) the `high` floor is Anthropic's Sonnet 5.5 start-point advice, not a measured result;
+(4) the cold-agent run (36 prompts, 34/36) is recorded in `evals/README.md`: `c1` 3/3 on re-run, `r1` (unrelated) unstable at 2/4 and left open; `c2`/`c3` expectations come from that run, so they guard against regression rather than prove the rule.

@@ -221,3 +221,22 @@ değiştirdi. Codex kolu yeniden türetildi (ayrıntı: `skill/reference.md` §1
   ("kaç paket bozuk" yazmıyordu), prompt netleştirildi. Bir güvenlik sınıflandırıcısı sızma-testi
   promptlarında bir ajanı durdurdu; grup bölünüp yeniden koşuldu.
 - **Ders (tekrarlayan):** ajanlar ayrışıyorsa önce promptu sorgula, kuralı değil (n2, x2, i1, j1, x1).
+
+## iteration-25 (3 Kasım 2026) — `ultracode` seviye olmaktan çıktı
+
+- **Tetik:** kullanıcı Claude'un `ultracode` efor mantığının değiştiğini bildirdi. Resmi dokümanlar (`model-config`, `workflows`,
+  `settings-reference`) ve Claude Code changelog'u okundu: **v2.1.284'ten beri Ultracode kendi anahtarı** — eforu `xhigh`'a
+  zorlamıyor, her efor seviyesinde açık kalıyor, `/effort ultracode off` var, efor tavanı altında kapanmıyor.
+- **Keşfedilen yan etkiler:** (1) oturum geneline uygulanır, her kayda değer görev workflow olur ve **limitler daha hızlı erir**;
+  (2) tek görev için `ultracode` anahtar kelimesi var (yalnız elle yazılan prompt'ta çalışır); (3) `CLAUDE_CODE_EFFORT_LEVEL`
+  ve `effortLevel` `ultracode`'u kabul etmez (önceki kayıt yanlıştı); (4) Haiku 5.5 `xhigh` listeler, yani teknik olarak desteklenir.
+- **Kural değişikliği:** UC1 artık `effort: <seviye> · ultracode` yazar; seviye `Efor ← D`, taban `high`, tavan `xhigh`. Eski
+  çıktı (`effort: ultracode`) `/effort ultracode` yazdırıyordu — bugün oturumu `xhigh`'a getirmez. Adım 7 kural 12 otomatik
+  `Ultracode:` satırı ekler (tek görev için `ultracode:` önek, oturumluk anahtar pahalı). `max` ile `ultracode` hâlâ hiç eşlenmez,
+  gerekçe değişti (bölünemez kararı fan-out bölemez; `max` çok ajan altında aşırı düşünmeyi katlar).
+- **Dürüst sınır:** `high` tabanı Anthropic'in Sonnet 5.5 başlangıç tavsiyesine dayanır, ölçüm değil; workflow alt ajanlarının hangi
+  eforda koştuğu belgelenmemiş. **Taze ajan koşusu (6 soğuk ajan, 36 prompt): 34/36.** `c1` rozeti bir kez OpenCode satırına koydu (model, `high`, bayrak ve
+  `Ultracode:` satırı doğruydu); 3 tekrar koşuda 3/3 → tek seferlik sapma. `r1` (`ultracode` ile ilgisiz) 4 koşuda 2/4: OpenCode `#1`
+  MiniMax ile MiMo arasında gidip geliyor; iteration-24'te geçmişti. Açık bırakıldı — dersimiz gereği önce prompt sorgulanmalı. Yeni
+  `c2` (D=3 × 180 servis → `xhigh · ultracode`) ve `c3` (beş faz, R=3 → `high · ultracode`) eklendi; beklentileri soğuk koşudan alındı ve
+  kurala karşı gözden geçirildi (bağımsız golden değil).
