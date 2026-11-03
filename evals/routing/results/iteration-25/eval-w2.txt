@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
+OpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: D=3 algorithm design is deep-reasoning, where Claude still leads Argon on HLE (61 vs 57) and CritPt (32 vs 27) and on ARC-AGI-2 against the budget tier.
+Gemini 4 Argon: opencode-go/gemini-4-argon-contributor — Google trains on your prompts; Go cap USD 60 during the 2× promo (30 after). If it errors or is overloaded, run the row's other model.
+⚡ Claude /fast available (2.5x faster, 2× price).
