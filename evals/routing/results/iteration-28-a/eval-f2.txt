@@ -1,0 +1,4 @@
+Claude: Haiku 5.5 · effort: low
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash Free · effort: low · #2 GLM-5.3-Flash · effort: low
+Evidence: D=0 single-function rename, one small unit, so the free Zen twin takes it at zero cost with paid GLM-5.3-Flash as fallback; Claude's quota stays untouched.
+GLM-5.3-Flash Free: opencode/glm-5.3-flash-free — Zen free model (OpenCode clients only, limited time), zero retention, not used for training. If it errors or is rate-limited, run #2.

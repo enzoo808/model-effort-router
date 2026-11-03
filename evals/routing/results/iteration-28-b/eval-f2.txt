@@ -1,0 +1,4 @@
+Claude: Haiku 5.5 · effort: low
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash Free · effort: low · #2 GLM-5.3-Flash · effort: low
+Evidence: D=0 single-function rename is basic one-unit work, so the free Zen twin takes it with paid GLM-5.3-Flash (USD 0.25 per task) as fallback, sparing Claude's quota.
+GLM-5.3-Flash Free: opencode/glm-5.3-flash-free — Zen free model (OpenCode clients only, limited time), zero retention, not used for training. If it errors or is rate-limited, run #2.

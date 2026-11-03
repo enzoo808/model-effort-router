@@ -1,7 +1,7 @@
 {
   "skill_name": "model-secici",
-  "source_of_truth": "README.tr.md 'Doğrulama' table for the legacy ids; this file for iteration-27",
-  "note": "Iteration-27 live regression set (Claude + OpenCode; BUD1 budget-first pool, SM1 OpenCode default, FR1 empty free lane, GM1 Gemini overlay). Gemini 4 Argon is zero-retention and untrained on Go (privacy table, 3 Nov), so GM1 puts it first at D=3 / R=3 on five rows whatever the confidentiality (`allow_gemini: true` on those evals); everywhere else it is a regression. The goldens are derived from SKILL.md's rules by hand; the iteration-24 cold-agent run (33/33) predates the 22-24 Oct roster change, and the iteration-25 cold-agent run (6 fresh agents, 27 Oct) scored 35/36 on the first pass; e1 missed once (long-context tag dropped) and passed on two further fresh agents. g1, j1, n1, r1, t1, w2, w3 changed goldens; p2 and ef1 are new. `python grade_routing.py --selftest --results-dir /tmp/x` proves the grader and the goldens agree. Effort rule: D>=2 -> max on DeepSeek V4.1 Flash / GLM-5.3-Flash. The iteration-20 (Codex) set is archived under archive/iteration-20-codex/routing/. Iteration-27 cold run (3 Nov, 6 fresh agents, 36 evals): 34/36 first pass; w3 exposed an NC1-vs-GM1 gap (NC1 block fixed) and c1 was a tag-reading outlier; both passed on two further fresh agents each (iteration-27-rerun-a/b), as did w2, f1, q1.",
+  "source_of_truth": "README.tr.md 'Doğrulama' table for the legacy ids; this file for iteration-28",
+  "note": "Iteration-28 live regression set (Claude + OpenCode; BUD1 budget-first pool, SM1 OpenCode default, FR1 empty free lane, GM1 Gemini overlay). Gemini 4 Argon is zero-retention and untrained on Go (privacy table, 3 Nov), so GM1 puts it first at D=3 / R=3 on five rows whatever the confidentiality (`allow_gemini: true` on those evals); everywhere else it is a regression. The goldens are derived from SKILL.md's rules by hand; the iteration-24 cold-agent run (33/33) predates the 22-24 Oct roster change, and the iteration-25 cold-agent run (6 fresh agents, 27 Oct) scored 35/36 on the first pass; e1 missed once (long-context tag dropped) and passed on two further fresh agents. g1, j1, n1, r1, t1, w2, w3 changed goldens; p2 and ef1 are new. `python grade_routing.py --selftest --results-dir /tmp/x` proves the grader and the goldens agree. Effort rule: D>=2 -> max on DeepSeek V4.1 Flash / GLM-5.3-Flash. The iteration-20 (Codex) set is archived under archive/iteration-20-codex/routing/. Iteration-27 cold run (3 Nov, 6 fresh agents, 36 evals): 34/36 first pass; w3 exposed an NC1-vs-GM1 gap (NC1 block fixed) and c1 was a tag-reading outlier; both passed on two further fresh agents each (iteration-27-rerun-a/b), as did w2, f1, q1. Iteration-28: Rule FR1 gives trivial D=0 one-unit work to Zen's GLM-5.3-Flash Free (f2, f3 set allow_free; f4 is the W=2 boundary).",
   "evals": [
     {
       "id": "a1",
@@ -236,6 +236,50 @@
       "forbidden": [
         "MiMo-V2.6-Pro"
       ]
+    },
+    {
+      "id": "f2",
+      "eval_name": "Trivial one-function rename (D=0, W=0): Zen's free twin is #1 (FR1)",
+      "prompt": "Rename the variable `usr` to `user` in this one function",
+      "expected_claude": "Haiku 5.5 · effort: low",
+      "expected_opencode": "#1 GLM-5.3-Flash Free · effort: low · #2 GLM-5.3-Flash · effort: low",
+      "tests_rule": "FR1: D=0, R=1 (reviewed code change), W=0, C=0, one small unit -> GLM-5.3-Flash Free #1 at low, the paid GLM-5.3-Flash #2; H1 gives Haiku 5.5 low; D<=1 -> OpenCode; free-model line, no DeepSeek line",
+      "golden_output": "Claude: Haiku 5.5 · effort: low\nOpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash Free · effort: low · #2 GLM-5.3-Flash · effort: low\nEvidence: A single-function rename is D=0 work, so the free Zen twin runs it and the paid GLM-5.3-Flash is the fallback; nothing here needs a paid slot.\nGLM-5.3-Flash Free: opencode/glm-5.3-flash-free — Zen free model (OpenCode clients only, limited time), zero retention, not used for training. If it errors or is rate-limited, run #2.",
+      "expected_notes": [
+        "opencode/glm-5.3-flash-free"
+      ],
+      "allow_free": true,
+      "expected_low_confidence": false,
+      "expected_recommended": "opencode"
+    },
+    {
+      "id": "f3",
+      "eval_name": "One-sentence translation (D=0, W=0, R=0): Zen's free twin is #1 (FR1)",
+      "prompt": "Translate this one sentence into Turkish: \"The meeting is moved to Thursday.\"",
+      "expected_claude": "Haiku 5.5 · effort: low",
+      "expected_opencode": "#1 GLM-5.3-Flash Free · effort: low · #2 GLM-5.3-Flash · effort: low",
+      "tests_rule": "FR1: pure form change of one sentence (D=0, R=0, W=0, C=0) -> GLM-5.3-Flash Free #1, GLM-5.3-Flash #2 at low; H1 Haiku 5.5 low; free-model line",
+      "golden_output": "Claude: Haiku 5.5 · effort: low\nOpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash Free · effort: low · #2 GLM-5.3-Flash · effort: low\nEvidence: Translating one sentence is D=0 work, so the free Zen twin runs it with the paid GLM-5.3-Flash as the fallback; it needs no paid cap.\nGLM-5.3-Flash Free: opencode/glm-5.3-flash-free — Zen free model (OpenCode clients only, limited time), zero retention, not used for training. If it errors or is rate-limited, run #2.",
+      "expected_notes": [
+        "opencode/glm-5.3-flash-free"
+      ],
+      "allow_free": true,
+      "expected_low_confidence": false,
+      "expected_recommended": "opencode"
+    },
+    {
+      "id": "f4",
+      "eval_name": "Mechanical rename across 40 files (D=1, W=2): FR1 does NOT apply, paid Flash pair",
+      "prompt": "Rename the variable `usr` to `user` across these 40 files",
+      "expected_claude": "Sonnet 5.5 · effort: medium",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low",
+      "tests_rule": "mechanical enumeration is D=1 (not D=3); W=2 (40 files) puts it outside FR1 (W=0) and outside H1 (D=1 needs W<=1) -> Sonnet 5.5 medium; D<=1 -> OpenCode, paid Flash pair at low; DeepSeek line, no free model",
+      "golden_output": "Claude: Sonnet 5.5 · effort: medium\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low\nEvidence: A mechanical rename across 40 files is D=1 work, so the paid Flash tier on its USD 60–100 caps handles it at USD 0.25–0.27 per task and keeps Claude's quota.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (read as valid through 30 Nov 2026 — confirm on the Go page after that date).",
+      "expected_notes": [
+        "peak hours cost 2×"
+      ],
+      "expected_low_confidence": false,
+      "expected_recommended": "opencode"
     },
     {
       "id": "i1",

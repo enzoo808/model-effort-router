@@ -2,8 +2,8 @@
 name: model-secici
 description: >-
   Routes a prompt: which model + effort on Claude (Haiku 5.5 / Sonnet 5.5 /
-  Opus 5.5 / Opus 4.8 / Fable 5.1) and on OpenCode (two models out of the 20 it
-  rates — the Go budget tier and, for the hardest cases, Go's Gemini 4 Argon —
+  Opus 5.5 / Opus 4.8 / Fable 5.1) and on OpenCode (two models out of the 21 it
+  rates — the Go budget tier, a free Zen model for the most basic work and, for the hardest cases, Go's Gemini 4 Argon —
   each with an effort), and which ecosystem to use — OpenCode by default, Claude
   where it makes a serious difference. Use for "which model / effort / AI should
   I use" or /model-secici.
@@ -11,7 +11,7 @@ description: >-
 
 # Claude & OpenCode model / effort router
 
-<!-- routing-policy-version: iteration-27 -->
+<!-- routing-policy-version: iteration-28 -->
 
 Route the user's prompt — **do not run it**. Say which model + effort to use on
 **Claude** and on **OpenCode** (**two** models, `#1` / `#2`, each with its own
@@ -26,8 +26,8 @@ window and each Go model's **own** dollar cap (plan USD 10/month; 5-hour window 
 20% of a model's cap, weekly 50%) — four Go models burn theirs in a handful of tasks
 and are kept out of the default pairs (Rule BUD1). Gemini 4 Argon is
 zero-retention and untrained on Go but has a USD 30 cap, so it is spent only on the hardest
-cases (Rule GM1). The free lane is empty since the MiniMax M3.1 Flash Free promo ended; its
-paid successor is a budget model (Rule FR1). When in doubt, round **down**.
+cases (Rule GM1). A free Zen model takes the most basic one-unit work, and only that
+(Rule FR1). When in doubt, round **down**.
 
 **Run Steps 0–6 in one pass, silently.** If Step 0 is clean and no gate fires,
 score once — do not re-derive. Emit only the output lines. `opencode-benchmarks.md`
@@ -46,11 +46,11 @@ to route.
 | **Fable 5.1** | Frontier scale (1000+ files), biology-adjacent R&D. USD 10/USD 50 |
 | Mythos 5.1 | = Fable 5.1, permissive safeguards, **Glasswing invite only** |
 
-**OpenCode pool — the 20 rated models** (plan: Go, USD 10/month; caps and privacy read from the Go docs page on 3 Nov 2026). `II` = AA
+**OpenCode pool — the 21 rated models** (plan: Go, USD 10/month; caps and privacy read from the Go docs page on 3 Nov 2026). `II` = AA
 Intelligence Index v4.3.2 (Max unless noted), `TB` = AA Terminal-Bench 4.0,
 `USD/task` = AA cost per index task, `cap` = Go monthly cap per model (`—` = no Go cap),
 `tasks/mo` = `cap ÷ Arena p50 cost per real agent task` (order of magnitude: how many real
-tasks one month of that model's cap buys). Tier: **B** budget, **P** premium (Rule BUD1), **G** Gemini (hardest cases only,
+tasks one month of that model's cap buys). Tier: **B** budget, **F** free (Zen, Rule FR1), **P** premium (Rule BUD1), **G** Gemini (hardest cases only,
 Rule GM1), **N** non-confidential only (NC1), **D** dominated. Full data, contexts and
 sources: `opencode-benchmarks.md`.
 
@@ -76,13 +76,14 @@ sources: `opencode-benchmarks.md`.
 | 18 | Gemini 3.8 Flash | 41 (High) | 20 | 1.24 | — | — | D | **Dominated** (E10): 41 @ USD 1.24 vs MiMo-V2.6-Pro 46 @ 0.13; not offered on Go |
 | 19 | **MiniMax M3.1 Flash** | 43 | 26 | 0.22 | 20 | — | B | Free promo deprecated 22 Oct; the paid `opencode-go/minimax-m3.1-flash` (USD 0.15/0.60 per MTok, zero retention) is a budget model on the Go page's own estimate: 19,380 requests a month against MiMo-V2.6-Pro's 16,300 (no Arena row). Leads the Flash tier on AutomationBench-AA (73), HLE (48), CritPt (22), SciCode (53); 1M; takes images. **Hallucination 92.8% — never for factual recall** |
 | 20 | **Kimi K3.1 Pro** | 55 | 67 | 2.11 | 15 | — | **P** | Live on Go since 23 Oct; supersedes Kimi K3 (44). AA TB 4.0 67 (mini-swe-agent), HLE 53, SciCode 61, GDPval-AA 1846; ~14% of its cap per AA task (150M output tokens, verbose); 1M, text + image + video; `low`/`high`/`max`. **Unverified:** the AA pages were unreachable — Go docs: USD 15 cap, 0-day retention, 735 requests a month. AA figures from search summaries (the AA pages were unreachable) |
+| 21 | **GLM-5.3-Flash Free** | 42 | 33 | 0 | free | — | F | Zen's free twin of GLM-5.3-Flash (`opencode/glm-5.3-flash-free`, OpenCode clients only, free for a limited time): same base model, so the row-6 anchors stand; zero retention, not used for training (Zen privacy page); 200k context, 32k output, text + image, `low`/`high`/`max`. Rule FR1 only — trivial one-unit work |
 
 <!-- rule:BUD1 -->
 **BUD1 · budget-first pool.** The four premium models — GLM-5.3, Kimi K3.1 Pro, Grok 4.7 and Qwen3.8 Max, each buying at most 35 real agent tasks per month of its Go cap (Kimi K3.1 Pro has no Arena figure yet: about 14% of its cap per AA task, so roughly 7) — are never `#1` or `#2` of a routed pair. They reach the OpenCode line only through Rule A1-OC, after the user states that an earlier OpenCode run fell short. Every other pair is built from the budget tier (140 or more tasks per month, or, where Arena has no row, at least 16,000 Go-estimated requests a month), Gemini 4 Argon where Rule GM1 allows it, and, under NC1, GPT 6 Luna and Muse Spark 1.3 Contributor.
 <!-- /rule:BUD1 -->
 
 <!-- rule:FR1 -->
-**FR1 · free lane.** The free lane is empty: MiniMax M3.1 Flash Free was deprecated on 22 Oct, Beam Free keeps prompts for 30 days and Iceman Contributor Free trains on them. Its paid successor MiniMax M3.1 Flash (Go cap USD 20, zero retention) is a budget-tier model — Arena has no row for it, but the Go page estimates 19,380 requests a month against 16,300 for MiMo-V2.6-Pro — and takes `#2` of the `deep-reasoning` and `science` rows and `#1` of the `doc-data-understanding` row, where its AA scores lead the Flash tier; it is gated out of factual recall like DeepSeek. If it errors or is delisted, the rows revert to GLM-5.3-Flash (`#2`) and Qwen3.8 Flash · MiMo-V2.6-Pro. Zen's free twins of paid Flash models (`glm-5.3-flash-free`, `deepseek-v4.1-flash-free`: same base models, zero retention, no training; the DeepSeek twin has a 200k window) are never `#1` or `#2` — when the user says a paid Flash window is exhausted, `Evidence:` names the twin before the CAP1 chain. `mimo-v2.6-flash-free` trains on prompts (NC1 spill-over only). Every other free model is never selected.
+**FR1 · free lane.** Go has no usable free model — Beam Free keeps prompts for 30 days, Iceman Contributor Free trains on them and MiniMax M3.1 Flash Free was deprecated on 22 Oct — but Zen's GLM-5.3-Flash Free (`opencode/glm-5.3-flash-free`: the same base model as GLM-5.3-Flash, zero retention, no training, 200k context, OpenCode clients only, free for a limited time) takes the most basic work. When `D = 0`, `R ≤ 1`, `W = 0` and `C = 0`, the work is one small unit (not a batch or a volume job) and the dominant capability is neither `research-synthesis` nor `latency-volume`, the pair is GLM-5.3-Flash Free `#1` and the paid GLM-5.3-Flash `#2`, both effort `low`; if the free model errors, is rate-limited or delisted, run `#2`. Every other task keeps the pair its table gives. MiniMax M3.1 Flash (Go cap USD 20, zero retention) is a budget-tier model — Arena has no row for it, but the Go page estimates 19,380 requests a month against 16,300 for MiMo-V2.6-Pro — and takes `#2` of the `deep-reasoning` and `science` rows and `#1` of the `doc-data-understanding` row, where its AA scores lead the Flash tier; it is gated out of factual recall like DeepSeek. If it errors or is delisted, those rows revert to GLM-5.3-Flash (`#2`) and Qwen3.8 Flash · MiMo-V2.6-Pro. Zen's DeepSeek twin (`deepseek-v4.1-flash-free`, 200k window) is never `#1` or `#2` — when the user says a paid Flash window is exhausted, `Evidence:` names it before the CAP1 chain. `mimo-v2.6-flash-free` trains on prompts (NC1 spill-over only). Every other free model is never selected.
 <!-- /rule:FR1 -->
 
 <!-- rule:GM1 -->
@@ -131,6 +132,7 @@ provider, read 6 Oct 2026; Claude Haiku 5.5 added 8 Oct, Gemini 4 Argon 20 and 2
 |---|---|---|
 | GLM-5.3 · GLM-5.3-Flash · DeepSeek V4.1 Flash | `low` · `high` · `max` | `D ≤ 1` `low` · `D ≥ 2` `max` |
 | MiMo-V2.6-Pro · MiMo-V2.6-Flash | **none** — thinking is always on | `default` |
+| GLM-5.3-Flash Free | `low` · `high` · `max` | `low` (Rule FR1, `D = 0` only) |
 | Kimi K3 | `max` only | never emitted (dominated) |
 | Kimi K3.1 Pro | `low` · `high` · `max` (default `max`) | `max` (A1-OC only, `D ≥ 2`) |
 | Grok 4.7 | `low` · `medium` · `high` · `xhigh` | `xhigh` (the rung AA measured) |
@@ -505,7 +507,7 @@ goes immediately after `Claude:` as usual.
 **1.** Step 1 OpenCode gates. **2.** `D ≤ 1` → first row. **3.** Otherwise the
 dominant tag's row, left column for `D ≤ 2 ∧ R ≤ 2`, right column for `D = 3` or
 `R = 3` (Rule PO1). **4.** Rules CAP1, FR1, GM1. **5.** Effort for each (below). Every pair comes
-from the **budget tier** (Rule BUD1) — the free lane of FR1 is empty; Rule GM1 puts Gemini 4 Argon
+from the **budget tier** (Rule BUD1); Rule FR1 puts the free Zen twin on top for trivial `D = 0` work, and Rule GM1 puts Gemini 4 Argon
 on top of the right-hand column — the premium four are not in this table.
 
 Each row is the **consensus of the independent anchors in `opencode-evidence.json`
@@ -663,7 +665,7 @@ thin evidence → the sensible default + `low-confidence`.
 
 ## Step 7 — Quota-protection and accuracy rules
 
-Rationale in `reference.md` §10.5. **Auto-added lines:** Rules 1, 9, 10 and 11.
+Rationale in `reference.md` §10.5. **Auto-added lines:** Rules 1, 9, 10, 11 and 12.
 
 1. **R=3 → human-review note** ("Do not apply without human review."). Model and
    effort unchanged. One shared note, not one per arm.
@@ -687,6 +689,8 @@ Rationale in `reference.md` §10.5. **Auto-added lines:** Rules 1, 9, 10 and 11.
     `DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (read as valid through 30 Nov 2026 — confirm on the Go page after that date).`
 11. **Gemini line (auto).** If **Gemini 4 Argon** is on the OpenCode line:
     `Gemini 4 Argon: opencode-go/gemini-4-argon — zero retention, not used for training; Go cap USD 30 (about 15 heavy tasks a month; promo USD 2/10 per MTok to 30 Nov, then 4/20). If it errors or is overloaded, run the row's other model.`
+12. **Free-model line (auto).** If **GLM-5.3-Flash Free** is on the OpenCode line:
+    `GLM-5.3-Flash Free: opencode/glm-5.3-flash-free — Zen free model (OpenCode clients only, limited time), zero retention, not used for training. If it errors or is rate-limited, run #2.`
 
 ### Speed line
 
@@ -711,7 +715,7 @@ Evidence: <one sentence, ≤ 30 words>
 - Write `default` where OpenCode offers no variant (MiMo-V2.6).
   OpenCode gated: `OpenCode: use Claude — <reason>` (no `#`).
 - Extras, own line each, in order: `opusplan` ⚠️ (directly under the Claude line) ·
-  data / DeepSeek / Gemini lines (Step 7) · speed line · `R=3` → `Do not apply without human
+  data / DeepSeek / Gemini / free-model lines (Step 7) · speed line · `R=3` → `Do not apply without human
   review.` last.
 - "Why?" → expand from `reference.md` / `opencode-benchmarks.md`; never unprompted.
 
@@ -791,5 +795,5 @@ Evidence: Offensive security is a deciding gate on both arms; only Opus 4.8 carr
 
 `reference.md` §8 examples · §10 edge cases · §11–§14 evidence maps · §17 Claude 5.5 · §19 Haiku 5.5
 (§9 and §18 are the retired Codex arm; iteration-20 is git tag `iteration-20-codex`).
-`opencode-benchmarks.md` — the 20-model evidence, variants, rung curves, sources (§13 = Gemini 4 Argon and the free models, §14 = the 22–24 Oct Go changes and Kimi K3.1 Pro).
+`opencode-benchmarks.md` — the 21-model evidence, variants, rung curves, sources (§13 = Gemini 4 Argon and the free models, §14 = the 22–24 Oct Go changes and Kimi K3.1 Pro).
 **Never load them to route a prompt.**

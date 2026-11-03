@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Grade model-secici routing outputs against evals.json (iteration-27: Claude + OpenCode, budget-first, empty free lane, Gemini slot).
+"""Grade model-secici routing outputs against evals.json (iteration-28: Claude + OpenCode, budget-first, trivial-work free lane, Gemini slot).
 
 Usage:
     python grade_routing.py --results-dir results/iteration-21
@@ -54,7 +54,7 @@ OPENCODE_MODELS = sorted([
     "Claude Haiku 5.5",
     "MiniMax M3", "MiniMax M2.7",
     "LongCat 2.5 Preview", "LongCat-2.0", "Hy4 Preview", "Hy3", "Space Bunny",
-    "MiniMax M3.1 Flash Free", "MiniMax M3.1 Flash", "Iceman Contributor Free", "Gemini 4 Argon Contributor", "Gemini 4 Argon", "Gemini 3.8 Flash",
+    "MiniMax M3.1 Flash Free", "GLM-5.3-Flash Free", "MiniMax M3.1 Flash", "Iceman Contributor Free", "Gemini 4 Argon Contributor", "Gemini 4 Argon", "Gemini 3.8 Flash",
     "Step 5 Preview", "Beam Free", "Big Pickle", "LL Alpha Free", "Exo Free", "Jev 1.13",
     "Nemotron 3 Ultra", "Nemotron 3.5 Lightning", "Nemotron 3.5 Super VL",
 ], key=len, reverse=True)
@@ -248,6 +248,11 @@ def grade_one(item: dict, output: str) -> tuple[bool, str]:
     oc_line = extract_line(output, "OpenCode") or ""
     if not item.get("allow_gemini") and re.search(GEMINI_PATTERN, oc_line):
         return False, f"OpenCode line names a Gemini model without Rule GM1 applying (D=3 / R=3 rows, or a shortfall): '{oc_line}'"
+    # Rule FR1 (iteration-28): Zen's GLM-5.3-Flash Free may be #1 of a trivial D=0 pair, only in evals that set "allow_free"
+    if re.search(r"GLM-5\.3-Flash Free", oc_line):
+        if not item.get("allow_free"):
+            return False, f"OpenCode line names GLM-5.3-Flash Free without Rule FR1 applying (D=0, R<=1, W=0, C=0, one small unit): '{oc_line}'"
+        oc_line = oc_line.replace("GLM-5.3-Flash Free", "GLM-5.3-Flash")
     for pat in NEVER_ON_LINE:
         if re.search(pat, oc_line):
             return False, f"OpenCode line names a free model that is never selected (Rule FR1, pattern {pat}): '{oc_line}'"

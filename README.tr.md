@@ -24,6 +24,16 @@ Evidence: Orta zorlukta özellik işi bağımsız DeepSWE'de eşit (DeepSeek 71.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
 ```
 
+## iteration-28 — ne değişti (3 Kasım 2026): en basit işler için ücretsiz model
+
+Router'ın arada bir çok basit işleri ücretsiz modele vermesini istediniz. Go'da uygun ücretsiz model yok (Beam Free istemleri 30 gün saklar ve skoru yok, Iceman Contributor Free istemlerle eğitir, MiniMax M3.1 Flash Free kullanımdan kalktı); bu yüzden ücretsiz model
+**Zen'in GLM-5.3-Flash Free'si** (`opencode/glm-5.3-flash-free`): ücretli GLM-5.3-Flash ile aynı taban model, sıfır saklama ve eğitimsiz (Zen gizlilik sayfası), 200k bağlam, `low`/`high`/`max`, yalnız OpenCode istemcileri, sınırlı süre ücretsiz.
+**Kural FR1** onu yalnızca `D = 0`, `R ≤ 1`, `W = 0`, `C = 0`, iş tek küçük birim (toplu değil) ve baskın capability `research-synthesis` (olgusal bilgi) ya da `latency-volume` değilse `#1` yapar (efor `low`, yedek `#2` ücretli GLM-5.3-Flash).
+Yani "bu tek fonksiyonda değişkeni yeniden adlandır" ya da "bu cümleyi çevir" — daha büyüğü değil; tasarım gereği nadir olur. Ücretsiz modelin Zen'de olduğunu ve kalkabileceğini bildiren kısa bir `GLM-5.3-Flash Free: …` satırı eklenir.
+`f2`/`f3` eval'leri bunu, `f4` (40 dosyada yeniden adlandırma) ücretli Flash katmanında kalması gereken sınırı sınar. Havuz 21.
+
+**Kontrol koşusu (3 Kasım):** iki taze ajan üç yeni prompt'u ve ücretsiz modeli **almaması** gereken beş sınır prompt'unu (`a1` 200 yorumluk toplu iş, `h1` `R=3` config, `y1` olgusal sorgu, `a4` ilk-token gecikmesi, `a2` `D=1` özet) yönlendirdi: **8/8 ve 8/8** (`results/iteration-28-a/b`). Kalan 31 eval bu kural için yeniden koşulmadı; hiçbirinde `D=0`, `W=0`, `R≤1` birlikte yok, yani değişemezler.
+
 ## iteration-27 — ne değişti (3 Kasım 2026): Go dokümanı doğrudan okundu
 
 `opencode.ai` erişilebilir oldu (ağ ayarı değişti); Go dokümanı — limit tablosu, tahmini istek tabloları, Privacy tablosu — iteration-26'daki arama özetlerinin yerini aldı.

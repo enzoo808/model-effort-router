@@ -46,6 +46,16 @@ model-secici:
 
 ---
 
+## What changed in iteration-28 (3 Nov 2026): a free model for the most basic work
+
+You asked for the router to hand trivial jobs to a free model now and then. Go has no free model that fits (Beam Free keeps prompts for 30 days and has no score, Iceman Contributor Free trains on prompts, MiniMax M3.1 Flash Free was
+deprecated), so the free model is **Zen's GLM-5.3-Flash Free** (`opencode/glm-5.3-flash-free`): the same base model as the paid GLM-5.3-Flash, zero retention and no training (Zen privacy page), 200k context, `low`/`high`/`max`, OpenCode clients
+only, free for a limited time. **Rule FR1** puts it `#1` (effort `low`, paid GLM-5.3-Flash `#2` as the fallback) only when `D = 0`, `R ≤ 1`, `W = 0` and `C = 0`, the job is one small unit (not a batch), and the dominant capability is neither
+`research-synthesis` (factual recall) nor `latency-volume`. That is "rename a variable in one function" or "translate one sentence", and nothing bigger — so it will be rare by design. A short `GLM-5.3-Flash Free: …` line is added so you know it is a Zen
+model that can disappear. Evals `f2`/`f3` cover it, `f4` (a rename across 40 files) is the boundary that must stay on the paid Flash tier. Pool 21.
+
+**Check run (3 Nov):** two fresh agents routed the three new prompts plus five boundary prompts that must *not* get the free model (`a1` 200-review batch, `h1` `R=3` config, `y1` factual lookup, `a4` first-token latency, `a2` `D=1` summary): **8/8 and 8/8** (`results/iteration-28-a/b`). The other 31 evals were not re-run for this rule; none of them has `D=0`, `W=0`, `R≤1`, so none can change.
+
 ## What changed in iteration-27 (3 Nov 2026): the Go docs read directly
 
 `opencode.ai` became reachable (the network setting was changed), so the Go docs page itself — limits table, estimated-request tables, Privacy table — replaces the search summaries of iteration-26.

@@ -6,7 +6,7 @@
 
 Checks (all mechanical, all fail loudly):
 
-  1. The roster table names exactly the 20 pool models, with the same Go cap, tier
+  1. The roster table names exactly the 21 pool models, with the same Go cap, tier
      (B budget / P premium / G Gemini / N non-confidential / U unrouted / D dominated) and
      tasks-per-month.
   2. Every Step 4-OC row (R<=2 pair, R=3 pair, NC1 variants) equals the mirror,
@@ -16,7 +16,7 @@ Checks (all mechanical, all fail loudly):
   4. Every OpenCode line in a worked example names only routable pool models, an
      effort that OpenCode actually offers for that model (policy `opencode_variants`), never `GLM-5.3 · low` / `Kimi K3 · low`, and never a
      USD 15-cap model at `low` (only the latency row's GPT 6 Luna is exempt).
-  5. No model outside the 20 appears in a Step 4-OC row or an example.
+  5. No model outside the 21 appears in a Step 4-OC row or an example.
   6. Rule GM1: Gemini 4 Argon is an overlay (zero-retention on Go, not NC1-gated) -- it appears in no Step 4-OC table
      cell, the rule text names every policy `gm1_rows` row and never gates it on NC1; an example
      that names it carries the auto-added Gemini line (Step 7 rule 11).
@@ -82,7 +82,7 @@ def main() -> int:
     errors: list[str] = []
 
     # 1 -- roster -----------------------------------------------------------------
-    roster = table_after(skill, "**OpenCode pool — the 20 rated models**")
+    roster = table_after(skill, "**OpenCode pool — the 21 rated models**")
     roster_caps = {}
     for r in roster:
         if len(r) < 9 or not r[0].isdigit():
@@ -104,8 +104,8 @@ def main() -> int:
     for m, cap in roster_caps.items():
         if m in pool and pool[m]["cap_usd"] != cap:
             errors.append("roster cap for %s is USD %d, policy says USD %d" % (m, cap, pool[m]["cap_usd"]))
-    if len(roster_caps) != 20:
-        errors.append("roster must hold exactly 20 models, found %d" % len(roster_caps))
+    if len(roster_caps) != 21:
+        errors.append("roster must hold exactly 21 models, found %d" % len(roster_caps))
 
     # 1b -- tier boundaries and tasks/month recomputed from the evidence (Rule BUD1) -----------
     evid = json.loads((ROOT / "skill" / "opencode-evidence.json").read_text(encoding="utf-8"))
@@ -202,6 +202,18 @@ def main() -> int:
         if "NC1" in gm1_text.group(1):
             errors.append("GM1: Gemini 4 Argon is zero-retention on Go (iteration-27); the rule text must not gate it on NC1")
 
+    # Rule FR1 -- the free Zen twin is an overlay: in no Step 4-OC table cell, and the rule names it with its D=0 limits
+    fr1_text = re.search(r"<!-- rule:FR1 -->\n(.*?)\n<!-- /rule:FR1 -->", skill, re.S)
+    if not fr1_text:
+        errors.append("FR1: rule block missing from SKILL.md")
+    else:
+        for needle in ("GLM-5.3-Flash Free", "`D = 0`", "`R ≤ 1`", "`W = 0`", "`C = 0`", "`research-synthesis`", "`latency-volume`"):
+            if needle not in fr1_text.group(1):
+                errors.append("FR1: the rule text must name %s" % needle)
+    for r in rows:
+        if len(r) >= 3 and (mentions("GLM-5.3-Flash Free", r[1]) or mentions("GLM-5.3-Flash Free", r[2])):
+            errors.append("FR1: GLM-5.3-Flash Free sits in a Step 4-OC pair (row %r); it is an overlay" % r[0][:40])
+
     # no emitted row may name a dominated or outside model
     oc_text = skill[skill.find("### OpenCode Go — Step 4-OC"):skill.find("#### OpenCode Go — effort")]
     table_only = "\n".join(ln for ln in oc_text.split("\n") if ln.strip().startswith("|"))
@@ -213,7 +225,7 @@ def main() -> int:
     for o in outside:
         for r in rows:
             if len(r) >= 3 and (mentions(o, r[1]) or mentions(o, r[2])):
-                errors.append("Step 4-OC emits %s, which is outside the 20-model pool" % o)
+                errors.append("Step 4-OC emits %s, which is outside the 21-model pool" % o)
     for m, meta in pool.items():
         if meta["status"] == "premium":
             for r in rows:
@@ -291,7 +303,7 @@ def main() -> int:
                 continue
             model = used[0]
             if model in outside:
-                errors.append("example names %s, outside the 20-model pool" % model)
+                errors.append("example names %s, outside the 21-model pool" % model)
                 continue
             st = pool[model]["status"]
             if st in ("dominated", "unrouted"):
