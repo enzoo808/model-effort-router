@@ -174,12 +174,15 @@ Hiç interpolasyon yapma.
 | `high` | **Varsayılan** |
 | `xhigh` | Daha derin akıl yürütme. 30 dk+ ajanik/kodlama işleri |
 | `max` | En derin muhakeme. Oturumluk |
-| `ultracode` | `xhigh` + dinamik workflow orkestrasyonu. Oturumluk |
+| `ultracode` | **Seviye değil.** Her kayda değer görev için dinamik workflow planlayan Claude Code anahtarı; oturumun eforunu **değiştirmez**. Eforun ardına bayrak olarak yazılır |
 
 Dört şeyi bil:
-1. **`ultracode` bir model efor seviyesi değil, Claude Code ayarıdır.** Model
-   kısıtı yok — `xhigh` destekleyen her modelde çalışır: Fable 5.1, Sonnet 5.5,
-   **Opus 5.5**, Opus 4.8; Haiku 5.5'e ise H1 hiç uzun orkestre oturum vermez.
+1. **`ultracode` bir model efor seviyesi değil, Claude Code anahtarıdır** (v2.1.284'ten beri
+   eforla bağımsız). Eforu `xhigh`'a **çekmez**; dinamik workflow açık ve `xhigh` destekleyen model
+   ister. **Oturum geneline** uygulanır: her kayda değer görev workflow'a dönüşür, limitler daha
+   hızlı erir. Tek görev için prompt'a `ultracode:` anahtar kelimesi yazılır. Yalnız
+   `--effort ultracode` bayrağı ayrıca `xhigh` kurar. Haiku 5.5 teknik olarak destekler ama H1 ona hiç
+   uzun orkestre iş vermez.
 2. **Haiku 5.5 efor alan ilk Haiku'dur** (`low`…`max`). Anthropic: `low` sohbet/kısa araç işi/basit hacim, `medium` varsayılan, `high` bilgi işi ve sıkı talimat. Router yalnız `low` veya `medium` yazar (E8).
 3. Efor bir token bütçesi değil, davranışsal sinyaldir; "low = 1024 token" gibi
    rakamlar uydurma.
@@ -223,7 +226,7 @@ W/süre kontrolü ayrıca yapılır, bkz. not) ve **eleyici** (sadece bir adayı
 listeden çıkarır, final model kararını Adım 2/3 verir).
 
 - Saniye altı gecikme **veya** yüksek hacimli sınıflandırma (`D ≤ 1`) → **Haiku 5.5**, efor `low`. Dur. (belirleyici — Haiku sonucu yetersiz kaldıysa H2 bunu geçersiz kılar)
-- **Saldırı amaçlı siber güvenlik** (exploit üretimi, sızma testi, ikili/binary tabanlı zafiyet taraması) → **Opus 4.8**, **efor tabanı `xhigh`**. (belirleyici — ama W/süre uygunsa efor `xhigh`'dan `ultracode`'a çıkabilir) — Glasswing erişimi varsa **Mythos 5.1**.
+- **Saldırı amaçlı siber güvenlik** (exploit üretimi, sızma testi, ikili/binary tabanlı zafiyet taraması) → **Opus 4.8**, **efor tabanı `xhigh`**. (belirleyici — ama W/süre uygunsa `xhigh` tabanının üstüne `ultracode` bayrağı eklenir) — Glasswing erişimi varsa **Mythos 5.1**.
 - **Biyoloji-bitişik Ar-Ge** (genomik, protein/kimya pipeline, biyo-CTF) → **Fable 5.1**. (belirleyici)
 - **1000+ dosya / tüm kod tabanı ölçeğinde** (frontier ölçek) → **Fable 5.1**. (belirleyici)
   Tek sinyal yeterli — "eşzamanlı 1M bağlam" ve "kalıcı bellek" ayrıca
@@ -360,8 +363,10 @@ D=3 dışında hiç seçilmiyor, dolayısıyla `low`/`medium` ile önerilmez. Ro
 `Sonnet 5.5 · max` **hiç üretmez** (orta katman `xhigh`'da kapanır).
 
 `ultracode` ⇔ tahmini süre > 30 dk **∧** (`O=high` **VEYA** `W=3 ∧ D≥2`) **∧**
-zorluk **tek bölünemez zincir değil**. Efor alanına `xhigh` değil **`ultracode`**
-yaz. Model kısıtı yok (Haiku 5.5'te asla).
+zorluk **tek bölünemez zincir değil**. Çıktıda eforun ardına bayrak olarak yaz:
+`effort: <seviye> · ultracode`. Seviye normal `D→efor` basamağıdır, **tabanı `high`, tavanı `xhigh`**
+(30 dk+ gözetimsiz koşuda Sonnet 5.5 `low`/`medium`'da sık durup soruyor). `ultracode` eforu
+yükseltmez. Haiku 5.5'te asla.
 
 **O=high (orkestrasyon), iteration-18:** oturum, **3+ ayrı FAZ** çalıştırmalı —
 faz = farklı türde bir çıktı üreten ve çıktısı sonraki faz tarafından tüketilen
@@ -384,7 +389,8 @@ gerektirdiğinde** (180 servislik auth-bypass denetimi). `D≤1`'de genişlik hi
 şey satın almaz.
 
 **Çakışma çözümü:** zorluk **tek bölünemez** bir tasarım/kanıt kararıysa
-(`max`'ın da şartı) `ultracode` **hayır** — ikisi aynı testi kullanır.
+(`max`'ın da şartı) `ultracode` **hayır** — ikisi aynı testi kullanır; `max` + `ultracode` hiç eşlenmez
+(bölünemez kararı fan-out bölemez, `max` çok ajan altında aşırı düşünmeyi katlar).
 
 **`opusplan` — BU BAĞLAMDA GEÇERLİ DEĞİL.** `opusplan` (plan modunda Opus,
 yürütmede otomatik Sonnet'e geçen model ayarı) yalnızca Claude Code CLI'de
@@ -424,7 +430,7 @@ gerçekten maksimum akıl yürütme hak ediyorsa kullanıcı elle `max` yapabili
 da amiral gemisine yükseltir.
 
 **5. 30 dakikanın altındaki işte `ultracode` önerme.** Tek seferlik derinlik
-için prompt'a **`ultrathink`** yaz.
+için prompt'a **`ultrathink`** yaz (terminalde v2.1.311+: o tur `xhigh` koşar).
 
 **6. Uzun oturum / MCP uyarısı.** Bağlı MCP/connector varsa hatırlat: her sunucu
 her mesaja araç şeması enjekte eder, yük araç sayısıyla orantılı (GitHub MCP 27
@@ -545,7 +551,7 @@ kapılandıysa ya da Adım 0 blokladıysa rozet yok. Kanıt yetersizse mantıkl�
 **Üç satır** (Adım 0 bloklarsa yalnız tek `Clarify:` satırı — model, rozet, `Evidence:` yok):
 
 ```
-Claude: <Model> · effort: <seviye>
+Claude: <Model> · effort: <seviye>[ · ultracode]
 OpenCode: ✅ RECOMMENDED AI · #1 <Model> · effort: <seviye> · #2 <Model> · effort: <seviye>
 Evidence: <tek cümle>
 ```
@@ -557,7 +563,8 @@ Evidence: <tek cümle>
   `OpenCode: use Claude — <neden>` (model yok, `#` yok).
 
 **Otomatik eklenen satırlar (bu sırayla):** (1) veri politikası ve DeepSeek satırları (Adım 4 kural 9–10);
-(2) `R=3` → **`Do not apply without human review.`** — **en sonda**, iki ekosistemi birden kapsayan tek satır.
+(2) Claude satırı `ultracode` taşıyorsa: `Ultracode: start the prompt with "ultracode:" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.` (SKILL.md Adım 7 kural 12);
+(3) `R=3` → **`Do not apply without human review.`** — **en sonda**, iki ekosistemi birden kapsayan tek satır.
 (`opusplan` uyarısı ve `/fast` speed line bu web yüzeyinde yok.)
 
 ## Referans: model kısıtları
@@ -643,7 +650,7 @@ Clarify: which file or function is broken, what does it do now, and what should 
 
 ---
 
-*Senkron: `skill/SKILL.md` **iteration-24** (26 Ekim 2026 — FR1 ücretsiz hat, GM1 Gemini yuvası yalnız Go Contributor yolu / NC1, 19 model, DeepSeek tavanı USD 80, Flash katmanında `D≥2 → max`). Bu türev özet: Adım 1 kapılarının Gemini ayrıntısı, PO1 sıralaması, E10/E11 ve örneklerin Gemini satırı `SKILL.md`'dedir.*
+*Senkron: `skill/SKILL.md` **iteration-25** (3 Kasım 2026 — `ultracode` artık `xhigh`'a bağlı bir seviye değil, bağımsız oturum anahtarı: UC1 `effort: <seviye> · ultracode` yazar, Adım 7 kural 12 `Ultracode:` satırını ekler; iteration-24: 26 Ekim 2026 — FR1 ücretsiz hat, GM1 Gemini yuvası yalnız Go Contributor yolu / NC1, 19 model, DeepSeek tavanı USD 80, Flash katmanında `D≥2 → max`). Bu türev özet: Adım 1 kapılarının Gemini ayrıntısı, PO1 sıralaması, E10/E11 ve örneklerin Gemini satırı `SKILL.md`'dedir.*
 
 *Senkron: `skill/SKILL.md` **iteration-23** (14 Ekim 2026 — BUD1 bütçe-öncelikli havuz, SM1 varsayılan OpenCode rozeti, A1-OC premium
 yükseltme, yeni Adım 4-OC çiftleri ve rozet tablosu; iteration-22: Haiku 5.5 kuşağı H1/H2/E8/E9; iteration-21'de Codex kolu emekli, OpenCode Go kolu kuruldu). **Bu fallback frontier derleyicisini ve per-model kanıt

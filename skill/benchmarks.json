@@ -800,8 +800,8 @@
         "comparison_type": "product_mechanism",
         "confidence": "low",
         "evidence_ids": [],
-        "last_verified": "2026-09-10",
-        "note": "Deliberately empty: this rule rests on a documented product mechanism (Ultra mode's ~4 collaborating agents vs ultracode's single chain), not on any benchmark. The validator permits an empty evidence list only when comparison_type is product_mechanism."
+        "last_verified": "2026-11-03",
+        "note": "Deliberately empty: this rule rests on a documented product mechanism (Ultra mode's ~4 collaborating agents vs ultracode's script-driven workflow orchestration, a session toggle since Claude Code v2.1.284 — see reference.md section 22), not on any benchmark. The validator permits an empty evidence list only when comparison_type is product_mechanism."
       },
       {
         "rule_id": "BADGE-long-context",

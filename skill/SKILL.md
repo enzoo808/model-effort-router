@@ -11,7 +11,7 @@ description: >-
 
 # Claude & OpenCode model / effort router
 
-<!-- routing-policy-version: iteration-24 -->
+<!-- routing-policy-version: iteration-25 -->
 
 Route the user's prompt — **do not run it**. Say which model + effort to use on
 **Claude** and on **OpenCode** (**two** models, `#1` / `#2`, each with its own
@@ -110,10 +110,12 @@ twins `opencode/<id>`).
 | `high` | **API default** on every effort model **except Opus 5.5** (`medium`) |
 | `xhigh` | Deeper reasoning. 30 min+ agentic/coding work |
 | `max` | Deepest reasoning. Over-thinking risk. Only through Rule M1 |
-| `ultracode` | `xhigh` + **dynamic workflow orchestration**. Claude Code setting |
+| `ultracode` | **Not a level.** A Claude Code toggle: plans a dynamic workflow for every substantive task, at whatever effort the session runs. Written as a flag after the effort |
 
-1. **`ultracode` is a Claude Code setting, not a model effort level**: it sends `xhigh` and adds
-   workflow orchestration, on every `xhigh` model except Haiku 5.5.
+1. **`ultracode` is a Claude Code toggle, not a model effort level** (independent of effort since
+   v2.1.284). It leaves the effort as it is, needs dynamic workflows on and a model with `xhigh`,
+   and is **session-wide**: every substantive task becomes a workflow, so limits drain faster. A
+   single task can use the prompt keyword `ultracode:` instead. Only `--effort ultracode` also sets `xhigh`.
 2. **Haiku 5.5 has effort** (`low`…`max`; thinking always on in Claude Code). The router writes only
    `low` or `medium` (Rule E8).
 3. Effort is a behavioural signal, not a token budget. Opus 5.5 defaults to `medium` and Sonnet 5.5's
@@ -194,7 +196,7 @@ availability do not trade against efficiency.
 | Condition | Kind | Result |
 |---|---|---|
 | Sub-second latency **or** high-volume classification/parsing (at `D ≤ 1`) | Deciding | **Haiku 5.5**, effort `low`. Stop (Rule H2 overrides it after a Haiku shortfall) |
-| **Offensive security:** exploit generation, penetration testing, binary-based vulnerability scanning | Deciding | **Opus 4.8**, effort floor `xhigh` (W/duration can still raise it to `ultracode`) — with Glasswing access, **Mythos 5.1** |
+| **Offensive security:** exploit generation, penetration testing, binary-based vulnerability scanning | Deciding | **Opus 4.8**, effort floor `xhigh` (W/duration can still add `ultracode`) — with Glasswing access, **Mythos 5.1** |
 | **Biology-adjacent R&D:** genomics, protein/chemistry-heavy pipeline, bio-CTF | Deciding | **Fable 5.1** (default effort `high`, no floor) |
 | **1000+ files / whole-codebase scale** | Deciding | **Fable 5.1** |
 
@@ -460,7 +462,7 @@ quota.
 > is five.
 
 <!-- rule:UC1 -->
-**UC1 · `ultracode`.** Emit `ultracode` when the estimated duration is over 30 minutes and either `O = high` or (`W = 3` and `D >= 2`) and the difficulty is not one indivisible chain. Write `ultracode` in the effort field. Never on Haiku 5.5.
+**UC1 · `ultracode`.** Emit `ultracode` when the estimated duration is over 30 minutes and either `O = high` or (`W = 3` and `D >= 2`) and the difficulty is not one indivisible chain. Write it as a flag after the effort, `effort: <level> · ultracode`, where the level is the Effort ← D rung with a floor of `high` and a ceiling of `xhigh`. Never on Haiku 5.5.
 <!-- /rule:UC1 -->
 
 > `ultracode` buys **workflow orchestration**, so it keys on distinct phases
@@ -468,8 +470,11 @@ quota.
 > *each need judgement* — a 180-service auth-bypass audit. At `D ≤ 1` width buys
 > nothing: 150 files of one rename is `medium`.
 >
-> The indivisible-chain guard is **the same test M1 uses for `max`**, so the two
-> rules can never refuse a task for opposite reasons.
+> Since v2.1.284 `ultracode` no longer forces `xhigh`, so the level is chosen by D
+> as usual; `high` is the floor because a 30-minute unattended run is where Sonnet 5.5
+> at `low`/`medium` stops to check in. The indivisible-chain guard is **the same test
+> M1 uses for `max`**: `max` and `ultracode` are never paired — one indivisible decision
+> gains nothing from a fan-out, and `max` under many agents multiplies the overthinking.
 
 #### `opusplan` — plan/execute model split
 
@@ -659,7 +664,7 @@ thin evidence → the sensible default + `low-confidence`.
 
 ## Step 7 — Quota-protection and accuracy rules
 
-Rationale in `reference.md` §10.5. **Auto-added lines:** Rules 1, 9, 10 and 11.
+Rationale in `reference.md` §10.5. **Auto-added lines:** Rules 1, 9, 10, 11 and 12.
 
 1. **R=3 → human-review note** ("Do not apply without human review."). Model and
    effort unchanged. One shared note, not one per arm.
@@ -670,7 +675,7 @@ Rationale in `reference.md` §10.5. **Auto-added lines:** Rules 1, 9, 10 and 11.
 4. **User knowledge:** low/medium on Opus 5.5 is not "waste" — Anthropic
    recommends them "liberally as your primary control for token cost".
 5. **No `ultracode` for work under 30 min.** For one-off depth, write
-   `ultrathink` into the prompt instead.
+   `ultrathink` into the prompt instead (terminal, v2.1.311+: that turn runs at `xhigh`).
 6. **Long-session / MCP warning:** each MCP server injects tool schemas into
    every message (GitHub MCP 27 tools ≈ 18k tokens).
 7. **Auto-accept warning:** if R≥2, suggest turning auto-accept off.
@@ -683,6 +688,8 @@ Rationale in `reference.md` §10.5. **Auto-added lines:** Rules 1, 9, 10 and 11.
     `DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).`
 11. **Gemini line (auto).** If **Gemini 4 Argon** is on the OpenCode line:
     `Gemini 4 Argon: opencode-go/gemini-4-argon-contributor — Google trains on your prompts; Go cap USD 60 during the 2× promo (30 after). If it errors or is overloaded, run the row's other model.`
+12. **Ultracode line (auto).** If the Claude line carries `ultracode`:
+    `Ultracode: start the prompt with "ultracode:" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.`
 
 ### Speed line
 
@@ -697,7 +704,7 @@ Only when the Claude line is `Opus 5.5` / `Opus 4.8` and **not** `opusplan`:
 Three lines — or the single `Clarify:` line when Step 0 blocks (Rule S0):
 
 ```
-Claude: <Model> · effort: <level>
+Claude: <Model> · effort: <level>[ · ultracode]
 OpenCode: ✅ RECOMMENDED AI · #1 <Model> · effort: <level> · #2 <Model> · effort: <level>
 Evidence: <one sentence, ≤ 30 words>
 ```
@@ -707,7 +714,7 @@ Evidence: <one sentence, ≤ 30 words>
 - Write `default` where OpenCode offers no variant (MiMo-V2.6).
   OpenCode gated: `OpenCode: use Claude — <reason>` (no `#`).
 - Extras, own line each, in order: `opusplan` ⚠️ (directly under the Claude line) ·
-  data / DeepSeek / Gemini lines (Step 7) · speed line · `R=3` → `Do not apply without human
+  data / DeepSeek / Gemini / Ultracode lines (Step 7) · speed line · `R=3` → `Do not apply without human
   review.` last.
 - "Why?" → expand from `reference.md` / `opencode-benchmarks.md`; never unprompted.
 

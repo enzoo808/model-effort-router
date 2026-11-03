@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Grade model-secici routing outputs against evals.json (iteration-24: Claude + OpenCode, budget-first, free lane, Gemini slot).
+"""Grade model-secici routing outputs against evals.json (iteration-25: Claude + OpenCode, budget-first, free lane, Gemini slot, ultracode as a flag).
 
 Usage:
     python grade_routing.py --results-dir results/iteration-21
@@ -134,8 +134,18 @@ def grade_claude(expected: str, actual_line: str | None) -> tuple[bool, str]:
     ok, msg = check_effort(expected, actual_line, side)
     if not ok:
         return False, msg
+    # iteration-25 (Claude Code v2.1.284): `ultracode` is a flag after the effort, not an effort
+    # level. `effort: ultracode` therefore fails check_effort above (the level word is wrong); this
+    # checks the flag itself, both ways.
+    want_uc = "ultracode" in expected.lower()
+    has_uc = bool(re.search(r"·\s*ultracode\b", actual_line, re.IGNORECASE))
+    if want_uc and not has_uc:
+        return False, f"{side}: expected the '· ultracode' flag after the effort, got: '{actual_line}'"
+    if has_uc and not want_uc:
+        return False, f"{side}: unexpected '· ultracode' flag (UC1 does not hold here), got: '{actual_line}'"
     em = re.search(r"effort:\s*(\w+)", expected, re.IGNORECASE)
-    return True, f"{side}: {expected_model} correct" + (f", effort={em.group(1)}" if em else "")
+    return True, (f"{side}: {expected_model} correct" + (f", effort={em.group(1)}" if em else "")
+                  + (", ultracode" if want_uc else ""))
 
 
 def split_picks(text: str) -> dict[str, str]:
