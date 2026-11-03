@@ -3020,5 +3020,4 @@ stays unemitted — now a routing choice, not a capability limit.
 (2) no benchmark compares workflow orchestration with a single agent, so UC1's trigger rests on
 the product mechanism alone (`benchmarks.json` → `routing_rules`, `product_mechanism`);
 (3) the `high` floor is Anthropic's Sonnet 5.5 start-point advice, not a measured result;
-(4) no cold-agent iteration run was made for this change — only the deterministic grader
-self-test, the policy-sync and example checks.
+(4) the cold-agent run (36 prompts, 34/36) is recorded in `evals/README.md`: `c1` 3/3 on re-run, `r1` (unrelated) unstable at 2/4 and left open; `c2`/`c3` expectations come from that run, so they guard against regression rather than prove the rule.

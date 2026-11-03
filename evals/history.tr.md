@@ -235,5 +235,8 @@ değiştirdi. Codex kolu yeniden türetildi (ayrıntı: `skill/reference.md` §1
   `Ultracode:` satırı ekler (tek görev için `ultracode:` önek, oturumluk anahtar pahalı). `max` ile `ultracode` hâlâ hiç eşlenmez,
   gerekçe değişti (bölünemez kararı fan-out bölemez; `max` çok ajan altında aşırı düşünmeyi katlar).
 - **Dürüst sınır:** `high` tabanı Anthropic'in Sonnet 5.5 başlangıç tavsiyesine dayanır, ölçüm değil; workflow alt ajanlarının hangi
-  eforda koştuğu belgelenmemiş. **Taze ajan koşusu yapılmadı** — yalnız deterministik kontroller (grader self-test 34/34, policy sync,
-  örnek kontrolü, benchmark validator).
+  eforda koştuğu belgelenmemiş. **Taze ajan koşusu (6 soğuk ajan, 36 prompt): 34/36.** `c1` rozeti bir kez OpenCode satırına koydu (model, `high`, bayrak ve
+  `Ultracode:` satırı doğruydu); 3 tekrar koşuda 3/3 → tek seferlik sapma. `r1` (`ultracode` ile ilgisiz) 4 koşuda 2/4: OpenCode `#1`
+  MiniMax ile MiMo arasında gidip geliyor; iteration-24'te geçmişti. Açık bırakıldı — dersimiz gereği önce prompt sorgulanmalı. Yeni
+  `c2` (D=3 × 180 servis → `xhigh · ultracode`) ve `c3` (beş faz, R=3 → `high · ultracode`) eklendi; beklentileri soğuk koşudan alındı ve
+  kurala karşı gözden geçirildi (bağımsız golden değil).

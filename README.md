@@ -55,7 +55,7 @@ Claude Code v2.1.284 turned Ultracode into its own switch: it **no longer forces
 - **The level follows difficulty** (Rule UC1): `Effort ← D`, floor `high` (a 30-minute unattended run is where Sonnet 5.5 at `low`/`medium` stops to check in), ceiling `xhigh`. `max` and `ultracode` are still never paired.
 - **It is session-wide and quota-heavy.** Every substantive task becomes a workflow, so limits drain faster. An auto-added `Ultracode:` line (Step 7 rule 12) says to start the prompt with `ultracode:` to run *only this task* as a workflow, instead of leaving the toggle on.
 
-Unchanged: the trigger (over 30 minutes and `O = high` or `W = 3 ∧ D ≥ 2`, not one indivisible chain), MECH1 (OpenCode has no equivalent), and no `ultracode` on Haiku 5.5 (now a routing choice — Haiku 5.5 does list `xhigh`). Checked: policy sync, example check, benchmark validator, grader self-test (34/34). **Not done:** a fresh-agent routing run for iteration-25 — only the deterministic checks.
+Unchanged: the trigger (over 30 minutes and `O = high` or `W = 3 ∧ D ≥ 2`, not one indivisible chain), MECH1 (OpenCode has no equivalent), and no `ultracode` on Haiku 5.5 (now a routing choice — Haiku 5.5 does list `xhigh`). Checked: policy sync, example check, benchmark validator, grader self-test (36/36), and a **fresh-agent run of all 36 prompts: 34/36** (`results/iteration-25/`). `c1` (the old `ultracode` row) missed once on the badge and passed 3/3 on re-run; `r1` (scanned receipts, unrelated to `ultracode`) splits 2/4 across runs and is left open. Two prompts were added: `c2` (D=3 × 180 services → `xhigh · ultracode`) and `c3` (five-phase migration → `high · ultracode`).
 
 ---
 

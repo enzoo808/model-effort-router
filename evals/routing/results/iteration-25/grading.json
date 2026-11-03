@@ -55,6 +55,18 @@
       "evidence": "badge is on 'opencode', expected 'claude'"
     },
     {
+      "id": "c2",
+      "eval_name": "Hours-long diagnosis across 180 services (ultracode at the xhigh ceiling)",
+      "passed": true,
+      "evidence": "Claude: Opus 5.5 correct, effort=xhigh, ultracode; OpenCode: #1 MiMo-V2.6-Pro default, #2 DeepSeek V4.1 Flash max; recommended=claude (correct); evidence ok; notes ok (peak hours cost 2×, start the prompt with \"ultracode:\", Claude /fast available)"
+    },
+    {
+      "id": "c3",
+      "eval_name": "Five-phase crypto-library migration before a deadline (O=high, R=3)",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high, ultracode; OpenCode: #1 MiMo-V2.6-Pro default, #2 DeepSeek V4.1 Flash max; recommended=claude (correct); evidence ok; notes ok (review note, peak hours cost 2×, start the prompt with \"ultracode:\")"
+    },
+    {
       "id": "d1",
       "eval_name": "Adversarial debugging (D3DIAG; deep-reasoning direction beats terminal efficiency row)",
       "passed": true,
@@ -206,9 +218,9 @@
     }
   ],
   "summary": {
-    "passed": 32,
+    "passed": 34,
     "failed": 2,
     "skipped": 0,
-    "total": 34
+    "total": 36
   }
 }

@@ -143,6 +143,45 @@
       ]
     },
     {
+      "id": "c2",
+      "eval_name": "Hours-long diagnosis across 180 services (ultracode at the xhigh ceiling)",
+      "prompt": "Our p99 latency regressed across the platform last week. There are 180 services. For each one, bisect the commits, work out whether the regression is real or a measurement artefact, judge whether reverting is safe, and write up the likely cause. I expect this to run for hours.",
+      "expected_claude": "Opus 5.5 · effort: xhigh · ultracode",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max",
+      "expected_recommended": "claude",
+      "expected_low_confidence": false,
+      "tests_rule": "iteration-25 UC1: D3DIAG D=3 x W=3 over 30 min, divisible -> ultracode rides on the xhigh ceiling (never max, never a level of its own); Step 7 rule 12 Ultracode line; Opus 5.5 keeps the /fast line. Expectation derived from a cold-agent run and reviewed against the rules, not an independent golden.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh · ultracode\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max\nEvidence: Adversarial D=3 diagnosis across 180 services: HLE 61 vs 49 and Terminal-Bench 4.0 64 vs 35 agree on Claude; hours-long width of 180 units adds ultracode.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).\nUltracode: start the prompt with \"ultracode:\" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.\n⚡ Claude /fast available (2.5x faster, 2× price).",
+      "expected_notes": [
+        "peak hours cost 2×",
+        "start the prompt with \"ultracode:\"",
+        "Claude /fast available"
+      ],
+      "forbidden": [
+        "effort: ultracode",
+        "Opus 5.5 · effort: max"
+      ]
+    },
+    {
+      "id": "c3",
+      "eval_name": "Five-phase crypto-library migration before a deadline (O=high, R=3)",
+      "prompt": "Move 150 services off the old crypto library before tonight's certificate rotation. Some of them co-sign with a shared key, so first work out the order and the key handover, then migrate each service, replay yesterday's staging traffic against every one, and update the runbook.",
+      "expected_claude": "Sonnet 5.5 · effort: high · ultracode",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max",
+      "expected_recommended": "claude",
+      "expected_low_confidence": false,
+      "expected_shared_note": "Do not apply without human review.",
+      "tests_rule": "iteration-25 UC1: research -> migration -> traffic replay -> runbook = O=high, so ultracode at the Effort<-D rung (D=2 -> high), not forced xhigh; MECH1 gives Claude the badge; R=3 review note last. Expectation derived from a cold-agent run and reviewed against the rules, not an independent golden.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high · ultracode\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max\nEvidence: Research, migration, traffic replay and runbook make five phases (O=high) over 30 minutes, so ultracode's workflow decides the badge for Claude; OpenCode has no equivalent.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).\nUltracode: start the prompt with \"ultracode:\" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.\nDo not apply without human review.",
+      "expected_notes": [
+        "peak hours cost 2×",
+        "start the prompt with \"ultracode:\""
+      ],
+      "forbidden": [
+        "effort: ultracode"
+      ]
+    },
+    {
       "id": "d1",
       "eval_name": "Adversarial debugging (D3DIAG; deep-reasoning direction beats terminal efficiency row)",
       "prompt": "Find the race condition that flakes in prod sometimes",

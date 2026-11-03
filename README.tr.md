@@ -33,7 +33,7 @@ Claude Code v2.1.284'ten beri Ultracode kendi anahtarı: eforu **`xhigh`'a çekm
 - **Seviyeyi zorluk belirler** (Kural UC1): `Efor ← D`, **taban `high`** (30 dk+ gözetimsiz koşuda Sonnet 5.5 `low`/`medium`'da sık durup soruyor), **tavan `xhigh`**. `max` ile `ultracode` hâlâ hiç eşlenmez.
 - **Oturum geneline uygulanır ve kotayı ağır yer.** Her kayda değer görev workflow'a döner, limitler daha hızlı erir. Otomatik `Ultracode:` satırı (Adım 7 kural 12), anahtarı açık bırakmak yerine prompt'u `ultracode:` ile başlatıp **yalnız o görevi** workflow olarak koşturmayı söyler.
 
-Değişmeyenler: tetikleyici (>30 dk ∧ `O=high` veya `W=3 ∧ D≥2`, tek bölünemez zincir değil), MECH1 (OpenCode'da karşılığı yok), Haiku 5.5'te `ultracode` yok (artık bir kapasite sınırı değil, router tercihi — Haiku 5.5 `xhigh` listeliyor). Doğrulandı: policy sync, örnek kontrolü, benchmark validator, grader self-test (34/34). **Yapılmadı:** iteration-25 için taze ajanlarla yönlendirme koşusu — yalnız deterministik kontroller.
+Değişmeyenler: tetikleyici (>30 dk ∧ `O=high` veya `W=3 ∧ D≥2`, tek bölünemez zincir değil), MECH1 (OpenCode'da karşılığı yok), Haiku 5.5'te `ultracode` yok (artık bir kapasite sınırı değil, router tercihi — Haiku 5.5 `xhigh` listeliyor). Doğrulandı: policy sync, örnek kontrolü, benchmark validator, grader self-test (36/36) ve **36 promptun taze ajanlarla koşusu: 34/36** (`results/iteration-25/`). `c1` (eski `ultracode` satırı) bir kez rozette şaştı, tekrar koşuda 3/3 geçti; `r1` (taranmış fişler, `ultracode` ile ilgisiz) koşular arasında 2/4 bölünüyor, açık bırakıldı. İki prompt eklendi: `c2` (D=3 × 180 servis → `xhigh · ultracode`) ve `c3` (beş fazlı göç → `high · ultracode`).
 
 ## iteration-24 — ne değişti (20 Ekim 2026): ücretsiz modeller ve Gemini 4 Argon
 
