@@ -3016,7 +3016,7 @@ ways and rejects the old `effort: ultracode`.
 not an indivisible chain), MECH1 (OpenCode still has no equivalent), and `Haiku 5.5 · ultracode`
 stays unemitted — now a routing choice, not a capability limit.
 
-**Open / unverified.** (1) Which effort a workflow's subagents actually run at is undocumented;
+**Open / unverified.** (1) Which effort a workflow's subagents run at is undocumented: the sub-agents page only says a subagent's `effort` frontmatter (or a per-invocation `effort`, v2.1.292+) overrides the session level, which implies — but never states — that an unset subagent follows the session; workflow agents are not covered (read 3 Nov 2026);
 (2) no benchmark compares workflow orchestration with a single agent, so UC1's trigger rests on
 the product mechanism alone (`benchmarks.json` → `routing_rules`, `product_mechanism`);
 (3) the `high` floor is Anthropic's Sonnet 5.5 start-point advice, not a measured result;
