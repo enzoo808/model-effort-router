@@ -25,7 +25,7 @@ bilingual", which is a small credibility signal, not a barrier.
 - [ ] A 10-second asciinema/GIF of `/model-secici <task>` → two-line output,
       embedded near the top of the README
 - [ ] `evals` run is green and the iteration folder is committed
-- [ ] One "good first issue" open (e.g. "English port of SKILL.md §X")
+- [ ] One "good first issue" open (e.g. "OpenCode reachability audit")
 - [ ] You're available for ~4 hours after posting to answer comments fast
 
 ## GitHub repo settings
@@ -47,7 +47,7 @@ buried.
 ## Show HN
 
 **Title:**
-`Show HN: A router that picks the cheapest Claude/GPT model + effort for a task`
+`Show HN: A router that picks the cheapest Claude/OpenCode model + effort for a task`
 
 **Body:**
 > I kept reflexively running everything on the most expensive model and burning
@@ -63,14 +63,14 @@ buried.
 >
 > It's sourced from the official docs, every uncertain claim is labelled, and
 > there's a deterministic regression eval (cold agents read the rules fresh and
-> route a fixed prompt set; a regex grader checks the output). Currently a 34-prompt set (iteration-22 cold-agent run: 29/29 after two corrections; iteration-24 cold-agent run: 33/33 routed evals after two corrections), plus a
+> route a fixed prompt set; a regex grader checks the output). Currently a 36-prompt set (latest fresh-agent run, iteration-25: 34/36 — one miss passed 3/3 on re-run, one prompt is still unstable and documented as open), plus a
 > separate no-LLM evidence suite: schema validation, rule-provenance resolution,
 > frontier staleness and 80 compiler assertions.
 >
 > Repo: <link>
 
 Then a first comment from you with the concrete "here's what it does" example and
-the honest limitations (Turkish skill body, model-name/price data has a shelf
+the honest limitations (model-name/price data has a shelf
 life, no open model has verified biology / offensive-security / computer-use evidence so the OpenCode arm punts to Claude there;
 AA publishes no confidence intervals, so a Terminal-Bench lead for Sonnet 5.5 is a *lean*: since iteration-23 the router sends errands and mid-difficulty (D≤2) coding to OpenCode's budget tier and keeps the Claude badge for D=3 coding/reasoning, finished deliverables, gates, mechanisms and R=3 — that threshold is a policy choice, documented in SKILL.md Rule SM1, not hidden).
 
@@ -89,7 +89,7 @@ AA publishes no confidence intervals, so a Terminal-Bench lead for Sonnet 5.5 is
 > biggest model by reflex. So it scores risk/depth/breadth/context and maps to
 > the cheapest model that clears the bar, rounding down on ties.
 >
-> Install is one PowerShell line for Claude Code, or a zip upload for claude.ai.
+> Install is one line for Claude Code (`./install.sh` or `.\install.ps1`), or a zip upload for claude.ai.
 > MIT, sourced from the official docs, has a regression eval suite.
 >
 > Feedback and data corrections very welcome — model prices/specs age fast.
@@ -109,9 +109,9 @@ AA publishes no confidence intervals, so a Terminal-Bench lead for Sonnet 5.5 is
    made v1 collapse every prompt onto the same 2 models.
 4. Everything's sourced from the official docs, uncertain claims are labelled,
    and there's a deterministic eval suite — cold agents route a fixed prompt set,
-   a regex grader checks it. 32/32 right now, and the benchmark evidence behind the
+   a regex grader checks it. 36 prompts, 34/36 on the latest fresh-agent run, and the benchmark evidence behind the
    rules has its own deterministic validator and compiler.
-5. MIT. One-line install for Claude Code. English port of the rules is the top
+5. MIT. One-line install for Claude Code. An OpenCode reachability audit is the top
    open issue if anyone wants a first PR. <link>
 
 ---
@@ -125,4 +125,4 @@ AA publishes no confidence intervals, so a Terminal-Bench lead for Sonnet 5.5 is
   signal that keeps a repo alive.
 - Add a `CHANGELOG.md` after the first few fixes land.
 - Don't relaunch the same post if it flops. Improve, wait a month, try a
-  different angle (e.g. after the English port).
+  different angle (e.g. after the next model generation).

@@ -5,8 +5,8 @@
 > bkz. "iteration-23" bölümü. Önceki not: **8 Ekim 2026 (iteration-22):** **Claude Haiku 5.5** geldi. Önceki not:
 > **6 Ekim 2026 (iteration-21):** Codex üyeliği bittiği için ikinci kol
 > **OpenCode Go (USD 10/ay)** ile sıfırdan yeniden kuruldu. Bu dosyanın **en üstündeki
-> bölüm güncel**; "Doğrulama" tablosu dahil geri kalanı **Codex dönemi
-> (iteration-20 ve öncesi) geçmişidir** ve git etiketi `iteration-20-codex` ile
+> iteration bölümleri, "Nasıl karar verir", "Örnekler", "Kurulum" ve "Dosyalar" güncel**; çizginin altındaki
+> geri kalanı ("Doğrulama" tablosu dahil) **Codex dönemi (iteration-20 ve öncesi) geçmişidir** ve git etiketi `iteration-20-codex` ile
 > `archive/iteration-20-codex/` altında saklanır. Skill gövdesi (`skill/SKILL.md`)
 > İngilizcedir.
 
@@ -101,7 +101,7 @@ için ilk kez **efor seviyeleriyle** çıktı. Router artık onu **maliyet seçi
   tek-olgu sorusu da (olgusal bilgi = `research-synthesis`).
 - **Claude'daki en ucuz seçenek, açık farkla:** AA görev maliyeti High'da USD 0.08, Max'ta 0.21; Sonnet 5.5 High USD 0.88 — −9 indeks
   puanına karşılık ~11× ucuz. `xhigh`/`max` hiç üretilmez (Max görev başına 162k token yakıyor ve yine Sonnet 5.5 High'ın altında, Kural E8).
-- **Rozet de onunla hareket eder.** `D ≤ 1`'de fiyat eşitlik bozucusu, Haiku 4.5 USD 1/5 olduğu için OpenCode'a giderdi. Haiku 5.5 ile
+- **Rozet de onunla hareket eder — iteration-23'te geçersiz kaldı** (Kural SM1 artık her `D ≤ 1` görevi OpenCode'a verir). `D ≤ 1`'de fiyat eşitlik bozucusu, Haiku 4.5 USD 1/5 olduğu için OpenCode'a giderdi. Haiku 5.5 ile
   **Claude**'a gidiyor (toplu etiketleme, kısa özet); Claude seçimi Sonnet 5.5 ise ve **ilk-token şartı** belirtildiyse OpenCode'ta kalıyor
   (`latency-volume` artık yalnız bunu ifade eder — kimsenin beklemediği toplu iş fiyat meselesidir).
 - **Haiku yetersiz kalırsa Sonnet 5.5'e çıkılır** (Kural H2); Haiku'nun eforu asla yükseltilmez.
@@ -140,7 +140,7 @@ için ilk kez **efor seviyeleriyle** çıktı. Router artık onu **maliyet seçi
 - **Token maliyeti düşürüldü.** `SKILL.md` 60 KB'tan 44 KB'a indi (roster, Adım 5/6 anlatımı ve örnekler sıkıştırıldı; Claude istisnaları ve kural blokları korundu); `Evidence:` tek cümle ve ≤ 30 kelime.
 - **Varsayılan: gizli.** Grok 4.7 ve GPT 6 Luna promptu 30 gün saklar, Muse Spark Contributor promptlarınla
   eğitilir → kullanıcı "gizli değil" demedikçe havuz dışı (Kural NC1). DeepSeek'in sıfır-saklama anlaşması
-  31 Ekim 2026'ya kadar geçerli, aylık yenileniyor.
+  31 Ekim 2026'ya kadar geçerliydi, aylık yenileniyor (yenilendi: 30 Kasım 2026'ya kadar geçerli, Go sayfası 3 Kasım 2026'da okundu).
 - **Tek kaynak yetmedi — çoklu kaynak (6 Ekim, 2. geçiş).** İlk geçiş yalnız Artificial Analysis'e dayanıyordu ve
   MiMo-V2.6-Pro'yu fazla öne çıkarıyordu. Artık havuzu yayımlayan her bağımsız kaynak kullanılıyor: AA (13 bileşen),
   **DeepSWE v1.1 (Mercor/Datacurve, yayımlanmış hata payıyla)**, **Arena (Agent / Code / Text)**, Vals, FrontierSWE v2,
@@ -162,6 +162,136 @@ için ilk kez **efor seviyeleriyle** çıktı. Router artık onu **maliyet seçi
   altın cevaplar); `grade_routing.py --selftest`, `check_policy_sync.py`,
   `check_opencode_pool.py`, `check_examples.py` yeşil. **Soğuk-ajan koşusu ve tetik eval'i
   iteration-21 için YAPILMADI** (canlı ajan gerekir).
+
+---
+
+## Nasıl karar verir (güncel — iteration-25)
+
+| Adım | Ne olur |
+|---|---|
+| **0 · Kalite kapısı** | Dört mekanik kontrol. Biri tetiklenirse → **model yok, rozet yok, tek bir `Clarify:` satırı.** |
+| **1 · Sert kapılar** | Claude: saniye altı/toplu iş → Haiku 5.5; saldırı amaçlı güvenlik → Opus 4.8; biyoloji → Fable 5.1; 1000+ dosya → Fable 5.1. **OpenCode: saldırı amaçlı güvenlik / biyoloji / bilgisayar kullanımı → `use Claude` (model yok); gizli iş (varsayılan) Muse Spark, Grok 4.7, GPT 6 Luna ve Gemini 4 Argon'u eler; olgusal bilgi DeepSeek V4.1 Flash ve MiniMax M3.1 Flash Free'yi eler; bağlam > 500k Grok 4.7'yi, > 256k Qwen3.8 Flash'ı eler; görüntü girişi GLM-5.3'ü eler (zaten premium); toplu iş/gecikme → DeepSeek V4.1 Flash.** |
+| **2 · Capability profili** | Bir ya da iki etiket (`agentic-code`, `deep-reasoning`, `knowledge-work`, `long-context`, `workflow-automation`, …) — hangi benchmark kanıtının geçerli olduğunu belirler. |
+| **3 · Kapsam ve risk** | **R**isk, **D**erinlik, **W** (genişlik), **C** (bağlam) — her biri 0–3. |
+| **4 · Aday model × efor** | Claude: Kural H1 tutarsa Haiku 5.5, yoksa model ← `max(D,C)` + profil; efor ← D (`low/medium/high/xhigh`); 30 dakikanın üstünde, 3+ fazda ya da her biri muhakeme isteyen 100+ birimde `· ultracode` bayrağı (UC1 — kendi başına bir seviye değil); `opusplan`. **OpenCode (4-OC): bütçe katmanı ve ücretsiz modelden bir çift (BUD1, FR1) — `D ≤ 1` → DeepSeek V4.1 Flash · GLM-5.3-Flash; yoksa capability'ye göre çift, `D = 3` / `R = 3`'te yeniden sıralanır; Gemini 4 Argon yalnız NC1 altında en üste çıkar (GM1). Efor modelin kendi varyantıdır: `low`/`high`/`max` sunan modellerde `D ≤ 1` `low`, `D ≥ 2` `max`; MiMo `default`, Qwen `xhigh`, Argon `high`.** |
+| **5 · Kanıt, eşdeğerlik, verimlilik** | Karşılaştırılabilirlik → yalnız yayımlanmış dağılım → baskınlık (OpenCode'ta önce Go tavan baskısı). |
+| **6 · `✅ RECOMMENDED AI`** | Sert kapı → MECH1 → geçerli capability ve kanıtı (B1, BD1), **SM1 ile okunur: Claude ciddi fark yaratmıyorsa OpenCode**. Tek rozet, tek `Evidence:` cümlesi. |
+| **7 · Kota korumaları** | `R=3` → insan onayı notu. Yükseltme bir model değişikliğidir. Veri politikası, DeepSeek, Gemini ve Ultracode satırları otomatik eklenir. |
+
+İki tasarım tercihi korunuyor: **risk model kademesini değil insan gözetimini yükseltir** ve
+**şüphede kalınca aşağı yuvarla**.
+
+## Örnekler (güncel — `evals/routing/evals.json` golden cevaplarıyla aynı)
+
+| Görev | Claude | OpenCode `#1` · `#2` | Önerilen |
+|---|---|---|---|
+| 200 müşteri yorumunu olumlu/olumsuz etiketle | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` toplu iş; USD 60–80 tavanlı Flash katmanı Claude kotasını korur |
+| 2 sayfalık toplantı dökümünü beş maddeye özetle | `Haiku 5.5 · medium` | DeepSeek V4.1 Flash `low` · GLM-5.3-Flash `low` | **OpenCode** — `D=1` okuma işi, AA-LCR 77 vs 78 |
+| Haftalık yönlendirme kurulu durum notunu yaz | `Sonnet 5.5 · medium` | DeepSeek V4.1 Flash `low` · GLM-5.3-Flash `low` | **OpenCode** — `D=1`; Haiku 5.5 bilgi işinin dışında |
+| Canlı sohbete ilk kelimeleri yaklaşık bir saniyede gelen cevap | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — ilk-token bağlı; DeepSeek'in ölçülmüş 1.1 sn'si var |
+| AB Yapay Zekâ Yasası'nın GPAI yükümlülükleri hangi yıl başladı? | `Sonnet 5.5 · low` | GLM-5.3-Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — olgusal bilgi Haiku'yu ve DeepSeek'i dışarıda bırakır |
+| Prod config'de `MAX_RETRIES` 3→5 | `Sonnet 5.5 · low` + onay notu | DeepSeek V4.1 Flash `low` · GLM-5.3-Flash `low` | **OpenCode** — `D=0`, ikisi de çıtayı geçer |
+| Ödeme modülünü 40 dosyada refactor et | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `max` · MiMo-V2.6-Pro `default` | **OpenCode** — `D=2`; DeepSWE eşit, görev başına USD 0.13 vs 1.67 |
+| Staging'i sıfırdan kur (Terraform, 12 servis, seed, smoke) | `Sonnet 5.5 · high · ultracode` | DeepSeek V4.1 Flash `max` · MiMo-V2.6-Pro `default` | **Claude** — üç faz; `ultracode`'un OpenCode'ta karşılığı yok (MECH1) |
+| Prod'da ara sıra patlayan race condition'ı bul | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, muhakeme yarısında iki uyuşan AA satırı |
+| Geri alınamaz işlem sınırını tasarla ve uygula | `Opus 5.5 · max` + onay notu | MiMo-V2.6-Pro `default` · MiniMax M3.1 Flash Free `max` | **Claude** — `D=3`, `R=3` |
+| 200 servisin auth mimarisini sıfırdan yeniden tasarla | `opusplan · plan: max · execute: medium` | MiMo-V2.6-Pro `default` · MiniMax M3.1 Flash Free `max` | **Claude** — `opusplan` mekanizması |
+| Jira → Slack → nöbetçi n8n akışını kur | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `max` · GLM-5.3-Flash `max` | **OpenCode**, low-confidence — AutomationBench eşit, ITBench açık modelleri önde gösteriyor |
+| 400 sayfalık dosyalamayı tek nota sentezle | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=2`'den itibaren bilgi işi |
+| 30 taranmış fişi tek mutabakat tablosuna oku | `Sonnet 5.5 · high` | MiniMax M3.1 Flash Free `max` · Qwen3.8 Flash `xhigh` | **OpenCode**, low-confidence — ikisi de görüntü alır; ücretsiz model Flash katmanında önde (FR1) |
+| Gizli olmayan konferans fiyatlama sunumu | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · Qwen3.8 Flash `xhigh` | **Claude** — bilgi işi; Grok 4.7 premium kalır |
+| Etiketler bu gece baskıya gitmeden 3 düzenleyici sayfasını oku | `Sonnet 5.5 · high` + onay notu | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude**, low-confidence — `R=3` ve tek bir Omniscience eğilimi |
+| Önceki bir OpenCode denemesi 30 dosyalık göçte yetmedi | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `max` · **GLM-5.3** `max` | **Claude** — Kural A1-OC premium `#2`'yi ekler ve rozeti devreder |
+| Bir CVE için exploit PoC | `Opus 4.8 · xhigh` | `use Claude` | **Claude** — diğer kol reddeder |
+| Tümör/normal ekzomlardan somatik varyant çağır | `Fable 5.1 · high` | `unverified — use Claude` | **Claude** — erişilebilirlik kapısı |
+| "Şu kodu düzelt" | *(model yok, rozet yok — sorar: hangi kod? nasıl bozuk? bitti ne demek?)* | | |
+
+---
+
+## Kurulum
+
+Bu bir **Claude skill'i** — `skill/` klasörünün tamamı (`SKILL.md`, `reference.md`,
+`opencode-benchmarks.md` ve üç JSON dosyası) bir `model-secici/` klasöründe. Yönlendirirken
+yalnız `SKILL.md` okunur; gerisi bir kuralı denetlemek ve "neden?" sorusunu cevaplamak içindir.
+"Kurmak" = o klasörü Claude'un skill'lere baktığı yere koymak.
+
+```bash
+git clone https://github.com/enzoo808/model-effort-router.git
+cd model-effort-router
+```
+
+### Claude Code (birincil)
+
+**macOS / Linux:** `./install.sh` · **Windows:** `.\install.ps1`
+
+**Ya da elle (her OS):**
+```bash
+mkdir -p ~/.claude/skills/model-secici
+cp skill/*.md skill/*.json ~/.claude/skills/model-secici/
+```
+
+`~/.claude/skills/model-secici/` altına kopyalar. Yeni bir Claude Code oturumu
+başlat, sonra:
+
+```
+/model-secici Repodaki auth akışını OAuth2'ye taşı
+```
+
+Proje-kapsamlı istersen: `model-secici/` klasörünü repo içindeki
+`.claude/skills/` altına koy.
+
+**`/model opus` artık Opus 5.5'e çözülüyor** (Claude Code v2.1.280+), `/model
+sonnet` Sonnet 5.5'e (v2.1.284+), `/model haiku` Haiku 5.5'e (v2.1.293+). Eski sürümdeysen `claude update` çalıştır, yoksa alias Opus 4.8'e (veya daha eskiye)
+düşebilir.
+
+### Claude.ai / Claude Chat (birincil — artık native Skill desteği var)
+
+29 Temmuz 2026 itibarıyla claude.ai **custom Skills**'i doğrudan destekliyor —
+Project'e bağlı değil, bir kez yüklenince **her sohbette** otomatik tetikleniyor.
+Gereksinim: Pro/Max/Team/Enterprise plan + Settings'te *code execution* açık.
+
+Repodaki **`dist/model-secici.zip`**'i indir (dosyayı aç → *Download raw file*).
+Düzenleme sonrası yeniden üretmek için: `.\build-claude-ai-zip.ps1` (Windows).
+Sonra: Claude.ai → **Settings → Features → Custom Skills → Upload** → zip'i seç.
+
+> **Sınırlama (resmî dokümandan):** claude.ai'a yüklenen skill Claude Code'daki
+> ile **otomatik senkronize olmaz** — SKILL.md değiştikçe `build-claude-ai-zip.ps1`'i
+> tekrar çalıştırıp zip'i yeniden yüklemen gerekir. Ayrıca claude.ai'daki custom
+> Skill'ler **kullanıcıya özel** (org geneli merkezi dağıtım/yönetim yok).
+
+### Claude.ai — eski yöntem (code execution kapalıysa fallback)
+
+Yukarıdaki native Skill yüklemesi için code execution gerekiyor; plan/ayar
+izin vermiyorsa `claude-ai/instructions.tr.md` dosyasındaki çizginin altındaki
+metni kopyala → Claude.ai → Projects → yeni proje → *Custom instructions* →
+yapıştır. Dezavantajı: tek bir Project'e bağlı kalır (her sohbette değil) ve
+`SKILL.md` ile elle senkronize tutulması gerekir.
+
+---
+
+## Dosyalar
+
+```
+skill/SKILL.md                  Router kuralları — tek kaynak, yönlendirirken okunan tek dosya
+skill/reference.md              Claude tarafı: benchmark/fiyat/abonelik tabloları + veri kalitesi notları
+skill/opencode-benchmarks.md    OpenCode Go tarafı: 19 modelin kanıtı, varyantlar, kaynaklar
+skill/opencode-evidence.json    OpenCode kanıtının makine-okur kopyası (derive_opencode_rows.py okur)
+skill/benchmarks.json           Ham kanıt deposu (Claude satırları; validate_benchmarks.py denetler)
+skill/benchmark_frontiers.json  benchmarks.json'dan ÜRETİLEN türev katman — elle düzenleme
+claude-ai/instructions.tr.md    Claude.ai fallback'i (code execution kapalıysa) — kendi kendine yeten türev
+install.sh / install.ps1        skill/ → ~/.claude/skills/model-secici/ (Claude Code)
+build-claude-ai-zip.ps1         skill/ → dist/model-secici.zip (Claude.ai native Skill yüklemesi)
+evals/                          Regresyon eval seti (routing + trigger), policy aynası, koşu geçmişi
+scripts/                        Tutarlılık kontrolleri (check_*.py, validate_benchmarks.py, …)
+archive/iteration-20-codex/     Emekli Codex kolunun erişilebilirlik denetimi
+docs/                           Sosyal önizleme, lansman planı, araştırma kaynakları
+```
+
+`SKILL.md` kısa tutuldu; tablolar `reference.md`'de. Kural değişikliği yaparsan:
+1. `build-claude-ai-zip.ps1`'i tekrar çalıştır ve claude.ai'a yeniden yükle
+   (otomatik senkronize olmuyor).
+2. `claude-ai/instructions.tr.md`'yi de güncelle — sadece fallback yöntemi
+   kullananlar için, ama hâlâ elle senkron tutuluyor.
 
 ---
 
@@ -247,85 +377,6 @@ Opus 5, Opus 4.8'e göre genel olarak büyük bir sıçrama yaptı (Frontier-Ben
 **tam farkı bilmiyoruz**, sadece yönün büyük ihtimalle aynı veya daha güçlü
 olduğunu biliyoruz. Router bunu dürüstçe işaretliyor, kanıtlanmamış üstünlük
 iddia etmiyor.
-
----
-
-## Kurulum
-
-Bu bir **Claude skill'i** — iki Markdown dosyası (`skill/SKILL.md` +
-`skill/reference.md`) bir `model-secici/` klasöründe. "Kurmak" = o klasörü
-Claude'un skill'lere baktığı yere koymak.
-
-```bash
-git clone https://github.com/enzoo808/model-effort-router.git
-cd model-effort-router
-```
-
-### Claude Code (birincil)
-
-**macOS / Linux:** `./install.sh` · **Windows:** `.\install.ps1`
-
-**Ya da elle (her OS):**
-```bash
-mkdir -p ~/.claude/skills/model-secici
-cp skill/SKILL.md skill/reference.md ~/.claude/skills/model-secici/
-```
-
-`~/.claude/skills/model-secici/` altına kopyalar. Yeni bir Claude Code oturumu
-başlat, sonra:
-
-```
-/model-secici Repodaki auth akışını OAuth2'ye taşı
-```
-
-Proje-kapsamlı istersen: `model-secici/` klasörünü repo içindeki
-`.claude/skills/` altına koy.
-
-**`/model opus` artık Opus 5.5'e çözülüyor** (Claude Code v2.1.280+), `/model
-sonnet` Sonnet 5.5'e (v2.1.284+). Eski sürümdeysen `claude update` çalıştır, yoksa alias Opus 4.8'e (veya daha eskiye)
-düşebilir.
-
-### Claude.ai / Claude Chat (birincil — artık native Skill desteği var)
-
-29 Temmuz 2026 itibarıyla claude.ai **custom Skills**'i doğrudan destekliyor —
-Project'e bağlı değil, bir kez yüklenince **her sohbette** otomatik tetikleniyor.
-Gereksinim: Pro/Max/Team/Enterprise plan + Settings'te *code execution* açık.
-
-Repodaki **`dist/model-secici.zip`**'i indir (dosyayı aç → *Download raw file*).
-Düzenleme sonrası yeniden üretmek için: `.\build-claude-ai-zip.ps1` (Windows).
-Sonra: Claude.ai → **Settings → Features → Custom Skills → Upload** → zip'i seç.
-
-> **Sınırlama (resmî dokümandan):** claude.ai'a yüklenen skill Claude Code'daki
-> ile **otomatik senkronize olmaz** — SKILL.md değiştikçe `build-claude-ai-zip.ps1`'i
-> tekrar çalıştırıp zip'i yeniden yüklemen gerekir. Ayrıca claude.ai'daki custom
-> Skill'ler **kullanıcıya özel** (org geneli merkezi dağıtım/yönetim yok).
-
-### Claude.ai — eski yöntem (code execution kapalıysa fallback)
-
-Yukarıdaki native Skill yüklemesi için code execution gerekiyor; plan/ayar
-izin vermiyorsa `claude-ai/instructions.tr.md` dosyasındaki çizginin altındaki
-metni kopyala → Claude.ai → Projects → yeni proje → *Custom instructions* →
-yapıştır. Dezavantajı: tek bir Project'e bağlı kalır (her sohbette değil) ve
-`SKILL.md` ile elle senkronize tutulması gerekir.
-
----
-
-## Dosyalar
-
-```
-skill/SKILL.md                  Router kuralları — tek kaynak
-skill/reference.md              Benchmark/fiyat/abonelik tabloları + veri kalitesi notları
-claude-ai/instructions.tr.md    Claude.ai fallback'i (code execution kapalıysa) — kendi kendine yeten türev
-install.sh / install.ps1        skill/ → ~/.claude/skills/model-secici/ (Claude Code)
-build-claude-ai-zip.ps1         skill/ → dist/model-secici.zip (Claude.ai native Skill yüklemesi)
-evals/                          Regresyon eval seti (routing + trigger) + koşu geçmişi
-```
-
-`SKILL.md` kısa tutuldu; tablolar `reference.md`'de. Kural değişikliği yaparsan:
-1. `build-claude-ai-zip.ps1`'i tekrar çalıştır ve claude.ai'a yeniden yükle
-   (otomatik senkronize olmuyor).
-2. `claude-ai/instructions.tr.md`'yi de güncelle — sadece fallback yöntemi
-   kullananlar için, ama hâlâ elle senkron tutuluyor.
 
 ---
 

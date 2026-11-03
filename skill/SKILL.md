@@ -62,7 +62,7 @@ sources: `opencode-benchmarks.md`.
 | 3 | **Kimi K3** | 44 | 13 | 2.00 | 15 | 21 | **P** | Contested coder; best AA-LCR / MMMU-Pro; weak prompt-injection resistance; `max` only |
 | 4 | **Grok 4.7** | 46 | 26 | 3.74 | 15 | 10 | **P** | Knowledge-work leader; ~25% of its cap per AA task; **30-day retention**; 500k context |
 | 5 | **Muse Spark 1.3 Contributor** | **48** | 33 | ~0.10 | 60 | 140 | N | **Trains on your prompts** — NC1 only |
-| 6 | **GLM-5.3-Flash** | 42 | 33 | 0.25 | 60 | 600 | B | **`D ≤ 1` #1**; text + image |
+| 6 | **GLM-5.3-Flash** | 42 | 33 | 0.25 | 60 | 600 | B | **`D ≤ 1` #2** (`#1` on `research-synthesis`); text + image |
 | 7 | **MiMo-V2.6-Flash** | 38 | 23 | **0.06** | 60 | 1500 | B | Cheapest; no effort variant |
 | 8 | **DeepSeek V4.1 Flash** | 39 | 27 | 0.27 | 80 | 615 | B | **Best coding consensus** (DeepSWE 71.7 ±6.3, Agent Arena 4.02 at USD 0.13); AutomationBench 69; 222 tok/s; **hallucination 96.5% — never for factual recall**; peak hours 2×; cap raised to USD 80 |
 | 9 | **GPT 6 Luna** | 38 | 13 | 0.07 | 15 | 214 | N | Fast bulk; **30-day retention**; never agentic |
@@ -91,7 +91,7 @@ sources: `opencode-benchmarks.md`.
 
 Rows 12–16 and 18 are rated but never emitted; tier **P** only through A1-OC — if a task already runs on one,
 name the budget model that replaces it. DeepSeek's zero-retention agreement is **renewed monthly (valid
-through 31 Oct 2026)**. **Never selected** (legacy, preview, unmeasured or free-and-unmeasured): Grok 4.6,
+through 30 Nov 2026; Go page read 3 Nov 2026)**. **Never selected** (legacy, preview, unmeasured or free-and-unmeasured): Grok 4.6,
 GPT 5.6 Luna, GLM-5.2, Kimi K2.6, MiMo-V2.5 (+ Pro, Free), Muse Spark 1.2, MiniMax M2.7, Hy4 Preview,
 LongCat-2.0, Hy3, Step 5 Preview, Beam Free, LongCat 2.5 Preview Free, Big Pickle, LL Alpha Free, Exo Free,
 Jev 1.13, Nemotron 3 Ultra / 3.5 Lightning / 3.5 Super VL Free. Model ids: `opencode-go/<id>` (Zen free
@@ -107,7 +107,7 @@ twins `opencode/<id>`).
 |---|---|
 | `low` | Short, well-scoped work that needs no intelligence |
 | `medium` | Cost-sensitive work |
-| `high` | **API default** on every effort model **except Opus 5.5** (`medium`) |
+| `high` | **API default** on every effort model **except Opus 5.5 and Haiku 5.5** (`medium`) |
 | `xhigh` | Deeper reasoning. 30 min+ agentic/coding work |
 | `max` | Deepest reasoning. Over-thinking risk. Only through Rule M1 |
 | `ultracode` | **Not a level.** A Claude Code toggle: plans a dynamic workflow for every substantive task, at whatever effort the session runs. Written as a flag after the effort |
@@ -685,7 +685,7 @@ Rationale in `reference.md` §10.5. **Auto-added lines:** Rules 1, 9, 10, 11 and
    is on it (NC1 only): `Data: Muse Spark 1.3 Contributor trains on your prompts.`
    Never name Muse Spark when the work is confidential.
 10. **DeepSeek line (auto).** If **DeepSeek V4.1 Flash** is on the OpenCode line:
-    `DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).`
+    `DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).`
 11. **Gemini line (auto).** If **Gemini 4 Argon** is on the OpenCode line:
     `Gemini 4 Argon: opencode-go/gemini-4-argon-contributor — Google trains on your prompts; Go cap USD 60 during the 2× promo (30 after). If it errors or is overloaded, run the row's other model.`
 12. **Ultracode line (auto).** If the Claude line carries `ultracode`:
@@ -725,7 +725,7 @@ Evidence: <one sentence, ≤ 30 words>
 Claude: Haiku 5.5 · effort: low
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
 Evidence: Labelling is D=0 bulk work, so OpenCode runs it: the Flash tier buys hundreds of such batches a month on USD 60–80 caps (USD 0.13–0.27 per task) and keeps Claude's quota for harder work.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 ```
 > Errand work goes to OpenCode even when Haiku 5.5 would do it. A finished memo or deck at `D ≥ 2` is `knowledge-work` and stays on Claude.
 
@@ -739,7 +739,7 @@ Clarify: which file or function is broken, what does it do now, and what should 
 Claude: Sonnet 5.5 · effort: high
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
 Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (DeepSeek 71.7 vs Sonnet 5.5 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task; Claude's lead starts at D=3.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 ```
 > One implementation phase → no `ultracode`. The same task at `D=3` (or after an OpenCode shortfall) flips the badge to Claude.
 
@@ -748,7 +748,7 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
 OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
 Evidence: D=3 reasoning half has two agreeing AA rows (HLE 61 vs 49, CritPt 32 vs 27); the terminal half sets no direction, so the direction decides.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 ⚡ Claude /fast available (2.5x faster, 2× price).
 ```
 > `D=3` (D3DIAG) but one phase → `xhigh`, not `ultracode`/`max`. `#1` from the badge-deciding tag (deep-reasoning); the terminal row's `#1` is the same model, so `#2` is its `#2`. Gemini 4 Argon is absent: the work is confidential by default (GM1).
@@ -775,7 +775,7 @@ Evidence: Finished-deliverable work is knowledge-work, where two agreeing AA row
 Claude: Sonnet 5.5 · effort: low
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
 Evidence: D=0 — both clear the bar, so price and cap decide: Flash models on USD 80 and 60 caps at USD 0.27 and 0.25 per task.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 Do not apply without human review.
 ```
 > `R=3` by blast radius, not line length — also why Haiku 5.5 is out.
@@ -791,7 +791,8 @@ Evidence: Offensive security is a deciding gate on both arms; only Opus 4.8 carr
 
 ## If detail is needed
 
-`reference.md` §8 examples · §10 edge cases · §11–§14 evidence maps · §17 Claude 5.5 · §19 Haiku 5.5
+`reference.md` §8 examples · §10 edge cases · §11–§14 evidence maps · §17 Claude 5.5 · §19 Haiku 5.5 ·
+§20 budget-first pool · §21 free models and Gemini · §22 `ultracode` toggle
 (§9 and §18 are the retired Codex arm; iteration-20 is git tag `iteration-20-codex`).
 `opencode-benchmarks.md` — the 19-model evidence, variants, rung curves, sources (§13 = Gemini 4 Argon and the free models).
 **Never load them to route a prompt.**

@@ -164,20 +164,21 @@ access.
 
 ## 1. Model capability table (Anthropic official)
 
-*Updated 29 Sep 2026 (`platform.claude.com/docs/en/models/overview`, read directly).*
+*Updated 29 Sep 2026 (`platform.claude.com/docs/en/models/overview`, read directly). Haiku 5.5 column and
+Sonnet 5.5's 7 Oct cache-read cut added 3 Nov 2026 from §19 and `opencode-benchmarks.md` §11.*
 
-| Feature | Fable 5.1 | **Opus 5.5** | **Sonnet 5.5** | Haiku 4.5 |
-|---|---|---|---|---|
-| Released | 1 Sep 2026 | **22 Sep 2026** | **28 Sep 2026** | 15 Oct 2025 |
-| Context | 1M | 1M | 1M | 200k |
-| Max output | 128k | 128k | 128k | 64k |
-| Price (input/output $/MTok) | $10/$50 | **$4/$20** | **$2/$10** | $1/$5 |
-| Cache read ($/MTok) | **$0.25** (0.025x) | **$0.20** (0.05x) | $0.20 | $0.10 |
-| Effort support | low–max | low–max | low–max | **none** |
-| API default effort | `high` | **`medium`** | `high` (`medium` in the Claude apps) | — |
-| Thinking | adaptive, always on | adaptive, **always on — `disabled` is a 400** | adaptive (lowest setting `between_tools`, high effort or below) | extended |
-| Knowledge cutoff | Jun 2026 | **Jun 2026** | **Jun 2026** | Feb 2025 |
-| Retirement (Anthropic platforms) | not before 1 Sep 2027 | not before 22 Sep 2027 | not before 28 Sep 2027 | **not before 15 Oct 2026** |
+| Feature | Fable 5.1 | **Opus 5.5** | **Sonnet 5.5** | **Haiku 5.5** | Haiku 4.5 (legacy) |
+|---|---|---|---|---|---|
+| Released | 1 Sep 2026 | **22 Sep 2026** | **28 Sep 2026** | **7 Oct 2026** | 15 Oct 2025 |
+| Context | 1M | 1M | 1M | 1M | 200k |
+| Max output | 128k | 128k | 128k | 128k | 64k |
+| Price (input/output $/MTok) | $10/$50 | **$4/$20** | **$2/$10** | **$0.10/$0.50** up to 100k tokens, $0.50/$2.50 above | $1/$5 |
+| Cache read ($/MTok) | **$0.25** (0.025x) | **$0.20** (0.05x) | $0.10 (was $0.20 until 7 Oct, §19.4) | $0.01 | $0.10 |
+| Effort support | low–max | low–max | low–max | low–max (router: `low`/`medium` only, E8) | **none** |
+| API default effort | `high` | **`medium`** | `high` (`medium` in the Claude apps) | **`medium`** | — |
+| Thinking | adaptive, always on | adaptive, **always on — `disabled` is a 400** | adaptive (lowest setting `between_tools`, high effort or below) | adaptive; cannot be disabled in Claude Code | extended |
+| Knowledge cutoff | Jun 2026 | **Jun 2026** | **Jun 2026** | Jun 2026 | Feb 2025 |
+| Retirement (Anthropic platforms) | not before 1 Sep 2027 | not before 22 Sep 2027 | not before 28 Sep 2027 | not before 7 Oct 2027 | **not before 15 Oct 2026** |
 
 **Legacy, still available:** Opus 5 ($5/$25, cache read $0.50, cutoff May 2026,
 default `high`) and Sonnet 5 ($2/$10, cache read $0.30, cutoff Jan 2026, default
@@ -345,7 +346,8 @@ model's **entire** token spend — text, tool calls, thinking.
 | Opus 4.8 | low, medium, high, xhigh, max | high |
 | Opus 4.7 | low, medium, high, xhigh, max | **xhigh** (exception) |
 | Opus 4.6, Sonnet 4.6 | low, medium, high, max (**no xhigh**) | high |
-| Haiku 4.5 | **none** | — |
+| **Haiku 5.5** | low, medium, high, xhigh, max | **medium** (the router writes only `low`/`medium`, Rule E8) |
+| Haiku 4.5 (legacy) | **none** | — |
 
 If `xhigh` is requested but unsupported, it falls to the nearest supported level
 below (e.g. `xhigh` → `high` on Opus 4.6).
@@ -2984,9 +2986,11 @@ it); example check. **Not done:** the cold-agent routing run and the trigger eva
 
 ## 21. Free models and the Gemini line (iteration-24, 20 October 2026)
 
-Rules **FR1** (free lane: MiniMax M3.1 Flash Free joins the pool; Zen free twins are spill-over only; every other free model is never selected) and **GM1** (Gemini 4 Argon is metered by the user's Google credits and
-goes first only in the right-hand column of `agentic-code`, `terminal-tool`, `deep-reasoning`, `research-synthesis` and `workflow-automation`) were added to `SKILL.md`. The evidence, the per-model verdicts, the Google-membership
-facts (USD 10/month of credits, paid vs free tier terms, the third-party-login warning) and the 503 / 429 diagnosis are in `opencode-benchmarks.md` §13. This file's Codex material (§9, §18) is still the retired arm.
+Rules **FR1** (free lane: MiniMax M3.1 Flash Free joins the pool; Zen free twins are spill-over only; every other free model is never selected) and **GM1** (Gemini 4 Argon goes first only in the right-hand column of
+`agentic-code`, `terminal-tool`, `deep-reasoning`, `research-synthesis` and `workflow-automation`) were added to `SKILL.md`. **26 Oct revision:** the user cannot use a Google membership inside OpenCode, so Argon is reachable
+only through Go's prompt-training *Contributor* route (`opencode-go/gemini-4-argon-contributor`, USD 60 cap during a 2× promo) and exists only under NC1; the first draft's "metered by the user's Google credits" no longer
+applies. The evidence, the per-model verdicts, the Google-membership facts (USD 10/month of credits, paid vs free tier terms, the third-party-login warning — background only since 26 Oct) and the 503 / 429 diagnosis are in
+`opencode-benchmarks.md` §13 (§13.5 has the revision). This file's Codex material (§9, §18) is still the retired arm.
 
 ## 22. `ultracode` becomes a toggle — iteration-25 (3 November 2026)
 

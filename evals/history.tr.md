@@ -222,6 +222,30 @@ değiştirdi. Codex kolu yeniden türetildi (ayrıntı: `skill/reference.md` §1
   promptlarında bir ajanı durdurdu; grup bölünüp yeniden koşuldu.
 - **Ders (tekrarlayan):** ajanlar ayrışıyorsa önce promptu sorgula, kuralı değil (n2, x2, i1, j1, x1).
 
+## iteration-21 (6 Ekim 2026) — Codex kolu emekli, OpenCode Go kolu
+
+- Codex üyeliği bittiği için ikinci kol **OpenCode Go (USD 10/ay)** için sıfırdan türetildi: iki model sırayla (`#1`, `#2`),
+  her biri kendi eforuyla; çiftler bağımsız kaynakların konsensüsünden (`skill/opencode-evidence.json`, `scripts/derive_opencode_rows.py`).
+  Codex dönemi seti `archive/iteration-20-codex/` altında.
+- **Canlı eval:** 25/25 (5 taze ajan). İlk turda 23/25 — `e1` ve `x1` prompt belirsizliğiydi, promptlar netleştirildi.
+
+## iteration-22 (8 Ekim 2026) — Claude Haiku 5.5
+
+- Haiku 5.5 maliyet seçimi oldu (Kural H1, H2, E8, E9); Haiku 4.5 legacy.
+- **Canlı eval:** 29/29. İlk turda 25/27 — `a3` golden hatasıydı (ajan haklıydı), `a5`'in promptu netleştirildi.
+
+## iteration-23 (14 Ekim 2026) — bütçe-öncelikli havuz, varsayılan OpenCode
+
+- BUD1 (dört premium model rutin çiftte yok, yalnız A1-OC ile `#2`) ve SM1 (rozet Claude'a yalnız ciddi farkta).
+- **Doğrulama:** öz-test 30/30, deterministik kontroller yeşil; **soğuk-ajan koşusu yapılmadı.**
+
+## iteration-24 (20–26 Ekim 2026) — ücretsiz hat ve Gemini yuvası
+
+- FR1 (MiniMax M3.1 Flash Free) ve GM1 (Gemini 4 Argon); 21 Ekim: Flash katmanında `D ≥ 2 → max`; 26 Ekim: Argon yalnız Go'nun
+  Contributor yolundan erişilebildiği için yalnız NC1 (gizli olmayan iş).
+- **Canlı eval:** 33/33 (`i1` koşulmadı). 26 Ekim revizyonunda etkilenen 10 eval, `p1` (A1-OC ifadesi) ve `g1` (prompt)
+  düzeltmelerinden sonra geçti.
+
 ## iteration-25 (3 Kasım 2026) — `ultracode` seviye olmaktan çıktı
 
 - **Tetik:** kullanıcı Claude'un `ultracode` efor mantığının değiştiğini bildirdi. Resmi dokümanlar (`model-config`, `workflows`,

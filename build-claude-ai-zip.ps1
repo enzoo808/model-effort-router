@@ -1,5 +1,5 @@
 # Packages the model-secici skill into a zip you can upload to claude.ai.
-# Uses the same skill/SKILL.md + skill/reference.md as Claude Code -- not a
+# Uses the same skill/ files as Claude Code (the payload list below) -- not a
 # hand-synced second copy.
 
 $ErrorActionPreference = 'Stop'

@@ -37,12 +37,13 @@ model-secici:
   Claude:   Haiku 5.5 · effort: low
   OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
   Evidence: Labelling is D=0 bulk work, so OpenCode runs it: the Flash tier buys hundreds of
-            such batches a month on USD 60 caps and keeps Claude's quota for harder work.
+            such batches a month on USD 60–80 caps (USD 0.13–0.27 per task) and keeps Claude's
+            quota for harder work.
   DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
 ```
 
 > The skill body (`skill/SKILL.md`, plus `opencode-benchmarks.md` and `reference.md`) and its output are English. It routes prompts in any language. 🇹🇷 A longer
-> Turkish walkthrough is in **[README.tr.md](README.tr.md)** (its iteration-21/22/23 sections are at the top; the rest is the Codex-era history).
+> Turkish walkthrough is in **[README.tr.md](README.tr.md)** (its iteration-21 to iteration-25 sections are at the top; the rest is the Codex-era history).
 
 ---
 
@@ -200,7 +201,7 @@ and `archive/iteration-20-codex/`.
 - **Confidential by default.** Grok 4.7 and GPT 6 Luna keep prompts 30 days and Muse Spark
   Contributor trains on them, so all three are out of the pool unless you say the work is
   non-confidential (Rule NC1). DeepSeek's zero-retention agreement is valid through
-  31 Oct 2026 and renewed monthly — the router prints that caveat.
+  31 Oct 2026 and renewed monthly — the router prints that caveat (renewed: valid through 30 Nov 2026, Go page read 3 Nov 2026).
 - **Multi-source, not one benchmark.** A first pass used only Artificial Analysis and over-ranked
   MiMo-V2.6-Pro. The router now rests on every independent source that publishes the pool —
   AA (13 components), DeepSWE v1.1 (Mercor/Datacurve, with error margins), Arena (Agent / Code /
@@ -317,13 +318,13 @@ id `opencode-go/<model-id>` and cycle the effort with `variant_cycle` (MiMo-V2.6
 | Step | What happens |
 |---|---|
 | **0 · Quality gate** | Four mechanical checks. If any fires → **no model, no badge, one `Clarify:` line.** |
-| **1 · Hard gates** | Claude: sub-second/bulk → Haiku 5.5; offensive security → Opus 4.8; biology → Fable 5.1; 1000+ files → Fable 5.1. **OpenCode: offensive security / biology / computer-use → `use Claude` (no models); confidential work removes Muse Spark, Grok 4.7 and GPT 6 Luna; context > 256k removes Qwen3.8 Flash; image input removes GLM-5.3 (premium anyway); bulk/latency → DeepSeek V4.1 Flash.** |
+| **1 · Hard gates** | Claude: sub-second/bulk → Haiku 5.5; offensive security → Opus 4.8; biology → Fable 5.1; 1000+ files → Fable 5.1. **OpenCode: offensive security / biology / computer-use → `use Claude` (no models); confidential work (the default) removes Muse Spark, Grok 4.7, GPT 6 Luna and Gemini 4 Argon; factual recall removes DeepSeek V4.1 Flash and MiniMax M3.1 Flash Free; context > 500k removes Grok 4.7, > 256k Qwen3.8 Flash; image input removes GLM-5.3 (premium anyway); bulk/latency → DeepSeek V4.1 Flash.** |
 | **2 · Capability profile** | One or two tags (`agentic-code`, `deep-reasoning`, `knowledge-work`, `long-context`, `workflow-automation`, …) — what makes benchmark evidence applicable or not. |
 | **3 · Score scope & stakes** | **R**isk, **D**epth, **W**idth, **C**ontext — each 0–3. |
-| **4 · Candidate model × effort** | Claude: Haiku 5.5 by Rule H1, else model ← `max(D,C)` + profile; effort ← D (`low/medium/high/xhigh`), a `· ultracode` flag on 3+ phases (never a level of its own), `opusplan`. **OpenCode (4-OC): a pair from the budget tier only (BUD1) — `D ≤ 1` → DeepSeek V4.1 Flash · GLM-5.3-Flash; otherwise a per-capability pair, reordered at `D = 3` / `R = 3`; effort = the model's own variant: `low`/`high`/`max` by `D` where OpenCode offers them, else `default` (MiMo), `xhigh` (Qwen).** |
+| **4 · Candidate model × effort** | Claude: Haiku 5.5 by Rule H1, else model ← `max(D,C)` + profile; effort ← D (`low/medium/high/xhigh`), a `· ultracode` flag over 30 minutes on 3+ phases or 100+ units that each need judgement (UC1 — never a level of its own), `opusplan`. **OpenCode (4-OC): a pair from the budget tier plus the free model (BUD1, FR1) — `D ≤ 1` → DeepSeek V4.1 Flash · GLM-5.3-Flash; otherwise a per-capability pair, reordered at `D = 3` / `R = 3`, with Gemini 4 Argon on top only under NC1 (GM1); effort = the model's own variant: `low` at `D ≤ 1`, `max` at `D ≥ 2` where OpenCode offers `low`/`high`/`max`, else `default` (MiMo), `xhigh` (Qwen), `high` (Argon).** |
 | **5 · Evidence, equivalence, efficiency** | Comparability → published dispersion only → dominance (Go cap pressure first for OpenCode). |
 | **6 · `✅ RECOMMENDED AI`** | Hard gate → MECH1 → applicable capability and its evidence (B1, BD1) read through **SM1: OpenCode unless Claude makes a serious difference**. One badge, one `Evidence:` sentence. |
-| **7 · Quota guards** | `R=3` → human-review note. Escalation is a model change. Data-policy and DeepSeek lines are auto-added. |
+| **7 · Quota guards** | `R=3` → human-review note. Escalation is a model change. Data-policy, DeepSeek, Gemini and Ultracode lines are auto-added. |
 
 Two design choices carried over: **risk raises human oversight, not model tier**, and
 **when in doubt, round down**.
@@ -340,17 +341,17 @@ Two design choices carried over: **risk raises human oversight, not model tier**
 | Live-chat reply, first words within about a second | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — first-token bound; DeepSeek has a measured 1.1 s |
 | Which year did the EU AI Act's GPAI obligations start? | `Sonnet 5.5 · low` | GLM-5.3-Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — factual recall excludes Haiku and DeepSeek |
 | Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5.5 · low` + review note | DeepSeek V4.1 Flash `low` · GLM-5.3-Flash `low` | **OpenCode** — `D=0`, both clear the bar |
-| Refactor the payment module across 40 files | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · MiMo-V2.6-Pro `default` | **OpenCode** — `D=2`; DeepSWE ties, USD 0.13 vs 1.67 per task |
-| Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · high · ultracode` | DeepSeek V4.1 Flash `high` · MiMo-V2.6-Pro `default` | **Claude** — three phases; `ultracode` has no OpenCode equivalent (MECH1) |
+| Refactor the payment module across 40 files | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `max` · MiMo-V2.6-Pro `default` | **OpenCode** — `D=2`; DeepSWE ties, USD 0.13 vs 1.67 per task |
+| Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · high · ultracode` | DeepSeek V4.1 Flash `max` · MiMo-V2.6-Pro `default` | **Claude** — three phases; `ultracode` has no OpenCode equivalent (MECH1) |
 | Find the race condition that flakes in prod | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, two agreeing AA rows on the reasoning half |
-| Design and implement the irreversible transaction boundary | `Opus 5.5 · max` + review note | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, `R=3` |
-| Redesign auth for 200 services from scratch | `opusplan · plan: max · execute: medium` | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude** — `opusplan` mechanism |
-| Wire a Jira → Slack → on-call n8n flow | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · GLM-5.3-Flash `high` | **OpenCode**, low-confidence — AutomationBench is a tie and ITBench favours the open models |
-| Summarise 400 pages of filings into one memo | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **Claude** — knowledge-work from `D=2` |
-| Read 30 scanned receipts into a reconciliation table | `Sonnet 5.5 · high` | Qwen3.8 Flash `xhigh` · MiMo-V2.6-Pro `default` | **OpenCode**, low-confidence — both take images |
+| Design and implement the irreversible transaction boundary | `Opus 5.5 · max` + review note | MiMo-V2.6-Pro `default` · MiniMax M3.1 Flash Free `max` | **Claude** — `D=3`, `R=3` |
+| Redesign auth for 200 services from scratch | `opusplan · plan: max · execute: medium` | MiMo-V2.6-Pro `default` · MiniMax M3.1 Flash Free `max` | **Claude** — `opusplan` mechanism |
+| Wire a Jira → Slack → on-call n8n flow | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `max` · GLM-5.3-Flash `max` | **OpenCode**, low-confidence — AutomationBench is a tie and ITBench favours the open models |
+| Summarise 400 pages of filings into one memo | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — knowledge-work from `D=2` |
+| Read 30 scanned receipts into a reconciliation table | `Sonnet 5.5 · high` | MiniMax M3.1 Flash Free `max` · Qwen3.8 Flash `xhigh` | **OpenCode**, low-confidence — both take images; the free model leads the Flash tier (FR1) |
 | Non-confidential conference pricing deck | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · Qwen3.8 Flash `xhigh` | **Claude** — knowledge-work; Grok 4.7 stays premium |
-| Read 3 regulator pages before labels go to print tonight | `Sonnet 5.5 · high` + review note | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `high` | **Claude**, low-confidence — `R=3` and a single Omniscience lean |
-| An earlier OpenCode attempt at a 30-file migration fell short | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · **GLM-5.3** `max` | **Claude** — Rule A1-OC adds the premium `#2` and hands the badge over |
+| Read 3 regulator pages before labels go to print tonight | `Sonnet 5.5 · high` + review note | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude**, low-confidence — `R=3` and a single Omniscience lean |
+| An earlier OpenCode attempt at a 30-file migration fell short | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `max` · **GLM-5.3** `max` | **Claude** — Rule A1-OC adds the premium `#2` and hands the badge over |
 | Exploit PoC for a CVE | `Opus 4.8 · xhigh` | `use Claude` | **Claude** — the other arm declines |
 | Call somatic variants from tumour/normal exomes | `Fable 5.1 · high` | `unverified — use Claude` | **Claude** — availability gate |
 | "Fix this code" | *(no model, no badge — asks: which code? broken how? done = ?)* | | |
@@ -359,7 +360,7 @@ Two design choices carried over: **risk raises human oversight, not model tier**
 
 ## Validation
 
-`evals/routing/evals.json` is a deterministic regression set (30 prompts) graded by
+`evals/routing/evals.json` is a deterministic regression set (36 prompts) graded by
 `evals/routing/grade_routing.py` (pure regex, no LLM): Claude model + effort, **both OpenCode
 picks (model, effort, order)**, which side carries the badge, a non-trivial `Evidence:` line
 (whose `low-confidence` flag must match the row's dagger), plus required / forbidden text
@@ -373,8 +374,8 @@ python scripts/derive_opencode_rows.py     # print the independent-evidence cons
 python scripts/check_examples.py           # every worked example agrees with its golden
 ```
 
-> **Status (14 Oct 2026).** Iteration-23: the grader self-test (30/30), policy sync, pool/badge-table check and example check are green; the goldens are rule-derived and **not yet confirmed by a cold-agent run**. The last cold-agent run (iteration-22, 29/29, `evals/README.md`) predates the budget-first pool and the OpenCode-default badge. The **trigger eval is a proxy only** (nested `claude -p` fails to
-> authenticate here); run `evals/trigger/run_trigger.py` from a logged-in terminal for the real result.
+> **Status (3 Nov 2026).** Iteration-25: the grader self-test (36/36), policy sync, pool/badge-table check, example check and benchmark validator are green. A **fresh-agent run of all 36 prompts scored 34/36** (`evals/routing/results/iteration-25/`): `c1` missed once on the badge and passed 3/3 on re-run; `r1` is unstable at 2/4 and left open. The **trigger eval is a proxy only** (nested `claude -p` fails to
+> authenticate here, last real run 10 Sep 2026); run `evals/trigger/run_trigger.py` from a logged-in terminal for the real result.
 
 Run history and the reasoning behind every rule change is in
 [`evals/README.md`](evals/README.md).

@@ -48,8 +48,9 @@ TAGS = {
 # burn 4-10% of their monthly Go cap per real agent task (Arena p50), the budget tier
 # 0.1-0.7% -- see tasks_per_month in evals/policy/routing_policy.json.
 # iteration-24: MiniMax M3.1 Flash Free joins the budget tier (Go: unlimited, zero-retention, so
-# cap pressure is nil); the Gemini line is metered by Google credits, not by a Go cap, and is
-# reported next to the premium four (Rule GM1) instead of competing for the budget slot.
+# cap pressure is nil); Gemini 4 Argon (Go's prompt-training Contributor route since the 26 Oct
+# revision, NC1-only) is an overlay (Rule GM1), reported next to the premium four instead of
+# competing for the budget slot.
 ROUTABLE = ["MiMo-V2.6-Pro", "GLM-5.3-Flash", "MiMo-V2.6-Flash", "DeepSeek V4.1 Flash", "Qwen3.8 Flash",
             "MiniMax M3.1 Flash"]
 GEMINI = ["Gemini 4 Argon", "Gemini 3.8 Flash"]

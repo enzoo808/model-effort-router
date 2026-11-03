@@ -63,7 +63,8 @@ DECLINE_MARKERS = ("unverified", "use claude")
 # Rule BUD1 (iteration-23): the four premium models appear on an OpenCode line only through
 # A1-OC, i.e. in evals that set "allow_premium": true.
 PREMIUM_PATTERNS = (r"GLM-5\.3(?!-Flash)", r"Kimi K3", r"Grok 4\.7", r"Qwen3\.8 Max")
-# Rule GM1 (iteration-24): Gemini 4 Argon is metered; it may be #1 (or, after a shortfall, #2)
+# Rule GM1 (iteration-24, Go Contributor route only since 26 Oct): Gemini 4 Argon trains on prompts,
+# so it is NC1-only; it may be #1 (or, after a shortfall, #2)
 # only in an eval that sets "allow_gemini": true. Everywhere else it is a regression.
 GEMINI_PATTERN = r"Gemini"
 # Rule FR1: the free Go model may appear; no Zen free twin or other free model ever may.

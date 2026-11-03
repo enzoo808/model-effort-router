@@ -1,4 +1,4 @@
-# OpenCode Go evidence — iteration-23
+# OpenCode Go evidence — iterations 21–24 (§13 is the latest pass)
 
 **Audit data for the OpenCode arm of `SKILL.md`. Never load this to route a prompt;
 every rule needed is in `SKILL.md`.** Verified **6 October 2026** (§11, Claude Haiku 5.5: **8 October 2026**). Everything below
@@ -20,7 +20,7 @@ Source: `opencode.ai/docs/go/`.
   (ZDR limits stateful Responses API and Files); **GPT 6 Luna / 5.6 Luna: 30 days**
   (abuse-monitoring logs); **DeepSeek (V4.1 Flash, V4 Pro, V4 Flash, V4 Flash Vision
   Exp): 0 days, "ZDR agreement is renewed monthly. The current agreement is valid
-  through October 31, 2026"**; **Muse Spark 1.3 / 1.2 Contributor: prompts and
+  through October 31, 2026"** (renewed — read 3 Nov 2026: "valid through November 30, 2026"); **Muse Spark 1.3 / 1.2 Contributor: prompts and
   completions may be used to train future Meta models** ("heavily discounted token
   pricing"), tier geo-restricted by Meta policy.
 - **Peak pricing (DeepSeek only):** Mon–Fri 01:00–04:00 and 06:00–10:00 UTC = 04–07

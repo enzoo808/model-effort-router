@@ -10,6 +10,7 @@
 > **8 Ekim 2026 (iteration-22):** **Claude Haiku 5.5** (7 Eki) Haiku 4.5'in yerini aldı — maliyet seçimi (Kural H1).
 > **14 Ekim 2026 (iteration-23):** OpenCode **varsayılan** (Kural SM1) ve havuz **fiyat-performans katmanına** daraltıldı (Kural BUD1).
 > **20 Ekim 2026 (iteration-24):** **ücretsiz hat** (Kural FR1: MiniMax M3.1 Flash Free) ve **Gemini yuvası** (Kural GM1: Gemini 4 Argon, yalnız Go'nun Contributor yolu → yalnız gizli olmayan iş) eklendi; havuz 19 model.
+> **3 Kasım 2026 (iteration-25):** `ultracode` artık efor seviyesi değil, eforun ardına yazılan bir Claude Code anahtarı (Kural UC1: `effort: <seviye> · ultracode`, taban `high`, tavan `xhigh`).
 
 **Kurulum:** Claude.ai → Projects → yeni proje → *Custom instructions* → aşağıdaki
 çizginin altındaki her şeyi yapıştır.
@@ -70,13 +71,13 @@ agent-görevi maliyeti (büyüklük mertebesi: bir aylık tavan kaç gerçek gö
 | **Kimi K3** | 44 max · 30 low | 13 | 2.00 · 1.15 | 15 | 21 | **P** | Tartışmalı kodlayıcı; AA-LCR/MMMU-Pro lideri; prompt-injection direnci zayıf; yalnız `max` |
 | **Grok 4.7** | 46 xhigh | 26 | 3.74 | 15 | 10 | **P** | GDPval/Briefcase lideri; görev başına tavanın ~%25'i; 30 gün saklama; 500k bağlam |
 | **Muse Spark 1.3 Contributor** | **48** | 33 | ~0.10 (Go fiyatıyla) | 60 | 140 | N | **Promptlarınla eğitilir** → yalnız NC1 |
-| **GLM-5.3-Flash** | 42 | 33 | 0.25 | **60** | 600 | B | **`D ≤ 1` #1**; metin+görüntü |
+| **GLM-5.3-Flash** | 42 | 33 | 0.25 | **60** | 600 | B | **`D ≤ 1` #2** (`research-synthesis`'te `#1`); metin+görüntü |
 | **MiMo-V2.6-Flash** | 38 | 23 | **0.06** | **60** | 1500 | B | En ucuz; toplu iş; 1M bağlam, metin+görüntü; efor varyantı yok |
 | **DeepSeek V4.1 Flash** | 39 max | 27 | 0.27 | **80** | 615 | B | **En iyi kodlama konsensüsü** (DeepSWE 71.7 ±6.3, Agent Arena 4.02 @ USD 0.13); AutomationBench 69; 222 t/s; **halüsinasyon oranı %96.5 — olgusal bilgiye asla**; yoğun saatlerde 2× |
 | **GPT 6 Luna** | 38 | 13 | 0.07 | 15 | 214 | N | Hızlı toplu iş (147 t/s); 30 gün saklama; asla ajanik |
 | **Qwen3.8 Flash** | 40 | 25 | 0.37 | 30 | 200 | B | Briefcase 1583 → bilgi-işi #2; 256k bağlam; görüntü alır |
 | **Qwen3.8 Max** | 45 | 39 | 5.41 | 15 | 33 | **P** | Görev başına tavanın ~%36'sı; yalnız A1-OC |
-| DeepSeek V4 Pro | 36 | 14 | 0.67 | 15 | 47 | D | **Domine** (V4.1 Flash 39 @ 0.27, tavan 60) |
+| DeepSeek V4 Pro | 36 | 14 | 0.67 | 15 | 47 | D | **Domine** (V4.1 Flash 39 @ 0.27, tavan 80) |
 | MiniMax M3 | 29 | 2 | 0.51 | 60 | — | D | **Domine** |
 | Kimi K2.7 Code | 26 | 1 | 0.54 | 60 | — | D | **Domine** |
 | Qwen3.7 Plus | 25 | 1 | 0.22 | 60 | — | D | **Domine** |
@@ -96,8 +97,8 @@ koşusunun yetmediğini söyledikten sonra girer. Diğer her çift bütçe katma
 Satır 12–16 ve Gemini 3.8 Flash puanlandı ve havuzda duruyor, ama hiçbir yönlendirme satırı onları üretmez.
 Havuz dışı (asla seçilmez): Grok 4.6, GPT 5.6 Luna, GLM-5.2, Kimi K2.6, MiMo-V2.5, MiMo-V2.5-Pro,
 Muse Spark 1.2, MiniMax M2.7, Hy4 Preview, LongCat-2.0, Hy3, Step 5 Preview, Beam Free, LongCat 2.5 Preview Free,
-Big Pickle, LL Alpha Free, Exo Free, Jev 1.13, MiMo-V2.5 Free, Nemotron 3 Ultra / 3.5 Lightning / 3.5 Super VL Free. DeepSeek'in sıfır-saklama anlaşması **31 Ekim 2026'ya kadar
-geçerli, aylık yenileniyor.**
+Big Pickle, LL Alpha Free, Exo Free, Jev 1.13, MiMo-V2.5 Free, Nemotron 3 Ultra / 3.5 Lightning / 3.5 Super VL Free. DeepSeek'in sıfır-saklama anlaşması **30 Kasım 2026'ya kadar
+geçerli, aylık yenileniyor** (Go sayfası 3 Kasım 2026'da okundu).
 
 ## OpenCode Kolu — özet (tam mantık `SKILL.md`'de, bu kısaltılmış özet)
 
@@ -118,7 +119,7 @@ kalır (Grok 4.7 premium kalır, BUD1 — geri gelmez); Muse Spark 1.3 yalnız
 
 | Baskın capability | `R ≤ 2` → `#1` · `#2` | `D = 3` veya `R = 3` → `#1` · `#2` | Kanıt (bağımsız çıtalar, bütçe katmanı) |
 |---|---|---|---|
-| **herhangi, `D ≤ 1`** | DeepSeek V4.1 Flash · GLM-5.3-Flash | aynı | DeepSeek, USD 60 katmanının her-işe-yarar modeli (Agent Arena 4.02 @ USD 0.13 vs GLM-Flash 0.44); research-synthesis'te DeepSeek elenir → GLM-5.3-Flash · MiMo-V2.6-Flash |
+| **herhangi, `D ≤ 1`** | DeepSeek V4.1 Flash · GLM-5.3-Flash | aynı | DeepSeek, USD 60–80 katmanının her-işe-yarar modeli (Agent Arena 4.02 @ USD 0.13 vs GLM-Flash 0.44); research-synthesis'te DeepSeek elenir → GLM-5.3-Flash · MiMo-V2.6-Flash |
 | `agentic-code`, `terminal-tool` | DeepSeek V4.1 Flash · MiMo-V2.6-Pro | **MiMo-V2.6-Pro · DeepSeek V4.1 Flash** | Konsensüs 0.88 / 0.83: DeepSeek DeepSWE'de (71.7 ±6.3, Claude ile eşit), Agent Arena'da ve Vals TB 2.1'de lider; MiMo-V2.6-Pro AA TB 4.0'da (35) lider, derinlikte önce. NC1 altında `D=3`/`R=3`'te Argon `#1` (GM1): AA TB 4.0 57, Vals 58, FrontierSWE v2 55 vs 35 / 18; Claude hâlâ önde (60–64) |
 | `deep-reasoning` | MiMo-V2.6-Pro · MiniMax M3.1 Flash Free | aynı | HLE 49 / 48 vs 40, CritPt 27 / 22 vs 15 (FR1: ücretsiz model `#2`). NC1 altında `D=3`/`R=3`'te Argon `#1`: HLE 57, ARC-AGI-2 91.3 vs 49 / 61; Opus 5.5 HLE ve CritPt'te hâlâ önde |
 | `knowledge-work` | MiMo-V2.6-Pro · Qwen3.8 Flash | aynı | GDPval MiMo, Briefcase Qwen Flash → ayrışır, ikisi birlikte lider (0.83) |
@@ -142,10 +143,11 @@ zincirinin sıradakini an: Pro **MiMo-V2.6-Pro → DeepSeek V4.1 Flash → GLM-5
 GLM-5.3-Flash → MiMo-V2.6-Flash → Qwen3.8 Flash**.
 
 **A1-OC (yükseltme).** Kullanıcı önceki bir **OpenCode** koşusunun yetmediğini söylerse `#2` → baskın capability için en iyi
-konsensüslü premium model: `agentic-code`, `terminal-tool`, `deep-reasoning`, `research-synthesis`, `workflow-automation` için (`D ≥ 2`) **GLM-5.3** (`research-synthesis` dahil);
+konsensüslü premium model: `agentic-code`, `terminal-tool`, `workflow-automation` ve `research-synthesis` için **GLM-5.3**;
 `deep-reasoning`, `science`, `long-context`, `doc-data-understanding` için **Kimi K3**; `knowledge-work` için **Qwen3.8 Max** — iş gizli değilse (NC1) GM1 satırlarında (`D ≥ 2`) **Gemini 4 Argon**, diğerlerinde **Grok 4.7** —
-ve `Evidence:` maliyetini söyler (gerçek agent görevi başına aylık tavanın ~%3–5'i, Grok %10). `D ≥ 2`'de yetmeyişten sonra baskın capability'nin
-BD1 altında Claude yönü varsa rozet Claude'a geçer; `D = 3`'te ayrıca Claude satırının daha güçlü olduğunu söyle. Bir arm'daki yetersizlik yalnız o arm'ı yükseltir.
+ve `Evidence:` maliyetini söyler (gerçek agent görevi başına aylık tavanın ~%3–5'i, Grok %10, Argon zor görev başına USD 60 tavanının ~%3'ü). `D ≥ 2`'de yetmeyişten sonra
+baskın capability'nin rozet tablosunda **herhangi bir Claude hücresi** varsa — `agentic-code`, `terminal-tool`, `deep-reasoning`, `knowledge-work`, görevin kendi derinliği ne olursa olsun —
+rozet Claude'a geçer, çünkü önceki koşu görevin OpenCode çiftinin kaldırabileceğinden zor olduğunu zaten gösterdi; `D = 3`'te ayrıca Claude satırının daha güçlü olduğunu söyle. Bir arm'daki yetersizlik yalnız o arm'ı yükseltir.
 
 **Efor (OpenCode) = OpenCode'un o model için sunduğu varyant** (models.dev, 6 Ekim 2026):
 
@@ -171,7 +173,7 @@ Hiç interpolasyon yapma.
 |---|---|
 | `low` | Kısa, kapsamı belli, zeka gerektirmeyen işler |
 | `medium` | Maliyet duyarlı iş; bir miktar zekadan ödün |
-| `high` | **Varsayılan** |
+| `high` | **API varsayılanı** (Opus 5.5 ve Haiku 5.5 hariç: onlarda `medium`) |
 | `xhigh` | Daha derin akıl yürütme. 30 dk+ ajanik/kodlama işleri |
 | `max` | En derin muhakeme. Oturumluk |
 | `ultracode` | **Seviye değil.** Her kayda değer görev için dinamik workflow planlayan Claude Code anahtarı; oturumun eforunu **değiştirmez**. Eforun ardına bayrak olarak yazılır |
@@ -189,8 +191,9 @@ Dört şeyi bil:
 4. **Claude eforu `D→efor` tablosundan başlar** (Adım 3). Claude'a özel düzenleyiciler:
    `ultracode` (>30dk ∧ (`O=high` = 3+ ayrı faz **veya** `W=3 ∧ D≥2`) ∧ tek bölünemez
    zincir değil — faz tanımı aşağıda) ve `opusplan` (yalnızca Claude Code — bu talimatta
-   geçerli değil). **OpenCode eforu ayrı bir sözlüktür:** yalnızca `low`, `max` ve (yalnız
-   Grok 4.7 için) `xhigh` — aşağıdaki "OpenCode Kolu" bölümüne bak.
+   geçerli değil). **OpenCode eforu ayrı bir sözlüktür:** her model yalnız kendi varyantını
+   alır — Flash katmanında `low`/`max`, MiMo'da `default`, Qwen ve Muse Spark'ta `xhigh`, Gemini 4 Argon'da `high` —
+   yukarıdaki "OpenCode Kolu" bölümündeki varyant tablosuna bak.
 
 **Opus 5.5'te low/medium (genel bilgi, router çıktısını değiştirmez):** Anthropic
 bunu "eval tuttuğu her yerde normal maliyet kontrolü" olarak öneriyor. Router
@@ -448,7 +451,7 @@ NC1): `Data: Muse Spark 1.3 Contributor trains on your prompts.` İş gizliyse M
 adlandırma.
 
 **10. DeepSeek satırı (otomatik).** OpenCode satırında **DeepSeek V4.1 Flash** varsa:
-`DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).`
+`DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).`
 
 **11. Gemini satırı (otomatik).** OpenCode satırında **Gemini 4 Argon** varsa:
 `Gemini 4 Argon: opencode-go/gemini-4-argon-contributor — Google trains on your prompts; Go cap USD 60 during the 2× promo (30 after). If it errors or is overloaded, run the row's other model.`
@@ -533,7 +536,7 @@ DeepSeek V4.1 Flash 71.7'yi Opus 5.5 72.3 ve Sonnet 5.5 70.5 ile eşit tutuyor, 
 | `long-context` (sığ) | **OpenCode** † | **OpenCode** † | **OpenCode** † | Satırlar çelişir: AA-LCR eşit, MLCR-AA Claude 67/75 vs 51 — verimlilik |
 | `research-synthesis` | **OpenCode** † | **OpenCode** † | **Claude** † | AA-Omniscience Sonnet 32 / Opus 46 vs MiMo 8 — tek satır. NC1 altında Argon `R=3`'te `#1`'dir ve Claude seçimini iki ölçümde de geçer (indeks 42 vs 32, halüsinasyon %15 vs %47) → o hücre **OpenCode** † |
 | `doc-data-understanding` | **OpenCode** † | **OpenCode** † | **Claude** † | GDP.pdf Opus/Sonnet 26 vs MiMo 19, tek satır |
-| `latency-volume` (ilk-token bağlı) | **OpenCode** | **OpenCode** | **OpenCode** | DeepSeek V4.1 Flash 222 t/s, TTFT 1.1 s, USD 60 tavan; Haiku 5.5'in `low`'da ölçülmüş ilk-token değeri yok — gerçekler, skor değil |
+| `latency-volume` (ilk-token bağlı) | **OpenCode** | **OpenCode** | **OpenCode** | DeepSeek V4.1 Flash 222 t/s, TTFT 1.1 s, USD 80 tavan; Haiku 5.5'in `low`'da ölçülmüş ilk-token değeri yok — gerçekler, skor değil |
 | `orchestration` veya `opusplan`a giden görev | **Claude** | **Claude** | **Claude** | `ultracode` fazları sıralar, `opusplan` amiral gemisini yalnız plana harcar; OpenCode'da ikisi de yok |
 | başka her şey / kanıt yok | **OpenCode** † | **OpenCode** † | **OpenCode** † | ucuz kol; `low-confidence` yaz |
 
@@ -586,7 +589,7 @@ Evidence: <tek cümle>
 Claude: Haiku 5.5 · effort: low
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
 Evidence: Labelling is D=0 bulk work, so OpenCode runs it: the Flash tier buys hundreds of such batches a month on USD 60–80 caps (USD 0.13–0.27 per task) and keeps Claude's quota for harder work.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 ```
 
 *"Bu 2 sayfalık toplantı transkriptini beş maddede özetle"*
@@ -594,7 +597,7 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 Claude: Haiku 5.5 · effort: medium
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
 Evidence: A short summary is D=1 reading work (AA-LCR has Haiku 5.5 at 77 and Sonnet 5.5 at 78), so the Flash tier on USD 60–80 caps handles it and Claude's quota is kept.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 ```
 
 *"Ödeme modülünü 40 dosyada yeni idempotency-key API'sine geçir, tüm çağıranları güncelle, testler geçsin"* (D=2, tek faz)
@@ -602,7 +605,7 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 Claude: Sonnet 5.5 · effort: high
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
 Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (DeepSeek 71.7 vs Sonnet 5.5 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task; Claude's lead starts at D=3.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 ```
 
 *"Prod'da ara sıra düşen race condition'ı bul"* (D3DIAG → D=3, Kural 2 → amiral gemisi)
@@ -610,7 +613,7 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
 OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
 Evidence: D=3 reasoning half has two agreeing AA rows (HLE 61 vs 49, CritPt 32 vs 27); the terminal half sets no direction, so the direction decides.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 ```
 
 *"Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek"* (R=3 sistem-geneli, D=0)
@@ -618,7 +621,7 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 Claude: Sonnet 5.5 · effort: low
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
 Evidence: D=0 — both clear the bar, so price and cap decide: Flash models on USD 80 and 60 caps at USD 0.27 and 0.25 per task.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 Do not apply without human review.
 ```
 
@@ -656,5 +659,7 @@ Clarify: which file or function is broken, what does it do now, and what should 
 yükseltme, yeni Adım 4-OC çiftleri ve rozet tablosu; iteration-22: Haiku 5.5 kuşağı H1/H2/E8/E9; iteration-21'de Codex kolu emekli, OpenCode Go kolu kuruldu). **Bu fallback frontier derleyicisini ve per-model kanıt
 dosyasını (`opencode-benchmarks.md`) taşımaz** — yalnızca sonuçlarını özetler; tam kural seti için
 `skill/SKILL.md`. Bilerek korunan farklar: Türkçe · kendi kendine yeterli · `opusplan` ve `/fast` speed line yok
-(Claude.ai yüzeyi) · OpenCode kolu kısaltılmış özet · Kural 8 (alias güvenliği) yok. Çıktı ve örnekler İngilizce
+(Claude.ai yüzeyi) · OpenCode kolu kısaltılmış özet · Kural 8 (alias güvenliği) yok · `ultracode` bayrağı ve `Ultracode:`
+satırı **bilerek korunur**: `ultracode` da yalnız Claude Code'da var, ama `opusplan`'ın aksine modeli değiştirmez — görevi Claude
+Code'da çalıştıran kullanıcıya bir ayar söyler ve MECH1 ile rozeti belirler; kaldırılırsa orkestrasyon satırlarının rozeti de değişir. Çıktı ve örnekler İngilizce
 (`Evidence:` vb.) bırakıldı çünkü skill çıktısı öyle.*
