@@ -1,4 +1,4 @@
-# OpenCode Go evidence — iteration-25
+# OpenCode Go evidence — iteration-26
 
 **Audit data for the OpenCode arm of `SKILL.md`. Never load this to route a prompt;
 every rule needed is in `SKILL.md`.** Verified **6 October 2026** (§11, Claude Haiku 5.5: **8 October 2026**). Everything below
@@ -659,6 +659,17 @@ the same log for `providers/opencode` (Zen: 26 Oct *DeepSeek V4 Flash marked dep
 retention field), and the OpenCode releases v1.19.5 (28 Oct) and v2.2.0 (27 Oct) — no Go or Zen model change; v2.2.0 only makes the console show budget limits and Go usage where they block you. A search for a DeepSeek
 zero-retention renewal found nothing, so the agreement stays "read as valid through 31 Oct". The one router change: the DeepSeek auto-line (Step 7 rule 10) now says *confirm on the Go page after that date*, so it cannot assert an expired
 date after 31 Oct.
+
+### 14.6 Sweep of 3 November 2026 (iteration-26)
+
+- **DeepSeek V4.1 Flash cap USD 80 → 100** (Go; Go Plus 200; Go Teams 105). PR #60625 merged 30 Oct, v2.2.4 "Raised OpenCode Go limits for DeepSeek V4.1 Flash". The first attempt (#60515) was reverted in #60532 because production would have
+  advertised more than the registry enforced; #60629 ships the registry change, and the PR bot says it cannot confirm it landed. Tasks/month 615 → 769 (cap ÷ Arena p50 0.13). No routing effect.
+- **The Go landing page, via a search summary:** Kimi K3.1 Pro USD 15 (docs table: 147 requests per 5 h, 368 per week, 735 per month), MiniMax M3.1 Flash USD 20 (3,880 / 9,690 / 19,380 requests), Gemini 4 Argon USD 30 (absent from the docs table). Each landing cell
+  holds two values (15 / 60, 20 / 80, 30 / 120); the first is read as the Go plan. **MiniMax M3.1 Flash:** cap ÷ AA cost per task (0.22) is 91, below the 140-task budget bar, and the Arena anchor has no MiniMax row, so it stays unrouted.
+  **Gemini 4 Argon:** at USD 30 a heavy AA task (1.99) costs about 7% of the cap; the data policy is still unread, so NC1-only stands.
+- **DeepSeek zero retention** is "valid through 30 Nov 2026" in the same summary; the router's auto-line still says to confirm after the date.
+- **Zen/other:** Pulse Alpha Free added 2 Nov (no score), Nemotron 3 Ultra Free deprecated 28 Oct, DeepSeek V4 Flash deprecated 26 Oct, GPT Image 2.5 Sunburst added 28 Oct (not a text model). OpenCode v2.2.1–v2.2.5 changed nothing in the Go roster (Claude Agent provider,
+  image generation, console limits and reset times, config overrides for Console-supplied limits and variants).
 
 **Sources (read 2026-10-27).** raw.githubusercontent.com/sst/models.dev/dev/providers/opencode-go/{provider.toml, models/{kimi-k3.1-pro,gemini-4-argon,gemini-4-argon-contributor,minimax-m3.1-flash,minimax-m3.1-flash-free,iceman-contributor-free,step-5-preview}.toml} ·
 github.com/sst/models.dev/commits/dev/providers/opencode-go · github.com/sst/models.dev/pull/{11258,11021} · github.com/anomalyco/opencode/releases (v1.19.0–v1.19.4, v2.2.0) · search summaries of

@@ -46,6 +46,22 @@ model-secici:
 
 ---
 
+## What changed in iteration-26 (3 Nov 2026): OpenCode sweep
+
+Sources: models.dev logs of `providers/opencode-go` and `providers/opencode`, OpenCode releases v1.19.5–v2.2.5, PRs #60625 / #60532, and search summaries of the Go pages (`opencode.ai` is not
+reachable from this environment, so every Go-page figure below is **unverified**).
+
+- **DeepSeek V4.1 Flash's Go cap is USD 100 (was 80).** Merged 30 Oct (PR #60625, shipped with v2.2.4 "Raised OpenCode Go limits for DeepSeek V4.1 Flash"); tasks/month 615 → 769. The earlier raise (#60515) had been
+  reverted so the docs would not advertise more than the registry enforced; the PR bot could not confirm the enforced registry value. No routing change: DeepSeek is already the Flash-tier leader.
+- **Caps for the three open models, from the Go landing page (first value of each cell, the Go plan):** Kimi K3.1 Pro USD 15 (matches the earlier read), MiniMax M3.1 Flash USD 20, Gemini 4 Argon USD 30. MiniMax stays
+  **unrouted**: the Arena anchor has no row for it, so tasks/month cannot be computed (cap ÷ AA cost alone gives about 90, below the 140 budget bar). Argon stays **NC1-only**: its data policy is still unread; at USD 30 a heavy AA
+  task costs about 7% of the cap (A1-OC text updated).
+- **DeepSeek's zero-retention agreement** now reads "valid through 30 Nov 2026" on the Go page (search summary); the auto-line keeps its "confirm on the Go page after that date".
+- **Zen:** Pulse Alpha Free added (2 Nov; no score, never selected); Nemotron 3 Ultra Free deprecated (28 Oct; already never selected); DeepSeek V4 Flash deprecated (26 Oct; outside the pool). A **Go Teams** plan exists (DeepSeek USD 105); the router
+  targets the Go plan.
+- **Check run (3 Nov, 1 fresh agent on the six evals the changed rule text touches: `w2`, `w3`, `p2`, `a1`, `h1`, `d1`): 5/6.** The miss, `p2`, had the right models, efforts and evidence but no `✅ RECOMMENDED AI` badge on the Claude line; two more fresh agents
+  (`iteration-26-p2-rerun-a/b`) emitted it, so `p2` is 2 of 3 here and passed in the iteration-25 run — a badge omission outlier, recorded, not a rule change. The other 30 evals were **not** re-run for iteration-26.
+
 ## What changed in iteration-25 (27 Oct 2026): Kimi K3.1 Pro, the free lane closes, Gemini 4 Argon moves
 
 A research pass over Go's roster since the 20 Oct reading (models.dev commit log, model TOMLs, search summaries — `opencode.ai`, `models.dev` and `artificialanalysis.ai` were not

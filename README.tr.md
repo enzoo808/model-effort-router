@@ -24,6 +24,16 @@ Evidence: Orta zorlukta özellik işi bağımsız DeepSWE'de eşit (DeepSeek 71.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
 ```
 
+## iteration-26 — ne değişti (3 Kasım 2026): OpenCode taraması
+
+Kaynaklar: `providers/opencode-go` ve `providers/opencode` models.dev günlükleri, OpenCode v1.19.5–v2.2.5, PR #60625 / #60532, Go sayfalarının arama özetleri (`opencode.ai` bu ortamdan açılmıyor; Go sayfası rakamları **doğrulanmadı**).
+
+- **DeepSeek V4.1 Flash Go tavanı USD 100 (önce 80).** 30 Ekim'de birleşti (PR #60625; v2.2.4 notu: "Raised OpenCode Go limits for DeepSeek V4.1 Flash"); görev/ay 615 → 769. Routing değişmedi.
+- **Açık kalan üç modelin tavanı (Go sayfası, her hücrenin ilk değeri = Go planı):** Kimi K3.1 Pro USD 15 (önceki okumayla aynı), MiniMax M3.1 Flash USD 20, Gemini 4 Argon USD 30. MiniMax **yönlendirilmez** (Arena'da satırı yok, görev/ay hesaplanamıyor); Argon **yalnız NC1** (veri politikası hâlâ okunamadı; ağır AA görevi tavanın ~%7'si).
+- **DeepSeek sıfır-saklama anlaşması** Go sayfasında "30 Kasım 2026'ya kadar geçerli" (arama özeti); otomatik satır "tarihten sonra Go sayfasından doğrula"yı korur.
+- **Zen:** Pulse Alpha Free eklendi (2 Kasım; puanı yok, asla seçilmez); Nemotron 3 Ultra Free ve DeepSeek V4 Flash kullanımdan kalktı. **Go Teams** planı var; router Go planını hedefler.
+- **Kontrol koşusu (3 Kasım; değişen kural metnine dokunan altı eval için 1 taze ajan: `w2`, `w3`, `p2`, `a1`, `h1`, `d1`): 5/6.** Kaçan `p2`'de model, efor ve gerekçe doğruydu ama Claude satırında `✅ RECOMMENDED AI` rozeti yoktu; iki ek taze ajan (`iteration-26-p2-rerun-a/b`) rozeti yazdı → burada 2/3, iteration-25 koşusunda geçmişti — rozet unutma sapması, kaydedildi, kural değişmedi. Diğer 30 eval iteration-26 için **yeniden koşulmadı**.
+
 ## iteration-25 — ne değişti (27 Ekim 2026): Kimi K3.1 Pro, ücretsiz hat kapandı, Gemini 4 Argon yeni yolda
 
 Go'nun 20 Ekim'den sonraki kadrosu için araştırma turu (models.dev commit günlüğü, model TOML'leri, arama özetleri). `opencode.ai`, `models.dev` ve `artificialanalysis.ai` derleme ortamından
