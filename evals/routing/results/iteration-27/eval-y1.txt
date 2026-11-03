@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: low
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: D=0 factual recall drops DeepSeek V4.1 Flash and MiniMax M3.1 Flash (hallucination 96.5% / 92.8%); Haiku 5.5 trails Sonnet 5.5 on AA-Omniscience (6 vs 21), so Claude runs Sonnet.

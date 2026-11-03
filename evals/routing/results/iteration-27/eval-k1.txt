@@ -1,0 +1,3 @@
+Claude: ✅ RECOMMENDED AI · Fable 5.1 · effort: high
+OpenCode: unverified — use Claude — biology-adjacent R&D has no independently verified pool model.
+Evidence: Genomics (somatic variant calling, driver prioritisation) is a deciding gate on the Claude arm, which routes it to Fable 5.1; the OpenCode arm declines the task.

@@ -1,0 +1,4 @@
+Claude: Haiku 5.5 · effort: medium
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
+Evidence: D=1 summary of supplied text is errand work — the Flash tier clears the bar on USD 100 and 60 caps (USD 0.27 and 0.25 per task) and keeps Claude's quota free.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (read as valid through 30 Nov 2026 — confirm on the Go page after that date).

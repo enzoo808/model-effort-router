@@ -17,8 +17,8 @@ Checks (all mechanical, all fail loudly):
      effort that OpenCode actually offers for that model (policy `opencode_variants`), never `GLM-5.3 · low` / `Kimi K3 · low`, and never a
      USD 15-cap model at `low` (only the latency row's GPT 6 Luna is exempt).
   5. No model outside the 20 appears in a Step 4-OC row or an example.
-  6. Rule GM1: Gemini 4 Argon is an NC1-only overlay -- it appears in no Step 4-OC table
-     cell, the rule text names every policy `gm1_rows` row and requires NC1; an example
+  6. Rule GM1: Gemini 4 Argon is an overlay (zero-retention on Go, not NC1-gated) -- it appears in no Step 4-OC table
+     cell, the rule text names every policy `gm1_rows` row and never gates it on NC1; an example
      that names it carries the auto-added Gemini line (Step 7 rule 11).
 
     python scripts/check_opencode_pool.py
@@ -127,8 +127,15 @@ def main() -> int:
                     errors.append("premium model %s has neither tasks/month nor an AA cost per task" % m)
             if tpm is not None and tpm > 35:
                 errors.append("premium model %s buys %s tasks/month (> 35)" % (m, tpm))
-        if meta["tier"] == "B" and meta["tasks_per_month"] < 140:
-            errors.append("budget model %s buys only %s tasks/month (< 140)" % (m, meta["tasks_per_month"]))
+        if meta["tier"] == "B":
+            if meta["tasks_per_month"] is None:
+                # no Arena row (iteration-27, MiniMax M3.1 Flash): fall back to the Go docs' estimated requests a month
+                if (meta.get("requests_per_month") or 0) < 16000:
+                    errors.append("budget model %s has no tasks/month and under 16,000 estimated requests/month" % m)
+            elif meta["tasks_per_month"] < 140:
+                errors.append("budget model %s buys only %s tasks/month (< 140)" % (m, meta["tasks_per_month"]))
+        if meta["tier"] in ("P", "G") and (meta.get("requests_per_month") or 0) > 3000:
+            errors.append("%s is tier %s but the Go docs estimate %s requests/month (> 3,000)" % (m, meta["tier"], meta["requests_per_month"]))
 
     # 2 -- Step 4-OC rows ---------------------------------------------------------
     rows = table_after(skill, "| Dominant capability | `R ≤ 2` → `#1` · `#2` |", True)
@@ -192,8 +199,8 @@ def main() -> int:
         for t in gm1:
             if "`%s`" % t not in gm1_text.group(1):
                 errors.append("GM1: the rule text does not name policy row %r" % t)
-        if "exists only under NC1" not in gm1_text.group(1):
-            errors.append("GM1: the rule text must say Gemini 4 Argon exists only under NC1")
+        if "NC1" in gm1_text.group(1):
+            errors.append("GM1: Gemini 4 Argon is zero-retention on Go (iteration-27); the rule text must not gate it on NC1")
 
     # no emitted row may name a dominated or outside model
     oc_text = skill[skill.find("### OpenCode Go — Step 4-OC"):skill.find("#### OpenCode Go — effort")]

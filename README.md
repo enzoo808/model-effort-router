@@ -23,10 +23,10 @@ You:    /model-secici  Find the race condition that flakes in prod sometimes
 
 model-secici:
   Claude:   ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
-  OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
-  Evidence: D=3 reasoning half has two agreeing AA rows (HLE 61 vs 49, CritPt 32 vs 27);
-            the terminal half sets no direction, so the direction decides.
-  DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
+  OpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default
+  Evidence: D=3 reasoning half has two agreeing AA rows for Claude even against Argon
+            (HLE 61 vs 57, CritPt 32 vs 27); the terminal half sets no direction.
+  Gemini 4 Argon: opencode-go/gemini-4-argon — zero retention, not used for training; …
   ⚡ Claude /fast available (2.5x faster, 2× price).
 ```
 
@@ -45,6 +45,24 @@ model-secici:
 > Turkish walkthrough is in **[README.tr.md](README.tr.md)** (its iteration-21/22/23 sections are at the top; the rest is the Codex-era history).
 
 ---
+
+## What changed in iteration-27 (3 Nov 2026): the Go docs read directly
+
+`opencode.ai` became reachable (the network setting was changed), so the Go docs page itself — limits table, estimated-request tables, Privacy table — replaces the search summaries of iteration-26.
+
+- **Every Go cap is now verified**: Kimi K3.1 Pro USD 15, MiniMax M3.1 Flash 20, Gemini 4 Argon 30, DeepSeek V4.1 Flash 100 (Go Plus 200, Go Teams 105); the rest of the roster matches.
+- **Gemini 4 Argon: "Not used" for training, "0 days" retention** (Go privacy table). Only the Muse Spark Contributors and Iceman Contributor Free are listed as training on prompts, and Argon is not on the "Enable restricted
+  models" list. Rule GM1 therefore no longer waits for NC1: Argon is `#1` (effort `high`) at `D = 3` or `R = 3` on `agentic-code`, `terminal-tool`, `deep-reasoning`, `research-synthesis` and `workflow-automation`, for
+  confidential work too, and never at `D ≤ 1` or at `D = 2` with `R ≤ 2`. The cost is a USD 30 cap (about 15 heavy tasks a month, 2,120 estimated requests), so it stays a deliberate spend. Seven evals moved (`d1`, `g1`, `j1`, `t1`, `v1`, `z1`, `w1`)
+  and `p2` now reads Argon · Kimi K3.1 Pro. The badge table does not change: Claude still leads Argon on HLE, CritPt, Terminal-Bench 4.0 and FrontierSWE v2.
+- **MiniMax M3.1 Flash is a budget model again.** The Go page estimates 19,380 requests a month for it, against 16,300 for MiMo-V2.6-Pro (budget) and at most 2,120 for any premium or Gemini model, so the tier check now falls
+  back to those estimates when Arena has no row. It takes its iteration-24 rows back (`#2` of `deep-reasoning` and `science`, `#1` of `doc-data-understanding`) and is gated out of factual recall with DeepSeek.
+- **DeepSeek's zero-retention agreement is "valid through November 30, 2026"** on the Go page itself. DeepSeek V4.1 Flash / V4 Pro also need **Global** under Settings › Privacy › Regions (the default is Europe & United States).
+- **Plans:** Go USD 10, Go Plus USD 40, Go Teams USD 20 per member (limits USD 5 above Go on every model).
+
+- **Cold-agent run (3 Nov, 6 fresh agents that read only `SKILL.md`, all 36 evals): 34/36 on the first pass** (`results/iteration-27/`). `w3` (non-confidential research at `R = 3`) exposed a real gap: NC1 said Muse Spark takes `#2` on `research-synthesis`
+  rows while GM1 said the former `#1` becomes `#2` once Argon is `#1`; the agent followed NC1. The NC1 block now says GM1 wins. `c1` was a tag-reading outlier (workflow row instead of the coding row). After the NC1 edit, two more fresh agents re-ran
+  `w3`, `c1`, `w2`, `f1`, `q1`: **10/10** (`iteration-27-rerun-a/b`). The other 31 evals were not re-run after the one-sentence NC1 edit, which only affects NC1 evals.
 
 ## What changed in iteration-26 (3 Nov 2026): OpenCode sweep
 
@@ -365,9 +383,9 @@ Two design choices carried over: **risk raises human oversight, not model tier**
 | Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5.5 · low` + review note | DeepSeek V4.1 Flash `low` · GLM-5.3-Flash `low` | **OpenCode** — `D=0`, both clear the bar |
 | Refactor the payment module across 40 files | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · MiMo-V2.6-Pro `default` | **OpenCode** — `D=2`; DeepSWE ties, USD 0.13 vs 1.67 per task |
 | Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · ultracode` | DeepSeek V4.1 Flash `high` · MiMo-V2.6-Pro `default` | **Claude** — three phases; `ultracode` has no OpenCode equivalent (MECH1) |
-| Find the race condition that flakes in prod | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, two agreeing AA rows on the reasoning half |
-| Design and implement the irreversible transaction boundary | `Opus 5.5 · max` + review note | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, `R=3` |
-| Redesign auth for 200 services from scratch | `opusplan · plan: max · execute: medium` | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude** — `opusplan` mechanism |
+| Find the race condition that flakes in prod | `Opus 5.5 · xhigh` | Gemini 4 Argon `high` · MiMo-V2.6-Pro `default` | **Claude** — `D=3`, two agreeing AA rows on the reasoning half |
+| Design and implement the irreversible transaction boundary | `Opus 5.5 · max` + review note | Gemini 4 Argon `high` · MiMo-V2.6-Pro `default` | **Claude** — `D=3`, `R=3` |
+| Redesign auth for 200 services from scratch | `opusplan · plan: max · execute: medium` | Gemini 4 Argon `high` · MiMo-V2.6-Pro `default` | **Claude** — `opusplan` mechanism |
 | Wire a Jira → Slack → on-call n8n flow | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · GLM-5.3-Flash `high` | **OpenCode**, low-confidence — AutomationBench is a tie and ITBench favours the open models |
 | Summarise 400 pages of filings into one memo | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **Claude** — knowledge-work from `D=2` |
 | Read 30 scanned receipts into a reconciliation table | `Sonnet 5.5 · high` | Qwen3.8 Flash `xhigh` · MiMo-V2.6-Pro `default` | **OpenCode**, low-confidence — both take images |

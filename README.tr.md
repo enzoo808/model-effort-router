@@ -24,6 +24,24 @@ Evidence: Orta zorlukta özellik işi bağımsız DeepSWE'de eşit (DeepSeek 71.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
 ```
 
+## iteration-27 — ne değişti (3 Kasım 2026): Go dokümanı doğrudan okundu
+
+`opencode.ai` erişilebilir oldu (ağ ayarı değişti); Go dokümanı — limit tablosu, tahmini istek tabloları, Privacy tablosu — iteration-26'daki arama özetlerinin yerini aldı.
+
+- **Tüm Go tavanları doğrulandı:** Kimi K3.1 Pro USD 15, MiniMax M3.1 Flash 20, Gemini 4 Argon 30, DeepSeek V4.1 Flash 100 (Go Plus 200, Go Teams 105); kadronun geri kalanı uyuşuyor.
+- **Gemini 4 Argon: eğitimde "Not used", saklama "0 days"** (Go gizlilik tablosu). Prompt ile eğittiği listelenenler yalnız Muse Spark Contributor'lar ve Iceman Contributor Free; Argon "Enable restricted models" listesinde de yok.
+  Bu yüzden GM1 artık NC1'i beklemez: Argon, `D = 3` veya `R = 3`'te `agentic-code`, `terminal-tool`, `deep-reasoning`, `research-synthesis`, `workflow-automation` satırlarında gizli işte de `#1` (efor `high`); `D ≤ 1`'de ve
+  `D = 2` ile `R ≤ 2`'de yine yuva almaz. Bedeli USD 30 tavan (ayda ~15 ağır görev, ~2.120 tahmini istek) → bilinçli harcama. Yedi eval değişti (`d1`, `g1`, `j1`, `t1`, `v1`, `z1`, `w1`), `p2` artık Argon · Kimi K3.1 Pro.
+  Rozet tablosu değişmedi: Claude HLE, CritPt, Terminal-Bench 4.0 ve FrontierSWE v2'de Argon'dan önde.
+- **MiniMax M3.1 Flash yeniden bütçe modeli.** Go sayfası ayda 19.380 istek tahmin ediyor (MiMo-V2.6-Pro 16.300 bütçe; premium/Gemini en çok 2.120); Arena satırı yoksa kademe kontrolü bu tahmine düşer. İterasyon-24 satırlarına döndü
+  (`deep-reasoning`/`science` `#2`, `doc-data-understanding` `#1`); olgusal bilgiden DeepSeek ile birlikte elenir.
+- **DeepSeek sıfır-saklama anlaşması** Go sayfasında doğrudan "30 Kasım 2026'ya kadar geçerli". DeepSeek V4.1 Flash / V4 Pro için ayrıca Settings › Privacy › Regions altında **Global** seçili olmalı (varsayılan Avrupa ve ABD).
+- **Planlar:** Go 10 USD, Go Plus 40 USD, Go Teams üye başı 20 USD (her modelde Go'dan 5 USD yüksek limit).
+
+- **Taze-ajan koşusu (3 Kasım, yalnız `SKILL.md`'yi okuyan 6 ajan, 36 eval): ilk geçişte 34/36** (`results/iteration-27/`). `w3` (gizli olmayan araştırma, `R = 3`) gerçek bir boşluğu gösterdi: NC1 "Muse Spark `research-synthesis` satırlarında `#2` olur" diyordu, GM1 ise Argon `#1` olunca eski `#1`'in `#2` olacağını söylüyordu;
+  ajan NC1'i izledi. NC1 bloğu artık GM1'in öncelikli olduğunu söylüyor. `c1` etiket okuma sapmasıydı (kodlama yerine workflow satırı). NC1 düzeltmesinden sonra iki yeni ajan `w3`, `c1`, `w2`, `f1`, `q1`'i yeniden koştu: **10/10** (`iteration-27-rerun-a/b`).
+  Kalan 31 eval tek cümlelik NC1 düzeltmesinden sonra yeniden koşulmadı; düzeltme yalnız NC1 eval'lerini etkiler.
+
 ## iteration-26 — ne değişti (3 Kasım 2026): OpenCode taraması
 
 Kaynaklar: `providers/opencode-go` ve `providers/opencode` models.dev günlükleri, OpenCode v1.19.5–v2.2.5, PR #60625 / #60532, Go sayfalarının arama özetleri (`opencode.ai` bu ortamdan açılmıyor; Go sayfası rakamları **doğrulanmadı**).

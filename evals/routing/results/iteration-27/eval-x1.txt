@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max
+Evidence: Multi-source summary at D=2 is research-synthesis; AA-Omniscience is the only row (Sonnet 5.5 32 vs MiMo-V2.6-Pro 8), so no BD1 direction and price decides; low-confidence.

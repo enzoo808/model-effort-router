@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 MiniMax M3.1 Flash · effort: max
+Evidence: D=2 science audit; SciCode has MiMo-V2.6-Pro at 61, tied with Sonnet 5.5 (61) and below Opus 5.5 (67); low-confidence — one benchmark row.

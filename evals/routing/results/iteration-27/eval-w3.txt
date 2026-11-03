@@ -1,0 +1,6 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 Muse Spark 1.3 Contributor · effort: xhigh
+Evidence: R=3 research-synthesis puts Argon first (Omniscience index 42 vs Sonnet 32, hallucination 15% vs 47%); non-confidential unlocks Muse Spark as #2; low-confidence, one benchmark.
+Data: Muse Spark 1.3 Contributor trains on your prompts.
+Gemini 4 Argon: opencode-go/gemini-4-argon — zero retention, not used for training; Go cap USD 30 (about 15 heavy tasks a month; promo USD 2/10 per MTok to 30 Nov, then 4/20). If it errors or is overloaded, run the row's other model.
+Do not apply without human review.

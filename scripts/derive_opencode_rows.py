@@ -50,11 +50,12 @@ TAGS = {
 # iteration-24: MiniMax M3.1 Flash Free joins the budget tier (Go: unlimited, zero-retention, so
 # cap pressure is nil); the Gemini line is metered by Google credits, not by a Go cap, and is
 # reported next to the premium four (Rule GM1) instead of competing for the budget slot.
-# iteration-25: MiniMax M3.1 Flash leaves ROUTABLE. Its free promo was deprecated on 22 Oct and the paid
-# model's Go cap has not been read, so it is rated (UNROUTED) but no row may emit it. Re-add it here
-# once routing_policy.json carries a cap and tasks/month for it.
-ROUTABLE = ["MiMo-V2.6-Pro", "GLM-5.3-Flash", "MiMo-V2.6-Flash", "DeepSeek V4.1 Flash", "Qwen3.8 Flash"]
-UNROUTED = ["MiniMax M3.1 Flash"]
+# iteration-27: MiniMax M3.1 Flash is back in ROUTABLE. Its free promo was deprecated on 22 Oct; the paid model
+# has a USD 20 Go cap and the Go docs estimate 19,380 requests a month (MiMo-V2.6-Pro, a budget model, 16,300;
+# every premium model <= 1,080), so it is budget tier although Arena has no row for it (policy tier B, tasks null).
+ROUTABLE = ["MiMo-V2.6-Pro", "GLM-5.3-Flash", "MiMo-V2.6-Flash", "DeepSeek V4.1 Flash", "Qwen3.8 Flash",
+            "MiniMax M3.1 Flash"]
+UNROUTED: list[str] = []
 GEMINI = ["Gemini 4 Argon", "Gemini 3.8 Flash"]
 NC1_ONLY = ["Muse Spark 1.3", "GPT 6 Luna"]
 # iteration-25: Kimi K3.1 Pro (Go, 23 Oct) replaces Kimi K3 in the premium four; K3 is dominated by it.

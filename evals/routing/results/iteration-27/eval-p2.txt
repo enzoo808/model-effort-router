@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
+OpenCode: #1 Gemini 4 Argon · effort: high · #2 Kimi K3.1 Pro · effort: max
+Evidence: OpenCode shortfall puts Kimi K3.1 Pro (about 14% of its cap per AA task) at #2; at D=3 Claude is stronger: HLE 61 vs Argon 57, CritPt 32 vs 27.
+Gemini 4 Argon: opencode-go/gemini-4-argon — zero retention, not used for training; Go cap USD 30 (about 15 heavy tasks a month; promo USD 2/10 per MTok to 30 Nov, then 4/20). If it errors or is overloaded, run the row's other model.
+⚡ Claude /fast available (2.5x faster, 2× price).

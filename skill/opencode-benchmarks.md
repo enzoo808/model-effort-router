@@ -1,4 +1,4 @@
-# OpenCode Go evidence — iteration-26
+# OpenCode Go evidence — iteration-27
 
 **Audit data for the OpenCode arm of `SKILL.md`. Never load this to route a prompt;
 every rule needed is in `SKILL.md`.** Verified **6 October 2026** (§11, Claude Haiku 5.5: **8 October 2026**). Everything below
@@ -670,6 +670,21 @@ date after 31 Oct.
 - **DeepSeek zero retention** is "valid through 30 Nov 2026" in the same summary; the router's auto-line still says to confirm after the date.
 - **Zen/other:** Pulse Alpha Free added 2 Nov (no score), Nemotron 3 Ultra Free deprecated 28 Oct, DeepSeek V4 Flash deprecated 26 Oct, GPT Image 2.5 Sunburst added 28 Oct (not a text model). OpenCode v2.2.1–v2.2.5 changed nothing in the Go roster (Claude Agent provider,
   image generation, console limits and reset times, config overrides for Console-supplied limits and variants).
+
+### 14.7 The Go docs page, read directly (3 November 2026, iteration-27)
+
+`opencode.ai/v2/docs/console/go/` loaded once the network setting was changed (WebFetch's own resolver stayed stale; `curl` through the proxy worked). It replaces every search-summary figure of §14.1–§14.6.
+
+- **Monthly limits, Go plan (USD):** DeepSeek V4.1 Flash 100 · Kimi K3.1 Pro 15 · MiniMax M3.1 Flash 20 · Gemini 4 Argon 30 (50% promo to 30 Nov) · GLM-5.3-Flash 60 · GLM-5.3 15 · MiMo-V2.6-Pro 15 · MiMo-V2.6-Flash 60 · Qwen3.8 Flash 30 · Qwen3.8 Max 15 · Grok 4.7 15 · GPT 6 Luna 15 · Claude Haiku 5.5 15 ·
+  Muse Spark 1.3 Contributor 60 · Step 5 Preview 15 · Beam Free / Iceman Contributor Free unlimited. Go Plus is about 4× (DeepSeek 2×: 200), Go Teams USD 5 above Go on every model (DeepSeek 105).
+- **Privacy table:** Gemini 4 Argon *Not used / 0 days*; Kimi K3.1 Pro and MiniMax M3.1 Flash *Not used / 0 days*; DeepSeek V4.1 Flash and V4 Pro *Not used / 0 days\** (ZDR agreement renewed monthly, **valid through November 30, 2026**);
+  Grok 4.7, GPT 6 Luna / 5.6 Luna and Claude Haiku 5.5 *30 days*; Muse Spark Contributors and Iceman Contributor Free *train on prompts*; Beam Free *30 days*. The "Enable restricted models" list names only DeepSeek (Global region) and the Muse Spark Contributors.
+- **Estimated requests a month (Go plan):** DeepSeek V4.1 Flash 216,670 · GLM-5.3-Flash 31,580 · Qwen3.8 Flash 27,000 · GPT 6 Luna 21,130 · **MiniMax M3.1 Flash 19,380** · Claude Haiku 5.5 19,230 · **MiMo-V2.6-Pro 16,300** · DeepSeek V4 Pro 5,200 · **Gemini 4 Argon 2,120** · GLM-5.3 1,080 ·
+  Grok 4.7 845 · Qwen3.8 Max 810 · **Kimi K3.1 Pro 735** · Kimi K3 490. The estimates assume typical Go traffic (for MiniMax 500 input, 49,400 cached and 360 output tokens a request), so they are a cap-per-request measure, not a tasks-per-month one.
+- **What the router does with it.** (1) Gemini 4 Argon is zero-retention and untrained, so Rule GM1 drops its NC1 gate; its USD 30 cap keeps it a deliberate spend at `D = 3` / `R = 3` on the five rows where independent evidence puts it above the budget tier.
+  (2) MiniMax M3.1 Flash costs about USD 0.001 per estimated request, the same class as MiMo-V2.6-Pro (0.0009) and 13× below the premium models (0.014–0.020), so it is a budget model although Arena has no row; the policy checker falls back to
+  requests a month (>= 16,000 for tier B, <= 3,000 for P and G). The margin to the lowest budget model is thin (19,380 vs 16,300) and each task's request count is unknown: if Arena later gives it a p50 below 140 tasks a month, move it back out.
+  (3) DeepSeek's agreement date, caps and the Global-region setting are now first-hand.
 
 **Sources (read 2026-10-27).** raw.githubusercontent.com/sst/models.dev/dev/providers/opencode-go/{provider.toml, models/{kimi-k3.1-pro,gemini-4-argon,gemini-4-argon-contributor,minimax-m3.1-flash,minimax-m3.1-flash-free,iceman-contributor-free,step-5-preview}.toml} ·
 github.com/sst/models.dev/commits/dev/providers/opencode-go · github.com/sst/models.dev/pull/{11258,11021} · github.com/anomalyco/opencode/releases (v1.19.0–v1.19.4, v2.2.0) · search summaries of

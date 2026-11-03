@@ -1,0 +1,3 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: medium
+OpenCode: unverified — use Claude — no independent OSWorld row exists for any pool model.
+Evidence: Driving a browser GUI is a deciding gate on OpenCode (no independent OSWorld row), so the badge goes to Claude; Haiku 5.5 is excluded from computer-use work.

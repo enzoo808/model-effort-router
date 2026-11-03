@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Grade model-secici routing outputs against evals.json (iteration-25: Claude + OpenCode, budget-first, empty free lane, Gemini slot).
+"""Grade model-secici routing outputs against evals.json (iteration-27: Claude + OpenCode, budget-first, empty free lane, Gemini slot).
 
 Usage:
     python grade_routing.py --results-dir results/iteration-21
@@ -66,9 +66,9 @@ PREMIUM_PATTERNS = (r"GLM-5\.3(?!-Flash)", r"Kimi K3", r"Grok 4\.7", r"Qwen3\.8 
 # Rule GM1 (iteration-24): Gemini 4 Argon is metered; it may be #1 (or, after a shortfall, #2)
 # only in an eval that sets "allow_gemini": true. Everywhere else it is a regression.
 GEMINI_PATTERN = r"Gemini"
-# Rule FR1 (iteration-25): the free lane is empty -- MiniMax M3.1 Flash Free is deprecated and the paid MiniMax M3.1 Flash is
-# unrouted (no Go cap read) -- so no MiniMax M3.1 Flash, Zen free twin or other free model ever may appear.
-NEVER_ON_LINE = (r"-free\b", r"Free", r"MiniMax M3\.1 Flash", r"Beam", r"Big Pickle", r"Nemotron", r"Iceman")
+# Rule FR1 (iteration-27): the free lane is empty -- MiniMax M3.1 Flash Free is deprecated; the paid MiniMax M3.1 Flash is a
+# budget model and may appear -- so no Zen free twin or other free model ever may.
+NEVER_ON_LINE = (r"-free\b", r"Free", r"Beam", r"Big Pickle", r"Nemotron", r"Iceman", r"Pulse", r"Flint")
 BADGE_TEXT = "recommended ai"
 MIN_EVIDENCE_CHARS = 20
 

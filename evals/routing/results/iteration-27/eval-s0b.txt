@@ -1,0 +1,1 @@
+Clarify: what counts as "inactive" — an `is_active = false` flag, or no login for N days (and what N) — and should it be a hard delete or a soft delete, in which table of the customer database?
