@@ -171,7 +171,7 @@ cp skill/*.md skill/*.json ~/.claude/skills/model-secici/
 
 ```bash
 ls ~/.claude/skills/model-secici
-# SKILL.md  benchmark_frontiers.json  benchmarks.json  opencode-benchmarks.md  opencode-evidence.json  reference.md
+# SKILL.md  opencode-benchmarks.md  opencode-evidence.json  reference.md
 ```
 
 Şimdi **yeni bir Claude Code oturumu başlat** (skill'ler açılışta yüklenir) ve `/model-secici <görevin>` yaz.
@@ -396,11 +396,9 @@ python scripts/check_policy_sync.py      # SKILL.md kural blokları == evals/pol
 python scripts/check_opencode_pool.py    # havuz, Adım 4-OC satırları, rozet tablosu, model başına varyantlar
 python scripts/check_examples.py         # her çalışılmış örnek kendi altın çıktısıyla uyuşur
 python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, iterasyon ve katman tabloları veriyle uyuşur
-python scripts/validate_benchmarks.py    # benchmark kayıtları ve türetilmiş frontier dosyası geçerli ve senkron
-python scripts/test_frontier_compiler.py # frontier derleyicisinin birim testleri
 ```
 
-Bu yedisi, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
+Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
 
 **Durum (3 Kasım 2026, iteration-25):** yukarıdaki kontrollerin hepsi geçiyor. Taze ajanlarla **36 promptun tamamında soğuk koşu 34/36** aldı; bir kaçırma yeniden koşuda 3/3 geçti, diğeri (`r1`, taranmış fişler) gerçekten kararsız bir prompt olup bilerek açık bırakıldı. Ayrıntı: [`evals/README.md`](evals/README.md).
 
@@ -421,14 +419,14 @@ skill/                       Skill'in kendisi — yönlendirirken yalnızca SKIL
   opencode-benchmarks.md     OpenCode kanıtı, model başına, kaynaklarıyla
   opencode-evidence.json     Kontrollerin türetildiği makine-okunur kanıt
   reference.md               Claude fiyat, limit, benchmark notları (denetim verisi)
-evals/                       Regresyon seti, not verici, politika aynası, tam koşu geçmişi
+evals/                       Regresyon seti, not verici, politika aynası, son koşu geçmişi
 scripts/                     Tutarlılık kontrolleri ve kanıt araçları
 docs/                        Nasıl çalışır, görseller, lansman notları
   README.legacy.tr.md        Eski ayrıntılı Türkçe rehber (Codex dönemi geçmişi dahil)
 dist/model-secici.zip        claude.ai'a yüklemeye hazır skill
 claude-ai/                   Code execution kapalıyken düz metin yedeği
 install.sh · install.ps1     Claude Code için tek komutla kurulum
-.github/workflows/          CI: yukarıdaki yedi kontrol her push ve pull request'te
+.github/workflows/          CI: yukarıdaki kontroller her push ve pull request'te
 CHANGELOG.md                 Her politika iterasyonu, en yeni en üstte
 ```
 

@@ -171,7 +171,7 @@ cp skill/*.md skill/*.json ~/.claude/skills/model-secici/
 
 ```bash
 ls ~/.claude/skills/model-secici
-# SKILL.md  benchmark_frontiers.json  benchmarks.json  opencode-benchmarks.md  opencode-evidence.json  reference.md
+# SKILL.md  opencode-benchmarks.md  opencode-evidence.json  reference.md
 ```
 
 Now **start a new Claude Code session** (skills are loaded at start-up) and run `/model-secici <your task>`.
@@ -414,11 +414,9 @@ python scripts/check_policy_sync.py      # SKILL.md rule blocks == evals/policy/
 python scripts/check_opencode_pool.py    # pool, Step 4-OC rows, badge table, per-model variants, consensus top-4
 python scripts/check_examples.py         # every worked example agrees with its golden
 python scripts/check_readme_facts.py     # counts, pool size, iteration and tier tables in the docs match the data
-python scripts/validate_benchmarks.py    # benchmark records and the derived frontiers file are valid and in sync
-python scripts/test_frontier_compiler.py # frontier compiler unit tests
 ```
 
-These seven are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
+These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
 
 **Where it stands (3 Nov 2026, iteration-25):** all of the checks above pass. A cold run of **all 36 prompts by fresh agents scored 34/36**; one miss re-ran 3/3, the other (`r1`, scanned receipts) is a genuinely unstable prompt that is left open on purpose. Details in [`evals/README.md`](evals/README.md).
 
@@ -439,13 +437,13 @@ skill/                       The skill itself — only SKILL.md is read when rou
   opencode-benchmarks.md     OpenCode evidence, per model, with sources
   opencode-evidence.json     Machine-readable evidence the checks derive from
   reference.md               Claude prices, limits, benchmark notes (audit data)
-evals/                       Regression set, grader, policy mirror, full run history
+evals/                       Regression set, grader, policy mirror, recent run history
 scripts/                     Consistency checks and evidence tooling
 docs/                        How it works, assets, launch notes
 dist/model-secici.zip        Ready-to-upload claude.ai skill
 claude-ai/                   Plain-text fallback when code execution is off
 install.sh · install.ps1     One-command installs for Claude Code
-.github/workflows/          CI: the seven checks above on every push and pull request
+.github/workflows/          CI: the checks above on every push and pull request
 CHANGELOG.md                 Every policy iteration, newest first
 ```
 

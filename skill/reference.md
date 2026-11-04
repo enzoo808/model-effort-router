@@ -1,5 +1,7 @@
 # Reference tables
 
+> **Cleanup note.** This file still names `skill/benchmarks.json`, `skill/benchmark_frontiers.json` and the compile / validate / test / ablate scripts of the Codex-era benchmark pipeline. They were removed from the tree after iteration-25 (last present at commit `7c24c81`, e.g. `git show 7c24c81:skill/benchmarks.json`). The router never read them.
+
 > **Primary source:** `platform.claude.com/docs/en/about-claude/models/overview`,
 > `platform.claude.com/docs/en/build-with-claude/effort`,
 > `platform.claude.com/docs/en/about-claude/pricing`,

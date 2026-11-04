@@ -45,9 +45,9 @@ prompt
 - **A direction needs two independent measurements that agree (BD1);** a single one decides only at `R=3`.
 - **The aggregate index never sets a capability direction** — it only licenses the efficiency tie-break.
 
-Raw evidence for the Claude side lives in `../skill/benchmarks.json` / `../skill/benchmark_frontiers.json`
-(Codex-era snapshot; the Claude rows are unchanged), and for OpenCode in
-`../skill/opencode-benchmarks.md`. Only `SKILL.md` is read when routing.
+The raw evidence is in `../skill/opencode-evidence.json` (machine-readable, what the checks read),
+`../skill/opencode-benchmarks.md` (per-model write-up) and `../skill/reference.md` (Claude prices and limits).
+Only `SKILL.md` is read when routing.
 
 
 ## How it decides
