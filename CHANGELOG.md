@@ -117,8 +117,8 @@ Haiku 5.5 shipped on 7 Oct at **USD 0.10 / USD 0.50 per MTok** (up to 100k token
 
 The second arm used to be Codex/ChatGPT (Luna / Sol / Sol Ultra / Astra). The Codex
 subscription ended, so the arm was **re-derived from scratch for OpenCode Go (USD 10/month)**.
-Claude's arm is untouched. The last Codex-era policy is the git tag `iteration-20-codex`
-and `archive/iteration-20-codex/`.
+Claude's arm is untouched. The last Codex-era policy is the git tag `iteration-20-codex`; the frozen Codex-era files
+under `archive/` were later removed from the tree and last exist at commit `7c24c81`.
 
 - **Two models, in order, each with its own effort.** The router first *selects* the two
   best of the pool for the task (`#1`, `#2`), then picks each one's effort.
@@ -182,4 +182,4 @@ for every `D ≤ 1` task, `D = 2` coding and reasoning, latency, and the *contes
 
 ---
 
-The Codex-era policy (iteration-20 and earlier) is the git tag `iteration-20-codex` and `archive/iteration-20-codex/`.
+The Codex-era policy (iteration-20 and earlier) is the git tag `iteration-20-codex`; the frozen files that used to sit under `archive/` last exist at commit `7c24c81`.

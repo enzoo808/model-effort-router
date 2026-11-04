@@ -24,8 +24,8 @@ by design. Optional "expected_notes" (substrings that must appear) and
 and the confidentiality default. Pure string/regex matching, no LLM involved,
 deterministic and free to re-run after every SKILL.md edit.
 
-The iteration-20 (Codex) version of this grader and its evals are archived under
-archive/iteration-20-codex/routing/.
+The iteration-20 (Codex) version of this grader and its evals were removed from the tree;
+the last commit that has them (archive/iteration-20-codex/routing/) is 7c24c81.
 """
 
 import argparse
