@@ -25,9 +25,9 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import io
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 
 GENERATOR_VERSION = "1.2"
@@ -75,12 +75,12 @@ DIRECTION_BASIS = ("published_ci", "published_se", "repeated_trial_variance",
                    "owner_practical_threshold")
 
 
-def band_for(group: dict, benchmark: str, rule: dict, spread: float) -> tuple[float | None, str]:
+def band_for(group: dict, benchmark: str) -> tuple[float | None, str]:
     """The equivalence band for one comparability group, from declared metadata only.
 
     Returns (band, basis). band is None whenever the declared metadata gives no
     MEASURE OF UNCERTAINTY, which the caller treats as UNRESOLVED. Observed spread
-    is carried through the output as a diagnostic and never used here.
+    is carried through the output as a diagnostic and is deliberately not an input.
     """
     eb = group.get("equivalence_band") or {"kind": "none"}
     if isinstance(eb, list):
@@ -109,6 +109,19 @@ def band_for(group: dict, benchmark: str, rule: dict, spread: float) -> tuple[fl
     return float(value), "owner_practical_threshold"
 
 
+def verdict(tally: Counter) -> tuple[str, str, str]:
+    """(preferred, confidence, rationale) for a precedence-weighted tally of directions."""
+    ranked = sorted(tally.items(), key=lambda kv: (-kv[1], kv[0]))
+    shown = ", ".join("%s=%d" % kv for kv in ranked)
+    if not ranked or ranked[0][1] == 0:
+        return UNRESOLVED, "none", "no comparison in any group carried a non-zero precedence weight"
+    if len(ranked) > 1 and ranked[0][1] - ranked[1][1] < 1:
+        return UNRESOLVED, "none", "groups disagree and no precedence step separates them (%s)" % shown
+    margin = ranked[0][1] - (ranked[1][1] if len(ranked) > 1 else 0)
+    confidence = "high" if margin >= 4 else "medium" if margin >= 2 else "low"
+    return ranked[0][0], confidence, "precedence-weighted tally %s" % shown
+
+
 def excluded_reason(benchmark: str, version, table: list) -> str | None:
     """Declared per-benchmark exclusions. A cell listed here can never set a direction."""
     for row in table:
@@ -120,7 +133,7 @@ def excluded_reason(benchmark: str, version, table: list) -> str | None:
     return None
 
 
-def compare_group(rows: list, group: dict, eco_map: dict, rule: dict,
+def compare_group(rows: list, group: dict, eco_map: dict,
                   spread_override: float | None = None, excluded: list | None = None) -> dict:
     """Compare the two ecosystems inside ONE (group, benchmark, version) cell.
 
@@ -174,25 +187,21 @@ def compare_group(rows: list, group: dict, eco_map: dict, rule: dict,
         out["reason"] = "only one ecosystem present in this group"
         return out
 
-    band, basis = band_for(group, out["benchmark"], rule, spread)
     gap = best[CLAUDE]["score"] - best[CODEX]["score"]
-    out["comparable"] = True
+    out["best"] = {eco: {"model": r["model"], "score": r["score"], "id": r["id"]}
+                   for eco, r in sorted(best.items())}
+    out["gap_claude_minus_codex"] = round(gap, 4)
     ce, xe = best[CLAUDE].get("effort"), best[CODEX].get("effort")
     if ce is not None and xe is not None and ce != xe:
         # SKILL.md 5a: two scores are comparable only when the effort matches too.
         # A vendor that runs its own model at xhigh and the competitor at high has
         # published two numbers, not a comparison.
-        out["best"] = {eco: {"model": r["model"], "score": r["score"], "id": r["id"]}
-                       for eco, r in sorted(best.items())}
-        out["gap_claude_minus_codex"] = round(gap, 4)
         out["direction"] = UNRESOLVED
-        out["comparable"] = False
         out["reason"] = ("efforts not matched (%s vs %s) -- not directly comparable, so the gap "
                          "sets no direction" % (ce, xe))
         return out
-    out["best"] = {eco: {"model": r["model"], "score": r["score"], "id": r["id"]}
-                   for eco, r in sorted(best.items())}
-    out["gap_claude_minus_codex"] = round(gap, 4)
+    out["comparable"] = True
+    band, basis = band_for(group, out["benchmark"])
     # DIAGNOSTIC ONLY. How the gap compares with how far apart the roster happens
     # to sit. Useful for spotting a cell worth chasing a published CI for. It is
     # not a confidence statement and never sets `direction`.
@@ -226,7 +235,6 @@ def compile_capability(cap: str, records: list, meta: dict) -> dict:
     roster = set(eco_map["current_roster"])
     groups_meta = meta["comparability_groups"]
     prec = meta["evidence_precedence"]["order"]
-    rule = meta["direction_setting_hierarchy"]
 
     # Cell = (comparability group, benchmark, version). One source publishing five
     # benchmarks yields five cells, never one pooled comparison.
@@ -247,28 +255,13 @@ def compile_capability(cap: str, records: list, meta: dict) -> dict:
         gmeta = groups_meta.get(key[0])
         if gmeta is None:
             continue
-        comparisons.append(compare_group(cells[key], gmeta, eco_map, rule, excluded=excluded))
+        comparisons.append(compare_group(cells[key], gmeta, eco_map, excluded=excluded))
 
-    tally: dict[str, int] = {}
+    tally: Counter = Counter()
     for c in comparisons:
-        if c["direction"] == UNRESOLVED:
-            continue
-        w = precedence_weight(c["evidence_class"], c["source_tier"], prec)
-        tally[c["direction"]] = tally.get(c["direction"], 0) + w
-
-    ranked = sorted(tally.items(), key=lambda kv: (-kv[1], kv[0]))
-    if not ranked or ranked[0][1] == 0:
-        preferred, confidence = UNRESOLVED, "none"
-        why = "no comparison in any group carried a non-zero precedence weight"
-    elif len(ranked) > 1 and ranked[0][1] - ranked[1][1] < 1:
-        preferred, confidence = UNRESOLVED, "none"
-        why = "groups disagree and no precedence step separates them (%s)" % (
-            ", ".join("%s=%d" % kv for kv in ranked))
-    else:
-        preferred = ranked[0][0]
-        margin = ranked[0][1] - (ranked[1][1] if len(ranked) > 1 else 0)
-        confidence = "high" if margin >= 4 else "medium" if margin >= 2 else "low"
-        why = "precedence-weighted tally %s" % ", ".join("%s=%d" % kv for kv in ranked)
+        if c["direction"] != UNRESOLVED:
+            tally[c["direction"]] += precedence_weight(c["evidence_class"], c["source_tier"], prec)
+    preferred, confidence, why = verdict(tally)
 
     basis = sorted({c["group"] for c in comparisons if c["direction"] != UNRESOLVED})
     return {
@@ -366,8 +359,6 @@ def compile_by_codex_model(cap: str, cells: dict, meta: dict) -> list:
     eco_map = meta["model_ecosystem"]
     groups_meta = meta["comparability_groups"]
     prec = meta["evidence_precedence"]["order"]
-    rule = meta["direction_setting_hierarchy"]
-
     excluded = meta.get("excluded_from_direction", [])
 
     def full_spread(rows):
@@ -376,7 +367,7 @@ def compile_by_codex_model(cap: str, cells: dict, meta: dict) -> list:
 
     out = []
     for codex_model in [m for m in eco_map["codex"] if m in eco_map["current_roster"]]:
-        tally: dict[str, int] = {}
+        tally: Counter = Counter()
         used = []
         for key in sorted(cells):
             rows = cells[key]
@@ -389,28 +380,19 @@ def compile_by_codex_model(cap: str, cells: dict, meta: dict) -> list:
                 continue
             if not any(ecosystem_of(r["model"], eco_map) == CLAUDE for r in subset):
                 continue
-            c = compare_group(subset, gmeta, eco_map, rule,
+            c = compare_group(subset, gmeta, eco_map,
                               spread_override=full_spread(rows), excluded=excluded)
             used.append({"cell": c["cell"], "direction": c["direction"], "reason": c["reason"],
                          "best": c.get("best"), "comparable": c["comparable"],
                          "gap": c.get("gap_claude_minus_codex"), "benchmark": c["benchmark"],
                          "evidence_class": c["evidence_class"], "source_tier": c["source_tier"],
                          "run_by": gmeta.get("run_by", "unknown")})
-            if c["direction"] == UNRESOLVED:
-                continue
-            tally[c["direction"]] = tally.get(c["direction"], 0) + precedence_weight(
-                gmeta["evidence_class"], gmeta["source_tier"], prec)
+            if c["direction"] != UNRESOLVED:
+                tally[c["direction"]] += precedence_weight(
+                    gmeta["evidence_class"], gmeta["source_tier"], prec)
         if not used:
             continue
-        ranked = sorted(tally.items(), key=lambda kv: (-kv[1], kv[0]))
-        if not ranked or ranked[0][1] == 0:
-            preferred, confidence = UNRESOLVED, "none"
-        elif len(ranked) > 1 and ranked[0][1] - ranked[1][1] < 1:
-            preferred, confidence = UNRESOLVED, "none"
-        else:
-            preferred = ranked[0][0]
-            margin = ranked[0][1] - (ranked[1][1] if len(ranked) > 1 else 0)
-            confidence = "high" if margin >= 4 else "medium" if margin >= 2 else "low"
+        preferred, confidence, _why = verdict(tally)
         out.append({
             "codex_model": codex_model,
             "preferred": preferred,
@@ -437,7 +419,6 @@ def compile_effort_curves(records: list, meta: dict) -> list:
 
     No interpolation: a rung that was never published simply does not appear.
     """
-    rule = meta["direction_setting_hierarchy"]
     groups_meta = meta["comparability_groups"]
     roster = set(meta["model_ecosystem"]["current_roster"])
     order = meta["effort_rung_order"]
@@ -463,9 +444,7 @@ def compile_effort_curves(records: list, meta: dict) -> list:
         if gmeta is None:
             continue
         rows.sort(key=lambda r: order.index(r["effort"]))
-        scores = [r["score"] for r in rows]
-        spread = max(scores) - min(scores)
-        band, basis = band_for(gmeta, rows[0]["benchmark"], rule, spread)
+        band, basis = band_for(gmeta, bench)
         points = [{"effort": r["effort"], "score": r["score"],
                    "cost_per_task_usd": r.get("cost_per_task_usd"),
                    "id": r["id"]} for r in rows]
@@ -681,7 +660,7 @@ def main() -> int:
         print("frontier is up to date (input_sha256 %s)" % digest[:16])
         return 0
 
-    io.open(out, "w", encoding="utf-8", newline="\n").write(text)
+    out.write_text(text, encoding="utf-8", newline="\n")
     data = json.loads(text)
     print("wrote %s" % out)
     print("  input_sha256      %s" % digest[:16])

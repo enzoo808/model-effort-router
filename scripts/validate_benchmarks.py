@@ -261,10 +261,11 @@ def check_frontier(d: dict, rep: Report) -> None:
                       % (stale[:16], digest[:16]))
 
     front = json.loads(actual)
+    ids = {r["id"] for r in d["records"]}
     for f in front.get("capability_frontiers", []):
         for comp in f.get("comparisons", []):
             for rid in comp.get("rows", []):
-                if rid not in {r["id"] for r in d["records"]}:
+                if rid not in ids:
                     rep.error("frontier-dangling",
                               "frontier cites record %r which no longer exists" % rid)
 

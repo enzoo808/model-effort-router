@@ -38,15 +38,12 @@ CODEX_MODELS = ["Astra", "GPT-6.1 Sol", "GPT-6 Luna"]
 def filters(raw: dict) -> dict:
     """The three evidence views. Each is a pure predicate over a record."""
     eco = raw["model_ecosystem"]
-    spans_both: set[str] = set()
     by_group: dict[str, set] = collections.defaultdict(set)
     for r in raw["records"]:
         for name in ("claude", "codex"):
             if r.get("model") in eco[name]:
                 by_group[r["comparability_group"]].add(name)
-    for gid, ecos in by_group.items():
-        if len(ecos) == 2:
-            spans_both.add(gid)
+    spans_both = {gid for gid, ecos in by_group.items() if len(ecos) == 2}
 
     return {
         "full": lambda r: True,
