@@ -12,106 +12,270 @@
 [![Policy](https://img.shields.io/badge/politika-iteration--25-8b949e?style=flat-square)](CHANGELOG.md)
 [![Regression evals](https://img.shields.io/badge/regresyon_eval-36-8b949e?style=flat-square)](#-doğrulama)
 
-**[Kurulum](#-kurulum)** · **[Demo](#-nasıl-çalıştığını-gör)** · **[Nasıl karar verir](#-nasıl-karar-verir)** · **[Örnekler](#-örnekler)** · **[Kanıt](#-hisle-değil-kanıtla)** · **[Değişiklik günlüğü](CHANGELOG.md)** · **[🇬🇧 English](README.md)**
+**[Hızlı başlangıç](#-hızlı-başlangıç)** · **[Kurulum](#-kurulum)** · **[Cevabı oku](#-cevabı-okumak)** · **[Nasıl karar verir](#-nasıl-karar-verir)** · **[Örnekler](#-örnekler)** · **[Kanıt](#-hisle-değil-kanıtla)** · **[Değişiklik günlüğü](CHANGELOG.md)** · **[🇬🇧 English](README.md)**
 
 </div>
 
 <br>
 
-> **Bir görev yapıştır. Hangi model ve efor seviyesinde çalıştırman gerektiğini — Claude için ve OpenCode Go planın için — ve ikisinden hangisini kullanacağını söyler.**
-> Görevi *çalıştırmaz*. Yalnızca yönlendirir.
+> ### Bir görev yapıştır. Hangi model ve eforda çalıştıracağını öğren.
+> **Claude** için *ve* **OpenCode Go** planın için — ayrıca ikisinden hangisini kullanacağını. Görevi asla çalıştırmaz, yalnızca yönlendirir.
 
 Çoğumuz model seçimini refleksle yaparız: her seferinde en büyüğü. Bu da gerçekten tükenen iki şeyi sessizce eritir: **Claude'un 5 saatlik penceresini** ve **her OpenCode Go modelinin kendi aylık dolar limitini**.
 `model-effort-router` bir [Claude skill](https://docs.claude.com/en/docs/claude-code/skills)'idir: görevi puanlar, bağımsız benchmark'larla karşılaştırır ve üç satırda cevap verir.
-
-<br>
-
-## ✨ Nasıl çalıştığını gör
 
 <div align="center">
 <img src="docs/assets/demo.svg" alt="Terminal demosu: 40 dosyalık refactor OpenCode'a yönlenir; prod'daki race condition için rozet Claude Opus 5.5 xhigh'a geçer" width="860">
 </div>
 
-✅ rozeti **hesaplanır, alışkanlıkla verilmez**. Ucuz ve orta zorluktaki işler OpenCode'a gider. Rozet yalnızca Claude'un *ciddi* fark yarattığı yerde Claude'a geçer; tek cümlelik `Evidence:` satırı kararı hangi ölçümün verdirdiğini söyler. (Skill çıktısı İngilizcedir; promptu hangi dilde yazarsan yaz yönlendirir.)
+<br>
+
+## ⚡ Hızlı başlangıç
+
+<div align="center">
+<img src="docs/assets/steps.svg" alt="Adım 1: ./install.sh ile kur. Adım 2: Claude Code'u yeniden başlat. Adım 3: /model-secici yaz ve görevini ekle." width="860">
+</div>
 
 <br>
 
-## 🎯 Farkı ne
+Sistemine uyan satırı seç. İkisi de skill'i `~/.claude/skills/model-secici` içine kurar:
+
+**macOS / Linux — klonlamaya gerek yok:**
+
+```bash
+mkdir -p ~/.claude/skills/model-secici && curl -fsSL https://github.com/enzoo808/model-effort-router/archive/refs/heads/main.tar.gz \
+  | tar -xz --strip-components=2 -C ~/.claude/skills/model-secici model-effort-router-main/skill
+```
+
+**Windows (PowerShell):**
+
+```powershell
+git clone https://github.com/enzoo808/model-effort-router.git; cd model-effort-router; .\install.ps1
+```
+
+Sonra **yeni** bir Claude Code oturumu aç ve sor:
+
+```text
+/model-secici  Ödeme modülünü şu 40 dosyada yeni idempotency-key API'sine geçir ve testleri geçir
+```
+
+Hepsi bu. Başka bir yol mu istiyorsun (claude.ai, tek bir proje, yalnızca OpenCode)? Aşağıdaki **[Kurulum](#-kurulum)** bölümüne bak. Bir şey mi çalışmıyor? **[Sorun giderme](#sorun-giderme)**.
+
+<br>
+
+## ✨ Ne elde edersin
+
+<table>
+<tr>
+<td width="33%" valign="top">
+
+### 🔀 İki ekosistem, tek cevap
+Bir **Claude** seçimi, sıralı **iki OpenCode modeli** (`#1`, `#2`) — her biri *kendi* eforuyla — ve **tek** ✅ öneri.
+
+</td>
+<td width="33%" valign="top">
+
+### 🧮 Hesaplanan rozet
+Ucuz ve orta zorluktaki işler OpenCode'a gider. Rozet yalnızca Claude'un *ciddi* fark yarattığı yerde Claude'a geçer ve nedenini söyler.
+
+</td>
+<td width="33%" valign="top">
+
+### 💸 Bütçe öncelikli
+Gerçekten tükenenleri korur: Claude'un 5 saatlik penceresi ve her Go modelinin **kendi dolar limiti**. Premium modeller yalnızca yükseltme içindir.
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+### 🔬 Kanıta bağlı
+Bir benchmark yalnızca görevin ihtiyacını ölçüyorsa sayılır ve bir yön için **birbirinden bağımsız, uyumlu iki ölçüm** gerekir.
+
+</td>
+<td valign="top">
+
+### 🔒 Varsayılan gizli
+İstemi kaydeden ya da eğitimde kullanan modeller, *sen* "gizli değil" demedikçe dışarıda kalır.
+
+</td>
+<td valign="top">
+
+### ✅ Doğrulanabilir
+36 deterministik regresyon promptu, regex tabanlı bir not verici ve CI'da koşan tutarlılık kontrolleri — bkz. [Doğrulama](#-doğrulama).
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary><b>Sıradan bir "model seçici"den farkı</b></summary>
+
+<br>
 
 | | Sıradan "model seçici" | **model-effort-router** |
 |---|---|---|
-| **Kapsam** | Tek sağlayıcı, bir model adı | **İki ekosistem** (Claude + OpenCode Go), model **ve efor seviyesi**, yan yana |
-| **Çıktı** | "En güçlü modeli kullan" | Sıralı iki OpenCode modeli (`#1`, `#2`), her biri *kendi* eforuyla; bir Claude seçimi; **tek** öneri |
-| **Dayanak** | His, liderlik tablosu sırası | **Göreve bağlı kanıt**: benchmark yalnızca görevin ihtiyacını ölçüyorsa sayılır; yön için birbirinden bağımsız ve uyumlu iki ölçüm gerekir |
-| **Maliyet modeli** | "Ucuz olan iyidir" | Gerçekten tükenenleri korur: 5 saatlik pencere ve **model başına dolar limitleri** (bütçe-öncelikli havuz) |
+| **Kapsam** | Tek sağlayıcı, bir model adı | **İki ekosistem**, model **ve efor seviyesi**, yan yana |
+| **Çıktı** | "En güçlü modeli kullan" | Claude seçimi + sıralı iki OpenCode seçimi (kendi eforlarıyla) + **tek** öneri |
+| **Dayanak** | His, liderlik tablosu sırası | **Göreve bağlı kanıt**, önce karşılaştırılabilirlik |
+| **Maliyet modeli** | "Ucuz olan iyidir" | 5 saatlik pencere ve **model başına dolar limitleri** |
 | **Risk** | Korkutucu iş için büyük model | **Risk model katmanını değil, insan denetimini artırır** — pahalı model değil, inceleme notu alırsın |
-| **Gizlilik** | Düşünülmez | **Varsayılan gizli**: istemi kaydeden veya eğitimde kullanan modeller, "gizli değil" demedikçe dışarıda |
+| **Gizlilik** | Düşünülmez | **Varsayılan gizli** |
 | **Dürüstlük** | Hep emin konuşur | `low-confidence` işaretler, tahmin yerine `n/p` (yayımlanmamış) der, efor basamakları arasında enterpolasyon yapmaz |
-| **Doğrulanabilir** | — | 36 deterministik regresyon promptu, regex tabanlı bir not verici ve saniyeler içinde çalışan 4 tutarlılık kontrolü |
+
+</details>
 
 <br>
 
 ## 🚀 Kurulum
 
-Bir Claude skill'idir: `model-secici/` klasörü. Yönlendirirken yalnızca `SKILL.md` okunur; gerisi bir kuralı denetleyebilmen için orada durur.
+### Başlamadan önce
+
+| Gerekenler | Neden |
+|---|---|
+| **[Claude Code](https://docs.claude.com/en/docs/claude-code/quickstart)** *ya da* **code execution** açık bir **claude.ai** Pro / Max / Team / Enterprise planı | Skill, Claude'un içinde çalışır. |
+| `git` *(yalnızca klonlama yolları için)* | Yukarıdaki tek satır ve zip için git gerekmez. |
+| Bir **OpenCode Go** planı *(isteğe bağlı)* | Yalnızca `OpenCode:` satırını *uygulamak* istersen. Router onsuz da çalışır. |
+
+Skill'in kendisi Python, Node ya da API anahtarı istemez — metin ve JSON dosyalarından oluşan bir klasördür.
+
+### Yolunu seç
+
+<details open>
+<summary><b>① Claude Code — her proje için</b> (önerilen)</summary>
+
+<br>
+
+*Kullanıcı kapsamında* kurar; `/model-secici` bu makinedeki her projede çalışır.
 
 ```bash
 git clone https://github.com/enzoo808/model-effort-router.git
 cd model-effort-router
-```
-
-<details open>
-<summary><b>Claude Code</b> (macOS / Linux / Windows)</summary>
-
-<br>
-
-```bash
-./install.sh            # macOS / Linux
+./install.sh                # macOS / Linux
 ```
 
 ```powershell
-.\install.ps1           # Windows (PowerShell)
+.\install.ps1               # Windows (PowerShell)
 ```
 
-Ya da elle:
+İki betik de `skill/` klasörünü `~/.claude/skills/model-secici/` içine kopyalar (Windows: `%USERPROFILE%\.claude\skills\model-secici\`). Ya da elle:
 
 ```bash
 mkdir -p ~/.claude/skills/model-secici
 cp skill/*.md skill/*.json ~/.claude/skills/model-secici/
 ```
 
-Yeni bir oturum aç, sonra:
+**Doğrula** — `SKILL.md` doğrudan bu klasörde olmalı (alt klasörde değil):
 
-```text
-/model-secici  <görevin>
+```bash
+ls ~/.claude/skills/model-secici
+# SKILL.md  benchmark_frontiers.json  benchmarks.json  opencode-benchmarks.md  opencode-evidence.json  reference.md
 ```
 
+Şimdi **yeni bir Claude Code oturumu başlat** (skill'ler açılışta yüklenir) ve `/model-secici <görevin>` yaz.
 *"Bunun için hangi modeli kullanmalıyım?"* gibi düz sorularla da tetiklenir.
 
 </details>
 
 <details>
-<summary><b>claude.ai / Claude Desktop</b> (yerel custom skill)</summary>
+<summary><b>② Claude Code — tek proje / ekip için</b></summary>
 
 <br>
 
-**Code execution** açık bir Pro / Max / Team / Enterprise plan gerekir.
+Skill'i *deponun içine* koy; depoyu klonlayan herkes alır:
 
-1. **[`dist/model-secici.zip`](dist/model-secici.zip)** dosyasını indir (yeniden üretmek için `.\build-claude-ai-zip.ps1`)
-2. **claude.ai → Settings → Features → Custom Skills → Upload**
-
-Code execution yoksa [`claude-ai/instructions.tr.md`](claude-ai/instructions.tr.md) içindeki düz metin yedeğini kullan.
+```bash
+mkdir -p .claude/skills/model-secici
+cp /path/to/model-effort-router/skill/*.md /path/to/model-effort-router/skill/*.json .claude/skills/model-secici/
+git add .claude/skills/model-secici && git commit -m "Add model-secici skill"
+```
 
 </details>
 
 <details>
-<summary><b>OpenCode Go</b> (router'ın cevabını uygulamak)</summary>
+<summary><b>③ claude.ai / Claude Desktop</b> (yerel custom skill)</summary>
 
 <br>
 
-OpenCode tarafında skill mekanizması yok — router yalnızca `OpenCode:` satırını yazar, sen uygularsın. OpenCode'da modeli `opencode-go/<model-id>` olarak seç, eforu `variant_cycle` ile değiştir. MiMo-V2.6'nın varyantı yoktur (düşünme hep açık), bu yüzden router `default` yazar ve çevrilecek bir şey olmaz.
+1. **[`dist/model-secici.zip`](dist/model-secici.zip)** dosyasını indir (yeniden üretmek için `.\build-claude-ai-zip.ps1`).
+2. **claude.ai → Settings → Features** sayfasında **code execution**'ın açık olduğundan emin ol.
+3. **Custom Skills** altında **Upload**'u seç ve zip'i yükle.
+4. Bir sohbette *"şunun için hangi modeli kullanmalıyım: …"* diye sor ve görevini ekle.
+
+Planında code execution yok mu? [`claude-ai/instructions.tr.md`](claude-ai/instructions.tr.md) içindeki düz metin yedeğini kullan.
 
 </details>
+
+<details>
+<summary><b>④ OpenCode Go</b> — cevabı uygulamak</summary>
+
+<br>
+
+OpenCode tarafında skill mekanizması yok: router yalnızca bir `OpenCode:` satırı yazar, sen uygularsın.
+
+1. Satırdaki `#1`'i al, örneğin `DeepSeek V4.1 Flash · effort: max`.
+2. OpenCode'da modeli **`opencode-go/<model-id>`** olarak seç.
+3. Router'ın yazdığı efor görünene kadar **`variant_cycle`** ile eforu değiştir.
+   MiMo-V2.6'nın varyantı yoktur (düşünme hep açık), bu yüzden router `default` yazar ve çevrilecek bir şey olmaz.
+4. `#1` yetersiz kalırsa `#2`'yi dene.
+
+</details>
+
+### Güncelle · kaldır
+
+```bash
+cd model-effort-router && git pull && ./install.sh      # güncelle (Windows'ta .\install.ps1'i yeniden çalıştır)
+rm -rf ~/.claude/skills/model-secici                    # kaldır (Windows: %USERPROFILE%\.claude\skills\model-secici klasörünü sil)
+```
+
+### Sorun giderme
+
+| Belirti | Çözüm |
+|---|---|
+| `/model-secici` listede yok | **Yeni** bir oturum başlat — skill'ler açılışta yüklenir. Sonra `~/.claude/skills/model-secici/SKILL.md` dosyasının var olduğunu kontrol et (`.../model-secici/skill/SKILL.md` değil). |
+| Tek satır hiçbir şey çıkarmıyor | `curl` ve `tar` `PATH`'inde olmalı; Windows'ta PowerShell satırını ya da zip'i kullan. |
+| PowerShell `install.ps1`'i çalıştırmıyor | `powershell -ExecutionPolicy Bypass -File .\install.ps1` |
+| claude.ai yüklemeyi "invalid characters" diye reddediyor | Hazır [`dist/model-secici.zip`](dist/model-secici.zip)'i kullan. Windows'un kendi araçlarıyla yapılan zip'ler ters bölü kullanır; `build-claude-ai-zip.ps1` düz bölü yazar. |
+| Yalnızca bir `Clarify:` satırı yazıyor | Tasarım gereği: prompt belirsizdi. Soruyu cevapla ve yeniden sor — bkz. [iyi prompt yazmak](#iyi-prompt-yazmak). |
+| Düz bir soruda tetiklenmiyor | Açık `/model-secici …` komutunu kullan. |
+
+<br>
+
+## 🔎 Cevabı okumak
+
+```text
+Claude:   Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (71.7 vs 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
+```
+
+| Satır | Ne söyler |
+|---|---|
+| `Claude:` | Claude'u seçersen kullanacağın tek Claude modeli ve eforu. |
+| `OpenCode:` | Sıralı **iki** Go modeli — `#1` ile başla, olmazsa `#2` — her biri OpenCode'un o model için gerçekten sunduğu eforla (`low` / `high` / `max`, `xhigh` ya da `default`). |
+| `✅ RECOMMENDED AI` | Kullanılacak ekosistem. **Claude ciddi fark yaratmıyorsa OpenCode.** Tam olarak bir rozet. |
+| `Evidence:` | Rozeti hangi ölçümün belirlediğini söyleyen tek cümle. `low-confidence`, kanıtın zayıf olduğu anlamına gelir. |
+| *Ek satırlar* | Yalnızca önemliyse eklenir: yüksek riskte insan inceleme notu, DeepSeek'in yoğun saat fiyatı, `/fast` uygunluğu, `Ultracode:` ipucu, veri-politikası uyarıları. |
+| `Clarify:` | Prompt yönlendirmek için fazla belirsizse yukarıdakilerin hepsinin yerine. |
+
+*(Skill çıktısı İngilizcedir; promptu hangi dilde yazarsan yaz yönlendirir.)*
+
+### İyi prompt yazmak
+
+Router, sözlerinden dört şeyi puanlar: Risk (**R**), Derinlik (**D**), Genişlik (**W**) ve Bağlam (**C**). Bu yüzden şunları söyle:
+
+- **Ne ve ne kadar büyük** — yalnızca "refactor" değil, "40 dosya", "400 sayfa", "200 yorum".
+- **Bitmiş hali nasıl görünür** — "test paketi geçsin", "tek bir mutabakat tablosu".
+- **Riskler** — "bu gece prod'a gidiyor", "etiketler baskıya gidiyor".
+
+Cevabı değiştiren sözler:
+
+| Söyle | Etki |
+|---|---|
+| *"bu iş gizli değil"* | İstemleri saklayan ya da eğitimde kullanan GPT 6 Luna, Muse Spark 1.3 ve Gemini 4 Argon'u açar. Üslupla asla varsayılmaz. |
+| *"önceki bir OpenCode denemesi yetersiz kaldı"* | `#2` olarak premium bir OpenCode modeli ekler ve rozeti Claude'a geçirir. |
+| başa `ultracode:` | Ultracode'u oturum boyunca açık bırakmak yerine *yalnızca bu görevi* bir Claude Code iş akışı olarak çalıştırır. |
 
 <br>
 

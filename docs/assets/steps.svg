@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="190" viewBox="0 0 1000 190" role="img" aria-labelledby="t d">
+  <title id="t">Three steps: install, restart, ask</title>
+  <desc id="d">1. Install the skill with one command. 2. Start a new Claude Code session. 3. Type /model-secici followed by your task.</desc>
+  <defs>
+    <linearGradient id="a" x1="0" x2="1"><stop offset="0" stop-color="#58a6ff"/><stop offset="1" stop-color="#a371f7"/></linearGradient>
+    <style>
+      text { font-family: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace; }
+      .h { font-size: 21px; font-weight: 700; fill: #f0f6fc; }
+      .s { font-size: 14px; fill: #8b949e; }
+      .c { font-size: 15px; fill: #79c0ff; }
+      .n { font-size: 17px; font-weight: 700; fill: #0d1117; }
+    </style>
+  </defs>
+  <rect width="1000" height="190" rx="16" fill="#0d1117"/>
+  <rect x=".5" y=".5" width="999" height="189" rx="15.5" fill="none" stroke="#30363d"/>
+
+  <!-- card 1 -->
+  <rect x="24" y="24" width="276" height="142" rx="12" fill="#161b22" stroke="#30363d"/>
+  <circle cx="54" cy="56" r="15" fill="url(#a)"/><text x="54" y="62" text-anchor="middle" class="n">1</text>
+  <text x="80" y="62" class="h">Install</text>
+  <rect x="44" y="84" width="236" height="34" rx="8" fill="#010409" stroke="#30363d"/>
+  <text x="58" y="106" class="c">./install.sh</text>
+  <text x="44" y="144" class="s">or the one-liner below</text>
+
+  <!-- arrow -->
+  <path d="M306 95 H340" stroke="#58a6ff" stroke-width="3" stroke-linecap="round"/><path d="M334 88 L342 95 L334 102" stroke="#58a6ff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- card 2 -->
+  <rect x="362" y="24" width="276" height="142" rx="12" fill="#161b22" stroke="#30363d"/>
+  <circle cx="392" cy="56" r="15" fill="url(#a)"/><text x="392" y="62" text-anchor="middle" class="n">2</text>
+  <text x="418" y="62" class="h">Restart</text>
+  <text x="382" y="102" class="s" style="font-size:16px;fill:#c9d1d9">Open a new Claude Code</text>
+  <text x="382" y="124" class="s" style="font-size:16px;fill:#c9d1d9">session</text>
+  <text x="382" y="150" class="s">skills load at start-up</text>
+
+  <!-- arrow -->
+  <path d="M644 95 H678" stroke="#58a6ff" stroke-width="3" stroke-linecap="round"/><path d="M672 88 L680 95 L672 102" stroke="#58a6ff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- card 3 -->
+  <rect x="700" y="24" width="276" height="142" rx="12" fill="#161b22" stroke="#3fb950"/>
+  <circle cx="730" cy="56" r="15" fill="url(#a)"/><text x="730" y="62" text-anchor="middle" class="n">3</text>
+  <text x="756" y="62" class="h">Ask</text>
+  <rect x="720" y="84" width="236" height="34" rx="8" fill="#010409" stroke="#30363d"/>
+  <text x="732" y="106" class="c">/model-secici <tspan fill="#8b949e">&lt;task&gt;</tspan></text>
+  <text x="720" y="144" class="s">get model + effort + badge</text>
+</svg>

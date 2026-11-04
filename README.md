@@ -12,106 +12,268 @@
 [![Policy](https://img.shields.io/badge/policy-iteration--25-8b949e?style=flat-square)](CHANGELOG.md)
 [![Regression evals](https://img.shields.io/badge/regression_evals-36-8b949e?style=flat-square)](#-validation)
 
-**[Install](#-install)** · **[Demo](#-see-it-work)** · **[How it works](#-how-it-decides)** · **[Examples](#-examples)** · **[Evidence](#-built-on-evidence-not-vibes)** · **[Changelog](CHANGELOG.md)** · **[🇹🇷 Türkçe](README.tr.md)**
+**[Quick start](#-quick-start)** · **[Install](#-install)** · **[Read the answer](#-reading-the-answer)** · **[How it works](#-how-it-decides)** · **[Examples](#-examples)** · **[Evidence](#-built-on-evidence-not-vibes)** · **[Changelog](CHANGELOG.md)** · **[🇹🇷 Türkçe](README.tr.md)**
 
 </div>
 
 <br>
 
-> **Paste a task. Get told which model and effort level to run it on — for Claude and for your OpenCode Go plan — and which of the two to use.**
-> It does *not* run the task. It routes it.
+> ### Paste a task. Get the model and effort to run it on.
+> For **Claude** *and* your **OpenCode Go** plan — plus which of the two to use. It never runs the task. It only routes it.
 
 Most people pick a model by reflex: the biggest one, every time. That quietly burns the two things that actually run out — **Claude's 5-hour window** and **each OpenCode Go model's own monthly dollar cap**.
 `model-effort-router` is a [Claude skill](https://docs.claude.com/en/docs/claude-code/skills) that scores your task, checks it against independent benchmarks, and answers in three lines.
-
-<br>
-
-## ✨ See it work
 
 <div align="center">
 <img src="docs/assets/demo.svg" alt="Terminal demo: a 40-file refactor is routed to OpenCode; a production race condition moves the badge to Claude Opus 5.5 at xhigh effort" width="860">
 </div>
 
-The ✅ badge is **computed, not habitual**. Cheap and mid-difficulty work goes to OpenCode. The badge moves to Claude only where Claude makes a *serious* difference — and the one-sentence `Evidence:` line says which measurement decided it.
+<br>
+
+## ⚡ Quick start
+
+<div align="center">
+<img src="docs/assets/steps.svg" alt="Step 1: install with ./install.sh. Step 2: restart Claude Code. Step 3: type /model-secici and your task." width="860">
+</div>
 
 <br>
 
-## 🎯 Why it's different
+Pick the line for your system. Each one installs the skill into `~/.claude/skills/model-secici`:
+
+**macOS / Linux — no clone needed:**
+
+```bash
+mkdir -p ~/.claude/skills/model-secici && curl -fsSL https://github.com/enzoo808/model-effort-router/archive/refs/heads/main.tar.gz \
+  | tar -xz --strip-components=2 -C ~/.claude/skills/model-secici model-effort-router-main/skill
+```
+
+**Windows (PowerShell):**
+
+```powershell
+git clone https://github.com/enzoo808/model-effort-router.git; cd model-effort-router; .\install.ps1
+```
+
+Then open a **new** Claude Code session and ask:
+
+```text
+/model-secici  Refactor the payment module across these 40 files to the new idempotency-key API and make the tests pass
+```
+
+That's it. Prefer a different route (claude.ai, a single project, OpenCode only)? See **[Install](#-install)** below. Something not working? See **[Troubleshooting](#troubleshooting)**.
+
+<br>
+
+## ✨ What you get
+
+<table>
+<tr>
+<td width="33%" valign="top">
+
+### 🔀 Two ecosystems, one answer
+A **Claude** pick, **two OpenCode models** in order (`#1`, `#2`) — each with *its own* effort — and **one** ✅ recommendation.
+
+</td>
+<td width="33%" valign="top">
+
+### 🧮 A badge that's computed
+Cheap and mid-difficulty work goes to OpenCode. The badge moves to Claude only where Claude makes a *serious* difference — and says why.
+
+</td>
+<td width="33%" valign="top">
+
+### 💸 Budget-first
+Protects what really runs out: Claude's 5-hour window and each Go model's **own dollar cap**. Premium models are escalation only.
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+### 🔬 Evidence-bound
+A benchmark only counts if it measures what your task needs, and a direction needs **two independent measurements that agree**.
+
+</td>
+<td valign="top">
+
+### 🔒 Confidential by default
+Models that log or train on prompts are out unless *you* say the work is non-confidential.
+
+</td>
+<td valign="top">
+
+### ✅ Verifiable
+36 deterministic regression prompts, a regex grader and consistency checks that run in CI — see [Validation](#-validation).
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary><b>How it differs from a typical "model picker"</b></summary>
+
+<br>
 
 | | Typical "model picker" | **model-effort-router** |
 |---|---|---|
-| **Scope** | One vendor, a model name | **Two ecosystems** (Claude + OpenCode Go), a model **and its effort level**, side by side |
-| **Output** | "Use the strongest model" | Two OpenCode models in order (`#1`, `#2`) each with *its own* effort, a Claude pick, and **one** recommendation |
-| **Basis** | Vibes, leaderboard rank | **Task-bound evidence**: a benchmark only counts if it measures what the task needs; a direction needs two independent measurements that agree |
-| **Cost model** | "Cheaper is better" | Protects the resources that really run out: the 5-hour window and **per-model dollar caps** (budget-first pool) |
+| **Scope** | One vendor, a model name | **Two ecosystems**, a model **and its effort level**, side by side |
+| **Output** | "Use the strongest model" | Claude pick + two ordered OpenCode picks with their own efforts + **one** recommendation |
+| **Basis** | Vibes, leaderboard rank | **Task-bound evidence**, comparability checked first |
+| **Cost model** | "Cheaper is better" | The 5-hour window and **per-model dollar caps** |
 | **Risk** | Bigger model for scarier work | **Risk raises human oversight, not model tier** — you get a review note, not a pricier model |
-| **Privacy** | Not considered | **Confidential by default**: models that log or train on prompts are out unless you say the work is non-confidential |
+| **Privacy** | Not considered | **Confidential by default** |
 | **Honesty** | Always sounds sure | Flags `low-confidence` rows, says `n/p` (not published) instead of guessing, never interpolates between effort rungs |
-| **Verifiable** | — | 36 deterministic regression prompts, a regex grader, and 4 consistency checks you can run in seconds |
+
+</details>
 
 <br>
 
 ## 🚀 Install
 
-It's a Claude skill: a `model-secici/` folder. Only `SKILL.md` is read when routing; the rest is there so you can audit any rule.
+### Before you start
+
+| You need | Why |
+|---|---|
+| **[Claude Code](https://docs.claude.com/en/docs/claude-code/quickstart)** *or* a **claude.ai** Pro / Max / Team / Enterprise plan with **code execution** on | The skill runs inside Claude. |
+| `git` *(only for the clone routes)* | The one-liner above and the zip need no git. |
+| An **OpenCode Go** plan *(optional)* | Only needed if you want to *act on* the `OpenCode:` line. The router works without one. |
+
+The skill itself needs no Python, no Node, no API key — it is a folder of text and JSON files.
+
+### Choose your route
+
+<details open>
+<summary><b>① Claude Code — for every project</b> (recommended)</summary>
+
+<br>
+
+Installs at *user scope*, so `/model-secici` works in every project on this machine.
 
 ```bash
 git clone https://github.com/enzoo808/model-effort-router.git
 cd model-effort-router
-```
-
-<details open>
-<summary><b>Claude Code</b> (macOS / Linux / Windows)</summary>
-
-<br>
-
-```bash
-./install.sh            # macOS / Linux
+./install.sh                # macOS / Linux
 ```
 
 ```powershell
-.\install.ps1           # Windows (PowerShell)
+.\install.ps1               # Windows (PowerShell)
 ```
 
-Or by hand:
+Both scripts copy `skill/` into `~/.claude/skills/model-secici/` (Windows: `%USERPROFILE%\.claude\skills\model-secici\`). Or do it by hand:
 
 ```bash
 mkdir -p ~/.claude/skills/model-secici
 cp skill/*.md skill/*.json ~/.claude/skills/model-secici/
 ```
 
-Start a new session, then:
+**Verify** — the folder must hold `SKILL.md` directly (not in a sub-folder):
 
-```text
-/model-secici  <your task>
+```bash
+ls ~/.claude/skills/model-secici
+# SKILL.md  benchmark_frontiers.json  benchmarks.json  opencode-benchmarks.md  opencode-evidence.json  reference.md
 ```
 
-It also triggers on plain questions like *"which model should I use for this?"*
+Now **start a new Claude Code session** (skills are loaded at start-up) and run `/model-secici <your task>`.
+It also fires on plain questions like *"which model should I use for this?"*
 
 </details>
 
 <details>
-<summary><b>claude.ai / Claude Desktop</b> (native custom skill)</summary>
+<summary><b>② Claude Code — for one project / your team</b></summary>
 
 <br>
 
-Needs a Pro / Max / Team / Enterprise plan with **code execution** enabled.
+Put the skill *inside the repository* so everyone who clones it gets it:
 
-1. Download **[`dist/model-secici.zip`](dist/model-secici.zip)** (rebuild with `.\build-claude-ai-zip.ps1`)
-2. **claude.ai → Settings → Features → Custom Skills → Upload**
-
-No code execution? Use the plain-text fallback in [`claude-ai/instructions.tr.md`](claude-ai/instructions.tr.md) (Turkish).
+```bash
+mkdir -p .claude/skills/model-secici
+cp /path/to/model-effort-router/skill/*.md /path/to/model-effort-router/skill/*.json .claude/skills/model-secici/
+git add .claude/skills/model-secici && git commit -m "Add model-secici skill"
+```
 
 </details>
 
 <details>
-<summary><b>OpenCode Go</b> (acting on the router's answer)</summary>
+<summary><b>③ claude.ai / Claude Desktop</b> (native custom skill)</summary>
 
 <br>
 
-OpenCode has no skill mechanism — the router just prints the `OpenCode:` line and you act on it. In OpenCode, pick the model as `opencode-go/<model-id>` and cycle the effort with `variant_cycle`. MiMo-V2.6 exposes no variant (thinking is always on), so the router writes `default` and there is nothing to cycle.
+1. Download **[`dist/model-secici.zip`](dist/model-secici.zip)** (rebuild it with `.\build-claude-ai-zip.ps1`).
+2. Open **claude.ai → Settings → Features** and make sure **code execution** is on.
+3. Under **Custom Skills**, choose **Upload** and select the zip.
+4. In a chat, ask *"which model should I use for: …"* followed by your task.
+
+No code execution on your plan? Use the plain-text fallback in [`claude-ai/instructions.tr.md`](claude-ai/instructions.tr.md) (Turkish).
 
 </details>
+
+<details>
+<summary><b>④ OpenCode Go</b> — acting on the answer</summary>
+
+<br>
+
+OpenCode has no skill mechanism: the router just prints an `OpenCode:` line and you apply it.
+
+1. Take `#1` from the line, e.g. `DeepSeek V4.1 Flash · effort: max`.
+2. In OpenCode, select the model as **`opencode-go/<model-id>`**.
+3. Set the effort with **`variant_cycle`** until it shows the effort the router named.
+   MiMo-V2.6 exposes no variants (thinking is always on), so the router writes `default` and there is nothing to cycle.
+4. Only if `#1` falls short, try `#2`.
+
+</details>
+
+### Update · uninstall
+
+```bash
+cd model-effort-router && git pull && ./install.sh      # update (re-run .\install.ps1 on Windows)
+rm -rf ~/.claude/skills/model-secici                    # uninstall (Windows: delete %USERPROFILE%\.claude\skills\model-secici)
+```
+
+### Troubleshooting
+
+| Symptom | Fix |
+|---|---|
+| `/model-secici` isn't listed | Start a **new** session — skills load at start-up. Then check that `~/.claude/skills/model-secici/SKILL.md` exists (not `.../model-secici/skill/SKILL.md`). |
+| The one-liner extracts nothing | `curl` and `tar` must be on your `PATH`; on Windows use the PowerShell line or the zip. |
+| PowerShell refuses to run `install.ps1` | `powershell -ExecutionPolicy Bypass -File .\install.ps1` |
+| claude.ai rejects the upload as "invalid characters" | Use the prebuilt [`dist/model-secici.zip`](dist/model-secici.zip). Zips made with Windows' own tools use backslashes; `build-claude-ai-zip.ps1` writes forward slashes. |
+| It only prints a `Clarify:` line | Working as designed: the prompt was ambiguous. Answer the question and ask again — see [writing a good prompt](#writing-a-good-prompt). |
+| It doesn't fire on a plain question | Use the explicit `/model-secici …` command. |
+
+<br>
+
+## 🔎 Reading the answer
+
+```text
+Claude:   Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (71.7 vs 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
+```
+
+| Line | What it tells you |
+|---|---|
+| `Claude:` | The one Claude model and effort to use if you pick Claude. |
+| `OpenCode:` | **Two** Go models in order — start with `#1`, fall back to `#2` — each with the effort OpenCode actually offers for it (`low` / `high` / `max`, `xhigh`, or `default`). |
+| `✅ RECOMMENDED AI` | The ecosystem to use. **OpenCode unless Claude makes a serious difference.** Exactly one badge. |
+| `Evidence:` | One sentence naming the measurement that decided the badge. `low-confidence` means the evidence is thin. |
+| *Extra lines* | Added only when they matter: a human-review note at high risk, DeepSeek's peak-hours pricing, `/fast` availability, an `Ultracode:` hint, data-policy warnings. |
+| `Clarify:` | Instead of everything above, when the prompt is too ambiguous to route. |
+
+### Writing a good prompt
+
+The router scores **R**isk, **D**epth, **W**idth and **C**ontext from your wording, so tell it:
+
+- **What and how big** — "40 files", "400 pages", "200 reviews", not just "refactor".
+- **What done looks like** — "make the test suite pass", "one reconciliation table".
+- **The stakes** — "goes to prod tonight", "labels go to print".
+
+Words that change the answer:
+
+| Say | Effect |
+|---|---|
+| *"this is non-confidential"* | Unlocks GPT 6 Luna, Muse Spark 1.3 and Gemini 4 Argon, which keep or train on prompts. Never assumed from tone. |
+| *"an earlier OpenCode attempt fell short"* | Adds a premium OpenCode model as `#2` and moves the badge to Claude. |
+| `ultracode:` at the start | Runs *only this task* as a Claude Code workflow instead of leaving ultracode on session-wide. |
 
 <br>
 
