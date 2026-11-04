@@ -25,7 +25,5 @@ jobs:
         run: python scripts/check_opencode_pool.py
       - name: Worked examples agree with goldens
         run: python scripts/check_examples.py
-      - name: Benchmark records validate
-        run: python scripts/validate_benchmarks.py
-      - name: Frontier compiler tests
-        run: python scripts/test_frontier_compiler.py
+      - name: README facts match the data (counts, pool, iteration, tiers)
+        run: python scripts/check_readme_facts.py

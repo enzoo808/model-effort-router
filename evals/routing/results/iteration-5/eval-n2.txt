@@ -1,2 +1,0 @@
-Claude: Sonnet 5 · efor: high
-Codex: Terra · efor: medium

@@ -30,6 +30,9 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import derive_opencode_rows as dr  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
 POLICY = ROOT / "evals" / "policy" / "routing_policy.json"
 SKILL = ROOT / "skill" / "SKILL.md"
@@ -108,8 +111,8 @@ def main() -> int:
         errors.append("roster must hold exactly 19 models, found %d" % len(roster_caps))
 
     # 1b -- tier boundaries and tasks/month recomputed from the evidence (Rule BUD1) -----------
-    evid = json.loads((ROOT / "skill" / "opencode-evidence.json").read_text(encoding="utf-8"))
-    arena = evid["anchors"]["Arena Agent Arena (net outcome vs avg model, %)"]["cost_per_task_p50_usd"]
+    evidence = json.loads((ROOT / "skill" / "opencode-evidence.json").read_text(encoding="utf-8"))
+    arena = evidence["anchors"]["Arena Agent Arena (net outcome vs avg model, %)"]["cost_per_task_p50_usd"]
     alias = {"Muse Spark 1.3 Contributor": "Muse Spark 1.3"}
     for m, meta in pool.items():
         key = alias.get(m, m)
@@ -128,6 +131,10 @@ def main() -> int:
         errors.append("could not find the Step 4-OC table in SKILL.md")
     want = policy["step4_oc_rows"]
     seen = set()
+
+    def rows_naming(model):
+        """Step 4-OC rows whose `#1`/`#2` cells name `model` as a whole name."""
+        return [r for r in rows if len(r) >= 3 and (mentions(model, r[1]) or mentions(model, r[2]))]
     for r in rows:
         if len(r) < 4:
             continue
@@ -156,7 +163,6 @@ def main() -> int:
             if b != w["r_eq_3"]:
                 errors.append("row %r R=3: SKILL.md %s, policy %s" % (t, b, w["r_eq_3"]))
         if "NC1" in evid:
-            m = re.search(r"NC1:\s*\**([^*·]+?)\s*·\s*([^*—]+?)\**\s*[—-]", evid)
             nc_tag = key_tags[0]
             nc_key = nc_tag + "+NC1"
             if nc_key in want:
@@ -174,9 +180,8 @@ def main() -> int:
     # Rule GM1 -- Gemini 4 Argon is an NC1-only overlay: it is in NO Step 4-OC table cell, the GM1 rule
     # names every policy gm1 row, and the rule requires NC1.
     gm1 = list(policy.get("gm1_rows", []))
-    for r in rows:
-        if len(r) >= 3 and (mentions("Gemini 4 Argon", r[1]) or mentions("Gemini 4 Argon", r[2])):
-            errors.append("GM1: Gemini 4 Argon sits in a Step 4-OC pair (row %r); it is an NC1-only overlay" % r[0][:40])
+    for r in rows_naming("Gemini 4 Argon"):
+        errors.append("GM1: Gemini 4 Argon sits in a Step 4-OC pair (row %r); it is an NC1-only overlay" % r[0][:40])
     gm1_text = re.search(r"<!-- rule:GM1 -->\n(.*?)\n<!-- /rule:GM1 -->", skill, re.S)
     if not gm1_text:
         errors.append("GM1: rule block missing from SKILL.md")
@@ -188,17 +193,13 @@ def main() -> int:
             errors.append("GM1: the rule text must say Gemini 4 Argon exists only under NC1")
 
     # no emitted row may name a dominated or outside model
-    oc_text = skill[skill.find("### OpenCode Go — Step 4-OC"):skill.find("#### OpenCode Go — effort")]
-    table_only = "\n".join(ln for ln in oc_text.split("\n") if ln.strip().startswith("|"))
     for m, meta in pool.items():
         if meta["status"] == "dominated":
-            for r in rows:
-                if len(r) >= 3 and (mentions(m, r[1]) or mentions(m, r[2])):
-                    errors.append("Step 4-OC emits dominated model %s in row %r" % (m, r[0][:40]))
+            for r in rows_naming(m):
+                errors.append("Step 4-OC emits dominated model %s in row %r" % (m, r[0][:40]))
     for o in outside:
-        for r in rows:
-            if len(r) >= 3 and (mentions(o, r[1]) or mentions(o, r[2])):
-                errors.append("Step 4-OC emits %s, which is outside the 19-model pool" % o)
+        for r in rows_naming(o):
+            errors.append("Step 4-OC emits %s, which is outside the 19-model pool" % o)
     for m, meta in pool.items():
         if meta["status"] == "premium":
             for r in rows:
@@ -206,19 +207,15 @@ def main() -> int:
                     errors.append("Step 4-OC emits premium model %s in row %r (Rule BUD1)" % (m, r[0][:40]))
 
     # 2b -- every Step 4-OC pair must sit near the top of the independent-evidence consensus
-    sys.path.insert(0, str(Path(__file__).resolve().parent))
-    import derive_opencode_rows as dr
-    ev = json.loads((ROOT / "skill" / "opencode-evidence.json").read_text(encoding="utf-8"))
+    free_alias = {"MiniMax M3.1 Flash Free": "MiniMax M3.1 Flash"}
     for tag in dr.TAGS:
-        w = want.get(tag) or want.get({"agentic-code": "agentic-code"}.get(tag, tag))
+        w = want.get(tag)
         if not w:
             continue
-        rank = [r[0] for r in dr.consensus(ev, tag, dr.ROUTABLE)]   # routable models, best first
-        grank = [r[0] for r in dr.consensus(ev, tag, dr.ROUTABLE + dr.GEMINI)]
-        alias = {"MiniMax M3.1 Flash Free": "MiniMax M3.1 Flash"}
+        rank = [r[0] for r in dr.consensus(evidence, tag, dr.ROUTABLE)]   # routable models, best first
         for col in ("r_le_2", "r_eq_3"):
             for m in w[col]:
-                m = alias.get(m, m)
+                m = free_alias.get(m, m)
                 if m not in rank:
                     errors.append("consensus: %s has no independent evidence for %r but row %r emits it" % (m, tag, tag))
                 elif rank.index(m) > 3:

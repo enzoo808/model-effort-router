@@ -12,7 +12,7 @@
 [![Policy](https://img.shields.io/badge/politika-iteration--25-8b949e?style=flat-square)](CHANGELOG.md)
 [![Regression evals](https://img.shields.io/badge/regresyon_eval-36-8b949e?style=flat-square)](#-doğrulama)
 
-**[Hızlı başlangıç](#-hızlı-başlangıç)** · **[Kurulum](#-kurulum)** · **[Cevabı oku](#-cevabı-okumak)** · **[Nasıl karar verir](#-nasıl-karar-verir)** · **[Örnekler](#-örnekler)** · **[Kanıt](#-hisle-değil-kanıtla)** · **[Değişiklik günlüğü](CHANGELOG.md)** · **[🇬🇧 English](README.md)**
+**[Hızlı başlangıç](#-hızlı-başlangıç)** · **[Kurulum](#-kurulum)** · **[Cevabı oku](#-cevabı-okumak)** · **[Nasıl karar verir](#-nasıl-karar-verir)** · **[Örnekler](#-kullanım-örnekleri)** · **[Kanıt](#-hisle-değil-kanıtla)** · **[Değişiklik günlüğü](CHANGELOG.md)** · **[🇬🇧 English](README.md)**
 
 </div>
 
@@ -50,8 +50,10 @@ mkdir -p ~/.claude/skills/model-secici && curl -fsSL https://github.com/enzoo808
 **Windows (PowerShell):**
 
 ```powershell
-git clone https://github.com/enzoo808/model-effort-router.git; cd model-effort-router; .\install.ps1
+git clone https://github.com/enzoo808/model-effort-router.git; cd model-effort-router; powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
+
+`-ExecutionPolicy Bypass` yalnızca bu tek çalıştırma için geçerlidir; Windows'un varsayılan politikası yerel betikleri çoğunlukla engeller.
 
 Sonra **yeni** bir Claude Code oturumu aç ve sor:
 
@@ -155,7 +157,7 @@ cd model-effort-router
 ```
 
 ```powershell
-.\install.ps1               # Windows (PowerShell)
+powershell -ExecutionPolicy Bypass -File .\install.ps1   # Windows (PowerShell)
 ```
 
 İki betik de `skill/` klasörünü `~/.claude/skills/model-secici/` içine kopyalar (Windows: `%USERPROFILE%\.claude\skills\model-secici\`). Ya da elle:
@@ -169,7 +171,7 @@ cp skill/*.md skill/*.json ~/.claude/skills/model-secici/
 
 ```bash
 ls ~/.claude/skills/model-secici
-# SKILL.md  benchmark_frontiers.json  benchmarks.json  opencode-benchmarks.md  opencode-evidence.json  reference.md
+# SKILL.md  opencode-benchmarks.md  opencode-evidence.json  reference.md
 ```
 
 Şimdi **yeni bir Claude Code oturumu başlat** (skill'ler açılışta yüklenir) ve `/model-secici <görevin>` yaz.
@@ -217,16 +219,27 @@ OpenCode tarafında skill mekanizması yok: router yalnızca bir `OpenCode:` sat
 2. OpenCode'da modeli **`opencode-go/<model-id>`** olarak seç.
 3. Router'ın yazdığı efor görünene kadar **`variant_cycle`** ile eforu değiştir.
    MiMo-V2.6'nın varyantı yoktur (düşünme hep açık), bu yüzden router `default` yazar ve çevrilecek bir şey olmaz.
-4. `#1` yetersiz kalırsa `#2`'yi dene.
+4. `#1` hata verir ya da aşırı yüklüyse `#2`'yi kullan. Bir modelin aylık penceresi bittiyse ya da sonucu yetersiz kaldıysa router'a söyle ([Prompt nasıl yazılır](#prompt-nasıl-yazılır)): zincirdeki sıradaki modeli söyler ya da yükseltir.
 
 </details>
 
 ### Güncelle · kaldır
 
+**Güncelle** — kullandığın yolu tekrarla. Tek satırla mı kurdun? Hızlı başlangıçtaki komutu yeniden çalıştır. Klondan mı kurdun?
+
 ```bash
-cd model-effort-router && git pull && ./install.sh      # güncelle (Windows'ta .\install.ps1'i yeniden çalıştır)
-rm -rf ~/.claude/skills/model-secici                    # kaldır (Windows: %USERPROFILE%\.claude\skills\model-secici klasörünü sil)
+cd model-effort-router && git pull && ./install.sh
 ```
+
+Windows'ta `git pull` yap, sonra `powershell -ExecutionPolicy Bypass -File .\install.ps1` komutunu yeniden çalıştır.
+
+**Kaldır:**
+
+```bash
+rm -rf ~/.claude/skills/model-secici
+```
+
+Windows'ta `%USERPROFILE%\.claude\skills\model-secici` klasörünü sil.
 
 ### Sorun giderme
 
@@ -234,9 +247,9 @@ rm -rf ~/.claude/skills/model-secici                    # kaldır (Windows: %USE
 |---|---|
 | `/model-secici` listede yok | **Yeni** bir oturum başlat — skill'ler açılışta yüklenir. Sonra `~/.claude/skills/model-secici/SKILL.md` dosyasının var olduğunu kontrol et (`.../model-secici/skill/SKILL.md` değil). |
 | Tek satır hiçbir şey çıkarmıyor | `curl` ve `tar` `PATH`'inde olmalı; Windows'ta PowerShell satırını ya da zip'i kullan. |
-| PowerShell `install.ps1`'i çalıştırmıyor | `powershell -ExecutionPolicy Bypass -File .\install.ps1` |
+| `install.ps1` \"running scripts is disabled\" hatası veriyor | Bypass bayrağı olmadan çalıştırmışsın: `powershell -ExecutionPolicy Bypass -File .\install.ps1` |
 | claude.ai yüklemeyi "invalid characters" diye reddediyor | Hazır [`dist/model-secici.zip`](dist/model-secici.zip)'i kullan. Windows'un kendi araçlarıyla yapılan zip'ler ters bölü kullanır; `build-claude-ai-zip.ps1` düz bölü yazar. |
-| Yalnızca bir `Clarify:` satırı yazıyor | Tasarım gereği: prompt belirsizdi. Soruyu cevapla ve yeniden sor — bkz. [iyi prompt yazmak](#iyi-prompt-yazmak). |
+| Yalnızca bir `Clarify:` satırı yazıyor | Tasarım gereği: prompt belirsizdi. Soruyu cevapla ve yeniden sor — bkz. [prompt nasıl yazılır](#prompt-nasıl-yazılır). |
 | Düz bir soruda tetiklenmiyor | Açık `/model-secici …` komutunu kullan. |
 
 <br>
@@ -246,14 +259,14 @@ rm -rf ~/.claude/skills/model-secici                    # kaldır (Windows: %USE
 ```text
 Claude:   Sonnet 5.5 · effort: high
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
-Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (71.7 vs 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task.
+Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (DeepSeek 71.7 vs Sonnet 5.5 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task; Claude's lead starts at D=3.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
 ```
 
 | Satır | Ne söyler |
 |---|---|
 | `Claude:` | Claude'u seçersen kullanacağın tek Claude modeli ve eforu. |
-| `OpenCode:` | Sıralı **iki** Go modeli — `#1` ile başla, olmazsa `#2` — her biri OpenCode'un o model için gerçekten sunduğu eforla (`low` / `high` / `max`, `xhigh` ya da `default`). |
+| `OpenCode:` | Sıralı **iki** Go modeli — `#1` seçimdir, `#2` yedek adaydır (`#1` hata verir ya da aşırı yüklüyse onu kullan) — her biri OpenCode'un o model için gerçekten sunduğu eforla (`low` / `high` / `max`, `xhigh` ya da `default`). |
 | `✅ RECOMMENDED AI` | Kullanılacak ekosistem. **Claude ciddi fark yaratmıyorsa OpenCode.** Tam olarak bir rozet. |
 | `Evidence:` | Rozeti hangi ölçümün belirlediğini söyleyen tek cümle. `low-confidence`, kanıtın zayıf olduğu anlamına gelir. |
 | *Ek satırlar* | Yalnızca önemliyse eklenir: yüksek riskte insan inceleme notu, DeepSeek'in yoğun saat fiyatı, `/fast` uygunluğu, `Ultracode:` ipucu, veri-politikası uyarıları. |
@@ -261,7 +274,9 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 
 *(Skill çıktısı İngilizcedir; promptu hangi dilde yazarsan yaz yönlendirir.)*
 
-### İyi prompt yazmak
+> **Claude satırı `· ultracode` ile bitiyorsa** router bir `Ultracode:` satırı ekler. Sonra Claude Code'da çalıştıracağın promptun başına `ultracode:` yaz; böylece *yalnızca o görev* iş akışı olarak çalışır. `/effort ultracode` ise oturum boyunca açık kalır ve limitlerini daha hızlı tüketir.
+
+### Prompt nasıl yazılır
 
 Router, sözlerinden dört şeyi puanlar: Risk (**R**), Derinlik (**D**), Genişlik (**W**) ve Bağlam (**C**). Bu yüzden şunları söyle:
 
@@ -274,8 +289,8 @@ Cevabı değiştiren sözler:
 | Söyle | Etki |
 |---|---|
 | *"bu iş gizli değil"* | İstemleri saklayan ya da eğitimde kullanan GPT 6 Luna, Muse Spark 1.3 ve Gemini 4 Argon'u açar. Üslupla asla varsayılmaz. |
-| *"önceki bir OpenCode denemesi yetersiz kaldı"* | `#2` olarak premium bir OpenCode modeli ekler ve rozeti Claude'a geçirir. |
-| başa `ultracode:` | Ultracode'u oturum boyunca açık bırakmak yerine *yalnızca bu görevi* bir Claude Code iş akışı olarak çalıştırır. |
+| *"önceki bir OpenCode denemesi yetersiz kaldı"* | Yükseltir: `#2` premium bir OpenCode modeli olur. `D ≥ 2`'de görevin ana yeteneğinin bir Claude satırı varsa rozet Claude'a geçer. |
+| *"DeepSeek pencerem doldu"* (herhangi bir model) | `Evidence:` satırı o modelin zincirindeki sıradaki modeli söyler. |
 
 <br>
 
@@ -313,7 +328,7 @@ Her kapı ve kural dahil adım adım ayrıntı: **[docs/how-it-works.md](docs/ho
 
 <br>
 
-## 🧪 Örnekler
+## 🧪 Kullanım örnekleri
 
 | Görev | Claude | OpenCode `#1` · `#2` | Önerilen |
 |---|---|---|---|
@@ -350,7 +365,7 @@ Daha fazla örnek (20 satırlık tam tablo) için [İngilizce README](README.md#
 | **Ücretsiz** | MiniMax M3.1 Flash Free | Sıfır saklama, Go limiti yok, sınırlı süre |
 | **Yalnızca gizli olmayan iş** | GPT 6 Luna · Muse Spark 1.3 · Gemini 4 Argon | İşin gizli olmadığını söylersen sunulur — bazıları istemlerle eğitilir |
 | **Premium** — yalnızca yükseltme | Qwen3.8 Max · GLM-5.3 · Kimi K3 · Grok 4.7 | Limit başına ayda 10–33 görev; yönlendirilen çiftte asla yok, yalnızca bildirilen bir yetersizlikten sonra `#2` |
-| **Baskın olunan** | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 | Puanlanır ve izlenir; hiçbir satır bunları üretmez |
+| **Baskın olunan** | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 · Gemini 3.8 Flash | Puanlanır ve izlenir; hiçbir satır bunları üretmez |
 
 > Efor, OpenCode'un o model için *gerçekten sunduğu* varyanttır (`low` / `high` / `max`, `xhigh` ya da `default`); asla reddedeceği bir değer yazılmaz.
 
@@ -362,7 +377,7 @@ Daha fazla örnek (20 satırlık tam tablo) için [İngilizce README](README.md#
 
 - **Benchmark'lar yeteneğe bağlanır.** Saf matematik promptunda Terminal-Bench'in ağırlığı sıfırdır.
 - **Önce karşılaştırılabilirlik.** İki sayı karşılaştırılmadan önce benchmark, sürüm, harness, araç erişimi, iskele *ve* efor eşleşmelidir.
-- **Yalnızca bağımsız kaynaklar.** Artificial Analysis, DeepSWE v1.1 (hata payıyla), Agent Arena, Vals, FrontierSWE v2, ARC-AGI, Gray Swan — [`skill/opencode-evidence.json`](skill/opencode-evidence.json) içinde derlenir. Bir sağlayıcının aynı rakamı yeniden anması iki değil, bir sayıdır.
+- **Bağımsız kaynaklar yönü belirler.** Artificial Analysis, DeepSWE v1.1 (hata payıyla), Agent Arena, Vals, FrontierSWE v2, ARC-AGI, Gray Swan — [`skill/opencode-evidence.json`](skill/opencode-evidence.json) içinde derlenir. Bir sağlayıcının aynı rakamı yeniden anması iki değil, bir sayıdır. Sağlayıcının bildirdiği efor eğrileri yalnızca bir efor basamağı seçmek için kullanılır, asla bir yön belirlemek için değil.
 - **Yön için uyumlu iki bağımsız ölçüm gerekir.** Tek bir ölçüm yalnızca `R = 3`'te karar verir.
 - Efor basamakları arasında **enterpolasyon yok**; `n/p` (yayımlanmamış) bir cevaptır.
 - **Toplam endeks hiçbir zaman yön belirlemez** — yalnızca verimlilik eşitlik bozmasına izin verir.
@@ -380,10 +395,12 @@ python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # altın
 python scripts/check_policy_sync.py      # SKILL.md kural blokları == evals/policy/routing_policy.json
 python scripts/check_opencode_pool.py    # havuz, Adım 4-OC satırları, rozet tablosu, model başına varyantlar
 python scripts/check_examples.py         # her çalışılmış örnek kendi altın çıktısıyla uyuşur
-python scripts/derive_opencode_rows.py   # yetenek başına bağımsız kanıt uzlaşısını yazdır
+python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, iterasyon ve katman tabloları veriyle uyuşur
 ```
 
-**Durum (3 Kasım 2026, iteration-25):** yukarıdaki dört kontrolün hepsi geçiyor (36/36 not verici öz-testi, 46 kural bloğu senkron). Taze ajanlarla **36 promptun tamamında soğuk koşu 34/36** aldı; bir kaçırma yeniden koşuda 3/3 geçti, diğeri (`r1`, taranmış fişler) gerçekten kararsız bir prompt olup bilerek açık bırakıldı. Ayrıntı: [`evals/README.md`](evals/README.md).
+Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
+
+**Durum (3 Kasım 2026, iteration-25):** yukarıdaki kontrollerin hepsi geçiyor. Taze ajanlarla **36 promptun tamamında soğuk koşu 34/36** aldı; bir kaçırma yeniden koşuda 3/3 geçti, diğeri (`r1`, taranmış fişler) gerçekten kararsız bir prompt olup bilerek açık bırakıldı. Ayrıntı: [`evals/README.md`](evals/README.md).
 
 ### Bilinen sınırlar
 
@@ -402,13 +419,14 @@ skill/                       Skill'in kendisi — yönlendirirken yalnızca SKIL
   opencode-benchmarks.md     OpenCode kanıtı, model başına, kaynaklarıyla
   opencode-evidence.json     Kontrollerin türetildiği makine-okunur kanıt
   reference.md               Claude fiyat, limit, benchmark notları (denetim verisi)
-evals/                       Regresyon seti, not verici, politika aynası, tam koşu geçmişi
+evals/                       Regresyon seti, not verici, politika aynası, son koşu geçmişi
 scripts/                     Tutarlılık kontrolleri ve kanıt araçları
 docs/                        Nasıl çalışır, görseller, lansman notları
   README.legacy.tr.md        Eski ayrıntılı Türkçe rehber (Codex dönemi geçmişi dahil)
 dist/model-secici.zip        claude.ai'a yüklemeye hazır skill
 claude-ai/                   Code execution kapalıyken düz metin yedeği
 install.sh · install.ps1     Claude Code için tek komutla kurulum
+.github/workflows/          CI: yukarıdaki kontroller her push ve pull request'te
 CHANGELOG.md                 Her politika iterasyonu, en yeni en üstte
 ```
 

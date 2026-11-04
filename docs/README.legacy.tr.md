@@ -7,8 +7,12 @@
 > **OpenCode Go (USD 10/ay)** ile sıfırdan yeniden kuruldu. Bu dosyanın **en üstündeki
 > bölüm güncel**; "Doğrulama" tablosu dahil geri kalanı **Codex dönemi
 > (iteration-20 ve öncesi) geçmişidir** ve git etiketi `iteration-20-codex` ile
-> `archive/iteration-20-codex/` altında saklanır. Skill gövdesi (`skill/SKILL.md`)
+> `archive/iteration-20-codex/` altında saklanırdı. Skill gövdesi (`skill/SKILL.md`)
 > İngilizcedir.
+> **Temizlik notu:** bu belgede anılan `archive/`, `skill/benchmarks.json`,
+> `skill/benchmark_frontiers.json` ve `scripts/compile_benchmark_frontiers.py` /
+> `validate_benchmarks.py` / `test_frontier_compiler.py` / `ablate_evidence.py` ağaçtan
+> kaldırıldı; son halleri `7c24c81` commit'inde (`git show 7c24c81:<yol>`).
 
 Bir promptu verdiğinde **Claude** (Haiku 5.5 / Sonnet 5.5 / **Opus 5.5** / Opus 4.8 /
 Fable 5.1 / Mythos 5.1) için model + efor önerir; **OpenCode Go** için ise havuzdaki
@@ -636,7 +640,7 @@ Pratikte:
   WebSearch'ün kullanılamadığı ve bu yüzden Terminal-Bench / LiveBench / OSWorld /
   SWE-bench **sahiplerinin** leaderboard'larının okunamadığı dahil.
 
-Bütün kayıtlar **[`skill/benchmarks.json`](../skill/benchmarks.json)** içinde — 61
+Bütün kayıtlar **`skill/benchmarks.json`** (ağaçtan kaldırıldı, bkz. üstteki temizlik notu) içinde — 61
 satır, yayımlanmamış her alan `null`.
 
 ---
