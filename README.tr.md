@@ -4,6 +4,7 @@
 
 <br>
 
+[![checks](https://github.com/enzoo808/model-effort-router/actions/workflows/checks.yml/badge.svg)](https://github.com/enzoo808/model-effort-router/actions/workflows/checks.yml)
 [![License: MIT](https://img.shields.io/badge/lisans-MIT-3fb950?style=flat-square)](LICENSE)
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-kurulum)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-kurulum)
