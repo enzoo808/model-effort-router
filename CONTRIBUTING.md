@@ -128,7 +128,7 @@ query).
 The skill body and README are English. `README.tr.md`, `claude-ai/instructions.tr.md`,
 `evals/history.tr.md` and the `tests_rule` notes in `evals/routing/evals.json` are
 Turkish (the project's original working language). When you change a rule, keep
-`README.tr.md` and `claude-ai/instructions.tr.md` in sync — or flag in the PR that
+`README.tr.md` and `claude-ai/instructions.tr.md` in sync (`docs/README.legacy.tr.md` is a frozen history file) — or flag in the PR that
 they lag, so a Turkish speaker can follow up.
 
 ## Style

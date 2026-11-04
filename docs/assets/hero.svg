@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-labelledby="t d">
+  <title id="t">model-effort-router</title>
+  <desc id="d">One task goes in, the router picks a model and effort level for Claude and for OpenCode Go, and marks one of the two as recommended.</desc>
+  <defs>
+    <radialGradient id="g1" cx="85%" cy="-10%" r="65%">
+      <stop offset="0" stop-color="#388bfd" stop-opacity=".30"/>
+      <stop offset="1" stop-color="#388bfd" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g2" cx="0%" cy="115%" r="60%">
+      <stop offset="0" stop-color="#a371f7" stop-opacity=".26"/>
+      <stop offset="1" stop-color="#a371f7" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="line" x1="0" x2="1">
+      <stop offset="0" stop-color="#58a6ff"/>
+      <stop offset="1" stop-color="#3fb950"/>
+    </linearGradient>
+    <linearGradient id="lineC" x1="0" x2="1">
+      <stop offset="0" stop-color="#58a6ff"/>
+      <stop offset="1" stop-color="#d2a8ff"/>
+    </linearGradient>
+    <style>
+      text { font-family: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace; }
+      .flow { stroke-dasharray: 6 8; animation: dash 1.4s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @media (prefers-reduced-motion: reduce) { .flow { animation: none; } }
+    </style>
+  </defs>
+
+  <rect width="1280" height="360" rx="18" fill="#0d1117"/>
+  <rect width="1280" height="360" rx="18" fill="url(#g1)"/>
+  <rect width="1280" height="360" rx="18" fill="url(#g2)"/>
+  <rect x=".5" y=".5" width="1279" height="359" rx="17.5" fill="none" stroke="#30363d"/>
+
+  <!-- wordmark -->
+  <text x="72" y="92" font-size="17" letter-spacing="3" fill="#7d8590">CLAUDE CODE  ·  CLAUDE.AI  ·  OPENCODE GO</text>
+  <text x="72" y="160" font-size="54" font-weight="700" letter-spacing="-1.5" fill="#f0f6fc">model<tspan fill="#58a6ff">-</tspan>effort<tspan fill="#58a6ff">-</tspan>router</text>
+  <text x="72" y="208" font-size="19" fill="#adbac7">The <tspan font-weight="700" fill="#f0f6fc">lowest-quota model + effort</tspan> that still clears the bar —</text>
+  <text x="72" y="238" font-size="19" fill="#adbac7">for Claude <tspan font-weight="700" fill="#f0f6fc">and</tspan> OpenCode Go. It routes. It doesn't run.</text>
+
+  <!-- chips -->
+  <g font-size="15">
+    <rect x="72" y="285" width="150" height="34" rx="17" fill="#161b22" stroke="#30363d"/>
+    <text x="147" y="307" text-anchor="middle" fill="#8b949e">19 rated models</text>
+    <rect x="234" y="285" width="176" height="34" rx="17" fill="#161b22" stroke="#30363d"/>
+    <text x="322" y="307" text-anchor="middle" fill="#8b949e">36 regression evals</text>
+    <rect x="422" y="285" width="170" height="34" rx="17" fill="#161b22" stroke="#30363d"/>
+    <text x="507" y="307" text-anchor="middle" fill="#8b949e">evidence-bound</text>
+  </g>
+
+  <!-- router glyph -->
+  <g transform="translate(792 18) scale(.93)">
+    <!-- input -->
+    <rect x="0" y="150" width="108" height="56" rx="10" fill="#161b22" stroke="#58a6ff"/>
+    <text x="54" y="184" font-size="19" text-anchor="middle" fill="#e6edf3">your task</text>
+    <path class="flow" d="M108 178 H176" stroke="#58a6ff" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- router node -->
+    <circle cx="214" cy="178" r="38" fill="#0d1117" stroke="url(#line)" stroke-width="3"/>
+    <text x="214" y="172" font-size="13" text-anchor="middle" fill="#8b949e">R · D</text>
+    <text x="214" y="190" font-size="13" text-anchor="middle" fill="#8b949e">W · C</text>
+    <!-- branches -->
+    <path class="flow" d="M250 166 C 292 140, 300 96, 338 96" stroke="url(#lineC)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path class="flow" d="M250 190 C 292 216, 300 260, 338 260" stroke="#3fb950" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- claude -->
+    <rect x="338" y="62" width="150" height="68" rx="12" fill="#161b22" stroke="#d2a8ff"/>
+    <text x="413" y="90" font-size="17" font-weight="700" text-anchor="middle" fill="#d2a8ff">Claude</text>
+    <text x="413" y="113" font-size="14" text-anchor="middle" fill="#8b949e">model · effort</text>
+    <!-- opencode -->
+    <rect x="338" y="226" width="150" height="68" rx="12" fill="#161b22" stroke="#3fb950"/>
+    <text x="413" y="254" font-size="17" font-weight="700" text-anchor="middle" fill="#3fb950">OpenCode</text>
+    <text x="413" y="277" font-size="14" text-anchor="middle" fill="#8b949e">#1 · #2 + effort</text>
+    <!-- badge -->
+    <rect x="338" y="304" width="150" height="26" rx="13" fill="#0f2d18" stroke="#2ea043"/>
+    <text x="413" y="322" font-size="13" text-anchor="middle" fill="#56d364">✓ RECOMMENDED AI</text>
+  </g>
+</svg>

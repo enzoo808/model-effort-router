@@ -61,7 +61,8 @@ by hand.
 ## 1. Routing eval (functional correctness)
 
 `routing/evals.json` — the machine-readable copy of the validation table in
-`README.tr.md`. The Turkish README stays the source of truth for the human-facing
+`docs/README.legacy.tr.md` (the old detailed Turkish README, moved there when the
+README was rewritten). It stays the source of truth for the legacy human-facing
 table; sync this file to it by hand.
 
 **How to run (after a `SKILL.md` change):**
