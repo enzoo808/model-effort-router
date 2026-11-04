@@ -1,6 +1,6 @@
 # Changelog
 
-Every routing-policy iteration, newest first. The router version is the `routing-policy-version` comment in [`skill/SKILL.md`](skill/SKILL.md); the reasoning behind each rule change is in [`evals/README.md`](evals/README.md).
+Routing-policy iterations 21 to 25 (the OpenCode Go era), newest first. Earlier iterations, including the Codex arm, are in [`evals/README.md`](evals/README.md), [`evals/history.tr.md`](evals/history.tr.md) and [`docs/README.legacy.tr.md`](docs/README.legacy.tr.md). The router version is the `routing-policy-version` comment in [`skill/SKILL.md`](skill/SKILL.md); the reasoning behind each rule change is in [`evals/README.md`](evals/README.md).
 
 ---
 

@@ -49,7 +49,8 @@ Very welcome. Requirements:
   the benchmark on `excluded_from_direction` rather than reading a ranking off
   it. SWE-bench Verified and Terminal-Bench 2.1 are both there for this reason.
 - If it's a Turkish/English README-visible fact, update `README.md` and
-  `README.tr.md`.
+  `README.tr.md`. `scripts/check_readme_facts.py` fails CI when a count, the pool
+  size, the iteration or a tier table in the docs disagrees with the data.
 
 ## 2. Routing-rule changes
 

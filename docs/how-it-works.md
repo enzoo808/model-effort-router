@@ -1,6 +1,6 @@
 # How it works
 
-The long form of the README: why the router exists, how it treats evidence, and the seven steps it runs. Only [`skill/SKILL.md`](../skill/SKILL.md) is read when routing; this page is for auditing.
+The long form of the README: why the router exists, how it treats evidence, and the steps it runs (Step 0 to Step 7). Only [`skill/SKILL.md`](../skill/SKILL.md) is read when routing; this page is for auditing.
 
 ## Why this exists
 

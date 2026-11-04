@@ -22,7 +22,7 @@
 > For **Claude** *and* your **OpenCode Go** plan — plus which of the two to use. It never runs the task. It only routes it.
 
 Most people pick a model by reflex: the biggest one, every time. That quietly burns the two things that actually run out — **Claude's 5-hour window** and **each OpenCode Go model's own monthly dollar cap**.
-`model-effort-router` is a [Claude skill](https://docs.claude.com/en/docs/claude-code/skills) that scores your task, checks it against independent benchmarks, and answers in three lines.
+`model-effort-router` is a [Claude skill](https://docs.claude.com/en/docs/claude-code/skills) that scores your task, checks it against independent benchmarks, and answers in three lines. Its output is English; it routes prompts written in any language.
 
 <div align="center">
 <img src="docs/assets/demo.svg" alt="Terminal demo: a 40-file refactor is routed to OpenCode; a production race condition moves the badge to Claude Opus 5.5 at xhigh effort" width="860">
@@ -50,8 +50,10 @@ mkdir -p ~/.claude/skills/model-secici && curl -fsSL https://github.com/enzoo808
 **Windows (PowerShell):**
 
 ```powershell
-git clone https://github.com/enzoo808/model-effort-router.git; cd model-effort-router; .\install.ps1
+git clone https://github.com/enzoo808/model-effort-router.git; cd model-effort-router; powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
+
+`-ExecutionPolicy Bypass` applies to this one run only; Windows' default policy often blocks local scripts.
 
 Then open a **new** Claude Code session and ask:
 
@@ -155,7 +157,7 @@ cd model-effort-router
 ```
 
 ```powershell
-.\install.ps1               # Windows (PowerShell)
+powershell -ExecutionPolicy Bypass -File .\install.ps1   # Windows (PowerShell)
 ```
 
 Both scripts copy `skill/` into `~/.claude/skills/model-secici/` (Windows: `%USERPROFILE%\.claude\skills\model-secici\`). Or do it by hand:
@@ -217,16 +219,27 @@ OpenCode has no skill mechanism: the router just prints an `OpenCode:` line and 
 2. In OpenCode, select the model as **`opencode-go/<model-id>`**.
 3. Set the effort with **`variant_cycle`** until it shows the effort the router named.
    MiMo-V2.6 exposes no variants (thinking is always on), so the router writes `default` and there is nothing to cycle.
-4. Only if `#1` falls short, try `#2`.
+4. If `#1` errors or is overloaded, use `#2`. If a model's monthly window is spent, or its result falls short, tell the router (see [Writing a good prompt](#writing-a-good-prompt)): it names the next model in the chain or escalates.
 
 </details>
 
 ### Update · uninstall
 
+**Update** — repeat the route you used. Installed with the one-liner? Run the Quick start command again. Installed from a clone?
+
 ```bash
-cd model-effort-router && git pull && ./install.sh      # update (re-run .\install.ps1 on Windows)
-rm -rf ~/.claude/skills/model-secici                    # uninstall (Windows: delete %USERPROFILE%\.claude\skills\model-secici)
+cd model-effort-router && git pull && ./install.sh
 ```
+
+On Windows, `git pull` and then run `powershell -ExecutionPolicy Bypass -File .\install.ps1` again.
+
+**Uninstall:**
+
+```bash
+rm -rf ~/.claude/skills/model-secici
+```
+
+On Windows, delete `%USERPROFILE%\.claude\skills\model-secici`.
 
 ### Troubleshooting
 
@@ -234,7 +247,7 @@ rm -rf ~/.claude/skills/model-secici                    # uninstall (Windows: de
 |---|---|
 | `/model-secici` isn't listed | Start a **new** session — skills load at start-up. Then check that `~/.claude/skills/model-secici/SKILL.md` exists (not `.../model-secici/skill/SKILL.md`). |
 | The one-liner extracts nothing | `curl` and `tar` must be on your `PATH`; on Windows use the PowerShell line or the zip. |
-| PowerShell refuses to run `install.ps1` | `powershell -ExecutionPolicy Bypass -File .\install.ps1` |
+| `install.ps1` fails with \"running scripts is disabled\" | You ran it without the bypass flag: `powershell -ExecutionPolicy Bypass -File .\install.ps1` |
 | claude.ai rejects the upload as "invalid characters" | Use the prebuilt [`dist/model-secici.zip`](dist/model-secici.zip). Zips made with Windows' own tools use backslashes; `build-claude-ai-zip.ps1` writes forward slashes. |
 | It only prints a `Clarify:` line | Working as designed: the prompt was ambiguous. Answer the question and ask again — see [writing a good prompt](#writing-a-good-prompt). |
 | It doesn't fire on a plain question | Use the explicit `/model-secici …` command. |
@@ -246,18 +259,20 @@ rm -rf ~/.claude/skills/model-secici                    # uninstall (Windows: de
 ```text
 Claude:   Sonnet 5.5 · effort: high
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
-Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (71.7 vs 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task.
+Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (DeepSeek 71.7 vs Sonnet 5.5 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task; Claude's lead starts at D=3.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
 ```
 
 | Line | What it tells you |
 |---|---|
 | `Claude:` | The one Claude model and effort to use if you pick Claude. |
-| `OpenCode:` | **Two** Go models in order — start with `#1`, fall back to `#2` — each with the effort OpenCode actually offers for it (`low` / `high` / `max`, `xhigh`, or `default`). |
+| `OpenCode:` | **Two** Go models in order — `#1` is the pick, `#2` the runner-up (use it if `#1` errors or is overloaded) — each with the effort OpenCode actually offers for it (`low` / `high` / `max`, `xhigh`, or `default`). |
 | `✅ RECOMMENDED AI` | The ecosystem to use. **OpenCode unless Claude makes a serious difference.** Exactly one badge. |
 | `Evidence:` | One sentence naming the measurement that decided the badge. `low-confidence` means the evidence is thin. |
 | *Extra lines* | Added only when they matter: a human-review note at high risk, DeepSeek's peak-hours pricing, `/fast` availability, an `Ultracode:` hint, data-policy warnings. |
 | `Clarify:` | Instead of everything above, when the prompt is too ambiguous to route. |
+
+> **If the Claude line ends in `· ultracode`**, the router adds an `Ultracode:` line. Start the prompt you then run in Claude Code with `ultracode:` to run *only that task* as a workflow; `/effort ultracode` would keep it on for the whole session and spend your limits faster.
 
 ### Writing a good prompt
 
@@ -272,8 +287,8 @@ Words that change the answer:
 | Say | Effect |
 |---|---|
 | *"this is non-confidential"* | Unlocks GPT 6 Luna, Muse Spark 1.3 and Gemini 4 Argon, which keep or train on prompts. Never assumed from tone. |
-| *"an earlier OpenCode attempt fell short"* | Adds a premium OpenCode model as `#2` and moves the badge to Claude. |
-| `ultracode:` at the start | Runs *only this task* as a Claude Code workflow instead of leaving ultracode on session-wide. |
+| *"an earlier OpenCode attempt fell short"* | Escalates: `#2` becomes a premium OpenCode model. At `D ≥ 2` the badge moves to Claude when the task's main capability has a Claude row. |
+| *"my DeepSeek window is used up"* (any model) | The `Evidence:` line names the next model in that model's chain. |
 
 <br>
 
@@ -368,7 +383,7 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 | **Free** | MiniMax M3.1 Flash Free | Zero retention, no Go cap, limited time |
 | **Non-confidential only** | GPT 6 Luna · Muse Spark 1.3 · Gemini 4 Argon | Offered only if you say the work isn't confidential — some of them train on prompts |
 | **Premium** — escalation only | Qwen3.8 Max · GLM-5.3 · Kimi K3 · Grok 4.7 | 10–33 tasks per month of cap; never in a routed pair, only as `#2` after a stated shortfall |
-| **Dominated** | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 | Rated and tracked; no row ever emits them |
+| **Dominated** | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 · Gemini 3.8 Flash | Rated and tracked; no row ever emits them |
 
 > Effort is the variant OpenCode *actually offers for that model* (`low` / `high` / `max`, `xhigh`, or `default`), never a value it would reject.
 
@@ -380,7 +395,7 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 
 - **Benchmarks are bound to capabilities.** A pure-maths prompt gives Terminal-Bench a weight of zero.
 - **Comparability first.** Benchmark, version, harness, tool access, scaffold *and* effort must match before two numbers are compared.
-- **Independent sources only.** Artificial Analysis, DeepSWE v1.1 (with error margins), Agent Arena, Vals, FrontierSWE v2, ARC-AGI, Gray Swan — compiled into [`skill/opencode-evidence.json`](skill/opencode-evidence.json). One vendor re-citing the same figure is one number, not two.
+- **Independent sources set the direction.** Artificial Analysis, DeepSWE v1.1 (with error margins), Agent Arena, Vals, FrontierSWE v2, ARC-AGI, Gray Swan — compiled into [`skill/opencode-evidence.json`](skill/opencode-evidence.json). One vendor re-citing the same figure is one number, not two. Vendor-reported effort curves are used only to pick an effort rung, never a direction.
 - **A direction needs two independent measurements that agree.** A single one decides only at `R = 3`.
 - **No interpolation** between effort rungs, and `n/p` (not published) is an answer.
 - **The aggregate index never sets a direction** — it only licenses the efficiency tie-break.
@@ -398,10 +413,14 @@ python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # golden
 python scripts/check_policy_sync.py      # SKILL.md rule blocks == evals/policy/routing_policy.json
 python scripts/check_opencode_pool.py    # pool, Step 4-OC rows, badge table, per-model variants, consensus top-4
 python scripts/check_examples.py         # every worked example agrees with its golden
-python scripts/derive_opencode_rows.py   # print the independent-evidence consensus per capability
+python scripts/check_readme_facts.py     # counts, pool size, iteration and tier tables in the docs match the data
+python scripts/validate_benchmarks.py    # benchmark records and the derived frontiers file are valid and in sync
+python scripts/test_frontier_compiler.py # frontier compiler unit tests
 ```
 
-**Where it stands (3 Nov 2026, iteration-25):** all four checks above pass (36/36 grader self-test, 46 rule blocks in sync). A cold run of **all 36 prompts by fresh agents scored 34/36**; one miss re-ran 3/3, the other (`r1`, scanned receipts) is a genuinely unstable prompt that is left open on purpose. Details in [`evals/README.md`](evals/README.md).
+These seven are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
+
+**Where it stands (3 Nov 2026, iteration-25):** all of the checks above pass. A cold run of **all 36 prompts by fresh agents scored 34/36**; one miss re-ran 3/3, the other (`r1`, scanned receipts) is a genuinely unstable prompt that is left open on purpose. Details in [`evals/README.md`](evals/README.md).
 
 ### Known limits, stated plainly
 
@@ -426,6 +445,7 @@ docs/                        How it works, assets, launch notes
 dist/model-secici.zip        Ready-to-upload claude.ai skill
 claude-ai/                   Plain-text fallback when code execution is off
 install.sh · install.ps1     One-command installs for Claude Code
+.github/workflows/          CI: the seven checks above on every push and pull request
 CHANGELOG.md                 Every policy iteration, newest first
 ```
 
