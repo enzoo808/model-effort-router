@@ -1,390 +1,445 @@
-# model-effort-router
+<div align="center">
 
-**Paste a task. Get told which model and effort level to run it on — for Claude and for your OpenCode Go subscription (two models out of the 19 it rates — the Go budget tier, one free Go model and Gemini 4 Argon — in order, each with its own effort) — and which of the two to use.** OpenCode is the default; Claude is recommended where it makes a serious difference. It does *not* run the task; it routes it.
+<img src="docs/assets/hero.svg" alt="model-effort-router — the lowest-quota model and effort that still clears the bar, for Claude and OpenCode Go" width="100%">
 
-Installed as a Claude Code / claude.ai skill invoked with `/model-secici`.
+<br>
 
-```
-You:    /model-secici  Refactor the payment module across these 40 files to use the new idempotency-key API, update every caller, and make the test suite pass.
+[![checks](https://github.com/enzoo808/model-effort-router/actions/workflows/checks.yml/badge.svg)](https://github.com/enzoo808/model-effort-router/actions/workflows/checks.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-3fb950?style=flat-square)](LICENSE)
+[![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-install)
+[![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-install)
+[![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-install)
+[![Policy](https://img.shields.io/badge/policy-iteration--25-8b949e?style=flat-square)](CHANGELOG.md)
+[![Regression evals](https://img.shields.io/badge/regression_evals-36-8b949e?style=flat-square)](#-validation)
 
-model-secici:
-  Claude:   Sonnet 5.5 · effort: high
-  OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
-  Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (DeepSeek 71.7
-            vs Sonnet 5.5 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task;
-            Claude's lead starts at D=3.
-  DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
-```
+**[Quick start](#-quick-start)** · **[Install](#-install)** · **[Read the answer](#-reading-the-answer)** · **[How it works](#-how-it-decides)** · **[Examples](#-examples)** · **[Evidence](#-built-on-evidence-not-vibes)** · **[Changelog](CHANGELOG.md)** · **[🇹🇷 Türkçe](README.tr.md)**
 
-The badge is **computed, not habitual** — make the task harder and it moves to Claude:
+</div>
 
-```
-You:    /model-secici  Find the race condition that flakes in prod sometimes
+<br>
 
-model-secici:
-  Claude:   ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
-  OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
-  Evidence: D=3 reasoning half has two agreeing AA rows (HLE 61 vs 49, CritPt 32 vs 27);
-            the terminal half sets no direction, so the direction decides.
-  DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
-  ⚡ Claude /fast available (2.5x faster, 2× price).
-```
+> ### Paste a task. Get the model and effort to run it on.
+> For **Claude** *and* your **OpenCode Go** plan — plus which of the two to use. It never runs the task. It only routes it.
 
-```
-You:    /model-secici  Label these 200 customer reviews as positive/negative
+Most people pick a model by reflex: the biggest one, every time. That quietly burns the two things that actually run out — **Claude's 5-hour window** and **each OpenCode Go model's own monthly dollar cap**.
+`model-effort-router` is a [Claude skill](https://docs.claude.com/en/docs/claude-code/skills) that scores your task, checks it against independent benchmarks, and answers in three lines.
 
-model-secici:
-  Claude:   Haiku 5.5 · effort: low
-  OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
-  Evidence: Labelling is D=0 bulk work, so OpenCode runs it: the Flash tier buys hundreds of
-            such batches a month on USD 60 caps and keeps Claude's quota for harder work.
-  DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
-```
+<div align="center">
+<img src="docs/assets/demo.svg" alt="Terminal demo: a 40-file refactor is routed to OpenCode; a production race condition moves the badge to Claude Opus 5.5 at xhigh effort" width="860">
+</div>
 
-> The skill body (`skill/SKILL.md`, plus `opencode-benchmarks.md` and `reference.md`) and its output are English. It routes prompts in any language. 🇹🇷 A longer
-> Turkish walkthrough is in **[README.tr.md](README.tr.md)** (its iteration-21/22/23 sections are at the top; the rest is the Codex-era history).
+<br>
 
----
+## ⚡ Quick start
 
-## What changed in iteration-25 (3 Nov 2026): `ultracode` is a toggle, not an effort level
+<div align="center">
+<img src="docs/assets/steps.svg" alt="Step 1: install with ./install.sh. Step 2: restart Claude Code. Step 3: type /model-secici and your task." width="860">
+</div>
 
-Claude Code v2.1.284 turned Ultracode into its own switch: it **no longer forces `xhigh`** and stays on at any effort level
-(`code.claude.com/docs/en/model-config`, `.../workflows`; details and sources in `skill/reference.md` §22). Three things follow, and the router now reflects them:
+<br>
 
-- **The output is a flag, not a level.** `Claude: Sonnet 5.5 · effort: high · ultracode`. The old `effort: ultracode` told you to run `/effort ultracode`, which today leaves your session at its own default (`medium` on Sonnet 5.5) instead of `xhigh`.
-- **The level follows difficulty** (Rule UC1): `Effort ← D`, floor `high` (a 30-minute unattended run is where Sonnet 5.5 at `low`/`medium` stops to check in), ceiling `xhigh`. `max` and `ultracode` are still never paired.
-- **It is session-wide and quota-heavy.** Every substantive task becomes a workflow, so limits drain faster. An auto-added `Ultracode:` line (Step 7 rule 12) says to start the prompt with `ultracode:` to run *only this task* as a workflow, instead of leaving the toggle on.
+Pick the line for your system. Each one installs the skill into `~/.claude/skills/model-secici`:
 
-Unchanged: the trigger (over 30 minutes and `O = high` or `W = 3 ∧ D ≥ 2`, not one indivisible chain), MECH1 (OpenCode has no equivalent), and no `ultracode` on Haiku 5.5 (now a routing choice — Haiku 5.5 does list `xhigh`). Checked: policy sync, example check, benchmark validator, grader self-test (36/36), and a **fresh-agent run of all 36 prompts: 34/36** (`results/iteration-25/`). `c1` (the old `ultracode` row) missed once on the badge and passed 3/3 on re-run; `r1` (scanned receipts, unrelated to `ultracode`) splits 2/4 across runs and is left open. Two prompts were added: `c2` (D=3 × 180 services → `xhigh · ultracode`) and `c3` (five-phase migration → `high · ultracode`).
+**macOS / Linux — no clone needed:**
 
----
-
-## What changed in iteration-24 (20 Oct 2026): free models and Gemini 4 Argon
-
-Two requests: try the *free* OpenCode models where they fit, and use Gemini where it stands out (first assumed reachable with a Google key; on 26 Oct the user clarified that only Go's Gemini route works). The pool is now **19 rated models**
-(`skill/opencode-benchmarks.md` §13 has every number and source).
-
-- **Free lane (Rule FR1).** Of the 14 free models on Zen, only **MiniMax M3.1 Flash Free** has a v4.3.2 score *and* a data policy fit for confidential work (zero retention, unlimited on Go):
-  AA index 43, and on the Flash tier it leads AutomationBench-AA (73), HLE (48), CritPt (22) and SciCode (53). It now takes `#2` on `deep-reasoning` / `science` and `#1` on `doc-data-understanding`, and is gated out of
-  factual recall (hallucination rate 92.8%, the same failure as DeepSeek). The free twins of GLM-5.3-Flash and DeepSeek V4.1 Flash are the first spill-over when a paid window runs out — never a pick.
-  Nemotron 3 Ultra scores 23 (budget models 38–46) and logs your prompts; Big Pickle, LL Alpha, Exo, Beam, LongCat 2.5 Preview and Jev have no independent score or train on prompts, so they are never selected.
-  Free is "limited time": the rows that used the free model record what they revert to.
-- **Gemini slot (Rule GM1) — Go's Contributor route only (26 Oct).** The Google membership cannot be used inside OpenCode, so Gemini 4 Argon is reachable only as
-  `opencode-go/gemini-4-argon-contributor` (USD 60 cap during a 2× promo, 30 after; **Google trains on prompts**). That makes it **non-confidential work only** (NC1). Argon is the first Google model worth a slot:
-  AA index 53, the **lowest hallucination rate (15%)** and a 42 Omniscience index of anything rated here, the highest AutomationBench-AA (77.5), HLE 57, ARC-AGI-2 91.3 — but 48 s to a first token, about 3% of its cap
-  per heavy task, and behind Claude on Terminal-Bench and finished deliverables. So, under NC1 only, it is `#1` at `D = 3` or `R = 3` on `agentic-code`, `terminal-tool`, `deep-reasoning`, `research-synthesis` and
-  `workflow-automation` (and `#2` after an OpenCode shortfall). Confidential work, the default, never sees it, and `research-synthesis` at `R = 3` stays with Claude unless you say the work is non-confidential.
-  Details, including the Google-membership facts (USD 10/month Cloud credits are API-only, third-party logins are against Google's terms): `opencode-benchmarks.md` §13.4.
-- **Effort (21 Oct):** `D ≥ 2 → max` (was `D = 2 → high`) on DeepSeek V4.1 Flash, GLM-5.3-Flash and MiniMax M3.1 Flash Free — AA measured DeepSeek only at `max`, `high` had only a vendor curve, and `max` costs about 0.3% of the cap per task.
-- **Also:** DeepSeek V4.1 Flash's Go cap rose to USD 80; Go's *Contributor* route for Argon (inside the USD 10 plan) trains on prompts, so it is offered only for work you call non-confidential.
-- **Checks:** `grade_routing.py --selftest` 34/34 (30 → 34 evals: d1, g1, j1, t1, v1, z1, p1, n1, r1 moved; `w1`–`w4` new); policy sync (42 blocks), pool check (mutation-tested), examples — all green.
-  **26 Oct Go-only revision, re-run by fresh agents: the 10 affected evals pass after two fixes (`p1`: A1-OC now says any Claude cell in the badge table moves the badge; `g1`: prompt sharpened to one indivisible decision, golden `#2` corrected).** Earlier cold run (6 fresh Sonnet agents, `evals/routing/results/iteration-24/`): 33/33 routed evals pass** — two corrections first: `w2` exposed a real ambiguity (NC1 said Muse Spark "may" take `#2` on deep-reasoning/science; now it takes `#2` on `research-synthesis` only) and `r1` was an ambiguous prompt (sharpened, rule unchanged). `i1` (exploit PoC) was declined by its agent as a routing-only task and not re-run; that gate is untouched. Not done: the trigger eval. `SKILL.md` 54.7 → 60.0 KB after trimming.
-
-## What changed in iteration-23 (14 Oct 2026): budget-first OpenCode, OpenCode by default
-
-Two requests: some Go models eat their quota in a handful of tasks, and Claude should be the
-exception, not the default.
-
-- **Budget-first pool (Rule BUD1).** Each Go model has its own dollar cap, so what matters is how
-  many *real* tasks one month of that cap buys (cap ÷ Arena p50 cost per agent task):
-
-  | Tier | Models | Tasks per month of its cap |
-  |---|---|---|
-  | **Budget** (default pairs) | MiMo-V2.6-Flash 1500 · GLM-5.3-Flash 600 · DeepSeek V4.1 Flash 462 · Qwen3.8 Flash 200 · MiMo-V2.6-Pro 150 | 150–1500 |
-  | Non-confidential only | GPT 6 Luna 214 · Muse Spark 1.3 140 (trains on prompts) | — |
-  | **Premium** (escalation only) | Qwen3.8 Max 33 · GLM-5.3 23 · Kimi K3 21 · Grok 4.7 10 | 10–33 |
-
-  AA's own cost per index task gives the same split (premium 6–36 % of the cap *per task*, budget
-  0.1–1.2 %). The four premium models are **never** `#1`/`#2` of a routed pair; they appear only as
-  `#2` through Rule A1-OC, after you say an earlier OpenCode run fell short. GLM-5.3 and Kimi K3
-  left the default pairs; the pairs are rebuilt from the independent-evidence consensus **inside the
-  budget tier** (`scripts/derive_opencode_rows.py`). Non-confidential no longer re-admits Grok 4.7.
-- **OpenCode by default (Rule SM1).** Errand work and everything OpenCode can do well goes to OpenCode.
-  The badge goes to Claude only when it makes a serious difference: a hard gate or a context limit,
-  a product mechanism (`ultracode`, `opusplan`), `D = 3` coding or deep reasoning (AA Terminal-Bench 4.0
-  64 / 60 against 35 for the best budget model, FrontierSWE v2 62 against 18, HLE 61 against 49),
-  finished deliverables from `D = 2` (GDPval-AA, Briefcase and AnalystAgent agree), or `R = 3` with a Claude
-  lean. **Every `D ≤ 1` task is OpenCode — Haiku 5.5 included** — and so is `D = 2` coding: the independent
-  DeepSWE v1.1 (±7) ties DeepSeek V4.1 Flash 71.7 with Opus 5.5 72.3 and Sonnet 5.5 70.5, at USD 0.13 per agent
-  task against Opus 5.5's 1.67.
-- **What this trades away, stated plainly.** At `D = 2` the router now sends coding to OpenCode even though
-  Claude still leads AA Terminal-Bench 4.0 there; the split rests on DeepSWE (mid-difficulty tasks) being a
-  tie while the Claude lead lives on the hardest anchors. If you would rather pay Claude for `D = 2` coding, it
-  is one row of the badge table in `skill/SKILL.md` (and its mirror in `evals/policy/routing_policy.json`).
-- **Effort is unchanged.** On the Flash tier `max` at `D = 3` costs about USD 0.25–0.27 per AA task (0.4 % of a
-  USD 60 cap), so it stays cheap there; the expensive `max` runs were GLM-5.3 and Kimi K3 (USD 2 per task on a
-  USD 15 cap).
-- 30 evals (new: `z1`, an `R = 3` regulatory read); the grader now also fails any OpenCode line that names a
-  premium model unless the eval sets `allow_premium` (only the shortfall case `p1` does).
-
----
-
-## What changed in iteration-22 (8 Oct 2026): Claude Haiku 5.5
-
-Haiku 5.5 shipped on 7 Oct at **USD 0.10 / USD 0.50 per MTok** (up to 100k tokens; USD 0.50 / 2.50 above),
-1M context and — for the first time on a Haiku — **effort levels**. The router now treats it as the
-**cost pick** and says why:
-
-- **Haiku 5.5 replaces Haiku 4.5** on the Claude line (Rule H1). It takes `D=0` work and, new,
-  `D=1` *reading/transform* work — summaries, labels, rewrites, translations, answers from text you supply —
-  at `low` / `medium`. AA's same-page numbers justify the boundary: reading comprehension is a tie with
-  Sonnet 5.5 (AA-LCR 77 vs 78), while the gap is large on exactly the agentic and knowledge-work anchors
-  (Terminal-Bench 22 vs 44, AutomationBench 34 vs 59, GDPval-AA 1420 vs 1551, Omniscience 6 vs 21). Those
-  stay on Sonnet 5.5, and so does a single-fact lookup (factual recall is `research-synthesis`).
-- **It is the cheapest Claude option by a wide margin:** AA cost per task USD 0.08 at High and 0.21 at Max,
-  against Sonnet 5.5 USD 0.88 at High — about 11× cheaper for −9 index points. `xhigh`/`max` are never
-  emitted (Max burns 162k tokens a task and still sits under Sonnet 5.5 High, Rule E8).
-- **The badge moved with it — superseded in iteration-23.** In iteration-22 the `D ≤ 1` price tie-break went
-  to **Claude** when the pick was Haiku 5.5. Iteration-23's Rule SM1 sends every `D ≤ 1` task to OpenCode. What
-  stays: `latency-volume` means only an explicit **first-token** requirement — bulk work nobody waits on is a
-  price question.
-- **A Haiku shortfall escalates to Sonnet 5.5** (Rule H2), never to a higher Haiku rung.
-- **OpenCode:** Claude Haiku 5.5 is on Go too (cap USD 15, 30-day retention). It is rated as the 16th model and
-  is **dominated** there (Rule E9): mid-pack on every independent anchor, and beaten on cap pressure by
-  MiMo-V2.6-Flash / GLM-5.3-Flash at equal index and cost. Its place is the Claude line, where no dollar cap applies.
-- **Also corrected:** Sonnet 5.5 cache reads halved on 7 Oct, so AA's Sonnet 5.5 Max cost fell to USD 5.46 (from
-  7.60); Rule E1 still holds (1.6× instead of 2.2×). Agent Arena costs were refreshed. `/model haiku` resolves to
-  Haiku 5.5 on Claude Code v2.1.293+.
-- **Honest limits.** AA measured only Haiku 5.5's High and Max rungs — the `low`/`medium` rungs the router emits
-  are unmeasured, so cost claims use High as an upper bound. A fresh-agent run of the 29 evals passes (29/29 after
-  two corrections, see `evals/README.md`); the D=1 boundary of Rule H1 rests on one reading-comprehension tie (AA-LCR). Evidence: [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.md) §11 and
-  [`skill/reference.md`](skill/reference.md) §19.
-
----
-
-## What changed in iteration-21 (6 Oct 2026): the Codex arm is gone, OpenCode Go is in
-
-> Pairs and badge rows below are the iteration-21/22 versions; iteration-23 replaced the pairs (premium models
-> out, see above) and the badge table.
-
-The second arm used to be Codex/ChatGPT (Luna / Sol / Sol Ultra / Astra). The Codex
-subscription ended, so the arm was **re-derived from scratch for OpenCode Go (USD 10/month)**.
-Claude's arm is untouched. The last Codex-era policy is the git tag `iteration-20-codex`
-and `archive/iteration-20-codex/`.
-
-- **Two models, in order, each with its own effort.** The router first *selects* the two
-  best of the pool for the task (`#1`, `#2`), then picks each one's effort.
-- **The 15 main models** (+ Haiku 5.5 as the 16th, see above) — chosen from the 30 on `opencode.ai/docs/go` (the other 15 are
-  superseded, preview, free, vision-experimental or have no independent measurement):
-
-  | Role | Models |
-  |---|---|
-  | Coding (consensus of 5 independent anchors) | **DeepSeek V4.1 Flash** (DeepSWE 71.7 ±6.3, Agent Arena 4.02 at USD 0.12) · **GLM-5.3** (leads the hardest anchors: TB 4.0, FrontierSWE v2) |
-  | Reasoning / science | **MiMo-V2.6-Pro** (HLE 49, CritPt 27 — thin coding evidence) · **Kimi K3** |
-  | Factual research | **GLM-5.3** (lowest hallucination) — **never DeepSeek (96.5% hallucination rate)** |
-  | Long context / documents / images | **Kimi K3** (AA-LCR 89, MMMU-Pro 81) · Qwen3.8 Flash |
-  | Workflow / latency / bulk | **DeepSeek V4.1 Flash** (AutomationBench-AA 69, 222 tok/s) · GLM-5.3-Flash · MiMo-V2.6-Flash |
-  | Knowledge-work | MiMo-V2.6-Pro · Qwen3.8 Flash · **Grok 4.7** (non-confidential only) |
-  | Escalation | Kimi K3 (coding) · Qwen3.8 Max (knowledge-work) |
-  | Opt-in, non-confidential | Muse Spark 1.3 Contributor (AA 48, but **trains on your prompts**) · GPT 6 Luna (30-day retention) |
-  | Rated, **dominated**, never emitted | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 |
-
-- **Caps are per model.** Go gives each model its own monthly dollar cap (USD 15 for the
-  expensive ones, 30 or 60 for the cheap ones); the 5-hour window is 20% of it and the weekly
-  50%. So the router reserves the USD 15 models for `D ≥ 2`, sends `D ≤ 1` to the USD 60
-  Flash tier, and names the next model of a tier chain when a window runs out.
-- **Effort is the variant OpenCode actually offers for that model.** Researched in models.dev:
-  GLM-5.3, GLM-5.3-Flash and DeepSeek V4.1 Flash expose `low`/`high`/`max`; **MiMo-V2.6 exposes
-  none** (thinking is always on, so the router writes `default`); Kimi K3 only `max`; Grok 4.7
-  `low`…`xhigh`; Qwen3.8 `low`/`medium`/`xhigh`. `medium` and `xhigh` are *rejected* on the
-  `low`/`high`/`max` models, so they are never written. On those three models `D ≤ 1 → low`,
-  **`D = 2 → high`, `D = 3 → max`**: DeepSeek's own paper finds effort 60–80 recovers most of
-  `max`'s accuracy at under half the tokens (and `max` adds 1.6–1.8× agent tokens for marginal
-  gains), and Z.ai's Code Bench has GLM-5.3 `high` 31.4% @ ~50k tokens vs `max` 34.5% @ ~75k —
-  vendor-reported own-model curves, used to pick a rung, never a cross-ecosystem direction. AA
-  measured only `low`/`max` (GLM-5.3 34 → 45, Kimi K3 30 → 44) and DeepSeek V4.1 Flash
-  non-reasoning (25 vs 39 at `max`). `GLM-5.3 · low` is dominated by GLM-5.3-Flash (42 at a
-  quarter of the cost), so the Pro tier is never emitted low. No interpolation.
-- **Pair order follows depth (Rule PO1).** At `D ≤ 2` and `R ≤ 2` `#1` is the most cap-efficient model inside the leading consensus band; at `D = 3` or `R = 3` the leader on the hardest anchors goes first (GLM-5.3 for coding). It orders the pair only; the badge still follows BD1.
-- **Token cost kept low.** `SKILL.md` was cut from 60 KB to 44 KB (rosters, Step 5/6 prose and examples compressed; every Claude carve-out and rule block kept) and `Evidence:` is capped at one sentence of ≤ 30 words. Details live in `skill/opencode-benchmarks.md`, which is never loaded to route.
-- **Confidential by default.** Grok 4.7 and GPT 6 Luna keep prompts 30 days and Muse Spark
-  Contributor trains on them, so all three are out of the pool unless you say the work is
-  non-confidential (Rule NC1). DeepSeek's zero-retention agreement is valid through
-  31 Oct 2026 and renewed monthly — the router prints that caveat.
-- **Multi-source, not one benchmark.** A first pass used only Artificial Analysis and over-ranked
-  MiMo-V2.6-Pro. The router now rests on every independent source that publishes the pool —
-  AA (13 components), DeepSWE v1.1 (Mercor/Datacurve, with error margins), Arena (Agent / Code /
-  Text), Vals, FrontierSWE v2, ARC-AGI, Gray Swan — compiled into `skill/opencode-evidence.json`;
-  `scripts/derive_opencode_rows.py` reproduces each capability's consensus and
-  `check_opencode_pool.py` fails if a routing row leaves the top 4. Findings: **DeepSeek V4.1
-  Flash is the best coding consensus** and sits on a USD 60 cap (and is #3 by tokens on OpenCode),
-  but hallucinates (96.5%); MiMo-V2.6-Pro has almost no independent coding evidence; Kimi K3 is a
-  *contested* coder (TB 4.0 13, yet Agent Arena #1 open and Vals TB 2.1 81) with weak
-  prompt-injection resistance; GLM-5.3 leads the hardest coding anchors. Details and quirks:
-  **[`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.md) §10**.
-
-### What the badge says now (iteration-23)
-
-Claude holds the badge on: every gate OpenCode declines (offensive security, biology, computer-use);
-the product mechanisms OpenCode lacks (`ultracode`, `opusplan`); **`D = 3`** `agentic-code` /
-`terminal-tool` / `deep-reasoning` (three independent rows agree); **`knowledge-work` from `D = 2`**; and
-`R = 3` work with a Claude lean (marked low-confidence for science, research and documents). OpenCode holds it
-for every `D ≤ 1` task, `D = 2` coding and reasoning, latency, and the *contested* rows — workflow-automation
-(open models lead ITBench) and long-context (AA-LCR vs MLCR-AA disagree) — the thin ones marked low-confidence.
-
----
-
-## Why this exists
-
-The failure mode isn't picking a model that's too weak. It's **reflexively picking
-the most expensive model** and burning your quota — Claude's 5-hour window *and* a
-Go model's per-model dollar cap. Those are the protected resources.
-
-The decision principle, in one sentence:
-
-> **Select the lowest-quota model × effort combination that stays on the
-> task-specific capability frontier.** Prefer the stronger candidate when the
-> task-relevant performance difference is meaningful; prefer the more
-> quota-efficient candidate when capability sits inside a defensible equivalence
-> band.
-
-Not "always cheapest". Not "always strongest". Not "highest benchmark score wins".
-
-```
-prompt
-  → quality gate                     (Step 0)
-  → hard gates: capability/safety/availability/retention   (Step 1)
-  → task capability profile          (Step 2)
-  → R/D/W/C + scope                  (Step 3)
-  → candidate model × effort         (Step 4: Claude; Step 4-OC: two OpenCode models, then efforts)
-  → benchmark evidence · comparability · equivalence · dominance (Step 5)
-  → cross-ecosystem comparison → ✅ RECOMMENDED AI + Evidence line (Step 6)
-  → quota guards + data-policy lines (Step 7)
+```bash
+mkdir -p ~/.claude/skills/model-secici && curl -fsSL https://github.com/enzoo808/model-effort-router/archive/refs/heads/main.tar.gz \
+  | tar -xz --strip-components=2 -C ~/.claude/skills/model-secici model-effort-router-main/skill
 ```
 
-## Data honesty
+**Windows (PowerShell):**
 
-> **Evidence sets the direction and the equivalence band; the capability profile
-> decides which evidence applies; efficiency breaks the ties capability leaves
-> open. A leaderboard position on its own decides nothing.**
+```powershell
+git clone https://github.com/enzoo808/model-effort-router.git; cd model-effort-router; .\install.ps1
+```
 
-- **Benchmarks are bound to capabilities.** A pure maths prompt gives Terminal-Bench a weight of zero.
-- **Comparability is checked first.** Benchmark, version, harness, tool access, scaffold *and* effort must match.
-  Traps in the record: Z.ai's launch table (vendor-reported, Terminal-Bench 2.1 88.2 — saturated); AA's Coding Agent
-  Index is a harness × model aggregate that *contains* Terminal-Bench 4.0, so it is not a second measurement;
-  AA prices differ from Go prices (Muse Spark, DeepSeek peak/off-peak).
-- **No interpolation between effort rungs**, and `n/p` (not published) is an answer.
-- **A direction needs two independent measurements that agree (BD1);** a single one decides only at `R=3`.
-- **The aggregate index never sets a capability direction** — it only licenses the efficiency tie-break.
+Then open a **new** Claude Code session and ask:
 
-Raw evidence for the Claude side lives in `skill/benchmarks.json` / `skill/benchmark_frontiers.json`
-(Codex-era snapshot; the Claude rows are unchanged), and for OpenCode in
-`skill/opencode-benchmarks.md`. Only `SKILL.md` is read when routing.
+```text
+/model-secici  Refactor the payment module across these 40 files to the new idempotency-key API and make the tests pass
+```
 
----
+That's it. Prefer a different route (claude.ai, a single project, OpenCode only)? See **[Install](#-install)** below. Something not working? See **[Troubleshooting](#troubleshooting)**.
 
-## Install
+<br>
 
-It's a [Claude skill](https://docs.claude.com/en/docs/claude-code/skills) — a
-`model-secici/` folder. Only `SKILL.md` is read when routing; the rest are there
-for auditing a rule.
+## ✨ What you get
+
+<table>
+<tr>
+<td width="33%" valign="top">
+
+### 🔀 Two ecosystems, one answer
+A **Claude** pick, **two OpenCode models** in order (`#1`, `#2`) — each with *its own* effort — and **one** ✅ recommendation.
+
+</td>
+<td width="33%" valign="top">
+
+### 🧮 A badge that's computed
+Cheap and mid-difficulty work goes to OpenCode. The badge moves to Claude only where Claude makes a *serious* difference — and says why.
+
+</td>
+<td width="33%" valign="top">
+
+### 💸 Budget-first
+Protects what really runs out: Claude's 5-hour window and each Go model's **own dollar cap**. Premium models are escalation only.
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+### 🔬 Evidence-bound
+A benchmark only counts if it measures what your task needs, and a direction needs **two independent measurements that agree**.
+
+</td>
+<td valign="top">
+
+### 🔒 Confidential by default
+Models that log or train on prompts are out unless *you* say the work is non-confidential.
+
+</td>
+<td valign="top">
+
+### ✅ Verifiable
+36 deterministic regression prompts, a regex grader and consistency checks that run in CI — see [Validation](#-validation).
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary><b>How it differs from a typical "model picker"</b></summary>
+
+<br>
+
+| | Typical "model picker" | **model-effort-router** |
+|---|---|---|
+| **Scope** | One vendor, a model name | **Two ecosystems**, a model **and its effort level**, side by side |
+| **Output** | "Use the strongest model" | Claude pick + two ordered OpenCode picks with their own efforts + **one** recommendation |
+| **Basis** | Vibes, leaderboard rank | **Task-bound evidence**, comparability checked first |
+| **Cost model** | "Cheaper is better" | The 5-hour window and **per-model dollar caps** |
+| **Risk** | Bigger model for scarier work | **Risk raises human oversight, not model tier** — you get a review note, not a pricier model |
+| **Privacy** | Not considered | **Confidential by default** |
+| **Honesty** | Always sounds sure | Flags `low-confidence` rows, says `n/p` (not published) instead of guessing, never interpolates between effort rungs |
+
+</details>
+
+<br>
+
+## 🚀 Install
+
+### Before you start
+
+| You need | Why |
+|---|---|
+| **[Claude Code](https://docs.claude.com/en/docs/claude-code/quickstart)** *or* a **claude.ai** Pro / Max / Team / Enterprise plan with **code execution** on | The skill runs inside Claude. |
+| `git` *(only for the clone routes)* | The one-liner above and the zip need no git. |
+| An **OpenCode Go** plan *(optional)* | Only needed if you want to *act on* the `OpenCode:` line. The router works without one. |
+
+The skill itself needs no Python, no Node, no API key — it is a folder of text and JSON files.
+
+### Choose your route
+
+<details open>
+<summary><b>① Claude Code — for every project</b> (recommended)</summary>
+
+<br>
+
+Installs at *user scope*, so `/model-secici` works in every project on this machine.
 
 ```bash
 git clone https://github.com/enzoo808/model-effort-router.git
 cd model-effort-router
+./install.sh                # macOS / Linux
 ```
 
-### Claude Code
+```powershell
+.\install.ps1               # Windows (PowerShell)
+```
 
-**macOS / Linux:** `./install.sh` · **Windows (PowerShell):** `.\install.ps1`
+Both scripts copy `skill/` into `~/.claude/skills/model-secici/` (Windows: `%USERPROFILE%\.claude\skills\model-secici\`). Or do it by hand:
 
-**Or by hand:**
 ```bash
 mkdir -p ~/.claude/skills/model-secici
 cp skill/*.md skill/*.json ~/.claude/skills/model-secici/
 ```
 
-Start a new Claude Code session, then `/model-secici  <your task>`. It also triggers on
-"which model should I use for this?".
+**Verify** — the folder must hold `SKILL.md` directly (not in a sub-folder):
 
-### claude.ai / Claude Desktop (native custom skill)
+```bash
+ls ~/.claude/skills/model-secici
+# SKILL.md  benchmark_frontiers.json  benchmarks.json  opencode-benchmarks.md  opencode-evidence.json  reference.md
+```
 
-Requires a Pro / Max / Team / Enterprise plan with **code execution** enabled. Download
-**[`dist/model-secici.zip`](dist/model-secici.zip)** (rebuild with `.\build-claude-ai-zip.ps1`),
-then **claude.ai → Settings → Features → Custom Skills → Upload**. No code execution? Use the
-plain-text fallback in [`claude-ai/instructions.tr.md`](claude-ai/instructions.tr.md) (Turkish).
+Now **start a new Claude Code session** (skills are loaded at start-up) and run `/model-secici <your task>`.
+It also fires on plain questions like *"which model should I use for this?"*
 
-### OpenCode Go
+</details>
 
-There is no skill mechanism on the OpenCode side — the router just produces the `OpenCode:`
-line (two models, each with an effort) for you to act on. In OpenCode, pick the model by its
-id `opencode-go/<model-id>` and cycle the effort with `variant_cycle` (MiMo-V2.6 has no variant — nothing to cycle).
+<details>
+<summary><b>② Claude Code — for one project / your team</b></summary>
 
----
+<br>
 
-## How it decides
+Put the skill *inside the repository* so everyone who clones it gets it:
 
-| Step | What happens |
+```bash
+mkdir -p .claude/skills/model-secici
+cp /path/to/model-effort-router/skill/*.md /path/to/model-effort-router/skill/*.json .claude/skills/model-secici/
+git add .claude/skills/model-secici && git commit -m "Add model-secici skill"
+```
+
+</details>
+
+<details>
+<summary><b>③ claude.ai / Claude Desktop</b> (native custom skill)</summary>
+
+<br>
+
+1. Download **[`dist/model-secici.zip`](dist/model-secici.zip)** (rebuild it with `.\build-claude-ai-zip.ps1`).
+2. Open **claude.ai → Settings → Features** and make sure **code execution** is on.
+3. Under **Custom Skills**, choose **Upload** and select the zip.
+4. In a chat, ask *"which model should I use for: …"* followed by your task.
+
+No code execution on your plan? Use the plain-text fallback in [`claude-ai/instructions.tr.md`](claude-ai/instructions.tr.md) (Turkish).
+
+</details>
+
+<details>
+<summary><b>④ OpenCode Go</b> — acting on the answer</summary>
+
+<br>
+
+OpenCode has no skill mechanism: the router just prints an `OpenCode:` line and you apply it.
+
+1. Take `#1` from the line, e.g. `DeepSeek V4.1 Flash · effort: max`.
+2. In OpenCode, select the model as **`opencode-go/<model-id>`**.
+3. Set the effort with **`variant_cycle`** until it shows the effort the router named.
+   MiMo-V2.6 exposes no variants (thinking is always on), so the router writes `default` and there is nothing to cycle.
+4. Only if `#1` falls short, try `#2`.
+
+</details>
+
+### Update · uninstall
+
+```bash
+cd model-effort-router && git pull && ./install.sh      # update (re-run .\install.ps1 on Windows)
+rm -rf ~/.claude/skills/model-secici                    # uninstall (Windows: delete %USERPROFILE%\.claude\skills\model-secici)
+```
+
+### Troubleshooting
+
+| Symptom | Fix |
 |---|---|
-| **0 · Quality gate** | Four mechanical checks. If any fires → **no model, no badge, one `Clarify:` line.** |
-| **1 · Hard gates** | Claude: sub-second/bulk → Haiku 5.5; offensive security → Opus 4.8; biology → Fable 5.1; 1000+ files → Fable 5.1. **OpenCode: offensive security / biology / computer-use → `use Claude` (no models); confidential work removes Muse Spark, Grok 4.7 and GPT 6 Luna; context > 256k removes Qwen3.8 Flash; image input removes GLM-5.3 (premium anyway); bulk/latency → DeepSeek V4.1 Flash.** |
-| **2 · Capability profile** | One or two tags (`agentic-code`, `deep-reasoning`, `knowledge-work`, `long-context`, `workflow-automation`, …) — what makes benchmark evidence applicable or not. |
-| **3 · Score scope & stakes** | **R**isk, **D**epth, **W**idth, **C**ontext — each 0–3. |
-| **4 · Candidate model × effort** | Claude: Haiku 5.5 by Rule H1, else model ← `max(D,C)` + profile; effort ← D (`low/medium/high/xhigh`), a `· ultracode` flag on 3+ phases (never a level of its own), `opusplan`. **OpenCode (4-OC): a pair from the budget tier only (BUD1) — `D ≤ 1` → DeepSeek V4.1 Flash · GLM-5.3-Flash; otherwise a per-capability pair, reordered at `D = 3` / `R = 3`; effort = the model's own variant: `low`/`high`/`max` by `D` where OpenCode offers them, else `default` (MiMo), `xhigh` (Qwen).** |
-| **5 · Evidence, equivalence, efficiency** | Comparability → published dispersion only → dominance (Go cap pressure first for OpenCode). |
-| **6 · `✅ RECOMMENDED AI`** | Hard gate → MECH1 → applicable capability and its evidence (B1, BD1) read through **SM1: OpenCode unless Claude makes a serious difference**. One badge, one `Evidence:` sentence. |
-| **7 · Quota guards** | `R=3` → human-review note. Escalation is a model change. Data-policy and DeepSeek lines are auto-added. |
+| `/model-secici` isn't listed | Start a **new** session — skills load at start-up. Then check that `~/.claude/skills/model-secici/SKILL.md` exists (not `.../model-secici/skill/SKILL.md`). |
+| The one-liner extracts nothing | `curl` and `tar` must be on your `PATH`; on Windows use the PowerShell line or the zip. |
+| PowerShell refuses to run `install.ps1` | `powershell -ExecutionPolicy Bypass -File .\install.ps1` |
+| claude.ai rejects the upload as "invalid characters" | Use the prebuilt [`dist/model-secici.zip`](dist/model-secici.zip). Zips made with Windows' own tools use backslashes; `build-claude-ai-zip.ps1` writes forward slashes. |
+| It only prints a `Clarify:` line | Working as designed: the prompt was ambiguous. Answer the question and ask again — see [writing a good prompt](#writing-a-good-prompt). |
+| It doesn't fire on a plain question | Use the explicit `/model-secici …` command. |
 
-Two design choices carried over: **risk raises human oversight, not model tier**, and
-**when in doubt, round down**.
+<br>
 
----
+## 🔎 Reading the answer
 
-## Examples
+```text
+Claude:   Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (71.7 vs 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
+```
+
+| Line | What it tells you |
+|---|---|
+| `Claude:` | The one Claude model and effort to use if you pick Claude. |
+| `OpenCode:` | **Two** Go models in order — start with `#1`, fall back to `#2` — each with the effort OpenCode actually offers for it (`low` / `high` / `max`, `xhigh`, or `default`). |
+| `✅ RECOMMENDED AI` | The ecosystem to use. **OpenCode unless Claude makes a serious difference.** Exactly one badge. |
+| `Evidence:` | One sentence naming the measurement that decided the badge. `low-confidence` means the evidence is thin. |
+| *Extra lines* | Added only when they matter: a human-review note at high risk, DeepSeek's peak-hours pricing, `/fast` availability, an `Ultracode:` hint, data-policy warnings. |
+| `Clarify:` | Instead of everything above, when the prompt is too ambiguous to route. |
+
+### Writing a good prompt
+
+The router scores **R**isk, **D**epth, **W**idth and **C**ontext from your wording, so tell it:
+
+- **What and how big** — "40 files", "400 pages", "200 reviews", not just "refactor".
+- **What done looks like** — "make the test suite pass", "one reconciliation table".
+- **The stakes** — "goes to prod tonight", "labels go to print".
+
+Words that change the answer:
+
+| Say | Effect |
+|---|---|
+| *"this is non-confidential"* | Unlocks GPT 6 Luna, Muse Spark 1.3 and Gemini 4 Argon, which keep or train on prompts. Never assumed from tone. |
+| *"an earlier OpenCode attempt fell short"* | Adds a premium OpenCode model as `#2` and moves the badge to Claude. |
+| `ultracode:` at the start | Runs *only this task* as a Claude Code workflow instead of leaving ultracode on session-wide. |
+
+<br>
+
+## 🧭 How it decides
+
+```mermaid
+flowchart LR
+    P(["your task"]) --> G0{"Step 0<br/>quality gate"}
+    G0 -- vague --> C[/"one Clarify: line"/]
+    G0 -- clear --> G1["Step 1<br/>hard gates"]
+    G1 --> S["Steps 2–3<br/>capability profile<br/>+ R · D · W · C"]
+    S --> A["Step 4<br/>Claude model × effort"]
+    S --> B["Step 4-OC<br/>two OpenCode models,<br/>each with its effort"]
+    A --> E["Step 5<br/>evidence · equivalence<br/>· dominance"]
+    B --> E
+    E --> R(["Step 6 — one ✅ badge<br/>+ Evidence sentence"])
+    R --> Q["Step 7<br/>quota and data-policy<br/>guards"]
+```
+
+Every task is scored on four axes, each 0–3:
+
+| Axis | Question it answers | What it drives |
+|---|---|---|
+| **R** — Risk | How bad is a wrong answer? | Human-review note (never a bigger model) |
+| **D** — Depth | How hard is the thinking? | Model tier and effort level |
+| **W** — Width | How many independent pieces or phases? | `ultracode` workflow flag, `opusplan` |
+| **C** — Context | How much has to fit? | Models that can hold it |
+
+The decision principle, in one sentence:
+
+> **Select the lowest-quota model × effort combination that stays on the task-specific capability frontier.** Prefer the stronger candidate when the task-relevant difference is meaningful; prefer the more quota-efficient one when capability sits inside a defensible equivalence band.
+
+Not "always cheapest". Not "always strongest". Not "highest benchmark wins".
+Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how-it-works.md)**.
+
+<br>
+
+## 🧪 Examples
 
 | Task | Claude | OpenCode `#1` · `#2` | Recommended |
 |---|---|---|---|
-| Label 200 reviews positive/negative | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` bulk work; the Flash tier on USD 60 caps keeps Claude's quota |
+| Label 200 reviews positive/negative | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` bulk work; Flash tier on USD 60 caps keeps Claude's quota |
+| Refactor the payment module across 40 files | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · MiMo-V2.6-Pro `default` | **OpenCode** — `D=2`; DeepSWE ties, USD 0.13 vs 1.67 per task |
+| Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · high · ultracode` | DeepSeek V4.1 Flash `high` · MiMo-V2.6-Pro `default` | **Claude** — multi-phase; `ultracode` has no OpenCode equivalent |
+| Find the race condition that flakes in prod | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, two agreeing AA rows |
+| Design the irreversible transaction boundary | `Opus 5.5 · max` + review note | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, `R=3` |
+| Redesign auth for 200 services from scratch | `opusplan · plan: max · execute: medium` | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude** — `opusplan` mechanism |
+| Exploit PoC for a CVE | `Opus 4.8 · xhigh` | `use Claude` | **Claude** — OpenCode declines this gate |
+| *"Fix this code"* | *(no model, no badge — it asks: which code? broken how? done = ?)* | | |
+
+<details>
+<summary><b>12 more worked examples</b></summary>
+
+<br>
+
+| Task | Claude | OpenCode `#1` · `#2` | Recommended |
+|---|---|---|---|
 | Summarise a 2-page transcript into five bullets | `Haiku 5.5 · medium` | DeepSeek V4.1 Flash `low` · GLM-5.3-Flash `low` | **OpenCode** — `D=1` reading work, AA-LCR 77 vs 78 |
 | Draft the weekly steering-committee status memo | `Sonnet 5.5 · medium` | DeepSeek V4.1 Flash `low` · GLM-5.3-Flash `low` | **OpenCode** — `D=1`; Haiku 5.5 is out of knowledge-work |
 | Live-chat reply, first words within about a second | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — first-token bound; DeepSeek has a measured 1.1 s |
 | Which year did the EU AI Act's GPAI obligations start? | `Sonnet 5.5 · low` | GLM-5.3-Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — factual recall excludes Haiku and DeepSeek |
 | Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5.5 · low` + review note | DeepSeek V4.1 Flash `low` · GLM-5.3-Flash `low` | **OpenCode** — `D=0`, both clear the bar |
-| Refactor the payment module across 40 files | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · MiMo-V2.6-Pro `default` | **OpenCode** — `D=2`; DeepSWE ties, USD 0.13 vs 1.67 per task |
-| Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · high · ultracode` | DeepSeek V4.1 Flash `high` · MiMo-V2.6-Pro `default` | **Claude** — three phases; `ultracode` has no OpenCode equivalent (MECH1) |
-| Find the race condition that flakes in prod | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, two agreeing AA rows on the reasoning half |
-| Design and implement the irreversible transaction boundary | `Opus 5.5 · max` + review note | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, `R=3` |
-| Redesign auth for 200 services from scratch | `opusplan · plan: max · execute: medium` | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude** — `opusplan` mechanism |
-| Wire a Jira → Slack → on-call n8n flow | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · GLM-5.3-Flash `high` | **OpenCode**, low-confidence — AutomationBench is a tie and ITBench favours the open models |
+| Wire a Jira → Slack → on-call n8n flow | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · GLM-5.3-Flash `high` | **OpenCode**, low-confidence — AutomationBench ties, ITBench favours open models |
 | Summarise 400 pages of filings into one memo | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **Claude** — knowledge-work from `D=2` |
 | Read 30 scanned receipts into a reconciliation table | `Sonnet 5.5 · high` | Qwen3.8 Flash `xhigh` · MiMo-V2.6-Pro `default` | **OpenCode**, low-confidence — both take images |
 | Non-confidential conference pricing deck | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · Qwen3.8 Flash `xhigh` | **Claude** — knowledge-work; Grok 4.7 stays premium |
 | Read 3 regulator pages before labels go to print tonight | `Sonnet 5.5 · high` + review note | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `high` | **Claude**, low-confidence — `R=3` and a single Omniscience lean |
-| An earlier OpenCode attempt at a 30-file migration fell short | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · **GLM-5.3** `max` | **Claude** — Rule A1-OC adds the premium `#2` and hands the badge over |
-| Exploit PoC for a CVE | `Opus 4.8 · xhigh` | `use Claude` | **Claude** — the other arm declines |
+| An earlier OpenCode attempt at a 30-file migration fell short | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · **GLM-5.3** `max` | **Claude** — Rule A1-OC adds a premium `#2` and hands over the badge |
 | Call somatic variants from tumour/normal exomes | `Fable 5.1 · high` | `unverified — use Claude` | **Claude** — availability gate |
-| "Fix this code" | *(no model, no badge — asks: which code? broken how? done = ?)* | | |
 
----
+</details>
 
-## Validation
+<br>
 
-`evals/routing/evals.json` is a deterministic regression set (30 prompts) graded by
-`evals/routing/grade_routing.py` (pure regex, no LLM): Claude model + effort, **both OpenCode
-picks (model, effort, order)**, which side carries the badge, a non-trivial `Evidence:` line
-(whose `low-confidence` flag must match the row's dagger), plus required / forbidden text
-for the auto-added lines and the confidentiality default.
+## 🧱 The model pool
+
+**Claude arm** — one model and one effort, picked by depth and context:
+
+| Model | Role |
+|---|---|
+| **Haiku 5.5** | The cost pick for small, shallow work (`D ≤ 1` reading and transform tasks) |
+| **Sonnet 5.5** | Daily work, the default start |
+| **Opus 5.5** | Flagship for hard agentic code (`D = 3`) |
+| **Opus 4.8** | Legacy — kept only for the offensive-security gate |
+| **Fable 5.1** | Frontier scale (1000+ files) and biology-adjacent R&D |
+
+**OpenCode Go arm** — the **19 rated models**, in tiers. Each Go model has its *own* monthly dollar cap, so what matters is how many *real* agent tasks a month of that cap buys:
+
+| Tier | Models | Role |
+|---|---|---|
+| **Budget** — the default pairs | MiMo-V2.6-Flash · GLM-5.3-Flash · DeepSeek V4.1 Flash · Qwen3.8 Flash · MiMo-V2.6-Pro | 150–1,500 tasks per month of cap |
+| **Free** | MiniMax M3.1 Flash Free | Zero retention, no Go cap, limited time |
+| **Non-confidential only** | GPT 6 Luna · Muse Spark 1.3 · Gemini 4 Argon | Offered only if you say the work isn't confidential — some of them train on prompts |
+| **Premium** — escalation only | Qwen3.8 Max · GLM-5.3 · Kimi K3 · Grok 4.7 | 10–33 tasks per month of cap; never in a routed pair, only as `#2` after a stated shortfall |
+| **Dominated** | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 | Rated and tracked; no row ever emits them |
+
+> Effort is the variant OpenCode *actually offers for that model* (`low` / `high` / `max`, `xhigh`, or `default`), never a value it would reject.
+
+<br>
+
+## 🔬 Built on evidence, not vibes
+
+> **Evidence sets the direction and the equivalence band; the capability profile decides which evidence applies; efficiency breaks the ties capability leaves open. A leaderboard position on its own decides nothing.**
+
+- **Benchmarks are bound to capabilities.** A pure-maths prompt gives Terminal-Bench a weight of zero.
+- **Comparability first.** Benchmark, version, harness, tool access, scaffold *and* effort must match before two numbers are compared.
+- **Independent sources only.** Artificial Analysis, DeepSWE v1.1 (with error margins), Agent Arena, Vals, FrontierSWE v2, ARC-AGI, Gray Swan — compiled into [`skill/opencode-evidence.json`](skill/opencode-evidence.json). One vendor re-citing the same figure is one number, not two.
+- **A direction needs two independent measurements that agree.** A single one decides only at `R = 3`.
+- **No interpolation** between effort rungs, and `n/p` (not published) is an answer.
+- **The aggregate index never sets a direction** — it only licenses the efficiency tie-break.
+
+Raw numbers live in [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.md) and [`skill/reference.md`](skill/reference.md). They are audit data and are **never loaded to route**, which keeps the token cost of a routing call low.
+
+<br>
+
+## ✅ Validation
+
+`evals/routing/evals.json` is a deterministic regression set — **36 prompts** — graded by a pure-regex grader (no LLM in the loop). It checks the Claude model and effort, **both OpenCode picks** (model, effort, order), which side holds the badge, a non-trivial `Evidence:` line, and required / forbidden text for the confidentiality default.
 
 ```bash
 python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # goldens vs grader
-python scripts/check_policy_sync.py        # SKILL.md rule blocks == evals/policy/routing_policy.json
-python scripts/check_opencode_pool.py      # pool, Step 4-OC rows, badge table, examples, per-model variants, consensus top-4
-python scripts/derive_opencode_rows.py     # print the independent-evidence consensus per capability
-python scripts/check_examples.py           # every worked example agrees with its golden
+python scripts/check_policy_sync.py      # SKILL.md rule blocks == evals/policy/routing_policy.json
+python scripts/check_opencode_pool.py    # pool, Step 4-OC rows, badge table, per-model variants, consensus top-4
+python scripts/check_examples.py         # every worked example agrees with its golden
+python scripts/derive_opencode_rows.py   # print the independent-evidence consensus per capability
 ```
 
-> **Status (14 Oct 2026).** Iteration-23: the grader self-test (30/30), policy sync, pool/badge-table check and example check are green; the goldens are rule-derived and **not yet confirmed by a cold-agent run**. The last cold-agent run (iteration-22, 29/29, `evals/README.md`) predates the budget-first pool and the OpenCode-default badge. The **trigger eval is a proxy only** (nested `claude -p` fails to
-> authenticate here); run `evals/trigger/run_trigger.py` from a logged-in terminal for the real result.
+**Where it stands (3 Nov 2026, iteration-25):** all four checks above pass (36/36 grader self-test, 46 rule blocks in sync). A cold run of **all 36 prompts by fresh agents scored 34/36**; one miss re-ran 3/3, the other (`r1`, scanned receipts) is a genuinely unstable prompt that is left open on purpose. Details in [`evals/README.md`](evals/README.md).
 
-Run history and the reasoning behind every rule change is in
-[`evals/README.md`](evals/README.md).
+### Known limits, stated plainly
 
-## Contributing
+- **The trigger eval is a proxy.** Nested `claude -p` can't authenticate in the build environment; run `evals/trigger/run_trigger.py` from a logged-in terminal for the real number.
+- **Prices, caps and retention terms are dated.** They are a snapshot (see each row's date) and OpenCode Go can change them — corrections with a primary source are the most valuable contribution.
+- **OpenCode-by-default is a trade-off.** At `D = 2` the router sends coding to OpenCode although Claude still leads some hardest-task anchors, because the mid-difficulty DeepSWE comparison is a tie at a fraction of the cost. If you'd rather pay Claude there, it's one row of the badge table in [`skill/SKILL.md`](skill/SKILL.md).
+- **Only `SKILL.md` is the source of truth** for routing; the `claude-ai/` fallback is a hand-synced derivative.
 
-Corrections to model specs, prices, caps, retention terms, effort defaults or **benchmark
-records** are very welcome — cite the primary source and add the harness/effort/date next to
-the number. Rule changes must keep the checks above green. See [CONTRIBUTING.md](CONTRIBUTING.md).
+<br>
 
-## License
+## 🗂 Repository map
+
+```text
+skill/                       The skill itself — only SKILL.md is read when routing
+  SKILL.md                   Routing rules (the single source of truth)
+  opencode-benchmarks.md     OpenCode evidence, per model, with sources
+  opencode-evidence.json     Machine-readable evidence the checks derive from
+  reference.md               Claude prices, limits, benchmark notes (audit data)
+evals/                       Regression set, grader, policy mirror, full run history
+scripts/                     Consistency checks and evidence tooling
+docs/                        How it works, assets, launch notes
+dist/model-secici.zip        Ready-to-upload claude.ai skill
+claude-ai/                   Plain-text fallback when code execution is off
+install.sh · install.ps1     One-command installs for Claude Code
+CHANGELOG.md                 Every policy iteration, newest first
+```
+
+## 🤝 Contributing
+
+Corrections to model specs, prices, caps, retention terms, effort defaults or **benchmark records** are very welcome — cite the primary source and put the harness, effort and date next to the number. Rule changes must keep the checks above green. See **[CONTRIBUTING.md](CONTRIBUTING.md)**.
+
+## 📄 License
 
 MIT — see [LICENSE](LICENSE).
+
+<div align="center">
+<br>
+
+*Protects your rate-limit windows — not your wallet.*
+
+</div>
