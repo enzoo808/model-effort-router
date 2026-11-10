@@ -1,3 +1,0 @@
-Claude: Sonnet 5.5 · effort: low
-OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
-Evidence: D=0 lookup: DeepSeek is gated out on factual recall (96.5% hallucination), so the Flash pair runs on USD 60 caps at USD 0.25/0.06 per task and keeps Claude's quota.

@@ -1,7 +1,0 @@
-Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh · ultracode
-OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
-Evidence: D=3 agentic migration: AA TB 4.0 64 vs 35 and FrontierSWE v2 62 vs 18 favour Claude, and ultracode sequences its four phases.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
-Ultracode: start the prompt with "ultracode:" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.
-⚡ Claude /fast available (2.5x faster, 2× price).
-Do not apply without human review.

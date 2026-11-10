@@ -1,5 +1,0 @@
-Claude: Haiku 5.5 · effort: low
-OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GPT 6 Luna · effort: low
-Evidence: Non-confidential D≤1 bulk labelling: the high-volume gate picks DeepSeek V4.1 Flash and GPT 6 Luna at USD 0.27 / 0.07 per task, keeping Claude's quota.
-Data: GPT 6 Luna keeps prompts for 30 days.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).

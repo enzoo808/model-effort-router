@@ -1,3 +1,0 @@
-Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 Qwen3.8 Flash · effort: xhigh · #2 MiMo-V2.6-Pro · effort: default
-Evidence: Scanned-receipt extraction is doc-data-understanding at D=2, where GDP.pdf (MiMo-V2.6-Pro 19 vs Claude 26) is one row, so price decides; low-confidence.
