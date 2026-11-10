@@ -323,11 +323,10 @@
       "expected_opencode": "unverified — use Claude",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "Step 1 biology gate: Fable 5.2 with effort `high` fixed by the gate (the D table does not raise it; vendor-reported FrontierCode 2.0 has Fable 5.2 high matching Opus 5.5 max, and Fable draws on a separate weekly limit); OpenCode declines without models; the Evidence line says the biology classifiers can block research tasks and that Mythos 5.2 is the result for a verified organisation; Step 7 rule 13 adds the fixed Fable-biology line.",
+      "tests_rule": "Step 1 biology gate: Fable 5.2 with effort high fixed by the gate (the D table does not raise it; vendor-reported FrontierCode 2.0 has Fable 5.2 high matching Opus 5.5 max, and Fable draws on a separate weekly limit); OpenCode declines without models; the Evidence line says the biology classifiers can block research tasks; verified access is covered by k2; Step 7 rule 13 adds the fixed Fable-biology line.",
       "golden_output": "Claude: ✅ RECOMMENDED AI · Fable 5.2 · effort: high\nOpenCode: unverified — use Claude\nEvidence: Biology-adjacent R&D is a deciding gate on both arms; Fable 5.2 carries it, though its biology classifiers can block research tasks (Mythos 5.2 for verified organisations), and no pool model has a verified result there.\nFable 5.2: its biology classifiers may block research tasks — on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused.",
       "expected_notes": [
         "may block research tasks",
-        "Mythos 5.2",
         "later biology-flagged requests are refused"
       ]
     },
