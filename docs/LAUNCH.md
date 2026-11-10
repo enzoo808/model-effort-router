@@ -63,16 +63,14 @@ buried.
 >
 > It's sourced from the official docs, every uncertain claim is labelled, and
 > there's a deterministic regression eval (cold agents read the rules fresh and
-> route a fixed prompt set; a regex grader checks the output). Currently a 39-prompt set (iteration-22 cold-agent run: 29/29 after two corrections; iteration-24 cold-agent run: 33/33 routed evals after two corrections; iteration-27 cold-agent run on the 16 affected prompts: 15/16, `c3` open), plus a
-> separate no-LLM evidence suite: schema validation, rule-provenance resolution,
-> frontier staleness and 80 compiler assertions.
+> route a fixed prompt set; a regex grader checks the output). Currently a 39-prompt set (iteration-27 cold-agent run on the 16 affected prompts: 15/16, `c3` open; the biology/frontier gate re-run after the final fixes is 3/3 for k1/k2/fa1), plus separate no-LLM checks: policy sync, pool/badge-table checks, worked-example checks and README-facts consistency (the old benchmark validator/compiler suite was removed upstream).
 >
 > Repo: <link>
 
 Then a first comment from you with the concrete "here's what it does" example and
 the honest limitations (Turkish skill body, model-name/price data has a shelf
 life, no open model has verified biology / offensive-security / computer-use evidence so the OpenCode arm punts to Claude there;
-AA publishes no interval for its Intelligence Index or Terminal-Bench 4.0, so a Terminal-Bench lead for Sonnet 5.5 is a *lean*: since iteration-23 the router sends errands and mid-difficulty (D≤2) coding to OpenCode's budget tier and keeps the Claude badge for D=3 coding/reasoning, finished deliverables, gates, mechanisms and R=3 — that threshold is a policy choice, documented in SKILL.md Rule SM1, not hidden).
+AA publishes no interval on its score rows (its Elo leaderboards do), so a Terminal-Bench lead for Sonnet 5.5 is a *lean*: since iteration-23 the router sends errands and mid-difficulty (D≤2) coding to OpenCode's budget tier and keeps the Claude badge for D=3 coding/reasoning, finished deliverables, gates, mechanisms and R=3 — that threshold is a policy choice, documented in SKILL.md Rule SM1, not hidden).
 
 ## r/ClaudeAI (and cross-post to r/LocalLLaMA, r/OpenAI)
 
