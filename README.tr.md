@@ -409,7 +409,8 @@ Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull reques
 ### Bilinen sınırlar
 
 - **Tetikleme eval'i bir vekildir.** İç içe `claude -p` derleme ortamında kimlik doğrulayamıyor; gerçek sayı için `evals/trigger/run_trigger.py`'yi oturum açmış bir terminalden çalıştır.
-- **Fable 5.2 biyoloji kapısı sabit bir satır taşır.** Biyoloji sınıflandırıcıları araştırma görevlerini engelleyebilir: ilk işaretlenen istekte Claude Code oturumu Opus 5'e taşır, sonraki biyoloji işaretli istekler reddedilir.
+- **Biyoloji kapısı `high` eforuna sabittir.** Biyoloji sınıflandırıcıları araştırma görevlerini engelleyebilir: ilk işaretlenen istekte Claude Code oturumu Opus 5'e taşır, sonraki biyoloji işaretli istekler reddedilir. Kapı, D tablosunun `xhigh`'ını almaz: Anthropic'in vendor-raporlu tablosunda Fable 5.2 `high` ile Opus 5.5 `max`, FrontierCode 2.0'da eşleşiyor ve Fable ayrı bir haftalık limitten harcıyor.
+- **1000+ dosya kapısı normal D basamağını kullanır.** Modeli Fable 5.2 yapar, eforu değil: D=3'te `xhigh`, `max` yalnız M1 altında, 30 dakika üstünde `ultracode`. Bu bir ölçek kapısıdır, sınıflandırıcı istisnası değil; mekanik 1000 dosyalık yeniden adlandırma kendi D basamağında kalır.
 - **Fiyatlar, limitler ve saklama koşulları tarihlidir.** Anlık görüntüdür (her satırın tarihine bak) ve OpenCode Go bunları değiştirebilir — birincil kaynaklı düzeltmeler en değerli katkıdır.
 - **Varsayılan OpenCode bir ödünleşimdir.** `D = 2`'de router kodlamayı OpenCode'a yollar; oysa Claude en zor görev ölçütlerinin bazılarında hâlâ önde. Sebep, orta zorluktaki DeepSWE karşılaştırmasının maliyetin çok altında eşit çıkmasıdır. Orada Claude'a ödemeyi tercih edersen bu, [`skill/SKILL.md`](skill/SKILL.md) içindeki rozet tablosunun tek satırıdır.
 - **Yönlendirmede tek doğruluk kaynağı `SKILL.md`'dir**; `claude-ai/` yedeği elle senkronlanan bir türevdir.

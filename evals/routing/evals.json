@@ -323,7 +323,7 @@
       "expected_opencode": "unverified — use Claude",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "Step 1 biology gate: Fable 5.2 by default (effort high, no floor); OpenCode declines without models; the Evidence line says the biology classifiers can block research tasks and that Mythos 5.2 is the result for a verified organisation; Step 7 rule 13 adds the fixed Fable-biology line.",
+      "tests_rule": "Step 1 biology gate: Fable 5.2 with effort `high` fixed by the gate (the D table does not raise it; vendor-reported FrontierCode 2.0 has Fable 5.2 high matching Opus 5.5 max, and Fable draws on a separate weekly limit); OpenCode declines without models; the Evidence line says the biology classifiers can block research tasks and that Mythos 5.2 is the result for a verified organisation; Step 7 rule 13 adds the fixed Fable-biology line.",
       "golden_output": "Claude: ✅ RECOMMENDED AI · Fable 5.2 · effort: high\nOpenCode: unverified — use Claude\nEvidence: Biology-adjacent R&D is a deciding gate on both arms; Fable 5.2 carries it, though its biology classifiers can block research tasks (Mythos 5.2 for verified organisations), and no pool model has a verified result there.\nFable 5.2: its biology classifiers may block research tasks — on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused.",
       "expected_notes": [
         "may block research tasks",
@@ -339,7 +339,7 @@
       "expected_opencode": "unverified — use Claude",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "Step 1 biology gate with the access clause (same pattern as the offensive-security row): a verified organisation gets Mythos 5.2 at the gate's default effort high; OpenCode declines; because the line is Mythos 5.2 (no biology classifiers), Step 7 rule 13's Fable line must not appear.",
+      "tests_rule": "Step 1 biology gate with the access clause (same pattern as the offensive-security row): a verified organisation gets Mythos 5.2 at the gate's fixed effort `high`; OpenCode declines; because the line is Mythos 5.2 (no biology classifiers), Step 7 rule 13's Fable line must not appear.",
       "golden_output": "Claude: ✅ RECOMMENDED AI · Mythos 5.2 · effort: high\nOpenCode: unverified — use Claude\nEvidence: Biology-adjacent R&D is a deciding gate on both arms; the stated Life Sciences Verification Program access makes Mythos 5.2 the gate result, and no pool model has a verified result there.",
       "forbidden": [
         "Fable 5.2 ·",
@@ -633,7 +633,7 @@
       "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "A1: deep-reasoning is on the flagship list and the user states an earlier flagship-tier run at xhigh fell short, so the Claude line becomes Fable 5.2 at its D=3 rung (xhigh, R<=2 so no max); a shortfall on the Claude arm does not escalate OpenCode (Argon #1 by GM1 at D=3); Gemini line, then the speed line (Fable 5.2 has /fast: 2.5x, USD 16/80 against 8/40). New in iteration-27; expectation reviewed against the rules, not an independent golden.",
+      "tests_rule": "A1: deep-reasoning is on the flagship list and the user states an earlier flagship-tier run at xhigh fell short, so the Claude line becomes Fable 5.2 at its D=3 rung (xhigh, R<=2 so no max); the 1000+ files gate is a separate scale gate that also leaves effort to D (xhigh at D=3), not the biology gate's fixed high; a shortfall on the Claude arm does not escalate OpenCode (Argon #1 by GM1 at D=3); Gemini line, then the speed line (Fable 5.2 has /fast: 2.5x, USD 16/80 against 8/40). New in iteration-27; expectation reviewed against the rules, not an independent golden.",
       "golden_output": "Claude: ✅ RECOMMENDED AI · Fable 5.2 · effort: xhigh\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: The earlier Opus 5.5 run at xhigh fell short, so the frontier rung applies; deep-reasoning at D=3 is where Claude leads (HLE 61 vs Argon's 57, CritPt 32 vs 27).\nGemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.\n⚡ Claude /fast available (2.5x faster, 2× price).",
       "expected_notes": [
         "/fast available",

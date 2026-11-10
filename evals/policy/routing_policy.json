@@ -734,15 +734,18 @@
     },
     "biology_adjacent": {
       "result": "Fable 5.2",
-      "effort": "high, no floor",
+      "effort": "high (fixed; the D table does not raise it)",
       "access_clause": "Life Sciences Verification Program (verified organisation) -> Mythos 5.2",
       "classifier_statement": "Fable 5.2's biology classifiers can block research tasks: first flagged request moves the Claude Code session to Opus 5, later flagged requests are refused there",
       "opus_5_5": "runs the same classifiers with the same fallback (Claude Code model-config: 'Fable models and Opus 5.5: biology-flagged requests re-run on Opus 5'); Opus 5 and Sonnet 5.5 have no biology fallback and refuse",
       "source": "code.claude.com/docs/en/model-config and anthropic.com/claude-fable-and-mythos-5-2, read 2026-11-10",
-      "auto_line": "Fable 5.2: its biology classifiers may block research tasks — on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused."
+      "auto_line": "Fable 5.2: its biology classifiers may block research tasks — on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused.",
+      "effort_reason": "Anthropic's vendor-reported table has Fable 5.2 at high matching Opus 5.5 at max on FrontierCode 2.0, and Fable draws on a separate weekly limit."
     },
     "frontier_scale_1000_files": {
-      "result": "Fable 5.2"
+      "result": "Fable 5.2",
+      "effort": "by D (the D=3 rung is xhigh; max only under M1; ultracode as a flag when the session runs over 30 minutes)",
+      "effort_reason": "The 1000+ files gate fixes the model, not the effort: it is a scale gate, not a classifier carve-out, so a mechanical 1000-file rename stays at its own D rung."
     }
   },
   "step7_auto_lines": {

@@ -201,8 +201,8 @@ availability do not trade against efficiency.
 |---|---|---|
 | Sub-second latency **or** high-volume classification/parsing (at `D ≤ 1`) | Deciding | **Haiku 5.5**, effort `low`. Stop (Rule H2 overrides it after a Haiku shortfall) |
 | **Offensive security:** exploit generation, penetration testing, binary-based vulnerability scanning | Deciding | **Opus 4.8**, effort floor `xhigh` (W/duration can still add `ultracode`) — with Cyber Verification Program access, **Mythos 5.2** |
-| **Biology-adjacent R&D:** genomics, protein/chemistry-heavy pipeline, bio-CTF | Deciding | **Fable 5.2** (default effort `high`, no floor) — with Life Sciences Verification Program access (a verified organisation), **Mythos 5.2**. Fable 5.2's biology classifiers can block research tasks: on the first flagged request Claude Code moves the session to Opus 5, and later flagged requests are refused there. Opus 5.5 runs the same classifiers, with the same fallback |
-| **1000+ files / whole-codebase scale** | Deciding | **Fable 5.2** |
+| **Biology-adjacent R&D:** genomics, protein/chemistry-heavy pipeline, bio-CTF | Deciding | **Fable 5.2**, effort `high` (fixed; the D table does not raise it) — Anthropic's vendor-reported table has Fable 5.2 at `high` matching Opus 5.5 at `max` on FrontierCode 2.0, and Fable draws on a separate weekly limit. With Life Sciences Verification Program access (a verified organisation), **Mythos 5.2**. Fable 5.2's biology classifiers can block research tasks: on the first flagged request Claude Code moves the session to Opus 5, and later flagged requests are refused there. Opus 5.5 runs the same classifiers, with the same fallback |
+| **1000+ files / whole-codebase scale** | Deciding | **Fable 5.2**, effort ← D (the D=3 rung is `xhigh`; `max` only under M1; `ultracode` as a flag when the session runs over 30 minutes) — this is a scale gate, not a classifier carve-out, so a mechanical 1000-file rename stays at its own D rung |
 
 ### OpenCode arm
 
