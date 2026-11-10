@@ -42,7 +42,7 @@
     <rect x="72" y="285" width="150" height="34" rx="17" fill="#161b22" stroke="#30363d"/>
     <text x="147" y="307" text-anchor="middle" fill="#8b949e">19 rated models</text>
     <rect x="234" y="285" width="176" height="34" rx="17" fill="#161b22" stroke="#30363d"/>
-    <text x="322" y="307" text-anchor="middle" fill="#8b949e">36 regression evals</text>
+    <text x="322" y="307" text-anchor="middle" fill="#8b949e">39 regression evals</text>
     <rect x="422" y="285" width="170" height="34" rx="17" fill="#161b22" stroke="#30363d"/>
     <text x="507" y="307" text-anchor="middle" fill="#8b949e">evidence-bound</text>
   </g>

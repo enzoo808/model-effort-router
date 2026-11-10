@@ -1,0 +1,1 @@
+Clarify: What is the matching rule — which key ties a bank webhook to its open invoice (bank reference/invoice number, amount + payer, or other), and what should happen on partial payments, multiple open invoices, or no match?

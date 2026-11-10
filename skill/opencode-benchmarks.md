@@ -49,7 +49,7 @@ models/comparisons/<model>-vs-<model>`), so they share one harness and one scale
 | **MiMo-V2.6-Flash** | 38 | 23 | 1611 | 1495 | 64 | 51 | 35 | 9 | 12 | −13 | 74 |
 | **DeepSeek V4.1 Flash** (Max) | 39 | 27 | 1600 | 1420 | **69** | 52 | 39 | 13 | 14 | −5 | 84 |
 | **GPT 6 Luna** (Max) | 38 | 13 | 1437 | 1336 | 53 | 55 | 39 | 23 | 19 | 1 | 83 |
-| **Qwen3.8 Flash** (-Next) | 40 | 25 | 1633 | 1583 | 56 | 51 | 38 | 16 | 11 | −10 | 80 |
+| Qwen3.8 Flash (all cells n/p — the rows under this name are 'Qwen3.8-Flash-Next', a different model) | n/p | n/p | n/p | n/p | n/p | n/p | n/p | n/p | n/p | n/p | n/p |
 | **Qwen3.8 Max** (0902) | 45 | 39 | 1671 | 1621 | 56 | 52 | 43 | 23 | 18 | 12 | 80 |
 | DeepSeek V4 Pro 0813 (Max) | 36 | 14 | 1455 | 1256 | 57 | 51 | 41 | 11 | 18 | 1 | 80 |
 | MiniMax M3 | 29 | 2 | 1245 | 1091 | 21 | 47 | 39 | 10 | 4 | 1 | 83 |
@@ -76,7 +76,7 @@ Cost, tokens, speed (same pages):
 | MiMo-V2.6-Flash | $0.06 | 78k | 58k | 62 | 4.21 s | 0.14 / 0.28 | $60 | 43M |
 | DeepSeek V4.1 Flash | $0.27 | 89k | 63k | **222** | **1.08 s** | 0.15–0.30 / 0.60–1.20 | $60 | 20M / 10M peak |
 | GPT 6 Luna | $0.07 | 50k | 39k | 147 | 96 s | 0.10–0.20 / 0.50–0.75 | $15 | 6M |
-| Qwen3.8 Flash | $0.37 | 108k | 72k | 55 | 2.48 s | 0.15 / 0.47 | $30 | 12.8M |
+| Qwen3.8 Flash | n/p (AA row is -Next) | — | — | — | — | 0.15 / 0.47 | $30 | 12.8M |
 | Qwen3.8 Max | $5.41 | 108k | 71k | 37 | 2.68 s | 2.00 / 6.00 | $15 | 0.5M |
 | DeepSeek V4 Pro | $0.67 | 55k | 38k | 99 | 1.67 s | 0.66–1.32 / 1.98–3.96 | $15 | 1.5M |
 | MiniMax M3 | $0.51 | 48k | 22k | 103 | 2.05 s | 0.30 / 1.20 | $60 | 10M |
@@ -91,7 +91,7 @@ input-dominated, where MiMo's USD 0.0036 cached read is the standout.
 
 Context windows: MiMo-V2.6-Pro 1M · GLM-5.3 1M · Kimi K3 1M · **Grok 4.7 500k** ·
 Muse Spark 1.3 1M · GLM-5.3-Flash 1M · DeepSeek V4.1 Flash 1M · GPT 6 Luna 1M ·
-**Qwen3.8 Flash 256k** · Qwen3.8 Max 984k · DeepSeek V4 Pro 1M · MiniMax M3 1M ·
+**Qwen3.8 Flash 1M** (Go catalogue; AA's 'Qwen3.8-Flash-Next' shows 256k — a different model) · Qwen3.8 Max 984k · DeepSeek V4 Pro 1M · MiniMax M3 1M ·
 Kimi K2.7 Code `n/p` · MiMo-V2.6-Flash **1M** (AA) · Qwen3.7 Plus ≥ 256k (tier boundary).
 
 Input modalities (AA): **text-only GLM-5.3**; text+image Kimi K3, GLM-5.3-Flash,
@@ -191,8 +191,10 @@ No AA `high` rung exists for any open model, and no AA `low` rung for any Flash 
 - **Qwen3.8:** `low`/`medium`/`xhigh` are token caps (4,096 / 16,384 / unbounded); `high`,
   `xhigh` and `max` all behave as unbounded.
 
-→ Router rule E7: **`D=2` takes `high`, `D=3` takes `max`** on the three `low`/`high`/`max`
-models; every other pool model has a single rung to write. Claude's own curve (Opus 5.5:
+→ Router rule E7: **DeepSeek V4.1 Flash takes `high` at `D=2` and `max` at `D≥3`** (the `high` rung
+is DeepSeek's own effort curve plus its API default, not an independent AA figure); **GLM-5.3 and
+GLM-5.3-Flash stay `low`/`max`** because AA has only `low`/`max` for GLM-5.3 and one unlabelled rung for
+GLM-5.3-Flash; every other pool model has a single rung to write. Claude's own curve (Opus 5.5:
 low 42 @ $0.55 · medium 51 @ $1.34 · high 54 @ $1.82 · xhigh 56 @ $3.46 · max 58 @ $5.98;
 Sonnet 5.5 max 56 @ $7.60) is from the iteration-19 pass and is unchanged.
 
@@ -218,9 +220,15 @@ GLM-5.3 53.4 · Grok 4.6 53.4 · Kimi K3 50.6 · DeepSeek V4 Pro 49.6 · MiMo-V2
 
 ## 6. Name mapping and caveats
 
-- **"Qwen3.8 Flash" (Go) = "Qwen3.8-Flash-Next" (AA)** — matched by price (USD 0.15 /
-  0.47 on both) and August 2026 release, **not by name**; AA's page does not mention
-  a plain "Qwen3.8 Flash". Treat as an inference.
+- **"Qwen3.8 Flash" (Go) is NOT "Qwen3.8-Flash-Next" (AA/Arena)** — resolved in
+  iteration-27 Stage 2: Go's served `qwen3.8-flash` (closed weights, 1M context, USD 0.15 /
+  0.47) and the open-weights 256k "Qwen3.8-Flash-Next" (AA model page /models/qwen3-8-flash-next:
+  Qwen Community License 1.0, 180B total / 6B active) are different models; models.dev carries
+  both canonical ids (`alibaba/qwen3.8-flash` 1,000,000 ctx vs `alibaba/qwen3.8-flash-next`
+  262,144 ctx). Neither AA (leaderboards/models, Briefcase, GDPval) nor Arena (Agent,
+  Code/WebDev) has a row for a plain "Qwen3.8 Flash", so every Qwen3.8 Flash benchmark cell is
+  `n/p` and the model is never selected. The old price/release match was an inference,
+  contradicted by name, weights and context window.
 - **"DeepSeek V4 Pro" (Go) = "DeepSeek V4 Pro 0813"** (AA, Aug 2026, 1.6T MoE, MIT).
 - **"Qwen3.8 Max" (Go) = "Qwen3.8 Max (0902)"** (AA); the Agentic Index mirror lists a
   *Preview* — not used.
@@ -349,7 +357,8 @@ the top 4 of that consensus).
   fetchable; Vals/Arena values come through benchlm or the leaderboard pages. SWE-bench Pro numbers
   found are vendor-reported and 30% of its public tasks are reportedly broken — unused.
 - Gray Swan IPI exists for only four models; prompt-injection resistance is unknown for DeepSeek, MiMo, Qwen.
-- Qwen3.8 Flash = AA/Arena "Qwen3.8-Flash-Next" by price and date, not by name.
+- Qwen3.8 Flash = AA/Arena "Qwen3.8-Flash-Next" by price and date, not by name — **resolved**
+  (iteration-27 Stage 2): different models; the cells are n/p — see §6.
 
 ## 11. Claude Haiku 5.5 — the first Claude model on Go (8 October 2026)
 
@@ -454,7 +463,7 @@ Claude recommended only where it makes a serious difference.
 | Kimi K3 | 15 | 2.00 (Low 1.15) | 13% (8%) | 0.72 | 21 | **P** |
 | Grok 4.7 | 15 | 3.74 | 25% | 1.54 | 10 | **P** |
 
-Both columns split the pool the same way, with a wide gap (35 → 140 tasks per month; 1.2% → 5.7% of the cap per task), so the tier boundary
+(Historical iteration-23 snapshot — superseded by the single-date Arena 8 Nov 2026 re-derivation and by Rule BUD1's named membership: §14.8.) Both columns split the pool the same way, with a wide gap (35 → 140 tasks per month; 1.2% → 5.7% of the cap per task), so the tier boundary
 is not sensitive to which cost figure is used. The 5-hour window is 20% of the cap: one GLM-5.3 AA task at Max uses ~67% of it, one DeepSeek V4.1 Flash
 task ~2%. Arena p50 costs are list-price token costs on real agent traces; they are an order of magnitude, not a quote.
 
@@ -572,6 +581,8 @@ only on the five rows where it leads, at `D = 3` / `R = 3`.
 
 **21 Oct follow-up (effort):** the user noticed DeepSeek V4.1 Flash `max` almost never appeared (16 golden DeepSeek picks: 9 `low`, 6 `high`, 1 `max`) — `max` only fired at `D = 3`, and GM1 had moved `D = 3` to Argon. E7 is now `D ≥ 2 → max` on DeepSeek V4.1 Flash, GLM-5.3-Flash and MiniMax M3.1 Flash Free: the only independent measurement of these models is at `max` (DeepSeek non-reasoning 25 → 39 at `max`), `high` had only vendor curves, and `max` costs USD 0.25–0.27 per AA task (about 0.3% of the USD 80 cap). `D ≤ 1` stays `low`.
 
+**6 Nov follow-up (effort):** the opposite complaint — `high` had become unreachable on DeepSeek V4.1 Flash. E7 now gives DeepSeek a three-way rule (`D ≤ 1` `low` · `D = 2` `high` · `D ≥ 3` `max`): the paper's effort-60–80 finding and the API's `high` default place `high` at mid-difficulty, and `max` stays the depth rung where AA's only DeepSeek figure sits. GLM-5.3 and GLM-5.3-Flash keep `low`/`max`; no independent AA `high` row exists for any open model, so the `high` rung carries the vendor caveat in E7.
+
 FR1 (free lane) and GM1 (Gemini slot) are new; BUD1, NC1, CAP1 and A1-OC were reworded; badge row `research-synthesis` at `R = 3` flipped Claude † → OpenCode † (with Argon the OpenCode line beats the
 Claude pick on both Omniscience measures); the DeepSeek cap is USD 80; the pool is 19. Mirror: `evals/policy/routing_policy.json` (`gm1_rows`, `free_lane`, `pool.models`). Goldens: 34 evals
 (d1/g1/j1/t1/v1/z1/p1/n1/r1 moved; w1–w4 new). `grade_routing.py` rejects a Gemini model on the OpenCode line unless the eval sets `allow_gemini`, and rejects any free model other than M3.1 Flash Free.
@@ -586,3 +597,114 @@ independent coding row and its free status is time-limited. (4) The Antigravity 
 artificialanalysis.ai (Argon page; comparisons vs MiMo-V2.6-Pro for Argon, Gemini 3.8 Flash, Nemotron 3 Ultra, MiniMax M3.1 Flash) · benchlm.ai/models/{gemini-4-argon,minimax-m3-1-flash} ·
 ai.google.dev/gemini-api/{pricing,terms} · blog.google …/gdp-premium-ai-pro-ultra · developersdigest.tech and smartscope.blog (credits) · discuss.ai.google.dev (suspension thread; 429/503 handling) ·
 computingforgeeks.com and eesel.ai (Argon API hands-on) · github.com/digithings-ai/digithings PR 5494 (free-tier probe).
+
+
+## 14. Iteration-27 — the 10 November 2026 re-read (Go page, Gemini 4 Argon, MiniMax, Kimi K3.1 Pro, AA Index v5)
+
+Everything below was read from the cited page on 2026-11-10; `skill/opencode-evidence.json` → `iteration_27` holds the numbers. The OpenCode pages carry no date, so
+"when" is only given where OpenCode's changelog says it. Arena and Vals block the built-in browser (Cloudflare), so those rows were read by a fetch agent that quoted the table cells.
+
+### 14.1 What changed on Go (against the 20 Oct reading in §13)
+
+| Item | 20 Oct | 10 Nov | Source |
+|---|---|---|---|
+| Models on the page | 29 | 32 | opencode.ai/docs/go; `/inference/go/v1/models` lists 30 ids |
+| Gemini 4 Argon | `gemini-4-argon-contributor`, USD 60 (2× promo), trains on prompts, Not ZDR | `gemini-4-argon`, USD 30, "Not used" / "0 days", 50% off through 30 Nov | Go page + catalogue + models.dev |
+| MiniMax M3.1 Flash Free | Unlimited, 0 days | not listed; paid **MiniMax M3.1 Flash**, USD 20, "Not used" / "0 days" | Go page; models.dev `minimax-m3.1-flash-free` = deprecated; `minimax-m3.1-flash` comment "Go list price from 2026-10-22" |
+| Kimi K3.1 Pro | — | `kimi-k3.1-pro`, USD 15, USD 2 / 10, "Not used" / "0 days", release 2026-10-23 | Go page + catalogue |
+| DeepSeek V4.1 Flash cap | USD 80 | USD 100 (changelog v2.2.4, 2026-10-30: "Raised OpenCode Go limits for DeepSeek V4.1 Flash") | Go page; opencode.ai/changelog |
+| DeepSeek ZDR | valid through 31 Oct 2026 | "ZDR agreement is renewed monthly. The current agreement is valid through November 30, 2026." | Go page |
+| Plans | Go USD 10, Go Plus USD 40 | + **Go Teams** USD 20 per member, USD 5/month above Go on every model, Extra Usage on by default (changelog 2026-10-28) | Go page; opencode.ai/console/changelog/go-teams |
+| New listings | — | Hy4 ("New", USD 60, released 2026-11-04), Iceman Contributor Free (trains, Not ZDR, limited time), LongCat 2.5 Free (hosted in China) | Go page + catalogue |
+
+Unchanged and re-read: every Go cap in the pool table, the 30-day retention of Grok 4.7 / GPT 6 Luna / GPT 5.6 Luna / Claude Haiku 5.5 / Beam Free, Muse Spark 1.3 and 1.2 Contributor ("Yes" / "Not ZDR"),
+the DeepSeek peak window (01:00–04:00 and 06:00–10:00 UTC, Monday–Friday, 2× price), and the effort variants of every pool model (catalogue). Not stated anywhere: when the Argon, MiniMax and Kimi
+changes happened, the Argon cap after 30 Nov, and whether a Contributor route returns.
+
+### 14.2 Gemini 4 Argon — the evidence for lifting the confidential gate
+
+Three first-party sources agree, so Argon leaves the NC1-only overlay (Rule GM1 rewritten; the slot itself — `D = 3` or `R = 3`, right-hand column, five rows — is unchanged):
+
+- Go privacy table, verbatim row: `Gemini 4 Argon	Not used	0 days`.
+- Go pricing table, verbatim row: `Gemini 4 Argon (50% off)	$4.00 $2.00	$20.00 $10.00	$0.20 $0.10	-	$30`, note "Gemini 4 Argon: The 50% discount applies through November 30, 2026."
+- Go's own catalogue (`/inference/go/v1/models`) has `gemini-4-argon` (price 2 / 10 / 0.1, `multipliers: [{when: date >= 2026-12-01, factor: 2}]`, efforts low / medium / high, context 1,048,576) and has **no** `gemini-4-argon-contributor`;
+  models.dev marks `gemini-4-argon-contributor` `status = "deprecated"` and its `gemini-4-argon` comment reads "the multiplier restores list prices from 2026-12-01".
+
+Not established: the cap after 30 Nov (the page prints the cap next to the discounted price), whether the Contributor route comes back, and Google's own retention beyond what Go prints. The 20 Oct "USD 60 promo" was a doubled cap; the page now shows USD 30.
+
+**tasks/month.** Arena Agent, 8 Nov 2026: Gemini 4 Argon (High) cost per task P50 USD 0.78, with the page's price column reading "USD 2 / USD 10" (the half-price Go price) → 30 ÷ 0.78 = **38** now. At list prices the cost per task roughly doubles, so ≈ **19** from 1 Dec
+(derived; the cap after 30 Nov is not stated). BUD1's premium threshold is 35: Argon is just above it today and below it after the promo, which is why the slot stays restricted to `D = 3` / `R = 3` and the Evidence line names the price.
+
+Independent rows read today: Vals Terminal-Bench 4.0 57.58 (rank 9; Fable 5.2 and Opus 5.5 65.15, Kimi K3.1 Pro 63.64), Vals Vibe Code Bench v1.1 91.91 (rank 3), Arena Agent net improvement 10.83% ±0.87 (rank 8), AA v5 Index 50 at USD 9.95 per task,
+AutomationBench-AA 78% (the AA announcement's leader). The Omniscience / hallucination comparison with Sonnet 5.5 (42 vs 32; 15% vs 47%) is **AA-Omniscience v1** on both sides — same version.
+
+### 14.3 MiniMax M3.1 Flash Free leaves, the paid listing stays unrated
+
+models.dev gives both listings the same `base_model = "minimax/MiniMax-M3.1-Flash"`, and AA's entity "MiniMax-M3.1-Flash" (v5: 29 at USD 0.49 per task) is that model. The skill still does not copy the Free listing's
+frozen v4.3.2 anchors (HLE 48, CritPt 22, SciCode 53, AutomationBench 73, GDP.pdf 21, MMMU-Pro 79) onto the paid USD 20 listing: Go's paid endpoint has no independent coding, Arena or DeepSWE row, no tasks/month figure, and its
+identity with the endpoint AA tested is not stated. It is "never selected". The three rows that used the free model revert exactly as FR1's own fallback text said:
+`deep-reasoning` MiMo-V2.6-Pro · GLM-5.3-Flash, `science` MiMo-V2.6-Pro · GLM-5.3-Flash, `doc-data-understanding` Qwen3.8 Flash · MiMo-V2.6-Pro — each confirmed by `scripts/derive_opencode_rows.py`
+(deep-reasoning: MiMo-V2.6-Pro 1.00, GLM-5.3-Flash 0.58; science: MiMo-V2.6-Pro 1.00, GLM-5.3-Flash 0.42 tied with DeepSeek 0.42; doc-data: Qwen3.8 Flash 1.00 and MiMo-V2.6-Pro 0.50, one anchor each).
+The free lane is now Zen only (`glm-5.3-flash-free`, `deepseek-v4.1-flash-free`, `minimax-m3.1-flash-free`: "free on OpenCode for a limited time ... zero-retention policy and does not use your data for model training").
+
+### 14.4 Kimi K3.1 Pro
+
+Go: USD 15 cap (Plus 60, Teams 20), USD 2 / 10 per MTok, 0 days, not trained on, context 1,048,576, image and video input, efforts `low` / `high` / `max` with `max` as default, open weights per the catalogue
+(AA's announcement says the weights are "not yet released"; models.dev says they were announced for release by 4 Nov — not checked). AA v5 Index 46 at USD 3.68 per task, the top open-weights model; per-evaluation: Terminal-Bench 4.0 67.2
+(the highest AA lists), FrontierCode 2.0 25.5, HLE-Diamond 37.3, Terminal-Bench-Science 34.3. Same-version rows added to `opencode-evidence.json` (non-Elo anchors only): TB 4.0 67.2, HLE 52.5, CritPt 24.6, AA-LCR 86.3, SciCode 60.8,
+AutomationBench 73.3, GDP.pdf 31.4, Omniscience v1 29.5 / hallucination 43.9%. Vals TB 4.0 63.64 (rank 4), Vibe Code 84.89 (rank 19), Arena Agent 5.24% ±1.12 (rank 13) at USD 1.25 P50 → 15 ÷ 1.25 = **12 tasks/month**: tier P.
+Premium consensus (`derive_opencode_rows.py`, percentiles over the full pool): deep-reasoning 0.92 (Kimi K3 0.68), science 0.88 (0.81), long-context 0.85 (0.81), doc-data 1.00 (0.85) — hence "Kimi K3.1 Pro in place of Kimi K3" in A1-OC, with `low-confidence`
+because Kimi K3 has no AA v5 row. On `agentic-code` and `workflow-automation` it also tops the premium reference (0.74 / 0.59 for GLM-5.3), on one anchor each (TB 4.0, AutomationBench) — **not applied**: A1-OC keeps GLM-5.3 there (open decision).
+
+### 14.5 AA Intelligence Index v5 — what happened to each anchor the skill uses
+
+Announcement 2026-10-27; pages label the Index "v5.0.1". Weights: Knowledge Work 25 (AA-Briefcase 15, AutomationBench-AA 5, GDP.pdf 5), Coding 25 (FrontierCode 2.0 15, Terminal-Bench 4.0 10), Science 25 (Terminal-Bench-Science 15, CritPt v2 hard 10),
+General 25 (AA-Omniscience v1.1 15, HLE-Diamond 10). AA gives no v4.3.2 → v5 conversion and no statement about whether v4.3.2 scores stay available (the announcement says "v4.3"). Median output tokens per task rose from 35k to 59k.
+
+| Anchor in the skill | Status after v5 | Evidence read 10 Nov | Use |
+|---|---|---|---|
+| Terminal-Bench 4.0 | kept in the Index, same benchmark | Opus 5.5 59.6, Sonnet 5.5 63.6, GLM-5.3 41.9, MiMo-V2.6-Pro 34.8, Grok 4.7 25.8, Qwen3.8 Max 38.9, GPT-6 Luna 12.6, Haiku 5.5 32.8 = the frozen values | old and new rows comparable; DeepSeek V4.1 Flash "1017" reads 33.8 vs the frozen 26.8 of the earlier revision → not comparable |
+| AA-Briefcase v1.1 | kept | Elo drifts a few points as models are added (Opus 1800.6 vs frozen 1807; MiMo-V2.6-Pro 1511.7 vs 1516) | comparable within CI-sized noise; not mixed across dates |
+| AutomationBench-AA | kept | Opus 69.5, Sonnet 71.8 reproduce | comparable |
+| GDP.pdf | kept | Opus 26.2, MiMo-V2.6-Pro 19.2 reproduce | comparable |
+| GDPval-AA v2.1 | removed from the Index; page tagged **Legacy**, still measures new models | Opus 1866.3 reproduces; MiMo-V2.6-Pro 1692 vs frozen 1686 | old rows comparable with each other |
+| AA-LCR v1.1 | removed; **Legacy** | Opus 84.7, Sonnet 82.7 reproduce | old rows comparable with each other |
+| SciCode | removed; "**Under review** following an independent audit of the dataset" | Opus 66.9 reproduces | only behind a † cell |
+| HLE | replaced by **HLE-Diamond** (different 1,000-question set); HLE page **Legacy**, still measured | Opus 61.4, Sonnet 55.0, MiMo-V2.6-Pro 49.4 reproduce | HLE rows never meet HLE-Diamond rows |
+| CritPt | replaced by **CritPt v2 hard subset**; original-dataset page kept | Opus 31.7, Sonnet 31.4 reproduce | CritPt rows never meet v2 rows |
+| AA-Omniscience | **v1.1** (3,000 questions, down from 6,000; scores on average 2 points lower) | the data's `omniscienceV1` field reproduces v1 (Opus 46.4 / 58.6%, Sonnet 32.3 / 47.0%, MiMo-V2.6-Pro 8.4 / 40.6%) | the Argon-vs-Sonnet comparison stays inside v1 |
+| MLCR-AA | hub tag "**Updated**" | Opus 27.8, Sonnet 41.7, MiMo-V2.6-Pro 12.8 vs frozen Claude 67 / 75, best budget 51 | frozen rows labelled "previous version"; no cross-version comparison |
+| Arena Agent Arena | relative to the day's average model | DeepSeek 2.07 (20261017 revision) vs frozen 4.02; Opus 19.96 vs 13.82 | 8 Nov rows never meet 6 Oct rows |
+| AA-AnalystAgent, Harvey LAB, EnterpriseOps-Gym, ITBench, 𝜏³-Banking, MMMU-Pro | not in the Index; Harvey LAB-AA is now "v1.1" ("Updated"), 𝜏³-Banking "Legacy"; the others carry no change tag | not re-read value by value | frozen; Harvey LAB only ever backed a tie |
+| DeepSWE v1.1, FrontierSWE v2, ARC-AGI-2, Vals TB 2.1 | not AA | not re-read this iteration | frozen |
+
+New v5 anchors usable for the pool but not wired in: FrontierCode 2.0 and Terminal-Bench-Science exist only for the models in the page data (budget Flash models other than DeepSeek are absent), so no budget-tier consensus can be derived.
+
+### 14.6 AA v5 rows for the pool (live leaderboard 2026-11-10, `index (USD per task)`)
+
+Fable 5.2 max 65 (26.54) · xhigh 62 (14.83) · high 62 (9.08) · medium 56 (3.80) · low 54 (3.10) — Opus 5.5 max 59 (10.04; the 27 Oct text says 58, the live data 59.1) · xhigh 57 (6.05) · high 52 (3.46) · medium 48 (2.45) · low 35 (0.98) —
+Sonnet 5.5 max 55 (10.02) · xhigh 50 (4.09) · high 42 (1.64) · medium 31 (0.78) · low 26 (0.51) — Haiku 5.5 max 36 (0.41) · xhigh 35 (0.25) · high 30 (0.16) · medium 25 (0.09) · low 19 (0.04) — Gemini 4 Argon high 50 (9.95) — Kimi K3.1 Pro 46 (3.68) —
+Grok 4.7 xhigh 35 (7.77) / high 35 (6.18) / low 31 (2.92) — Tencent Hy4 35 (1.03) — Qwen3.8 Max "0902" 34 (10.02) — DeepSeek V4.1 Flash "1017" max 33 (0.60) / high 29 (0.46) / non-reasoning 19 (0.43) — GLM-5.3 max 32 (5.01) / low 23 (1.57) —
+MiMo-V2.6-Pro 30 (0.26) — MiniMax-M3.1-Flash 29 (0.49) — GPT-6 Luna max 28 (0.15) / xhigh 23 / high 21 / medium 18 / low 10 — GLM-5.3-Flash 28 (0.58) — MiMo-V2.6-Flash 27 (0.13) — MiniMax-M3 19 (1.29) — Gemini 3.8 Flash high 31 (cost not read).
+Not on the page: Kimi K3, Muse Spark 1.3, DeepSeek V4 Pro, Kimi K2.7 Code, Qwen3.7 Plus; "Qwen3.8-Flash-Next" has no index. Open models lost 12–16 points against v4.3.2 (MiMo-V2.6-Pro 46 → 30, GLM-5.3 45 → 32), Claude at most 7 (Haiku 5.5 43 → 36).
+The router's badge uses per-capability anchors, not the Index, so the gap changes no rule; it does make the budget tier's lag behind Claude on this aggregate larger than the frozen table shows.
+
+### 14.7 Open items
+
+(1) Whether Go serves DeepSeek V4.1 Flash "1017" and Qwen3.8 Max "0902". (2) The Argon cap after 30 Nov and a possible Contributor return. (3) Hy4 (AA v5 35 at USD 1.03, USD 60 cap on Go, Arena Agent 4.66% at USD 0.60, Vals TB 4.0 39.39) has no coding row that is comparable with the budget tier in one version: never selected, candidate for the next pass.
+
+### 14.8 Stage 2 resolutions (10 Nov 2026)
+
+**Qwen3.8 Flash identity (D2 + D5).** Bounded check: AA (leaderboards/models, AA-Briefcase v1.1, GDPval-AA v2.1, model pages) and Arena (Agent, Code/WebDev) have no row for a plain "Qwen3.8 Flash" - only "Qwen3.8-Flash-Next" (open-weights, 256k per AA's model page and every models.dev `alibaba/qwen3.8-flash-next` entry). Go's served `qwen3.8-flash` is a different model (closed weights, `limit.context` 1,000,000 in Go's own catalogue and models.dev's `opencode-go` entry). Repo rule applied: every Qwen3.8 Flash benchmark-derived cell is `n/p`, its tasks/month is `n/p`, and it is never selected (unrated) - the same treatment as the paid MiniMax M3.1 Flash listing. Go-derived facts stay (cap USD 30, 1M context, image input, effort list).
+
+**Context gate (D2).** The Step 1 gate "Context > 256k tokens — Qwen3.8 Flash removed" is deleted: 256k is the Flash-Next window; Go's catalogue says 1M. The Grok 4.7 500k gate stays.
+
+**tasks/mo (D1).** One single-date snapshot: Agent Arena page of 8 Nov 2026 ("Nov 8, 2026 — 2,750,973 sessions — 57 models", read 2026-11-10), Cost/Task (P50), `round(cap / p50)`: MiMo-V2.6-Pro 88 (0.17), GLM-5.3 14 (1.08), Kimi K3 18 (0.84), Grok 4.7 5 (2.84), Muse Spark 1.3 128 (0.47), GLM-5.3-Flash 375 (0.16), MiMo-V2.6-Flash 857 (0.07), DeepSeek V4.1 Flash 714 (0.14), GPT 6 Luna 188 (0.08), Qwen3.8 Flash n/p, Qwen3.8 Max 12 (1.20), DeepSeek V4 Pro n/p (no row), MiniMax M3 171 (0.35), Kimi K2.7 Code n/p (no row), Qwen3.7 Plus 400 (0.15), Claude Haiku 5.5 188 (0.08), Gemini 4 Argon 38 (0.78), Gemini 3.8 Flash — (no Go cap), Kimi K3.1 Pro 12 (1.25). Rule BUD1 now states tier membership **by name** (premium five never in a pair; budget tier = MiMo-V2.6-Pro, GLM-5.3-Flash, MiMo-V2.6-Flash, DeepSeek V4.1 Flash), and `scripts/check_opencode_pool.py` checks membership plus the sanity bound that the premium five stay at or below 35 tasks/month (they are at 5-18).
+
+**Pairs after the re-derive.** `knowledge-work` MiMo-V2.6-Pro · GLM-5.3-Flash (MiMo leads both GDPval 1686 and Briefcase 1516 in the budget tier; GLM-5.3-Flash 1647 / 1454 is the next budget model); `doc-data-understanding` MiMo-V2.6-Pro · DeepSeek V4.1 Flash (the two anchor leaders that take image input: GDP.pdf 19 and MMMU-Pro 77). All other rows unchanged.
+
+**AA intervals (D3).** Verified per benchmark on the pages read 2026-11-10: AA-Briefcase v1.1 and GDPval-AA v2.1 publish 95% intervals (Briefcase Sonnet 5.5 (Max) 1816 -10/+12, Opus 5.5 (Max) 1801 -10/+10, MiMo-V2.6-Pro 1512 -9/+9; GDPval Opus 1866 ±26, Sonnet 1838 ±23, MiMo-V2.6-Pro 1692 ±20 - the gaps clear the intervals); the Intelligence Index, Terminal-Bench 4.0 and the score-based rows (HLE, CritPt, Omniscience, AutomationBench-AA, GDP.pdf, AnalystAgent, LCR, SciCode) publish none. Step 5's "AA publishes none" sentence is narrowed accordingly and the knowledge-work badge cell carries the +/- values. No badge cell changes side.
+
+**Sources (read 2026-11-10).** opencode.ai/docs/go · opencode.ai/inference/go/v1/models · opencode.ai/docs/zen · opencode.ai/changelog · opencode.ai/console/changelog/go-teams · raw.githubusercontent.com/anomalyco/models.dev/dev/providers/opencode-go/models/{gemini-4-argon,
+gemini-4-argon-contributor,minimax-m3.1-flash,minimax-m3.1-flash-free,kimi-k3.1-pro}.toml · artificialanalysis.ai (articles/artificial-analysis-intelligence-index-v5, leaderboards/models, evaluations and the data embedded in /evaluations/terminalbench-4-0) ·
+arena.ai/leaderboard/agent (8 Nov) · vals.ai/benchmarks/{terminal-bench-4,vibe-code} (9 Nov).

@@ -44,18 +44,23 @@ TAGS = {
     "doc-data-understanding": ["GDP.pdf", "AA-MMMU-Pro (multimodal)"],
 }
 
-# iteration-23 (Rule BUD1): the pair is chosen inside the BUDGET tier. The premium four
-# burn 4-10% of their monthly Go cap per real agent task (Arena p50), the budget tier
-# 0.1-0.7% -- see tasks_per_month in evals/policy/routing_policy.json.
-# iteration-24: MiniMax M3.1 Flash Free joins the budget tier (Go: unlimited, zero-retention, so
-# cap pressure is nil); the Gemini line is metered by Google credits, not by a Go cap, and is
-# reported next to the premium four (Rule GM1) instead of competing for the budget slot.
-ROUTABLE = ["MiMo-V2.6-Pro", "GLM-5.3-Flash", "MiMo-V2.6-Flash", "DeepSeek V4.1 Flash", "Qwen3.8 Flash",
-            "MiniMax M3.1 Flash"]
+# iteration-23 (Rule BUD1): the pair is chosen inside the BUDGET tier. The premium models burn
+# 4-10% of their monthly Go cap per real agent task (Arena p50), the budget tier 0.1-0.7% --
+# see tasks_per_month in evals/policy/routing_policy.json.
+# iteration-27: MiniMax M3.1 Flash Free left Go (the paid MiniMax M3.1 Flash is unrated, so its scores are
+# NOT copied from the Free listing) and is no longer routable. Gemini 4 Argon is metered by its USD 30 cap
+# and reported next to the premium models (Rule GM1) instead of competing for the budget slot. Kimi K3.1 Pro
+# joins the premium reference (A1-OC only).
+# iteration-27 Stage 2 (D2+D5): Qwen3.8 Flash is unrated -- AA and Arena publish no row for Go's served
+# qwen3.8-flash (1M context); every row under that name is 'Qwen3.8-Flash-Next', a different open-weights
+# 256k model, so its benchmark cells are n/p and it never leads or joins a pair.
+ROUTABLE = ["MiMo-V2.6-Pro", "GLM-5.3-Flash", "MiMo-V2.6-Flash", "DeepSeek V4.1 Flash"]
 GEMINI = ["Gemini 4 Argon", "Gemini 3.8 Flash"]
 NC1_ONLY = ["Muse Spark 1.3", "GPT 6 Luna"]
-PREMIUM = ["GLM-5.3", "Kimi K3", "Grok 4.7", "Qwen3.8 Max"]   # A1-OC only; reported, never led with
+PREMIUM = ["GLM-5.3", "Kimi K3", "Kimi K3.1 Pro", "Grok 4.7", "Qwen3.8 Max"]   # A1-OC only; reported, never led with
 DOMINATED = ["DeepSeek V4 Pro", "MiniMax M3", "Claude Haiku 5.5"]
+UNRATED = ["MiniMax M3.1 Flash",   # AA entity of the Free listing; the paid Go listing is never selected
+           "Qwen3.8 Flash"]        # no row for the served model ('Qwen3.8-Flash-Next' rows are n/p for it)
 
 
 def percentiles(values: dict[str, float], higher_better: bool, models: list[str]) -> dict[str, float]:

@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Fable 5.2 · effort: high
+OpenCode: use Claude — biology-adjacent R&D is unverified on the open pool.
+Evidence: Genomics is a deciding gate on both arms; only Claude carries it, and no open-pool model has verified safeguards for this work.
+Fable 5.2: its biology classifiers may block research tasks — on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused.
+⚡ Claude /fast available (2.5x faster, 2× price).

@@ -9,8 +9,8 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-kurulum)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-kurulum)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-kurulum)
-[![Policy](https://img.shields.io/badge/politika-iteration--25-8b949e?style=flat-square)](CHANGELOG.md)
-[![Regression evals](https://img.shields.io/badge/regresyon_eval-36-8b949e?style=flat-square)](#-doğrulama)
+[![Policy](https://img.shields.io/badge/politika-iteration--27-8b949e?style=flat-square)](CHANGELOG.md)
+[![Regression evals](https://img.shields.io/badge/regresyon_eval-39-8b949e?style=flat-square)](#-doğrulama)
 
 **[Hızlı başlangıç](#-hızlı-başlangıç)** · **[Kurulum](#-kurulum)** · **[Cevabı oku](#-cevabı-okumak)** · **[Nasıl karar verir](#-nasıl-karar-verir)** · **[Örnekler](#-kullanım-örnekleri)** · **[Kanıt](#-hisle-değil-kanıtla)** · **[Değişiklik günlüğü](CHANGELOG.md)** · **[🇬🇧 English](README.md)**
 
@@ -104,7 +104,7 @@ Bir benchmark yalnızca görevin ihtiyacını ölçüyorsa sayılır ve bir yön
 <td valign="top">
 
 ### ✅ Doğrulanabilir
-36 deterministik regresyon promptu, regex tabanlı bir not verici ve CI'da koşan tutarlılık kontrolleri — bkz. [Doğrulama](#-doğrulama).
+39 deterministik regresyon promptu, regex tabanlı bir not verici ve CI'da koşan tutarlılık kontrolleri — bkz. [Doğrulama](#-doğrulama).
 
 </td>
 </tr>
@@ -288,7 +288,7 @@ Cevabı değiştiren sözler:
 
 | Söyle | Etki |
 |---|---|
-| *"bu iş gizli değil"* | İstemleri saklayan ya da eğitimde kullanan GPT 6 Luna, Muse Spark 1.3 ve Gemini 4 Argon'u açar. Üslupla asla varsayılmaz. |
+| *"bu iş gizli değil"* | İstemleri saklayan ya da eğitimde kullanan GPT 6 Luna ve Muse Spark 1.3'ü açar. Üslupla asla varsayılmaz. |
 | *"önceki bir OpenCode denemesi yetersiz kaldı"* | Yükseltir: `#2` premium bir OpenCode modeli olur. `D ≥ 2`'de görevin ana yeteneğinin bir Claude satırı varsa rozet Claude'a geçer. |
 | *"DeepSeek pencerem doldu"* (herhangi bir model) | `Evidence:` satırı o modelin zincirindeki sıradaki modeli söyler. |
 
@@ -354,20 +354,22 @@ Daha fazla örnek (20 satırlık tam tablo) için [İngilizce README](README.md#
 | **Haiku 5.5** | Küçük, sığ işler için maliyet seçimi (`D ≤ 1` okuma ve dönüştürme işleri) |
 | **Sonnet 5.5** | Günlük iş, varsayılan başlangıç |
 | **Opus 5.5** | Zor ajan tabanlı kod için amiral gemisi (`D = 3`) |
-| **Opus 4.8** | Eski — yalnızca saldırgan güvenlik kapısı için tutulur |
-| **Fable 5.1** | Devasa ölçek (1000+ dosya) ve biyolojiye komşu Ar-Ge |
+| **Opus 4.8** | Eski — yalnızca saldırgan güvenlik kapısı için tutulur (`/fast` 30 Kasım 2026'da bitiyor) |
+| **Fable 5.2** | Devasa ölçek (1000+ dosya) ve biyolojiye komşu Ar-Ge (USD 8/40; `/fast` var) |
+| **Mythos 5.2** | Gevşek korumalı Fable 5.2 — yalnızca Life Sciences Verification Program |
 
-**OpenCode Go kolu** — **puanlanan 19 model**, katmanlara ayrılmış. Her Go modelinin *kendi* aylık dolar limiti vardır; önemli olan o limitin bir ayda kaç *gerçek* ajan görevi aldığıdır:
+**OpenCode Go kolu** — **puanlanan 19 model**, katmanlara ayrılmış. Her Go modelinin *kendi* aylık dolar limiti vardır; önemli olan o limitin bir ayda kaç *gerçek* ajan görevi aldığıdır. Katman üyeliği **isimle** belirlenir (Kural BUD1); aşağıdaki görev sayıları 8 Kasım 2026 tarihli tek bir Arena anlık görüntüsüdür ve yalnızca bilgi amaçlıdır:
 
 | Katman | Modeller | Rol |
 |---|---|---|
-| **Bütçe** — varsayılan çiftler | MiMo-V2.6-Flash · GLM-5.3-Flash · DeepSeek V4.1 Flash · Qwen3.8 Flash · MiMo-V2.6-Pro | Limit başına ayda 150–1.500 görev |
-| **Ücretsiz** | MiniMax M3.1 Flash Free | Sıfır saklama, Go limiti yok, sınırlı süre |
-| **Yalnızca gizli olmayan iş** | GPT 6 Luna · Muse Spark 1.3 · Gemini 4 Argon | İşin gizli olmadığını söylersen sunulur — bazıları istemlerle eğitilir |
-| **Premium** — yalnızca yükseltme | Qwen3.8 Max · GLM-5.3 · Kimi K3 · Grok 4.7 | Limit başına ayda 10–33 görev; yönlendirilen çiftte asla yok, yalnızca bildirilen bir yetersizlikten sonra `#2` |
+| **Bütçe** — varsayılan çiftler | MiMo-V2.6-Flash 857 · DeepSeek V4.1 Flash 714 · GLM-5.3-Flash 375 · MiMo-V2.6-Pro 88 | Limit başına ayda 88–857 görev |
+| **Yalnızca gizli olmayan iş** | GPT 6 Luna 188 · Muse Spark 1.3 128 | İşin gizli olmadığını söylersen sunulur — bazıları istemlerle eğitilir |
+| **Premium** — yalnızca yükseltme | Kimi K3 18 · GLM-5.3 14 · Qwen3.8 Max 12 · Kimi K3.1 Pro 12 · Grok 4.7 5 | Limit başına ayda 5–18 görev; yönlendirilen çiftte asla yok, yalnızca bildirilen bir yetersizlikten sonra `#2` |
+| **Gemini (GM1)** — kaplama | Gemini 4 Argon | Go'nun düz `gemini-4-argon`u (Not used / 0 gün), gizli işe açık; yalnızca beş satırda `D = 3` / `R = 3` için `#1`, USD 30 limit — varsayılan çift değil |
+| **Puanlanmamış** — asla seçilmez | Qwen3.8 Flash | Bu ad altındaki her satır "Qwen3.8-Flash-Next", farklı bir açık ağırlıklı model; `n/p` |
 | **Baskın olunan** | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 · Gemini 3.8 Flash | Puanlanır ve izlenir; hiçbir satır bunları üretmez |
 
-> Efor, OpenCode'un o model için *gerçekten sunduğu* varyanttır (`low` / `high` / `max`, `xhigh` ya da `default`); asla reddedeceği bir değer yazılmaz.
+> Efor, OpenCode'un o model için *gerçekten sunduğu* varyanttır (`low` / `high` / `max`, `xhigh` ya da `default`); asla reddedeceği bir değer yazılmaz. DeepSeek V4.1 Flash üç kademeyi de kullanır: `D ≤ 1` `low`, `D = 2` `high`, `D ≥ 3` `max`. DeepSeek'in limiti USD 100 ve sıfır-saklama anlaşması 30 Kasım 2026'ya kadar geçerli.
 
 <br>
 
@@ -377,6 +379,8 @@ Daha fazla örnek (20 satırlık tam tablo) için [İngilizce README](README.md#
 
 - **Benchmark'lar yeteneğe bağlanır.** Saf matematik promptunda Terminal-Bench'in ağırlığı sıfırdır.
 - **Önce karşılaştırılabilirlik.** İki sayı karşılaştırılmadan önce benchmark, sürüm, harness, araç erişimi, iskele *ve* efor eşleşmelidir.
+- **AA Intelligence Index v5 ayrı sütunda yaşar.** Tüm v4.3.2 II / TB / USD-görev-başı rakamları **dondurulmuştur**; v5 sütunu yalnızca 10 Kasım 2026'da yeniden okunanı taşır ve iki sürüm asla karşılaştırılmaz.
+- **AA Elo aralıkları eşitliği çözer.** AA her satır için bir Elo aralığı yayımlar; bu aralığın içinde kalan fark, ne kadar büyük görünürse görünsün bir yön değildir.
 - **Bağımsız kaynaklar yönü belirler.** Artificial Analysis, DeepSWE v1.1 (hata payıyla), Agent Arena, Vals, FrontierSWE v2, ARC-AGI, Gray Swan — [`skill/opencode-evidence.json`](skill/opencode-evidence.json) içinde derlenir. Bir sağlayıcının aynı rakamı yeniden anması iki değil, bir sayıdır. Sağlayıcının bildirdiği efor eğrileri yalnızca bir efor basamağı seçmek için kullanılır, asla bir yön belirlemek için değil.
 - **Yön için uyumlu iki bağımsız ölçüm gerekir.** Tek bir ölçüm yalnızca `R = 3`'te karar verir.
 - Efor basamakları arasında **enterpolasyon yok**; `n/p` (yayımlanmamış) bir cevaptır.
@@ -388,7 +392,7 @@ Ham sayılar [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.md) ve [
 
 ## ✅ Doğrulama
 
-`evals/routing/evals.json`, saf regex ile (döngüde LLM yok) notlanan deterministik bir regresyon setidir — **36 prompt**. Claude modelini ve eforunu, **her iki OpenCode seçimini** (model, efor, sıra), rozetin hangi tarafta olduğunu, anlamlı bir `Evidence:` satırını ve gizlilik varsayılanı için zorunlu / yasak metni denetler.
+`evals/routing/evals.json`, saf regex ile (döngüde LLM yok) notlanan deterministik bir regresyon setidir — **39 prompt**. Claude modelini ve eforunu, **her iki OpenCode seçimini** (model, efor, sıra), rozetin hangi tarafta olduğunu, anlamlı bir `Evidence:` satırını ve gizlilik varsayılanı için zorunlu / yasak metni denetler.
 
 ```bash
 python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # altın çıktılar vs not verici
@@ -400,11 +404,13 @@ python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, 
 
 Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
 
-**Durum (3 Kasım 2026, iteration-25):** yukarıdaki kontrollerin hepsi geçiyor. Taze ajanlarla **36 promptun tamamında soğuk koşu 34/36** aldı; bir kaçırma yeniden koşuda 3/3 geçti, diğeri (`r1`, taranmış fişler) gerçekten kararsız bir prompt olup bilerek açık bırakıldı. Ayrıntı: [`evals/README.md`](evals/README.md).
+**Durum (10 Kasım 2026, iteration-27):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **39/39**. Etkilenen **16 promptun** soğuk koşusu **15/16** (Argon, MiniMax'ın kalkması, Fable 5.2 ve DeepSeek tarihi); `i1` siber korumalar tarafından durduruldu ve koşulmadı, tetikleme eval'i hâlâ proxy. Ayrıntı: [`evals/README.md`](evals/README.md).
 
 ### Bilinen sınırlar
 
 - **Tetikleme eval'i bir vekildir.** İç içe `claude -p` derleme ortamında kimlik doğrulayamıyor; gerçek sayı için `evals/trigger/run_trigger.py`'yi oturum açmış bir terminalden çalıştır.
+- **Biyoloji kapısı `high` eforuna sabittir.** Biyoloji sınıflandırıcıları araştırma görevlerini engelleyebilir: ilk işaretlenen istekte Claude Code oturumu Opus 5'e taşır, sonraki biyoloji işaretli istekler reddedilir. Kapı, D tablosunun `xhigh`'ını almaz: Anthropic'in vendor-raporlu tablosunda Fable 5.2 `high` ile Opus 5.5 `max`, FrontierCode 2.0'da eşleşiyor ve Fable ayrı bir haftalık limitten harcıyor.
+- **1000+ dosya kapısı normal D basamağını kullanır.** Modeli Fable 5.2 yapar, eforu değil: D=3'te `xhigh`, `max` yalnız M1 altında, 30 dakika üstünde `ultracode`. Bu bir ölçek kapısıdır, sınıflandırıcı istisnası değil; mekanik 1000 dosyalık yeniden adlandırma kendi D basamağında kalır.
 - **Fiyatlar, limitler ve saklama koşulları tarihlidir.** Anlık görüntüdür (her satırın tarihine bak) ve OpenCode Go bunları değiştirebilir — birincil kaynaklı düzeltmeler en değerli katkıdır.
 - **Varsayılan OpenCode bir ödünleşimdir.** `D = 2`'de router kodlamayı OpenCode'a yollar; oysa Claude en zor görev ölçütlerinin bazılarında hâlâ önde. Sebep, orta zorluktaki DeepSWE karşılaştırmasının maliyetin çok altında eşit çıkmasıdır. Orada Claude'a ödemeyi tercih edersen bu, [`skill/SKILL.md`](skill/SKILL.md) içindeki rozet tablosunun tek satırıdır.
 - **Yönlendirmede tek doğruluk kaynağı `SKILL.md`'dir**; `claude-ai/` yedeği elle senkronlanan bir türevdir.

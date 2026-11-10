@@ -4,6 +4,34 @@ Routing-policy iterations 21 to 25 (the OpenCode Go era), newest first. Earlier 
 
 ---
 
+## iteration-27 (10 Nov 2026): Fable 5.2, AA Index v5, Argon on Go proper
+
+Everything below was re-read from the primary pages on 10 Nov 2026 (`skill/opencode-benchmarks.md` §14, `skill/reference.md` §23).
+
+- **Claude.** Fable 5.2 (USD 8/40, `fable` alias in Claude Code 2.1.321) replaces Fable 5.1 in the roster and in the biology and 1000+-file gates; Mythos 5.2 is for verified organisations (the launch post does not mention Glasswing).
+  Prices and aliases of Opus 5.5 / Sonnet 5.5 / Haiku 5.5 are unchanged; Haiku 4.5 is still Active. Effort defaults now differ by surface (API: Fable 5.2 and Sonnet 5.5 `high`, Opus 5.5 and Haiku 5.5 `medium`; Claude Code: `medium` on all four).
+  Opus 4.8's `/fast` mode is removed on **30 Nov 2026** (the speed line names the date); Fable 5.2 gets the `/fast` line too (USD 16/80). **Biology gate:** Fable 5.2 stays the default result, but the gate now says its biology classifiers can block research tasks (the Claude Code session moves to Opus 5 on the first flagged request, later ones are refused; Opus 5.5 runs the same classifiers), and a verified organisation (Life Sciences Verification Program) gets Mythos 5.2.
+  Rule A1 is unchanged, but its rationale no longer says "Opus 5.5 ≥ Fable": for Fable 5.2 the vendor table favours Fable, AA's v5 Index (62 vs 59) has no interval, and Vals' Terminal-Bench 4.0 has them level — unresolved.
+- **AA Intelligence Index v5 (27 Oct).** Every II / TB / USD-per-task figure stays **frozen as v4.3.2**; a separate `II v5 (USD/task)` column holds what was re-read, and the two versions are never compared. Per-anchor audit: Terminal-Bench 4.0, AA-Briefcase v1.1, GDP.pdf and AutomationBench-AA are unchanged;
+  GDPval-AA v2.1, AA-LCR v1.1 and SciCode left the Index (SciCode is now "under review"); HLE → HLE-Diamond, CritPt → CritPt v2, AA-Omniscience → v1.1 and MLCR-AA ("Updated") are different benchmarks, so old rows never meet new ones. **AA also publishes Elo intervals:** a gap inside the interval is not a direction.
+- **OpenCode Go.** Gemini 4 Argon is now Go's plain `gemini-4-argon` (privacy table: Not used / 0 days; the Contributor route is gone from the catalogue), so Rule GM1 is **open to confidential work** — still only at `D = 3` or `R = 3` on five rows, USD 30 cap at half price through 30 Nov (≈ 38 tasks/month, ≈ 19 after) — and the `research-synthesis` `R = 3` badge cell reads OpenCode †. MiniMax M3.1 Flash Free left Go, so the `deep-reasoning`, `science` and `doc-data` rows revert to FR1's fallback (GLM-5.3-Flash / Qwen3.8 Flash · MiMo-V2.6-Pro); the paid MiniMax M3.1 Flash is never selected.
+  Kimi K3.1 Pro joins as a premium model (USD 15 cap, ≈ 12 tasks/month) and replaces Kimi K3 in A1-OC with `low-confidence`. DeepSeek V4.1 Flash cap USD 100, zero-retention agreement valid through 30 Nov. Go Teams (USD 20/member) is a note. Pool stays **19**. **BUD1 is stated by name** (premium five: GLM-5.3, Kimi K3, Kimi K3.1 Pro, Grok 4.7, Qwen3.8 Max; budget: MiMo-V2.6-Pro, GLM-5.3-Flash, MiMo-V2.6-Flash, DeepSeek V4.1 Flash); the 140/35 thresholds are retired. **Qwen3.8 Flash is unrated** — every row under that name is "Qwen3.8-Flash-Next", a different open-weights model, so it is never selected.
+- **Evals.** `routing/evals.json` is **39 prompts** (new `fa1`, `k2`); the moved goldens are listed in `evals/README.md`. Self-test 39/39, policy sync, pool check, example check, README-facts check, benchmark validator and compiler tests green. Cold-agent run on the 16 affected prompts: 15/16 (`c3` still fails; `i1` was stopped by the cyber safeguards and not run).
+
+---
+
+## iteration-26 (6 Nov 2026): DeepSeek's middle effort rung
+
+DeepSeek V4.1 Flash offers `low`/`high`/`max`, but the router only ever wrote `low` (at `D ≤ 1`) or `max` (at `D ≥ 2`), so `high` — the DeepSeek API default — was effectively unreachable. E7 now uses all three rungs on that model:
+
+- **`D ≤ 1` → `low`, `D = 2` → `high`, `D ≥ 3` → `max`.**
+- **Why `high` at `D = 2`:** DeepSeek's V4.1-Flash paper places API `high` at effort 75 and reports effort 60–80 recovering most of `max`'s accuracy at under half the tokens; the final step to effort 100 lengthens agent trajectories by 1.6–1.8× for only marginal gains, so `max` is "best reserved for the most challenging tasks". `D = 2` is multi-step but well-documented, and `max` costs USD 0.25–0.27 per AA task — quota is not the constraint, tokens and latency are.
+- **The `high` rung is vendor-curve, not an independent AA figure.** AA's only DeepSeek rows are non-reasoning 25 and `max` 39, so `D ≥ 3` stays on `max`, where the independent evidence sits. The caveat is kept in E7.
+- **GLM-5.3 and GLM-5.3-Flash stay `low`/`max`.** AA measured GLM-5.3 only at `low` 34 → `max` 45 and GLM-5.3-Flash at one unlabelled rung. GLM-5.3's Z.ai Code Bench curve (`high` 31.4% vs `max` 34.5%) is vendor-reported and own-model — a rung choice, but A1-OC reaches GLM-5.3 only after an earlier run fell short, so that escalation keeps the vendor's top rung; GLM-5.3-Flash has no own-model rung curve at all.
+- **Evals:** `b1` (`D=2` refactor) moves to DeepSeek `high`, `b2` (new `D=2` rate-limiter feature) asserts it, `c1`/`c3`/`e1`/`m1`/`p1`/`w1` follow; `a1` still expects `low`, `d1`/`c2`/`v1` still expect `max` at `D=3`.
+
+---
+
 ## iteration-25 (3 Nov 2026): `ultracode` is a toggle, not an effort level
 
 Claude Code v2.1.284 turned Ultracode into its own switch: it **no longer forces `xhigh`** and stays on at any effort level

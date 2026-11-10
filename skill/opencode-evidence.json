@@ -1,5 +1,5 @@
 {
-  "_about": "Independent multi-source evidence for the OpenCode Go pool (+ Claude reference rows). Audit data only — never loaded to route. Values are as published on the source page on 2026-10-06 (Claude Haiku 5.5 rows and the Arena cost refresh: 2026-10-08); null/absent = not published. 'indep' = run by an evaluator that is not the model's vendor. Sources are listed per anchor. Compiled into rows by scripts/derive_opencode_rows.py.",
+  "_about": "Independent multi-source evidence for the OpenCode Go pool (+ Claude reference rows). Audit data only - never loaded to route. Values are as published on the source page on 2026-10-06 (Claude Haiku 5.5 rows and the Arena cost refresh: 2026-10-08); null/absent = not published or not re-read. 'indep' = run by an evaluator that is not the model's vendor. Sources are listed per anchor. Compiled into rows by scripts/derive_opencode_rows.py. Iteration-27 (2026-11-10): the `iteration_27` block holds what was re-read on 2026-11-10 (AA Intelligence Index v5.0.1, Go page and catalogue, Arena 2026-11-08, Vals 2026-11-09). Values from different dates or different benchmark versions are never compared. Qwen3.8 Flash: every benchmark-derived cell is removed (n/p) - AA and Arena publish no row for the served model, only 'Qwen3.8-Flash-Next' (a different, open-weights 256k model); Go-derived facts stay. The Arena cost column is the single 8 Nov 2026 snapshot.",
   "models": [
     "MiMo-V2.6-Pro",
     "GLM-5.3",
@@ -19,7 +19,8 @@
     "Claude Haiku 5.5",
     "MiniMax M3.1 Flash",
     "Gemini 4 Argon",
-    "Gemini 3.8 Flash"
+    "Gemini 3.8 Flash",
+    "Kimi K3.1 Pro"
   ],
   "anchors": {
     "AA Terminal-Bench 4.0": {
@@ -43,7 +44,6 @@
         "GLM-5.3-Flash": 32.8,
         "DeepSeek V4.1 Flash": 26.8,
         "Grok 4.7": 25.8,
-        "Qwen3.8 Flash": 25.0,
         "MiMo-V2.6-Flash": 23.0,
         "DeepSeek V4 Pro": 14.0,
         "Kimi K3": 12.6,
@@ -51,7 +51,11 @@
         "MiniMax M3": 2.0,
         "Claude Opus 5.5": 59.6,
         "Claude Sonnet 5.5": 63.6,
-        "Claude Haiku 5.5": 32.8
+        "Claude Haiku 5.5": 32.8,
+        "Kimi K3.1 Pro": 67.2
+      },
+      "iteration_27_note": {
+        "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
       }
     },
     "DeepSWE v1.1 (Mercor/Datacurve)": {
@@ -105,29 +109,32 @@
         "GLM-5.3": 2.36,
         "GPT 6 Luna": 1.35,
         "DeepSeek V4 Pro": 1.19,
-        "Qwen3.8 Flash": 0.73,
         "MiMo-V2.6-Flash": 0.57,
         "GLM-5.3-Flash": 0.44,
         "Claude Opus 5.5": 13.82,
         "Claude Sonnet 5.5": 12.52
       },
       "cost_per_task_p50_usd": {
-        "Kimi K3": 0.72,
-        "Grok 4.7": 1.54,
-        "DeepSeek V4.1 Flash": 0.13,
-        "Muse Spark 1.3": 0.43,
-        "MiMo-V2.6-Pro": 0.1,
-        "Qwen3.8 Max": 0.45,
-        "GLM-5.3": 0.66,
-        "GPT 6 Luna": 0.07,
-        "DeepSeek V4 Pro": 0.32,
-        "Qwen3.8 Flash": 0.15,
-        "MiMo-V2.6-Flash": 0.04,
-        "GLM-5.3-Flash": 0.1,
-        "Claude Opus 5.5": 1.67,
-        "Claude Sonnet 5.5": 3.04
+        "Claude Opus 5.5": 6.06,
+        "Claude Sonnet 5.5": 3.35,
+        "Gemini 4 Argon": 0.78,
+        "Kimi K3.1 Pro": 1.25,
+        "DeepSeek V4.1 Flash": 0.14,
+        "MiMo-V2.6-Pro": 0.17,
+        "GLM-5.3": 1.08,
+        "Kimi K3": 0.84,
+        "Grok 4.7": 2.84,
+        "Gemini 3.8 Flash": 0.63,
+        "Muse Spark 1.3": 0.47,
+        "MiMo-V2.6-Flash": 0.07,
+        "GLM-5.3-Flash": 0.16,
+        "GPT 6 Luna": 0.08,
+        "Qwen3.8 Max": 1.2,
+        "MiniMax M3": 0.35,
+        "Qwen3.7 Plus": 0.15,
+        "Claude Haiku 5.5": 0.08
       },
-      "note": "MiniMax M3 row (rank 43, 6.87%) is internally inconsistent in the extraction and is excluded. Cost/task refreshed 2026-10-08 (Opus 5.5 High 1.67, Sonnet 5.5 Max 3.04, DeepSeek 0.13, Luna 0.07). Claude Haiku 5.5 is not on the Agent Arena leaderboard."
+      "note": "MiniMax M3 row (rank 43, 6.87%) was internally inconsistent in the 6 Oct extraction and was excluded then; the 8 Nov row ('MiniMax-M3' 10.42%+-1.19%, 44,355 sessions, $0.35) reads consistently. cost_per_task_p50_usd is ONE single-date snapshot: the Agent Arena page of 8 Nov 2026 ('Nov 8, 2026 - 2,750,973 sessions - 57 models', read 2026-11-10), Cost/Task (P50) column, headline rung per model (GPT-6 Luna Max $0.08 - its Medium $0.03 / Low $0.01 rungs are separate rows). Rows with no page row on that date are absent (n/p): DeepSeek V4 Pro, Kimi K2.7 Code. Qwen3.8 Flash is absent too: the only Qwen3.8 Flash-class row is 'Qwen3.8-Flash-Next' ($0.22), a different model (open-weights, 256k) from Go's served qwen3.8-flash - its values are n/p for the pool model. Net-improvement values are relative to the day's average model, so rows of different dates are never compared."
     },
     "Terminal-Bench 2.1 (Vals)": {
       "tags": [
@@ -163,7 +170,6 @@
         "Kimi K3": 76.2,
         "Muse Spark 1.3": 75.8,
         "GLM-5.3": 74.8,
-        "Qwen3.8 Flash": 73.0,
         "DeepSeek V4 Pro": 68.8,
         "MiniMax M3": 58.6
       }
@@ -215,7 +221,6 @@
       "values": {
         "Kimi K3": 1658,
         "Muse Spark 1.3": 1657,
-        "Qwen3.8 Flash": 1637,
         "MiMo-V2.6-Pro": 1628,
         "GLM-5.3": 1623,
         "DeepSeek V4.1 Flash": 1620,
@@ -249,11 +254,14 @@
         "DeepSeek V4.1 Flash": 39.2,
         "MiniMax M3": 39.0,
         "GPT 6 Luna": 38.5,
-        "Qwen3.8 Flash": 38.0,
         "MiMo-V2.6-Flash": 35.1,
         "Claude Opus 5.5": 61.4,
         "Claude Sonnet 5.5": 55.0,
-        "Claude Haiku 5.5": 44.4
+        "Claude Haiku 5.5": 44.4,
+        "Kimi K3.1 Pro": 52.5
+      },
+      "iteration_27_note": {
+        "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
       }
     },
     "CritPt": {
@@ -279,11 +287,14 @@
         "GLM-5.3-Flash": 15.4,
         "DeepSeek V4.1 Flash": 14.3,
         "MiMo-V2.6-Flash": 12.0,
-        "Qwen3.8 Flash": 11.1,
         "MiniMax M3": 3.7,
         "Claude Opus 5.5": 31.7,
         "Claude Sonnet 5.5": 31.4,
-        "Claude Haiku 5.5": 18.9
+        "Claude Haiku 5.5": 18.9,
+        "Kimi K3.1 Pro": 24.6
+      },
+      "iteration_27_note": {
+        "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
       }
     },
     "ARC-AGI-2": {
@@ -319,7 +330,6 @@
         "Muse Spark 1.3": 1684,
         "Qwen3.8 Max": 1671,
         "GLM-5.3": 1653,
-        "Qwen3.8 Flash": 1648,
         "GLM-5.3-Flash": 1647,
         "MiMo-V2.6-Flash": 1611,
         "DeepSeek V4.1 Flash": 1600,
@@ -346,7 +356,6 @@
         "Grok 4.7": 1644,
         "Qwen3.8 Max": 1621,
         "Muse Spark 1.3": 1583,
-        "Qwen3.8 Flash": 1583,
         "MiMo-V2.6-Pro": 1516,
         "GLM-5.3": 1510,
         "Kimi K3": 1501,
@@ -430,12 +439,15 @@
         "Kimi K3": 58.3,
         "Muse Spark 1.3": 57.9,
         "Qwen3.8 Max": 56.0,
-        "Qwen3.8 Flash": 56.0,
         "GPT 6 Luna": 53.2,
         "MiniMax M3": 21.3,
         "Claude Opus 5.5": 69.5,
         "Claude Sonnet 5.5": 71.8,
-        "Claude Haiku 5.5": 35.4
+        "Claude Haiku 5.5": 35.4,
+        "Kimi K3.1 Pro": 73.3
+      },
+      "iteration_27_note": {
+        "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
       }
     },
     "AA Tau3 Banking": {
@@ -506,12 +518,15 @@
         "DeepSeek V4 Pro": 80.3,
         "GLM-5.3-Flash": 80.0,
         "GLM-5.3": 79.7,
-        "Qwen3.8 Flash": 79.7,
         "Grok 4.7": 76.7,
         "MiMo-V2.6-Flash": 74.3,
         "Claude Opus 5.5": 84.7,
         "Claude Sonnet 5.5": 82.7,
-        "Claude Haiku 5.5": 82.7
+        "Claude Haiku 5.5": 82.7,
+        "Kimi K3.1 Pro": 86.3
+      },
+      "iteration_27_note": {
+        "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
       }
     },
     "MLCR-AA": {
@@ -557,12 +572,15 @@
         "MiniMax M3": 1.4,
         "DeepSeek V4 Pro": 0.8,
         "GPT 6 Luna": 0.7,
-        "Qwen3.8 Flash": -9.7,
         "DeepSeek V4.1 Flash": -5.3,
         "MiMo-V2.6-Flash": -12.7,
         "Claude Opus 5.5": 46.4,
         "Claude Sonnet 5.5": 32.3,
-        "Claude Haiku 5.5": 10.7
+        "Claude Haiku 5.5": 10.7,
+        "Kimi K3.1 Pro": 29.5
+      },
+      "iteration_27_note": {
+        "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
       }
     },
     "AA-Omniscience hallucination rate (lower better)": {
@@ -581,14 +599,17 @@
         "GLM-5.3": 29.6,
         "Muse Spark 1.3": 32.9,
         "MiMo-V2.6-Pro": 40.6,
-        "Qwen3.8 Flash": 45.3,
         "Kimi K3": 53.2,
         "MiMo-V2.6-Flash": 54.4,
         "GPT 6 Luna": 76.7,
         "DeepSeek V4 Pro": 94.1,
         "DeepSeek V4.1 Flash": 96.5,
         "Claude Opus 5.5": 58.6,
-        "Claude Sonnet 5.5": 47.0
+        "Claude Sonnet 5.5": 47.0,
+        "Kimi K3.1 Pro": 43.9
+      },
+      "iteration_27_note": {
+        "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
       }
     },
     "AA-SciCode": {
@@ -612,12 +633,15 @@
         "DeepSeek V4.1 Flash": 51.9,
         "GLM-5.3-Flash": 51.6,
         "MiMo-V2.6-Flash": 51.3,
-        "Qwen3.8 Flash": 50.6,
         "DeepSeek V4 Pro": 51.0,
         "MiniMax M3": 47.1,
         "Claude Opus 5.5": 66.9,
         "Claude Sonnet 5.5": 61.0,
-        "Claude Haiku 5.5": 55.0
+        "Claude Haiku 5.5": 55.0,
+        "Kimi K3.1 Pro": 60.8
+      },
+      "iteration_27_note": {
+        "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
       }
     },
     "GDP.pdf": {
@@ -643,7 +667,11 @@
         "MiniMax M3": 9.8,
         "Claude Opus 5.5": 26.2,
         "Claude Sonnet 5.5": 25.8,
-        "Claude Haiku 5.5": 20.8
+        "Claude Haiku 5.5": 20.8,
+        "Kimi K3.1 Pro": 31.4
+      },
+      "iteration_27_note": {
+        "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
       }
     },
     "AA-MMMU-Pro (multimodal)": {
@@ -657,7 +685,6 @@
       "values": {
         "MiniMax M3.1 Flash": 79.1,
         "Kimi K3": 80.5,
-        "Qwen3.8 Flash": 79.8,
         "GPT 6 Luna": 79.7,
         "MiniMax M3": 78.6,
         "DeepSeek V4.1 Flash": 77.0,
@@ -1285,5 +1312,553 @@
       }
     },
     "go_only_revision_2026_10_26": "User cannot use the Google membership in OpenCode: Gemini 4 Argon is reachable only as opencode-go/gemini-4-argon-contributor (USD 60 promo cap, trains on prompts) -> NC1-only overlay (Rule GM1). The google_membership / overload_errors blocks are background, not router inputs."
+  },
+  "iteration_27": {
+    "date": "2026-11-10",
+    "scope": "Claude 5.2 generation, AA Intelligence Index v5, Go page changes (Gemini 4 Argon, MiniMax, Kimi K3.1 Pro, DeepSeek cap). Every number was re-read from the cited primary page on 2026-11-10 unless a date says otherwise; n/p = not published or not re-read.",
+    "go_page": {
+      "source": "opencode.ai/docs/go (redirects to /docs/console/go/) and opencode.ai/inference/go/v1/models, read 2026-11-10; no date printed on the page",
+      "models_listed": 32,
+      "caps_usd_go": {
+        "MiMo-V2.6-Pro": 15,
+        "GLM-5.3": 15,
+        "Kimi K3": 15,
+        "Kimi K3.1 Pro": 15,
+        "Grok 4.7": 15,
+        "Muse Spark 1.3 Contributor": 60,
+        "GLM-5.3-Flash": 60,
+        "MiMo-V2.6-Flash": 60,
+        "DeepSeek V4.1 Flash": 100,
+        "GPT 6 Luna": 15,
+        "Qwen3.8 Flash": 30,
+        "Qwen3.8 Max": 15,
+        "DeepSeek V4 Pro": 15,
+        "MiniMax M3": 60,
+        "Kimi K2.7 Code": 60,
+        "Qwen3.7 Plus": 60,
+        "Claude Haiku 5.5": 15,
+        "Gemini 4 Argon": 30,
+        "MiniMax M3.1 Flash": 20,
+        "Hy4": 60,
+        "Hy4 preview": 30,
+        "Hy3": 60,
+        "GLM-5.2": 60,
+        "LongCat-2.0": 60,
+        "Step 5 Preview": 15,
+        "MiMo-V2.5": 60,
+        "MiMo-V2.5-Pro": 15,
+        "Muse Spark 1.2 Contributor": 60,
+        "GPT 5.6 Luna": 15
+      },
+      "plans": {
+        "Go": "USD 10/month",
+        "Go Plus": "USD 40/month",
+        "Go Teams": "USD 20/member/month, USD 5/month higher than Go on every model, Extra Usage on by default"
+      },
+      "privacy_table": {
+        "not_trained_0d": [
+          "Gemini 4 Argon",
+          "GLM-5.3-Flash",
+          "GLM-5.3",
+          "GLM-5.2",
+          "Kimi K3.1 Pro",
+          "Kimi K3",
+          "Kimi K2.7 Code",
+          "LongCat-2.0",
+          "MiMo-V2.6-Pro",
+          "MiMo-V2.6-Flash",
+          "MiMo-V2.5-Pro",
+          "MiMo-V2.5",
+          "Qwen3.8 Max",
+          "Qwen3.8 Flash",
+          "Qwen3.7 Plus",
+          "MiniMax M3.1 Flash",
+          "MiniMax M3",
+          "Hy4",
+          "Hy4 preview",
+          "Hy3",
+          "Step 5 Preview",
+          "LongCat 2.5 Free"
+        ],
+        "not_trained_30d": [
+          "Grok 4.7",
+          "GPT 6 Luna",
+          "GPT 5.6 Luna",
+          "Claude Haiku 5.5",
+          "Beam Free"
+        ],
+        "trains_not_zdr": [
+          "Muse Spark 1.3 Contributor",
+          "Muse Spark 1.2 Contributor",
+          "Iceman Contributor Free"
+        ],
+        "deepseek": "0 days*, ZDR agreement renewed monthly, 'valid through November 30, 2026'; needs Global region"
+      },
+      "peak_hours_deepseek": "Peak hours are 01:00-04:00 and 06:00-10:00 UTC, Monday through Friday (2x price) - unchanged",
+      "gemini_4_argon": {
+        "id": "gemini-4-argon (route /inference/go/google/v1beta)",
+        "cap_usd": 30,
+        "price_per_mtok_go": [
+          2.0,
+          10.0,
+          0.1
+        ],
+        "price_note": "page header 'Gemini 4 Argon (50% off)', list USD 4/20/0.20; 'The 50% discount applies through November 30, 2026'; catalogue multiplier factor 2 from 2026-12-01",
+        "training_retention": "Not used / 0 days (Go privacy table)",
+        "contributor_route": "gemini-4-argon-contributor is absent from Go's /v1/models and is status 'deprecated' in models.dev; return of a Contributor route: not stated",
+        "cap_after_2026_11_30": "not stated (n/p)",
+        "tasks_per_month": {
+          "at_promo_price": 38,
+          "at_list_price_derived": 19,
+          "basis": "cap 30 / Arena p50 0.78 (Arena price column USD 2/10); list price assumed to double the cost per task"
+        }
+      },
+      "minimax": {
+        "free_on_go": "no longer listed; models.dev minimax-m3.1-flash-free status deprecated; paid 'MiniMax M3.1 Flash' (Go list price from 2026-10-22 per models.dev comment) cap USD 20, 0 days, not trained on",
+        "same_base_model": "minimax/MiniMax-M3.1-Flash for both listings (models.dev); the free listing's AA rows are therefore NOT copied onto the paid listing - it stays unrated",
+        "aa_v5": {
+          "MiniMax-M3.1-Flash": {
+            "II": 29,
+            "usd_per_task": 0.49
+          }
+        }
+      },
+      "kimi_k3_1_pro": {
+        "id": "kimi-k3.1-pro",
+        "release": "2026-10-23",
+        "cap_usd": 15,
+        "price_per_mtok": [
+          2.0,
+          10.0,
+          0.2
+        ],
+        "context": 1048576,
+        "effort": [
+          "low",
+          "high",
+          "max"
+        ],
+        "default_effort": "max",
+        "retention": "Not used / 0 days",
+        "tasks_per_month": 12
+      },
+      "deepseek_v4_1_flash": {
+        "cap_usd": 100,
+        "changelog": "opencode.ai/changelog v2.2.4, 2026-10-30: 'Raised OpenCode Go limits for DeepSeek V4.1 Flash' (no figures printed)",
+        "tasks_per_month": 714,
+        "basis": "100 / 0.14 (Arena row 20261017); 100 / 0.13 (8 Oct snapshot) would give 769"
+      },
+      "zen_free_twins": [
+        "glm-5.3-flash-free",
+        "deepseek-v4.1-flash-free",
+        "minimax-m3.1-flash-free"
+      ],
+      "zen_free_twins_note": "opencode.ai/docs/zen: 'free on OpenCode for a limited time ... zero-retention policy and does not use your data for model training' for these three; mimo-v2.6-flash-free: 'data may be used to improve the model'",
+      "catalogue_discrepancy": "RESOLVED (iteration-27 Stage 2): qwen3.8-flash context in Go's /v1/models is 1,000,000 (models.dev opencode-go agrees) - the 256k figure belongs to 'Qwen3.8-Flash-Next', a different model; the Step 1 gate 'Context > 256k -> Qwen3.8 Flash removed' is deleted (Grok 4.7's 500k gate stays)."
+    },
+    "aa_index_v5": {
+      "source": "artificialanalysis.ai/articles/artificial-analysis-intelligence-index-v5 (2026-10-27), /leaderboards/models and the data embedded in /evaluations/terminalbench-4-0, read 2026-11-10; page label 'Artificial Analysis Intelligence Index v5.0.1'",
+      "components_weights": {
+        "Knowledge Work 25": "AA-Briefcase 15, AutomationBench-AA 5, GDP.pdf 5",
+        "Coding 25": "FrontierCode 2.0 15, Terminal-Bench 4.0 10",
+        "Science 25": "Terminal-Bench-Science 15, CritPt v2 hard subset 10",
+        "General 25": "AA-Omniscience v1.1 15 (10 accuracy + 5 non-hallucination), HLE-Diamond 10"
+      },
+      "removed": [
+        "GDPval-AA v2.1",
+        "SciCode",
+        "AA-LCR v1.1"
+      ],
+      "no_interval_for_index": "no confidence interval for the Index or Terminal-Bench 4.0 was found; the Elo benchmarks DO publish 95% intervals (page data lower95ci/upper95ci, leaderboard CI column: AA-Briefcase v1.1 and GDPval-AA v2.1 - verified per benchmark on artificialanalysis.ai/evaluations/aa-briefcase and /evaluations/gdpval-aa, read 2026-11-10). Step 5 wording is narrowed accordingly: only the score-based AA rows stay UNRESOLVED.",
+      "opus_5_5_max": {
+        "article_2026_10_27": 58,
+        "live_leaderboard_and_data_2026_11_10": 59.1,
+        "resolution": "live data 59.1 (rounds to 59); the announcement text says 58; written as 59 with the conflict noted"
+      },
+      "rows": {
+        "Claude Fable 5.2": {
+          "max": [
+            65,
+            26.54
+          ],
+          "xhigh": [
+            62,
+            14.83
+          ],
+          "high": [
+            62,
+            9.08
+          ],
+          "medium": [
+            56,
+            3.8
+          ],
+          "low": [
+            54,
+            3.1
+          ]
+        },
+        "Claude Opus 5.5": {
+          "max": [
+            59,
+            10.04
+          ],
+          "xhigh": [
+            57,
+            6.05
+          ],
+          "high": [
+            52,
+            3.46
+          ],
+          "medium": [
+            48,
+            2.45
+          ],
+          "low": [
+            35,
+            0.98
+          ]
+        },
+        "Claude Sonnet 5.5": {
+          "max": [
+            55,
+            10.02
+          ],
+          "xhigh": [
+            50,
+            4.09
+          ],
+          "high": [
+            42,
+            1.64
+          ],
+          "medium": [
+            31,
+            0.78
+          ],
+          "low": [
+            26,
+            0.51
+          ]
+        },
+        "Claude Haiku 5.5": {
+          "max": [
+            36,
+            0.41
+          ],
+          "xhigh": [
+            35,
+            0.25
+          ],
+          "high": [
+            30,
+            0.16
+          ],
+          "medium": [
+            25,
+            0.09
+          ],
+          "low": [
+            19,
+            0.04
+          ]
+        },
+        "Gemini 4 Argon": {
+          "high": [
+            50,
+            9.95
+          ]
+        },
+        "Kimi K3.1 Pro": {
+          "-": [
+            46,
+            3.68
+          ]
+        },
+        "Grok 4.7": {
+          "xhigh": [
+            35,
+            7.77
+          ],
+          "high": [
+            35,
+            6.18
+          ],
+          "low": [
+            31,
+            2.92
+          ]
+        },
+        "Tencent Hy4": {
+          "-": [
+            35,
+            1.03
+          ]
+        },
+        "Qwen3.8 Max (0902 revision)": {
+          "-": [
+            34,
+            10.02
+          ]
+        },
+        "DeepSeek V4.1 Flash 1017": {
+          "max": [
+            33,
+            0.6
+          ],
+          "high": [
+            29,
+            0.46
+          ],
+          "non-reasoning": [
+            19,
+            0.43
+          ]
+        },
+        "GLM-5.3": {
+          "max": [
+            32,
+            5.01
+          ],
+          "low": [
+            23,
+            1.57
+          ]
+        },
+        "MiMo-V2.6-Pro": {
+          "-": [
+            30,
+            0.26
+          ]
+        },
+        "MiniMax-M3.1-Flash": {
+          "-": [
+            29,
+            0.49
+          ]
+        },
+        "GPT-6 Luna": {
+          "max": [
+            28,
+            0.15
+          ],
+          "xhigh": [
+            23,
+            0.1
+          ],
+          "high": [
+            21,
+            0.07
+          ],
+          "medium": [
+            18,
+            0.04
+          ],
+          "low": [
+            10,
+            0.01
+          ]
+        },
+        "GLM-5.3-Flash": {
+          "-": [
+            28,
+            0.58
+          ]
+        },
+        "MiMo-V2.6-Flash": {
+          "-": [
+            27,
+            0.13
+          ]
+        },
+        "MiniMax-M3": {
+          "-": [
+            19,
+            1.29
+          ]
+        },
+        "Gemini 3.8 Flash": {
+          "high": [
+            31,
+            null
+          ]
+        }
+      },
+      "rows_missing": [
+        "Kimi K3",
+        "Muse Spark 1.3 (Contributor)",
+        "Qwen3.8 Flash ('Qwen3.8-Flash-Next' has no index)",
+        "DeepSeek V4 Pro",
+        "Kimi K2.7 Code",
+        "Qwen3.7 Plus"
+      ],
+      "terminal_bench_4_0_unchanged": {
+        "Claude Opus 5.5": 59.6,
+        "Claude Sonnet 5.5": 63.6,
+        "GLM-5.3": 41.9,
+        "MiMo-V2.6-Pro": 34.8,
+        "Grok 4.7": 25.8,
+        "Qwen3.8 Max (0902)": 38.9,
+        "GPT-6 Luna": 12.6,
+        "Claude Haiku 5.5": 32.8,
+        "note": "identical (to rounding) to the frozen v4.3.2 values; DeepSeek V4.1 Flash 1017 reads 33.8 against the frozen 26.8 of the earlier revision"
+      },
+      "anchor_audit": {
+        "Terminal-Bench 4.0": "kept in Index v5, same benchmark; old and new rows comparable",
+        "AA-Briefcase v1.1": "kept; Elo values drift a few points as models are added (Opus 5.5 1800.6 vs frozen 1807)",
+        "AutomationBench-AA": "kept; values reproduce (Opus 69.5, Sonnet 71.8)",
+        "GDP.pdf": "kept; values reproduce (Opus 26.2, MiMo-V2.6-Pro 19.2)",
+        "GDPval-AA v2.1": "removed from the Index; page tagged Legacy, still measures new models (Kimi K3.1 Pro 1860.9); Elo drifts (MiMo-V2.6-Pro 1692 vs frozen 1686)",
+        "AA-LCR v1.1": "removed from the Index; Legacy page, values reproduce (Opus 84.7, Sonnet 82.7)",
+        "SciCode": "removed from the Index; tagged 'Under review' following an independent audit of the dataset",
+        "HLE": "replaced in the Index by HLE-Diamond (different 1,000-question set); legacy HLE page keeps measuring (Opus 61.4, MiMo-V2.6-Pro 49.4 reproduce)",
+        "CritPt": "replaced by CritPt v2 hard subset; the original-dataset page is kept (Opus 31.7 reproduces)",
+        "AA-Omniscience": "v1.1 (3,000 questions, down from 6,000); the v1 values reproduce from the data's omniscienceV1 field (Opus 46.4, Sonnet 32.3, MiMo-V2.6-Pro 8.4); v1.1 scores average 2 points lower",
+        "MLCR-AA": "evaluation hub tag 'Updated'; current values (Opus 27.8, Sonnet 41.7, MiMo-V2.6-Pro 12.8) do not match the frozen scale (Claude 67 / 75) - treated as a new version",
+        "Arena Agent Arena": "net improvement is relative to the day's average model; 8 Nov rows are not comparable with the 6 Oct rows (DeepSeek 2.07 for revision 20261017 vs frozen 4.02)"
+      },
+      "terminal_bench_science_v5": {
+        "Kimi K3.1 Pro": 34.3,
+        "DeepSeek V4.1 Flash 1017": 12.9,
+        "Hy4": 12.9,
+        "Qwen3.8 Max (0902)": 11.9,
+        "Grok 4.7": 11.4,
+        "GLM-5.3": 9.5,
+        "GPT-6 Luna": 8.6,
+        "MiMo-V2.6-Pro": 5.7,
+        "note": "Flash-tier models other than DeepSeek are not in the page data: no budget-tier consensus is derivable"
+      }
+    },
+    "vals_terminal_bench_4_0": {
+      "source": "vals.ai/benchmarks/terminal-bench-4, 'Updated 11/9/2026', Mini-SWE-agent, avg@3",
+      "rows": {
+        "Claude Fable 5.2": 65.15,
+        "Claude Opus 5.5": 65.15,
+        "Claude Sonnet 5.5": 64.14,
+        "Kimi K3.1 Pro": 63.64,
+        "Gemini 4 Argon": 57.58,
+        "GLM 5.3": 38.89,
+        "GLM 5.3 Flash": 37.37,
+        "MiMo V2.6 Pro": 31.31,
+        "DeepSeek V4.1 Flash": 19.7
+      }
+    },
+    "vals_vibe_code_v1_1": {
+      "Gemini 4 Argon": 91.91,
+      "Kimi K3.1 Pro": 84.89
+    },
+    "arena_agent_2026_11_08": {
+      "Claude Opus 5.5 (Max)": [
+        19.96,
+        6.06
+      ],
+      "Claude Sonnet 5.5 (Max)": [
+        15.99,
+        3.35
+      ],
+      "Gemini 4 Argon (High)": [
+        10.83,
+        0.78
+      ],
+      "Kimi K3.1 Pro (Max)": [
+        5.24,
+        1.25
+      ],
+      "DeepSeek-V4.1-Flash-20261017 (Max)": [
+        2.07,
+        0.14
+      ],
+      "MiMo-V2.6-Pro": [
+        2.33,
+        0.17
+      ],
+      "GLM-5.3 (Max)": [
+        0.99,
+        1.08
+      ],
+      "Kimi K3 (Max)": [
+        0.57,
+        0.84
+      ],
+      "note": "[net improvement %, cost per task P50 USD]; Claude Fable 5.2 not listed"
+    },
+    "claude": {
+      "fable_5_2": {
+        "released": "2026-11-09",
+        "api_id": "claude-fable-5-2",
+        "price_per_mtok": [
+          8,
+          40
+        ],
+        "context": "1M",
+        "max_output": "128K",
+        "default_effort_api": "high",
+        "default_effort_claude_code": "medium",
+        "fast_mode": "up to 2.5x faster, USD 16/80 per MTok, Claude Code v2.1.321+, usage credits only",
+        "safeguards": "classifiers block penetration testing, exploit generation, binary-based vulnerability scanning and most research-biology tasks; blocked cyber requests are answered by Opus 4.8, biology by Opus 5",
+        "retirement": "not sooner than 2027-11-09",
+        "source": "anthropic.com/claude-fable-and-mythos-5-2; platform.claude.com models overview and deprecations; code.claude.com model-config and fast-mode"
+      },
+      "mythos_5_2": "same model without the cyber and biology safeguards; verified organisations (Cyber Verification Program, Life Sciences Verification Program); the launch post does not mention Glasswing",
+      "launch_table_vendor": {
+        "note": "vendor-reported, each model at its highest-available effort unless noted, Fable/Opus with safeguards on, no harness statement",
+        "FrontierCode 2.0": [
+          49.1,
+          32.4,
+          45.5
+        ],
+        "FrontierSWE v2": [
+          69.9,
+          56.3,
+          62.3
+        ],
+        "AutomationBench": [
+          51.4,
+          31.4,
+          42.5
+        ],
+        "OSWorld 2.1 (offline, partial)": [
+          89.3,
+          83.5,
+          87.2
+        ],
+        "HLE with tools": [
+          74.2,
+          65.6,
+          67.7
+        ],
+        "AA-Briefcase v1.1 rubric": [
+          66.1,
+          61.5,
+          61.2
+        ],
+        "AA-Briefcase v1.1 Elo": [
+          1785,
+          1669,
+          1800
+        ],
+        "columns": "Fable 5.2, Fable 5.1, Opus 5.5"
+      },
+      "opus_4_8_fast_mode": "deprecated 2026-10-30, removed 2026-11-30 (requests are then rejected)",
+      "haiku_4_5": "claude-haiku-4-5-20251001 Active, 'Not sooner than October 15, 2026', no deprecation date"
+    },
+    "open_items": [
+      "Whether Go serves DeepSeek V4.1 Flash 1017 and Qwen3.8 Max 0902 (the revisions AA and Arena now test) is not stated",
+      "Gemini 4 Argon cap after 2026-11-30 and a possible Contributor return: not stated",
+      "Fable 5.2 on Pro / standard seats: the launch post says included up to 50% of weekly limits as a promotion, the help-centre article says usage credits",
+      "AA gives 'Qwen3.8-Flash-Next' 180B total / 6B active parameters, models.dev's provider descriptions say 125B total / 6B active - both say 6B active; immaterial now that its rows are n/p for the pool"
+    ],
+    "qwen3_8_flash_identity": {
+      "finding": "Go's served qwen3.8-flash (Go catalogue /inference/go/v1/models and models.dev opencode-go: closed weights, limit.context 1,000,000, USD 0.15/0.47) is NOT the model AA and Arena test under 'Qwen3.8-Flash-Next' (AA model page /models/qwen3-8-flash-next, read 2026-11-10: open weights, Qwen Community License 1.0, 180B total / 6B active, context window 256k; models.dev canonical alibaba/qwen3.8-flash-next lists 262,144). Bounded identity check 2026-11-10: neither AA (leaderboards/models, AA-Briefcase v1.1, GDPval-AA v2.1, model pages) nor Arena (Agent leaderboard, Code/WebDev leaderboard) has a row for a plain 'Qwen3.8 Flash' - only 'Qwen3.8-Flash-Next'.",
+      "rule_applied": "Repo rule: a figure whose source cannot be attributed becomes n/p. Every Qwen3.8 Flash benchmark-derived cell (AA rows, Arena rows, AA Coding Index aggregate) and its tasks/month are removed; Go-derived facts stay (cap USD 30, 1M context, image input, effort list low/medium/xhigh).",
+      "sources": [
+        "opencode.ai/inference/go/v1/models (read 2026-11-10)",
+        "models.dev api.json: providers/opencode-go qwen3.8-flash and canonical alibaba/qwen3.8-flash-next entries (read 2026-11-10)",
+        "artificialanalysis.ai/models/qwen3-8-flash-next (read 2026-11-10)",
+        "artificialanalysis.ai/leaderboards/models; /evaluations/aa-briefcase; /evaluations/gdpval-aa (read 2026-11-10)",
+        "arena.ai/leaderboard/agent and arena.ai/leaderboard/code/webdev (8 Nov 2026 snapshots, read 2026-11-10)"
+      ]
+    }
   }
 }

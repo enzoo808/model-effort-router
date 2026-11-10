@@ -9,8 +9,8 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-install)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-install)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-install)
-[![Policy](https://img.shields.io/badge/policy-iteration--25-8b949e?style=flat-square)](CHANGELOG.md)
-[![Regression evals](https://img.shields.io/badge/regression_evals-36-8b949e?style=flat-square)](#-validation)
+[![Policy](https://img.shields.io/badge/policy-iteration--27-8b949e?style=flat-square)](CHANGELOG.md)
+[![Regression evals](https://img.shields.io/badge/regression_evals-39-8b949e?style=flat-square)](#-validation)
 
 **[Quick start](#-quick-start)** · **[Install](#-install)** · **[Read the answer](#-reading-the-answer)** · **[How it works](#-how-it-decides)** · **[Examples](#-examples)** · **[Evidence](#-built-on-evidence-not-vibes)** · **[Changelog](CHANGELOG.md)** · **[🇹🇷 Türkçe](README.tr.md)**
 
@@ -104,7 +104,7 @@ Models that log or train on prompts are out unless *you* say the work is non-con
 <td valign="top">
 
 ### ✅ Verifiable
-36 deterministic regression prompts, a regex grader and consistency checks that run in CI — see [Validation](#-validation).
+39 deterministic regression prompts, a regex grader and consistency checks that run in CI — see [Validation](#-validation).
 
 </td>
 </tr>
@@ -351,13 +351,13 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 | Live-chat reply, first words within about a second | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — first-token bound; DeepSeek has a measured 1.1 s |
 | Which year did the EU AI Act's GPAI obligations start? | `Sonnet 5.5 · low` | GLM-5.3-Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — factual recall excludes Haiku and DeepSeek |
 | Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5.5 · low` + review note | DeepSeek V4.1 Flash `low` · GLM-5.3-Flash `low` | **OpenCode** — `D=0`, both clear the bar |
-| Wire a Jira → Slack → on-call n8n flow | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · GLM-5.3-Flash `high` | **OpenCode**, low-confidence — AutomationBench ties, ITBench favours open models |
+| Wire a Jira → Slack → on-call n8n flow | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · GLM-5.3-Flash `max` | **OpenCode**, low-confidence — AutomationBench ties, ITBench favours open models |
 | Summarise 400 pages of filings into one memo | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **Claude** — knowledge-work from `D=2` |
-| Read 30 scanned receipts into a reconciliation table | `Sonnet 5.5 · high` | Qwen3.8 Flash `xhigh` · MiMo-V2.6-Pro `default` | **OpenCode**, low-confidence — both take images |
-| Non-confidential conference pricing deck | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · Qwen3.8 Flash `xhigh` | **Claude** — knowledge-work; Grok 4.7 stays premium |
-| Read 3 regulator pages before labels go to print tonight | `Sonnet 5.5 · high` + review note | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `high` | **Claude**, low-confidence — `R=3` and a single Omniscience lean |
-| An earlier OpenCode attempt at a 30-file migration fell short | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · **GLM-5.3** `max` | **Claude** — Rule A1-OC adds a premium `#2` and hands over the badge |
-| Call somatic variants from tumour/normal exomes | `Fable 5.1 · high` | `unverified — use Claude` | **Claude** — availability gate |
+| Read 30 scanned receipts into a reconciliation table | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **OpenCode**, low-confidence — both take images |
+| Non-confidential conference pricing deck | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude** — knowledge-work; Grok 4.7 stays premium |
+| Read 3 regulator pages before labels go to print tonight | `Sonnet 5.5 · high` + review note | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude**, low-confidence — `R=3` and a single Omniscience lean |
+| An earlier OpenCode attempt at a 30-file migration fell short | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · **Gemini 4 Argon** `high` | **Claude** — Rule A1-OC adds the `#2` (Argon on a GM1 row) and hands over the badge |
+| Call somatic variants from tumour/normal exomes | `Fable 5.2 · high` | `unverified — use Claude` | **Claude** — availability gate; its biology classifiers can block research tasks |
 
 </details>
 
@@ -372,20 +372,22 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 | **Haiku 5.5** | The cost pick for small, shallow work (`D ≤ 1` reading and transform tasks) |
 | **Sonnet 5.5** | Daily work, the default start |
 | **Opus 5.5** | Flagship for hard agentic code (`D = 3`) |
-| **Opus 4.8** | Legacy — kept only for the offensive-security gate |
-| **Fable 5.1** | Frontier scale (1000+ files) and biology-adjacent R&D |
+| **Opus 4.8** | Legacy — kept only for the offensive-security gate (`/fast` ends 30 Nov 2026) |
+| **Fable 5.2** | Frontier scale (1000+ files) and biology-adjacent R&D (USD 8/40; `/fast` available) |
+| **Mythos 5.2** | Fable 5.2 with permissive safeguards — Life Sciences Verification Program only |
 
-**OpenCode Go arm** — the **19 rated models**, in tiers. Each Go model has its *own* monthly dollar cap, so what matters is how many *real* agent tasks a month of that cap buys:
+**OpenCode Go arm** — the **19 rated models**, in tiers. Each Go model has its *own* monthly dollar cap, so what matters is how many *real* agent tasks a month of that cap buys. Tier membership is **by name** (Rule BUD1); the task counts below are one informational Arena snapshot (8 Nov 2026):
 
 | Tier | Models | Role |
 |---|---|---|
-| **Budget** — the default pairs | MiMo-V2.6-Flash · GLM-5.3-Flash · DeepSeek V4.1 Flash · Qwen3.8 Flash · MiMo-V2.6-Pro | 150–1,500 tasks per month of cap |
-| **Free** | MiniMax M3.1 Flash Free | Zero retention, no Go cap, limited time |
-| **Non-confidential only** | GPT 6 Luna · Muse Spark 1.3 · Gemini 4 Argon | Offered only if you say the work isn't confidential — some of them train on prompts |
-| **Premium** — escalation only | Qwen3.8 Max · GLM-5.3 · Kimi K3 · Grok 4.7 | 10–33 tasks per month of cap; never in a routed pair, only as `#2` after a stated shortfall |
+| **Budget** — the default pairs | MiMo-V2.6-Flash 857 · DeepSeek V4.1 Flash 714 · GLM-5.3-Flash 375 · MiMo-V2.6-Pro 88 | 88–857 tasks per month of cap |
+| **Non-confidential only** | GPT 6 Luna 188 · Muse Spark 1.3 128 | Offered only if you say the work isn't confidential — some of them train on prompts |
+| **Premium** — escalation only | Kimi K3 18 · GLM-5.3 14 · Qwen3.8 Max 12 · Kimi K3.1 Pro 12 · Grok 4.7 5 | 5–18 tasks per month of cap; never in a routed pair, only as `#2` after a stated shortfall |
+| **Gemini (GM1)** — overlay | Gemini 4 Argon | Go's plain `gemini-4-argon` (Not used / 0 days), open to confidential work; `#1` only at `D = 3` / `R = 3` on five rows, USD 30 cap — not a default pair |
+| **Unrated** — never selected | Qwen3.8 Flash | Every row under that name is "Qwen3.8-Flash-Next", a different open-weights model; `n/p` |
 | **Dominated** | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 · Gemini 3.8 Flash | Rated and tracked; no row ever emits them |
 
-> Effort is the variant OpenCode *actually offers for that model* (`low` / `high` / `max`, `xhigh`, or `default`), never a value it would reject.
+> Effort is the variant OpenCode *actually offers for that model* (`low` / `high` / `max`, `xhigh`, or `default`), never a value it would reject. DeepSeek V4.1 Flash uses all three rungs: `D ≤ 1` `low`, `D = 2` `high`, `D ≥ 3` `max`. DeepSeek's cap is USD 100 and its zero-retention agreement is valid through 30 Nov 2026.
 
 <br>
 
@@ -395,6 +397,8 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 
 - **Benchmarks are bound to capabilities.** A pure-maths prompt gives Terminal-Bench a weight of zero.
 - **Comparability first.** Benchmark, version, harness, tool access, scaffold *and* effort must match before two numbers are compared.
+- **AA Intelligence Index v5 lives in its own column.** Every v4.3.2 II / TB / USD-per-task figure stays **frozen**; the v5 column holds only what was re-read on 10 Nov 2026, and the two versions are never compared.
+- **AA Elo intervals decide ties.** AA publishes an Elo interval per row; a gap that sits inside that interval is not a direction, however large it looks.
 - **Independent sources set the direction.** Artificial Analysis, DeepSWE v1.1 (with error margins), Agent Arena, Vals, FrontierSWE v2, ARC-AGI, Gray Swan — compiled into [`skill/opencode-evidence.json`](skill/opencode-evidence.json). One vendor re-citing the same figure is one number, not two. Vendor-reported effort curves are used only to pick an effort rung, never a direction.
 - **A direction needs two independent measurements that agree.** A single one decides only at `R = 3`.
 - **No interpolation** between effort rungs, and `n/p` (not published) is an answer.
@@ -406,7 +410,7 @@ Raw numbers live in [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.m
 
 ## ✅ Validation
 
-`evals/routing/evals.json` is a deterministic regression set — **36 prompts** — graded by a pure-regex grader (no LLM in the loop). It checks the Claude model and effort, **both OpenCode picks** (model, effort, order), which side holds the badge, a non-trivial `Evidence:` line, and required / forbidden text for the confidentiality default.
+`evals/routing/evals.json` is a deterministic regression set — **39 prompts** — graded by a pure-regex grader (no LLM in the loop). It checks the Claude model and effort, **both OpenCode picks** (model, effort, order), which side holds the badge, a non-trivial `Evidence:` line, and required / forbidden text for the confidentiality default.
 
 ```bash
 python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # goldens vs grader
@@ -418,11 +422,13 @@ python scripts/check_readme_facts.py     # counts, pool size, iteration and tier
 
 These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
 
-**Where it stands (3 Nov 2026, iteration-25):** all of the checks above pass. A cold run of **all 36 prompts by fresh agents scored 34/36**; one miss re-ran 3/3, the other (`r1`, scanned receipts) is a genuinely unstable prompt that is left open on purpose. Details in [`evals/README.md`](evals/README.md).
+**Where it stands (10 Nov 2026, iteration-27):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **39/39**. A cold run of the **16 affected prompts** scored **15/16** (Argon, MiniMax removal, Fable 5.2 and the DeepSeek date); `i1` was stopped by the cyber safeguards and not run, and the trigger eval is still a proxy. Details in [`evals/README.md`](evals/README.md).
 
 ### Known limits, stated plainly
 
 - **The trigger eval is a proxy.** Nested `claude -p` can't authenticate in the build environment; run `evals/trigger/run_trigger.py` from a logged-in terminal for the real number.
+- **The biology gate is fixed at `high` effort.** Its biology classifiers may block research tasks: on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused. The gate does not take the D table's `xhigh`: Anthropic's vendor-reported table has Fable 5.2 at `high` matching Opus 5.5 at `max` on FrontierCode 2.0, and Fable draws on a separate weekly limit.
+- **The 1000+ files gate uses the normal D rung.** It fixes Fable 5.2, not the effort: `xhigh` at D=3, `max` only under M1, `ultracode` over 30 minutes. It is a scale gate, not a classifier carve-out, so a mechanical 1000-file rename stays lower.
 - **Prices, caps and retention terms are dated.** They are a snapshot (see each row's date) and OpenCode Go can change them — corrections with a primary source are the most valuable contribution.
 - **OpenCode-by-default is a trade-off.** At `D = 2` the router sends coding to OpenCode although Claude still leads some hardest-task anchors, because the mid-difficulty DeepSWE comparison is a tie at a fraction of the cost. If you'd rather pay Claude there, it's one row of the badge table in [`skill/SKILL.md`](skill/SKILL.md).
 - **Only `SKILL.md` is the source of truth** for routing; the `claude-ai/` fallback is a hand-synced derivative.

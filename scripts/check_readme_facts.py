@@ -94,11 +94,11 @@ def main() -> int:
     rows = {
         "README.md": {
             "B": "**Budget**", "F": "**Free**", "N": "**Non-confidential only**",
-            "G": "**Non-confidential only**", "P": "**Premium**", "D": "**Dominated**",
+            "G": "**Gemini (GM1)**", "P": "**Premium**", "D": "**Dominated**", "—": "**Unrated**",
         },
         "README.tr.md": {
             "B": "**Bütçe**", "F": "**Ücretsiz**", "N": "**Yalnızca gizli olmayan iş**",
-            "G": "**Yalnızca gizli olmayan iş**", "P": "**Premium**", "D": "**Baskın olunan**",
+            "G": "**Gemini (GM1)**", "P": "**Premium**", "D": "**Baskın olunan**", "—": "**Puanlanmamış**",
         },
     }
     for rel, labels in rows.items():

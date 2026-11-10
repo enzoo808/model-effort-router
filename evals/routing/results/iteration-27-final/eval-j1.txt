@@ -1,0 +1,6 @@
+Claude: ✅ RECOMMENDED AI · opusplan · plan: max · execute: medium
+⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.
+OpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: D=3, R=3 architecture from scratch: Claude beats Argon on two agreeing rows (HLE 61 vs 57, TB 4.0 64 vs 57); execution repeats per service, so opusplan.
+Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.
+Do not apply without human review.

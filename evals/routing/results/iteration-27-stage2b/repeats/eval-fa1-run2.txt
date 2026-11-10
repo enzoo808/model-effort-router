@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Fable 5.2 · effort: xhigh
+OpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: D=3 new-algorithm work: AA HLE/CritPt/ARC rows favour Claude, and the stated Opus 5.5 xhigh shortfall moves it to Fable 5.2.
+Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.
+⚡ Claude /fast available (2.5x faster, 2× price).
