@@ -1,5 +1,7 @@
 # Reference tables
 
+> **Cleanup note.** This file still names `skill/benchmarks.json`, `skill/benchmark_frontiers.json` and the compile / validate / test / ablate scripts of the Codex-era benchmark pipeline. They were removed from the tree after iteration-25 (last present at commit `7c24c81`, e.g. `git show 7c24c81:skill/benchmarks.json`). The router never read them.
+
 > **Primary source:** `platform.claude.com/docs/en/about-claude/models/overview`,
 > `platform.claude.com/docs/en/build-with-claude/effort`,
 > `platform.claude.com/docs/en/about-claude/pricing`,
@@ -78,31 +80,35 @@ to Opus 5.
 ahead of Sonnet 5 Opus 5 is **on those specific tests** is unknown. The overall
 jump above is a strong direction indicator but **not a number**.
 
-### Safety classifier / fallback chain (updated with Fable 5.1)
+### Safety classifier / fallback chain (updated with Fable 5.2)
 
 | Model | If offensive-security flagged | If biology-R&D flagged |
 |---|---|---|
-| Fable 5.1 | → **Opus 4.8 or Opus 5** (permitted fallback targets) | → **Opus models** |
+| Fable 5.2 | → **Opus 4.8 or Opus 5** (permitted fallback targets) | → first flag **Opus 5**, later flags refused |
+| Mythos 5.2 | permissive safeguards; Life Sciences Verification Program only | permissive safeguards; Life Sciences Verification Program only |
+| Fable 5.1 (legacy) | → **Opus 4.8 or Opus 5** (permitted fallback targets) | → **Opus models** |
+| Opus 5.5 | → **Opus 4.8** | → first flag **Opus 5**, later flags refused |
 | Opus 5 | → **Opus 4.8** | → **Refuse** (no fallback) |
 | Fable 5 (legacy) | → **Opus 4.8** | → **Opus 5** |
 
 This table is the source of the two separate gates in `SKILL.md` Step 1.
 
-**What changed with Fable 5.1 (1 Sep 2026 announcement + `platform.claude.com`
+**What changed with Fable 5.2 (9 Nov 2026 announcement + `platform.claude.com`
 verification):**
-- **Defensive vulnerability discovery is now permitted** — Fable 5.1 "can
-  discover software vulnerabilities, but cannot develop exploits for them". Only
-  **penetration testing, exploit generation, binary-based vulnerability
-  scanning** redirect to Opus models.
-- On benign requests, cyber interventions dropped **~60%**, and on basic
-  biology-medical questions **~85%**.
-- **Mythos 5.1** (`claude-mythos-5-1`): same model as Fable 5.1 with permissive
-  safeguards. **Project Glasswing invite only** (Cyber Verification Program /
-  Life Sciences Verification Program; US-first). Normal API / Claude Code access
-  does not route to it automatically — a separate, invite-only model.
-- Fable 5.1's permitted fallback targets are listed in the official docs as
-  **"Opus 4.8 and Opus 5"**; the router continues to pick Opus 4.8 at the
-  offensive gate (most permissive general model on cyber posture).
+- **Defensive vulnerability discovery is permitted** — Fable 5.2 "comes with
+  safety classifiers that block high-risk cyber activities, including penetration
+  testing, exploit generation, and binary-based vulnerability [scanning], as well
+  as most tasks in research biology". Only the three offensive categories redirect
+  to Opus.
+- **Biology is not a clean refusal:** Claude Code's model-config page says the
+  first flagged biology request moves the session to **Opus 5**, and later
+  biology-flagged requests are refused there. Opus 5.5 runs the same classifiers.
+- **Mythos 5.2** (`claude-mythos-5-2`): same model as Fable 5.2 with permissive
+  safeguards, available to **vetted organisations** (Life Sciences Verification
+  Program for biology); the launch post does not mention Glasswing.
+- Fable 5.2's permitted offensive fallback targets are **"Opus 4.8 and Opus 5"**;
+  the router continues to pick Opus 4.8 at the offensive gate (most permissive
+  general model on cyber posture). Fable 5.1 remains Active as legacy.
 
 ### Claude Code version requirement
 
@@ -336,7 +342,8 @@ model's **entire** token spend — text, tool calls, thinking.
 
 | Model | Levels | Default |
 |---|---|---|
-| **Fable 5.1** / Mythos 5.1 | low, medium, high, xhigh, max | high (Claude Code) · medium (claude.ai / Cowork) |
+| **Fable 5.2** / Mythos 5.2 | low, medium, high, xhigh, max | high (API) · medium (Claude Code / apps) |
+| Fable 5.1 / Mythos 5.1 (legacy) | low, medium, high, xhigh, max | high (Claude Code) · medium (claude.ai / Cowork) |
 | Fable 5 (legacy) | low, medium, high, xhigh, max | high |
 | **Opus 5.5** | low, medium, high, xhigh, max | **medium** (Opus 5 and every earlier Opus defaulted to `high`) |
 | **Sonnet 5.5** | low, medium, high, xhigh, max | high (API) · medium (Claude apps) |
@@ -351,7 +358,7 @@ If `xhigh` is requested but unsupported, it falls to the nearest supported level
 below (e.g. `xhigh` → `high` on Opus 4.6).
 
 > **`max` is a supported *setting* on every Claude tier, but the router only
-> *emits* it on a flagship** (Opus 5.5 / Opus 4.8 / Fable 5.1 / Sol / Astra), and
+> *emits* it on a flagship** (Opus 5.5 / Opus 4.8 / Fable 5.2 / Sol / Astra), and
 > since iteration-16 only when Rule E3 also allows it (§13.2). The
 > `D=3 ∧ R=3 → max` rule fires there; on a mid-tier model (Sonnet 5 / Terra) it
 > stays `xhigh`. Rationale: the router picks the mid tier only when the reasoning
@@ -396,10 +403,10 @@ below (e.g. `xhigh` → `high` on Opus 4.6).
 - **Opus 4.8/4.7:** start from `xhigh` for coding/agentic work; drop to
   `low`/`medium` only after measuring with an eval (more conservative advice than
   Opus 5).
-- **Fable 5.1:** start from `high` (Claude Code default) or `medium` (chat
-  default), tune with an eval. The gain over Fable 5 is widest at high effort. It
+- **Fable 5.2:** start from `high` (API default) or `medium` (Claude Code / apps
+  default), tune with an eval. The gain over Fable 5.1 is widest at high effort. It
   calls search/retrieval tools less often at `low` effort — raise effort for a
-  turn that needs fresh information (Fable 5.1 supports mid-conversation effort
+  turn that needs fresh information (Fable 5.2 supports mid-conversation effort
   changes without busting the cache).
 
 ### `ultracode` — a Claude Code toggle, independent of effort

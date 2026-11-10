@@ -1,3 +1,0 @@
-Claude: Sonnet 5 · effort: medium
-Codex: Terra · effort: medium
-⚡ Fast Mode recommended: Codex Fast Mode (1.5x faster, 1.5x quota) — low-risk / mechanical work.

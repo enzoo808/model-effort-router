@@ -24,8 +24,8 @@ by design. Optional "expected_notes" (substrings that must appear) and
 and the confidentiality default. Pure string/regex matching, no LLM involved,
 deterministic and free to re-run after every SKILL.md edit.
 
-The iteration-20 (Codex) version of this grader and its evals are archived under
-archive/iteration-20-codex/routing/.
+The iteration-20 (Codex) version of this grader and its evals were removed from the tree;
+the last commit that has them (archive/iteration-20-codex/routing/) is 7c24c81.
 """
 
 import argparse
@@ -89,15 +89,20 @@ def first_model(text: str, names: list[str]) -> str | None:
     return None
 
 
-def check_effort(expected: str, actual: str, side: str, allow_none: bool = False) -> tuple[bool, str]:
-    em = re.search(r"effort:\s*(\w+)", expected, re.IGNORECASE)
-    om = re.search(r"effort:\s*(\w+)", actual, re.IGNORECASE)
-    if em:
-        if not om:
-            return False, f"{side}: expected 'effort: {em.group(1)}' but there is no effort field"
-        if om.group(1).lower() != em.group(1).lower():
-            return False, f"{side}: effort '{om.group(1)}', expected '{em.group(1)}'"
-    elif om and not allow_none:
+def effort_of(text: str) -> str | None:
+    """The word after 'effort:' in a line, or None."""
+    m = re.search(r"effort:\s*(\w+)", text, re.IGNORECASE)
+    return m.group(1) if m else None
+
+
+def check_effort(expected: str, actual: str, side: str) -> tuple[bool, str]:
+    want, got = effort_of(expected), effort_of(actual)
+    if want:
+        if not got:
+            return False, f"{side}: expected 'effort: {want}' but there is no effort field"
+        if got.lower() != want.lower():
+            return False, f"{side}: effort '{got}', expected '{want}'"
+    elif got:
         return False, f"{side}: the expected line has no effort field but the output has one"
     return True, ""
 
@@ -144,8 +149,8 @@ def grade_claude(expected: str, actual_line: str | None) -> tuple[bool, str]:
         return False, f"{side}: expected the '· ultracode' flag after the effort, got: '{actual_line}'"
     if has_uc and not want_uc:
         return False, f"{side}: unexpected '· ultracode' flag (UC1 does not hold here), got: '{actual_line}'"
-    em = re.search(r"effort:\s*(\w+)", expected, re.IGNORECASE)
-    return True, (f"{side}: {expected_model} correct" + (f", effort={em.group(1)}" if em else "")
+    eff = effort_of(expected)
+    return True, (f"{side}: {expected_model} correct" + (f", effort={eff}" if eff else "")
                   + (", ultracode" if want_uc else ""))
 
 
@@ -194,8 +199,8 @@ def grade_opencode(expected: str, actual_line: str | None) -> tuple[bool, str]:
         ok, msg = check_effort(exp[rank], act[rank], f"{side} #{rank}")
         if not ok:
             return False, msg
-        em = re.search(r"effort:\s*(\w+)", exp[rank], re.IGNORECASE)
-        msgs.append(f"#{rank} {want}" + (f" {em.group(1)}" if em else ""))
+        eff = effort_of(exp[rank])
+        msgs.append(f"#{rank} {want}" + (f" {eff}" if eff else ""))
     return True, f"{side}: " + ", ".join(msgs)
 
 
@@ -249,13 +254,12 @@ def grade_one(item: dict, output: str) -> tuple[bool, str]:
     ok_o, msg_o = grade_opencode(item["expected_opencode"], extract_line(output, "OpenCode"))
     if not ok_o:
         return False, msg_o
+    oc_line = extract_line(output, "OpenCode") or ""
     if not item.get("allow_premium"):
-        oc_line = extract_line(output, "OpenCode") or ""
         for pat in PREMIUM_PATTERNS:
             if re.search(pat, oc_line):
                 return False, f"OpenCode line names a premium model ({pat}) without a stated shortfall (Rule BUD1): '{oc_line}'"
 
-    oc_line = extract_line(output, "OpenCode") or ""
     if not item.get("allow_gemini") and re.search(GEMINI_PATTERN, oc_line):
         return False, f"OpenCode line names a Gemini model without Rule GM1 applying (D=3 / R=3 rows, or a shortfall): '{oc_line}'"
     for pat in NEVER_ON_LINE:

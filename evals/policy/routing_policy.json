@@ -3,7 +3,7 @@
   "policy_version": "iteration-27",
   "compiled": "2026-11-10",
   "purpose": "Machine-readable mirror of skill/SKILL.md for the OpenCode arm. Read by scripts/check_policy_sync.py (rule blocks must equal SKILL.md verbatim) and scripts/check_opencode_pool.py (the 19-model pool with its budget/free/premium/Gemini tiers, the Step 4-OC rows and the badge table must match SKILL.md). Not read by the router.",
-  "drift_guard": "Change a rule block here and forget SKILL.md, or the reverse, and check_policy_sync.py fails. The iteration-20 mirror, reachability corpus and matrix are frozen under archive/iteration-20-codex/ — they audit the retired Codex arm.",
+  "drift_guard": "Change a rule block here and forget SKILL.md, or the reverse, and check_policy_sync.py fails. The iteration-20 mirror, reachability corpus and matrix audited the retired Codex arm; they were removed from the tree and last exist at commit 7c24c81 (archive/iteration-20-codex/).",
   "pool": {
     "plan": "OpenCode Go, USD 10/month (Go Plus USD 40, Go Teams USD 20 per member); limits are per model (5-hour 20%, weekly 50%, monthly 100% of the cap). Gemini 4 Argon is Go's `gemini-4-argon` (Go privacy table: Not used / 0 days); the Contributor route is gone from Go's catalogue.",
     "models": {

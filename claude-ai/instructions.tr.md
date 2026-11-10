@@ -237,8 +237,7 @@ listeden çıkarır, final model kararını Adım 2/3 verir).
 **Savunma amaçlı güvenlik işi kapı DEĞİL — ölçekten bağımsız.** "Kodu/altyapıyı
 zafiyet için denetle", "açık portları bul", "güvenlik grubu kurallarını gözden
 geçir", "180 servisi auth-bypass için denetle (exploit yok)" — savunma işi,
-normal skorlamaya girer. Fable 5.1 bunu kendisi yapabiliyor (1 Eyl 2026'dan
-beri). Yalnızca üç saldırı-amaçlı kategori (exploit üretimi, sızma testi,
+normal skorlamaya girer. Fable 5.2 bunu kendisi yapabiliyor (Fable 5.1 de yapıyordu). Yalnızca üç saldırı-amaçlı kategori (exploit üretimi, sızma testi,
 binary tabanlı zafiyet taraması) kapı tetikler.
 
 **Neden saldırı amaçlı siber → Opus 4.8:** Fable 5.2 ve Opus 5.5'in kendi güvenlik

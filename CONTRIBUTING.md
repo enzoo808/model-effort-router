@@ -10,46 +10,31 @@ Very welcome. Requirements:
   official changelog — not an aggregator/SEO blog. If only a secondary source
   exists, say so and it will be labelled "unverified" in `skill/reference.md`,
   the same as the existing hedged claims.
-- Update the number in **all** of `skill/benchmarks.json` (the machine-readable
-  record), `skill/reference.md`, and anywhere `skill/SKILL.md` restates it, then
-  **regenerate the derived layer**:
-  ```
-  python scripts/compile_benchmark_frontiers.py
-  python scripts/validate_benchmarks.py
-  ```
-  The validator fails if `skill/benchmark_frontiers.json` no longer matches the
-  sha256 of `skill/benchmarks.json`, so a forgotten recompile cannot be
-  committed. Never hand-edit `benchmark_frontiers.json` — it is generated.
-- **Every record needs an `id`, an `evidence_class` and a `comparability_group`.**
-  The class decides what the row may be used for: `model_intrinsic` (same harness
-  for every model — the right input for model/effort selection),
-  `ecosystem_end_to_end` (each model in its own vendor's agent — the right input
-  for the `✅ RECOMMENDED AI` badge), `vendor_relative` (one vendor measuring a
-  competitor — direction only), `aggregate`, `efficiency_only`. A comparability
-  group *asserts* that benchmark, version, harness, tool access, scaffold and
-  evaluator were constant across its rows; the validator checks the assertion.
+- Update the number everywhere it is stated: `skill/opencode-evidence.json` (the
+  machine-readable record the checks read), `skill/opencode-benchmarks.md` (the
+  per-model write-up), `skill/reference.md` (Claude prices and limits) and anywhere
+  `skill/SKILL.md` restates it. Then run `python scripts/check_opencode_pool.py`: it
+  recomputes tasks per month from the Arena costs and fails if a routing row leaves
+  the top 4 of the independent-evidence consensus.
 - **Before adding a number, check whether it is actually a new measurement.** If
   two vendors publish the same figure to the decimal, that is one number re-cited,
-  not corroboration — say so in `notes` and do not let it count twice.
-- **Benchmark records need methodology, not just a score.** A row in
-  `skill/benchmarks.json` without `harness`, `effort` and `date` cannot be
-  compared with anything, so it cannot inform a rule. Leave a field `null` when
-  it isn't published — never guess it, and never interpolate a score between
+  not corroboration — say so in the write-up and do not let it count twice.
+- **Evidence needs methodology, not just a score.** Name the benchmark, its
+  version, the harness, the effort and the date next to the number. Write `n/p`
+  when it isn't published — never guess it, and never interpolate a score between
   effort levels.
 - **Only published dispersion may set a direction.** A confidence interval, a
   standard error, repeated-trial variance, or a practical-significance threshold
   the benchmark's *owner* publishes. Nothing else — and specifically **not a
   fraction of the roster's observed score spread**, which reads as statistics and
-  is not one. A group with no dispersion sets no direction however large its gap
-  looks; `UNRESOLVED` is the answer and the router falls through to efficiency.
-  `scripts/compile_benchmark_frontiers.py` raises `SpreadFallbackResurrected` if
-  a spread-based band is reintroduced.
+  is not one. A comparison with no published dispersion sets no direction however
+  large its gap looks; the router falls through to efficiency (Rule BD1).
 - **A benchmark that cannot separate the candidates does not belong in a rule.**
-  If the frontier clusters within a point or two, add the row with a note and put
-  the benchmark on `excluded_from_direction` rather than reading a ranking off
-  it. SWE-bench Verified and Terminal-Bench 2.1 are both there for this reason.
+  If the frontier clusters within a point or two (Terminal-Bench 2.1 is saturated
+  for this reason), record the row with a note instead of reading a ranking off it.
 - If it's a Turkish/English README-visible fact, update `README.md` and
-  `README.tr.md`.
+  `README.tr.md`. `scripts/check_readme_facts.py` fails CI when a count, the pool
+  size, the iteration or a tier table in the docs disagrees with the data.
 
 ## 2. Routing-rule changes
 
@@ -64,7 +49,8 @@ procedure.
    `forbidden` for the auto-added lines, a `golden_output`, or `blocked: true`).
 3. Run it with **fresh/cold agents** (a subagent or a new conversation that
    reads `skill/SKILL.md` directly — *not* the `Skill` tool, which caches) and
-   save the raw outputs under `evals/routing/results/iteration-<N>/`.
+   save the raw outputs under `evals/routing/results/iteration-<N>/`. Keep only
+   the latest iterations in the tree; older runs stay in git history.
 4. `python evals/routing/grade_routing.py --results-dir evals/routing/results/iteration-<N>`
    must be green (`--selftest` first, to prove the grader and goldens agree).
 5. **Mirror the rule into `evals/policy/routing_policy.json` in the same commit** —
@@ -90,21 +76,19 @@ procedure.
    meant an audit was certifying a policy nobody could run — these guards fail if
    either file moves without the other.
 
-   *(The Codex-era reachability audit — corpus, matrix, flip review — is archived
-   under `archive/iteration-20-codex/`; it simulated the retired Codex arm. An
-   OpenCode reachability audit is open work.)*
-6. If the rule is benchmark-derived, add or update its entry in
-   `skill/benchmarks.json` → `routing_rules` with the `evidence_ids` it rests on.
-   The validator fails on a dangling id, which is what stops a rule outliving the
-   number behind it. Then run:
+   *(The Codex-era reachability audit — corpus, matrix, flip review — simulated the
+   retired Codex arm and was removed from the tree; the last commit that has it is
+   `7c24c81`. An OpenCode reachability audit is open work.)*
+6. If the rule is benchmark-derived, add or update the anchor in
+   `skill/opencode-evidence.json` and its write-up in `skill/opencode-benchmarks.md`,
+   then run:
    ```
-   python scripts/validate_benchmarks.py
-   python scripts/test_frontier_compiler.py
-   python scripts/ablate_evidence.py
+   python scripts/check_opencode_pool.py
+   python scripts/derive_opencode_rows.py
    ```
-   Read the ablation even when it passes: if a capability's verdict disappears
-   once vendor-run rows are dropped, the rule needs a `low-confidence` marker,
-   not a stronger claim.
+   Read the consensus output even when the check passes: if a capability's lead
+   rests on one anchor, or on vendor-reported rows, the rule needs a
+   `low-confidence` marker, not a stronger claim.
 7. Mirror the change into `claude-ai/instructions.tr.md` (the no-code-execution
    fallback), except the Claude Code-only parts (`opusplan`, the `⚡ Claude /fast`
    speed line, the `/model opus` alias rule) — that file has a footer listing its
@@ -128,18 +112,17 @@ query).
 The skill body and README are English. `README.tr.md`, `claude-ai/instructions.tr.md`,
 `evals/history.tr.md` and the `tests_rule` notes in `evals/routing/evals.json` are
 Turkish (the project's original working language). When you change a rule, keep
-`README.tr.md` and `claude-ai/instructions.tr.md` in sync — or flag in the PR that
+`README.tr.md` and `claude-ai/instructions.tr.md` in sync (`docs/README.legacy.tr.md` is a frozen history file) — or flag in the PR that
 they lag, so a Turkish speaker can follow up.
 
 ## Style
 
-- **Three layers, and only the first is read at runtime.** `SKILL.md` carries
+- **Two layers, and only the first is read at runtime.** `SKILL.md` carries
   classification, the routing algorithm, the compact benchmark-derived rules and
-  the recommended-AI logic. `benchmark_frontiers.json` is the generated derived
-  layer, read when auditing a rule. `benchmarks.json` is the raw evidence store,
-  read when changing one. Prose, sourcing, conflicts and history live in
-  `reference.md`. Runtime token cost must not grow: never make the router load
-  the data files to answer a routing question.
+  the recommended-AI logic. The audit data (`opencode-evidence.json`,
+  `opencode-benchmarks.md`, and `reference.md` with its prose, sourcing, conflicts
+  and history) is read when changing a rule. Runtime token cost must not grow:
+  never make the router load the data files to answer a routing question.
 - Every effort-level or model claim needs either a citation or an explicit
   "unverified" label. No confident numbers without a source.
 - When in doubt about a routing call, the project rounds **down** (quota-aware).

@@ -1,3 +1,0 @@
-Claude: Sonnet 5 · efor: low
-Codex: Terra · efor: minimal
-İnsan onayı olmadan uygulanmasın.

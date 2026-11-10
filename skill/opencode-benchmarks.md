@@ -1,5 +1,7 @@
 # OpenCode Go evidence — iteration-23
 
+> **Cleanup note.** This file still names `skill/benchmarks.json`, `skill/benchmark_frontiers.json` and the compile / validate / test / ablate scripts of the Codex-era benchmark pipeline. They were removed from the tree after iteration-25 (last present at commit `7c24c81`, e.g. `git show 7c24c81:skill/benchmarks.json`). The router never read them.
+
 **Audit data for the OpenCode arm of `SKILL.md`. Never load this to route a prompt;
 every rule needed is in `SKILL.md`.** Verified **6 October 2026** (§11, Claude Haiku 5.5: **8 October 2026**). Everything below
 was fetched in this pass from the sources in §8; anything not fetched is marked
