@@ -703,7 +703,7 @@
     ]
   },
   "gm1_requires": "D=3 or R=3; right-hand column only; overlay, not a table entry; open to confidential work (Go: Not used / 0 days); never at D<=2 with R<=2",
-  "badge_table_note": "research-synthesis at R=3 reads OpenCode (dagger) because Gemini 4 Argon is #1 (Rule GM1, open to confidential work since iteration-27) and beats the Claude pick on both AA-Omniscience v1 measures; before iteration-27 the cell read Claude whenever the work was confidential.",
+  "badge_table_note": "research-synthesis at R=3 reads OpenCode (dagger) because Gemini 4 Argon is #1 (Rule GM1, open to confidential work since iteration-27) and beats the Claude pick on both AA-Omniscience v1 measures; before iteration-27 the cell read Claude whenever the work was confidential. The only D=2 dagger exemption is the `agentic-code` / `deep-reasoning` rows; `science` and every other dagger row still require `low-confidence`.",
   "aa_index": {
     "frozen": "v4.3.2 (II, TB, USD/task columns and every anchor value in SKILL.md)",
     "current": "v5.0.1 (announced 2026-10-27); shown only in the `II v5 (USD/task)` column and in notes; the two versions are never compared",
@@ -738,10 +738,17 @@
       "access_clause": "Life Sciences Verification Program (verified organisation) -> Mythos 5.2",
       "classifier_statement": "Fable 5.2's biology classifiers can block research tasks: first flagged request moves the Claude Code session to Opus 5, later flagged requests are refused there",
       "opus_5_5": "runs the same classifiers with the same fallback (Claude Code model-config: 'Fable models and Opus 5.5: biology-flagged requests re-run on Opus 5'); Opus 5 and Sonnet 5.5 have no biology fallback and refuse",
-      "source": "code.claude.com/docs/en/model-config and anthropic.com/claude-fable-and-mythos-5-2, read 2026-11-10"
+      "source": "code.claude.com/docs/en/model-config and anthropic.com/claude-fable-and-mythos-5-2, read 2026-11-10",
+      "auto_line": "Fable 5.2: its biology classifiers may block research tasks — on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused."
     },
     "frontier_scale_1000_files": {
       "result": "Fable 5.2"
+    }
+  },
+  "step7_auto_lines": {
+    "fable_biology": {
+      "trigger": "Claude line is Fable 5.2 and the biology-adjacent gate fired in Step 1",
+      "text": "Fable 5.2: its biology classifiers may block research tasks — on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused."
     }
   }
 }

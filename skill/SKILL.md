@@ -674,10 +674,12 @@ The depth split is the evidence's own: Claude's lead lives on the `D = 3` anchor
 | anything else | **OpenCode** † | **OpenCode** † | **OpenCode** † | no row → the cheaper arm; say `low-confidence` |
 
 **† → Evidence must say `low-confidence`** (binds that row; so does "anything else").
-Mechanism, `latency-volume` and the `D ≤ 1` rule carry none. A `D = 2` coding or reasoning
-row that SM1 sends to OpenCode is **not** †: its evidence is strong, the Claude lead just
-sits at a depth the task does not reach — name the tie and the price instead. At `R = 3` a
-row that fell to efficiency follows its single measurement's lean and keeps its †.
+Mechanism, `latency-volume` and the `D ≤ 1` rule carry none. Only the **`agentic-code`**
+and **`deep-reasoning`** rows at `D = 2` that SM1 sends to OpenCode are **not** †: their
+evidence is strong, the Claude lead just sits at a depth the task does not reach — name
+the tie and the price instead. Every other † row, `science` included, still requires
+`low-confidence`. At `R = 3` a row that fell to efficiency follows its single
+measurement's lean and keeps its †.
 
 **`D ≤ 1` → OpenCode, whatever the Claude pick** (Haiku 5.5 included): skip the capability
 rows (except `latency-volume`, which keeps its own); price, cap and the Claude quota
@@ -690,7 +692,7 @@ thin evidence → the sensible default + `low-confidence`.
 
 ## Step 7 — Quota-protection and accuracy rules
 
-Rationale in `reference.md` §10.5. **Auto-added lines:** Rules 1, 9, 10, 11 and 12.
+Rationale in `reference.md` §10.5. **Auto-added lines:** Rules 1, 9, 10, 11, 12 and 13.
 
 1. **R=3 → human-review note** ("Do not apply without human review."). Model and
    effort unchanged. One shared note, not one per arm.
@@ -716,6 +718,9 @@ Rationale in `reference.md` §10.5. **Auto-added lines:** Rules 1, 9, 10, 11 and
     `Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.`
 12. **Ultracode line (auto).** If the Claude line carries `ultracode`:
     `Ultracode: start the prompt with "ultracode:" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.`
+13. **Fable biology line (auto).** If the Claude line is **Fable 5.2** and the
+    biology-adjacent gate fired in Step 1:
+    `Fable 5.2: its biology classifiers may block research tasks — on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused.`
 
 ### Speed line
 
@@ -740,7 +745,7 @@ Evidence: <one sentence, ≤ 30 words>
 - Write `default` where OpenCode offers no variant (MiMo-V2.6).
   OpenCode gated: `OpenCode: use Claude — <reason>` (no `#`).
 - Extras, own line each, in order: `opusplan` ⚠️ (directly under the Claude line) ·
-  data / DeepSeek / Gemini / Ultracode lines (Step 7) · speed line · `R=3` → `Do not apply without human
+  data / DeepSeek / Gemini / Ultracode / Fable-biology lines (Step 7) · speed line · `R=3` → `Do not apply without human
   review.` last.
 - "Why?" → expand from `reference.md` / `opencode-benchmarks.md`; never unprompted.
 

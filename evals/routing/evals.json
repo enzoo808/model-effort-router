@@ -323,11 +323,12 @@
       "expected_opencode": "unverified — use Claude",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "Step 1 biology gate: Fable 5.2 by default (effort high, no floor); OpenCode declines without models; the Evidence line says the biology classifiers can block research tasks and that Mythos 5.2 is the result for a verified organisation",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Fable 5.2 · effort: high\nOpenCode: unverified — use Claude\nEvidence: Biology-adjacent R&D is a deciding gate on both arms; Fable 5.2 carries it, though its biology classifiers can block research tasks (Mythos 5.2 for verified organisations), and no pool model has a verified result there.",
+      "tests_rule": "Step 1 biology gate: Fable 5.2 by default (effort high, no floor); OpenCode declines without models; the Evidence line says the biology classifiers can block research tasks and that Mythos 5.2 is the result for a verified organisation; Step 7 rule 13 adds the fixed Fable-biology line.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Fable 5.2 · effort: high\nOpenCode: unverified — use Claude\nEvidence: Biology-adjacent R&D is a deciding gate on both arms; Fable 5.2 carries it, though its biology classifiers can block research tasks (Mythos 5.2 for verified organisations), and no pool model has a verified result there.\nFable 5.2: its biology classifiers may block research tasks — on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused.",
       "expected_notes": [
-        "can block research tasks",
-        "Mythos 5.2"
+        "may block research tasks",
+        "Mythos 5.2",
+        "later biology-flagged requests are refused"
       ]
     },
     {
@@ -338,10 +339,12 @@
       "expected_opencode": "unverified — use Claude",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "Step 1 biology gate with the access clause (same pattern as the offensive-security row): a verified organisation gets Mythos 5.2 at the gate's default effort high; OpenCode declines. New in iteration-27; expectation derived from the gate text, not an independent golden.",
+      "tests_rule": "Step 1 biology gate with the access clause (same pattern as the offensive-security row): a verified organisation gets Mythos 5.2 at the gate's default effort high; OpenCode declines; because the line is Mythos 5.2 (no biology classifiers), Step 7 rule 13's Fable line must not appear.",
       "golden_output": "Claude: ✅ RECOMMENDED AI · Mythos 5.2 · effort: high\nOpenCode: unverified — use Claude\nEvidence: Biology-adjacent R&D is a deciding gate on both arms; the stated Life Sciences Verification Program access makes Mythos 5.2 the gate result, and no pool model has a verified result there.",
       "forbidden": [
-        "Fable 5.2 ·"
+        "Fable 5.2 ·",
+        "biology classifiers may block",
+        "later biology-flagged requests are refused"
       ]
     },
     {

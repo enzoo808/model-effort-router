@@ -427,6 +427,7 @@ These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on ever
 ### Known limits, stated plainly
 
 - **The trigger eval is a proxy.** Nested `claude -p` can't authenticate in the build environment; run `evals/trigger/run_trigger.py` from a logged-in terminal for the real number.
+- **The biology gate on Fable 5.2 carries a fixed line.** Its biology classifiers may block research tasks: on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused.
 - **Prices, caps and retention terms are dated.** They are a snapshot (see each row's date) and OpenCode Go can change them — corrections with a primary source are the most valuable contribution.
 - **OpenCode-by-default is a trade-off.** At `D = 2` the router sends coding to OpenCode although Claude still leads some hardest-task anchors, because the mid-difficulty DeepSWE comparison is a tie at a fraction of the cost. If you'd rather pay Claude there, it's one row of the badge table in [`skill/SKILL.md`](skill/SKILL.md).
 - **Only `SKILL.md` is the source of truth** for routing; the `claude-ai/` fallback is a hand-synced derivative.
