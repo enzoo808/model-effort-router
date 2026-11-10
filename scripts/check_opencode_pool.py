@@ -7,8 +7,8 @@
 Checks (all mechanical, all fail loudly):
 
   1. The roster table names exactly the 19 pool models, with the same Go cap, tier
-     (B budget / F free / P premium / G Gemini / N non-confidential / D dominated) and
-     tasks-per-month.
+     (B budget / P premium / G Gemini / N non-confidential / D dominated) and
+     tasks-per-month. (Columns: # | Model | II | TB | USD/task | II v5 | cap | tasks/mo | tier | Notes.)
   2. Every Step 4-OC row (R<=2 pair, R=3 pair, NC1 variants) equals the mirror,
      and no row ever emits a model whose status is `dominated`.
   3. The badge table (side at D=2, at D=3 and at R=3, dagger) equals the mirror, and no
@@ -17,9 +17,9 @@ Checks (all mechanical, all fail loudly):
      effort that OpenCode actually offers for that model (policy `opencode_variants`), never `GLM-5.3 · low` / `Kimi K3 · low`, and never a
      USD 15-cap model at `low` (only the latency row's GPT 6 Luna is exempt).
   5. No model outside the 19 appears in a Step 4-OC row or an example.
-  6. Rule GM1: Gemini 4 Argon is an NC1-only overlay -- it appears in no Step 4-OC table
-     cell, the rule text names every policy `gm1_rows` row and requires NC1; an example
-     that names it carries the auto-added Gemini line (Step 7 rule 11).
+  6. Rule GM1: Gemini 4 Argon is an overlay open to confidential work -- it appears in no Step 4-OC
+     table cell, the rule text names every policy `gm1_rows` row and says it is open to confidential
+     work; an example that names it carries the auto-added Gemini line (Step 7 rule 11).
 
     python scripts/check_opencode_pool.py
 """
@@ -85,15 +85,15 @@ def main() -> int:
     roster = table_after(skill, "**OpenCode pool — the 19 rated models**")
     roster_caps = {}
     for r in roster:
-        if len(r) < 9 or not r[0].isdigit():
+        if len(r) < 10 or not r[0].isdigit():
             continue
-        roster_caps[strip_md(r[1])] = int(re.sub(r"\D", "", strip_md(r[5])) or 0)
+        roster_caps[strip_md(r[1])] = int(re.sub(r"\D", "", strip_md(r[6])) or 0)
         name_ = strip_md(r[1])
         if name_ in pool:
-            tier_ = strip_md(r[7])
+            tier_ = strip_md(r[8])
             if tier_ != pool[name_]["tier"]:
                 errors.append("roster tier for %s is %r, policy says %r" % (name_, tier_, pool[name_]["tier"]))
-            tpm_txt = strip_md(r[6])
+            tpm_txt = strip_md(r[7])
             tpm_ = int(tpm_txt) if tpm_txt.isdigit() else None
             if tpm_ != pool[name_]["tasks_per_month"]:
                 errors.append("roster tasks/mo for %s is %r, policy says %r"
@@ -107,20 +107,32 @@ def main() -> int:
     if len(roster_caps) != 19:
         errors.append("roster must hold exactly 19 models, found %d" % len(roster_caps))
 
-    # 1b -- tier boundaries and tasks/month recomputed from the evidence (Rule BUD1) -----------
+    # 1b -- tasks/month recomputed from the Arena snapshot; tier membership is BY NAME (Rule
+    # BUD1), with a sanity bound that the named premium models stay at or below 35 tasks/month.
     evid = json.loads((ROOT / "skill" / "opencode-evidence.json").read_text(encoding="utf-8"))
     arena = evid["anchors"]["Arena Agent Arena (net outcome vs avg model, %)"]["cost_per_task_p50_usd"]
     alias = {"Muse Spark 1.3 Contributor": "Muse Spark 1.3"}
     for m, meta in pool.items():
         key = alias.get(m, m)
-        if key in arena:
+        if key in arena and meta["tasks_per_month"] is not None and meta["cap_usd"]:
             calc = round(meta["cap_usd"] / arena[key])
             if calc != meta["tasks_per_month"]:
                 errors.append("tasks/month for %s: policy %s, cap / Arena p50 = %s" % (m, meta["tasks_per_month"], calc))
-        if meta["tier"] == "P" and meta["tasks_per_month"] > 35:
-            errors.append("premium model %s buys %s tasks/month (> 35)" % (m, meta["tasks_per_month"]))
-        if meta["tier"] == "B" and meta["tasks_per_month"] < 140:
-            errors.append("budget model %s buys only %s tasks/month (< 140)" % (m, meta["tasks_per_month"]))
+        if meta["tier"] == "P" and meta["tasks_per_month"] is not None and meta["tasks_per_month"] > 35:
+            errors.append("premium model %s buys %s tasks/month (sanity bound is <= 35)" % (m, meta["tasks_per_month"]))
+
+    # 1c -- Rule BUD1 states membership by name: the rule block must name every tier-P and
+    # tier-B model and must not fall back on the retired numeric thresholds (140 / 35).
+    bud1 = re.search(r"<!-- rule:BUD1 -->\n(.*?)\n<!-- /rule:BUD1 -->", skill, re.S)
+    if not bud1:
+        errors.append("BUD1: rule block missing from SKILL.md")
+    else:
+        for m, meta in pool.items():
+            if meta["tier"] in ("P", "B") and not mentions(m, bud1.group(1)):
+                errors.append("BUD1: the rule text does not name %s (tier %s)" % (m, meta["tier"]))
+        for stale in ("140 or more", "at most 35"):
+            if stale in bud1.group(1):
+                errors.append("BUD1: the rule text still carries the numeric threshold %r" % stale)
 
     # 2 -- Step 4-OC rows ---------------------------------------------------------
     rows = table_after(skill, "| Dominant capability | `R ≤ 2` → `#1` · `#2` |", True)
@@ -171,12 +183,12 @@ def main() -> int:
         if t not in seen:
             errors.append("policy row %r is missing from the Step 4-OC table" % t)
 
-    # Rule GM1 -- Gemini 4 Argon is an NC1-only overlay: it is in NO Step 4-OC table cell, the GM1 rule
-    # names every policy gm1 row, and the rule requires NC1.
+    # Rule GM1 -- Gemini 4 Argon is an overlay: it is in NO Step 4-OC table cell, the GM1 rule
+    # names every policy gm1 row, and the rule says it is open to confidential work.
     gm1 = list(policy.get("gm1_rows", []))
     for r in rows:
         if len(r) >= 3 and (mentions("Gemini 4 Argon", r[1]) or mentions("Gemini 4 Argon", r[2])):
-            errors.append("GM1: Gemini 4 Argon sits in a Step 4-OC pair (row %r); it is an NC1-only overlay" % r[0][:40])
+            errors.append("GM1: Gemini 4 Argon sits in a Step 4-OC pair (row %r); it is an overlay, not a table entry" % r[0][:40])
     gm1_text = re.search(r"<!-- rule:GM1 -->\n(.*?)\n<!-- /rule:GM1 -->", skill, re.S)
     if not gm1_text:
         errors.append("GM1: rule block missing from SKILL.md")
@@ -184,17 +196,19 @@ def main() -> int:
         for t in gm1:
             if "`%s`" % t not in gm1_text.group(1):
                 errors.append("GM1: the rule text does not name policy row %r" % t)
-        if "exists only under NC1" not in gm1_text.group(1):
-            errors.append("GM1: the rule text must say Gemini 4 Argon exists only under NC1")
+        if "open to confidential work" not in gm1_text.group(1):
+            errors.append("GM1: the rule text must say Gemini 4 Argon is open to confidential work (Go: Not used / 0 days)")
+        if "Contributor" in gm1_text.group(1) and "gemini-4-argon-contributor" in gm1_text.group(1):
+            errors.append("GM1: the rule text still names the retired Contributor route id")
 
     # no emitted row may name a dominated or outside model
     oc_text = skill[skill.find("### OpenCode Go — Step 4-OC"):skill.find("#### OpenCode Go — effort")]
     table_only = "\n".join(ln for ln in oc_text.split("\n") if ln.strip().startswith("|"))
     for m, meta in pool.items():
-        if meta["status"] == "dominated":
+        if meta["status"] in ("dominated", "unrated"):
             for r in rows:
                 if len(r) >= 3 and (mentions(m, r[1]) or mentions(m, r[2])):
-                    errors.append("Step 4-OC emits dominated model %s in row %r" % (m, r[0][:40]))
+                    errors.append("Step 4-OC emits %s model %s in row %r" % (meta["status"], m, r[0][:40]))
     for o in outside:
         for r in rows:
             if len(r) >= 3 and (mentions(o, r[1]) or mentions(o, r[2])):
@@ -215,7 +229,7 @@ def main() -> int:
             continue
         rank = [r[0] for r in dr.consensus(ev, tag, dr.ROUTABLE)]   # routable models, best first
         grank = [r[0] for r in dr.consensus(ev, tag, dr.ROUTABLE + dr.GEMINI)]
-        alias = {"MiniMax M3.1 Flash Free": "MiniMax M3.1 Flash"}
+        alias = {}
         for col in ("r_le_2", "r_eq_3"):
             for m in w[col]:
                 m = alias.get(m, m)
@@ -266,7 +280,7 @@ def main() -> int:
         n_ex += 1
         if oc.lower().startswith(("use claude", "unverified")):
             continue
-        if "Gemini 4 Argon" in oc and "Gemini 4 Argon: opencode-go/gemini-4-argon-contributor" not in block:
+        if "Gemini 4 Argon" in oc and "Gemini 4 Argon: opencode-go/gemini-4-argon —" not in block:
             errors.append("example names Gemini 4 Argon without the auto-added Gemini line (Step 7 rule 11)")
         parts = re.split(r"#\s*[12]\b", oc)[1:]
         for p in parts:
@@ -279,8 +293,8 @@ def main() -> int:
                 errors.append("example names %s, outside the 19-model pool" % model)
                 continue
             st = pool[model]["status"]
-            if st == "dominated":
-                errors.append("example emits dominated model %s" % model)
+            if st in ("dominated", "unrated"):
+                errors.append("example emits %s model %s" % (st, model))
             if st == "premium" and "fell short" not in block:
                 errors.append("example emits premium model %s without a stated OpenCode shortfall (Rule BUD1)" % model)
             em = re.search(r"effort:\s*(\w+)", p)

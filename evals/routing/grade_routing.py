@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Grade model-secici routing outputs against evals.json (iteration-25: Claude + OpenCode, budget-first, free lane, Gemini slot, ultracode as a flag).
+"""Grade model-secici routing outputs against evals.json (iteration-27: Claude + OpenCode, budget-first, Gemini slot open to confidential work, ultracode as a flag).
 
 Usage:
     python grade_routing.py --results-dir results/iteration-21
@@ -36,9 +36,9 @@ from pathlib import Path
 
 # Longer names that contain a shorter one must come first.
 CLAUDE_MODELS = ["Haiku 5.5", "Haiku 4.5", "Sonnet 5.5", "Opus 4.8", "Opus 5.5",
-                 "Fable 5.1", "Fable 5", "Mythos 5.1"]
+                 "Fable 5.2", "Fable 5.1", "Fable 5", "Mythos 5.2", "Mythos 5.1"]
 
-# Every model the router rates or knowingly skips on the OpenCode side (Go page of 20 Oct 2026
+# Every model the router rates or knowingly skips on the OpenCode side (Go page of 10 Nov 2026
 # plus the Gemini line and the Zen free models). The 13 with a routing role are routable; any
 # of the others -- dominated or unrated -- appearing on an OpenCode line is a regression this
 # list exists to catch.
@@ -54,20 +54,21 @@ OPENCODE_MODELS = sorted([
     "Claude Haiku 5.5",
     "MiniMax M3", "MiniMax M2.7",
     "LongCat 2.5 Preview", "LongCat-2.0", "Hy4 Preview", "Hy3", "Space Bunny",
-    "MiniMax M3.1 Flash Free", "Gemini 4 Argon Contributor", "Gemini 4 Argon", "Gemini 3.8 Flash",
+    "MiniMax M3.1 Flash Free", "MiniMax M3.1 Flash", "Kimi K3.1 Pro", "Hy4", "Iceman Contributor Free", "LongCat 2.5 Free",
+    "Gemini 4 Argon Contributor", "Gemini 4 Argon", "Gemini 3.8 Flash",
     "Step 5 Preview", "Beam Free", "Big Pickle", "LL Alpha Free", "Exo Free", "Jev 1.13",
     "Nemotron 3 Ultra", "Nemotron 3.5 Lightning", "Nemotron 3.5 Super VL",
 ], key=len, reverse=True)
 
 DECLINE_MARKERS = ("unverified", "use claude")
-# Rule BUD1 (iteration-23): the four premium models appear on an OpenCode line only through
+# Rule BUD1 (iteration-23; five premium models since iteration-27): the premium models appear on an OpenCode line only through
 # A1-OC, i.e. in evals that set "allow_premium": true.
 PREMIUM_PATTERNS = (r"GLM-5\.3(?!-Flash)", r"Kimi K3", r"Grok 4\.7", r"Qwen3\.8 Max")
-# Rule GM1 (iteration-24): Gemini 4 Argon is metered; it may be #1 (or, after a shortfall, #2)
-# only in an eval that sets "allow_gemini": true. Everywhere else it is a regression.
+# Rule GM1: Gemini 4 Argon is metered (USD 30 cap); it may be #1 at D=3 / R=3 on a GM1 row (or #2 after a
+# shortfall at D=2) only in an eval that sets "allow_gemini": true. Everywhere else it is a regression.
 GEMINI_PATTERN = r"Gemini"
-# Rule FR1: the free Go model may appear; no Zen free twin or other free model ever may.
-NEVER_ON_LINE = (r"-free\b", r"Free(?<!MiniMax M3\.1 Flash Free)", r"Beam", r"Big Pickle", r"Nemotron")
+# Rule FR1: no free model (Go or Zen) is ever #1 or #2; the paid MiniMax M3.1 Flash and Hy4 are never selected.
+NEVER_ON_LINE = (r"-free\b", r"Free", r"Beam", r"Big Pickle", r"Nemotron", r"Iceman", r"MiniMax M3\.1", r"Hy4", r"LongCat 2\.5")
 BADGE_TEXT = "recommended ai"
 MIN_EVIDENCE_CHARS = 20
 

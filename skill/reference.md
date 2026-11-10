@@ -2921,7 +2921,7 @@ GDPval-AA 1420 vs 1551, Briefcase 1443 vs 1639, Omniscience 6 vs 21, GDP.pdf 17 
 HLE 37 vs 46; **AA-LCR 77 vs 78**. Anthropic's own table adds Chartography 46.4 vs 61.6 and OSWorld 72.4 vs 83.9.
 So the Haiku family is: summaries, labels, reformatting, translation, rewriting, answers from text the user
 supplies. A finished memo or deck at the same depth is `knowledge-work` and goes to Sonnet (eval a3). AA publishes
-no intervals, so these are directions the router can act on only because the *exclusion* is conservative: the
+no intervals on these score rows (its Elo leaderboards do publish 95% intervals, see Step 5), so these are the router can act on only because the *exclusion* is conservative: the
 rule sends work to the stronger model when in doubt.
 
 ### 19.3. The honest consequences
@@ -2982,6 +2982,8 @@ Claude badge at every depth; A1-OC's `Kimi K3` default for coding (now GLM-5.3, 
 **Verification:** `grade_routing.py --selftest` 30/30; policy sync (36 blocks); pool check (mutation-tested: swapping GLM-5.3 into a row or flipping a badge cell fails
 it); example check. **Not done:** the cold-agent routing run and the trigger eval.
 
+**Iteration-27 update (10 Nov 2026).** The tasks/month column is re-derived on one single-date Arena snapshot (8 Nov 2026: MiMo-V2.6-Pro 88, Qwen3.8 Flash n/p) and Rule BUD1 states tier membership **by name** — the numeric thresholds (premium above 35 / budget below 140) are retired from the rule; `check_opencode_pool.py` now checks membership plus the sanity bound that the premium five stay at or below 35 tasks/month. Qwen3.8 Flash is unrated (every row under that name is 'Qwen3.8-Flash-Next', a different open-weights 256k model, so its cells are n/p) and its pairs moved: knowledge-work MiMo-V2.6-Pro · GLM-5.3-Flash, doc-data-understanding MiMo-V2.6-Pro · DeepSeek V4.1 Flash. AA's Elo leaderboards publish 95% intervals, so Step 5's 'AA publishes none' sentence is narrowed to the score-based rows. Full record: `opencode-benchmarks.md` §14.8.
+
 ## 21. Free models and the Gemini line (iteration-24, 20 October 2026)
 
 Rules **FR1** (free lane: MiniMax M3.1 Flash Free joins the pool; Zen free twins are spill-over only; every other free model is never selected) and **GM1** (Gemini 4 Argon is metered by the user's Google credits and
@@ -3021,3 +3023,38 @@ stays unemitted — now a routing choice, not a capability limit.
 the product mechanism alone (`benchmarks.json` → `routing_rules`, `product_mechanism`);
 (3) the `high` floor is Anthropic's Sonnet 5.5 start-point advice, not a measured result;
 (4) the cold-agent run (36 prompts, 34/36) is recorded in `evals/README.md`: `c1` 3/3 on re-run, `r1` (unrelated) unstable at 2/4 and left open; `c2`/`c3` expectations come from that run, so they guard against regression rather than prove the rule.
+
+
+## 23. The Claude 5.2 generation — iteration-27 (10 November 2026)
+
+**What shipped.** Claude Fable 5.2 and Mythos 5.2 on 9 Nov 2026 (`claude-fable-5-2`, USD 8 / 40 per MTok against 10 / 50 for Fable 5.1; 1M context, 128K output, knowledge cutoff Jun 2026; retirement not sooner than 9 Nov 2027).
+Opus 5.5, Sonnet 5.5 and Haiku 5.5 prices, ids and Claude Code aliases are unchanged (platform.claude.com pricing, models overview, deprecations; code.claude.com model-config). Fable 5.1 and Mythos 5.1 stay Active (not sooner than 1 Sep 2027); Haiku 4.5
+stays Active ("not sooner than October 15, 2026", no deprecation date); Opus 4.8 stays Active (not sooner than 28 May 2027).
+
+**Effort defaults differ by surface.** API: Fable 5.2 `high`, Opus 5.5 `medium`, Sonnet 5.5 `high`, Haiku 5.5 `medium` (models overview and the effort page). Claude Code and the apps: `medium` on all four ("Fable 5.2, Opus 5.5, Sonnet 5.5, and Haiku 5.5
+default to `medium`"; the launch post: "On Medium effort (the default in Claude apps and Claude Code)"). SKILL.md's effort table used to say "`high` on every effort model except Opus 5.5", which already contradicted its own Haiku 5.5 row.
+
+**Aliases.** `fable` → Fable 5.2 everywhere except Claude apps gateway sessions (Fable 5), Claude Code v2.1.321+; `best` = `opus`; a saved `claude-fable-5-1` moves to `fable` on Pro, Max, Team and Enterprise plans; `opus`, `sonnet`, `haiku` unchanged
+(Opus 5.5 v2.1.280+, Sonnet 5.5 v2.1.284+, Haiku 5.5 v2.1.293+); `opusplan` unchanged; `ultracode` unchanged (a setting, not an effort); `ultrathink` (v2.1.311+) raises that turn to `xhigh`, and the changelog names Opus 5.5, Sonnet 5.5, Haiku 5.5 and
+Fable 5.1 — Fable 5.2 is not named (n/p). New settings: `CLAUDE_CODE_SUBAGENT_EFFORT` (v2.1.316), `CLAUDE_CODE_DISABLE_ULTRATHINK` (v2.1.316), `CLAUDE_CODE_WORKFLOW_SUBAGENT_MODEL` (v2.1.296); a subagent on another model uses that model's saved effort (v2.1.317).
+
+**Fast mode.** "Fast mode is supported on Fable 5.2, Opus 5.5, Opus 5, and Opus 4.8"; "up to 2.5x faster at a higher cost per token"; USD 16 / 80 on Fable 5.2, 8 / 40 on Opus 5.5, 10 / 50 on Opus 5 and Opus 4.8 (all 2× the standard price); usage credits only, not
+the subscription limits; Fable 5.2 needs v2.1.321+. **Opus 4.8 fast mode: "deprecated on October 30, 2026, and will be removed on November 30, 2026"**, after which the API rejects the request. The speed line therefore names Fable 5.2 and, until that date, Opus 4.8.
+
+**Safeguards — and the biology gate.** The launch post: Fable 5.2 "comes with safety classifiers that block high-risk cyber activities, including penetration testing, exploit generation, and binary-based vulnerability [scanning], as well as most tasks in
+research biology. When a query is blocked, users will instead receive a response from Opus 4.8 for cybersecurity and Opus 5 for biology." Claude Code's model-config page says the same for Fable models, Opus 5.5 and Opus 5: "For substantive biology work on a Fable model or Opus 5.5,
+the first flagged request that switches models moves the session to Opus 5. Later biology-flagged requests end in refusals there." The offensive-security gate (Opus 4.8) is therefore exactly Anthropic's own cyber fallback. **Biology gate (decided 10 Nov):** Fable 5.2 stays the default result, the gate row says plainly that its biology classifiers can block research tasks (first flagged request → the session moves to Opus 5, later ones are refused there), and, in the offensive-security row's pattern, a verified organisation (Life Sciences Verification Program) gets Mythos 5.2. **Opus 5.5 is subject to the same classifiers**: model-config — "Fable models and Opus 5.5: biology-flagged requests re-run on Opus 5"; Opus 5 and Sonnet 5.5 have no biology fallback and refuse from the first flagged request. Mythos 5.2: "available to vetted organizations"; the launch post does not mention Glasswing.
+
+**A1 and the evidence for Fable 5.2 against Opus 5.5.** A same-harness Anthropic table for 5.2 does not exist: the launch table is cross-vendor, each model at its highest-available effort "unless otherwise noted", Fable / Opus with safeguards on, with no harness statement. Fable 5.2 / Fable 5.1 / Opus 5.5 / GPT-6 Astra /
+Gemini 4 Carbon: FrontierCode 2.0 49.1 (Xhigh) / 32.4 (Xhigh) / 45.5 / 42.8 / 41.1 (Medium); FrontierSWE v2 69.9 / 56.3 / 62.3 / 65.5 / 61.2; AutomationBench 51.4 / 31.4 / 42.5 / 41.4 / 53.9; Terminal-Bench-Science 0.1 74.6 / 52.6 / 58.7 / 68.1 / 64.8; OSWorld 2.1 (offline, partial)
+89.3 / 83.5 / 87.2 / 79.5 / 81.5; AA-Briefcase v1.1 66.1% rubric / 61.5 / 61.2 / 52.0 / 61.8 and Elo 1785 / 1669 / 1800 / 1569 / 1611; HLE with tools 74.2 / 65.6 / 67.7 / 57.2 / —. Text: "at High effort, Fable 5.2 scores about the same as Opus 5.5's best score (45.3% vs. 45.5%)
+for roughly half the cost per task". Independent: AA v5 — Fable 5.2 high 62 (USD 9.08) against Opus 5.5 max 59 (USD 10.04; the announcement says 58) with no published interval; Vals Terminal-Bench 4.0 (Mini-SWE-agent, avg@3) 65.15 for both. Plans: "Fable is included for up
+to 50% of weekly usage limits for Pro plans and standard seats on the Team plan" (launch promotion) against the help-centre article (Fable on Pro runs on usage credits) — conflicting, so the user's plan decides and is n/p. A1/M1 are unchanged; the rationale paragraph under A1 was rewritten.
+
+**AA Index v5 against the Claude rules.** E1 (Sonnet 5.5 `max` 55 at USD 10.02 vs Opus 5.5 `xhigh` 57 at USD 6.05) and E3 (Opus 5.5 `max` over `xhigh`: +2 points, +66% cost) hold on v5; Haiku 5.5 `low` / `medium` are now measured (19 at USD 0.04, 25 at USD 0.09) where the 8 Oct
+analysis called them unmeasured. New observation, not a rule: Fable 5.2 `high` ≥ Opus 5.5 `max` and Fable 5.2 `low` (54 at USD 3.10) ≥ Opus 5.5 `high` (52 at USD 3.46) on AA's dollars — which is not the user's subscription quota (Fable draws on a separate weekly limit).
+
+**Not verified.** Fable 5.2's ultrathink coverage; its `/fast` behaviour on subscription plans beyond the docs; whether the safeguards changed for Opus 5.5; Mythos pricing and plan access beyond the launch post; the `fable` alias on Team and Enterprise before an admin enables it.
+
+**Sources (read 2026-11-10).** anthropic.com/claude-fable-and-mythos-5-2 · platform.claude.com/docs/en/{about-claude/models/overview, about-claude/model-deprecations, about-claude/pricing, build-with-claude/effort, release-notes/overview} ·
+code.claude.com/docs/en/{model-config, fast-mode, changelog} · support.claude.com/en/articles/15424964 · artificialanalysis.ai/leaderboards/models · vals.ai/benchmarks/terminal-bench-4.
