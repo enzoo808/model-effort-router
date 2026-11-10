@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: xhigh · ultracode
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 MiniMax M3.1 Flash Free · effort: max
+Evidence: Adversarial diagnosis at D=3: Sonnet 5.5's HLE 55 vs MiMo-V2.6-Pro 49 and CritPt 31 vs 27 agree; 180 services widen W, not the tier.
+Ultracode: start the prompt with "ultracode:" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.

@@ -1,0 +1,5 @@
+Claude: Sonnet 5.5 · effort: high · ultracode
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
+Evidence: D=1 documented 150-service migration: both arms clear it, so price and cap decide — Flash models on USD 80 and 60 caps; Claude's ultracode adds orchestration, not depth.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).
+Ultracode: start the prompt with "ultracode:" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.

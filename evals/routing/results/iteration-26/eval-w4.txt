@@ -1,0 +1,3 @@
+Claude: Haiku 5.5 · effort: low
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: DeepSeek's Go window is spent; deepseek-v4.1-flash-free is Zen's free twin but never #1/#2, so the CAP1 chain promotes GLM-5.3-Flash, with MiMo-V2.6-Flash at USD 0.06.

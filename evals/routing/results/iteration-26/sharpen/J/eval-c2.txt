@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh · ultracode
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 MiniMax M3.1 Flash Free · effort: max
+Evidence: D=3 adversarial diagnosis: AA HLE 61 vs 49 and CritPt 32 vs 27 give Claude the direction; OpenCode has no ultracode for the 180-service fan-out.
+Ultracode: start the prompt with "ultracode:" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.
+⚡ Claude /fast available (2.5x faster, 2× price).

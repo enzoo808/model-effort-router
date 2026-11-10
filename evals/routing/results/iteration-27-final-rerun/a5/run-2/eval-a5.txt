@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: medium
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: Tone judgement raises each label to D=1, yet relabelling 200 is bulk work: the Flash pair on USD 100/60 caps keeps Claude's quota; H2 replaces Haiku with Sonnet 5.5.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
