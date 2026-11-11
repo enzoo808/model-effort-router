@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Gemini 4 Argon · effort: high
+Evidence: The earlier OpenCode run fell short, so Claude takes the badge (A1-OC); Claude leads on Vals TB 4.0 (65 / 64 vs 31), and Argon as #2 costs about 2% of its USD 30 cap per task.
+Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.

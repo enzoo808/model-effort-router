@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: low
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: A single-source factual lookup is D=0, so price and cap decide on OpenCode's Flash tier; DeepSeek V4.1 Flash is gated out of factual recall (64.1% hallucination), and Haiku 5.5 trails on recall.

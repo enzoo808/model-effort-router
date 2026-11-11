@@ -9,7 +9,7 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-install)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-install)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-install)
-[![Policy](https://img.shields.io/badge/policy-iteration--27-8b949e?style=flat-square)](CHANGELOG.md)
+[![Policy](https://img.shields.io/badge/policy-iteration--28-8b949e?style=flat-square)](CHANGELOG.md)
 [![Regression evals](https://img.shields.io/badge/regression_evals-39-8b949e?style=flat-square)](#-validation)
 
 **[Quick start](#-quick-start)** · **[Install](#-install)** · **[Read the answer](#-reading-the-answer)** · **[How it works](#-how-it-decides)** · **[Examples](#-examples)** · **[Evidence](#-built-on-evidence-not-vibes)** · **[Changelog](CHANGELOG.md)** · **[🇹🇷 Türkçe](README.tr.md)**
@@ -217,7 +217,7 @@ OpenCode has no skill mechanism: the router just prints an `OpenCode:` line and 
 
 1. Take `#1` from the line, e.g. `DeepSeek V4.1 Flash · effort: max`.
 2. In OpenCode, select the model as **`opencode-go/<model-id>`**.
-3. Set the effort with **`variant_cycle`** until it shows the effort the router named.
+3. Set the effort with **`variant_cycle`** (`ctrl+t`) until it shows the effort the router named — or pick it directly with `#variant`: `opencode run --model opencode-go/deepseek-v4.1-flash#high "…"` (the same `provider/model#variant` form works in agent and command `model` fields; the root `model` setting keeps no variant).
    MiMo-V2.6 exposes no variants (thinking is always on), so the router writes `default` and there is nothing to cycle.
 4. If `#1` errors or is overloaded, use `#2`. If a model's monthly window is spent, or its result falls short, tell the router (see [Writing a good prompt](#writing-a-good-prompt)): it names the next model in the chain or escalates.
 
@@ -258,8 +258,8 @@ On Windows, delete `%USERPROFILE%\.claude\skills\model-secici`.
 
 ```text
 Claude:   Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
-Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (DeepSeek 71.7 vs Sonnet 5.5 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task; Claude's lead starts at D=3.
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: high
+Evidence: Mid-difficulty feature work stays on OpenCode (SM1): Claude's lead on Vals TB 4.0 (65 / 64 vs 31 / 32) and Arena Agent only counts from D=3, and a real agent task costs USD 0.17 (MiMo-V2.6-Pro) against Sonnet 5.5's 3.38 and Opus 5.5's 5.38 (Arena, 10 Nov).
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
 ```
 
@@ -331,8 +331,8 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 | Task | Claude | OpenCode `#1` · `#2` | Recommended |
 |---|---|---|---|
 | Label 200 reviews positive/negative | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` bulk work; Flash tier on USD 60 caps keeps Claude's quota |
-| Refactor the payment module across 40 files | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · MiMo-V2.6-Pro `default` | **OpenCode** — `D=2`; DeepSWE ties, USD 0.13 vs 1.67 per task |
-| Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · high · ultracode` | DeepSeek V4.1 Flash `high` · MiMo-V2.6-Pro `default` | **Claude** — multi-phase; `ultracode` has no OpenCode equivalent |
+| Refactor the payment module across 40 files | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **OpenCode** — `D=2`; Claude's lead only counts from `D=3`, USD 0.17 vs 3.38 per task |
+| Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · high · ultracode` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **Claude** — multi-phase; `ultracode` has no OpenCode equivalent |
 | Find the race condition that flakes in prod | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, two agreeing AA rows |
 | Design the irreversible transaction boundary | `Opus 5.5 · max` + review note | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, `R=3` |
 | Redesign auth for 200 services from scratch | `opusplan · plan: max · execute: medium` | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude** — `opusplan` mechanism |
@@ -348,15 +348,15 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 |---|---|---|---|
 | Summarise a 2-page transcript into five bullets | `Haiku 5.5 · medium` | DeepSeek V4.1 Flash `low` · GLM-5.3-Flash `low` | **OpenCode** — `D=1` reading work, AA-LCR 77 vs 78 |
 | Draft the weekly steering-committee status memo | `Sonnet 5.5 · medium` | DeepSeek V4.1 Flash `low` · GLM-5.3-Flash `low` | **OpenCode** — `D=1`; Haiku 5.5 is out of knowledge-work |
-| Live-chat reply, first words within about a second | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — first-token bound; DeepSeek has a measured 1.1 s |
+| Live-chat reply, first words within about a second | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — first-token bound; DeepSeek 1017 streams 142 tok/s (AA) |
 | Which year did the EU AI Act's GPAI obligations start? | `Sonnet 5.5 · low` | GLM-5.3-Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — factual recall excludes Haiku and DeepSeek |
 | Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5.5 · low` + review note | DeepSeek V4.1 Flash `low` · GLM-5.3-Flash `low` | **OpenCode** — `D=0`, both clear the bar |
-| Wire a Jira → Slack → on-call n8n flow | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · GLM-5.3-Flash `max` | **OpenCode**, low-confidence — AutomationBench ties, ITBench favours open models |
-| Summarise 400 pages of filings into one memo | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **Claude** — knowledge-work from `D=2` |
+| Wire a Jira → Slack → on-call n8n flow | `Sonnet 5.5 · high` | GLM-5.3-Flash `max` · DeepSeek V4.1 Flash `high` | **OpenCode**, low-confidence — AutomationBench has no interval, ITBench favours open models |
+| Summarise 400 pages of filings into one memo | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · GLM-5.3-Flash `max` | **Claude** — knowledge-work from `D=2` |
 | Read 30 scanned receipts into a reconciliation table | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **OpenCode**, low-confidence — both take images |
 | Non-confidential conference pricing deck | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude** — knowledge-work; Grok 4.7 stays premium |
 | Read 3 regulator pages before labels go to print tonight | `Sonnet 5.5 · high` + review note | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude**, low-confidence — `R=3` and a single Omniscience lean |
-| An earlier OpenCode attempt at a 30-file migration fell short | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · **Gemini 4 Argon** `high` | **Claude** — Rule A1-OC adds the `#2` (Argon on a GM1 row) and hands over the badge |
+| An earlier OpenCode attempt at a 30-file migration fell short | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · **Gemini 4 Argon** `high` | **Claude** — Rule A1-OC adds the `#2` (Argon on a GM1 row) and hands over the badge |
 | Call somatic variants from tumour/normal exomes | `Fable 5.2 · high` | `unverified — use Claude` | **Claude** — availability gate; its biology classifiers can block research tasks |
 
 </details>
@@ -376,18 +376,18 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 | **Fable 5.2** | Frontier scale (1000+ files) and biology-adjacent R&D (USD 8/40; `/fast` available) |
 | **Mythos 5.2** | Fable 5.2 with permissive safeguards — Life Sciences Verification Program only |
 
-**OpenCode Go arm** — the **19 rated models**, in tiers. Each Go model has its *own* monthly dollar cap, so what matters is how many *real* agent tasks a month of that cap buys. Tier membership is **by name** (Rule BUD1); the task counts below are one informational Arena snapshot (8 Nov 2026):
+**OpenCode Go arm** — the **19 rated models**, in tiers. Each Go model has its *own* monthly dollar cap, so what matters is how many *real* agent tasks a month of that cap buys. Tier membership is **by name** (Rule BUD1); the task counts below are one informational Arena snapshot (10 Nov 2026, every row from the same page):
 
 | Tier | Models | Role |
 |---|---|---|
 | **Budget** — the default pairs | MiMo-V2.6-Flash 857 · DeepSeek V4.1 Flash 714 · GLM-5.3-Flash 375 · MiMo-V2.6-Pro 88 | 88–857 tasks per month of cap |
-| **Non-confidential only** | GPT 6 Luna 188 · Muse Spark 1.3 128 | Offered only if you say the work isn't confidential — some of them train on prompts |
-| **Premium** — escalation only | Kimi K3 18 · GLM-5.3 14 · Qwen3.8 Max 12 · Kimi K3.1 Pro 12 · Grok 4.7 5 | 5–18 tasks per month of cap; never in a routed pair, only as `#2` after a stated shortfall |
+| **Non-confidential only** | GPT 6 Luna 188 · Muse Spark 1.3 130 | Offered only if you say the work isn't confidential — some of them train on prompts |
+| **Premium** — escalation only | Kimi K3 18 · GLM-5.3 13 · Qwen3.8 Max 12 · Kimi K3.1 Pro 12 · Grok 4.7 5 | 5–18 tasks per month of cap; never in a routed pair, only as `#2` after a stated shortfall |
 | **Gemini (GM1)** — overlay | Gemini 4 Argon | Go's plain `gemini-4-argon` (Not used / 0 days), open to confidential work; `#1` only at `D = 3` / `R = 3` on five rows, USD 30 cap — not a default pair |
 | **Unrated** — never selected | Qwen3.8 Flash | Every row under that name is "Qwen3.8-Flash-Next", a different open-weights model; `n/p` |
 | **Dominated** | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 · Gemini 3.8 Flash | Rated and tracked; no row ever emits them |
 
-> Effort is the variant OpenCode *actually offers for that model* (`low` / `high` / `max`, `xhigh`, or `default`), never a value it would reject. DeepSeek V4.1 Flash uses all three rungs: `D ≤ 1` `low`, `D = 2` `high`, `D ≥ 3` `max`. DeepSeek's cap is USD 100 and its zero-retention agreement is valid through 30 Nov 2026.
+> Effort is the variant OpenCode *actually offers for that model* (`low` / `high` / `max`, `xhigh`, or `default`), never a value it would reject. DeepSeek V4.1 Flash uses all three rungs: `D ≤ 1` `low`, `D = 2` `high`, `D ≥ 3` `max`. DeepSeek's cap is USD 100 and its zero-retention agreement is valid through 30 Nov 2026. Go serves the **1017** build of DeepSeek V4.1 Flash, so every DeepSeek figure the router cites is a 1017 figure (older-revision numbers back no row or badge).
 
 <br>
 
@@ -422,7 +422,7 @@ python scripts/check_readme_facts.py     # counts, pool size, iteration and tier
 
 These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
 
-**Where it stands (10 Nov 2026, iteration-27):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **39/39**. A cold run of the **16 affected prompts** scored **15/16** (Argon, MiniMax removal, Fable 5.2 and the DeepSeek date); `i1` was stopped by the cyber safeguards and not run, and the trigger eval is still a proxy. Details in [`evals/README.md`](evals/README.md).
+**Where it stands (11 Nov 2026, iteration-28):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **39/39**. A cold run of the **33 prompts the change can move** (one fresh agent per prompt, reading only `skill/SKILL.md`) scored **33/33**; `i1` was skipped (cyber safeguards), five prompts without an OpenCode pair were not run, and the trigger eval is still a proxy. Details in [`evals/README.md`](evals/README.md).
 
 ### Known limits, stated plainly
 

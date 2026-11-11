@@ -4,6 +4,19 @@ Routing-policy iterations 21 to 25 (the OpenCode Go era), newest first. Earlier 
 
 ---
 
+## iteration-28 (11 Nov 2026): Go serves DeepSeek V4.1 Flash 1017
+
+Everything below was re-read from the primary pages on 11 Nov 2026 (`skill/opencode-benchmarks.md` §15, `skill/reference.md` §24).
+
+- **DeepSeek identity.** Go's catalogue now names the served model **"DeepSeek V4.1 Flash 1017"** and models.dev records that Go and Free moved to that build on 2026-10-20; AA marks the earlier page deprecated. The DeepSeek evidence is re-based onto 1017 same-revision rows (AA v5 33, AA TB 4.0 34, Vals TB 4.0 31.8, Arena Agent 2.07 ±0.52, GDPval-AA 1746 (1725–1767), Briefcase 1570 (1560–1580)). Every older figure (II 39, TB 27, DeepSWE 71.7, Agent Arena 4.02, Vals TB 2.1 74.5, hallucination 96.5%) is labelled "previous revision / revision unspecified" in the evidence file and backs no routing row or badge cell; every DeepSeek figure in `SKILL.md`, the READMEs and the evals names its revision.
+- **Rows that moved** (`derive_opencode_rows.py`, never by hand): `agentic-code` / `terminal-tool` now lead with MiMo-V2.6-Pro (DeepSeek second), `deep-reasoning` and `science` take DeepSeek as `#2` (was GLM-5.3-Flash), `knowledge-work` leads with DeepSeek (disjoint 95% intervals on GDPval-AA and Briefcase), `workflow-automation` leads with GLM-5.3-Flash, `long-context` is GLM-5.3-Flash · MiMo-V2.6-Pro (`R = 3`: reversed). No badge cell changed side. Ten goldens moved: `b1`, `b2`, `c1`, `e1`, `f1`, `u1`, `m1`, `n1`, `p1`, `w1`.
+- **Factual-recall gate kept, rationale rewritten.** Same-version AA-Omniscience v1.1: 1017 hallucinates 64.1% (`max`) / 61.2% (`high`) against MiMo-V2.6-Pro 60.2% and GLM-5.3-Flash 38.3% — high in absolute terms, no longer the outlier the 96.5% (previous revision) suggested.
+- **E7 unchanged.** The `D = 2` `high` rung stays on DeepSeek's own curve: AA's Index and Terminal-Bench rows carry no interval, GDPval-AA publishes `max` only, and the one interval-bearing row with both rungs (AA-Briefcase) separates them (1570 vs 1416) — recorded for a decision, not acted on.
+- **Data.** Arena refreshed as one snapshot (10 Nov 2026) for the whole tasks/month column and the net-improvement anchor; DeepSWE refreshed from the benchlm mirror (10 Nov capture, 57 configurations) at low confidence; the 30 Nov items (Argon half price, DeepSeek zero-retention, Opus 4.8 `/fast`) are status only. README step ④ documents `provider/model#variant`.
+- **Evals.** `routing/evals.json` stays at **39 prompts**; self-test 39/39 and the four policy checks green; the cold-agent run is recorded in `evals/README.md`.
+
+---
+
 ## iteration-27 (10 Nov 2026): Fable 5.2, AA Index v5, Argon on Go proper
 
 Everything below was re-read from the primary pages on 10 Nov 2026 (`skill/opencode-benchmarks.md` §14, `skill/reference.md` §23).

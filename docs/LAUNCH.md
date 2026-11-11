@@ -63,7 +63,7 @@ buried.
 >
 > It's sourced from the official docs, every uncertain claim is labelled, and
 > there's a deterministic regression eval (cold agents read the rules fresh and
-> route a fixed prompt set; a regex grader checks the output). Currently a 39-prompt set (iteration-27 cold-agent run on the 16 affected prompts: 15/16, `c3` open; the biology/frontier gate re-run after the final fixes is 3/3 for k1/k2/fa1), plus separate no-LLM checks: policy sync, pool/badge-table checks, worked-example checks and README-facts consistency (the old benchmark validator/compiler suite was removed upstream).
+> route a fixed prompt set; a regex grader checks the output). Currently a 39-prompt set (iteration-28 cold-agent run on the 33 prompts the change can move: 33/33; `i1` skipped), plus separate no-LLM checks: policy sync, pool/badge-table checks, worked-example checks and README-facts consistency (the old benchmark validator/compiler suite was removed upstream).
 >
 > Repo: <link>
 
@@ -79,7 +79,7 @@ AA publishes no interval on its score rows (its Elo leaderboards do), so a Termi
 
 **Body:**
 > Short version: paste a task, it replies with two lines —
-> `Claude: Sonnet 5.5 · effort: high` / `OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: high · #2 MiMo-V2.6-Pro · effort: default` — and doesn't
+> `Claude: Sonnet 5.5 · effort: high` / `OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: high` — and doesn't
 > run anything.
 >
 > It's built around one idea: the thing you're actually running out of is your
