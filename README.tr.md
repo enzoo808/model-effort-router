@@ -9,7 +9,7 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-kurulum)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-kurulum)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-kurulum)
-[![Policy](https://img.shields.io/badge/politika-iteration--27-8b949e?style=flat-square)](CHANGELOG.md)
+[![Policy](https://img.shields.io/badge/politika-iteration--28-8b949e?style=flat-square)](CHANGELOG.md)
 [![Regression evals](https://img.shields.io/badge/regresyon_eval-39-8b949e?style=flat-square)](#-doğrulama)
 
 **[Hızlı başlangıç](#-hızlı-başlangıç)** · **[Kurulum](#-kurulum)** · **[Cevabı oku](#-cevabı-okumak)** · **[Nasıl karar verir](#-nasıl-karar-verir)** · **[Örnekler](#-kullanım-örnekleri)** · **[Kanıt](#-hisle-değil-kanıtla)** · **[Değişiklik günlüğü](CHANGELOG.md)** · **[🇬🇧 English](README.md)**
@@ -217,7 +217,7 @@ OpenCode tarafında skill mekanizması yok: router yalnızca bir `OpenCode:` sat
 
 1. Satırdaki `#1`'i al, örneğin `DeepSeek V4.1 Flash · effort: max`.
 2. OpenCode'da modeli **`opencode-go/<model-id>`** olarak seç.
-3. Router'ın yazdığı efor görünene kadar **`variant_cycle`** ile eforu değiştir.
+3. Router'ın yazdığı efor görünene kadar **`variant_cycle`** (`ctrl+t`) ile eforu değiştir — ya da doğrudan `#variant` ile seç: `opencode run --model opencode-go/deepseek-v4.1-flash#high "…"` (aynı `provider/model#variant` biçimi ajan ve komut `model` alanlarında da geçerli; kök `model` ayarı varyantı tutmaz).
    MiMo-V2.6'nın varyantı yoktur (düşünme hep açık), bu yüzden router `default` yazar ve çevrilecek bir şey olmaz.
 4. `#1` hata verir ya da aşırı yüklüyse `#2`'yi kullan. Bir modelin aylık penceresi bittiyse ya da sonucu yetersiz kaldıysa router'a söyle ([Prompt nasıl yazılır](#prompt-nasıl-yazılır)): zincirdeki sıradaki modeli söyler ya da yükseltir.
 
@@ -258,8 +258,8 @@ Windows'ta `%USERPROFILE%\.claude\skills\model-secici` klasörünü sil.
 
 ```text
 Claude:   Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
-Evidence: Mid-difficulty feature work is a tie on the independent DeepSWE (DeepSeek 71.7 vs Sonnet 5.5 70.5, ±7) at USD 0.13 against Opus 5.5's 1.67 per agent task; Claude's lead starts at D=3.
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: high
+Evidence: Mid-difficulty feature work stays on OpenCode (SM1): Claude's lead on Vals TB 4.0 (65 / 64 vs 31 / 32) and Arena Agent only counts from D=3, and a real agent task costs USD 0.17 (MiMo-V2.6-Pro) against Sonnet 5.5's 3.38 and Opus 5.5's 5.38 (Arena, 10 Nov).
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
 ```
 
@@ -333,8 +333,8 @@ Her kapı ve kural dahil adım adım ayrıntı: **[docs/how-it-works.md](docs/ho
 | Görev | Claude | OpenCode `#1` · `#2` | Önerilen |
 |---|---|---|---|
 | 200 yorumu olumlu/olumsuz etiketle | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` toplu iş; USD 60 limitli Flash katmanı Claude kotasını korur |
-| Ödeme modülünü 40 dosyada yeniden düzenle | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · MiMo-V2.6-Pro `default` | **OpenCode** — `D=2`; DeepSWE'de eşit, görev başına USD 0.13 vs 1.67 |
-| Staging'i sıfırdan kur (Terraform, 12 servis, seed, smoke) | `Sonnet 5.5 · high · ultracode` | DeepSeek V4.1 Flash `high` · MiMo-V2.6-Pro `default` | **Claude** — çok fazlı; `ultracode`'un OpenCode karşılığı yok |
+| Ödeme modülünü 40 dosyada yeniden düzenle | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **OpenCode** — `D=2`; Claude'un önü `D=3`'ten itibaren sayılır, görev başına USD 0.17 vs 3.38 |
+| Staging'i sıfırdan kur (Terraform, 12 servis, seed, smoke) | `Sonnet 5.5 · high · ultracode` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **Claude** — çok fazlı; `ultracode`'un OpenCode karşılığı yok |
 | Prod'da ara sıra patlayan race condition'ı bul | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, uyumlu iki AA satırı |
 | Geri döndürülemez işlem sınırını tasarla | `Opus 5.5 · max` + inceleme notu | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, `R=3` |
 | 200 servis için auth'u sıfırdan yeniden tasarla | `opusplan · plan: max · execute: medium` | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude** — `opusplan` mekanizması |
@@ -358,18 +358,18 @@ Daha fazla örnek (20 satırlık tam tablo) için [İngilizce README](README.md#
 | **Fable 5.2** | Devasa ölçek (1000+ dosya) ve biyolojiye komşu Ar-Ge (USD 8/40; `/fast` var) |
 | **Mythos 5.2** | Gevşek korumalı Fable 5.2 — yalnızca Life Sciences Verification Program |
 
-**OpenCode Go kolu** — **puanlanan 19 model**, katmanlara ayrılmış. Her Go modelinin *kendi* aylık dolar limiti vardır; önemli olan o limitin bir ayda kaç *gerçek* ajan görevi aldığıdır. Katman üyeliği **isimle** belirlenir (Kural BUD1); aşağıdaki görev sayıları 8 Kasım 2026 tarihli tek bir Arena anlık görüntüsüdür ve yalnızca bilgi amaçlıdır:
+**OpenCode Go kolu** — **puanlanan 19 model**, katmanlara ayrılmış. Her Go modelinin *kendi* aylık dolar limiti vardır; önemli olan o limitin bir ayda kaç *gerçek* ajan görevi aldığıdır. Katman üyeliği **isimle** belirlenir (Kural BUD1); aşağıdaki görev sayıları 10 Kasım 2026 tarihli, her satırı aynı sayfadan alınmış tek bir Arena anlık görüntüsüdür ve yalnızca bilgi amaçlıdır:
 
 | Katman | Modeller | Rol |
 |---|---|---|
 | **Bütçe** — varsayılan çiftler | MiMo-V2.6-Flash 857 · DeepSeek V4.1 Flash 714 · GLM-5.3-Flash 375 · MiMo-V2.6-Pro 88 | Limit başına ayda 88–857 görev |
 | **Yalnızca gizli olmayan iş** | GPT 6 Luna 188 · Muse Spark 1.3 128 | İşin gizli olmadığını söylersen sunulur — bazıları istemlerle eğitilir |
-| **Premium** — yalnızca yükseltme | Kimi K3 18 · GLM-5.3 14 · Qwen3.8 Max 12 · Kimi K3.1 Pro 12 · Grok 4.7 5 | Limit başına ayda 5–18 görev; yönlendirilen çiftte asla yok, yalnızca bildirilen bir yetersizlikten sonra `#2` |
+| **Premium** — yalnızca yükseltme | Kimi K3 18 · GLM-5.3 13 · Qwen3.8 Max 12 · Kimi K3.1 Pro 12 · Grok 4.7 5 | Limit başına ayda 5–18 görev; yönlendirilen çiftte asla yok, yalnızca bildirilen bir yetersizlikten sonra `#2` |
 | **Gemini (GM1)** — kaplama | Gemini 4 Argon | Go'nun düz `gemini-4-argon`u (Not used / 0 gün), gizli işe açık; yalnızca beş satırda `D = 3` / `R = 3` için `#1`, USD 30 limit — varsayılan çift değil |
 | **Puanlanmamış** — asla seçilmez | Qwen3.8 Flash | Bu ad altındaki her satır "Qwen3.8-Flash-Next", farklı bir açık ağırlıklı model; `n/p` |
 | **Baskın olunan** | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 · Gemini 3.8 Flash | Puanlanır ve izlenir; hiçbir satır bunları üretmez |
 
-> Efor, OpenCode'un o model için *gerçekten sunduğu* varyanttır (`low` / `high` / `max`, `xhigh` ya da `default`); asla reddedeceği bir değer yazılmaz. DeepSeek V4.1 Flash üç kademeyi de kullanır: `D ≤ 1` `low`, `D = 2` `high`, `D ≥ 3` `max`. DeepSeek'in limiti USD 100 ve sıfır-saklama anlaşması 30 Kasım 2026'ya kadar geçerli.
+> Efor, OpenCode'un o model için *gerçekten sunduğu* varyanttır (`low` / `high` / `max`, `xhigh` ya da `default`); asla reddedeceği bir değer yazılmaz. DeepSeek V4.1 Flash üç kademeyi de kullanır: `D ≤ 1` `low`, `D = 2` `high`, `D ≥ 3` `max`. DeepSeek'in limiti USD 100 ve sıfır-saklama anlaşması 30 Kasım 2026'ya kadar geçerli. Go DeepSeek V4.1 Flash'ın **1017** sürümünü sunuyor; router'ın andığı her DeepSeek rakamı 1017 rakamıdır (eski sürüm rakamları hiçbir satırı veya rozeti desteklemez).
 
 <br>
 
@@ -404,7 +404,7 @@ python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, 
 
 Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
 
-**Durum (10 Kasım 2026, iteration-27):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **39/39**. Etkilenen **16 promptun** soğuk koşusu **15/16** (Argon, MiniMax'ın kalkması, Fable 5.2 ve DeepSeek tarihi); `i1` siber korumalar tarafından durduruldu ve koşulmadı, tetikleme eval'i hâlâ proxy. Ayrıntı: [`evals/README.md`](evals/README.md).
+**Durum (11 Kasım 2026, iteration-28):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **39/39**. Değişikliğin etkileyebileceği **33 promptun** soğuk koşusu (her prompt için taze bir ajan, yalnızca `skill/SKILL.md` okuyarak) **33/33** geçti; `i1` atlandı (siber güvenlik kapıları), OpenCode çifti taşımayan beş prompt koşulmadı, tetikleme eval'i hâlâ bir vekil. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
 
 ### Bilinen sınırlar
 
