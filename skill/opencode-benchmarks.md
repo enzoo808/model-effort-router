@@ -1,4 +1,4 @@
-# OpenCode Go evidence — iteration-23
+# OpenCode Go evidence — iteration-23 (updated through iteration-28; §15 is the 11 November 2026 update)
 
 > **Cleanup note.** This file still names `skill/benchmarks.json`, `skill/benchmark_frontiers.json` and the compile / validate / test / ablate scripts of the Codex-era benchmark pipeline. They were removed from the tree after iteration-25 (last present at commit `7c24c81`, e.g. `git show 7c24c81:skill/benchmarks.json`). The router never read them.
 
@@ -708,3 +708,91 @@ The router's badge uses per-capability anchors, not the Index, so the gap change
 **Sources (read 2026-11-10).** opencode.ai/docs/go · opencode.ai/inference/go/v1/models · opencode.ai/docs/zen · opencode.ai/changelog · opencode.ai/console/changelog/go-teams · raw.githubusercontent.com/anomalyco/models.dev/dev/providers/opencode-go/models/{gemini-4-argon,
 gemini-4-argon-contributor,minimax-m3.1-flash,minimax-m3.1-flash-free,kimi-k3.1-pro}.toml · artificialanalysis.ai (articles/artificial-analysis-intelligence-index-v5, leaderboards/models, evaluations and the data embedded in /evaluations/terminalbench-4-0) ·
 arena.ai/leaderboard/agent (8 Nov) · vals.ai/benchmarks/{terminal-bench-4,vibe-code} (9 Nov).
+
+
+## 15. Iteration-28 — the 11 November 2026 update (Go serves DeepSeek V4.1 Flash 1017)
+
+All figures below were read on 2026-11-11 from the cited page; `skill/opencode-evidence.json` → `iteration_28` holds them. Vendor figures and independent figures are labelled. Nothing was copied from memory.
+
+### 15.1 Identity — which DeepSeek build Go serves (vendor, first-party)
+
+- Go catalogue (`opencode.ai/inference/go/v1/models`): id `deepseek-v4.1-flash`, name **"DeepSeek V4.1 Flash 1017"**, `canonical_id` `deepseek/deepseek-v4.1-flash-1017`, release 2026-10-17, efforts `low` / `high` / `max`, text + image, 1,000,000 context.
+- models.dev commit `975b6bb` (anomalyco/models.dev, 2026-11-10T19:34Z, after the iteration-27 merge): *"Serves DeepSeek-V4.1-Flash-1017 (Go and Free were updated to the October 17 build on 2026-10-20)"*; `base_model` moved to `deepseek/deepseek-v4.1-flash-1017`. When the catalogue *name* changed is not stated.
+- Independent corroboration: AA marks its earlier "DeepSeek V4.1 Flash" page deprecated ("DeepSeek has launched a newer release, DeepSeek V4.1 Flash 1017. We suggest considering it instead").
+- The Zen free twin `deepseek-v4.1-flash-free` points at the same 1017 build.
+
+### 15.2 Same-revision rows (independent; AA, Vals, Arena) and the previous revision
+
+| Measure | 1017 (served) | Previous revision (kept in the evidence file only) | MiMo-V2.6-Pro (same page, same day) | Source |
+|---|---|---|---|---|
+| AA Index v5 (USD/task) | `max` 32.6 (0.60) · `high` 28.6 (0.46) · non-reasoning 18.5 | v4.3.2 39 (0.27) — a different index version | 29.9 (0.26) | AA model pages |
+| AA Terminal-Bench 4.0 | `max` 33.8 · `high` 28.8 | 26.8 | 34.8 | AA |
+| Vals Terminal-Bench 4.0 (updated 9 Nov) | 31.82 | 19.70 ("DeepSeek V4.1 Flash") | 31.31 | vals.ai |
+| Arena Agent, net improvement (10 Nov) | 2.07 ±0.52, USD 0.14 p50, 84,249 sessions | 4.02 (Oct snapshot) — not comparable | 2.30 ±0.91, USD 0.17 | arena.ai |
+| GDPval-AA v2.1 (95% interval) | `max` 1745.77 (1724.98–1766.56); `high` **no value** | 1600 | 1692.05 (1672.07–1712.03) | AA |
+| AA-Briefcase v1.1 (95% interval) | `max` 1570.42 (1560.41–1580.42); `high` 1415.70 (1405.12–1425.98) | 1417.22 | 1511.68 (1503.15–1521.02) | AA |
+| HLE / CritPt / SciCode / AA-LCR / GDP.pdf / MMMU-Pro / AutomationBench-AA (`max`) | 43.3 / 24.0 / 55.9 / 82.7 / 17.2 / 80.6 / 66.6 | 39.2 / 14.3 / 51.9 / 84.0 / 12.8 / 77.0 / 68.9 | 49.4 / 26.6 / 60.9 / 86.3 / 19.2 / n/p / 58.6 | AA (the legacy pages still measure these) |
+| Speed | 142 tok/s, 49.4 s to the first answer token | 222 tok/s, TTFT 1.1 s (different measure — reasoning counted) | n/p | AA |
+
+Not mixed in: the 1017 MLCR-AA value (26.7) belongs to the *updated* MLCR-AA, while the anchor's other rows are the previous version. DeepSWE has **no 1017 row**; the benchlm row "DeepSeek-V4.1-Flash" 71.7 ±6.3 does not state its revision → note only. ITBench and AnalystAgent have no 1017 row.
+
+### 15.3 E7 — the D=2 `high` rung (rule unchanged)
+
+AA publishes `high` and `max` for 1017, but the Index (28.6 vs 32.6) and Terminal-Bench (28.8 vs 33.8) rows carry no interval, so the rung choice is **UNRESOLVED** on AA's score rows and stays on the vendor curve (§4c). **GDPval-AA publishes the `max` rung only**, so it cannot separate the rungs. The one interval-bearing row that has both rungs, **AA-Briefcase v1.1, separates them** (`max` 1570 (1560–1580) vs `high` 1416 (1405–1426), a 155-Elo gap with disjoint intervals; `high` also sits below MiMo-V2.6-Pro's 1512 (1503–1521)). The instruction was to leave the `high` rule unchanged unless GDPval-AA separated the rungs; it did not, so the rule is unchanged and the Briefcase gap is reported for a decision. Consequence recorded in SKILL.md: the Step 4-OC evidence for DeepSeek is `max`-rung, and the `knowledge-work` cell says so (the badge there is Claude from `D = 2` regardless).
+
+### 15.4 Factual-recall gate (kept; rationale rewritten)
+
+AA-Omniscience **v1.1** (the only version with a 1017 row), same page, no interval published:
+
+| Model | Index | Accuracy | Hallucination |
+|---|---|---|---|
+| DeepSeek V4.1 Flash 1017 `max` / `high` | 0.9 / 1.5 | 39.6% / 38.9% | **64.1% / 61.2%** |
+| MiMo-V2.6-Pro | −4.5 | 34.8% | 60.2% |
+| MiMo-V2.6-Flash | −10.8 | 27.2% | 52.2% |
+| GLM-5.3-Flash | 0.7 | 28.2% | 38.3% |
+
+The 96.5% figure (v1) belonged to the previous revision. Same-version, the served model is a few points above MiMo-V2.6-Pro (the factual-recall `#1`) and far above GLM-5.3-Flash on hallucination, with a higher index than either; nothing singles it out as the worst. The gate stays as a conservative rule (a 64% hallucination rate is high in absolute terms) and its text now says exactly that. The anchors in the evidence file still hold the v1 values (MiMo-V2.6-Pro 8.4 / 40.6%); on v1.1 MiMo-V2.6-Pro reads −4.5 / 60.2%, a larger v1 → v1.1 drop than AA's "about 2 points" statement for the Index.
+
+### 15.5 What moved (output of `scripts/derive_opencode_rows.py`, run before and after the re-base)
+
+Consensus after the re-base (budget tier, at least 2 anchors to lead): `agentic-code` MiMo-V2.6-Pro 0.90 · DeepSeek 0.60 · GLM-5.3-Flash 0.48; `deep-reasoning` MiMo 1.00 · DeepSeek 0.60 · GLM-Flash 0.30; `knowledge-work` DeepSeek 0.90 · MiMo 0.70 · GLM-Flash 0.30; `workflow-automation` GLM-Flash 0.65 (DeepSeek has one anchor, AutomationBench-AA, and cannot lead); `long-context` MiMo 0.67 · GLM-Flash 0.60 · DeepSeek 0.40 (n=1); `science` MiMo 1.00 · DeepSeek 0.60 · GLM-Flash 0.20; `research-synthesis`, `doc-data-understanding` unchanged.
+
+| Row | Before | After | Reason |
+|---|---|---|---|
+| `agentic-code`, `terminal-tool` | `R ≤ 2` DeepSeek · MiMo; `R = 3` MiMo · DeepSeek | MiMo · DeepSeek in both | the old DeepSeek lead rested on DeepSWE, Agent Arena (Oct) and Vals TB 2.1, all previous revision / unspecified; on 1017 rows MiMo-V2.6-Pro leads or ties (AA TB 4.0, Vals TB 4.0, Arena Agent) |
+| `deep-reasoning` | MiMo · GLM-5.3-Flash | MiMo · DeepSeek | 1017's HLE 43.3 / CritPt 24.0 beat GLM-5.3-Flash 39.9 / 15.4 (the previous revision's 39.2 / 14.3 did not) |
+| `knowledge-work` | MiMo · GLM-5.3-Flash | DeepSeek · MiMo | 1017 leads both Elo rows with disjoint 95% intervals (GDPval-AA +54, Briefcase +59) |
+| `workflow-automation` | DeepSeek · GLM-Flash | GLM-Flash · DeepSeek | DeepSeek's ITBench (46.9) is the previous revision; with one 1017 anchor it cannot lead |
+| `long-context` | `R ≤ 2` and `R = 3` DeepSeek · GLM-Flash | `R ≤ 2` GLM-Flash · MiMo; `R = 3` MiMo · GLM-Flash | DeepSeek has one same-version anchor (AA-LCR); the band is MiMo / GLM-Flash and PO1 orders it by cap efficiency, then by the AA-LCR leader |
+| `science` | MiMo · GLM-Flash | MiMo · DeepSeek | 1017's SciCode 55.9 / CritPt 24.0 beat GLM-5.3-Flash 51.6 / 15.4 |
+| unchanged | `D ≤ 1`, `research-synthesis`, `doc-data-understanding`, `latency-volume`, anything else | | |
+
+No badge cell changed side. Goldens that moved (10): `b1`, `b2`, `c1` (agentic-code order), `e1` (two-tag pick), `f1`, `u1` (knowledge-work), `m1` (workflow order), `n1` (science `#2`), `p1` (A1-OC: `#1` is now MiMo-V2.6-Pro, no DeepSeek line), `w1` (GM1: Argon `#1`, the row's `#1` GLM-5.3-Flash `#2` at `max`, no DeepSeek line). The rest only had figure wording re-labelled.
+
+### 15.6 DeepSWE v1.1 refresh (benchlm mirror, low confidence)
+
+Source: `benchlm.ai/benchmarks/mercordeepswe11`, "Updated November 10, 2026 capture", 57 configurations (Mercor's own page was not read; the repo already used this mirror). Changed: Kimi K3 66.4 ±8.8 → 72.9 ±6.6; GLM-5.3 70.5 → 72.0 ±6.3. New rows: GLM-5.3-Flash 64.3 ±6.5, Muse Spark 1.3 (xhigh) 67.8 ±6.9, Claude Haiku 5.5 59.9 ±7.7, Grok 4.7 (xhigh) 33.3 ±6.0. Unchanged: Opus 5.5 72.3 ±7.3, Sonnet 5.5 70.5 ±7.7, GPT 6 Luna 67.0 ±6.8, DeepSeek V4 Pro 0813 56.3, Qwen3.8 Max 53.1, Kimi K2.7 Code 30.1, MiniMax M3 9.1. MiMo-V2.6-Pro still has no row; DeepSeek-V4.1-Flash 71.7 ±6.3 is a row of unstated revision (note only).
+
+### 15.7 Arena refresh — one snapshot, 10 Nov 2026
+
+Agent Arena page headed "Nov 10, 2026" (read 11 Nov; the page updates live — costs moved by a cent between two reads that day; the second read is used). Cost/task P50 → tasks/month = round(cap ÷ cost): MiMo-V2.6-Pro 0.17 → 88 · GLM-5.3 1.12 → 13 · Kimi K3 0.82 → 18 · Grok 4.7 2.79 → 5 · Muse Spark 1.3 0.46 → 130 · GLM-5.3-Flash 0.16 → 375 · MiMo-V2.6-Flash 0.07 → 857 · DeepSeek 1017 0.14 → 714 · GPT 6 Luna (Max) 0.08 → 188 · Qwen3.8 Max 1.22 → 12 · MiniMax M3 0.37 → 162 · Qwen3.7 Plus 0.16 → 375 · Claude Haiku 5.5 (High) 0.08 → 188 · Gemini 4 Argon 0.73 → 41 (≈ 20 at list prices) · Kimi K3.1 Pro 1.24 → 12. Changed against 8 Nov: GLM-5.3 14 → 13, Muse Spark 128 → 130, MiniMax M3 171 → 162, Qwen3.7 Plus 400 → 375, Argon 38 → 41. Tier membership is by name (BUD1); the premium five stay at 5–18. The net-improvement column of the Arena anchor was refreshed to the same page (Opus 5.5 19.53, Sonnet 5.5 16.10, Argon 10.70, Kimi K3.1 Pro 4.99, MiMo-V2.6-Pro 2.30, DeepSeek-20261017 2.07, GLM-5.3-Flash 2.98, …); the 6 Oct values are gone from the anchor and are never compared with these.
+
+### 15.8 Time-boxed items due 30 Nov 2026 — status only (no post-30-Nov values)
+
+- Gemini 4 Argon half price: Go and Zen pages — "The 50% discount applies through November 30, 2026"; the catalogue carries a ×2 multiplier from 2026-12-01; cap USD 30; the cap after 30 Nov is not stated.
+- DeepSeek zero-retention agreement: Go privacy table — "renewed monthly … valid through November 30, 2026"; no renewal announced.
+- Opus 4.8 `/fast`: Claude Code docs — deprecated 2026-10-30, removed 2026-11-30, the API rejects requests after that date.
+
+### 15.9 Notes only (no routing rule touched)
+
+- Go page: 32 models listed, 30 ids in the catalogue; caps, prices, retention, effort variants and contexts of the 19 pool models are identical to the 10 Nov reading. New page sections (pay with credit, validated clients, restricted-model privacy switches) do not concern the router. Console changelog 9–10 Nov: "Connect other coding agents", Claude/ChatGPT subscription usage counted at USD 0.
+- Step 5 Preview (Go cap USD 15): AA v5 28.5, Vals TB 4.0 31.82, Arena Agent 3.71 ±1.39 at USD 0.63 — never selected; Hy4: AA v5 34.6, Vals 39.39, Arena 5.08 ±1.31 (Preliminary); Gemini 4 Carbon (AA v5 60) is Zen-only.
+- Qwen3.8 Max: Go catalogue context 1,000,000 (the table's 984k is AA's); whether Go serves the "0902" revision is still not stated.
+- Free lane: LongCat 2.5 Free has a 100 requests/day limit on Zen (the Go page says Unlimited); Zen also lists Flint 40B Free and Inkling 2 Small Free (retains data, may train); Crouton Alpha Free was added 2026-11-06 and deprecated 2026-11-09. FR1 is unaffected.
+- OpenCode tool: v2.2.5 (30 Oct), v2.2.6 (6 Nov), v2.2.7 (10 Nov) change nothing about variants, model ids or `variant_cycle` (`ctrl+t`, still in the keybinds page). The docs now describe `provider/model#variant` for `--model`, agents and commands; the root `model` setting keeps no variant. The README's step ④ gained that line.
+
+### 15.10 Open items
+
+(1) Whether DeepSeek's DeepSWE row (revision unstated) is the 1017 build. (2) The D=2 `high` rung for knowledge-work-like rows: Briefcase `high` 1416 is below MiMo-V2.6-Pro 1512 — decision for the owner. (3) The Argon cap after 30 Nov. (4) Whether Go serves Qwen3.8 Max "0902". (5) AA's first-answer-token time for 1017 (49.4 s) counts hidden reasoning and is not the 1.1 s streamed time the latency row used; the `latency-volume` row stays on speed (142 tok/s) and says so.
+
+**Sources (read 2026-11-11).** opencode.ai/docs/go · opencode.ai/docs/zen · opencode.ai/inference/go/v1/models · opencode.ai/changelog · opencode.ai/console/changelog · opencode.ai/docs/{models,keybinds,config,agents,commands} · github.com/anomalyco/models.dev commit 975b6bb and the commit list for `providers/opencode-go` · artificialanalysis.ai/models/{deepseek-v4-1-flash, deepseek-v4-1-flash-1017, deepseek-v4-1-flash-1017-high, glm-5-3-flash} (embedded model data) · arena.ai/leaderboard/agent (header "Nov 10, 2026") · vals.ai/benchmarks/terminal-bench-4 (updated 11/9/2026) · benchlm.ai/benchmarks/mercordeepswe11 (mirror) · code.claude.com/docs/en/fast-mode.

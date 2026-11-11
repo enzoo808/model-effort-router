@@ -42,7 +42,6 @@
         "MiMo-V2.6-Pro": 34.8,
         "Muse Spark 1.3": 33.3,
         "GLM-5.3-Flash": 32.8,
-        "DeepSeek V4.1 Flash": 26.8,
         "Grok 4.7": 25.8,
         "MiMo-V2.6-Flash": 23.0,
         "DeepSeek V4 Pro": 14.0,
@@ -52,10 +51,18 @@
         "Claude Opus 5.5": 59.6,
         "Claude Sonnet 5.5": 63.6,
         "Claude Haiku 5.5": 32.8,
-        "Kimi K3.1 Pro": 67.2
+        "Kimi K3.1 Pro": 67.2,
+        "DeepSeek V4.1 Flash": 33.8
       },
       "iteration_27_note": {
         "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 26.8
+      },
+      "revision_notes": {
+        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)"
       }
     },
     "DeepSWE v1.1 (Mercor/Datacurve)": {
@@ -63,31 +70,45 @@
         "agentic-code"
       ],
       "higher_better": true,
-      "evaluator": "Mercor/Datacurve leaderboard via benchlm.ai",
+      "evaluator": "Mercor/Datacurve leaderboard via the benchlm.ai MIRROR (Mercor primary page not read) - LOW CONFIDENCE",
       "indep": true,
       "ci": "published, +-6.3 to +-8.8 per row",
       "values": {
-        "DeepSeek V4.1 Flash": 71.7,
-        "GLM-5.3": 70.5,
+        "GLM-5.3": 72.0,
         "GPT 6 Luna": 67.0,
-        "Kimi K3": 66.4,
+        "Kimi K3": 72.9,
         "DeepSeek V4 Pro": 56.3,
         "Qwen3.8 Max": 53.1,
         "MiniMax M3": 9.1,
         "Claude Opus 5.5": 72.3,
-        "Claude Sonnet 5.5": 70.5
+        "Claude Sonnet 5.5": 70.5,
+        "GLM-5.3-Flash": 64.3,
+        "Muse Spark 1.3": 67.8,
+        "Claude Haiku 5.5": 59.9,
+        "Grok 4.7": 33.3
       },
       "ci_pm": {
-        "DeepSeek V4.1 Flash": 6.3,
         "GLM-5.3": 6.3,
+        "Kimi K3": 6.6,
+        "GLM-5.3-Flash": 6.5,
+        "Muse Spark 1.3": 6.9,
+        "Claude Haiku 5.5": 7.7,
+        "Grok 4.7": 6.0,
         "GPT 6 Luna": 6.8,
-        "Kimi K3": 8.8,
         "DeepSeek V4 Pro": 7.2,
         "Qwen3.8 Max": 8.8,
         "MiniMax M3": 3.1,
         "Claude Opus 5.5": 7.3,
         "Claude Sonnet 5.5": 7.7
-      }
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 71.7,
+        "_note": "benchlm row 'DeepSeek-V4.1-Flash' (71.7 +-6.3): the revision is not stated and there is no 1017 row; note only, never backs a routing row or a badge cell",
+        "ci_pm": 6.3
+      },
+      "snapshot": "benchlm.ai/benchmarks/mercordeepswe11, 'Updated November 10, 2026 capture', 57 configurations, read 2026-11-11",
+      "notes": "6 Oct values replaced by the 10 Nov capture: Kimi K3 66.4 +-8.8 -> 72.9 +-6.6, GLM-5.3 70.5 -> 72.0 +-6.3; new rows GLM-5.3-Flash, Muse Spark 1.3 (xhigh), Claude Haiku 5.5, Grok 4.7 (xhigh). MiMo-V2.6-Pro still has no row. DeepSeek V4.1 Flash is parked under previous_revision (revision not stated, no 1017 row)."
     },
     "Arena Agent Arena (net outcome vs avg model, %)": {
       "tags": [
@@ -100,41 +121,74 @@
       "indep": true,
       "ci": null,
       "values": {
-        "Kimi K3": 4.18,
-        "Grok 4.7": 4.04,
-        "DeepSeek V4.1 Flash": 4.02,
-        "Muse Spark 1.3": 4.0,
-        "MiMo-V2.6-Pro": 3.28,
-        "Qwen3.8 Max": 2.51,
-        "GLM-5.3": 2.36,
-        "GPT 6 Luna": 1.35,
-        "DeepSeek V4 Pro": 1.19,
-        "MiMo-V2.6-Flash": 0.57,
-        "GLM-5.3-Flash": 0.44,
-        "Claude Opus 5.5": 13.82,
-        "Claude Sonnet 5.5": 12.52
+        "Claude Opus 5.5": 19.53,
+        "Claude Sonnet 5.5": 16.1,
+        "Gemini 4 Argon": 10.7,
+        "Kimi K3.1 Pro": 4.99,
+        "Grok 4.7": 2.55,
+        "MiMo-V2.6-Pro": 2.3,
+        "Muse Spark 1.3": 2.2,
+        "DeepSeek V4.1 Flash": 2.07,
+        "GPT 6 Luna": 1.55,
+        "GLM-5.3": 1.04,
+        "Kimi K3": 0.59,
+        "Claude Haiku 5.5": 0.51,
+        "Qwen3.8 Max": 0.13,
+        "MiMo-V2.6-Flash": 0.03,
+        "GLM-5.3-Flash": 2.98,
+        "Gemini 3.8 Flash": 2.36,
+        "MiniMax M3": 10.37
       },
       "cost_per_task_p50_usd": {
-        "Claude Opus 5.5": 6.06,
-        "Claude Sonnet 5.5": 3.35,
-        "Gemini 4 Argon": 0.78,
-        "Kimi K3.1 Pro": 1.25,
+        "Claude Opus 5.5": 5.38,
+        "Claude Sonnet 5.5": 3.38,
+        "Gemini 4 Argon": 0.73,
+        "Kimi K3.1 Pro": 1.24,
         "DeepSeek V4.1 Flash": 0.14,
         "MiMo-V2.6-Pro": 0.17,
-        "GLM-5.3": 1.08,
-        "Kimi K3": 0.84,
-        "Grok 4.7": 2.84,
+        "GLM-5.3": 1.12,
+        "Kimi K3": 0.82,
+        "Grok 4.7": 2.79,
         "Gemini 3.8 Flash": 0.63,
-        "Muse Spark 1.3": 0.47,
+        "Muse Spark 1.3": 0.46,
         "MiMo-V2.6-Flash": 0.07,
         "GLM-5.3-Flash": 0.16,
         "GPT 6 Luna": 0.08,
-        "Qwen3.8 Max": 1.2,
-        "MiniMax M3": 0.35,
-        "Qwen3.7 Plus": 0.15,
+        "Qwen3.8 Max": 1.22,
+        "MiniMax M3": 0.37,
+        "Qwen3.7 Plus": 0.16,
         "Claude Haiku 5.5": 0.08
       },
-      "note": "MiniMax M3 row (rank 43, 6.87%) was internally inconsistent in the 6 Oct extraction and was excluded then; the 8 Nov row ('MiniMax-M3' 10.42%+-1.19%, 44,355 sessions, $0.35) reads consistently. cost_per_task_p50_usd is ONE single-date snapshot: the Agent Arena page of 8 Nov 2026 ('Nov 8, 2026 - 2,750,973 sessions - 57 models', read 2026-11-10), Cost/Task (P50) column, headline rung per model (GPT-6 Luna Max $0.08 - its Medium $0.03 / Low $0.01 rungs are separate rows). Rows with no page row on that date are absent (n/p): DeepSeek V4 Pro, Kimi K2.7 Code. Qwen3.8 Flash is absent too: the only Qwen3.8 Flash-class row is 'Qwen3.8-Flash-Next' ($0.22), a different model (open-weights, 256k) from Go's served qwen3.8-flash - its values are n/p for the pool model. Net-improvement values are relative to the day's average model, so rows of different dates are never compared."
+      "note": "ONE single-date snapshot for every row (iteration-28): the Agent Arena page header 'Nov 10, 2026', read 2026-11-11 (arena.ai/leaderboard/agent; the page updates live, so costs moved by a cent between two reads that day - this is the second read). Net improvement is relative to the day's average model, so the 6 Oct and 8 Nov rows are gone from this anchor and are never compared with these. Rows with no page row on that date are absent (n/p): DeepSeek V4 Pro, Kimi K2.7 Code, Qwen3.8 Flash (the only Qwen3.8 Flash-class row is 'Qwen3.8-Flash-Next', a different model). MiniMax M3 reads 10.37 +-1.19 (44,417 sessions). Headline rung per model.",
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 4.02,
+        "_note": "Oct snapshot 4.02; Arena's revision for that row not stated"
+      },
+      "ci_pm": {
+        "Claude Opus 5.5": 2.04,
+        "Claude Sonnet 5.5": 2.82,
+        "Gemini 4 Argon": 0.89,
+        "Kimi K3.1 Pro": 1.11,
+        "Grok 4.7": 1.49,
+        "MiMo-V2.6-Pro": 0.91,
+        "Muse Spark 1.3": 0.86,
+        "DeepSeek V4.1 Flash": 0.52,
+        "GPT 6 Luna": 0.46,
+        "GLM-5.3": 0.83,
+        "Kimi K3": 0.61,
+        "Claude Haiku 5.5": 1.03,
+        "Qwen3.8 Max": 0.68,
+        "MiMo-V2.6-Flash": 1.05,
+        "GLM-5.3-Flash": 0.72,
+        "Gemini 3.8 Flash": 0.86,
+        "MiniMax M3": 1.19
+      },
+      "revision_notes": {
+        "DeepSeek V4.1 Flash": "Arena row 'DeepSeek-V4.1-Flash-20261017 (Max)' = the 1017 build, 84,249 sessions",
+        "Claude Haiku 5.5": "High rung (the row Arena lists)",
+        "GPT 6 Luna": "Max rung ($0.08); Medium / Low are separate rows"
+      }
     },
     "Terminal-Bench 2.1 (Vals)": {
       "tags": [
@@ -147,7 +201,6 @@
       "ci": null,
       "values": {
         "Kimi K3": 80.9,
-        "DeepSeek V4.1 Flash": 74.5,
         "Grok 4.7": 73.4,
         "Muse Spark 1.3": 72.3,
         "GLM-5.3": 71.5,
@@ -155,6 +208,10 @@
         "GLM-5.3-Flash": 62.9,
         "DeepSeek V4 Pro": 54.7,
         "MiniMax M3": 53.6
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 74.5
       }
     },
     "AA Coding Index": {
@@ -223,13 +280,16 @@
         "Muse Spark 1.3": 1657,
         "MiMo-V2.6-Pro": 1628,
         "GLM-5.3": 1623,
-        "DeepSeek V4.1 Flash": 1620,
         "GLM-5.3-Flash": 1616,
         "GPT 6 Luna": 1579,
         "MiniMax M3": 1482,
         "DeepSeek V4 Pro": 1446,
         "Claude Opus 5.5": 1815,
         "Claude Sonnet 5.5": 1786
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 1620
       }
     },
     "AA-HLE": {
@@ -251,17 +311,24 @@
         "GLM-5.3": 42.3,
         "DeepSeek V4 Pro": 41.0,
         "GLM-5.3-Flash": 39.9,
-        "DeepSeek V4.1 Flash": 39.2,
         "MiniMax M3": 39.0,
         "GPT 6 Luna": 38.5,
         "MiMo-V2.6-Flash": 35.1,
         "Claude Opus 5.5": 61.4,
         "Claude Sonnet 5.5": 55.0,
         "Claude Haiku 5.5": 44.4,
-        "Kimi K3.1 Pro": 52.5
+        "Kimi K3.1 Pro": 52.5,
+        "DeepSeek V4.1 Flash": 43.3
       },
       "iteration_27_note": {
         "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 39.2
+      },
+      "revision_notes": {
+        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)"
       }
     },
     "CritPt": {
@@ -285,16 +352,23 @@
         "DeepSeek V4 Pro": 18.0,
         "Grok 4.7": 17.7,
         "GLM-5.3-Flash": 15.4,
-        "DeepSeek V4.1 Flash": 14.3,
         "MiMo-V2.6-Flash": 12.0,
         "MiniMax M3": 3.7,
         "Claude Opus 5.5": 31.7,
         "Claude Sonnet 5.5": 31.4,
         "Claude Haiku 5.5": 18.9,
-        "Kimi K3.1 Pro": 24.6
+        "Kimi K3.1 Pro": 24.6,
+        "DeepSeek V4.1 Flash": 24.0
       },
       "iteration_27_note": {
         "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 14.3
+      },
+      "revision_notes": {
+        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)"
       }
     },
     "ARC-AGI-2": {
@@ -332,13 +406,31 @@
         "GLM-5.3": 1653,
         "GLM-5.3-Flash": 1647,
         "MiMo-V2.6-Flash": 1611,
-        "DeepSeek V4.1 Flash": 1600,
         "Kimi K3": 1537,
         "GPT 6 Luna": 1437,
         "MiniMax M3": 1245,
         "Claude Opus 5.5": 1866,
         "Claude Sonnet 5.5": 1839,
-        "Claude Haiku 5.5": 1620
+        "Claude Haiku 5.5": 1620,
+        "DeepSeek V4.1 Flash": 1745.77
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 1600
+      },
+      "revision_notes": {
+        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)",
+        "_dates": "1017 and MiMo-V2.6-Pro re-read 2026-11-11 (the 11 Nov MiMo value is 1692.05 against the stored 1686: Elo drift); other rows are the 6 Oct / 10 Nov reads"
+      },
+      "ci_95": {
+        "DeepSeek V4.1 Flash": [
+          1724.98,
+          1766.56
+        ],
+        "MiMo-V2.6-Pro": [
+          1672.07,
+          1712.03
+        ]
       }
     },
     "AA-Briefcase": {
@@ -361,12 +453,30 @@
         "Kimi K3": 1501,
         "MiMo-V2.6-Flash": 1495,
         "GLM-5.3-Flash": 1454,
-        "DeepSeek V4.1 Flash": 1420,
         "GPT 6 Luna": 1336,
         "MiniMax M3": 1091,
         "Claude Opus 5.5": 1807,
         "Claude Sonnet 5.5": 1823,
-        "Claude Haiku 5.5": 1578
+        "Claude Haiku 5.5": 1578,
+        "DeepSeek V4.1 Flash": 1570.42
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 1420
+      },
+      "revision_notes": {
+        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)",
+        "_dates": "1017 and MiMo-V2.6-Pro re-read 2026-11-11 (MiMo 1511.68 against the stored 1516); other rows are earlier reads; Elo drifts a few points as models are added"
+      },
+      "ci_95": {
+        "DeepSeek V4.1 Flash": [
+          1560.41,
+          1580.42
+        ],
+        "MiMo-V2.6-Pro": [
+          1503.15,
+          1521.02
+        ]
       }
     },
     "AA-AnalystAgent": {
@@ -430,7 +540,6 @@
         "Gemini 4 Argon": 77.5,
         "Gemini 3.8 Flash": 60.0,
         "MiniMax M3.1 Flash": 72.5,
-        "DeepSeek V4.1 Flash": 68.9,
         "Grok 4.7": 65.6,
         "MiMo-V2.6-Flash": 64.0,
         "GLM-5.3": 62.2,
@@ -444,10 +553,18 @@
         "Claude Opus 5.5": 69.5,
         "Claude Sonnet 5.5": 71.8,
         "Claude Haiku 5.5": 35.4,
-        "Kimi K3.1 Pro": 73.3
+        "Kimi K3.1 Pro": 73.3,
+        "DeepSeek V4.1 Flash": 66.6
       },
       "iteration_27_note": {
         "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 68.9
+      },
+      "revision_notes": {
+        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)"
       }
     },
     "AA Tau3 Banking": {
@@ -477,11 +594,14 @@
       "values": {
         "GLM-5.3-Flash": 51.2,
         "Kimi K3": 47.7,
-        "DeepSeek V4.1 Flash": 46.9,
         "GLM-5.3": 46.1,
         "Grok 4.7": 42.1,
         "Muse Spark 1.3": 33.2,
         "Claude Opus 5.5": 38.2
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 46.9
       }
     },
     "tau2-bench": {
@@ -511,7 +631,6 @@
         "MiniMax M3.1 Flash": 79.7,
         "Kimi K3": 88.7,
         "MiMo-V2.6-Pro": 86.3,
-        "DeepSeek V4.1 Flash": 84.0,
         "GPT 6 Luna": 83.3,
         "Muse Spark 1.3": 83.0,
         "MiniMax M3": 83.0,
@@ -523,10 +642,18 @@
         "Claude Opus 5.5": 84.7,
         "Claude Sonnet 5.5": 82.7,
         "Claude Haiku 5.5": 82.7,
-        "Kimi K3.1 Pro": 86.3
+        "Kimi K3.1 Pro": 86.3,
+        "DeepSeek V4.1 Flash": 82.7
       },
       "iteration_27_note": {
         "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 84.0
+      },
+      "revision_notes": {
+        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)"
       }
     },
     "MLCR-AA": {
@@ -542,13 +669,16 @@
         "GLM-5.3": 48.3,
         "Muse Spark 1.3": 43.3,
         "Kimi K3": 38.3,
-        "DeepSeek V4.1 Flash": 22.8,
         "MiMo-V2.6-Pro": 18.3,
         "MiniMax M3": 17.2,
         "GPT 6 Luna": 16.1,
         "Grok 4.7": 15.0,
         "Claude Opus 5.5": 66.7,
         "Claude Sonnet 5.5": 75.0
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 22.8
       }
     },
     "AA-Omniscience Index": {
@@ -572,7 +702,6 @@
         "MiniMax M3": 1.4,
         "DeepSeek V4 Pro": 0.8,
         "GPT 6 Luna": 0.7,
-        "DeepSeek V4.1 Flash": -5.3,
         "MiMo-V2.6-Flash": -12.7,
         "Claude Opus 5.5": 46.4,
         "Claude Sonnet 5.5": 32.3,
@@ -581,6 +710,10 @@
       },
       "iteration_27_note": {
         "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": -5.3
       }
     },
     "AA-Omniscience hallucination rate (lower better)": {
@@ -603,13 +736,16 @@
         "MiMo-V2.6-Flash": 54.4,
         "GPT 6 Luna": 76.7,
         "DeepSeek V4 Pro": 94.1,
-        "DeepSeek V4.1 Flash": 96.5,
         "Claude Opus 5.5": 58.6,
         "Claude Sonnet 5.5": 47.0,
         "Kimi K3.1 Pro": 43.9
       },
       "iteration_27_note": {
         "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 96.5
       }
     },
     "AA-SciCode": {
@@ -630,7 +766,6 @@
         "Muse Spark 1.3": 58.8,
         "Grok 4.7": 57.4,
         "GPT 6 Luna": 54.6,
-        "DeepSeek V4.1 Flash": 51.9,
         "GLM-5.3-Flash": 51.6,
         "MiMo-V2.6-Flash": 51.3,
         "DeepSeek V4 Pro": 51.0,
@@ -638,10 +773,18 @@
         "Claude Opus 5.5": 66.9,
         "Claude Sonnet 5.5": 61.0,
         "Claude Haiku 5.5": 55.0,
-        "Kimi K3.1 Pro": 60.8
+        "Kimi K3.1 Pro": 60.8,
+        "DeepSeek V4.1 Flash": 55.9
       },
       "iteration_27_note": {
         "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 51.9
+      },
+      "revision_notes": {
+        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)"
       }
     },
     "GDP.pdf": {
@@ -662,16 +805,23 @@
         "Grok 4.7": 20.0,
         "MiMo-V2.6-Pro": 19.2,
         "GLM-5.3-Flash": 15.4,
-        "DeepSeek V4.1 Flash": 12.8,
         "GLM-5.3": 11.2,
         "MiniMax M3": 9.8,
         "Claude Opus 5.5": 26.2,
         "Claude Sonnet 5.5": 25.8,
         "Claude Haiku 5.5": 20.8,
-        "Kimi K3.1 Pro": 31.4
+        "Kimi K3.1 Pro": 31.4,
+        "DeepSeek V4.1 Flash": 17.2
       },
       "iteration_27_note": {
         "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 12.8
+      },
+      "revision_notes": {
+        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)"
       }
     },
     "AA-MMMU-Pro (multimodal)": {
@@ -687,9 +837,16 @@
         "Kimi K3": 80.5,
         "GPT 6 Luna": 79.7,
         "MiniMax M3": 78.6,
-        "DeepSeek V4.1 Flash": 77.0,
         "MiMo-V2.6-Flash": 73.1,
-        "Claude Opus 5.5": 87.7
+        "Claude Opus 5.5": 87.7,
+        "DeepSeek V4.1 Flash": 80.6
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 77.0
+      },
+      "revision_notes": {
+        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)"
       }
     },
     "Gray Swan IPI (prompt-injection attack success, 15 attempts; lower better)": {
@@ -706,6 +863,44 @@
         "GLM-5.3": 31.5,
         "Kimi K3": 52.7
       }
+    },
+    "Terminal-Bench 4.0 (Vals)": {
+      "tags": [
+        "agentic-code",
+        "terminal-tool"
+      ],
+      "higher_better": true,
+      "evaluator": "Vals AI (Mini-SWE-agent)",
+      "indep": true,
+      "ci": null,
+      "snapshot": "vals.ai/benchmarks/terminal-bench-4, 'UPDATED 11/9/2026', read 2026-11-11",
+      "values": {
+        "Claude Opus 5.5": 65.15,
+        "Claude Sonnet 5.5": 64.14,
+        "Kimi K3.1 Pro": 63.64,
+        "Gemini 4 Argon": 57.58,
+        "GLM-5.3": 38.89,
+        "Qwen3.8 Max": 34.34,
+        "GLM-5.3-Flash": 37.37,
+        "Claude Haiku 5.5": 36.36,
+        "DeepSeek V4.1 Flash": 31.82,
+        "MiMo-V2.6-Pro": 31.31,
+        "Grok 4.7": 28.79,
+        "MiMo-V2.6-Flash": 24.24,
+        "Kimi K3": 17.17,
+        "GPT 6 Luna": 13.64,
+        "DeepSeek V4 Pro": 14.14,
+        "MiniMax M3.1 Flash": 25.25
+      },
+      "previous_revision": {
+        "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
+        "DeepSeek V4.1 Flash": 19.7
+      },
+      "revision_notes": {
+        "DeepSeek V4.1 Flash": "Vals row 'DeepSeek V4.1 Flash 1017'",
+        "Qwen3.8 Max": "row 'Qwen 3.8 Max'; the separate '0902' row reads 38.89"
+      },
+      "note": "Same benchmark as AA Terminal-Bench 4.0 but a different harness (Mini-SWE-agent) - kept as its own anchor."
     }
   },
   "usage": {
@@ -1859,6 +2054,125 @@
         "artificialanalysis.ai/leaderboards/models; /evaluations/aa-briefcase; /evaluations/gdpval-aa (read 2026-11-10)",
         "arena.ai/leaderboard/agent and arena.ai/leaderboard/code/webdev (8 Nov 2026 snapshots, read 2026-11-10)"
       ]
+    }
+  },
+  "iteration_28": {
+    "date": "2026-11-11",
+    "scope": "Go serves the 1017 build of DeepSeek V4.1 Flash; DeepSeek evidence re-based onto 1017 same-revision rows; DeepSWE mirror refresh; Arena snapshot 10 Nov; time-boxed statuses",
+    "deepseek_identity": {
+      "go_catalogue": "opencode.ai/inference/go/v1/models: id deepseek-v4.1-flash, name 'DeepSeek V4.1 Flash 1017', canonical_id deepseek/deepseek-v4.1-flash-1017, release 2026-10-17, efforts low/high/max, text+image, 1,000,000 context",
+      "models_dev": "anomalyco/models.dev commit 975b6bb (2026-11-10T19:34Z): 'Serves DeepSeek-V4.1-Flash-1017 (Go and Free were updated to the October 17 build on 2026-10-20)'; base_model deepseek/deepseek-v4.1-flash-1017",
+      "aa": "AA marks the earlier 'DeepSeek V4.1 Flash' page deprecated and recommends 'DeepSeek V4.1 Flash 1017'",
+      "verdict": "identity resolved by first-party sources (the catalogue name was not recorded before 10 Nov, so when it changed in the catalogue is not stated)"
+    },
+    "deepseek_1017_speed_aa_2026_11_11": {
+      "output_tokens_per_s": 142,
+      "time_to_first_answer_token_s": 49.42,
+      "note": "AA 1017 page; the earlier repo figure (222 tok/s, TTFT 1.1 s) is the previous revision and a different first-token measure (reasoning counted), so the two are not compared"
+    },
+    "mlcr_aa_note": "MLCR-AA is tagged Updated at AA: the 1017 value (26.7) is the current version and is NOT mixed into the MLCR-AA anchor, whose rows are the previous version",
+    "deepseek_1017_aa_2026_11_11": {
+      "max": {
+        "index_v5": 32.59,
+        "cost_per_task": 0.6,
+        "tb_4_0": 33.8,
+        "gdpval_aa": 1745.77,
+        "gdpval_aa_95": [
+          1724.98,
+          1766.56
+        ],
+        "briefcase": 1570.42,
+        "briefcase_95": [
+          1560.41,
+          1580.42
+        ],
+        "omniscience_v1_1": 0.9,
+        "omniscience_accuracy": 39.6,
+        "hallucination_v1_1": 64.1,
+        "gdp_pdf": 17.2,
+        "hle": 43.3,
+        "critpt": 24.0,
+        "scicode": 55.9,
+        "lcr": 82.7,
+        "mlcr_aa_current_version": 26.7,
+        "mmmu_pro": 80.6,
+        "automationbench": 66.6
+      },
+      "high": {
+        "index_v5": 28.64,
+        "cost_per_task": 0.46,
+        "tb_4_0": 28.8,
+        "gdpval_aa": null,
+        "briefcase": 1415.7,
+        "briefcase_95": [
+          1405.12,
+          1425.98
+        ],
+        "omniscience_v1_1": 1.5,
+        "hallucination_v1_1": 61.2,
+        "gdp_pdf": 14.2,
+        "mmmu_pro": 79.7,
+        "automationbench": 68.5
+      },
+      "non_reasoning": {
+        "index_v5": 18.5,
+        "tb_4_0": 9.1,
+        "briefcase": 1425.32,
+        "hallucination_v1_1": 25.3
+      },
+      "e7_check": "GDPval-AA publishes the Max rung only (1745.77, 95% 1724.98-1766.56); the High rung has no GDPval-AA value, so GDPval-AA cannot separate the rungs. AA-Briefcase v1.1 publishes both with 95% intervals and they are disjoint (Max 1570.42 [1560.41-1580.42] vs High 1415.70 [1405.12-1425.98]). The D=2 'high' rule was NOT changed (instruction); the Briefcase gap is reported for a decision."
+    },
+    "omniscience_v1_1_same_version": {
+      "MiMo-V2.6-Pro": {
+        "index": -4.47,
+        "accuracy": 34.8,
+        "hallucination": 60.2
+      },
+      "GLM-5.3-Flash": {
+        "index": 0.67,
+        "accuracy": 28.2,
+        "hallucination": 38.3
+      },
+      "MiMo-V2.6-Flash": {
+        "index": -10.83,
+        "accuracy": 27.2,
+        "hallucination": 52.2
+      },
+      "DeepSeek V4.1 Flash 1017 (Max)": {
+        "index": 0.9,
+        "accuracy": 39.6,
+        "hallucination": 64.1
+      },
+      "DeepSeek V4.1 Flash 1017 (High)": {
+        "index": 1.53,
+        "accuracy": 38.9,
+        "hallucination": 61.2
+      },
+      "source": "artificialanalysis.ai model pages, read 2026-11-11; AA publishes no interval for these rows. The anchors above still hold the v1 values (MiMo-V2.6-Pro 8.4 / 40.6%, ...) and are not mixed with these.",
+      "reading": "same-version, the 1017 build is 4 points (Max) / 1 point (High) above MiMo-V2.6-Pro on hallucination and 21-26 points above GLM-5.3-Flash; its index is above MiMo-V2.6-Pro's. The 96.5% figure belongs to the previous revision (v1). The gate is kept; the reason it states changes."
+    },
+    "arena_agent_2026_11_10": {
+      "header": "Nov 10, 2026",
+      "read": "2026-11-11",
+      "note": "see the anchor 'Arena Agent Arena': the whole column is this snapshot"
+    },
+    "vals_terminal_bench_4_0": {
+      "updated": "11/9/2026",
+      "note": "see the anchor 'Terminal-Bench 4.0 (Vals)'"
+    },
+    "go_unchanged_2026_11_11": "caps, prices, retention, effort variants and contexts of the 19 pool models are identical to the 10 Nov reading; Go Teams USD 20/member; 32 models on the page, 30 ids in the catalogue",
+    "time_boxed_status": {
+      "argon_half_price": "Go and Zen pages: 'The 50% discount applies through November 30, 2026'; catalogue multiplier date >= 2026-12-01 factor 2; cap USD 30; cap after 30 Nov not stated",
+      "deepseek_zdr": "Go privacy table: 'ZDR agreement is renewed monthly. The current agreement is valid through November 30, 2026.'",
+      "opus_4_8_fast": "code.claude.com/docs/en/fast-mode: deprecated 2026-10-30, removed 2026-11-30, the API rejects requests after that date"
+    },
+    "notes_only": {
+      "step_5_preview": "AA v5 index 28.5 (released 2026-09-18, per-evaluation cells not retrieved); Vals TB 4.0 31.82; Arena Agent 3.71 +-1.39 at USD 0.63. Go cap USD 15. Never selected.",
+      "gemini_4_carbon": "AA v5 60; Zen only (50% off through 30 Nov), not on Go",
+      "hy4": "AA v5 34.6; Vals TB 4.0 39.39; Arena Agent 5.08 +-1.31 (Preliminary) at USD 0.60; never selected",
+      "qwen3_8_max_context": "Go catalogue 1,000,000 (AA 984k); Go's served build vs AA '0902': not stated",
+      "zen_free": "LongCat 2.5 Free has a 100 requests/day limit on Zen (the Go page says Unlimited); Zen also lists Flint 40B Free, Inkling 2 Small Free (retains data, may train), Iceman Free; Crouton Alpha Free was added 2026-11-06 and deprecated 2026-11-09; the Zen deepseek-v4.1-flash-free twin now also serves 1017",
+      "opencode_tool": "v2.2.5 (30 Oct), v2.2.6 (6 Nov), v2.2.7 (10 Nov): no variant, model-id or variant_cycle change; variant_cycle is still ctrl+t; new documented model syntax provider/model#variant for --model, agents and commands; the root model setting keeps no variant"
     }
   }
 }

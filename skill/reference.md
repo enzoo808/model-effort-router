@@ -3065,3 +3065,8 @@ analysis called them unmeasured. New observation, not a rule: Fable 5.2 `high` �
 
 **Sources (read 2026-11-10).** anthropic.com/claude-fable-and-mythos-5-2 · platform.claude.com/docs/en/{about-claude/models/overview, about-claude/model-deprecations, about-claude/pricing, build-with-claude/effort, release-notes/overview} ·
 code.claude.com/docs/en/{model-config, fast-mode, changelog} · support.claude.com/en/articles/15424964 · artificialanalysis.ai/leaderboards/models · vals.ai/benchmarks/terminal-bench-4.
+
+
+## 24. Iteration-28 update (11 Nov 2026)
+
+Go serves the **1017** build of DeepSeek V4.1 Flash (catalogue name, models.dev commit `975b6bb`, AA's deprecation of the earlier page). The OpenCode arm's DeepSeek evidence is re-based onto 1017 same-revision rows (AA v5, AA TB 4.0, Vals TB 4.0, Arena Agent, GDPval-AA, Briefcase); every older DeepSeek figure is labelled "previous revision" or "revision unspecified" and backs no routing row or badge cell. Six Step 4-OC rows changed (`agentic-code` / `terminal-tool`, `deep-reasoning`, `knowledge-work`, `workflow-automation`, `long-context`, `science`); ten goldens moved; no badge cell changed side. The factual-recall gate is kept with a new rationale (Omniscience v1.1: 64.1% vs MiMo-V2.6-Pro 60.2% and GLM-5.3-Flash 38.3%); E7's `high` rule at `D = 2` is unchanged. The Arena column (tasks/month and net improvement) is one snapshot, 10 Nov 2026; DeepSWE is refreshed from the benchlm mirror at low confidence. Full tables, sources and open items: `opencode-benchmarks.md` §15.
