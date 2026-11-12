@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
+Evidence: Domain-correctness audit is D=2 science; SciCode Opus 67 / Sonnet 61 vs MiMo-V2.6-Pro 61 is a tie with Sonnet, so price decides; low-confidence — one row.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).

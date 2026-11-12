@@ -1,0 +1,4 @@
+Claude: Haiku 5.5 · effort: low
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: Bulk labelling is D=0, so OpenCode runs it; with DeepSeek's window used up, try its Zen free twin deepseek-v4.1-flash-free first, then GLM-5.3-Flash (USD 60 cap).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).

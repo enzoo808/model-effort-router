@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
+Evidence: D=2 feature work stays on OpenCode (SM1): Claude's TB 4.0 and Arena Agent lead only counts from D=3, and an agent task costs USD 0.17 against Sonnet 5.5's 3.38.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
