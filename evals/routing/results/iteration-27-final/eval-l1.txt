@@ -1,3 +1,0 @@
-Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
-OpenCode: use Claude — unverified for GUI driving: no independent OSWorld row for any pool model.
-Evidence: Computer-use is a deciding gate on the OpenCode arm (no independent OSWorld row for any pool model), so only the Claude arm runs the GUI.

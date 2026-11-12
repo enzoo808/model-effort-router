@@ -199,7 +199,7 @@ git add .claude/skills/model-secici && git commit -m "Add model-secici skill"
 
 <br>
 
-1. **[`dist/model-secici.zip`](dist/model-secici.zip)** dosyasını indir (yeniden üretmek için `.\build-claude-ai-zip.ps1`).
+1. Zip'i `.\build-claude-ai-zip.ps1` ile üret (yalnız release'de üretilir, depoya işlenmez; yayımlanmışsa release sayfasından al).
 2. **claude.ai → Settings → Features** sayfasında **code execution**'ın açık olduğundan emin ol.
 3. **Custom Skills** altında **Upload**'u seç ve zip'i yükle.
 4. Bir sohbette *"şunun için hangi modeli kullanmalıyım: …"* diye sor ve görevini ekle.
@@ -248,7 +248,7 @@ Windows'ta `%USERPROFILE%\.claude\skills\model-secici` klasörünü sil.
 | `/model-secici` listede yok | **Yeni** bir oturum başlat — skill'ler açılışta yüklenir. Sonra `~/.claude/skills/model-secici/SKILL.md` dosyasının var olduğunu kontrol et (`.../model-secici/skill/SKILL.md` değil). |
 | Tek satır hiçbir şey çıkarmıyor | `curl` ve `tar` `PATH`'inde olmalı; Windows'ta PowerShell satırını ya da zip'i kullan. |
 | `install.ps1` \"running scripts is disabled\" hatası veriyor | Bypass bayrağı olmadan çalıştırmışsın: `powershell -ExecutionPolicy Bypass -File .\install.ps1` |
-| claude.ai yüklemeyi "invalid characters" diye reddediyor | Hazır [`dist/model-secici.zip`](dist/model-secici.zip)'i kullan. Windows'un kendi araçlarıyla yapılan zip'ler ters bölü kullanır; `build-claude-ai-zip.ps1` düz bölü yazar. |
+| claude.ai yüklemeyi "invalid characters" diye reddediyor | Zip'i `build-claude-ai-zip.ps1` ile üret; düz bölü yazar. Windows'un kendi araçlarıyla yapılan zip'ler ters bölü kullanır. |
 | Yalnızca bir `Clarify:` satırı yazıyor | Tasarım gereği: prompt belirsizdi. Soruyu cevapla ve yeniden sor — bkz. [prompt nasıl yazılır](#prompt-nasıl-yazılır). |
 | Düz bir soruda tetiklenmiyor | Açık `/model-secici …` komutunu kullan. |
 
@@ -428,8 +428,7 @@ skill/                       Skill'in kendisi — yönlendirirken yalnızca SKIL
 evals/                       Regresyon seti, not verici, politika aynası, son koşu geçmişi
 scripts/                     Tutarlılık kontrolleri ve kanıt araçları
 docs/                        Nasıl çalışır, görseller, lansman notları
-  README.legacy.tr.md        Eski ayrıntılı Türkçe rehber (Codex dönemi geçmişi dahil)
-dist/model-secici.zip        claude.ai'a yüklemeye hazır skill
+dist/model-secici.zip        claude.ai'a yüklemeye hazır skill (yalnız release'de üretilir)
 claude-ai/                   Code execution kapalıyken düz metin yedeği
 install.sh · install.ps1     Claude Code için tek komutla kurulum
 .github/workflows/          CI: yukarıdaki kontroller her push ve pull request'te

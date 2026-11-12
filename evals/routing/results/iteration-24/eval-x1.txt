@@ -1,3 +1,0 @@
-Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max
-Evidence: Three-source synthesis is research-synthesis at D=2: AA-Omniscience is a single row with no agreed Claude direction, and MiMo-V2.6-Pro's hallucination rate is 41%; low-confidence, so price decides.

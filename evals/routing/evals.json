@@ -1,6 +1,6 @@
 {
   "skill_name": "model-secici",
-  "source_of_truth": "docs/README.legacy.tr.md 'Doğrulama' table for the legacy ids; this file for iteration-27",
+  "source_of_truth": "evals/README.md 'Legacy id table' section for the legacy ids; this file for iteration-27",
   "note": "Iteration-28 live regression set (Claude + OpenCode; BUD1 budget-first pool, SM1 OpenCode default, FR1 spill-over note, GM1 Gemini overlay). Go serves the 1017 build of DeepSeek V4.1 Flash, so every DeepSeek figure in the evidence is the 1017 revision (previous-revision figures back no row): agentic-code / terminal-tool and deep-reasoning and science lead with MiMo-V2.6-Pro, knowledge-work with DeepSeek, workflow-automation with GLM-5.3-Flash, long-context R<=2 with GLM-5.3-Flash. Gemini 4 Argon is Go's `gemini-4-argon` (Go privacy table: Not used / 0 days), so it appears in every eval whose prompt is D=3 or R=3 on a GM1 row (`allow_gemini: true`), confidential or not. The goldens are derived from SKILL.md's rules (not independent): `python grade_routing.py --selftest --results-dir /tmp/x` proves the grader and the goldens agree; the cold-agent run is recorded in evals/README.md. Effort rule: DeepSeek V4.1 Flash D<=1 -> low, D=2 -> high, D>=3 -> max; GLM-5.3 / GLM-5.3-Flash D<=1 -> low, D>=2 -> max. The iteration-20 (Codex) set was removed from the tree; the last commit that has it is 7c24c81.",
   "evals": [
     {

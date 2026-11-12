@@ -93,7 +93,7 @@ procedure.
    fallback), except the Claude Code-only parts (`opusplan`, the `⚡ Claude /fast`
    speed line, the `/model opus` alias rule) — that file has a footer listing its
    deliberate differences.
-8. Re-run `.\build-claude-ai-zip.ps1`.
+8. Re-run `.\build-claude-ai-zip.ps1` at release time — `dist/` is git-ignored; the zip is never committed.
 9. If `docs/social-preview.html` changed, re-render the PNG in the same commit:
    `.\scripts\render-social-preview.ps1`. A stale PNG is a wrong screenshot of the
    product on every link preview, and nobody notices because nobody opens the HTML.
@@ -109,10 +109,10 @@ query).
 
 ## 3. Turkish parity
 
-The skill body and README are English. `README.tr.md`, `claude-ai/instructions.tr.md`,
-`evals/history.tr.md` and the `tests_rule` notes in `evals/routing/evals.json` are
+The skill body and README are English. `README.tr.md`, `claude-ai/instructions.tr.md`
+and the `tests_rule` notes in `evals/routing/evals.json` are
 Turkish (the project's original working language). When you change a rule, keep
-`README.tr.md` and `claude-ai/instructions.tr.md` in sync (`docs/README.legacy.tr.md` is a frozen history file) — or flag in the PR that
+`README.tr.md` and `claude-ai/instructions.tr.md` in sync — or flag in the PR that
 they lag, so a Turkish speaker can follow up.
 
 ## Style

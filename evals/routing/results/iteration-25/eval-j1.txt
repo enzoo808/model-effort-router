@@ -1,5 +1,0 @@
-Claude: ✅ RECOMMENDED AI · opusplan · plan: max · execute: medium
-⚠️ Effort does not carry over — after switching to execution mode set it manually with /effort medium.
-OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 MiniMax M3.1 Flash Free · effort: max
-Evidence: The difficulty is front-loaded into one architecture plan before a repeatable rollout across 200 services; opusplan is a mechanism OpenCode lacks, so it decides the badge.
-Do not apply without human review.

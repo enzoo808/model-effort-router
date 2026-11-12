@@ -1,5 +1,0 @@
-Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default
-Evidence: Argon beats the Claude pick on both Omniscience measures (index 42 vs 32, hallucination 15% vs 47%), so the badge goes to OpenCode; low-confidence.
-Gemini 4 Argon: opencode-go/gemini-4-argon-contributor — Google trains on your prompts; Go cap USD 60 during the 2× promo (30 after). If it errors or is overloaded, run the row's other model.
-Do not apply without human review.

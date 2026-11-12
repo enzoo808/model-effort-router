@@ -8,7 +8,7 @@ mutual-star rings — it gets the repo flagged and kills its credibility.
 
 The skill body and README are now English (ported 2 Sep 2026, eval re-run as
 iteration-9). The remaining Turkish surface (`README.tr.md`,
-`claude-ai/instructions.tr.md`, `evals/history.tr.md`, the `tests_rule` notes in
+`claude-ai/instructions.tr.md`, the `tests_rule` notes in
 `evals.json`) is fine to leave — it reads as "originally built in Turkish, now
 bilingual", which is a small credibility signal, not a barrier.
 

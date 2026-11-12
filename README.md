@@ -199,7 +199,7 @@ git add .claude/skills/model-secici && git commit -m "Add model-secici skill"
 
 <br>
 
-1. Download **[`dist/model-secici.zip`](dist/model-secici.zip)** (rebuild it with `.\build-claude-ai-zip.ps1`).
+1. Build the zip with `.\build-claude-ai-zip.ps1` (it is generated at release time, not committed; take it from the release page if one is published).
 2. Open **claude.ai → Settings → Features** and make sure **code execution** is on.
 3. Under **Custom Skills**, choose **Upload** and select the zip.
 4. In a chat, ask *"which model should I use for: …"* followed by your task.
@@ -248,7 +248,7 @@ On Windows, delete `%USERPROFILE%\.claude\skills\model-secici`.
 | `/model-secici` isn't listed | Start a **new** session — skills load at start-up. Then check that `~/.claude/skills/model-secici/SKILL.md` exists (not `.../model-secici/skill/SKILL.md`). |
 | The one-liner extracts nothing | `curl` and `tar` must be on your `PATH`; on Windows use the PowerShell line or the zip. |
 | `install.ps1` fails with \"running scripts is disabled\" | You ran it without the bypass flag: `powershell -ExecutionPolicy Bypass -File .\install.ps1` |
-| claude.ai rejects the upload as "invalid characters" | Use the prebuilt [`dist/model-secici.zip`](dist/model-secici.zip). Zips made with Windows' own tools use backslashes; `build-claude-ai-zip.ps1` writes forward slashes. |
+| claude.ai rejects the upload as "invalid characters" | Build the zip with `build-claude-ai-zip.ps1`, which writes forward slashes. Zips made with Windows' own tools use backslashes. |
 | It only prints a `Clarify:` line | Working as designed: the prompt was ambiguous. Answer the question and ask again — see [writing a good prompt](#writing-a-good-prompt). |
 | It doesn't fire on a plain question | Use the explicit `/model-secici …` command. |
 
@@ -446,7 +446,7 @@ skill/                       The skill itself — only SKILL.md is read when rou
 evals/                       Regression set, grader, policy mirror, recent run history
 scripts/                     Consistency checks and evidence tooling
 docs/                        How it works, assets, launch notes
-dist/model-secici.zip        Ready-to-upload claude.ai skill
+dist/model-secici.zip        Ready-to-upload claude.ai skill (built at release time, not committed)
 claude-ai/                   Plain-text fallback when code execution is off
 install.sh · install.ps1     One-command installs for Claude Code
 .github/workflows/          CI: the checks above on every push and pull request
