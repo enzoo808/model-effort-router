@@ -199,7 +199,7 @@ git add .claude/skills/model-secici && git commit -m "Add model-secici skill"
 
 <br>
 
-1. Build the zip with `.\build-claude-ai-zip.ps1` (it is generated at release time, not committed; take it from the release page if one is published).
+1. Download `model-secici.zip` from the [latest release](https://github.com/enzoo808/model-effort-router/releases/latest), or build it with `.\build-claude-ai-zip.ps1` (the zip is generated at release time, not committed).
 2. Open **claude.ai → Settings → Features** and make sure **code execution** is on.
 3. Under **Custom Skills**, choose **Upload** and select the zip.
 4. In a chat, ask *"which model should I use for: …"* followed by your task.

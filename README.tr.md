@@ -199,7 +199,7 @@ git add .claude/skills/model-secici && git commit -m "Add model-secici skill"
 
 <br>
 
-1. Zip'i `.\build-claude-ai-zip.ps1` ile üret (yalnız release'de üretilir, depoya işlenmez; yayımlanmışsa release sayfasından al).
+1. `model-secici.zip`'i [son release](https://github.com/enzoo808/model-effort-router/releases/latest) sayfasından indir ya da `.\build-claude-ai-zip.ps1` ile üret (zip yalnız release'de üretilir, depoya işlenmez).
 2. **claude.ai → Settings → Features** sayfasında **code execution**'ın açık olduğundan emin ol.
 3. **Custom Skills** altında **Upload**'u seç ve zip'i yükle.
 4. Bir sohbette *"şunun için hangi modeli kullanmalıyım: …"* diye sor ve görevini ekle.
