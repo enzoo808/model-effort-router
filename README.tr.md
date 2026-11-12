@@ -9,7 +9,7 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-kurulum)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-kurulum)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-kurulum)
-[![Policy](https://img.shields.io/badge/politika-iteration--28-8b949e?style=flat-square)](CHANGELOG.md)
+[![Policy](https://img.shields.io/badge/politika-iteration--29-8b949e?style=flat-square)](CHANGELOG.md)
 [![Regression evals](https://img.shields.io/badge/regresyon_eval-39-8b949e?style=flat-square)](#-doğrulama)
 
 **[Hızlı başlangıç](#-hızlı-başlangıç)** · **[Kurulum](#-kurulum)** · **[Cevabı oku](#-cevabı-okumak)** · **[Nasıl karar verir](#-nasıl-karar-verir)** · **[Örnekler](#-kullanım-örnekleri)** · **[Kanıt](#-hisle-değil-kanıtla)** · **[Değişiklik günlüğü](CHANGELOG.md)** · **[🇬🇧 English](README.md)**
@@ -258,7 +258,7 @@ Windows'ta `%USERPROFILE%\.claude\skills\model-secici` klasörünü sil.
 
 ```text
 Claude:   Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
 Evidence: Mid-difficulty feature work stays on OpenCode (SM1): Claude's lead on Vals TB 4.0 (65 / 64 vs 31 / 32) and Arena Agent only counts from D=3, and a real agent task costs USD 0.17 (MiMo-V2.6-Pro) against Sonnet 5.5's 3.38 and Opus 5.5's 5.38 (Arena, 10 Nov).
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
 ```
@@ -333,8 +333,8 @@ Her kapı ve kural dahil adım adım ayrıntı: **[docs/how-it-works.md](docs/ho
 | Görev | Claude | OpenCode `#1` · `#2` | Önerilen |
 |---|---|---|---|
 | 200 yorumu olumlu/olumsuz etiketle | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` toplu iş; USD 60 limitli Flash katmanı Claude kotasını korur |
-| Ödeme modülünü 40 dosyada yeniden düzenle | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **OpenCode** — `D=2`; Claude'un önü `D=3`'ten itibaren sayılır, görev başına USD 0.17 vs 3.38 |
-| Staging'i sıfırdan kur (Terraform, 12 servis, seed, smoke) | `Sonnet 5.5 · high · ultracode` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **Claude** — çok fazlı; `ultracode`'un OpenCode karşılığı yok |
+| Ödeme modülünü 40 dosyada yeniden düzenle | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **OpenCode** — `D=2`; Claude'un önü `D=3`'ten itibaren sayılır, görev başına USD 0.17 vs 3.38 |
+| Staging'i sıfırdan kur (Terraform, 12 servis, seed, smoke) | `Sonnet 5.5 · high · ultracode` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — çok fazlı; `ultracode`'un OpenCode karşılığı yok |
 | Prod'da ara sıra patlayan race condition'ı bul | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, uyumlu iki AA satırı |
 | Geri döndürülemez işlem sınırını tasarla | `Opus 5.5 · max` + inceleme notu | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, `R=3` |
 | 200 servis için auth'u sıfırdan yeniden tasarla | `opusplan · plan: max · execute: medium` | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude** — `opusplan` mekanizması |
@@ -369,7 +369,7 @@ Daha fazla örnek (20 satırlık tam tablo) için [İngilizce README](README.md#
 | **Puanlanmamış** — asla seçilmez | Qwen3.8 Flash | Bu ad altındaki her satır "Qwen3.8-Flash-Next", farklı bir açık ağırlıklı model; `n/p` |
 | **Baskın olunan** | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 · Gemini 3.8 Flash | Puanlanır ve izlenir; hiçbir satır bunları üretmez |
 
-> Efor, OpenCode'un o model için *gerçekten sunduğu* varyanttır (`low` / `high` / `max`, `xhigh` ya da `default`); asla reddedeceği bir değer yazılmaz. DeepSeek V4.1 Flash üç kademeyi de kullanır: `D ≤ 1` `low`, `D = 2` `high`, `D ≥ 3` `max`. DeepSeek'in limiti USD 100 ve sıfır-saklama anlaşması 30 Kasım 2026'ya kadar geçerli. Go DeepSeek V4.1 Flash'ın **1017** sürümünü sunuyor; router'ın andığı her DeepSeek rakamı 1017 rakamıdır (eski sürüm rakamları hiçbir satırı veya rozeti desteklemez).
+> Efor, OpenCode'un o model için *gerçekten sunduğu* varyanttır (`low` / `high` / `max`, `xhigh` ya da `default`); asla reddedeceği bir değer yazılmaz. DeepSeek V4.1 Flash `D ≤ 1` için `low`, `D ≥ 2` için `max` yazar (`high` sunulur, asla yazılmaz: AA-Briefcase ve Vals Terminal-Bench 4.0 etkinlik grafiği onu `max`'tan ayırır; iteration-26'nın üç kademeli kuralı geri alındı). DeepSeek'in limiti USD 100 ve sıfır-saklama anlaşması 30 Kasım 2026'ya kadar geçerli. Go DeepSeek V4.1 Flash'ın **1017** sürümünü sunuyor; router'ın andığı her DeepSeek rakamı 1017 rakamıdır (eski sürüm rakamları hiçbir satırı veya rozeti desteklemez).
 
 <br>
 
@@ -404,7 +404,7 @@ python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, 
 
 Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
 
-**Durum (11 Kasım 2026, iteration-28):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **39/39**. Değişikliğin etkileyebileceği **33 promptun** soğuk koşusu (her prompt için taze bir ajan, yalnızca `skill/SKILL.md` okuyarak) **33/33** geçti; `i1` atlandı (siber güvenlik kapıları), OpenCode çifti taşımayan beş prompt koşulmadı, tetikleme eval'i hâlâ bir vekil. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
+**Durum (12 Kasım 2026, iteration-29):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **39/39**. OpenCode satırında DeepSeek bulunan **18 promptun** soğuk koşusu (her prompt için taze bir ajan, yalnızca `skill/SKILL.md` okuyarak) **17/18**; tek hata (`w4`, atlanan Zen ikizi) yeniden koşuda **3/3** geçti. `i1` atlandı, tetikleme eval'i hâlâ bir vekil. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
 
 ### Bilinen sınırlar
 

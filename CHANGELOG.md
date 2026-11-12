@@ -4,6 +4,18 @@ Routing-policy iterations 21 to 25 (the OpenCode Go era), newest first. Earlier 
 
 ---
 
+## iteration-29 (12 Nov 2026): DeepSeek V4.1 Flash back to two rungs
+
+Everything below was read from the primary pages on 11-12 Nov 2026 (`skill/opencode-benchmarks.md` §16, `skill/reference.md` §25).
+
+- **Rule E7 reverted to two rungs.** DeepSeek V4.1 Flash writes `low` at `D ≤ 1` and `max` at `D ≥ 2`, like GLM-5.3 and GLM-5.3-Flash; `high` stays offered in the variants table and is never emitted. **This reverts the iteration-26 three-rung rule** (`D = 2` → `high`).
+- **Measured reason.** AA-Briefcase v1.1 separates the rungs with disjoint 95% intervals (`max` 1570 (1560–1580) vs `high` 1416 (1405–1426)); the Vals Terminal-Bench 4.0 effort chart does too (`high` 17.2 ±1.01 vs `max` 35.4 ±4.4, ~4 SE) but its revision is unconfirmed, so it never decides. AutomationBench-AA (`high` 68.5 vs `max` 66.6) has no interval and is UNRESOLVED; GDPval-AA publishes `max` only. Every DeepSeek placement in Step 4-OC rested on `max`-rung figures, and `max` costs about 0.6% of the USD 100 cap per AA task. GLM-5.3-Flash has no per-rung data (its `max` is a convention).
+- **Derivation.** `derive_opencode_rows.py` now reads the Vals TB 4.0 anchor for `agentic-code` (it was in the evidence file since iteration-28 but not wired in; the earlier "Vals TB 4.0 31.8" wording was not a derivation input). No band or pair moved.
+- **Notes only.** GLM-5.3's Vals chart has `high` 43.4 ±2.02 above `max` 37.4 ±2.02 (A1-OC unchanged); the Vals table and chart disagree on DeepSeek.
+- **Evals.** `routing/evals.json` stays at **39 prompts**; nine goldens moved in effort only (`b1 b2 c1 e1 f1 m1 n1 r1 u1`); self-test 39/39 and the four policy checks green; cold-agent run on the 18 DeepSeek prompts 17/18 (`w4` omitted the Zen twin once, 3/3 on re-run).
+
+---
+
 ## iteration-28 (11 Nov 2026): Go serves DeepSeek V4.1 Flash 1017
 
 Everything below was re-read from the primary pages on 11 Nov 2026 (`skill/opencode-benchmarks.md` §15, `skill/reference.md` §24).
