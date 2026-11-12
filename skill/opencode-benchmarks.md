@@ -796,3 +796,45 @@ Agent Arena page headed "Nov 10, 2026" (read 11 Nov; the page updates live — c
 (1) Whether DeepSeek's DeepSWE row (revision unstated) is the 1017 build. (2) The D=2 `high` rung for knowledge-work-like rows: Briefcase `high` 1416 is below MiMo-V2.6-Pro 1512 — decision for the owner. (3) The Argon cap after 30 Nov. (4) Whether Go serves Qwen3.8 Max "0902". (5) AA's first-answer-token time for 1017 (49.4 s) counts hidden reasoning and is not the 1.1 s streamed time the latency row used; the `latency-volume` row stays on speed (142 tok/s) and says so.
 
 **Sources (read 2026-11-11).** opencode.ai/docs/go · opencode.ai/docs/zen · opencode.ai/inference/go/v1/models · opencode.ai/changelog · opencode.ai/console/changelog · opencode.ai/docs/{models,keybinds,config,agents,commands} · github.com/anomalyco/models.dev commit 975b6bb and the commit list for `providers/opencode-go` · artificialanalysis.ai/models/{deepseek-v4-1-flash, deepseek-v4-1-flash-1017, deepseek-v4-1-flash-1017-high, glm-5-3-flash} (embedded model data) · arena.ai/leaderboard/agent (header "Nov 10, 2026") · vals.ai/benchmarks/terminal-bench-4 (updated 11/9/2026) · benchlm.ai/benchmarks/mercordeepswe11 (mirror) · code.claude.com/docs/en/fast-mode.
+
+
+## 16. Iteration-29 — per-rung evidence and the two-rung DeepSeek rule (12 November 2026)
+
+All figures read on 2026-11-11/12 from the cited page; `skill/opencode-evidence.json` → `iteration_29` holds them. Question: DeepSeek V4.1 Flash 1017 sits on Step 4-OC rows whose evidence was measured at the `max` rung, while iteration-26's E7 wrote `high` at `D = 2`.
+
+### 16.1 Per-rung rows (same benchmark version only)
+
+| Anchor | 1017 `high` | 1017 `max` | Interval / separation |
+|---|---|---|---|
+| AA Index v5 (USD/task; output tokens) | 28.6 (0.46; 134M) | 32.6 (0.60; 174M) | none |
+| AA Terminal-Bench 4.0 | 28.8 | 33.8 | none |
+| **AA-Briefcase v1.1** | 1415.70 (1405.12–1425.98) | 1570.42 (1560.41–1580.42) | 95% intervals, **disjoint** (155 Elo) |
+| GDPval-AA v2.1 | n/p | 1745.77 (1724.98–1766.56) | `max` only |
+| AutomationBench-AA | 68.5 | 66.6 | none; `high` ahead — UNRESOLVED |
+| GDP.pdf · MMMU-Pro | 14.2 · 79.7 | 17.2 · 80.6 | none |
+| Omniscience v1.1 (index; hallucination) | 1.5; 61.2% | 0.9; 64.1% | none |
+| HLE, CritPt, SciCode, AA-LCR | n/p | 43.3, 24.0, 55.9, 82.7 | `high` row missing |
+| **Vals TB 4.0 effort chart** (avg@3, ±1 SE) | 17.2 ±1.01 (low 16.2 ±2.67) | 35.4 ±4.4 | ~4 SE; **revision unconfirmed** |
+| Arena Agent (10 Nov) · DeepSWE (benchlm, 10 Nov) | no row | one `(Max)` / `max reasoning` row | n/p at `high` |
+
+Cost and speed (AA, 1017): `max` USD 0.60 per task, 16.3 min, 142 tok/s, 49.4 s to the first answer token; `high` USD 0.46, 12.6 min, 146 tok/s, 23.7 s; non-reasoning USD 0.43, 8.3 min, 1.3 s (Index 18.5). `max` costs +USD 0.14 (+30%) and +30% output tokens over `high`, about 0.6% of the USD 100 cap per AA task. Vals (effort chart, same unconfirmed revision): USD per test 0.47 / 0.50 / 0.77 (`low` / `high` / `max`), output tokens 50.7k / 50.7k / 76.5k, reasoning tokens 152k / 183k / 214k, p50 latency 1558 / 2194 / 2756 s.
+
+### 16.2 What the rows support
+
+Supports `max`: AA-Briefcase (disjoint intervals), the Vals chart (direction only), and — without intervals — the AA Index, AA TB 4.0 and GDP.pdf. Supports `high`: only AutomationBench-AA (68.5 vs 66.6, no interval), which is UNRESOLVED. Equal within noise: Omniscience v1.1, MMMU-Pro. Missing at `high`: GDPval-AA, HLE, CritPt, SciCode, AA-LCR, Arena Agent, DeepSWE. Every DeepSeek placement in Step 4-OC rests on `max`-rung figures.
+
+### 16.3 The vendor curve and the Vals chart's status
+
+The V4.1-Flash paper (§4c) is vendor, tier C, own-model, and was measured before the served 1017 build; it can pick a rung, never override independent per-rung rows. The Vals chart's model key is `deepseek/deepseek-v4.1-flash` with no revision; its `max` (35.4) matches neither Vals' table row for the earlier revision (19.70) nor the one for 1017 (31.82). It is therefore a note that supports a direction and never the deciding anchor.
+
+### 16.4 GLM-5.3 and GLM-5.3-Flash
+
+GLM-5.3 (A1-OC only): AA `low` vs `max` — Briefcase 1185 (1176–1194) vs 1503 (1495–1512), GDPval-AA 1333 (1313–1354) vs 1657 (1638–1676), disjoint; Index 23.1 (USD 1.57) vs 31.7 (USD 5.01). **Note only:** the Vals chart has GLM-5.3 `low` 33.3 ±1.75, `high` 43.4 ±2.02, `max` 37.4 ±2.02 — `high` above `max` by about 2 combined SE; A1-OC still writes `max`. GLM-5.3-Flash has **no per-rung data** (AA: one unlabelled row, Index 27.8, USD 0.58, 124M tokens; Vals and Arena: none); its `max` at `D ≥ 2` is a convention shared with GLM-5.3.
+
+### 16.5 Decision and what moved
+
+E7 is two rungs for DeepSeek V4.1 Flash: `D ≤ 1` `low`, `D ≥ 2` `max`; `high` stays in the variants table as offered and is never emitted. This **reverts the iteration-26 rule** (`D = 2` `high`) and restores the pre-iteration-26 behaviour for DeepSeek. No Step 4-OC row or pair moved (the evidence was already `max`-rung); nine goldens moved in effort only: `b1`, `b2`, `c1`, `e1`, `f1`, `m1`, `n1`, `r1`, `u1`. `derive_opencode_rows.py` now reads the Vals TB 4.0 anchor for `agentic-code`; in iteration-28 that anchor was in the evidence file but not in `TAGS`, so the "Vals TB 4.0 31.8" wording was evidence-cell text, not a derivation input. Adding it moved no band (MiMo-V2.6-Pro 0.77, DeepSeek 0.65, GLM-5.3-Flash 0.57).
+
+**Open items.** (1) The Vals chart's revision. (2) Per-rung data for GLM-5.3-Flash. (3) GLM-5.3 `high` vs `max` on Vals (A1-OC unchanged). (4) AutomationBench-AA `high` ≥ `max` has no interval.
+
+**Sources (read 2026-11-11/12).** artificialanalysis.ai/models/{deepseek-v4-1-flash-1017, -1017-high, -1017-non-reasoning, glm-5-3, glm-5-3-low, glm-5-3-flash} (embedded model data and summaries) · vals.ai/benchmarks/terminal-bench-4 (table updated 11/9/2026; Reasoning Effort chart, graphDate 2026-11-09) · arena.ai/leaderboard/agent (Nov 10, 2026) · benchlm.ai/benchmarks/mercordeepswe11 (mirror, 10 Nov capture).

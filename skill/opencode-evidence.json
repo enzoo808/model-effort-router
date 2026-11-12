@@ -900,7 +900,7 @@
         "DeepSeek V4.1 Flash": "Vals row 'DeepSeek V4.1 Flash 1017'",
         "Qwen3.8 Max": "row 'Qwen 3.8 Max'; the separate '0902' row reads 38.89"
       },
-      "note": "Same benchmark as AA Terminal-Bench 4.0 but a different harness (Mini-SWE-agent) - kept as its own anchor."
+      "note": "Same benchmark as AA Terminal-Bench 4.0 but a different harness (Mini-SWE-agent) - kept as its own anchor. Wired into derive_opencode_rows.py TAGS['agentic-code'] since iteration-29; in iteration-28 it sat in this file but was NOT read by the derivation (the iteration-28 wording 'Vals TB 4.0 31.8' was evidence-cell text, not a derivation input). Adding it moved no band or pair (agentic-code: MiMo-V2.6-Pro 0.77, DeepSeek 0.65, GLM-5.3-Flash 0.57)."
     }
   },
   "usage": {
@@ -2174,5 +2174,155 @@
       "zen_free": "LongCat 2.5 Free has a 100 requests/day limit on Zen (the Go page says Unlimited); Zen also lists Flint 40B Free, Inkling 2 Small Free (retains data, may train), Iceman Free; Crouton Alpha Free was added 2026-11-06 and deprecated 2026-11-09; the Zen deepseek-v4.1-flash-free twin now also serves 1017",
       "opencode_tool": "v2.2.5 (30 Oct), v2.2.6 (6 Nov), v2.2.7 (10 Nov): no variant, model-id or variant_cycle change; variant_cycle is still ctrl+t; new documented model syntax provider/model#variant for --model, agents and commands; the root model setting keeps no variant"
     }
+  },
+  "iteration_29": {
+    "date": "2026-11-12",
+    "scope": "per-rung evidence for DeepSeek V4.1 Flash 1017 (and GLM-5.3 / GLM-5.3-Flash where it exists); E7 becomes two rungs (D<=1 low, D>=2 max)",
+    "per_rung_aa_2026_11_11": {
+      "deepseek_v4_1_flash_1017": {
+        "max": {
+          "index_v5": 32.59,
+          "usd_per_task": 0.6,
+          "output_tokens_index_run_M": 174,
+          "minutes_per_task": 16.3,
+          "tok_per_s": 142,
+          "first_answer_token_s": 49.42,
+          "tb_4_0": 33.8,
+          "briefcase": [
+            1570.42,
+            1560.41,
+            1580.42
+          ],
+          "gdpval_aa": [
+            1745.77,
+            1724.98,
+            1766.56
+          ],
+          "gdp_pdf": 17.2,
+          "automationbench": 66.6,
+          "mmmu_pro": 80.6,
+          "omniscience_v1_1_index": 0.9,
+          "hallucination_v1_1": 64.1,
+          "hle": 43.3,
+          "critpt": 24.0,
+          "scicode": 55.9,
+          "aa_lcr": 82.7
+        },
+        "high": {
+          "index_v5": 28.64,
+          "usd_per_task": 0.46,
+          "output_tokens_index_run_M": 134,
+          "minutes_per_task": 12.6,
+          "tok_per_s": 146,
+          "first_answer_token_s": 23.67,
+          "tb_4_0": 28.8,
+          "briefcase": [
+            1415.7,
+            1405.12,
+            1425.98
+          ],
+          "gdpval_aa": null,
+          "gdp_pdf": 14.2,
+          "automationbench": 68.5,
+          "mmmu_pro": 79.7,
+          "omniscience_v1_1_index": 1.5,
+          "hallucination_v1_1": 61.2,
+          "hle": null,
+          "critpt": null,
+          "scicode": null,
+          "aa_lcr": null
+        },
+        "non_reasoning": {
+          "index_v5": 18.5,
+          "usd_per_task": 0.43,
+          "output_tokens_index_run_M": 51.2,
+          "minutes_per_task": 8.3,
+          "tok_per_s": 132,
+          "first_answer_token_s": 1.33
+        },
+        "intervals": "AA-Briefcase v1.1 publishes 95% intervals for both rungs and they are disjoint (155 Elo); GDPval-AA has the max rung only; every other AA row (Index, TB 4.0, GDP.pdf, AutomationBench-AA, MMMU-Pro, Omniscience) publishes none"
+      },
+      "glm_5_3": {
+        "max": {
+          "index_v5": 31.65,
+          "usd_per_task": 5.01,
+          "output_tokens_index_run_M": 135,
+          "tb_4_0": 41.9,
+          "briefcase": [
+            1502.84,
+            1494.58,
+            1511.53
+          ],
+          "gdpval_aa": [
+            1656.88,
+            1638.26,
+            1675.51
+          ]
+        },
+        "low": {
+          "index_v5": 23.11,
+          "usd_per_task": 1.57,
+          "output_tokens_index_run_M": 63.3,
+          "tb_4_0": 34.8,
+          "briefcase": [
+            1185.12,
+            1175.64,
+            1193.61
+          ],
+          "gdpval_aa": [
+            1333.34,
+            1312.99,
+            1353.69
+          ]
+        },
+        "intervals": "Briefcase and GDPval-AA separate low from max with disjoint 95% intervals"
+      },
+      "glm_5_3_flash": {
+        "rungs": "n/p - AA lists one unlabelled row (index_v5 27.8, USD 0.58 per task, 124M output tokens, TB 4.0 32.8); Vals and Arena list none"
+      }
+    },
+    "vals_terminal_bench_4_0_effort_chart_2026_11_09": {
+      "source": "vals.ai/benchmarks/terminal-bench-4, 'Reasoning Effort' chart (graphDate 2026-11-09): avg@3, +-1 standard error across the three runs",
+      "revision_note": "the chart's model key is 'deepseek/deepseek-v4.1-flash' with no revision; its 'max' 35.4 differs from Vals' table rows (DeepSeek V4.1 Flash 19.70, DeepSeek V4.1 Flash 1017 31.82) - REVISION UNCONFIRMED, so the chart is a note and never a deciding anchor",
+      "deepseek_v4_1_flash": {
+        "low": {
+          "score": 16.2,
+          "se": 2.67,
+          "usd_per_test": 0.4742
+        },
+        "high": {
+          "score": 17.2,
+          "se": 1.01,
+          "usd_per_test": 0.4995
+        },
+        "max": {
+          "score": 35.4,
+          "se": 4.4,
+          "usd_per_test": 0.7666,
+          "default": true
+        }
+      },
+      "glm_5_3": {
+        "low": {
+          "score": 33.3,
+          "se": 1.75
+        },
+        "high": {
+          "score": 43.4,
+          "se": 2.02
+        },
+        "max": {
+          "score": 37.4,
+          "se": 2.02,
+          "default": true
+        }
+      },
+      "note_glm_5_3": "high (43.4) sits above max (37.4) by about 2 combined SE; A1-OC writes max and is NOT changed"
+    },
+    "arena_and_deepswe_per_rung": {
+      "arena_agent_2026_11_10": "DeepSeek-V4.1-Flash-20261017 has one row, '(Max)'; GLM-5.3 '(Max)' only; no High rows for either (GPT-6 Luna has Max / Medium / Low rows)",
+      "deepswe_benchlm_2026_11_10": "DeepSeek-V4.1-Flash (revision unspecified), GLM-5.3 and GLM-5.3-Flash each have one 'max reasoning' row; no high rows"
+    },
+    "decision": "E7: DeepSeek V4.1 Flash, GLM-5.3 and GLM-5.3-Flash write low at D<=1 and max at D>=2; DeepSeek's high is offered by the catalogue and never emitted. GLM-5.3-Flash's max is a convention (no per-rung data)."
   }
 }
