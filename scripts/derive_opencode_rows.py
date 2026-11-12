@@ -33,6 +33,7 @@ TIE = 0.10  # consensus points that still count as "the same band"
 TAGS = {
     "agentic-code": ["AA Terminal-Bench 4.0", "DeepSWE v1.1 (Mercor/Datacurve)",
                      "Arena Agent Arena (net outcome vs avg model, %)", "Terminal-Bench 2.1 (Vals)",
+                     "Terminal-Bench 4.0 (Vals)",   # iteration-29: wired in (it was in the evidence file since iteration-28 but not read here)
                      "FrontierSWE v2"],
     "deep-reasoning": ["AA-HLE", "CritPt", "ARC-AGI-2"],
     "knowledge-work": ["GDPval-AA (Elo)", "AA-Briefcase", "AA-AnalystAgent", "AA Harvey LAB (legal)"],

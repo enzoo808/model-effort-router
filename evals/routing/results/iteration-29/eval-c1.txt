@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high · ultracode
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
+Evidence: Five distinct phases (Terraform, deploy, seed, smoke verification, repair) trigger O1: ultracode sequences them and OpenCode has no equivalent, so Claude takes the badge (MECH1).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
+Ultracode: start the prompt with "ultracode:" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.

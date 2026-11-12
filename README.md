@@ -9,7 +9,7 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-install)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-install)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-install)
-[![Policy](https://img.shields.io/badge/policy-iteration--28-8b949e?style=flat-square)](CHANGELOG.md)
+[![Policy](https://img.shields.io/badge/policy-iteration--29-8b949e?style=flat-square)](CHANGELOG.md)
 [![Regression evals](https://img.shields.io/badge/regression_evals-39-8b949e?style=flat-square)](#-validation)
 
 **[Quick start](#-quick-start)** · **[Install](#-install)** · **[Read the answer](#-reading-the-answer)** · **[How it works](#-how-it-decides)** · **[Examples](#-examples)** · **[Evidence](#-built-on-evidence-not-vibes)** · **[Changelog](CHANGELOG.md)** · **[🇹🇷 Türkçe](README.tr.md)**
@@ -258,7 +258,7 @@ On Windows, delete `%USERPROFILE%\.claude\skills\model-secici`.
 
 ```text
 Claude:   Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
 Evidence: Mid-difficulty feature work stays on OpenCode (SM1): Claude's lead on Vals TB 4.0 (65 / 64 vs 31 / 32) and Arena Agent only counts from D=3, and a real agent task costs USD 0.17 (MiMo-V2.6-Pro) against Sonnet 5.5's 3.38 and Opus 5.5's 5.38 (Arena, 10 Nov).
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); …
 ```
@@ -331,8 +331,8 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 | Task | Claude | OpenCode `#1` · `#2` | Recommended |
 |---|---|---|---|
 | Label 200 reviews positive/negative | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` bulk work; Flash tier on USD 60 caps keeps Claude's quota |
-| Refactor the payment module across 40 files | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **OpenCode** — `D=2`; Claude's lead only counts from `D=3`, USD 0.17 vs 3.38 per task |
-| Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · high · ultracode` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **Claude** — multi-phase; `ultracode` has no OpenCode equivalent |
+| Refactor the payment module across 40 files | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **OpenCode** — `D=2`; Claude's lead only counts from `D=3`, USD 0.17 vs 3.38 per task |
+| Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · high · ultracode` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — multi-phase; `ultracode` has no OpenCode equivalent |
 | Find the race condition that flakes in prod | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, two agreeing AA rows |
 | Design the irreversible transaction boundary | `Opus 5.5 · max` + review note | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, `R=3` |
 | Redesign auth for 200 services from scratch | `opusplan · plan: max · execute: medium` | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude** — `opusplan` mechanism |
@@ -351,9 +351,9 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 | Live-chat reply, first words within about a second | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — first-token bound; DeepSeek 1017 streams 142 tok/s (AA) |
 | Which year did the EU AI Act's GPAI obligations start? | `Sonnet 5.5 · low` | GLM-5.3-Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — factual recall excludes Haiku and DeepSeek |
 | Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5.5 · low` + review note | DeepSeek V4.1 Flash `low` · GLM-5.3-Flash `low` | **OpenCode** — `D=0`, both clear the bar |
-| Wire a Jira → Slack → on-call n8n flow | `Sonnet 5.5 · high` | GLM-5.3-Flash `max` · DeepSeek V4.1 Flash `high` | **OpenCode**, low-confidence — AutomationBench has no interval, ITBench favours open models |
-| Summarise 400 pages of filings into one memo | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `high` · GLM-5.3-Flash `max` | **Claude** — knowledge-work from `D=2` |
-| Read 30 scanned receipts into a reconciliation table | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `high` | **OpenCode**, low-confidence — both take images |
+| Wire a Jira → Slack → on-call n8n flow | `Sonnet 5.5 · high` | GLM-5.3-Flash `max` · DeepSeek V4.1 Flash `max` | **OpenCode**, low-confidence — AutomationBench has no interval, ITBench favours open models |
+| Summarise 400 pages of filings into one memo | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `max` · GLM-5.3-Flash `max` | **Claude** — knowledge-work from `D=2` |
+| Read 30 scanned receipts into a reconciliation table | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **OpenCode**, low-confidence — both take images |
 | Non-confidential conference pricing deck | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude** — knowledge-work; Grok 4.7 stays premium |
 | Read 3 regulator pages before labels go to print tonight | `Sonnet 5.5 · high` + review note | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude**, low-confidence — `R=3` and a single Omniscience lean |
 | An earlier OpenCode attempt at a 30-file migration fell short | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · **Gemini 4 Argon** `high` | **Claude** — Rule A1-OC adds the `#2` (Argon on a GM1 row) and hands over the badge |
@@ -387,7 +387,7 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 | **Unrated** — never selected | Qwen3.8 Flash | Every row under that name is "Qwen3.8-Flash-Next", a different open-weights model; `n/p` |
 | **Dominated** | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 · Gemini 3.8 Flash | Rated and tracked; no row ever emits them |
 
-> Effort is the variant OpenCode *actually offers for that model* (`low` / `high` / `max`, `xhigh`, or `default`), never a value it would reject. DeepSeek V4.1 Flash uses all three rungs: `D ≤ 1` `low`, `D = 2` `high`, `D ≥ 3` `max`. DeepSeek's cap is USD 100 and its zero-retention agreement is valid through 30 Nov 2026. Go serves the **1017** build of DeepSeek V4.1 Flash, so every DeepSeek figure the router cites is a 1017 figure (older-revision numbers back no row or badge).
+> Effort is the variant OpenCode *actually offers for that model* (`low` / `high` / `max`, `xhigh`, or `default`), never a value it would reject. DeepSeek V4.1 Flash writes `D ≤ 1` `low` and `D ≥ 2` `max` (`high` is offered but never emitted: AA-Briefcase and the Vals Terminal-Bench 4.0 effort chart separate it from `max`; this reverts the iteration-26 three-rung rule). DeepSeek's cap is USD 100 and its zero-retention agreement is valid through 30 Nov 2026. Go serves the **1017** build of DeepSeek V4.1 Flash, so every DeepSeek figure the router cites is a 1017 figure (older-revision numbers back no row or badge).
 
 <br>
 
@@ -422,7 +422,7 @@ python scripts/check_readme_facts.py     # counts, pool size, iteration and tier
 
 These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
 
-**Where it stands (11 Nov 2026, iteration-28):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **39/39**. A cold run of the **33 prompts the change can move** (one fresh agent per prompt, reading only `skill/SKILL.md`) scored **33/33**; `i1` was skipped (cyber safeguards), five prompts without an OpenCode pair were not run, and the trigger eval is still a proxy. Details in [`evals/README.md`](evals/README.md).
+**Where it stands (12 Nov 2026, iteration-29):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **39/39**. A cold run of the **18 prompts whose OpenCode line carries DeepSeek** (one fresh agent per prompt, reading only `skill/SKILL.md`) scored **17/18**; the one miss (`w4`, an omitted Zen twin) passed **3/3** on re-run. `i1` was skipped and the trigger eval is still a proxy. Details in [`evals/README.md`](evals/README.md).
 
 ### Known limits, stated plainly
 

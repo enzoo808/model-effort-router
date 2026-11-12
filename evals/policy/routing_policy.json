@@ -1,7 +1,7 @@
 {
   "schema_version": "6",
-  "policy_version": "iteration-28",
-  "compiled": "2026-11-11",
+  "policy_version": "iteration-29",
+  "compiled": "2026-11-12",
   "purpose": "Machine-readable mirror of skill/SKILL.md for the OpenCode arm. Read by scripts/check_policy_sync.py (rule blocks must equal SKILL.md verbatim) and scripts/check_opencode_pool.py (the 19-model pool with its budget/free/premium/Gemini tiers, the Step 4-OC rows and the badge table must match SKILL.md). Not read by the router.",
   "drift_guard": "Change a rule block here and forget SKILL.md, or the reverse, and check_policy_sync.py fails. The iteration-20 mirror, reachability corpus and matrix audited the retired Codex arm; they were removed from the tree and last exist at commit 7c24c81 (archive/iteration-20-codex/).",
   "pool": {
@@ -222,11 +222,11 @@
       "DeepSeek V4.1 Flash": {
         "0": "low",
         "1": "low",
-        "2": "high",
+        "2": "max",
         "3": "max"
       }
     },
-    "opencode_from_D_note": "E7: only DeepSeek V4.1 Flash has a vendor effort curve broad enough to place high at D=2 (paper: effort 60-80 recovers most of max at under half the tokens; API default high). Go serves the 1017 build (catalogue name 'DeepSeek V4.1 Flash 1017'; models.dev: Go moved to it on 2026-10-20). AA v5 shows high 29 / max 33 for that revision, but its Index and Terminal-Bench rows carry no interval, so the rung choice is UNRESOLVED on AA's score rows and stays vendor-curve. The one interval-bearing row with both rungs, AA-Briefcase v1.1, separates them (max 1570 [1560-1580] vs high 1416 [1405-1426]); GDPval-AA publishes max only. The D=2 high rule is unchanged. GLM-5.3 / GLM-5.3-Flash keep low/max: AA measured GLM-5.3 only low 34 -> max 45 (v4.3.2), GLM-5.3-Flash at one unlabelled rung, and the Z.ai curve is GLM-5.3's own.",
+    "opencode_from_D_note": "E7 (iteration-29, replaces the iteration-26 three-rung rule): DeepSeek V4.1 Flash, GLM-5.3 and GLM-5.3-Flash write low at D<=1 and max at D>=2; DeepSeek's high is offered by the catalogue (opencode_variants) but never emitted. The vendor paper curve is tier C and unmeasured on the served 1017 revision. Two per-rung anchors separate high from max: AA-Briefcase v1.1 (disjoint 95% intervals: max 1570 [1560-1580] vs high 1416 [1405-1426]) and the Vals TB 4.0 effort chart (avg@3, +-1 SE: high 17.2 +-1.01 vs max 35.4 +-4.4; revision unconfirmed, supports the direction only). AA Index/TB 4.0 and AutomationBench-AA (high 68.5 vs max 66.6) have no interval: UNRESOLVED; GDPval-AA publishes max only. Every DeepSeek placement rests on max-rung figures. GLM-5.3-Flash has no per-rung data: its max is a convention, not a measurement.",
     "opencode_variants": {
       "GLM-5.3": [
         "low",
@@ -638,7 +638,13 @@
     "Agent Arena 4.02 at USD 0.13",
     "Arena snapshot of 8 Nov 2026",
     "DeepSeek leads DeepSWE (71.7 ±6.3, tied with Claude)",
-    "the \"1017\" revision AA tests now reads 67% / 4.7"
+    "the \"1017\" revision AA tests now reads 67% / 4.7",
+    "`D ≤ 1` `low` · `D = 2` `high` · `D ≥ 3` `max`",
+    "DeepSeek V4.1 Flash gets the middle rung at `D = 2`",
+    "`D = 2` is multi-step but well-documented",
+    "the `D = 2` rung is `high` (E7)",
+    "That gap is recorded, the rule is unchanged",
+    "which keeps `max` for the `D ≥ 3` rung"
   ],
   "haiku_5_5": {
     "claude_pick_rule": "H1",

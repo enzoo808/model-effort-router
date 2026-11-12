@@ -11,7 +11,7 @@ description: >-
 
 # Claude & OpenCode model / effort router
 
-<!-- routing-policy-version: iteration-28 -->
+<!-- routing-policy-version: iteration-29 -->
 
 Route the user's prompt — **do not run it**. Say which model + effort to use on
 **Claude** and on **OpenCode** (**two** models, `#1` / `#2`, each with its own
@@ -133,7 +133,7 @@ OpenCode shows only the effort **variants its model catalogue (Go's `/v1/models`
 
 | Model | Variants OpenCode offers | Emit |
 |---|---|---|
-| DeepSeek V4.1 Flash | `low` · `high` · `max` | `D ≤ 1` `low` · `D = 2` `high` · `D ≥ 3` `max` |
+| DeepSeek V4.1 Flash | `low` · `high` · `max` | `D ≤ 1` `low` · `D ≥ 2` `max` (`high` is offered, never emitted — E7) |
 | GLM-5.3 · GLM-5.3-Flash | `low` · `high` · `max` | `D ≤ 1` `low` · `D ≥ 2` `max` |
 | MiMo-V2.6-Pro · MiMo-V2.6-Flash | **none** — thinking is always on | `default` |
 | Kimi K3 | `max` only | `max` |
@@ -530,7 +530,7 @@ among the budget tier** (mean rank across ≥ 2 evaluators;
 | **any tag, `D ≤ 1`** | DeepSeek V4.1 Flash · GLM-5.3-Flash | same | Price and cap decide: on the 10 Nov Arena snapshot GLM-5.3-Flash (2.98 ±0.72 at USD 0.16, cap USD 60) and DeepSeek 1017 (2.07 ±0.52 at USD 0.14, cap USD 100) lead the Flash tier, MiMo-V2.6-Flash trails (0.03 ±1.05 at USD 0.07); research-synthesis drops DeepSeek (gate) → GLM-5.3-Flash · MiMo-V2.6-Flash |
 | `agentic-code`, `terminal-tool` | MiMo-V2.6-Pro · DeepSeek V4.1 Flash | same | Same-revision consensus (DeepSeek rows are the 1017 build): MiMo-V2.6-Pro leads AA TB 4.0 (35 vs 34) and Arena Agent (2.30 ±0.91 vs 2.07 ±0.52, a tie) and ties Vals TB 4.0 (31.3 vs 31.8); DeepSeek 1017 is the next budget model. DeepSWE's 71.7 is a row whose revision is unspecified — note only. Argon is `#1` at `D = 3` / `R = 3` (GM1): AA TB 4.0 57, Vals 58, FrontierSWE v2 55 (vs 35 / 18), still behind Claude (60–64). GLM-5.3 is premium — A1-OC |
 | `deep-reasoning` | MiMo-V2.6-Pro · DeepSeek V4.1 Flash | same | HLE 49 vs 43, CritPt 27 vs 24 against DeepSeek 1017, the next budget model (GLM-5.3-Flash 40 / 15) — AA scores, no interval. At `D = 3` / `R = 3` Argon is `#1` (GM1): HLE 57, ARC-AGI-2 91.3 (vs 49 / 61); Opus 5.5 still leads HLE and CritPt |
-| `knowledge-work` | DeepSeek V4.1 Flash · MiMo-V2.6-Pro | same | DeepSeek 1017 leads both Elo rows with disjoint 95% intervals: GDPval-AA 1746 (1725–1767) vs MiMo-V2.6-Pro 1692 (1672–1712), Briefcase 1570 (1560–1580) vs 1512 (1503–1521); AnalystAgent has no 1017 row. These are `max`-rung figures — the `D = 2` rung is `high` (E7), whose Briefcase is 1416 (1405–1426), below MiMo-V2.6-Pro; the badge is Claude from `D = 2` anyway |
+| `knowledge-work` | DeepSeek V4.1 Flash · MiMo-V2.6-Pro | same | DeepSeek 1017 leads both Elo rows with disjoint 95% intervals: GDPval-AA 1746 (1725–1767) vs MiMo-V2.6-Pro 1692 (1672–1712), Briefcase 1570 (1560–1580) vs 1512 (1503–1521); AnalystAgent has no 1017 row. These are `max`-rung figures and `max` is the rung written from `D ≥ 2` (E7); the badge is Claude from `D = 2` |
 | `workflow-automation` | GLM-5.3-Flash · DeepSeek V4.1 Flash | same | GLM-5.3-Flash leads the multi-anchor consensus (ITBench 51, EnterpriseOps-Gym, AutomationBench 60); DeepSeek 1017 has the best budget AutomationBench-AA (67) but no ITBench row — one anchor, so it cannot lead. At `D = 3` / `R = 3` Argon is `#1` — 77.5 (Sonnet 5.5 72) |
 | `long-context` | GLM-5.3-Flash · MiMo-V2.6-Pro | **MiMo-V2.6-Pro · GLM-5.3-Flash** | AA-LCR 86 (MiMo-V2.6-Pro) vs 80; MLCR-AA (previous version) 51 (GLM-5.3-Flash) vs 18 — each leads one row, both 1M, so the cap-efficient GLM-5.3-Flash goes first at `R ≤ 2` and the AA-LCR leader at `R = 3` (PO1). DeepSeek 1017 (LCR 83) has no same-version MLCR-AA row. Kimi K3 is premium |
 | `research-synthesis` | MiMo-V2.6-Pro · GLM-5.3-Flash | same | Omniscience v1 8.4 vs 7.5, hallucination 41% (MiMo-V2.6-Pro; on v1.1 it reads −4.5 / 60%, GLM-5.3-Flash 0.7 / 38%); **DeepSeek is gated out**. At `D = 3` / `R = 3` Argon is `#1`: AA-Omniscience v1 index 42, hallucination 15% (Sonnet 5.5 32 / 47%) |
@@ -559,29 +559,22 @@ named); `#2` = the other row's `#1`, or its `#2` if that is the same model.
 
 #### OpenCode Go — effort for each model
 
-Use the variants table under *Effort levels*. **DeepSeek V4.1 Flash:
-`D ≤ 1` `low` · `D = 2` `high` · `D ≥ 3` `max`.** GLM-5.3, GLM-5.3-Flash and
-stay `D ≤ 1` `low` · `D ≥ 2` `max`. Every other model
+Use the variants table under *Effort levels*. **DeepSeek V4.1 Flash, GLM-5.3 and
+GLM-5.3-Flash: `D ≤ 1` `low` · `D ≥ 2` `max`.** Every other model
 has one rung to write (Gemini 4 Argon: `high`).
 
-> **E7.** DeepSeek V4.1 Flash gets the middle rung at `D = 2`. The `high` rung rests on DeepSeek's
-> own-model curve, **not an independent AA figure**: the V4.1-Flash paper (`opencode-benchmarks.md` §4c)
-> places API `high` at effort 75 and reports effort 60–80 recovering most of `max`'s accuracy at under
-> half the tokens, with the final step to effort 100 lengthening agent trajectories by 1.6–1.8× for only
-> marginal gains — "the maximum tier is thus best reserved for the most challenging tasks" (vendor,
-> tier C: it picks a rung, never a cross-ecosystem direction). `high` is also the DeepSeek API default.
-> `D = 2` is multi-step but well-documented, not the "most challenging" case, so it takes `high`.
-> `D ≥ 3` — design from scratch, concurrency, conflicting constraints, adversarial diagnosis — keeps
-> `max`, which is where AA's v5 rows for the served "1017" revision sit (non-reasoning 19 → `high` 29 → `max` 33). **Identity is now stated** — Go's
-> catalogue serves "DeepSeek V4.1 Flash 1017" and models.dev records that Go moved to that build on 2026-10-20 — and AA publishes both rungs for it, but its Index and
-> Terminal-Bench rows carry no interval, so the rung choice is **UNRESOLVED** on AA's score rows and stays vendor-based. The one interval-bearing row that has both rungs,
-> AA-Briefcase v1.1, separates them (`max` 1570 (1560–1580) vs `high` 1416 (1405–1426)); GDPval-AA publishes `max` only. That gap is recorded, the rule is unchanged. `max` costs
-> USD 0.60 per AA task (`high` 0.46) — about 0.6% of a USD 100 cap — so quota is not the constraint; the paper's token and latency curve is. The Step 4-OC evidence for DeepSeek is `max`-rung.
-> **GLM-5.3 and GLM-5.3-Flash stay `low`/`max`.** AA measured GLM-5.3 only at `low` 34 → `max` 45 and
-> GLM-5.3-Flash at one unlabelled rung. GLM-5.3's Z.ai Code Bench curve (`high` 31.4% vs `max` 34.5%) is
-> vendor-reported and own-model — a rung choice, but A1-OC reaches GLM-5.3 only after an earlier run fell
-> short, so that escalation keeps the vendor's top rung; GLM-5.3-Flash has no own-model rung curve at all.
-> `GLM-5.3 · low` is dominated (E6); `low` on a Flash
+> **E7.** DeepSeek V4.1 Flash, GLM-5.3 and GLM-5.3-Flash write `low` at `D ≤ 1` and `max` at `D ≥ 2`. DeepSeek's `high` is offered by Go's catalogue
+> (the variants table) but never emitted; this replaces the iteration-26 rule that wrote `high` at `D = 2`. Why, in order of weight:
+> (1) the V4.1-Flash paper's curve (`opencode-benchmarks.md` §4c: API `high` = effort 75, effort 60–80 recovering most of `max` at under half the tokens) is vendor, tier C,
+> own-model and **was not measured on the served 1017 revision** — it can pick a rung, nothing more. (2) The two per-rung anchors that resolve the question both separate `high`
+> from `max` for DeepSeek: AA-Briefcase v1.1 with disjoint 95% intervals (`max` 1570 (1560–1580) vs `high` 1416 (1405–1426)), and the Vals Terminal-Bench 4.0 reasoning-effort chart
+> (avg@3, ±1 SE across three runs: `high` 17.2 ±1.01 vs `max` 35.4 ±4.4, about 4 SE, and `high` ≈ `low` 16.2 ±2.67) — the chart's revision is **unconfirmed** (its label carries none and its
+> numbers differ from Vals' own table), so it supports the direction and never decides. (3) The rest is **UNRESOLVED**: the AA v5 Index (`high` 29, `max` 33) and AA Terminal-Bench 4.0
+> (28.8 vs 33.8) carry no interval; AutomationBench-AA has `high` 68.5 ahead of `max` 66.6 with no interval, so it does not argue for `high` either; GDPval-AA publishes `max` only, and
+> HLE, CritPt, SciCode, AA-LCR, Arena Agent and DeepSWE have no `high` row (n/p). (4) Cost is no argument for `high`: `max` is USD 0.60 per AA task against `high` 0.46 (+30% output
+> tokens), about 0.6% of a USD 100 cap. Every DeepSeek placement in Step 4-OC rests on `max`-rung figures, so the emitted rung is now the evidence rung.
+> **GLM-5.3-Flash has no per-rung data at all** (AA lists one unlabelled row; Vals and Arena list none): its `max` at `D ≥ 2` is a **convention** shared with GLM-5.3, not a measurement.
+> GLM-5.3 (A1-OC only) is measured at `low` and `max` on AA, where Briefcase and GDPval-AA separate them with disjoint intervals; `GLM-5.3 · low` is dominated (E6) and `low` on a Flash
 > model has no number and is used only at `D ≤ 1`.
 
 ---
@@ -616,7 +609,7 @@ pressure** (cost/task ÷ cap, then the 5-hour output-token budget) → reasoning
 
 - **E1** `Sonnet 5.5 · max` (56 @ USD 5.46, ~197k tokens) is dominated by `Opus 5.5 · xhigh` (56 @ USD 3.46); Anthropic's footnote: Sonnet scores *lower* at `max` on FrontierCode. AA v5 reproduces it (Sonnet 55 @ USD 10.02 vs Opus 57 @ USD 6.05). Never emit it; escalate to `Opus 5.5 · xhigh`.
 - **E3** `max` over `xhigh` buys little on Claude (Fable 5.1 53 = 53; Opus 5.5 58 vs 56, +73% cost; AA v5: 59 vs 57, +66% cost) → `max` needs M1.
-- **E5** open models are the exception: `max` buys +11 (GLM-5.3 34 → 45) and +14 (Kimi K3 30 → 44) — the premium pair, reached only through A1-OC — and DeepSeek V4.1 Flash 1017 non-reasoning 19 → `max` 33 (AA v5), which keeps `max` for the `D ≥ 3` rung (E7).
+- **E5** open models are the exception: `max` buys +11 (GLM-5.3 34 → 45) and +14 (Kimi K3 30 → 44) — the premium pair, reached only through A1-OC — and DeepSeek V4.1 Flash 1017 non-reasoning 19 → `max` 33 (AA v5), which is why DeepSeek writes `max` from `D ≥ 2` (E7).
 - **E6** dominated, never emitted: `GLM-5.3 · low` (→ GLM-5.3-Flash 42 @ 0.25), `Kimi K3 · low` (→ MiMo-V2.6-Flash; OpenCode offers Kimi `max` only), DeepSeek V4 Pro (→ V4.1 Flash), MiniMax M3 / Kimi K2.7 Code / Qwen3.7 Plus (TB 2/1/1), Qwen3.8 Max (→ MiMo-V2.6-Pro) except via A1-OC. Grok 4.7 and GPT 6 Luna are not dominated — retention *eliminates* them; Grok 4.7 is premium (BUD1).
 - **E8** `Haiku 5.5 · xhigh` / `max` is never emitted: AA Max is 43 @ USD 0.21 but 162k output tokens per task against Sonnet 5.5 High 47 @ USD 0.88 and 37k. Haiku stops at `medium` (H1); needing more makes it a Sonnet 5.5 task.
 - **E9** Claude Haiku 5.5 is rated on Go but never emitted there: High 38 @ USD 0.08 on a USD 15 cap with 30-day retention is dominated by MiMo-V2.6-Flash (38 @ 0.06, USD 60 cap, 0-day), Max 43 @ 0.21 by GLM-5.3-Flash (42 @ 0.25, USD 60 cap). Use it on the Claude line, where no dollar cap applies.
@@ -770,7 +763,7 @@ Clarify: which file or function is broken, what does it do now, and what should 
 *"Refactor the payment module across these 40 files to use the new idempotency-key API, update every caller, and make the test suite pass."*
 ```
 Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
 Evidence: Mid-difficulty feature work stays on OpenCode (SM1): Claude's lead on Vals TB 4.0 (65 / 64 vs 31 / 32) and Arena Agent only counts from D=3, and a real agent task costs USD 0.17 (MiMo-V2.6-Pro) against Sonnet 5.5's 3.38 and Opus 5.5's 5.38 (Arena, 10 Nov).
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 ```
@@ -799,7 +792,7 @@ Do not apply without human review.
 *"I'm preparing a non-confidential competitor-pricing deck for a conference — research, structure and write the 12 slides"*
 ```
 Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
-OpenCode: #1 DeepSeek V4.1 Flash · effort: high · #2 MiMo-V2.6-Pro · effort: default
+OpenCode: #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
 Evidence: Finished-deliverable work is knowledge-work, where two agreeing AA rows favour Claude (GDPval-AA 1839 vs DeepSeek 1017's 1746, Briefcase 1823 vs 1570, both gaps clear the 95% intervals); Grok 4.7 stays premium and out of the pair.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 ```
@@ -829,5 +822,5 @@ Evidence: Offensive security is a deciding gate on both arms; only Opus 4.8 (or 
 
 `reference.md` §8 examples · §10 edge cases · §11–§14 evidence maps · §17 Claude 5.5 · §19 Haiku 5.5 · §23 Claude 5.2 generation
 (§9 and §18 are the retired Codex arm; iteration-20 is git tag `iteration-20-codex`).
-`opencode-benchmarks.md` — the 19-model evidence, variants, rung curves, sources (§13 = Gemini 4 Argon and the free models, §14 = the 10 Nov 2026 re-read and the AA v5 anchor audit, §15 = the 11 Nov 2026 update: Go serves the 1017 build, DeepSeek re-based, DeepSWE mirror refresh, notes).
+`opencode-benchmarks.md` — the 19-model evidence, variants, rung curves, sources (§13 = Gemini 4 Argon and the free models, §14 = the 10 Nov 2026 re-read and the AA v5 anchor audit, §15 = the 11 Nov 2026 update: Go serves the 1017 build, DeepSeek re-based, DeepSWE mirror refresh, notes; §16 = the 12 Nov 2026 per-rung evidence and the two-rung DeepSeek rule).
 **Never load them to route a prompt.**
