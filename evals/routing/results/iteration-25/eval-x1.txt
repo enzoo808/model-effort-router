@@ -1,3 +1,0 @@
-Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max
-Evidence: Multi-source synthesis rests on one AA-Omniscience row (Sonnet 5.5 32 vs MiMo-V2.6-Pro 8) that sets no direction, so price decides; low-confidence.

@@ -1,4 +1,0 @@
-Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
-OpenCode: #1 DeepSeek V4.1 Flash · effort: high · #2 GLM-5.3-Flash · effort: max
-Evidence: A finished comparative memo is knowledge-work, where GDPval-AA (1866 / 1838 vs DeepSeek 1017's 1746) and Briefcase gaps clear the 95% intervals, so Claude takes the badge; the 400 pages add long-context.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).

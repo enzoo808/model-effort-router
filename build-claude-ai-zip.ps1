@@ -1,6 +1,7 @@
 # Packages the model-secici skill into a zip you can upload to claude.ai.
 # Uses the same skill/SKILL.md + skill/reference.md as Claude Code -- not a
 # hand-synced second copy.
+# Run this at release time: dist/ is git-ignored and the zip is never committed.
 
 $ErrorActionPreference = 'Stop'
 

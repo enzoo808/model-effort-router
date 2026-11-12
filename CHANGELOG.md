@@ -1,6 +1,15 @@
 # Changelog
 
-Routing-policy iterations 21 to 25 (the OpenCode Go era), newest first. Earlier iterations, including the Codex arm, are in [`evals/README.md`](evals/README.md), [`evals/history.tr.md`](evals/history.tr.md) and [`docs/README.legacy.tr.md`](docs/README.legacy.tr.md). The router version is the `routing-policy-version` comment in [`skill/SKILL.md`](skill/SKILL.md); the reasoning behind each rule change is in [`evals/README.md`](evals/README.md).
+Routing-policy iterations (the OpenCode Go era and the Codex era), newest first. Earlier iterations are in [`evals/README.md`](evals/README.md) and git history. The router version is the `routing-policy-version` comment in [`skill/SKILL.md`](skill/SKILL.md); the reasoning behind each rule change is in [`evals/README.md`](evals/README.md).
+
+---
+
+## Cleanup (12 Nov 2026): remove dead weight
+
+- **Old eval results removed.** Only `iteration-29` and `iteration-29-rerun` stay under `evals/routing/results/`; the older folders (177 files) remain in git history. No routing behaviour changed.
+- **Retired notes.** `evals/findings-iteration-27.tr.md` removed; the legacy Turkish README's id table moved into `evals/README.md` (and `evals.json`'s `source_of_truth` repointed); the Turkish history was folded into this file; `evals/history.tr.md` removed.
+- **Release artifact untracked.** `dist/model-secici.zip` is no longer committed (kept locally); `dist/` is git-ignored and the zip is built only at release time.
+- **Kept.** The claude.ai install path (`claude-ai/`, `build-claude-ai-zip.ps1`) and the social-preview HTML/PNG stay in place.
 
 ---
 
@@ -66,7 +75,7 @@ Claude Code v2.1.284 turned Ultracode into its own switch: it **no longer forces
 - **The level follows difficulty** (Rule UC1): `Effort ← D`, floor `high` (a 30-minute unattended run is where Sonnet 5.5 at `low`/`medium` stops to check in), ceiling `xhigh`. `max` and `ultracode` are still never paired.
 - **It is session-wide and quota-heavy.** Every substantive task becomes a workflow, so limits drain faster. An auto-added `Ultracode:` line (Step 7 rule 12) says to start the prompt with `ultracode:` to run *only this task* as a workflow, instead of leaving the toggle on.
 
-Unchanged: the trigger (over 30 minutes and `O = high` or `W = 3 ∧ D ≥ 2`, not one indivisible chain), MECH1 (OpenCode has no equivalent), and no `ultracode` on Haiku 5.5 (now a routing choice — Haiku 5.5 does list `xhigh`). Checked: policy sync, example check, benchmark validator, grader self-test (36/36), and a **fresh-agent run of all 36 prompts: 34/36** (`results/iteration-25/`). `c1` (the old `ultracode` row) missed once on the badge and passed 3/3 on re-run; `r1` (scanned receipts, unrelated to `ultracode`) splits 2/4 across runs and is left open. Two prompts were added: `c2` (D=3 × 180 services → `xhigh · ultracode`) and `c3` (five-phase migration → `high · ultracode`).
+Unchanged: the trigger (over 30 minutes and `O = high` or `W = 3 ∧ D ≥ 2`, not one indivisible chain), MECH1 (OpenCode has no equivalent), and no `ultracode` on Haiku 5.5 (now a routing choice — Haiku 5.5 does list `xhigh`). Checked: policy sync, example check, benchmark validator, grader self-test (36/36), and a **fresh-agent run of all 36 prompts: 34/36** (iteration-25 run). `c1` (the old `ultracode` row) missed once on the badge and passed 3/3 on re-run; `r1` (scanned receipts, unrelated to `ultracode`) splits 2/4 across runs and is left open. Two prompts were added: `c2` (D=3 × 180 services → `xhigh · ultracode`) and `c3` (five-phase migration → `high · ultracode`).
 
 ---
 
@@ -89,7 +98,7 @@ Two requests: try the *free* OpenCode models where they fit, and use Gemini wher
 - **Effort (21 Oct):** `D ≥ 2 → max` (was `D = 2 → high`) on DeepSeek V4.1 Flash, GLM-5.3-Flash and MiniMax M3.1 Flash Free — AA measured DeepSeek only at `max`, `high` had only a vendor curve, and `max` costs about 0.3% of the cap per task.
 - **Also:** DeepSeek V4.1 Flash's Go cap rose to USD 80; Go's *Contributor* route for Argon (inside the USD 10 plan) trains on prompts, so it is offered only for work you call non-confidential.
 - **Checks:** `grade_routing.py --selftest` 34/34 (30 → 34 evals: d1, g1, j1, t1, v1, z1, p1, n1, r1 moved; `w1`–`w4` new); policy sync (42 blocks), pool check (mutation-tested), examples — all green.
-  **26 Oct Go-only revision, re-run by fresh agents: the 10 affected evals pass after two fixes (`p1`: A1-OC now says any Claude cell in the badge table moves the badge; `g1`: prompt sharpened to one indivisible decision, golden `#2` corrected).** Earlier cold run (6 fresh Sonnet agents, `evals/routing/results/iteration-24/`): 33/33 routed evals pass** — two corrections first: `w2` exposed a real ambiguity (NC1 said Muse Spark "may" take `#2` on deep-reasoning/science; now it takes `#2` on `research-synthesis` only) and `r1` was an ambiguous prompt (sharpened, rule unchanged). `i1` (exploit PoC) was declined by its agent as a routing-only task and not re-run; that gate is untouched. Not done: the trigger eval. `SKILL.md` 54.7 → 60.0 KB after trimming.
+  **26 Oct Go-only revision, re-run by fresh agents: the 10 affected evals pass after two fixes (`p1`: A1-OC now says any Claude cell in the badge table moves the badge; `g1`: prompt sharpened to one indivisible decision, golden `#2` corrected).** Earlier cold run (6 fresh Sonnet agents, the iteration-24 run): 33/33 routed evals pass** — two corrections first: `w2` exposed a real ambiguity (NC1 said Muse Spark "may" take `#2` on deep-reasoning/science; now it takes `#2` on `research-synthesis` only) and `r1` was an ambiguous prompt (sharpened, rule unchanged). `i1` (exploit PoC) was declined by its agent as a routing-only task and not re-run; that gate is untouched. Not done: the trigger eval. `SKILL.md` 54.7 → 60.0 KB after trimming.
 
 ## iteration-23 (14 Oct 2026): budget-first OpenCode, OpenCode by default
 
@@ -236,3 +245,13 @@ for every `D ≤ 1` task, `D = 2` coding and reasoning, latency, and the *contes
 ---
 
 The Codex-era policy (iteration-20 and earlier) is the git tag `iteration-20-codex`; the frozen files that used to sit under `archive/` last exist at commit `7c24c81`.
+
+---
+
+## Earlier history (iterations 1–20)
+
+- **iteration-1:** 13/16. Fixed three ambiguities: the frontier gate's "three conditions AND", a missing execution verb in the `opusplan` flagship example, and "architecture decision" blurring R=2/R=3.
+- **iteration-2:** an internal-consistency audit found four contradictions and fixed them: the R rubric vs its own single-line config example, two meanings of "a gate overrides scoring", the output-format exception list (now exactly two), and an untested 200k-context gate. Re-run: 21/21 automatic + 1 observational.
+- **iteration-5:** "always both outputs" replaced the separate ecosystem-selection step; 10/10. This is why every route now prints a Claude line and an OpenCode line.
+- **iteration-6:** two root causes for Luna/Terra-low almost never firing — the D=1/D=2 boundary and the missing D=0 anchor for non-code work — plus an R-rubric mis-tag that sent ordinary code changes to R=2; `r1`, `r2`, `s1`, `s3` were added.
+- **iteration-20:** the Codex arm was re-derived around GPT-6.1 Sol (Luna / Sol / Astra); cold run 38/38.

@@ -1,4 +1,0 @@
-Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
-OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: high
-Evidence: Knowledge-work at D=2: two Elo rows clear their intervals (GDPval-AA 1838 vs 1692, Briefcase 1816 vs 1512), so the comparative memo stays on Claude.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).

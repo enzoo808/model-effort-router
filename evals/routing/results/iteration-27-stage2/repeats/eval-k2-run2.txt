@@ -1,3 +1,0 @@
-Claude: ✅ RECOMMENDED AI · Mythos 5.2 · effort: xhigh
-OpenCode: use Claude — biology-adjacent R&D is unverified on the pool; no OpenCode model is named.
-Evidence: Life Sciences Verification Program access puts Mythos 5.2 on the biology gate; the pool has no verified biology evidence, so the other arm declines.

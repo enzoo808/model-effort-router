@@ -1,6 +1,0 @@
-Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 DeepSeek V4.1 Flash · effort: high
-Evidence: No Claude direction on the workflow rows (AutomationBench 72/70 vs DeepSeek 69 is a tie, ITBench favours the open models); Argon's 77.5 leads, so OpenCode takes it — low-confidence.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
-Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.
-Do not apply without human review.

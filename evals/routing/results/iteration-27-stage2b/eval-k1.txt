@@ -1,5 +1,0 @@
-Claude: ✅ RECOMMENDED AI · Fable 5.2 · effort: high
-OpenCode: use Claude — biology-adjacent R&D is a deciding gate on the OpenCode arm and no pool model is verified.
-Evidence: Genomics pipeline design is a biology-adjacent gate on both arms: Fable 5.2 at high carries it, OpenCode has no verified model.
-Fable 5.2: its biology classifiers may block research tasks — on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused.
-⚡ Claude /fast available (2.5x faster, 2× price).

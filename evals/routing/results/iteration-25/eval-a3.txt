@@ -1,4 +1,0 @@
-Claude: Sonnet 5.5 · effort: medium
-OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
-Evidence: D=1 draft from the user's notes, so OpenCode clears the bar: Flash tier at USD 0.25–0.27 per task on USD 60–80 caps; Claude's knowledge-work lead only starts at D=2.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).

@@ -20,5 +20,6 @@ venv/
 .claude/
 CLAUDE.local.md
 
-# Build staging (the committed dist/model-secici.zip is intentional)
+# Release build output (the zip is generated at release time, never committed)
+dist/
 *.tmp

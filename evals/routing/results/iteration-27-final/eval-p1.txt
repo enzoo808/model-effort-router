@@ -1,5 +1,0 @@
-Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
-OpenCode: #1 DeepSeek V4.1 Flash · effort: high · #2 Gemini 4 Argon · effort: high
-Evidence: The first OpenCode run fell short so the badge moves to Claude (A1-OC); Argon #2 costs about 3% of its USD 30 cap per task at half price.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
-Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.

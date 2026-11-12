@@ -1,4 +1,0 @@
-Claude: Sonnet 5.5 · effort: medium
-OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
-Evidence: D=1 bulk relabel: the Haiku shortfall escalates only the Claude arm, while the Flash tier still clears the bar on USD 60–100 caps (USD 0.14 per task, Arena 10 Nov).
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).

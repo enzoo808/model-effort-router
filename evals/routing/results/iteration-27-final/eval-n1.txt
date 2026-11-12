@@ -1,3 +1,0 @@
-Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max
-Evidence: Claude's HLE/CritPt lead bites only at D=3; this D=2 theory audit is mid-depth, so the budget pair wins on price (USD 0.13–0.25 per task).

@@ -1,4 +1,0 @@
-Claude: ✅ RECOMMENDED AI · Fable 5.2 · effort: high
-OpenCode: use Claude — unverified
-Evidence: Genomics is a deciding gate (Fable 5.2 on the Claude arm) and no Go pool model has independent genomics evidence, so the OpenCode arm is unverified.
-⚡ Claude /fast available (2.5x faster, 2× price).

@@ -1,4 +1,0 @@
-Claude: Haiku 5.5 · effort: medium
-OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
-Evidence: D=1 summary of text you provide — both clear the bar, so price and cap decide: Flash models on USD 100 and 60 caps at USD 0.14 and 0.16 per real agent task (Arena, 10 Nov).
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).

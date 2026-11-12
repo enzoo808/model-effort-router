@@ -1,5 +1,0 @@
-Claude: Haiku 5.5 · effort: low
-OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GPT 6 Luna · effort: low
-Evidence: Bulk labelling is D≤1 work, so OpenCode runs it: DeepSeek V4.1 Flash at USD 0.27 per task on an USD 80 cap, Luna (147 tok/s) as #2 since the work is non-confidential.
-Data: GPT 6 Luna keeps prompts for 30 days.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 31 Oct 2026).

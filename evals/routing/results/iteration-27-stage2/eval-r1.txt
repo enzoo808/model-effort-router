@@ -1,4 +1,0 @@
-Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: high
-Evidence: Multimodal extraction is doc-data-understanding: GDP.pdf has Opus/Sonnet 26 against MiMo-V2.6-Pro 19 on one row only; low-confidence.
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).

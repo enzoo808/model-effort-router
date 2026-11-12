@@ -1,1 +1,0 @@
-Clarify: how is "inactive" defined — an `is_active` flag or no login for N days (which N) — and hard DELETE or soft-delete?
