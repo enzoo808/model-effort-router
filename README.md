@@ -9,8 +9,8 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-install)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-install)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-install)
-[![Policy](https://img.shields.io/badge/policy-iteration--29-8b949e?style=flat-square)](CHANGELOG.md)
-[![Regression evals](https://img.shields.io/badge/regression_evals-39-8b949e?style=flat-square)](#-validation)
+[![Policy](https://img.shields.io/badge/policy-iteration--30-8b949e?style=flat-square)](CHANGELOG.md)
+[![Regression evals](https://img.shields.io/badge/regression_evals-41-8b949e?style=flat-square)](#-validation)
 
 **[Quick start](#-quick-start)** · **[Install](#-install)** · **[Read the answer](#-reading-the-answer)** · **[How it works](#-how-it-decides)** · **[Examples](#-examples)** · **[Evidence](#-built-on-evidence-not-vibes)** · **[Changelog](CHANGELOG.md)** · **[🇹🇷 Türkçe](README.tr.md)**
 
@@ -104,7 +104,7 @@ Models that log or train on prompts are out unless *you* say the work is non-con
 <td valign="top">
 
 ### ✅ Verifiable
-39 deterministic regression prompts, a regex grader and consistency checks that run in CI — see [Validation](#-validation).
+41 deterministic regression prompts, a regex grader and consistency checks that run in CI — see [Validation](#-validation).
 
 </td>
 </tr>
@@ -272,7 +272,7 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 | *Extra lines* | Added only when they matter: a human-review note at high risk, DeepSeek's peak-hours pricing, `/fast` availability, an `Ultracode:` hint, data-policy warnings. |
 | `Clarify:` | Instead of everything above, when the prompt is too ambiguous to route. |
 
-> **If the Claude line ends in `· ultracode`**, the router adds an `Ultracode:` line. Start the prompt you then run in Claude Code with `ultracode:` to run *only that task* as a workflow; `/effort ultracode` would keep it on for the whole session and spend your limits faster.
+> **If the Claude line ends in `· ultracode`**, the router adds an `Ultracode:` line. Start the prompt you then run in Claude Code with `ultracode:` to run *only that task* as a workflow; `/effort ultracode` would keep it on for the whole session and spend your limits faster. The flag appears only on jobs over 30 minutes where 100+ units each need judgement, or where three workloads feed each other (a build, a data backfill, a check against the deployed result) — running CI and updating the README or CHANGELOG after a change does not count.
 
 ### Writing a good prompt
 
@@ -332,7 +332,7 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 |---|---|---|---|
 | Label 200 reviews positive/negative | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` bulk work; Flash tier on USD 60 caps keeps Claude's quota |
 | Refactor the payment module across 40 files | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **OpenCode** — `D=2`; Claude's lead only counts from `D=3`, USD 0.17 vs 3.38 per task |
-| Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · high · ultracode` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — multi-phase; `ultracode` has no OpenCode equivalent |
+| Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · high · ultracode` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — build, seed and a smoke run on the deployed env feed each other; OpenCode has no workflow runtime |
 | Find the race condition that flakes in prod | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, two agreeing AA rows |
 | Design the irreversible transaction boundary | `Opus 5.5 · max` + review note | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, `R=3` |
 | Redesign auth for 200 services from scratch | `opusplan · plan: max · execute: medium` | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude** — `opusplan` mechanism |
@@ -410,7 +410,7 @@ Raw numbers live in [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.m
 
 ## ✅ Validation
 
-`evals/routing/evals.json` is a deterministic regression set — **39 prompts** — graded by a pure-regex grader (no LLM in the loop). It checks the Claude model and effort, **both OpenCode picks** (model, effort, order), which side holds the badge, a non-trivial `Evidence:` line, and required / forbidden text for the confidentiality default.
+`evals/routing/evals.json` is a deterministic regression set — **41 prompts** — graded by a pure-regex grader (no LLM in the loop). It checks the Claude model and effort, **both OpenCode picks** (model, effort, order), which side holds the badge, a non-trivial `Evidence:` line, and required / forbidden text for the confidentiality default.
 
 ```bash
 python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # goldens vs grader
@@ -422,7 +422,7 @@ python scripts/check_readme_facts.py     # counts, pool size, iteration and tier
 
 These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
 
-**Where it stands (12 Nov 2026, iteration-29):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **39/39**. A cold run of the **18 prompts whose OpenCode line carries DeepSeek** (one fresh agent per prompt, reading only `skill/SKILL.md`) scored **17/18**; the one miss (`w4`, an omitted Zen twin) passed **3/3** on re-run. `i1` was skipped and the trigger eval is still a proxy. Details in [`evals/README.md`](evals/README.md).
+**Where it stands (13 Nov 2026, iteration-30):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **41/41**. A cold run of the four prompts this change touches (`c1`, `c3`, `o2`, `o3`; fresh agents reading only `skill/SKILL.md`) scored **4/4**, and on a 30-prompt calibration set `ultracode` went from 4 to 2 and the Claude badge from 11 to 7 ([record](evals/routing/results/iteration-30/calibration.md)). `i1` was skipped and the trigger eval is still a proxy. Details in [`evals/README.md`](evals/README.md).
 
 ### Known limits, stated plainly
 
