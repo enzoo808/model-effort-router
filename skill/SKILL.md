@@ -11,7 +11,7 @@ description: >-
 
 # Claude & OpenCode model / effort router
 
-<!-- routing-policy-version: iteration-29 -->
+<!-- routing-policy-version: iteration-30 -->
 
 Route the user's prompt — **do not run it**. Say which model + effort to use on
 **Claude** and on **OpenCode** (**two** models, `#1` / `#2`, each with its own
@@ -274,7 +274,7 @@ decision (Rule B1).
 >
 > `orchestration` is a tag only when **O1** fires — the *width* limb of UC1
 > (`W=3 ∧ D≥2`) is execution breadth, not phase sequencing, and does not make it
-> dominant. It names something only the Claude arm's product has.
+> dominant.
 >
 > **AA anchors after Index v5 (27 Oct 2026).** Every figure below is AA Index v4.3.2 or a single
 > benchmark row and stays frozen; a row is compared only with rows of the same benchmark version.
@@ -453,35 +453,39 @@ quota.
 #### Claude arm modifiers
 
 <!-- rule:O1 -->
-**O1 · orchestration load.** `O = high` when the session must run three or more distinct phases, where a phase is a stretch of work that produces a different kind of deliverable and whose output is consumed by a later phase. The phases that count are research, implementation, independent verification, packaging, data or schema migration, documentation, and triage. The whole edit-run-repair implementation loop is one phase, and tests you write for your own change are inside it.
+**O1 · orchestration load.** `O = high` when the session must run three or more distinct phases, where a phase is a stretch of work that produces a different kind of deliverable and whose output is consumed by a later phase. The phases that count are research, implementation, independent verification, packaging, data or schema migration, documentation that a later phase works from, and triage. The whole edit-run-repair implementation loop is one phase: tests you write for your own change, the repo's own checks run on it (build, lint, CI, an e2e or eval suite, fresh-agent eval runs included) and the docs, README, changelog or mirrored copies that describe it are all inside it.
 <!-- /rule:O1 -->
 
-> **What each phase means.**
-> **Research** — establish how something behaves, or choose between approaches,
-> *before* the shape of the work is known. Finding which files to edit is not
-> research. **Implementation** — edit source, run its tests, repair what they
-> catch, repeat. **Independent verification** — a gate the implementation loop
-> does not already run: a build/lint/CI gate, a golden-image or traffic replay,
-> a smoke run against a deployed environment. **Packaging** — build an image,
-> publish, ship a preview. **Migration** — backfill, seed, migrate data or
-> schema. **Documentation** — runbook, docs, release notes. **Triage** — turn a
-> run's output into a filed finding that is itself a deliverable.
+> **What each phase means.** **Research** — establish how something behaves, or
+> choose between approaches, *before* the shape of the work is known; finding which
+> files to edit is not research. **Implementation** — edit, run the tests and the
+> repo's checks, repair, repeat, then write the change up. **Independent
+> verification** — a check against something other than the artefact just edited: a
+> golden-image or traffic replay, a smoke run against a deployed environment,
+> checksums on migrated data. **Packaging** — build an image, publish, ship a
+> preview. **Migration** — backfill, seed, migrate data or schema.
+> **Documentation** — only when a later phase works from it (a runbook the cutover
+> then follows). **Triage** — a run's output turned into a filed finding.
 >
 > **Two phases is a job with steps in it.** `locate → edit → test → fix` is
-> **one** phase however many files it touches and however long it takes.
-> "Refactor 40 files onto the new API and make the suite pass" is one phase.
+> **one** phase however many files it touches and however long it takes; so is
+> "port 25 files, run the CI checks, update the README and the CHANGELOG".
 > "Work out how the current back-pressure behaves, port it, migrate the
 > checkpoint store, replay last week's traffic against it, update the runbook"
-> is five.
+> is four. Why: ultracode already splits every task into "one to understand the
+> code, one to make the change, and one to verify it" (code.claude.com/docs/en/workflows,
+> read 13 Nov 2026), so a check or a write-up after a change marks no task.
 
 <!-- rule:UC1 -->
 **UC1 · `ultracode`.** Emit `ultracode` when the estimated duration is over 30 minutes and either `O = high` or (`W = 3` and `D >= 2`) and the difficulty is not one indivisible chain. Write it as a flag after the effort, `effort: <level> · ultracode`, where the level is the Effort ← D rung with a floor of `high` and a ceiling of `xhigh`. Never on Haiku 5.5.
 <!-- /rule:UC1 -->
 
-> `ultracode` buys **workflow orchestration**, so it keys on distinct phases
-> (O1), not on file count. The width limb is the separate case where 100+ units
-> *each need judgement* — a 180-service auth-bypass audit. At `D ≤ 1` width buys
-> nothing: 150 files of one rename is `medium`.
+> `ultracode` buys **workflow orchestration**. Anthropic's page says a workflow "fits
+> best when the task is larger than one agent can hold in context, or when the same
+> step needs to run across many items" — the width limb: 100+ units that *each need
+> judgement* (a 180-service auth-bypass audit). The O limb is the router's own call
+> for workloads that feed each other, kept narrow by O1; no measurement backs it.
+> At `D ≤ 1` width buys nothing: 150 files of one rename is `medium`.
 >
 > Since v2.1.284 `ultracode` no longer forces `xhigh`, so the level is chosen by D
 > as usual; `high` is the floor because a 30-minute unattended run is where Sonnet 5.5
@@ -650,13 +654,13 @@ gets the badge, stop; (2) MECH1; (3) applicable capability (B1) and its evidence
 credible vendor evidence) read through BD1 and SM1; (4) everything SM1 leaves over is
 OpenCode, and the Evidence line says what Claude would add and why it is below the bar.
 
-The depth split is the evidence's own: Claude's lead lives on the `D = 3` anchors (TB 4.0, FrontierSWE v2, HLE) while DeepSWE v1.1 (±7) ties at mid-difficulty; finished deliverables are the other wide gap, so `knowledge-work` stays Claude from `D = 2`.
+The depth split is the evidence's own: Claude's lead lives on the `D = 3` anchors (TB 4.0, FrontierCode-AA 2.0, HLE) while DeepSWE v1.1 (±7) ties at mid-difficulty; finished deliverables are the other wide gap, so `knowledge-work` stays Claude from `D = 2`.
 
 ### Badge table
 
 | Dominant capability | `D = 2`, `R ≤ 2` | `D = 3`, `R ≤ 2` | `D ≥ 2`, `R = 3` | Evidence to name |
 |---|---|---|---|---|
-| `agentic-code`, `terminal-tool` | **OpenCode** | **Claude** | **Claude** | `D = 2`: SM1 sends it to OpenCode — Claude's lead is real on every same-revision row (Vals TB 4.0 65 / 64 vs DeepSeek 1017 32 and MiMo-V2.6-Pro 31; Arena Agent 19.5 / 16.1 vs 2.07 / 2.30; AA TB 4.0 64 / 60 vs 34 / 35) but sits at a depth the task does not reach, and a real agent task costs USD 0.14–0.17 against 3.38–5.38 (Arena, 10 Nov); the one tie, DeepSWE ±7 (benchlm mirror), is GLM-5.3 72.0 vs Opus 72.3 / Sonnet 70.5. `D = 3` / `R = 3`: three independent rows agree — AA TB 4.0 64 / 60 vs 35, FrontierSWE v2 62 vs 18, Vals TB 4.0 65 / 64 vs 32 / 31; against Argon (GM1) Claude still leads: TB 64 / 60 vs 57, FrontierSWE 62 vs 55, Google's own table 66 vs 57 |
+| `agentic-code`, `terminal-tool` | **OpenCode** | **Claude** | **Claude** | `D = 2`: SM1 sends it to OpenCode — Claude's lead is real on every same-revision row (Vals TB 4.0 65 / 64 vs DeepSeek 1017 32 and MiMo-V2.6-Pro 31; Arena Agent 19.5 / 16.1 vs 2.07 / 2.30; AA TB 4.0 64 / 60 vs 34 / 35) but sits at a depth the task does not reach, and a real agent task costs USD 0.14–0.17 against 3.38–5.38 (Arena, 10 Nov); the one tie, DeepSWE ±7 (benchlm mirror), is GLM-5.3 72.0 vs Opus 72.3 / Sonnet 70.5. `D = 3` / `R = 3`: two independent rows agree — AA TB 4.0 64 / 60 vs 35, Vals TB 4.0 65 / 64 vs 32 / 31; against Argon (GM1), at the rung the line runs (Opus 5.5 `xhigh` vs Argon `high`, AA, 13 Nov 2026): TB 4.0 59.6 vs 57.1, FrontierCode-AA 2.0 43.8 vs 25.7; Google's own table 66 vs 57. FrontierSWE v2 62 is the figure of Anthropic's own launch table — vendor, not counted |
 | `deep-reasoning` | **OpenCode** | **Claude** | **Claude** | HLE 61 / 55 vs MiMo-V2.6-Pro 49; CritPt 32 / 31 vs 27; ARC-AGI-2 92 vs 61 — three rows agree, and they bite at `D = 3`; against Argon (GM1) Claude still leads HLE and CritPt (61 / 32 vs 57 / 27) |
 | `knowledge-work` | **Claude** | **Claude** | **Claude** | GDPval-AA 1866 (±26) / 1838 (±23) vs DeepSeek 1017 1746 (±21) and MiMo-V2.6-Pro 1692 (±20); Briefcase 1801 (-10/+10) / 1816 (-10/+12) vs DeepSeek 1017 1570 (±10) and MiMo-V2.6-Pro 1512 (-9/+9) — both Elo gaps clear the 95% intervals against the best budget model (rows read 10–11 Nov 2026); AnalystAgent 56 / 58 vs 39 — three AA rows agree (Harvey LAB is a tie) |
 | `workflow-automation` | **OpenCode** † | **OpenCode** † | **OpenCode** † | AutomationBench-AA Sonnet 72 / Opus 70 vs DeepSeek 1017 67 carries no interval (UNRESOLVED) and ITBench has the open models ahead — no Claude direction; Argon (GM1) is 77.5 |
@@ -665,7 +669,7 @@ The depth split is the evidence's own: Claude's lead lives on the `D = 3` anchor
 | `research-synthesis` | **OpenCode** † | **OpenCode** † | **OpenCode** † | AA-Omniscience v1 Sonnet 32 / Opus 46 vs MiMo-V2.6-Pro 8 — one row. Argon is `#1` at `R = 3` (GM1) and beats the Claude pick on both measures — index 42 vs 32, hallucination 15% vs 47% (same v1 dataset) — so the `R = 3` cell reads **OpenCode** † |
 | `doc-data-understanding` | **OpenCode** † | **OpenCode** † | **Claude** † | GDP.pdf Opus / Sonnet 26 vs MiMo-V2.6-Pro 19 — one row |
 | `latency-volume` (first-token bound) | **OpenCode** | **OpenCode** | **OpenCode** | DeepSeek V4.1 Flash 142 tok/s on the served 1017 revision (222 tok/s, TTFT 1.1 s on the earlier one; AA's 49.4 s to the first answer token counts reasoning, so it is not the same measure); Haiku 5.5 has no measured first-token figure at `low` — facts, not a score |
-| `orchestration`, or a task routed to `opusplan` | **Claude** | **Claude** | **Claude** | `ultracode` sequences phases, `opusplan` spends the flagship on the plan; OpenCode has neither |
+| `orchestration`, or a task routed to `opusplan` | **Claude** | **Claude** | **Claude** | Product facts, unmeasured: `ultracode` runs a scripted many-agent workflow, `opusplan` switches model between plan and execute; OpenCode has subagents and per-agent models, no workflow runtime (opencode.ai/docs/agents, 13 Nov 2026) |
 | anything else | **OpenCode** † | **OpenCode** † | **OpenCode** † | no row → the cheaper arm; say `low-confidence` |
 
 **† → Evidence must say `low-confidence`** (binds that row; so does "anything else").

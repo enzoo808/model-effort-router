@@ -150,8 +150,8 @@
       "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "O1 three phases -> UC1 ultracode as a flag after the effort (v2.1.284: ultracode no longer forces xhigh; D=2 -> high); MECH1 beats SM1's OpenCode default; Step 7 rule 12 adds the Ultracode line; budget coding pair with DeepSeek max at D>=2 (E7)",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high · ultracode\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max\nEvidence: Implementation, a data-seeding phase and a smoke run against a deployed environment are three distinct phases feeding each other, which is what ultracode's orchestration sequences and OpenCode has no mode for.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).\nUltracode: start the prompt with \"ultracode:\" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.",
+      "tests_rule": "O1 three phases -> UC1 ultracode as a flag after the effort (v2.1.284: ultracode no longer forces xhigh; D=2 -> high); MECH1 beats SM1's OpenCode default; Step 7 rule 12 adds the Ultracode line; budget coding pair with DeepSeek max at D>=2 (E7) | iteration-30 (O1 narrowed): still three phases - implementation (Terraform, deploy, fix), data seeding (migration) and the smoke suite against the deployed environment (independent verification: a check against something other than the code just edited) - so this is the O-limb guard that must keep ultracode and the MECH1 badge.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high · ultracode\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max\nEvidence: Implementation, a data-seeding phase and a smoke run against a deployed environment are three distinct phases feeding each other, which ultracode runs as a workflow and OpenCode has no workflow runtime for.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).\nUltracode: start the prompt with \"ultracode:\" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.",
       "expected_notes": [
         "peak hours cost 2×",
         "start the prompt with \"ultracode:\""
@@ -183,15 +183,15 @@
     },
     {
       "id": "c3",
-      "eval_name": "Five-phase crypto-library migration before a deadline (O=high, R=3)",
+      "eval_name": "150-service crypto-library migration before a deadline (W=3 x D=2 keeps ultracode, R=3 keeps the Claude badge)",
       "prompt": "Move 150 production services off the old crypto library before tonight's certificate rotation — after the rotation the old CA is destroyed, so there is no rollback: a wrong cutover order or key handover breaks the payment signatures these services co-sign with a shared key. The replacement is a drop-in library with a documented rolling-cutover recipe; the work is multi-step migration with one bounded design decision (the cutover order and the key handover), not new architecture. For each service: migrate it, replay yesterday's staging traffic against it, then update the runbook.",
       "expected_claude": "Sonnet 5.5 · effort: high · ultracode",
       "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
       "expected_shared_note": "Do not apply without human review.",
-      "tests_rule": "iteration-25 UC1: research -> migration -> traffic replay -> runbook = O=high, so ultracode at the Effort<-D rung (D=2 -> high), not forced xhigh; MECH1 gives Claude the badge; R=3 review note last. Prompt sharpened in iteration-27 Stage 2 (D4) after cold agents split on D/R: the replacement is stated as a settled drop-in recipe with one bounded design decision (D=2, not new architecture) and the rotation destroys the CA behind live payment signatures (R=3). Golden unchanged.",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high · ultracode\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Research, migration, traffic replay and runbook make five phases (O=high) over 30 minutes, so ultracode's workflow decides the badge for Claude; OpenCode has no equivalent.\nGemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.\nUltracode: start the prompt with \"ultracode:\" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.\nDo not apply without human review.",
+      "tests_rule": "iteration-30: under the narrowed O1 the per-service runbook update is inside the implementation phase, so O=high is no longer needed here - 150 services that each need a cutover judgement are W=3 at D=2 over 30 minutes (UC1 width limb, the fit Anthropic's workflows page names: the same step across many items), ultracode at the Effort<-D rung (high); the badge is Claude by the R=3 agentic-code cell (MECH1 also applies if an agent counts the key handover as a migration phase - same output). R=3 review note last. Prompt sharpened in iteration-27 Stage 2 (D4): settled drop-in recipe with one bounded design decision (D=2) and the rotation destroys the CA behind live payment signatures (R=3). Golden lines unchanged; the R=3 cell itself is an open judgement call (CHANGELOG iteration-30: at the emitted rung Sonnet 5.5 high trails Argon high on AA TB 4.0).",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high · ultracode\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: 150 services that each need their own cutover judgement are W=3 at D=2 over 30 minutes, so ultracode applies, and at R=3 the agentic-code row leans to Claude.\nGemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.\nUltracode: start the prompt with \"ultracode:\" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.\nDo not apply without human review.",
       "expected_notes": [
         "opencode-go/gemini-4-argon",
         "start the prompt with \"ultracode:\""
@@ -200,6 +200,42 @@
         "effort: ultracode"
       ],
       "allow_gemini": true
+    },
+    {
+      "id": "o2",
+      "eval_name": "One implementation loop with CI and docs at the end (O1 does not count them): no ultracode, OpenCode badge",
+      "prompt": "Port the reporting module's 25 files from moment.js to date-fns — where the two libraries parse or round dates differently, keep the behaviour our existing tests expect — then run the CI checks, update the README's dependency section and add a CHANGELOG entry. It will take most of the afternoon.",
+      "expected_claude": "Sonnet 5.5 · effort: high",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max",
+      "expected_recommended": "opencode",
+      "expected_low_confidence": false,
+      "tests_rule": "iteration-30 O1: the CI run on the change and the README / CHANGELOG write-up are inside the one implementation phase (code.claude.com/docs/en/workflows, read 2026-11-13: ultracode splits every task into understand / change / verify), so O=low; W=2 (25 files) so the width limb does not fire either -> no ultracode even though the job runs over 30 minutes; agentic-code at D=2 (behaviour choices where the libraries differ) -> SM1 OpenCode, no dagger; budget coding pair, DeepSeek max at D>=2 (E7); DeepSeek auto-line. Before iteration-30 cold agents counted CI as independent verification and the docs as documentation (3 phases) and gave Sonnet 5.5 high ultracode with the Claude badge (calibration cal27).",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max\nEvidence: The port, its CI run and the README / CHANGELOG write-up are one implementation phase (O1), so no ultracode; mid-difficulty feature work stays on OpenCode (SM1) at USD 0.17 per real agent task (MiMo-V2.6-Pro) against Sonnet 5.5's 3.38 (Arena, 10 Nov).\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).",
+      "expected_notes": [
+        "peak hours cost 2×"
+      ],
+      "forbidden": [
+        "Ultracode:"
+      ]
+    },
+    {
+      "id": "o3",
+      "eval_name": "Three workloads that feed each other (implementation, backfill, checksum check on migrated data): ultracode and the MECH1 badge stay",
+      "prompt": "Move user uploads from local disk to S3: write the storage adapter, backfill the 200k existing files, switch reads over behind a flag, verify checksums on a sample of the migrated files, and write the cutover runbook. The local files stay in place until we cut over, so every step can be undone.",
+      "expected_claude": "Sonnet 5.5 · effort: high · ultracode",
+      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max",
+      "expected_recommended": "claude",
+      "expected_low_confidence": false,
+      "tests_rule": "iteration-30 guard against over-correcting O1: implementation (adapter, read switch), data migration (the 200k-file backfill) and independent verification against something other than the code just edited (checksums on the migrated files) are three phases that feed each other -> O=high over 30 minutes -> UC1 ultracode at the D=2 rung (high), MECH1 gives Claude the badge; the closing runbook is inside the implementation phase (nothing later works from it); R=2 (reversible: the local copies stay until cutover) keeps the left column, so the budget coding pair, DeepSeek max (E7); DeepSeek and Ultracode auto-lines.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high · ultracode\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max\nEvidence: Implementation, a 200k-file backfill and a checksum check on the migrated data are three phases that feed each other, which ultracode runs as a workflow and OpenCode has no workflow runtime for (MECH1).\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).\nUltracode: start the prompt with \"ultracode:\" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.",
+      "expected_notes": [
+        "peak hours cost 2×",
+        "start the prompt with \"ultracode:\""
+      ],
+      "forbidden": [
+        "effort: ultracode",
+        "Gemini"
+      ]
     },
     {
       "id": "d1",
