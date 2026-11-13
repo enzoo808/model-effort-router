@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
+Evidence: Building a new spin-orbit correction is D=3 science work, and Terminal-Bench-Science 0.1 and CritPt v2 agree: Opus 5.5 xhigh 61.9 / 67.5 vs MiMo-V2.6-Pro 5.7 / 34.0.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
+⚡ Claude /fast available (2.5x faster, 2× price).

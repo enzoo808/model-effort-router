@@ -1,0 +1,5 @@
+Claude: Sonnet 5.5 · effort: xhigh
+OpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Checking a proof is D=3 deep-reasoning review, and the rows split (HLE-Diamond 44.1 vs Argon 56.7, CritPt v2 57.5 vs 52.5), so no Claude direction; low-confidence.
+Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.
+Do not apply without human review.

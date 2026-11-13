@@ -9,8 +9,8 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-kurulum)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-kurulum)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-kurulum)
-[![Policy](https://img.shields.io/badge/politika-iteration--30-8b949e?style=flat-square)](CHANGELOG.md)
-[![Regression evals](https://img.shields.io/badge/regresyon_eval-41-8b949e?style=flat-square)](#-doğrulama)
+[![Policy](https://img.shields.io/badge/politika-iteration--31-8b949e?style=flat-square)](CHANGELOG.md)
+[![Regression evals](https://img.shields.io/badge/regresyon_eval-45-8b949e?style=flat-square)](#-doğrulama)
 
 **[Hızlı başlangıç](#-hızlı-başlangıç)** · **[Kurulum](#-kurulum)** · **[Cevabı oku](#-cevabı-okumak)** · **[Nasıl karar verir](#-nasıl-karar-verir)** · **[Örnekler](#-kullanım-örnekleri)** · **[Kanıt](#-hisle-değil-kanıtla)** · **[Değişiklik günlüğü](CHANGELOG.md)** · **[🇬🇧 English](README.md)**
 
@@ -104,7 +104,7 @@ Bir benchmark yalnızca görevin ihtiyacını ölçüyorsa sayılır ve bir yön
 <td valign="top">
 
 ### ✅ Doğrulanabilir
-41 deterministik regresyon promptu, regex tabanlı bir not verici ve CI'da koşan tutarlılık kontrolleri — bkz. [Doğrulama](#-doğrulama).
+45 deterministik regresyon promptu, regex tabanlı bir not verici ve CI'da koşan tutarlılık kontrolleri — bkz. [Doğrulama](#-doğrulama).
 
 </td>
 </tr>
@@ -333,7 +333,7 @@ Her kapı ve kural dahil adım adım ayrıntı: **[docs/how-it-works.md](docs/ho
 | Görev | Claude | OpenCode `#1` · `#2` | Önerilen |
 |---|---|---|---|
 | 200 yorumu olumlu/olumsuz etiketle | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` toplu iş; USD 60 limitli Flash katmanı Claude kotasını korur |
-| Ödeme modülünü 40 dosyada yeniden düzenle | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **OpenCode** — `D=2`; Claude'un önü `D=3`'ten itibaren sayılır, görev başına USD 0.17 vs 3.38 |
+| Ödeme modülünü 40 dosyada yeniden düzenle | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **OpenCode** — `D=2`; Sonnet 5.5 `high` önde ama AA görevi başına USD 1.64 vs 0.26 |
 | Staging'i sıfırdan kur (Terraform, 12 servis, seed, smoke) | `Sonnet 5.5 · high · ultracode` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — derleme, seed ve dağıtılmış ortamda smoke koşusu birbirini besler; OpenCode'da workflow çalışma zamanı yok |
 | Prod'da ara sıra patlayan race condition'ı bul | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, uyumlu iki AA satırı |
 | Geri döndürülemez işlem sınırını tasarla | `Opus 5.5 · max` + inceleme notu | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, `R=3` |
@@ -392,7 +392,7 @@ Ham sayılar [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.md) ve [
 
 ## ✅ Doğrulama
 
-`evals/routing/evals.json`, saf regex ile (döngüde LLM yok) notlanan deterministik bir regresyon setidir — **41 prompt**. Claude modelini ve eforunu, **her iki OpenCode seçimini** (model, efor, sıra), rozetin hangi tarafta olduğunu, anlamlı bir `Evidence:` satırını ve gizlilik varsayılanı için zorunlu / yasak metni denetler.
+`evals/routing/evals.json`, saf regex ile (döngüde LLM yok) notlanan deterministik bir regresyon setidir — **45 prompt**. Claude modelini ve eforunu, **her iki OpenCode seçimini** (model, efor, sıra), rozetin hangi tarafta olduğunu, anlamlı bir `Evidence:` satırını ve gizlilik varsayılanı için zorunlu / yasak metni denetler.
 
 ```bash
 python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # altın çıktılar vs not verici
@@ -404,7 +404,7 @@ python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, 
 
 Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
 
-**Durum (13 Kasım 2026, iteration-30):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **41/41**. Bu değişikliğin dokunduğu dört promptun (`c1`, `c3`, `o2`, `o3`; yalnızca `skill/SKILL.md` okuyan taze ajanlar) soğuk koşusu **4/4**; 30 promptluk kalibrasyon setinde `ultracode` 4'ten 2'ye, Claude rozeti 11'den 7'ye indi ([kayıt](evals/routing/results/iteration-30/calibration.md)). `i1` atlandı, tetikleme eval'i hâlâ bir vekil. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
+**Durum (13 Kasım 2026, iteration-31):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **45/45**. Rozet tablosu artık her hattın gerçekten koştuğu kademede okunuyor. Değişikliğin dokunduğu dokuz promptun soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze ajanlar) iki prompt netleştirildikten ve bir altın çıktı iki ajanın okumasına göre güncellendikten sonra **9/9**. Iteration-30 kalibrasyon kaydı [burada](evals/routing/results/iteration-30/calibration.md). `i1` atlandı, tetikleme eval'i hâlâ bir vekil. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
 
 ### Bilinen sınırlar
 

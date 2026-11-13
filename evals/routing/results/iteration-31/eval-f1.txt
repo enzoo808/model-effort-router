@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
+Evidence: A finished deck is knowledge-work, where only AA-Briefcase is published at the rung the line runs (Sonnet 5.5 high 1634 vs DeepSeek 1017's 1570) — one measurement, so efficiency decides; low-confidence.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).

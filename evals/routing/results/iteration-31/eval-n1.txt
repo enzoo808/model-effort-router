@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
+Evidence: A domain-correctness audit of well-specified numerics is D=2; Sonnet 5.5 high leads on Terminal-Bench-Science and CritPt v2 (34.3/51.5 vs 5.7/34.0), but SM1 keeps D=2 on OpenCode at USD 0.26 per AA task against 1.64.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).

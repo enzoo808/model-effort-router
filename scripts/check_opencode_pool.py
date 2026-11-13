@@ -11,7 +11,7 @@ Checks (all mechanical, all fail loudly):
      tasks-per-month. (Columns: # | Model | II | TB | USD/task | II v5 | cap | tasks/mo | tier | Notes.)
   2. Every Step 4-OC row (R<=2 pair, R=3 pair, NC1 variants) equals the mirror,
      and no row ever emits a model whose status is `dominated`.
-  3. The badge table (side at D=2, at D=3 and at R=3, dagger) equals the mirror, and no
+  3. The badge table (side and dagger per cell: D=2 / D=3 at R<=2, D=2 / D=3 at R=3) equals the mirror, and no
      Step 4-OC row ever emits a premium model (Rule BUD1).
   4. Every OpenCode line in a worked example names only routable pool models, an
      effort that OpenCode actually offers for that model (policy `opencode_variants`), never `GLM-5.3 · low` / `Kimi K3 · low`, and never a
@@ -238,15 +238,18 @@ def main() -> int:
                                   % (m, rank.index(m) + 1, len(rank), tag, tag))
 
     # 3 -- badge table ------------------------------------------------------------
-    brow = table_after(skill, "| Dominant capability | `D = 2`, `R ≤ 2` | `D = 3`, `R ≤ 2` | `D ≥ 2`, `R = 3` | Evidence to name |", True)
+    # iteration-31: four cell columns (R = 3 split by depth) and a dagger per cell, e.g. "opencode†".
+    brow = table_after(skill, "| Dominant capability | `D = 2`, `R ≤ 2` | `D = 3`, `R ≤ 2` | `D = 2`, `R = 3` | `D = 3`, `R = 3` | Evidence to name |", True)
     wantb = policy["badge_table"]
     seenb = set()
+    cols = ("d2_r_le_2", "d3_r_le_2", "d2_r3", "d3_r3")
 
     def side(cell):
-        return "opencode" if "OpenCode" in cell else "claude" if "Claude" in cell else None
+        s = "opencode" if "OpenCode" in cell else "claude" if "Claude" in cell else None
+        return s + "†" if s and "†" in cell else s
 
     for r in brow:
-        if len(r) < 5:
+        if len(r) < 6:
             continue
         tags = [t for t in re.findall(r"`([a-z-]+)`", r[0]) if t in wantb]
         if "anything else" in r[0]:
@@ -254,13 +257,10 @@ def main() -> int:
         for t in tags:
             seenb.add(t)
             w = wantb[t]
-            got = (side(r[1]), side(r[2]), side(r[3]))
-            want_ = (w["d2_r_le_2"], w["d3_r_le_2"], w["d_ge_2_r3"])
+            got = tuple(side(r[i]) for i in range(1, 5))
+            want_ = tuple(w[c] for c in cols)
             if got != want_:
                 errors.append("badge row %r: SKILL.md %s, policy %s" % (t, got, want_))
-            dag = "†" in r[1] or "†" in r[2] or "†" in r[3]
-            if dag != w["low_confidence"]:
-                errors.append("badge row %r dagger: SKILL.md %s, policy %s" % (t, dag, w["low_confidence"]))
     for t in wantb:
         if t not in seenb:
             errors.append("policy badge row %r is missing from SKILL.md" % t)
