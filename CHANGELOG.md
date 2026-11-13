@@ -4,6 +4,33 @@ Routing-policy iterations (the OpenCode Go era and the Codex era), newest first.
 
 ---
 
+## iteration-31 (13 Nov 2026): the badge table at the rung the router writes
+
+Rows read on 13 Nov 2026: Artificial Analysis same-page comparisons (v5 components for Sonnet 5.5 `medium` / `high` / `xhigh` / `max`, Opus 5.5 `xhigh` / `max`, Gemini 4 Argon `high`, MiMo-V2.6-Pro, DeepSeek V4.1 Flash 1017 `max`, GLM-5.3-Flash), `evaluations/gdpval-aa`, `evaluations/aa-briefcase`, and Vals' Terminal-Bench 4.0 page (updated 11 Nov). Recorded in `skill/opencode-evidence.json` → `iteration_31`.
+
+- **Why.** Most Claude figures in the badge table were AA's default **Max** listings. The router never writes Max for Sonnet 5.5 (E1) and writes it for Opus 5.5 only under M1, so those rows were not comparable with the line they judged (Step 5: effort must match).
+- **Rule.** Every cell is now read at the rung each line runs: Sonnet 5.5 `high` at `D = 2`; `xhigh` at `D = 3` off the flagship list, and for analysis on it; Opus 5.5 `xhigh` when the task builds on a flagship tag (`max` under M1); OpenCode at its written rung. A row published only at another rung is n/p. This applies to AA's default Max listing, Arena Agent (Max) and Vals TB 4.0, which states no rung for Sonnet 5.5 and has Opus 5.5 only at `low` / `high` / `max`.
+- **Anchors.** Rows follow AA v5's own grouping where AA replaced a benchmark: coding = Terminal-Bench 4.0 + FrontierCode-AA 2.0; deep reasoning = HLE-Diamond + CritPt v2; science = Terminal-Bench-Science 0.1 + CritPt v2 (SciCode is under review); research = AA-Omniscience v1.1.
+- **Table.** The `R = 3` column is split by depth, and † now binds a single cell. `check_opencode_pool.py` and the policy mirror compare side and dagger per cell.
+- **Cells that moved:**
+  - **`knowledge-work`** at `R ≤ 2`: Claude → **OpenCode †**. Only AA-Briefcase is published at the line's rung: Sonnet 5.5 `high` 1634 / `xhigh` 1742 vs DeepSeek 1017 1570. GDPval-AA has no `high` row and ties at `xhigh` (1735 ±23 vs 1746 ±21). At `R = 3`: **Claude †** (a single lean).
+  - **`agentic-code` / `terminal-tool`** at `D = 2`, `R = 3`: Claude → **OpenCode †**. Sonnet 5.5 `high` trails Argon on TB 4.0 (43.9 vs 57.1) and ties FrontierCode at 25.7.
+  - **`deep-reasoning`** at `D = 2`, `R = 3`: Claude → **OpenCode**. HLE-Diamond 33.8 vs 56.7 and CritPt v2 51.5 vs 52.5 both favour Argon.
+  - **`science`** gains a direction: Terminal-Bench-Science and CritPt v2 agree, Sonnet 5.5 `high` 34.3 / 51.5 and Opus 5.5 `xhigh` 61.9 / 67.5 vs MiMo-V2.6-Pro 5.7 / 34.0. **SM1's `D = 3` limb now lists `science`** (the only rule-text change); its `D = 2` cell loses the dagger, and its `R = 3` cells lose theirs too.
+  - **New note, `D = 3` analysis on a flagship tag.** When the line stays Sonnet 5.5 `xhigh`, it is read against Argon `high`. Coding has one lean (FrontierCode 35.6 vs 25.7, TB tie at 57.1): OpenCode † at `R ≤ 2`, Claude † at `R = 3`. Deep reasoning splits (44.1 vs 56.7, 57.5 vs 52.5): OpenCode †. Science keeps its direction.
+  - Unchanged sides: `D = 3` building on coding and reasoning stays Claude (Opus 5.5 `xhigh` vs Argon: 59.6 / 57.1, 43.8 / 25.7, 64.0 / 56.7, 67.5 / 52.5). Workflow, long-context, research, doc-data, latency, orchestration and "anything else" keep their sides.
+- **Evals: 45 prompts.**
+  - New: `sc1` (science `D = 3` → Opus 5.5, Claude), `kw1` (knowledge-work `R = 3` → Claude †), `da1` (`D = 3` analysis → Sonnet 5.5 `xhigh`, OpenCode †), `dr1` (`D = 3` analysis at `R = 3` → OpenCode †).
+  - Moved goldens: `e1`, `f1`, `u1` (OpenCode †), `c3` (OpenCode †, keeps `ultracode`), `n1` (no dagger).
+  - Evidence wording only: `b1`, `d1`.
+  - Prompts sharpened after the first cold run, rules unchanged: `u1` (one agent read the short memo as D=1) and `sc1` (the first wording held three real O1 phases and a deep-reasoning cue).
+  - `dr1` was written as a `D = 2`, `R = 3` proof check. Both agents read a proof check as `D = 3` review, so its golden follows that reading. The `D = 2`, `R = 3` deep-reasoning cell has no eval.
+- **Checks.** Self-test 45/45; the five CI commands green; the badge check is mutation-tested. Cold run (`results/iteration-31/`, fresh sonnet agents reading only `SKILL.md`): **9/9** after the sharpening above. SKILL.md is +0.65% against iteration-30.
+- **Calibration.** `cal18` and `cal19` (knowledge-work at D=2) now route to OpenCode †; `cal21` scored D=1 this run. The other 27 prompts were not re-run.
+- **Still open.** The `D = 2` coding badge is unchanged. SM1 keeps it on OpenCode although Sonnet 5.5 `high` leads MiMo-V2.6-Pro on both coding rows (43.9 vs 34.8, 25.7 vs 24.0) at 6× the AA cost per task (USD 1.64 vs 0.26). This corrects iteration-30's "no BD1 direction".
+
+---
+
 ## iteration-30 (13 Nov 2026): a change's own checks and write-up are not phases
 
 Sources read on 13 Nov 2026: `code.claude.com/docs/en/workflows`, `code.claude.com/docs/en/model-config`, `opencode.ai/docs/agents`, and Artificial Analysis same-page comparisons (`claude-sonnet-5-5-vs-gemini-4-argon`, `claude-sonnet-5-5-high-vs-gemini-4-argon`, `claude-opus-5-5-xhigh-vs-gemini-4-argon`, `claude-sonnet-5-5-xhigh-vs-mimo-v2-6-pro`) plus `evaluations/aa-briefcase` and `evaluations/gdpval-aa`.

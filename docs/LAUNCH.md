@@ -63,7 +63,7 @@ buried.
 >
 > It's sourced from the official docs, every uncertain claim is labelled, and
 > there's a deterministic regression eval (cold agents read the rules fresh and
-> route a fixed prompt set; a regex grader checks the output). Currently a 41-prompt set (iteration-30 cold-agent run on the four prompts the change touches: 4/4; `i1` skipped), plus separate no-LLM checks: policy sync, pool/badge-table checks, worked-example checks and README-facts consistency (the old benchmark validator/compiler suite was removed upstream).
+> route a fixed prompt set; a regex grader checks the output). Currently a 45-prompt set (iteration-31 cold-agent run on the nine prompts the change touches: 9/9 after two prompts were sharpened; `i1` skipped), plus separate no-LLM checks: policy sync, pool/badge-table checks, worked-example checks and README-facts consistency (the old benchmark validator/compiler suite was removed upstream).
 >
 > Repo: <link>
 

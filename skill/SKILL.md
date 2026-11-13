@@ -11,7 +11,7 @@ description: >-
 
 # Claude & OpenCode model / effort router
 
-<!-- routing-policy-version: iteration-30 -->
+<!-- routing-policy-version: iteration-31 -->
 
 Route the user's prompt — **do not run it**. Say which model + effort to use on
 **Claude** and on **OpenCode** (**two** models, `#1` / `#2`, each with its own
@@ -250,14 +250,14 @@ decision (Rule B1).
 
 | Capability tag | Prompt signals | Evidence anchor |
 |---|---|---|
-| **agentic-code** | multi-file implementation, refactor, migration, feature build, debug-and-fix across files | AA Terminal-Bench 4.0 · DeepSWE v1.1 · FrontierSWE v2 · Agent Arena |
+| **agentic-code** | multi-file implementation, refactor, migration, feature build, debug-and-fix across files | AA Terminal-Bench 4.0 · FrontierCode-AA 2.0 · DeepSWE v1.1 · Agent Arena |
 | **terminal-tool** | terminal/CLI work, build & test loops, tool orchestration, long-horizon execution | AA Terminal-Bench 4.0 |
-| **deep-reasoning** | **architecture from scratch**, algorithm design, mathematics/formal proof, tool-less analysis, adversarial correctness hunting | AA HLE · CritPt · ARC-AGI-2 |
+| **deep-reasoning** | **architecture from scratch**, algorithm design, mathematics/formal proof, tool-less analysis, adversarial correctness hunting | AA HLE-Diamond · CritPt v2 · ARC-AGI-2 |
 | **knowledge-work** | produce a finished document / spreadsheet / deck / memo / filing | GDPval-AA v2.1 · AA-Briefcase · AA-AnalystAgent · Harvey LAB |
-| **research-synthesis** | multi-source research, web search, reconciling conflicting sources | AA-Omniscience index |
+| **research-synthesis** | multi-source research, web search, reconciling conflicting sources | AA-Omniscience v1.1 index |
 | **long-context** | read a large corpus, map/summarise across hundreds of pages or a whole repo | AA-LCR v1.1 · MLCR-AA + the context-window spec |
 | **computer-use** | drive a browser or desktop GUI, click through an app, screenshots | OSWorld (⚠️ version + scoring mode) — gated on the OpenCode arm |
-| **science** | genomics, chemistry, physics, research engineering, lab pipelines | SciCode · Terminal-Bench-Science |
+| **science** | genomics, chemistry, physics, research engineering, lab pipelines | Terminal-Bench-Science 0.1 · CritPt v2 · SciCode (under review) |
 | **workflow-automation** | wire up business workflows, integrations, multi-tool orchestration | AutomationBench-AA · ITBench · EnterpriseOps-Gym |
 | **doc-data-understanding** | scanned documents, PDFs, charts, tables, multimodal extraction | AA GDP.pdf (one independent row) |
 | **parallel-independent** | 3+ targets or strands that proceed unaware of each other and merge at the end | *no product mechanism on either arm now* |
@@ -534,7 +534,7 @@ among the budget tier** (mean rank across ≥ 2 evaluators;
 | **any tag, `D ≤ 1`** | DeepSeek V4.1 Flash · GLM-5.3-Flash | same | Price and cap decide: on the 10 Nov Arena snapshot GLM-5.3-Flash (2.98 ±0.72 at USD 0.16, cap USD 60) and DeepSeek 1017 (2.07 ±0.52 at USD 0.14, cap USD 100) lead the Flash tier, MiMo-V2.6-Flash trails (0.03 ±1.05 at USD 0.07); research-synthesis drops DeepSeek (gate) → GLM-5.3-Flash · MiMo-V2.6-Flash |
 | `agentic-code`, `terminal-tool` | MiMo-V2.6-Pro · DeepSeek V4.1 Flash | same | Same-revision consensus (DeepSeek rows are the 1017 build): MiMo-V2.6-Pro leads AA TB 4.0 (35 vs 34) and Arena Agent (2.30 ±0.91 vs 2.07 ±0.52, a tie) and ties Vals TB 4.0 (31.3 vs 31.8); DeepSeek 1017 is the next budget model. DeepSWE's 71.7 is a row whose revision is unspecified — note only. Argon is `#1` at `D = 3` / `R = 3` (GM1): AA TB 4.0 57, Vals 58, FrontierSWE v2 55 (vs 35 / 18), still behind Claude (60–64). GLM-5.3 is premium — A1-OC |
 | `deep-reasoning` | MiMo-V2.6-Pro · DeepSeek V4.1 Flash | same | HLE 49 vs 43, CritPt 27 vs 24 against DeepSeek 1017, the next budget model (GLM-5.3-Flash 40 / 15) — AA scores, no interval. At `D = 3` / `R = 3` Argon is `#1` (GM1): HLE 57, ARC-AGI-2 91.3 (vs 49 / 61); Opus 5.5 still leads HLE and CritPt |
-| `knowledge-work` | DeepSeek V4.1 Flash · MiMo-V2.6-Pro | same | DeepSeek 1017 leads both Elo rows with disjoint 95% intervals: GDPval-AA 1746 (1725–1767) vs MiMo-V2.6-Pro 1692 (1672–1712), Briefcase 1570 (1560–1580) vs 1512 (1503–1521); AnalystAgent has no 1017 row. These are `max`-rung figures and `max` is the rung written from `D ≥ 2` (E7); the badge is Claude from `D = 2` |
+| `knowledge-work` | DeepSeek V4.1 Flash · MiMo-V2.6-Pro | same | DeepSeek 1017 leads both Elo rows with disjoint 95% intervals: GDPval-AA 1746 (1725–1767) vs MiMo-V2.6-Pro 1692 (1672–1712), Briefcase 1570 (1560–1580) vs 1512 (1503–1521); AnalystAgent has no 1017 row. These are `max`-rung figures and `max` is the rung written from `D ≥ 2` (E7); the badge is OpenCode † at `R ≤ 2` (Step 6) |
 | `workflow-automation` | GLM-5.3-Flash · DeepSeek V4.1 Flash | same | GLM-5.3-Flash leads the multi-anchor consensus (ITBench 51, EnterpriseOps-Gym, AutomationBench 60); DeepSeek 1017 has the best budget AutomationBench-AA (67) but no ITBench row — one anchor, so it cannot lead. At `D = 3` / `R = 3` Argon is `#1` — 77.5 (Sonnet 5.5 72) |
 | `long-context` | GLM-5.3-Flash · MiMo-V2.6-Pro | **MiMo-V2.6-Pro · GLM-5.3-Flash** | AA-LCR 86 (MiMo-V2.6-Pro) vs 80; MLCR-AA (previous version) 51 (GLM-5.3-Flash) vs 18 — each leads one row, both 1M, so the cap-efficient GLM-5.3-Flash goes first at `R ≤ 2` and the AA-LCR leader at `R = 3` (PO1). DeepSeek 1017 (LCR 83) has no same-version MLCR-AA row. Kimi K3 is premium |
 | `research-synthesis` | MiMo-V2.6-Pro · GLM-5.3-Flash | same | Omniscience v1 8.4 vs 7.5, hallucination 41% (MiMo-V2.6-Pro; on v1.1 it reads −4.5 / 60%, GLM-5.3-Flash 0.7 / 38%); **DeepSeek is gated out**. At `D = 3` / `R = 3` Argon is `#1`: AA-Omniscience v1 index 42, hallucination 15% (Sonnet 5.5 32 / 47%) |
@@ -645,7 +645,7 @@ a serious difference (Rule SM1).
 <!-- /rule:MECH1 -->
 
 <!-- rule:SM1 -->
-**SM1 · OpenCode by default.** The badge goes to OpenCode unless Claude clears a serious margin. Claude takes it only when a hard gate or the context window puts OpenCode out, or MECH1 applies, or `D = 3` and the dominant capability is `agentic-code`, `terminal-tool` or `deep-reasoning` and BD1 gives Claude a direction, or the dominant capability is `knowledge-work` at `D ≥ 2` with a BD1 direction, or `R = 3` and `D ≥ 2` and the dominant row leans to Claude. Every `D ≤ 1` task and every other `D = 2` task is OpenCode: the budget pair clears the bar there, and a Claude direction that only shows on harder tasks is not a reason to spend Claude's quota.
+**SM1 · OpenCode by default.** The badge goes to OpenCode unless Claude clears a serious margin. Claude takes it only when a hard gate or the context window puts OpenCode out, or MECH1 applies, or `D = 3` and the dominant capability is `agentic-code`, `terminal-tool`, `deep-reasoning` or `science` and BD1 gives Claude a direction, or the dominant capability is `knowledge-work` at `D ≥ 2` with a BD1 direction, or `R = 3` and `D ≥ 2` and the dominant row leans to Claude. Every `D ≤ 1` task and every other `D = 2` task is OpenCode: the budget pair clears the bar there, and a Claude direction that only shows on harder tasks is not a reason to spend Claude's quota.
 <!-- /rule:SM1 -->
 
 **Order:** (1) hard gate — if one arm declines or lacks the context window, the other
@@ -654,31 +654,35 @@ gets the badge, stop; (2) MECH1; (3) applicable capability (B1) and its evidence
 credible vendor evidence) read through BD1 and SM1; (4) everything SM1 leaves over is
 OpenCode, and the Evidence line says what Claude would add and why it is below the bar.
 
-The depth split is the evidence's own: Claude's lead lives on the `D = 3` anchors (TB 4.0, FrontierCode-AA 2.0, HLE) while DeepSWE v1.1 (±7) ties at mid-difficulty; finished deliverables are the other wide gap, so `knowledge-work` stays Claude from `D = 2`.
+**Rows are read at the rung each line runs** (Step 5): Claude — Sonnet 5.5 `high` at `D = 2`, `xhigh` at `D = 3` off the flagship list, Opus 5.5 `xhigh` on it (`max` under M1); OpenCode — its written rung. A row published only at another rung (AA's default Max listing, Arena Agent at Max, Vals without a stated rung) is n/p for the badge. Figures below: AA same-page comparisons and the GDPval-AA / AA-Briefcase pages, read 13 Nov 2026.
 
 ### Badge table
 
-| Dominant capability | `D = 2`, `R ≤ 2` | `D = 3`, `R ≤ 2` | `D ≥ 2`, `R = 3` | Evidence to name |
-|---|---|---|---|---|
-| `agentic-code`, `terminal-tool` | **OpenCode** | **Claude** | **Claude** | `D = 2`: SM1 sends it to OpenCode — Claude's lead is real on every same-revision row (Vals TB 4.0 65 / 64 vs DeepSeek 1017 32 and MiMo-V2.6-Pro 31; Arena Agent 19.5 / 16.1 vs 2.07 / 2.30; AA TB 4.0 64 / 60 vs 34 / 35) but sits at a depth the task does not reach, and a real agent task costs USD 0.14–0.17 against 3.38–5.38 (Arena, 10 Nov); the one tie, DeepSWE ±7 (benchlm mirror), is GLM-5.3 72.0 vs Opus 72.3 / Sonnet 70.5. `D = 3` / `R = 3`: two independent rows agree — AA TB 4.0 64 / 60 vs 35, Vals TB 4.0 65 / 64 vs 32 / 31; against Argon (GM1), at the rung the line runs (Opus 5.5 `xhigh` vs Argon `high`, AA, 13 Nov 2026): TB 4.0 59.6 vs 57.1, FrontierCode-AA 2.0 43.8 vs 25.7; Google's own table 66 vs 57. FrontierSWE v2 62 is the figure of Anthropic's own launch table — vendor, not counted |
-| `deep-reasoning` | **OpenCode** | **Claude** | **Claude** | HLE 61 / 55 vs MiMo-V2.6-Pro 49; CritPt 32 / 31 vs 27; ARC-AGI-2 92 vs 61 — three rows agree, and they bite at `D = 3`; against Argon (GM1) Claude still leads HLE and CritPt (61 / 32 vs 57 / 27) |
-| `knowledge-work` | **Claude** | **Claude** | **Claude** | GDPval-AA 1866 (±26) / 1838 (±23) vs DeepSeek 1017 1746 (±21) and MiMo-V2.6-Pro 1692 (±20); Briefcase 1801 (-10/+10) / 1816 (-10/+12) vs DeepSeek 1017 1570 (±10) and MiMo-V2.6-Pro 1512 (-9/+9) — both Elo gaps clear the 95% intervals against the best budget model (rows read 10–11 Nov 2026); AnalystAgent 56 / 58 vs 39 — three AA rows agree (Harvey LAB is a tie) |
-| `workflow-automation` | **OpenCode** † | **OpenCode** † | **OpenCode** † | AutomationBench-AA Sonnet 72 / Opus 70 vs DeepSeek 1017 67 carries no interval (UNRESOLVED) and ITBench has the open models ahead — no Claude direction; Argon (GM1) is 77.5 |
-| `science` | **OpenCode** † | **OpenCode** † | **Claude** † | SciCode Opus 67 / Sonnet 61 vs MiMo-V2.6-Pro 61 — one row, a tie with Sonnet |
-| `long-context` (shallow) | **OpenCode** † | **OpenCode** † | **OpenCode** † | The rows disagree: AA-LCR MiMo-V2.6-Pro 86 vs Opus 85 / Sonnet 83 is a tie, but MLCR-AA (previous version) Claude 67 / 75 vs best budget 51 — contested, so efficiency |
-| `research-synthesis` | **OpenCode** † | **OpenCode** † | **OpenCode** † | AA-Omniscience v1 Sonnet 32 / Opus 46 vs MiMo-V2.6-Pro 8 — one row. Argon is `#1` at `R = 3` (GM1) and beats the Claude pick on both measures — index 42 vs 32, hallucination 15% vs 47% (same v1 dataset) — so the `R = 3` cell reads **OpenCode** † |
-| `doc-data-understanding` | **OpenCode** † | **OpenCode** † | **Claude** † | GDP.pdf Opus / Sonnet 26 vs MiMo-V2.6-Pro 19 — one row |
-| `latency-volume` (first-token bound) | **OpenCode** | **OpenCode** | **OpenCode** | DeepSeek V4.1 Flash 142 tok/s on the served 1017 revision (222 tok/s, TTFT 1.1 s on the earlier one; AA's 49.4 s to the first answer token counts reasoning, so it is not the same measure); Haiku 5.5 has no measured first-token figure at `low` — facts, not a score |
-| `orchestration`, or a task routed to `opusplan` | **Claude** | **Claude** | **Claude** | Product facts, unmeasured: `ultracode` runs a scripted many-agent workflow, `opusplan` switches model between plan and execute; OpenCode has subagents and per-agent models, no workflow runtime (opencode.ai/docs/agents, 13 Nov 2026) |
-| anything else | **OpenCode** † | **OpenCode** † | **OpenCode** † | no row → the cheaper arm; say `low-confidence` |
+| Dominant capability | `D = 2`, `R ≤ 2` | `D = 3`, `R ≤ 2` | `D = 2`, `R = 3` | `D = 3`, `R = 3` | Evidence to name |
+|---|---|---|---|---|---|
+| `agentic-code`, `terminal-tool` | **OpenCode** | **Claude** | **OpenCode** † | **Claude** | `D = 2`: Sonnet 5.5 `high` leads MiMo-V2.6-Pro on TB 4.0 (43.9 vs 34.8) and FrontierCode-AA 2.0 (25.7 vs 24.0), but SM1 keeps mid-depth work on OpenCode at USD 0.26 per AA task against 1.64. `D = 3`: Opus 5.5 `xhigh` vs Argon `high`, 59.6 vs 57.1 and 43.8 vs 25.7. `D = 2`, `R = 3`: Sonnet 5.5 `high` trails Argon on TB 4.0 (43.9 vs 57.1) and ties FrontierCode (25.7) — one lean. FrontierSWE v2's 62.3 is Anthropic's own launch figure |
+| `deep-reasoning` | **OpenCode** | **Claude** | **OpenCode** | **Claude** | HLE-Diamond / CritPt v2. `D = 2`: Sonnet 5.5 `high` 33.8 / 51.5 vs MiMo-V2.6-Pro 15.2 / 34.0, SM1 keeps it on OpenCode. `D = 3`: Opus 5.5 `xhigh` 64.0 / 67.5 vs Argon 56.7 / 52.5 (`max` under M1: 67.9 / 68.0). `D = 2`, `R = 3`: Sonnet 5.5 `high` trails Argon on both — a direction for OpenCode. ARC-AGI-2 states no rung |
+| `knowledge-work` | **OpenCode** † | **OpenCode** † | **Claude** † | **Claude** † | The line is Sonnet 5.5 at every depth. AA-Briefcase v1.1 leads DeepSeek 1017 `max` (1570, 1560–1580): 1634 at `high`, 1742 at `xhigh`. GDPval-AA has no `high` row and ties at `xhigh` (1735 ±23 vs 1746 ±21); AnalystAgent has no 1017 row — one measurement. The wide Max-rung gaps (GDPval 1838 / 1866) are not the line the router writes |
+| `workflow-automation` | **OpenCode** † | **OpenCode** † | **OpenCode** † | **OpenCode** † | AutomationBench-AA: the line trails Argon (Opus 5.5 `xhigh` 65.0, Sonnet 5.5 `high` 59.4 vs 77.5); GLM-5.3-Flash has no labelled rung (n/p); ITBench has the open models ahead — no Claude direction |
+| `science` | **OpenCode** | **Claude** | **Claude** | **Claude** | Terminal-Bench-Science 0.1 and CritPt v2 agree against MiMo-V2.6-Pro (5.7 / 34.0): Sonnet 5.5 `high` 34.3 / 51.5, Opus 5.5 `xhigh` 61.9 / 67.5; SM1 keeps `D = 2` on OpenCode. SciCode is under review and backs nothing |
+| `long-context` (shallow) | **OpenCode** † | **OpenCode** † | **OpenCode** † | **OpenCode** † | AA-LCR and MLCR-AA publish no row at the line's rung; at Max they disagree (LCR a tie, MLCR-AA previous version Claude) — efficiency |
+| `research-synthesis` | **OpenCode** † | **OpenCode** † | **OpenCode** † | **OpenCode** † | AA-Omniscience v1.1, one benchmark: Sonnet 5.5 `high` 19 vs MiMo-V2.6-Pro −4 at `D = 2`; against Argon, `#1` at `D = 3` / `R = 3` (GM1), 19 / 21 vs 46 |
+| `doc-data-understanding` | **OpenCode** † | **OpenCode** † | **Claude** † | **Claude** † | GDP.pdf, one row: Sonnet 5.5 `high` 25.2 / `xhigh` 24.6 vs MiMo-V2.6-Pro 19.2 |
+| `latency-volume` (first-token bound) | **OpenCode** | **OpenCode** | **OpenCode** | **OpenCode** | DeepSeek V4.1 Flash 142 tok/s on the served 1017 revision (222 tok/s, TTFT 1.1 s on the earlier one; AA's 49.4 s to the first answer token counts reasoning, so it is not the same measure); Haiku 5.5 has no measured first-token figure at `low` — facts, not a score |
+| `orchestration`, or a task routed to `opusplan` | **Claude** | **Claude** | **Claude** | **Claude** | Product facts, unmeasured: `ultracode` runs a scripted many-agent workflow, `opusplan` switches model between plan and execute; OpenCode has subagents and per-agent models, no workflow runtime (opencode.ai/docs/agents, 13 Nov 2026) |
+| anything else | **OpenCode** † | **OpenCode** † | **OpenCode** † | **OpenCode** † | no row → the cheaper arm; say `low-confidence` |
 
-**† → Evidence must say `low-confidence`** (binds that row; so does "anything else").
-Mechanism, `latency-volume` and the `D ≤ 1` rule carry none. Only the **`agentic-code`**
-and **`deep-reasoning`** rows at `D = 2` that SM1 sends to OpenCode are **not** †: their
-evidence is strong, the Claude lead just sits at a depth the task does not reach — name
-the gap and the price instead. Every other † row, `science` included, still requires
-`low-confidence`. At `R = 3` a row that fell to efficiency follows its single
-measurement's lean and keeps its †.
+**† → Evidence must say `low-confidence`** — † binds its cell (and "anything else").
+Mechanism, `latency-volume` and the `D ≤ 1` rule carry none. A cell that SM1 sends to
+OpenCode against a Claude direction (`agentic-code`, `deep-reasoning`, `science` at `D = 2`)
+is **not** †: name the lead and the price instead. At `R = 3` a cell that fell to efficiency
+follows its single measurement's lean and keeps its †.
+
+**`D = 3` analysis on a flagship tag** (reading, reviewing, auditing — the line stays Sonnet 5.5
+`xhigh`, Step 4) is read against Argon `high`: `agentic-code` has one lean (FrontierCode-AA 2.0
+35.6 vs 25.7, TB 4.0 a tie at 57.1) → **OpenCode** † at `R ≤ 2`, **Claude** † at `R = 3`;
+`deep-reasoning` splits (HLE-Diamond 44.1 vs 56.7, CritPt v2 57.5 vs 52.5) → **OpenCode** †;
+`science` keeps its direction (52.4 / 57.5 vs MiMo-V2.6-Pro 5.7 / 34.0) → **Claude**.
 
 **`D ≤ 1` → OpenCode, whatever the Claude pick** (Haiku 5.5 included): skip the capability
 rows (except `latency-volume`, which keeps its own); price, cap and the Claude quota
@@ -757,7 +761,7 @@ OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo
 Evidence: Labelling is D=0 bulk work, so OpenCode runs it: the Flash tier buys hundreds of such batches a month on USD 60–100 caps (USD 0.14 per real agent task for DeepSeek 1017, Arena 10 Nov) and keeps Claude's quota for harder work.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 ```
-> Errand work goes to OpenCode even when Haiku 5.5 would do it. A finished memo or deck at `D ≥ 2` is `knowledge-work` and stays on Claude.
+> Errand work goes to OpenCode even when Haiku 5.5 would do it.
 
 *"Fix this code"*
 ```
@@ -768,7 +772,7 @@ Clarify: which file or function is broken, what does it do now, and what should 
 ```
 Claude: Sonnet 5.5 · effort: high
 OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
-Evidence: Mid-difficulty feature work stays on OpenCode (SM1): Claude's lead on Vals TB 4.0 (65 / 64 vs 31 / 32) and Arena Agent only counts from D=3, and a real agent task costs USD 0.17 (MiMo-V2.6-Pro) against Sonnet 5.5's 3.38 and Opus 5.5's 5.38 (Arena, 10 Nov).
+Evidence: Mid-difficulty feature work stays on OpenCode (SM1): Sonnet 5.5 `high` leads on TB 4.0 (43.9 vs 34.8) and FrontierCode-AA 2.0 (25.7 vs 24.0), but at USD 1.64 per AA task against MiMo-V2.6-Pro's 0.26 (AA, 13 Nov).
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 ```
 > One implementation phase → no `ultracode`. The same task at `D=3` (or after an OpenCode shortfall) flips the badge to Claude.
@@ -777,11 +781,11 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 ```
 Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
 OpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default
-Evidence: D=3 reasoning half has two agreeing AA rows (HLE 61 vs Argon's 57, CritPt 32 vs 27); the terminal half sets no direction, so the direction decides.
+Evidence: D=3 reasoning half has two agreeing AA rows at the rung each line runs (HLE-Diamond 64.0 vs Argon's 56.7, CritPt v2 67.5 vs 52.5), and the terminal half agrees.
 Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.
 ⚡ Claude /fast available (2.5x faster, 2× price).
 ```
-> `D=3` (D3DIAG) but one phase → `xhigh`, not `ultracode`/`max`. Argon takes `#1` on both rows (GM1) and each row's former `#1`, MiMo-V2.6-Pro, becomes `#2`; the Claude lead on HLE and CritPt still decides the badge.
+> `D=3` (D3DIAG) but one phase → `xhigh`, not `ultracode`/`max`. Argon takes `#1` on both rows (GM1) and each row's former `#1`, MiMo-V2.6-Pro, becomes `#2`; Opus 5.5 `xhigh` still leads it on HLE-Diamond, CritPt v2, TB 4.0 and FrontierCode-AA 2.0.
 
 *"Read these three public EU regulator pages and tell me what each one says about home-compostable claims on packaging labels — we send the labels to print tonight and cannot reprint them"*
 ```
@@ -795,9 +799,9 @@ Do not apply without human review.
 
 *"I'm preparing a non-confidential competitor-pricing deck for a conference — research, structure and write the 12 slides"*
 ```
-Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
-OpenCode: #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
-Evidence: Finished-deliverable work is knowledge-work, where two agreeing AA rows favour Claude (GDPval-AA 1839 vs DeepSeek 1017's 1746, Briefcase 1823 vs 1570, both gaps clear the 95% intervals); Grok 4.7 stays premium and out of the pair.
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
+Evidence: A finished deck is knowledge-work, where only AA-Briefcase is published at the rung the line runs (Sonnet 5.5 high 1634 vs DeepSeek 1017's 1570) — one measurement, so efficiency decides; low-confidence.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 ```
 > Non-confidential does not unlock Grok 4.7 (BUD1): the pair is the same as for confidential work.

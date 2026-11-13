@@ -9,8 +9,8 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-install)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-install)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-install)
-[![Policy](https://img.shields.io/badge/policy-iteration--30-8b949e?style=flat-square)](CHANGELOG.md)
-[![Regression evals](https://img.shields.io/badge/regression_evals-41-8b949e?style=flat-square)](#-validation)
+[![Policy](https://img.shields.io/badge/policy-iteration--31-8b949e?style=flat-square)](CHANGELOG.md)
+[![Regression evals](https://img.shields.io/badge/regression_evals-45-8b949e?style=flat-square)](#-validation)
 
 **[Quick start](#-quick-start)** · **[Install](#-install)** · **[Read the answer](#-reading-the-answer)** · **[How it works](#-how-it-decides)** · **[Examples](#-examples)** · **[Evidence](#-built-on-evidence-not-vibes)** · **[Changelog](CHANGELOG.md)** · **[🇹🇷 Türkçe](README.tr.md)**
 
@@ -104,7 +104,7 @@ Models that log or train on prompts are out unless *you* say the work is non-con
 <td valign="top">
 
 ### ✅ Verifiable
-41 deterministic regression prompts, a regex grader and consistency checks that run in CI — see [Validation](#-validation).
+45 deterministic regression prompts, a regex grader and consistency checks that run in CI — see [Validation](#-validation).
 
 </td>
 </tr>
@@ -331,7 +331,7 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 | Task | Claude | OpenCode `#1` · `#2` | Recommended |
 |---|---|---|---|
 | Label 200 reviews positive/negative | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` bulk work; Flash tier on USD 60 caps keeps Claude's quota |
-| Refactor the payment module across 40 files | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **OpenCode** — `D=2`; Claude's lead only counts from `D=3`, USD 0.17 vs 3.38 per task |
+| Refactor the payment module across 40 files | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **OpenCode** — `D=2`; Sonnet 5.5 `high` leads, but USD 1.64 vs 0.26 per AA task |
 | Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · high · ultracode` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — build, seed and a smoke run on the deployed env feed each other; OpenCode has no workflow runtime |
 | Find the race condition that flakes in prod | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, two agreeing AA rows |
 | Design the irreversible transaction boundary | `Opus 5.5 · max` + review note | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, `R=3` |
@@ -352,9 +352,9 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 | Which year did the EU AI Act's GPAI obligations start? | `Sonnet 5.5 · low` | GLM-5.3-Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — factual recall excludes Haiku and DeepSeek |
 | Bump `MAX_RETRIES` 3→5 in the prod config | `Sonnet 5.5 · low` + review note | DeepSeek V4.1 Flash `low` · GLM-5.3-Flash `low` | **OpenCode** — `D=0`, both clear the bar |
 | Wire a Jira → Slack → on-call n8n flow | `Sonnet 5.5 · high` | GLM-5.3-Flash `max` · DeepSeek V4.1 Flash `max` | **OpenCode**, low-confidence — AutomationBench has no interval, ITBench favours open models |
-| Summarise 400 pages of filings into one memo | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `max` · GLM-5.3-Flash `max` | **Claude** — knowledge-work from `D=2` |
+| Summarise 400 pages of filings into one memo | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `max` · GLM-5.3-Flash `max` | **OpenCode**, low-confidence — at Sonnet 5.5 `high` only AA-Briefcase is published |
 | Read 30 scanned receipts into a reconciliation table | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **OpenCode**, low-confidence — both take images |
-| Non-confidential conference pricing deck | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude** — knowledge-work; Grok 4.7 stays premium |
+| Non-confidential conference pricing deck | `Sonnet 5.5 · high` | DeepSeek V4.1 Flash `max` · MiMo-V2.6-Pro `default` | **OpenCode**, low-confidence — one rung-matched row; Grok 4.7 stays premium |
 | Read 3 regulator pages before labels go to print tonight | `Sonnet 5.5 · high` + review note | MiMo-V2.6-Pro `default` · GLM-5.3-Flash `max` | **Claude**, low-confidence — `R=3` and a single Omniscience lean |
 | An earlier OpenCode attempt at a 30-file migration fell short | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · **Gemini 4 Argon** `high` | **Claude** — Rule A1-OC adds the `#2` (Argon on a GM1 row) and hands over the badge |
 | Call somatic variants from tumour/normal exomes | `Fable 5.2 · high` | `unverified — use Claude` | **Claude** — availability gate; its biology classifiers can block research tasks |
@@ -410,7 +410,7 @@ Raw numbers live in [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.m
 
 ## ✅ Validation
 
-`evals/routing/evals.json` is a deterministic regression set — **41 prompts** — graded by a pure-regex grader (no LLM in the loop). It checks the Claude model and effort, **both OpenCode picks** (model, effort, order), which side holds the badge, a non-trivial `Evidence:` line, and required / forbidden text for the confidentiality default.
+`evals/routing/evals.json` is a deterministic regression set — **45 prompts** — graded by a pure-regex grader (no LLM in the loop). It checks the Claude model and effort, **both OpenCode picks** (model, effort, order), which side holds the badge, a non-trivial `Evidence:` line, and required / forbidden text for the confidentiality default.
 
 ```bash
 python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # goldens vs grader
@@ -422,7 +422,7 @@ python scripts/check_readme_facts.py     # counts, pool size, iteration and tier
 
 These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
 
-**Where it stands (13 Nov 2026, iteration-30):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **41/41**. A cold run of the four prompts this change touches (`c1`, `c3`, `o2`, `o3`; fresh agents reading only `skill/SKILL.md`) scored **4/4**, and on a 30-prompt calibration set `ultracode` went from 4 to 2 and the Claude badge from 11 to 7 ([record](evals/routing/results/iteration-30/calibration.md)). `i1` was skipped and the trigger eval is still a proxy. Details in [`evals/README.md`](evals/README.md).
+**Where it stands (13 Nov 2026, iteration-31):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **45/45**. The badge table is read at the rung each line actually runs. A cold run of the nine prompts this change touches (fresh agents reading only `skill/SKILL.md`) passed **9/9** after two prompts were sharpened and one golden followed the reading both agents gave. Iteration-30's calibration record is [here](evals/routing/results/iteration-30/calibration.md). `i1` was skipped and the trigger eval is still a proxy. Details in [`evals/README.md`](evals/README.md).
 
 ### Known limits, stated plainly
 

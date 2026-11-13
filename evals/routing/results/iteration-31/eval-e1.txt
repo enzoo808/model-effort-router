@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 GLM-5.3-Flash · effort: max
+Evidence: A finished memo over a 400-page corpus is knowledge-work plus long-context, and both badge cells fall to efficiency on OpenCode (AA-Briefcase 1570 vs 1634 at `high`, one measurement); low-confidence.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
