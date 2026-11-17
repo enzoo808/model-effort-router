@@ -1,4 +1,4 @@
-# OpenCode Go evidence — iteration-23 (updated through iteration-32; §17–§18 are the 17 November 2026 update)
+# OpenCode Go evidence — iteration-23 (updated through iteration-33; §17–§19 are the 17 November 2026 update)
 
 > **Cleanup note.** This file still names `skill/benchmarks.json`, `skill/benchmark_frontiers.json` and the compile / validate / test / ablate scripts of the Codex-era benchmark pipeline. They were removed from the tree after iteration-25 (last present at commit `7c24c81`, e.g. `git show 7c24c81:skill/benchmarks.json`). The router never read them.
 
@@ -12,6 +12,8 @@ was fetched in this pass from the sources in §8; anything not fetched is marked
 Source: `opencode.ai/docs/go/`.
 
 - **Go = USD 10/month, Go Plus = USD 40/month.** The user is on Go.
+- **Superseded (17 Nov 2026, §18.1 / §19):** the allowance is now **shared** by every paid model and each model's
+  limit is a weight on it. The 6 Oct reading is kept, dated:
 - Limits are **per model**, not shared: *"5-hour — 20% of the monthly limit; weekly —
   50%; monthly — 100%"*. The Monthly limit column is the maximum dollar amount that
   can be spent on that one model per month. So a USD 15 model allows USD 3 per
@@ -446,7 +448,7 @@ Agent Arena cost/task refreshed: Opus 5.5 1.67, Sonnet 5.5 3.04, DeepSeek V4.1 F
 with as much performance as that allows; and that OpenCode should take everything up to where it stops being good enough, with
 Claude recommended only where it makes a serious difference.
 
-**Measuring burn.** Go caps are per model (§1). Two independent per-task cost figures exist for the pool:
+**Measuring burn.** Go caps were per model on 6 Oct (§1); since 17 Nov they are weights on one shared allowance (§19). Two independent per-task cost figures exist for the pool:
 
 | Model | cap | AA USD/task (Max) | % of cap per AA task | Arena p50 USD/real agent task | agent tasks per month of cap | tier |
 |---|---|---|---|---|---|---|
@@ -1047,3 +1049,105 @@ cap per AA task" note are computed off 15 and stay.
   change; Argon's cap-after-30-Nov stays `n/p` for 1 Dec.
 - DeepSeek: "ZDR agreement is renewed monthly. The current agreement is valid through November 30, 2026" —
   unchanged wording.
+
+## 19. Iteration-33 — the shared allowance in the rules, GLM-5.3's limit, PO1 in code (17 November 2026)
+
+Rule text rewritten from §18.1's verified fact: SKILL.md intro, **CAP1** (the per-model exhaustion chain is gone —
+switching paid models never gets past a Go limit; what helps is a Zen free twin (FR1), Extra Usage, paid from
+credit, or the Claude line), **GM1** (USD 30 is Argon's weight on the shared allowance; rows unchanged), FR1's
+pointer, the pool-table header, a Go Plus note, Step 7 rule 11, README / README.tr / `docs/how-it-works.md` /
+`claude-ai/instructions.tr.md`. BUD1, SM1, E7 and the confidential default are untouched.
+
+### 19.1 Sources (all public, no login)
+
+- `opencode.ai/console/go` limits table ("Relative request allowances": `Est. requests / 5 hr`, `Monthly limit`,
+  Go and Go Plus), read **twice**, 14:11 and 14:22 UTC, each time in the collapsed view (12 rows) and the
+  expanded one ("View all 32 models" → "32 of 32 models shown"). FAQ: allowances are "counted over five-hour,
+  weekly and monthly windows, and allowances vary by model. When you reach a Go limit, you can keep using the
+  free models." With credit added and Extra Usage on, "Once you reach your Go limits, requests use your credit
+  instead of stopping" (that costs money). Plans: Go USD 10/month, Go Plus USD 40/month.
+- `opencode.ai/inference/go/v1/models` (`go.monthly_usage`), read once, 14:13 UTC.
+- Account console: its Limits panel shows three plan-level bars (Rolling, Weekly, Monthly) and no per-model bar
+  (the coordinator's reading, 17 Nov). No account figure is recorded anywhere in this repo.
+
+### 19.2 GLM-5.3's monthly limit — the sources now agree: USD 100
+
+| Reading (17 Nov 2026, UTC) | View | Est. requests / 5 hr (Go; Go Plus) | Monthly limit (Go; Go Plus) |
+|---|---|---|---|
+| console, 14:11 | collapsed | 1,320; 2,640 | USD 100; 200 |
+| console, 14:11 | expanded | 1,320; 2,640 | USD 100; 200 |
+| catalogue, 14:13 | `go.monthly_usage` | — | 100; 200 (go-teams 105) |
+| console, 14:22 | collapsed | 1,320; 2,640 | USD 100; 200 |
+| console, 14:22 | expanded | 1,320; 2,640 | USD 100; 200 |
+
+Earlier the same day the console showed USD 15 (§18.2: "Go: $15; Go Plus: $120"; a collapsed-view reading by the
+coordinator: 198 requests, USD 15). 1,320 ÷ 198 = 6.67 = 100 ÷ 15, so the request estimate moved with the weight:
+the console caught up with the catalogue. With both sources agreeing on four readings (CONTRIBUTING §1), the pool
+table now carries **USD 100** and **105 tasks/mo** (100 ÷ Arena p50 0.95); A1-OC's cost clause says GLM-5.3 costs
+about 1% of the allowance per real agent task (the "3–8%" band was computed off 15). **Consequence not acted on:**
+at 105 tasks/mo GLM-5.3 is budget-class by cap pressure (MiMo-V2.6-Pro 94, Hy4 109). BUD1 keeps tier P by name;
+`check_opencode_pool.py` lists it in `PREMIUM_ABOVE_BOUND` instead of failing its ≤ 35 bound. Whether the best
+open coder joins the budget tier is a routing-rule change for its own iteration (judgement call).
+
+The same clause had "Grok 10%"; Arena's 13 Nov p50 (USD 3.35 ÷ 15) gives about 22% — corrected.
+
+### 19.3 A second cost proxy: Go's `Est. requests / 5 hr`
+
+Go's own estimate of how many requests fit in one 5-hour window (= 20% of the allowance) when spent on that
+model alone, so the share of the allowance per request = 20% ÷ that figure. **Caveat:** Go's "typical" request
+has no published token mix; real agent requests are heavier, and a verbose model pays for its tokens, which a
+per-request figure does not see. `tasks/mo` (Arena p50 per real agent task) is unchanged and stays PO1's metric.
+
+| Model | Go limit | Est. requests / 5 hr (Go; Go Plus) | % of allowance per typical request | tasks/mo (Arena) |
+|---|---|---|---|---|
+| DeepSeek V4.1 Flash 1017 | 100 | 43,300; 86,700 | 0.0005% | 714 |
+| MiMo-V2.6-Flash | 60 | 30,100; 60,200 | 0.0007% | 750 |
+| GLM-5.3-Flash | 60 | 6,320; 18,900 | 0.003% | 429 |
+| MiMo-V2.6-Pro | 15 | 3,260; 13,000 | 0.006% | 94 |
+| Hy4 | 60 | 2,710; 10,800 | 0.007% | 109 |
+| Gemini 4 Argon | 30 | 566; 2,260 | 0.035% | 44 |
+| GLM-5.3 | 100 | 1,320; 2,640 | 0.015% | 105 |
+| Qwen4 Max | 15 | 463; 1,850 | 0.043% | 10 |
+| Grok 4.7 | 15 | 169; 676 | 0.12% | 4 |
+| Qwen3.8 Max | 15 | 162; 647 | 0.12% | 12 |
+| Kimi K3.1 Pro | 15 | 147; 588 | 0.14% | 13 |
+| Kimi K3 | 15 | 98; 392 | 0.20% | 16 |
+| GPT 6 Luna | 15 | 4,230; 16,900 | 0.005% | 188 |
+| Muse Spark 1.3 Contributor | 60 | 45,300; 90,600 | 0.0004% | 130 |
+
+The two proxies agree on the budget tier's broad order and **disagree on two adjacent pairs** — DeepSeek vs
+MiMo-V2.6-Flash and MiMo-V2.6-Pro vs Hy4 — neither of which is a PO1 tie today. Argon draws about 6× the allowance
+of MiMo-V2.6-Pro per request (566 vs 3,260) and about 2× per real task (44 vs 94 tasks/mo); Step 7 rule 11 now
+names the per-request ratio, labelled a proxy. Go Plus raises each limit 2–4× (×4 for the USD 15 models, Argon and
+Hy4; ×3 for GLM-5.3-Flash; ×2 for DeepSeek, GLM-5.3 and MiMo-V2.6-Flash).
+
+### 19.4 PO1 in code (`scripts/derive_opencode_rows.py`)
+
+PO1 said "most cap-efficient model inside the leading band first at `D ≤ 2`, `R ≤ 2`", but the script printed the
+band in consensus order and never applied it. Now `quality_order` puts the model that may lead (≥ 2 anchors)
+first, then the higher consensus, and the right-hand column keeps that order. In the left column the leader stays
+first only if its lead over the other model is a **BD1 direction read head-to-head** on the tag's anchors that
+rate both: nothing disagrees, and either one anchor shows disjoint published intervals (Arena `ci_pm`, the Elo
+boards' `ci_95`) or two anchors agree. Otherwise the two are tied and the more cap-efficient one (`tasks/mo`) goes
+first. `check_opencode_pool.py` now fails when the table's order differs from the derived one, and it runs the
+script's five synthetic `--selftest` cases. Membership is unchanged (still the top-4 consensus check).
+
+| Row (column) | before | after | why |
+|---|---|---|---|
+| `workflow-automation` (`R ≤ 2`) | GLM-5.3-Flash · DeepSeek | **DeepSeek · GLM-5.3-Flash** | the one anchor rating both (AutomationBench-AA) has DeepSeek ahead; GLM-5.3-Flash's ITBench / EnterpriseOps-Gym have no DeepSeek row |
+| `research-synthesis` (`R ≤ 2`) | MiMo-V2.6-Pro · GLM-5.3-Flash | **GLM-5.3-Flash · MiMo-V2.6-Pro** | one shared anchor (Omniscience v1 8.4 vs 7.5); the hallucination row has no GLM-5.3-Flash value |
+| `doc-data-understanding` (both) | MiMo-V2.6-Pro · DeepSeek | **DeepSeek · MiMo-V2.6-Pro** | DeepSeek is the consensus leader (MMMU-Pro + GDP.pdf); the one shared anchor (GDP.pdf 19 vs 17) favours MiMo-V2.6-Pro — a tie |
+| `long-context` (`R ≤ 2`) | GLM-5.3-Flash · MiMo-V2.6-Pro | unchanged | split 1–1 (AA-LCR vs MLCR-AA) → cap-efficient first; the code now reproduces the table |
+| `agentic-code`, `terminal-tool` | Hy4 · MiMo-V2.6-Pro | unchanged | three agreeing anchors, Arena with disjoint intervals |
+| `deep-reasoning`, `science` | MiMo-V2.6-Pro · DeepSeek | unchanged | HLE + CritPt; SciCode + CritPt (SciCode is under review — without it `science` would tie and flip to DeepSeek first) |
+| `knowledge-work` | DeepSeek · MiMo-V2.6-Pro | unchanged | GDPval-AA and Briefcase, disjoint 95% intervals |
+
+Badge sides are unchanged; the evidence text of the `workflow-automation`, `research-synthesis` and
+`doc-data-understanding` cells now names the new `#1`. Goldens `m1`, `x1` and `r1` move. Not changed, recorded:
+on `doc-data-understanding` Hy4 has the best budget GDP.pdf (21.6, one anchor, rung n/p) and ties DeepSeek's
+consensus score, so the script's own partner would be Hy4, not MiMo-V2.6-Pro.
+
+### 19.5 Arena label check (17 Nov, 14:26 UTC)
+
+`arena.ai/leaderboard/agent`, all 65 models: the page is still headed **Nov 13, 2026**, and Hy4 still reads
+"Tencent · Proprietary · **Preliminary**", 5.67% ±1.25% at USD 0.55 p50 (23,160 sessions). No change.
