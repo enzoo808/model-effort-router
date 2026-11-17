@@ -1,0 +1,1 @@
+Clarify: what counts as "inactive" — an is_active flag, or no login for N days (and what N) — and should the delete be a hard delete or a soft delete?

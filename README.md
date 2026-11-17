@@ -422,7 +422,7 @@ python scripts/check_readme_facts.py     # counts, pool size, iteration and tier
 
 These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
 
-**Where it stands (17 Nov 2026, iteration-33):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **48/48**. Go's paid models share one allowance, and the cap rules now say so (CAP1); the pair order (PO1) is derived in code. COLDRUN_EN Details in [`evals/README.md`](evals/README.md).
+**Where it stands (17 Nov 2026, iteration-33):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **48/48**. Go's paid models share one allowance, and the cap rules now say so (CAP1); the pair order (PO1) is derived in code. A full cold run of all 48 prompts (fresh Claude Sonnet 5.5 agents reading only `skill/SKILL.md`, eight prompts each) passed **46/48** on the first pass. The one-shot re-runs passed `c2` and failed `e1` again: its two-tag order is an open finding. Details in [`evals/README.md`](evals/README.md).
 
 ### Known limits, stated plainly
 
