@@ -21,7 +21,7 @@
 > ### Paste a task. Get the model and effort to run it on.
 > For **Claude** *and* your **OpenCode Go** plan — plus which of the two to use. It never runs the task. It only routes it.
 
-Most people pick a model by reflex: the biggest one, every time. That quietly burns the two things that actually run out — **Claude's 5-hour window** and **each OpenCode Go model's own monthly dollar cap**.
+Most people pick a model by reflex: the biggest one, every time. That quietly burns the two things that actually run out — **Claude's 5-hour window** and **OpenCode Go's one shared monthly allowance**.
 `model-effort-router` is a [Claude skill](https://docs.claude.com/en/docs/claude-code/skills) that scores your task, checks it against independent benchmarks, and answers in three lines. Its output is English; it routes prompts written in any language.
 
 <div align="center">
@@ -84,7 +84,7 @@ Cheap and mid-difficulty work goes to OpenCode. The badge moves to Claude only w
 <td width="33%" valign="top">
 
 ### 💸 Budget-first
-Protects what really runs out: Claude's 5-hour window and each Go model's **own dollar cap**. Premium models are escalation only.
+Protects what really runs out: Claude's 5-hour window and Go's **shared allowance**. Premium models are escalation only.
 
 </td>
 </tr>
@@ -120,7 +120,7 @@ Models that log or train on prompts are out unless *you* say the work is non-con
 | **Scope** | One vendor, a model name | **Two ecosystems**, a model **and its effort level**, side by side |
 | **Output** | "Use the strongest model" | Claude pick + two ordered OpenCode picks with their own efforts + **one** recommendation |
 | **Basis** | Vibes, leaderboard rank | **Task-bound evidence**, comparability checked first |
-| **Cost model** | "Cheaper is better" | The 5-hour window and **per-model dollar caps** |
+| **Cost model** | "Cheaper is better" | The 5-hour window and **Go's shared allowance** |
 | **Risk** | Bigger model for scarier work | **Risk raises human oversight, not model tier** — you get a review note, not a pricier model |
 | **Privacy** | Not considered | **Confidential by default** |
 | **Honesty** | Always sounds sure | Flags `low-confidence` rows, says `n/p` (not published) instead of guessing, never interpolates between effort rungs |
@@ -219,7 +219,7 @@ OpenCode has no skill mechanism: the router just prints an `OpenCode:` line and 
 2. In OpenCode, select the model as **`opencode-go/<model-id>`**.
 3. Set the effort with **`variant_cycle`** (`ctrl+t`) until it shows the effort the router named — or pick it directly with `#variant`: `opencode run --model opencode-go/deepseek-v4.1-flash#high "…"` (the same `provider/model#variant` form works in agent and command `model` fields; the root `model` setting keeps no variant).
    MiMo-V2.6 exposes no variants (thinking is always on), so the router writes `default` and there is nothing to cycle.
-4. If `#1` errors or is overloaded, use `#2`. If a model's monthly window is spent, or its result falls short, tell the router (see [Writing a good prompt](#writing-a-good-prompt)): it names the next model in the chain or escalates.
+4. If `#1` errors or is overloaded, use `#2`. If Go says a limit is reached, or the result falls short, tell the router (see [Writing a good prompt](#writing-a-good-prompt)): every paid Go model draws on the same allowance, so it names what still helps (a Zen free twin, Extra Usage, or Claude); a shortfall escalates.
 
 </details>
 
@@ -288,7 +288,7 @@ Words that change the answer:
 |---|---|
 | *"this is non-confidential"* | Unlocks GPT 6 Luna, Muse Spark 1.3 and Gemini 4 Argon, which keep or train on prompts. Never assumed from tone. |
 | *"an earlier OpenCode attempt fell short"* | Escalates: `#2` becomes a premium OpenCode model. At `D ≥ 2` the badge moves to Claude when the task's main capability has a Claude row. |
-| *"my DeepSeek window is used up"* (any model) | The `Evidence:` line names the next model in that model's chain. |
+| *"my Go allowance is used up"* (or nearly) | Switching Go models does not help: they all draw on one allowance. `Evidence:` names what does — a Zen free twin, Extra Usage (paid from credit) or the Claude line. |
 
 <br>
 
@@ -376,14 +376,14 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 | **Fable 5.2** | Frontier scale (1000+ files) and biology-adjacent R&D (USD 8/40; `/fast` available) |
 | **Mythos 5.2** | Fable 5.2 with permissive safeguards — Life Sciences Verification Program only |
 
-**OpenCode Go arm** — the **21 rated models**, in tiers. Each Go model has its *own* monthly dollar cap, so what matters is how many *real* agent tasks a month of that cap buys. Tier membership is **by name** (Rule BUD1); the task counts below are one informational Arena snapshot (13 Nov 2026, every row from the same page):
+**OpenCode Go arm** — the **21 rated models**, in tiers. Go's paid models share **one** allowance, counted over 5-hour, weekly and monthly windows; each model's monthly limit is its weight on it, so what matters is how many *real* agent tasks the allowance buys on that model (Go Plus, USD 40, raises each limit 2–4×). Tier membership is **by name** (Rule BUD1); the task counts below are one informational Arena snapshot (13 Nov 2026, every row from the same page):
 
 | Tier | Models | Role |
 |---|---|---|
-| **Budget** — the default pairs | MiMo-V2.6-Flash 750 · DeepSeek V4.1 Flash 714 · GLM-5.3-Flash 429 · Hy4 109 · MiMo-V2.6-Pro 94 | 94–750 tasks per month of cap |
+| **Budget** — the default pairs | MiMo-V2.6-Flash 750 · DeepSeek V4.1 Flash 714 · GLM-5.3-Flash 429 · Hy4 109 · MiMo-V2.6-Pro 94 | 94–750 tasks a month on the allowance |
 | **Non-confidential only** | GPT 6 Luna 188 · Muse Spark 1.3 130 | Offered only if you say the work isn't confidential — some of them train on prompts |
-| **Premium** — escalation only | Kimi K3 16 · GLM-5.3 16 · Kimi K3.1 Pro 13 · Qwen3.8 Max 12 · Qwen4 Max 10 · Grok 4.7 4 | 4–16 tasks per month of cap; never in a routed pair, only as `#2` after a stated shortfall |
-| **Gemini (GM1)** — overlay | Gemini 4 Argon | Go's plain `gemini-4-argon` (Not used / 0 days), open to confidential work; `#1` only at `D = 3` / `R = 3` on five rows, USD 30 cap — not a default pair |
+| **Premium** — escalation only | GLM-5.3 105 · Kimi K3 16 · Kimi K3.1 Pro 13 · Qwen3.8 Max 12 · Qwen4 Max 10 · Grok 4.7 4 | 4–16 tasks a month (GLM-5.3 105 since its limit rose to USD 100 — premium by name); never in a routed pair, only as `#2` after a stated shortfall |
+| **Gemini (GM1)** — overlay | Gemini 4 Argon | Go's plain `gemini-4-argon` (Not used / 0 days), open to confidential work; `#1` only at `D = 3` / `R = 3` on five rows, USD 30 limit — not a default pair |
 | **Unrated** — never selected | Qwen3.8 Flash | Every row under that name is "Qwen3.8-Flash-Next", a different open-weights model; `n/p` |
 | **Dominated** | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 · Gemini 3.8 Flash | Rated and tracked; no row ever emits them |
 
@@ -415,7 +415,7 @@ Raw numbers live in [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.m
 ```bash
 python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # goldens vs grader
 python scripts/check_policy_sync.py      # SKILL.md rule blocks == evals/policy/routing_policy.json
-python scripts/check_opencode_pool.py    # pool, Step 4-OC rows, badge table, per-model variants, consensus top-4
+python scripts/check_opencode_pool.py    # pool, Step 4-OC rows, badge table, per-model variants, consensus top-4, PO1 order
 python scripts/check_examples.py         # every worked example agrees with its golden
 python scripts/check_readme_facts.py     # counts, pool size, iteration and tier tables in the docs match the data
 ```
