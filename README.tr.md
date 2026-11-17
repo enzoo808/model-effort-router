@@ -9,8 +9,8 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-kurulum)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-kurulum)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-kurulum)
-[![Policy](https://img.shields.io/badge/politika-iteration--32-8b949e?style=flat-square)](CHANGELOG.md)
-[![Regression evals](https://img.shields.io/badge/regresyon_eval-46-8b949e?style=flat-square)](#-doğrulama)
+[![Policy](https://img.shields.io/badge/politika-iteration--33-8b949e?style=flat-square)](CHANGELOG.md)
+[![Regression evals](https://img.shields.io/badge/regresyon_eval-48-8b949e?style=flat-square)](#-doğrulama)
 
 **[Hızlı başlangıç](#-hızlı-başlangıç)** · **[Kurulum](#-kurulum)** · **[Cevabı oku](#-cevabı-okumak)** · **[Nasıl karar verir](#-nasıl-karar-verir)** · **[Örnekler](#-kullanım-örnekleri)** · **[Kanıt](#-hisle-değil-kanıtla)** · **[Değişiklik günlüğü](CHANGELOG.md)** · **[🇬🇧 English](README.md)**
 
@@ -104,7 +104,7 @@ Bir benchmark yalnızca görevin ihtiyacını ölçüyorsa sayılır ve bir yön
 <td valign="top">
 
 ### ✅ Doğrulanabilir
-46 deterministik regresyon promptu, regex tabanlı bir not verici ve CI'da koşan tutarlılık kontrolleri — bkz. [Doğrulama](#-doğrulama).
+48 deterministik regresyon promptu, regex tabanlı bir not verici ve CI'da koşan tutarlılık kontrolleri — bkz. [Doğrulama](#-doğrulama).
 
 </td>
 </tr>
@@ -392,7 +392,7 @@ Ham sayılar [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.md) ve [
 
 ## ✅ Doğrulama
 
-`evals/routing/evals.json`, saf regex ile (döngüde LLM yok) notlanan deterministik bir regresyon setidir — **46 prompt**. Claude modelini ve eforunu, **her iki OpenCode seçimini** (model, efor, sıra), rozetin hangi tarafta olduğunu, anlamlı bir `Evidence:` satırını ve gizlilik varsayılanı için zorunlu / yasak metni denetler.
+`evals/routing/evals.json`, saf regex ile (döngüde LLM yok) notlanan deterministik bir regresyon setidir — **48 prompt**. Claude modelini ve eforunu, **her iki OpenCode seçimini** (model, efor, sıra), rozetin hangi tarafta olduğunu, anlamlı bir `Evidence:` satırını ve gizlilik varsayılanı için zorunlu / yasak metni denetler.
 
 ```bash
 python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # altın çıktılar vs not verici
@@ -404,7 +404,7 @@ python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, 
 
 Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
 
-**Durum (17 Kasım 2026, iteration-32):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **46/46**. Kodlama satırları artık Hy4 · MiMo-V2.6-Pro ve `D = 2` rozet hücresi hattın gerçekten koştuğu kademede okunuyor. 46 promptun tamamının soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze ajanlar, onlara Sonnet sunulmadığı için oturumun varsayılan model sınıfı) dört tek atımlık yeniden koşudan sonra **46/46** geçti. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
+**Durum (17 Kasım 2026, iteration-33):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **48/48**. Go'nun ücretli modelleri tek bir kotayı paylaşıyor ve kota kuralları artık bunu söylüyor (CAP1); çift sırası (PO1) kodda türetiliyor. COLDRUN_TR Ayrıntılar [`evals/README.md`](evals/README.md)'de.
 
 ### Bilinen sınırlar
 

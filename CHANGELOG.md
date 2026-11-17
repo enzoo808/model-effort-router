@@ -4,6 +4,19 @@ Routing-policy iterations (the OpenCode Go era and the Codex era), newest first.
 
 ---
 
+## iteration-33 (17 Nov 2026): one shared Go allowance in the rules, GLM-5.3 at USD 100, PO1 in code
+
+Sources read 17 Nov 2026 (public, no login): opencode.ai/console/go (limits table read twice, 14:11 and 14:22 UTC, collapsed and expanded), `/inference/go/v1/models` (14:13 UTC), arena.ai/leaderboard/agent (14:26 UTC). Details: `skill/opencode-benchmarks.md` §19, `opencode-evidence.json` `iteration_33`.
+
+- **Shared allowance.** Go's paid models share one allowance, counted over a 5-hour, a weekly and a monthly window, and a model's monthly limit is its weight on it. **CAP1** is rewritten: the per-model exhaustion chain is gone, because switching paid models never gets past a Go limit. When the user says a limit is reached or near, the pair stays and `Evidence:` says the allowance is shared and names what helps: a Zen free twin (FR1), Extra Usage (paid from credit) or the Claude line. The intro, GM1 (USD 30 is Argon's weight; rows unchanged), FR1's pointer, the pool-table header (with a Go Plus note: each limit 2–4×), README / README.tr, `docs/` and the Turkish no-code mirror follow. BUD1, SM1, E7 and the confidential default are unchanged.
+- **GLM-5.3's limit is USD 100.** The console (both views, two readings 10 minutes apart) and the catalogue agree, so the pool table now carries 100 and 105 tasks/mo. Earlier the same day the console still showed USD 15, so the page caught up with the catalogue. Tier P is kept by name. GLM-5.3 is now budget-class by cap pressure; `check_opencode_pool.py` lists it as an explicit exception and the tier review is left for its own iteration. A1-OC's cost clause now reads as a share of the allowance per task (USD 15 models about 6–8%, Grok about 22% (it said 10%, which was stale), GLM-5.3 about 1%, Argon about 2%).
+- **PO1 in code.** `derive_opencode_rows.py` now orders every pair. The consensus leader goes first in the right-hand column. At `D ≤ 2`, `R ≤ 2` it stays first only on a BD1 direction read head-to-head; otherwise the more cap-efficient model goes first, judged by `tasks/mo`, a proxy (Arena p50 per real agent task ÷ Go limit). `check_opencode_pool.py` fails when the table differs and runs the script's selftest. **Rows moved:** `workflow-automation` (`R ≤ 2`) → DeepSeek V4.1 Flash · GLM-5.3-Flash; `research-synthesis` (`R ≤ 2`) → GLM-5.3-Flash · MiMo-V2.6-Pro; `doc-data-understanding` (both columns) → DeepSeek V4.1 Flash · MiMo-V2.6-Pro. No badge side moved; three evidence cells name the new `#1`.
+- **Spend note and second proxy.** Step 7 rule 11 adds that an Argon request draws about 6× the shared allowance of a MiMo-V2.6-Pro one (Go's own 5-hour estimates, 566 vs 3,260; a proxy). Go's `Est. requests / 5 hr` column is recorded as a second cost proxy (§19.3, with a caveat), and `tasks/mo` is unchanged. Arena: Hy4 is still "Preliminary" on the 13 Nov snapshot.
+- **Evals: 48 prompts.** New: `al1` (allowance nearly used up) and `ar1` (`D = 3` workflow: Argon · GLM-5.3-Flash plus the spend line). Moved goldens: `m1`, `x1`, `r1` (pair order), `w4` (Evidence now corrects the per-model reading). Every Argon golden carries the new rule-11 line. `j1`'s prompt is sharpened toward deep-reasoning, and its expected output is unchanged.
+- **Checks.** Self-test 48/48; the five CI commands are green. COLDRUN_CL
+
+---
+
 ## iteration-32 (17 Nov 2026): the OpenCode Go refresh — Qwen4 Max, Hy4, the 13 Nov Arena snapshot
 
 Sources read 17 Nov 2026: opencode.ai/docs/go + /console/go, the `/inference/go/v1/models` and `/inference/v1/models` endpoints, models.dev `opencode-go`, opencode.ai/docs/agents, the AA comparison/model pages and `/changelog`, vals.ai Terminal-Bench 4.0 (updated 11 Nov) and the Agent Arena page headed "Nov 13, 2026". Recorded in `skill/opencode-evidence.json` → `iteration_32`, and in `skill/opencode-benchmarks.md` §17–§18.

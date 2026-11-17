@@ -1,5 +1,12 @@
 # model-secici eval set
 
+> **iteration-33 (17 Nov 2026): one shared Go allowance in the rules, GLM-5.3 at USD 100, PO1 in code.**
+>
+> - **Rule.** CAP1 now describes one allowance shared by every paid Go model. A model's limit is a weight, and switching models never gets past a limit. When a limit is reached or near, the pair stays and `Evidence:` names a Zen free twin, Extra Usage or the Claude line. PO1's cap-efficiency tie-break is implemented in `scripts/derive_opencode_rows.py`: a BD1 direction read head-to-head, else `tasks/mo` (a proxy). `check_opencode_pool.py` enforces the derived order. GLM-5.3's Go limit is USD 100 (two console readings plus the catalogue).
+> - **Moved rows.** `workflow-automation` `R ≤ 2` → DeepSeek · GLM-5.3-Flash; `research-synthesis` `R ≤ 2` → GLM-5.3-Flash · MiMo-V2.6-Pro; `doc-data-understanding` → DeepSeek · MiMo-V2.6-Pro (both columns). No badge side moved.
+> - **Evals: 48.** New: `al1` (allowance nearly used up, `D = 2` coding pair unchanged) and `ar1` (`D = 3` workflow: Argon · GLM-5.3-Flash, the right column keeps its own leader). Moved goldens: `m1`, `x1`, `r1`, `w4`. Every Argon golden carries the new Step 7 rule-11 text. `j1`'s prompt is sharpened (expected output unchanged). `--selftest` 48/48; the five CI commands are green.
+> - COLDRUN_EVALS
+
 > **iteration-32 (17 Nov 2026) — the OpenCode Go refresh: Qwen4 Max, Hy4, the 13 Nov Arena snapshot.**
 >
 > - **Rule.** No rule text changed; this is a data refresh (CONTRIBUTING §1). Qwen4 Max joins tier P, Hy4 tier B; the `agentic-code` / `terminal-tool` row is now Hy4 · MiMo-V2.6-Pro (three independent evaluators); the `D = 2` coding badge cell falls to efficiency and gains the dagger because Hy4's rows carry no rung label. The Go page's shared-allowance fact, GLM-5.3's cap conflict and the 30 Nov items are recorded (benchmarks §17–§18, evidence `iteration_32`) for iteration-33, not acted on.

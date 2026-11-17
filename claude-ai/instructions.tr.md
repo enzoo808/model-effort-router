@@ -141,7 +141,7 @@ kalır (Grok 4.7 premium kalır, BUD1 — geri gelmez); Muse Spark 1.3 yalnız
 **CAP1 · paylaşılan kota.** Go'nun ücretli modelleri 5 saatlik, haftalık ve aylık pencerelerle sayılan tek bir kotayı paylaşır; bir modelin aylık
 limiti o kotadaki ağırlığıdır. USD 15'lik bütçe modelleri (MiMo-V2.6-Pro, GPT 6 Luna) `D ≥ 2`'ye ayrılır; `D ≤ 1` USD 60–100'lük Flash
 katmanına gider (`latency-volume` muaf). Ücretli model değiştirmek bir Go limitini aşmaz: kullanıcı limite ulaştığını ya da yaklaştığını
-söylerse çifti koru ve `Evidence:`'ta işe yarayanı an — bir Zen ücretsiz ikizi (FR1), Extra Usage (krediden ödenir) ya da Claude satırı.
+söylerse çifti koru, `Evidence:`'ta kotanın paylaşıldığını söyle ve işe yarayanı an — bir Zen ücretsiz ikizi (FR1), Extra Usage (krediden ödenir) ya da Claude satırı.
 
 **A1-OC (yükseltme).** Kullanıcı önceki bir **OpenCode** koşusunun yetmediğini söylerse `#2` → baskın capability için en iyi
 konsensüslü premium model: `agentic-code`, `terminal-tool`, `deep-reasoning`, `research-synthesis`, `workflow-automation` için (`D ≥ 2`) **GLM-5.3** (`research-synthesis` dahil);

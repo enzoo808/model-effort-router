@@ -9,8 +9,8 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-install)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-install)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-install)
-[![Policy](https://img.shields.io/badge/policy-iteration--32-8b949e?style=flat-square)](CHANGELOG.md)
-[![Regression evals](https://img.shields.io/badge/regression_evals-46-8b949e?style=flat-square)](#-validation)
+[![Policy](https://img.shields.io/badge/policy-iteration--33-8b949e?style=flat-square)](CHANGELOG.md)
+[![Regression evals](https://img.shields.io/badge/regression_evals-48-8b949e?style=flat-square)](#-validation)
 
 **[Quick start](#-quick-start)** · **[Install](#-install)** · **[Read the answer](#-reading-the-answer)** · **[How it works](#-how-it-decides)** · **[Examples](#-examples)** · **[Evidence](#-built-on-evidence-not-vibes)** · **[Changelog](CHANGELOG.md)** · **[🇹🇷 Türkçe](README.tr.md)**
 
@@ -104,7 +104,7 @@ Models that log or train on prompts are out unless *you* say the work is non-con
 <td valign="top">
 
 ### ✅ Verifiable
-46 deterministic regression prompts, a regex grader and consistency checks that run in CI — see [Validation](#-validation).
+48 deterministic regression prompts, a regex grader and consistency checks that run in CI — see [Validation](#-validation).
 
 </td>
 </tr>
@@ -410,7 +410,7 @@ Raw numbers live in [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.m
 
 ## ✅ Validation
 
-`evals/routing/evals.json` is a deterministic regression set — **46 prompts** — graded by a pure-regex grader (no LLM in the loop). It checks the Claude model and effort, **both OpenCode picks** (model, effort, order), which side holds the badge, a non-trivial `Evidence:` line, and required / forbidden text for the confidentiality default.
+`evals/routing/evals.json` is a deterministic regression set — **48 prompts** — graded by a pure-regex grader (no LLM in the loop). It checks the Claude model and effort, **both OpenCode picks** (model, effort, order), which side holds the badge, a non-trivial `Evidence:` line, and required / forbidden text for the confidentiality default.
 
 ```bash
 python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # goldens vs grader
@@ -422,7 +422,7 @@ python scripts/check_readme_facts.py     # counts, pool size, iteration and tier
 
 These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
 
-**Where it stands (17 Nov 2026, iteration-32):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **46/46**. The coding rows are now Hy4 · MiMo-V2.6-Pro and the `D = 2` badge cell is read at the rung the line runs. A full cold run of all 46 prompts (fresh agents reading only `skill/SKILL.md`, session default model class — no Sonnet was available to them) passed **46/46** after four one-shot re-runs. Details in [`evals/README.md`](evals/README.md).
+**Where it stands (17 Nov 2026, iteration-33):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **48/48**. Go's paid models share one allowance, and the cap rules now say so (CAP1); the pair order (PO1) is derived in code. COLDRUN_EN Details in [`evals/README.md`](evals/README.md).
 
 ### Known limits, stated plainly
 

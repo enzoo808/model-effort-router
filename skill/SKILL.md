@@ -11,7 +11,7 @@ description: >-
 
 # Claude & OpenCode model / effort router
 
-<!-- routing-policy-version: iteration-32 -->
+<!-- routing-policy-version: iteration-33 -->
 
 Route the user's prompt — **do not run it**. Say which model + effort to use on
 **Claude** and on **OpenCode** (**two** models, `#1` / `#2`, each with its own
@@ -556,7 +556,7 @@ named); `#2` = the other row's `#1`, or its `#2` if that is the same model.
 <!-- /rule:PO1 -->
 
 <!-- rule:CAP1 -->
-**CAP1 · shared allowance.** Go's paid models share one allowance, counted over 5-hour, weekly and monthly windows; a model's monthly limit is its weight on it. The USD 15 budget models (MiMo-V2.6-Pro, GPT 6 Luna) are kept for `D ≥ 2`; `D ≤ 1` goes to the USD 60–100 Flash tier (`latency-volume` exempt). Switching paid models never gets past a Go limit: when the user says one is reached or near, keep the pair and name in `Evidence:` what helps — a Zen free twin (FR1), Extra Usage (paid from credit) or the Claude line.
+**CAP1 · shared allowance.** Go's paid models share one allowance, counted over 5-hour, weekly and monthly windows; a model's monthly limit is its weight on it. The USD 15 budget models (MiMo-V2.6-Pro, GPT 6 Luna) are kept for `D ≥ 2`; `D ≤ 1` goes to the USD 60–100 Flash tier (`latency-volume` exempt). Switching paid models never gets past a Go limit: when the user says one is reached or near, keep the pair, say in `Evidence:` that the allowance is shared, and name what helps — a Zen free twin (FR1), Extra Usage (paid from credit) or the Claude line.
 <!-- /rule:CAP1 -->
 
 <!-- rule:A1-OC -->
