@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+OpenCode: #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
+Evidence: A filing that cannot be amended is knowledge-work at R=3; AA-Briefcase at the rung the line runs favours Sonnet 5.5 high (1634 vs DeepSeek 1017 max 1570), but it is one measurement, so low-confidence.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
+Do not apply without human review.
