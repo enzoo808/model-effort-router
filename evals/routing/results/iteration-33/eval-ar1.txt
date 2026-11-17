@@ -1,0 +1,5 @@
+Claude: Opus 5.5 · effort: xhigh
+OpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 GLM-5.3-Flash · effort: max
+Evidence: AutomationBench-AA has Argon at 77.5 against Opus 5.5 xhigh's 65.0 and ITBench favours the open models, so Claude has no direction; low-confidence.
+Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; limit USD 30 at half price through 30 Nov 2026 (list prices after); a request draws about 6× the shared allowance a MiMo-V2.6-Pro one does (Go's 5-hour estimates, 566 vs 3,260 — a proxy). If it errors or is overloaded, run the row's other model.
+⚡ Claude /fast available (2.5x faster, 2× price).

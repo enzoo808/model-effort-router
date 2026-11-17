@@ -1,0 +1,4 @@
+Claude: Haiku 5.5 · effort: low
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: Go's allowance is shared, so switching models will not get past the limit; the Zen free twin deepseek-v4.1-flash-free, Extra Usage or the Claude line (Haiku 5.5 low) are the ways on.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).

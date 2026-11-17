@@ -5,8 +5,8 @@ The long form of the README: why the router exists, how it treats evidence, and 
 ## Why this exists
 
 The failure mode isn't picking a model that's too weak. It's **reflexively picking
-the most expensive model** and burning your quota — Claude's 5-hour window *and* a
-Go model's per-model dollar cap. Those are the protected resources.
+the most expensive model** and burning your quota — Claude's 5-hour window *and* Go's
+one shared monthly allowance (each model's limit is a weight on it). Those are the protected resources.
 
 The decision principle, in one sentence:
 

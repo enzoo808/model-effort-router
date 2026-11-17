@@ -1,0 +1,6 @@
+Claude: Opus 5.5 · effort: xhigh · ultracode
+OpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 Hy4 · effort: high
+Evidence: D=3 bisect-and-judge across 180 services is terminal and reasoning work where Opus 5.5 xhigh leads Argon (TB 4.0 59.6 vs 57.1, HLE-Diamond 64.0 vs 56.7); width plus hours justify ultracode.
+Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; limit USD 30 at half price through 30 Nov 2026 (list prices after); a request draws about 6× the shared allowance a MiMo-V2.6-Pro one does (Go's 5-hour estimates, 566 vs 3,260 — a proxy). If it errors or is overloaded, run the row's other model.
+Ultracode: start the prompt with "ultracode:" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.
+⚡ Claude /fast available (2.5x faster, 2× price).

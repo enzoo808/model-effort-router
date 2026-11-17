@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: low
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: D=0 factual lookup, so price and cap decide on OpenCode; DeepSeek is gated out of factual recall (64.1% hallucination), leaving the lower-hallucination GLM-5.3-Flash (38.3%).

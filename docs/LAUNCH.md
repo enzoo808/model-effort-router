@@ -31,7 +31,7 @@ bilingual", which is a small credibility signal, not a barrier.
 ## GitHub repo settings
 
 **Description:**
-> Routes a task to the cheapest Claude *and* OpenCode Go model + effort level that clears the bar — protects your 5-hour window and your per-model Go caps, not your wallet.
+> Routes a task to the cheapest Claude *and* OpenCode Go model + effort level that clears the bar — protects your 5-hour window and your shared Go allowance, not your wallet.
 
 **Topics:** `claude` `claude-code` `anthropic` `opencode` `open-weight` `llm` `ai-agents`
 `prompt-engineering` `developer-tools` `model-routing` `skill`
@@ -51,7 +51,7 @@ buried.
 
 **Body:**
 > I kept reflexively running everything on the most expensive model and burning
-> my Claude 5-hour window (and my OpenCode Go per-model caps), so I wrote a decision procedure
+> my Claude 5-hour window (and my OpenCode Go allowance), so I wrote a decision procedure
 > that scores a task on four axes — risk, depth, breadth, context — and outputs
 > which model and effort level to use, for both ecosystems, in two lines. It
 > doesn't run the task, it just routes it.

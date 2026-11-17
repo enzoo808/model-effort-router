@@ -9,8 +9,8 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-kurulum)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-kurulum)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-kurulum)
-[![Policy](https://img.shields.io/badge/politika-iteration--32-8b949e?style=flat-square)](CHANGELOG.md)
-[![Regression evals](https://img.shields.io/badge/regresyon_eval-46-8b949e?style=flat-square)](#-doğrulama)
+[![Policy](https://img.shields.io/badge/politika-iteration--33-8b949e?style=flat-square)](CHANGELOG.md)
+[![Regression evals](https://img.shields.io/badge/regresyon_eval-48-8b949e?style=flat-square)](#-doğrulama)
 
 **[Hızlı başlangıç](#-hızlı-başlangıç)** · **[Kurulum](#-kurulum)** · **[Cevabı oku](#-cevabı-okumak)** · **[Nasıl karar verir](#-nasıl-karar-verir)** · **[Örnekler](#-kullanım-örnekleri)** · **[Kanıt](#-hisle-değil-kanıtla)** · **[Değişiklik günlüğü](CHANGELOG.md)** · **[🇬🇧 English](README.md)**
 
@@ -21,7 +21,7 @@
 > ### Bir görev yapıştır. Hangi model ve eforda çalıştıracağını öğren.
 > **Claude** için *ve* **OpenCode Go** planın için — ayrıca ikisinden hangisini kullanacağını. Görevi asla çalıştırmaz, yalnızca yönlendirir.
 
-Çoğumuz model seçimini refleksle yaparız: her seferinde en büyüğü. Bu da gerçekten tükenen iki şeyi sessizce eritir: **Claude'un 5 saatlik penceresini** ve **her OpenCode Go modelinin kendi aylık dolar limitini**.
+Çoğumuz model seçimini refleksle yaparız: her seferinde en büyüğü. Bu da gerçekten tükenen iki şeyi sessizce eritir: **Claude'un 5 saatlik penceresini** ve **OpenCode Go'nun tüm modellerce paylaşılan aylık kotasını**.
 `model-effort-router` bir [Claude skill](https://docs.claude.com/en/docs/claude-code/skills)'idir: görevi puanlar, bağımsız benchmark'larla karşılaştırır ve üç satırda cevap verir.
 
 <div align="center">
@@ -84,7 +84,7 @@ Ucuz ve orta zorluktaki işler OpenCode'a gider. Rozet yalnızca Claude'un *cidd
 <td width="33%" valign="top">
 
 ### 💸 Bütçe öncelikli
-Gerçekten tükenenleri korur: Claude'un 5 saatlik penceresi ve her Go modelinin **kendi dolar limiti**. Premium modeller yalnızca yükseltme içindir.
+Gerçekten tükenenleri korur: Claude'un 5 saatlik penceresi ve Go'nun **paylaşılan kotası**. Premium modeller yalnızca yükseltme içindir.
 
 </td>
 </tr>
@@ -104,7 +104,7 @@ Bir benchmark yalnızca görevin ihtiyacını ölçüyorsa sayılır ve bir yön
 <td valign="top">
 
 ### ✅ Doğrulanabilir
-46 deterministik regresyon promptu, regex tabanlı bir not verici ve CI'da koşan tutarlılık kontrolleri — bkz. [Doğrulama](#-doğrulama).
+48 deterministik regresyon promptu, regex tabanlı bir not verici ve CI'da koşan tutarlılık kontrolleri — bkz. [Doğrulama](#-doğrulama).
 
 </td>
 </tr>
@@ -120,7 +120,7 @@ Bir benchmark yalnızca görevin ihtiyacını ölçüyorsa sayılır ve bir yön
 | **Kapsam** | Tek sağlayıcı, bir model adı | **İki ekosistem**, model **ve efor seviyesi**, yan yana |
 | **Çıktı** | "En güçlü modeli kullan" | Claude seçimi + sıralı iki OpenCode seçimi (kendi eforlarıyla) + **tek** öneri |
 | **Dayanak** | His, liderlik tablosu sırası | **Göreve bağlı kanıt**, önce karşılaştırılabilirlik |
-| **Maliyet modeli** | "Ucuz olan iyidir" | 5 saatlik pencere ve **model başına dolar limitleri** |
+| **Maliyet modeli** | "Ucuz olan iyidir" | 5 saatlik pencere ve **Go'nun paylaşılan kotası** |
 | **Risk** | Korkutucu iş için büyük model | **Risk model katmanını değil, insan denetimini artırır** — pahalı model değil, inceleme notu alırsın |
 | **Gizlilik** | Düşünülmez | **Varsayılan gizli** |
 | **Dürüstlük** | Hep emin konuşur | `low-confidence` işaretler, tahmin yerine `n/p` (yayımlanmamış) der, efor basamakları arasında enterpolasyon yapmaz |
@@ -219,7 +219,7 @@ OpenCode tarafında skill mekanizması yok: router yalnızca bir `OpenCode:` sat
 2. OpenCode'da modeli **`opencode-go/<model-id>`** olarak seç.
 3. Router'ın yazdığı efor görünene kadar **`variant_cycle`** (`ctrl+t`) ile eforu değiştir — ya da doğrudan `#variant` ile seç: `opencode run --model opencode-go/deepseek-v4.1-flash#high "…"` (aynı `provider/model#variant` biçimi ajan ve komut `model` alanlarında da geçerli; kök `model` ayarı varyantı tutmaz).
    MiMo-V2.6'nın varyantı yoktur (düşünme hep açık), bu yüzden router `default` yazar ve çevrilecek bir şey olmaz.
-4. `#1` hata verir ya da aşırı yüklüyse `#2`'yi kullan. Bir modelin aylık penceresi bittiyse ya da sonucu yetersiz kaldıysa router'a söyle ([Prompt nasıl yazılır](#prompt-nasıl-yazılır)): zincirdeki sıradaki modeli söyler ya da yükseltir.
+4. `#1` hata verir ya da aşırı yüklüyse `#2`'yi kullan. Go bir limite ulaştığını söylerse ya da sonuç yetersiz kaldıysa router'a söyle ([Prompt nasıl yazılır](#prompt-nasıl-yazılır)): ücretli Go modellerinin hepsi aynı kotadan yer, bu yüzden hâlâ işe yarayanı söyler (bir Zen ücretsiz ikizi, Extra Usage ya da Claude); yetersizlikte yükseltir.
 
 </details>
 
@@ -290,7 +290,7 @@ Cevabı değiştiren sözler:
 |---|---|
 | *"bu iş gizli değil"* | İstemleri saklayan ya da eğitimde kullanan GPT 6 Luna ve Muse Spark 1.3'ü açar. Üslupla asla varsayılmaz. |
 | *"önceki bir OpenCode denemesi yetersiz kaldı"* | Yükseltir: `#2` premium bir OpenCode modeli olur. `D ≥ 2`'de görevin ana yeteneğinin bir Claude satırı varsa rozet Claude'a geçer. |
-| *"DeepSeek pencerem doldu"* (herhangi bir model) | `Evidence:` satırı o modelin zincirindeki sıradaki modeli söyler. |
+| *"Go kotam doldu"* (ya da dolmak üzere) | Go modelini değiştirmek işe yaramaz: hepsi tek kotadan yer. `Evidence:` işe yarayanı söyler — bir Zen ücretsiz ikizi, Extra Usage (krediden ödenir) ya da Claude satırı. |
 
 <br>
 
@@ -358,14 +358,14 @@ Daha fazla örnek (20 satırlık tam tablo) için [İngilizce README](README.md#
 | **Fable 5.2** | Devasa ölçek (1000+ dosya) ve biyolojiye komşu Ar-Ge (USD 8/40; `/fast` var) |
 | **Mythos 5.2** | Gevşek korumalı Fable 5.2 — yalnızca Life Sciences Verification Program |
 
-**OpenCode Go kolu** — **puanlanan 21 model**, katmanlara ayrılmış. Her Go modelinin *kendi* aylık dolar limiti vardır; önemli olan o limitin bir ayda kaç *gerçek* ajan görevi aldığıdır. Katman üyeliği **isimle** belirlenir (Kural BUD1); aşağıdaki görev sayıları 13 Kasım 2026 tarihli, her satırı aynı sayfadan alınmış tek bir Arena anlık görüntüsüdür ve yalnızca bilgi amaçlıdır:
+**OpenCode Go kolu** — **puanlanan 21 model**, katmanlara ayrılmış. Go'nun ücretli modelleri **tek** bir kotayı paylaşır (5 saatlik, haftalık ve aylık pencereler); her modelin aylık limiti o kotadaki ağırlığıdır, yani önemli olan kotanın o modelde kaç *gerçek* ajan görevi aldığıdır (Go Plus, USD 40, her limiti 2–4 kat artırır). Katman üyeliği **isimle** belirlenir (Kural BUD1); aşağıdaki görev sayıları 13 Kasım 2026 tarihli, her satırı aynı sayfadan alınmış tek bir Arena anlık görüntüsüdür ve yalnızca bilgi amaçlıdır:
 
 | Katman | Modeller | Rol |
 |---|---|---|
-| **Bütçe** — varsayılan çiftler | MiMo-V2.6-Flash 750 · DeepSeek V4.1 Flash 714 · GLM-5.3-Flash 429 · Hy4 109 · MiMo-V2.6-Pro 94 | Limit başına ayda 94–750 görev |
+| **Bütçe** — varsayılan çiftler | MiMo-V2.6-Flash 750 · DeepSeek V4.1 Flash 714 · GLM-5.3-Flash 429 · Hy4 109 · MiMo-V2.6-Pro 94 | Kotayla ayda 94–750 görev |
 | **Yalnızca gizli olmayan iş** | GPT 6 Luna 188 · Muse Spark 1.3 130 | İşin gizli olmadığını söylersen sunulur — bazıları istemlerle eğitilir |
-| **Premium** — yalnızca yükseltme | Kimi K3 16 · GLM-5.3 16 · Kimi K3.1 Pro 13 · Qwen3.8 Max 12 · Qwen4 Max 10 · Grok 4.7 4 | Limit başına ayda 4–16 görev; yönlendirilen çiftte asla yok, yalnızca bildirilen bir yetersizlikten sonra `#2` |
-| **Gemini (GM1)** — kaplama | Gemini 4 Argon | Go'nun düz `gemini-4-argon`u (Not used / 0 gün), gizli işe açık; yalnızca beş satırda `D = 3` / `R = 3` için `#1`, USD 30 limit — varsayılan çift değil |
+| **Premium** — yalnızca yükseltme | GLM-5.3 105 · Kimi K3 16 · Kimi K3.1 Pro 13 · Qwen3.8 Max 12 · Qwen4 Max 10 · Grok 4.7 4 | Kotayla ayda 4–16 görev (GLM-5.3'ün limiti USD 100'e çıktığından 105 — premium isimle); yönlendirilen çiftte asla yok, yalnızca bildirilen bir yetersizlikten sonra `#2` |
+| **Gemini (GM1)** — kaplama | Gemini 4 Argon | Go'nun düz `gemini-4-argon`u (Not used / 0 gün), gizli işe açık; yalnızca beş satırda `D = 3` / `R = 3` için `#1`, USD 30 limit (kotadaki ağırlığı) — varsayılan çift değil |
 | **Puanlanmamış** — asla seçilmez | Qwen3.8 Flash | Bu ad altındaki her satır "Qwen3.8-Flash-Next", farklı bir açık ağırlıklı model; `n/p` |
 | **Baskın olunan** | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 · Gemini 3.8 Flash | Puanlanır ve izlenir; hiçbir satır bunları üretmez |
 
@@ -392,19 +392,19 @@ Ham sayılar [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.md) ve [
 
 ## ✅ Doğrulama
 
-`evals/routing/evals.json`, saf regex ile (döngüde LLM yok) notlanan deterministik bir regresyon setidir — **46 prompt**. Claude modelini ve eforunu, **her iki OpenCode seçimini** (model, efor, sıra), rozetin hangi tarafta olduğunu, anlamlı bir `Evidence:` satırını ve gizlilik varsayılanı için zorunlu / yasak metni denetler.
+`evals/routing/evals.json`, saf regex ile (döngüde LLM yok) notlanan deterministik bir regresyon setidir — **48 prompt**. Claude modelini ve eforunu, **her iki OpenCode seçimini** (model, efor, sıra), rozetin hangi tarafta olduğunu, anlamlı bir `Evidence:` satırını ve gizlilik varsayılanı için zorunlu / yasak metni denetler.
 
 ```bash
 python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # altın çıktılar vs not verici
 python scripts/check_policy_sync.py      # SKILL.md kural blokları == evals/policy/routing_policy.json
-python scripts/check_opencode_pool.py    # havuz, Adım 4-OC satırları, rozet tablosu, model başına varyantlar
+python scripts/check_opencode_pool.py    # havuz, Adım 4-OC satırları, rozet tablosu, model başına varyantlar, PO1 sırası
 python scripts/check_examples.py         # her çalışılmış örnek kendi altın çıktısıyla uyuşur
 python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, iterasyon ve katman tabloları veriyle uyuşur
 ```
 
 Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
 
-**Durum (17 Kasım 2026, iteration-32):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **46/46**. Kodlama satırları artık Hy4 · MiMo-V2.6-Pro ve `D = 2` rozet hücresi hattın gerçekten koştuğu kademede okunuyor. 46 promptun tamamının soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze ajanlar, onlara Sonnet sunulmadığı için oturumun varsayılan model sınıfı) dört tek atımlık yeniden koşudan sonra **46/46** geçti. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
+**Durum (17 Kasım 2026, iteration-33):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **48/48**. Go'nun ücretli modelleri tek bir kotayı paylaşıyor ve kota kuralları artık bunu söylüyor (CAP1); çift sırası (PO1) kodda türetiliyor. 48 promptun tamamının soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze Claude Sonnet 5.5 ajanları, ajan başına sekiz prompt) ilk geçişte **46/48** geçti. `e1` iki etiketli sıradaki bir boşluğu gösterdi; boşluk PO1'de kapatıldı ve `e1` artık geçiyor. `c2` açık bulgu olarak kalıyor: üç koşuda her seferinde farklı bir yerde kaldı. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
 
 ### Bilinen sınırlar
 

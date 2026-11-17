@@ -33,6 +33,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import derive_opencode_rows as dr  # noqa: E402
 
+# iteration-33: a premium model (tier P is by name, Rule BUD1) whose Go limit rose above premium-class cap
+# pressure. Listed, not silently allowed: the tier review is a routing-rule change for its own iteration.
+PREMIUM_ABOVE_BOUND = {
+    "GLM-5.3": "Go limit USD 100 (console and catalogue agree, 17 Nov 2026; was 15) -- budget-class cap "
+               "pressure, tier kept by name pending a BUD1 review (iteration-33 judgement call)",
+}
+
 ROOT = Path(__file__).resolve().parent.parent
 POLICY = ROOT / "evals" / "policy" / "routing_policy.json"
 SKILL = ROOT / "skill" / "SKILL.md"
@@ -122,7 +129,11 @@ def main() -> int:
             if calc != meta["tasks_per_month"]:
                 errors.append("tasks/month for %s: policy %s, cap / Arena p50 = %s" % (m, meta["tasks_per_month"], calc))
         if meta["tier"] == "P" and meta["tasks_per_month"] is not None and meta["tasks_per_month"] > 35:
-            errors.append("premium model %s buys %s tasks/month (sanity bound is <= 35)" % (m, meta["tasks_per_month"]))
+            if m in PREMIUM_ABOVE_BOUND:
+                print("NOTE [opencode-pool] premium model %s buys %s tasks/month, above the <= 35 bound: %s"
+                      % (m, meta["tasks_per_month"], PREMIUM_ABOVE_BOUND[m]))
+            else:
+                errors.append("premium model %s buys %s tasks/month (sanity bound is <= 35)" % (m, meta["tasks_per_month"]))
 
     # 1c -- Rule BUD1 states membership by name: the rule block must name every tier-P and
     # tier-B model and must not fall back on the retired numeric thresholds (140 / 35).
@@ -236,6 +247,18 @@ def main() -> int:
                 elif rank.index(m) > 3:
                     errors.append("consensus: %s is #%d of %d for %r (top-4 required) but row %r emits it"
                                   % (m, rank.index(m) + 1, len(rank), tag, tag))
+
+    # 2c -- iteration-33: Rule PO1's order is derived (derive_opencode_rows.po1_order), not hand-set:
+    # the leader stays first at D <= 2 only on a BD1 direction, otherwise the more cap-efficient model leads.
+    errors.extend(dr.selftest())
+    for tag in list(dr.TAGS) + ["terminal-tool"]:
+        w = want.get(tag)
+        if not w:
+            continue
+        for col, key in (("left", "r_le_2"), ("right", "r_eq_3")):
+            order, why = dr.po1_order(evidence, policy, tag, w[key], col)
+            if order != w[key]:
+                errors.append("PO1: %s %s column is %s, derived %s (%s)" % (tag, col, w[key], order, why))
 
     # 3 -- badge table ------------------------------------------------------------
     # iteration-31: four cell columns (R = 3 split by depth) and a dagger per cell, e.g. "opencode†".

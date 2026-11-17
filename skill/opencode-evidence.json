@@ -2658,5 +2658,272 @@
     },
     "glm_5_3_cap_conflict_2026_11_17": "/inference/go/v1/models go.monthly_usage for glm-5.3 = 100 (go-plus 200, go-teams 105) vs opencode.ai/console/go limits table \"GLM-5.3 ... Go: $15; Go Plus: $120\" (read 2026-11-17; every other pool model matches between the two sources). CONFLICT -> pool table keeps cap USD 15 (read 2026-10-10/11) and tasks/mo 16; recorded for iteration-33 to re-read both sources before changing the pool table.",
     "argon_2026_11_30_note": "Go page still prints only \"The 50% discount applies through November 30, 2026\" (read 2026-11-17); the cap after 30 Nov is not stated. Catalogue: gemini-4-argon monthly_usage.go = 30 with price multiplier date >= 2026-12-01 factor 2 (list prices 2/10/0.1). No text change; nothing new."
+  },
+  "iteration_33": {
+    "date": "2026-11-17",
+    "scope": "Shared-allowance rewrite of the cap rules (CAP1, GM1, intro, pool header, FR1 pointer, Step 7 rule 11, READMEs, TR mirror); GLM-5.3 Go limit re-read twice; PO1 tie-break implemented in scripts/derive_opencode_rows.py; Go's Est. requests / 5 hr recorded as a second cost proxy; Arena Hy4 label re-checked. No account usage figure is recorded.",
+    "sources": [
+      "opencode.ai/console/go (public; limits table collapsed + expanded, FAQ), read 2026-11-17 14:11 and 14:22 UTC",
+      "opencode.ai/inference/go/v1/models (go.monthly_usage), read 2026-11-17 14:13 UTC",
+      "arena.ai/leaderboard/agent (all 65 models), read 2026-11-17 14:26 UTC"
+    ],
+    "shared_allowance": {
+      "fact": "Paid Go models share one allowance counted over a rolling 5-hour window (20%), a weekly window (50%, resets Monday 00:00 UTC) and the month; a model's monthly limit is its weight on that allowance (docs.opencode.ai/docs/go, quoted in iteration_32 / benchmarks 18.1).",
+      "console_faq_2026_11_17": [
+        "allowances are counted over five-hour, weekly and monthly windows, and allowances vary by model; at a Go limit the free models stay usable",
+        "with credit added and Extra Usage on, requests at a Go limit use credit instead of stopping (costs money)"
+      ],
+      "account_console_limits_panel": "three plan-level bars (Rolling, Weekly, Monthly), no per-model bar (coordinator reading, 17 Nov); no figures recorded",
+      "plans": {
+        "Go": "USD 10/month",
+        "Go Plus": "USD 40/month; each limit 2-4x Go's (x4 USD 15 models, Argon, Hy4; x3 GLM-5.3-Flash; x2 DeepSeek 1017, GLM-5.3, MiMo-V2.6-Flash)"
+      }
+    },
+    "glm_5_3_limit": {
+      "readings": [
+        {
+          "utc": "2026-11-17T14:11",
+          "source": "console/go",
+          "view": "collapsed",
+          "est_requests_5h": [
+            1320,
+            2640
+          ],
+          "monthly_limit_usd": [
+            100,
+            200
+          ]
+        },
+        {
+          "utc": "2026-11-17T14:11",
+          "source": "console/go",
+          "view": "expanded",
+          "est_requests_5h": [
+            1320,
+            2640
+          ],
+          "monthly_limit_usd": [
+            100,
+            200
+          ]
+        },
+        {
+          "utc": "2026-11-17T14:13",
+          "source": "/inference/go/v1/models",
+          "view": "go.monthly_usage",
+          "monthly_limit_usd": {
+            "go": 100,
+            "go-plus": 200,
+            "go-teams": 105
+          }
+        },
+        {
+          "utc": "2026-11-17T14:22",
+          "source": "console/go",
+          "view": "collapsed",
+          "est_requests_5h": [
+            1320,
+            2640
+          ],
+          "monthly_limit_usd": [
+            100,
+            200
+          ]
+        },
+        {
+          "utc": "2026-11-17T14:22",
+          "source": "console/go",
+          "view": "expanded",
+          "est_requests_5h": [
+            1320,
+            2640
+          ],
+          "monthly_limit_usd": [
+            100,
+            200
+          ]
+        }
+      ],
+      "earlier_same_day": "console showed USD 15 (iteration_32 record: 'Go: $15; Go Plus: $120'; coordinator collapsed-view reading 198 requests / USD 15). 1320/198 = 6.67 = 100/15: the console caught up with the catalogue.",
+      "verdict": "sources agree -> pool cap USD 100, tasks/mo 105 (100 / Arena p50 0.95). Tier P kept by name (BUD1); budget-class cap pressure flagged as a judgement call (check_opencode_pool PREMIUM_ABOVE_BOUND)."
+    },
+    "go_est_requests_5h": {
+      "_about": "Go's own 'Est. requests / 5 hr' and 'Monthly limit' columns, opencode.ai/console/go, 2026-11-17 14:11/14:22 UTC: [Go req/5h, Go Plus req/5h, Go limit USD, Go Plus limit USD]. Second cost proxy, informational. Caveat: a 'typical' request with no published token mix; real agent requests are heavier and per-request figures miss verbosity. Share of the allowance per request = 20% / Go req/5h. PO1 uses tasks/mo (Arena p50 per real task), not this.",
+      "values": {
+        "DeepSeek V4.1 Flash": [
+          43300,
+          86700,
+          100,
+          200
+        ],
+        "MiMo-V2.6-Flash": [
+          30100,
+          60200,
+          60,
+          120
+        ],
+        "GLM-5.3-Flash": [
+          6320,
+          18900,
+          60,
+          180
+        ],
+        "MiMo-V2.6-Pro": [
+          3260,
+          13000,
+          15,
+          60
+        ],
+        "Hy4": [
+          2710,
+          10800,
+          60,
+          240
+        ],
+        "Gemini 4 Argon": [
+          566,
+          2260,
+          30,
+          120
+        ],
+        "GLM-5.3": [
+          1320,
+          2640,
+          100,
+          200
+        ],
+        "Qwen4 Max": [
+          463,
+          1850,
+          15,
+          60
+        ],
+        "Grok 4.7": [
+          169,
+          676,
+          15,
+          60
+        ],
+        "Qwen3.8 Max": [
+          162,
+          647,
+          15,
+          60
+        ],
+        "Kimi K3.1 Pro": [
+          147,
+          588,
+          15,
+          60
+        ],
+        "Kimi K3": [
+          98,
+          392,
+          15,
+          60
+        ],
+        "GPT 6 Luna": [
+          4230,
+          16900,
+          15,
+          60
+        ],
+        "Muse Spark 1.3": [
+          45300,
+          90600,
+          60,
+          120
+        ],
+        "Qwen3.8 Flash": [
+          5400,
+          16200,
+          30,
+          90
+        ],
+        "Claude Haiku 5.5": [
+          3850,
+          15400,
+          15,
+          60
+        ],
+        "DeepSeek V4 Pro": [
+          1040,
+          4180,
+          15,
+          60
+        ],
+        "MiniMax M3": [
+          3210,
+          9620,
+          60,
+          180
+        ],
+        "Kimi K2.7 Code": [
+          994,
+          2980,
+          60,
+          180
+        ],
+        "Qwen3.7 Plus": [
+          4310,
+          12900,
+          60,
+          180
+        ],
+        "MiniMax M3.1 Flash": [
+          3880,
+          15500,
+          20,
+          80
+        ],
+        "Hy4 preview": [
+          1350,
+          5410,
+          30,
+          120
+        ]
+      }
+    },
+    "po1_code": {
+      "metric": "tasks_per_month = Go monthly limit / Arena p50 cost per real agent task (proxy; chosen because Arena's figure has a published method and sees verbosity; Go's estimate agrees on every PO1 tie in today's table)",
+      "rule": "right column: consensus leader (>= 2 anchors) first; left column: leader first only on a BD1 direction read head-to-head on the tag's anchors that rate both (no disagreement; one disjoint published interval or two agreeing anchors), else the more cap-efficient first",
+      "rows_changed": {
+        "workflow-automation r_le_2": [
+          [
+            "GLM-5.3-Flash",
+            "DeepSeek V4.1 Flash"
+          ],
+          [
+            "DeepSeek V4.1 Flash",
+            "GLM-5.3-Flash"
+          ]
+        ],
+        "research-synthesis r_le_2": [
+          [
+            "MiMo-V2.6-Pro",
+            "GLM-5.3-Flash"
+          ],
+          [
+            "GLM-5.3-Flash",
+            "MiMo-V2.6-Pro"
+          ]
+        ],
+        "doc-data-understanding r_le_2 and r_eq_3": [
+          [
+            "MiMo-V2.6-Pro",
+            "DeepSeek V4.1 Flash"
+          ],
+          [
+            "DeepSeek V4.1 Flash",
+            "MiMo-V2.6-Pro"
+          ]
+        ]
+      },
+      "caveats": [
+        "science keeps MiMo-V2.6-Pro first on SciCode + CritPt; SciCode is under review - without it science would tie and flip to DeepSeek first",
+        "doc-data: Hy4's GDP.pdf 21.6 (one anchor, rung n/p) ties DeepSeek's consensus; membership left as MiMo-V2.6-Pro + DeepSeek"
+      ]
+    },
+    "arena_check_2026_11_17": "arena.ai/leaderboard/agent 14:26 UTC: still headed Nov 13, 2026; Hy4 still 'Preliminary' (5.67% +-1.25% at USD 0.55, 23,160 sessions) - no change"
   }
 }

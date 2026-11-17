@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: high · ultracode
+OpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Mid-depth diagnosis (D=2) stays on OpenCode (SM1): Hy4's rows carry no rung label, so efficiency decides at USD 1.03 per AA task against Sonnet 5.5 `high`'s 1.64; low-confidence.
+Ultracode: start the prompt with "ultracode:" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.

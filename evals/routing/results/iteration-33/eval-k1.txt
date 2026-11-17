@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Fable 5.2 · effort: high
+OpenCode: unverified — use Claude — biology-adjacent R&D, no pool model's safeguards or independent evidence are verified.
+Evidence: Somatic variant calling is a genomics pipeline, a deciding biology gate on both arms; Fable 5.2 at high matches Opus 5.5 at max on FrontierCode 2.0 (vendor-reported).
+Fable 5.2: its biology classifiers may block research tasks — on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused.
+⚡ Claude /fast available (2.5x faster, 2× price).

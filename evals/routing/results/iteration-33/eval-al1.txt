@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Go's allowance is shared, so another model won't get past it; Extra Usage, a Zen free twin (glm-5.3-flash-free) or the Claude line help. D=2 efficiency decides; low-confidence.
