@@ -1,0 +1,5 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 GLM-5.3-Flash · effort: max
+Evidence: Workflow-automation has no Claude direction (AutomationBench-AA: Sonnet 5.5 high 59.4 vs Argon 77.5), so OpenCode keeps the badge despite the irreversible postings; low-confidence.
+Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.
+Do not apply without human review.

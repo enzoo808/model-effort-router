@@ -422,7 +422,7 @@ python scripts/check_readme_facts.py     # counts, pool size, iteration and tier
 
 These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
 
-**Where it stands (17 Nov 2026, iteration-32):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **46/46**. The badge table is read at the rung each line actually runs. A cold run of the nine prompts this change touches (fresh agents reading only `skill/SKILL.md`) passed **9/9** after two prompts were sharpened and one golden followed the reading both agents gave. Iteration-30's calibration record is [here](evals/routing/results/iteration-30/calibration.md). `i1` was skipped and the trigger eval is still a proxy. Details in [`evals/README.md`](evals/README.md).
+**Where it stands (17 Nov 2026, iteration-32):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **46/46**. The coding rows are now Hy4 · MiMo-V2.6-Pro and the `D = 2` badge cell is read at the rung the line runs. A full cold run of all 46 prompts (fresh agents reading only `skill/SKILL.md`, session default model class — no Sonnet was available to them) passed **46/46** after four one-shot re-runs. Details in [`evals/README.md`](evals/README.md).
 
 ### Known limits, stated plainly
 

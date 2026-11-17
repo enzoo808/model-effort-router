@@ -404,7 +404,7 @@ python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, 
 
 Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
 
-**Durum (17 Kasım 2026, iteration-32):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **46/46**. Rozet tablosu artık her hattın gerçekten koştuğu kademede okunuyor. Değişikliğin dokunduğu dokuz promptun soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze ajanlar) iki prompt netleştirildikten ve bir altın çıktı iki ajanın okumasına göre güncellendikten sonra **9/9**. Iteration-30 kalibrasyon kaydı [burada](evals/routing/results/iteration-30/calibration.md). `i1` atlandı, tetikleme eval'i hâlâ bir vekil. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
+**Durum (17 Kasım 2026, iteration-32):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **46/46**. Kodlama satırları artık Hy4 · MiMo-V2.6-Pro ve `D = 2` rozet hücresi hattın gerçekten koştuğu kademede okunuyor. 46 promptun tamamının soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze ajanlar, onlara Sonnet sunulmadığı için oturumun varsayılan model sınıfı) dört tek atımlık yeniden koşudan sonra **46/46** geçti. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
 
 ### Bilinen sınırlar
 

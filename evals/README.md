@@ -1,5 +1,12 @@
 # model-secici eval set
 
+> **iteration-32 (17 Nov 2026) — the OpenCode Go refresh: Qwen4 Max, Hy4, the 13 Nov Arena snapshot.**
+>
+> - **Rule.** No rule text changed; this is a data refresh (CONTRIBUTING §1). Qwen4 Max joins tier P, Hy4 tier B; the `agentic-code` / `terminal-tool` row is now Hy4 · MiMo-V2.6-Pro (three independent evaluators); the `D = 2` coding badge cell falls to efficiency and gains the dagger because Hy4's rows carry no rung label. The Go page's shared-allowance fact, GLM-5.3's cap conflict and the 30 Nov items are recorded (benchmarks §17–§18, evidence `iteration_32`) for iteration-33, not acted on.
+> - **Evals: 46.** New `ter1`. Moved goldens: `b1`, `b2`, `o2`, `o3`, `c1` (Hy4 · MiMo-V2.6-Pro), `c2`, `c3`, `d1`, `v1` (#2 Hy4 under GM1), `p1` (`Hy4 · Argon` after the shortfall). `--selftest` 46/46; the five CI commands green.
+> - **Cold-agent run** (`results/iteration-32/`, six fresh agents reading only `skill/SKILL.md`, 6–8 prompts each, session default model class — **no Claude Sonnet was available to subagents in this environment**, a deviation from the earlier iterations' sonnet runs): first pass **42/46**. Failures were cold-agent reading misses, not golden conflicts: `c2` (Sonnet written instead of Opus 5.5), `j1` (opusplan plan rung), `u1` (badge side), `sc1` (a spurious `ultracode` flag). Re-ran each once with a fresh agent: `c2`, `u1`, `sc1` passed; `j1` failed again on the other limb (OpenCode `#2` — the agent read the dominant capability as agentic-code, the eval targets deep-reasoning), re-ran once more: **final 46/46**.
+> - **Not verified this run:** the v2.3.0 version attribution for background subagents (the docs-page behaviour is verified); `models.dev` entries beyond the catalogue cross-check; the Console Go page renders a plan toggle (read as served).
+
 > **iteration-31 (13 Nov 2026) — the badge table at the rung the router writes.**
 >
 > - **Rule.** Every badge cell is read at the rung each line actually runs (Sonnet 5.5 `high` at `D = 2`, Sonnet 5.5 `xhigh` or Opus 5.5 `xhigh` at `D = 3`, OpenCode at its written rung), from AA rows read 13 Nov 2026. Most old Claude figures were AA's default Max listings, which E1 never emits for Sonnet.

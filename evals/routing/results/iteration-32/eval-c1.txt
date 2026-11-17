@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high · ultracode
+OpenCode: #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: O=high (Terraform → deploy → seed → smoke are separate phases) makes ultracode the mechanism row: OpenCode has subagents but no workflow runtime (MECH1), so Claude takes the badge.
+Ultracode: start the prompt with "ultracode:" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.
