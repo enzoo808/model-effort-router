@@ -1,0 +1,3 @@
+Claude: ✅ RECOMMENDED AI · Mythos 5.2 · effort: high
+OpenCode: use Claude — unverified for biology-adjacent R&D.
+Evidence: Life Sciences Verification access makes Mythos 5.2 (Fable 5.2 without the biology safeguards) the genomics-gate pick; OpenCode stays unverified for biology-adjacent R&D, so Claude keeps the badge.

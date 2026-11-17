@@ -1,0 +1,6 @@
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh · ultracode
+OpenCode: #1 Gemini 4 Argon · effort: high · #2 Hy4 · effort: high
+Evidence: D=3 adversarial diagnosis (real-vs-artefact, bisection at W=3) fires ultracode; Opus 5.5 xhigh leads Argon at D=3 on HLE-Diamond 64.0 vs 56.7 and CritPt v2 67.5 vs 52.5.
+Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.
+Ultracode: start the prompt with "ultracode:" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.
+⚡ Claude /fast available (2.5x faster, 2× price).

@@ -9,8 +9,8 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-install)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-install)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-install)
-[![Policy](https://img.shields.io/badge/policy-iteration--31-8b949e?style=flat-square)](CHANGELOG.md)
-[![Regression evals](https://img.shields.io/badge/regression_evals-45-8b949e?style=flat-square)](#-validation)
+[![Policy](https://img.shields.io/badge/policy-iteration--32-8b949e?style=flat-square)](CHANGELOG.md)
+[![Regression evals](https://img.shields.io/badge/regression_evals-46-8b949e?style=flat-square)](#-validation)
 
 **[Quick start](#-quick-start)** · **[Install](#-install)** · **[Read the answer](#-reading-the-answer)** · **[How it works](#-how-it-decides)** · **[Examples](#-examples)** · **[Evidence](#-built-on-evidence-not-vibes)** · **[Changelog](CHANGELOG.md)** · **[🇹🇷 Türkçe](README.tr.md)**
 
@@ -104,7 +104,7 @@ Models that log or train on prompts are out unless *you* say the work is non-con
 <td valign="top">
 
 ### ✅ Verifiable
-45 deterministic regression prompts, a regex grader and consistency checks that run in CI — see [Validation](#-validation).
+46 deterministic regression prompts, a regex grader and consistency checks that run in CI — see [Validation](#-validation).
 
 </td>
 </tr>
@@ -376,13 +376,13 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 | **Fable 5.2** | Frontier scale (1000+ files) and biology-adjacent R&D (USD 8/40; `/fast` available) |
 | **Mythos 5.2** | Fable 5.2 with permissive safeguards — Life Sciences Verification Program only |
 
-**OpenCode Go arm** — the **19 rated models**, in tiers. Each Go model has its *own* monthly dollar cap, so what matters is how many *real* agent tasks a month of that cap buys. Tier membership is **by name** (Rule BUD1); the task counts below are one informational Arena snapshot (10 Nov 2026, every row from the same page):
+**OpenCode Go arm** — the **21 rated models**, in tiers. Each Go model has its *own* monthly dollar cap, so what matters is how many *real* agent tasks a month of that cap buys. Tier membership is **by name** (Rule BUD1); the task counts below are one informational Arena snapshot (13 Nov 2026, every row from the same page):
 
 | Tier | Models | Role |
 |---|---|---|
-| **Budget** — the default pairs | MiMo-V2.6-Flash 857 · DeepSeek V4.1 Flash 714 · GLM-5.3-Flash 375 · MiMo-V2.6-Pro 88 | 88–857 tasks per month of cap |
+| **Budget** — the default pairs | MiMo-V2.6-Flash 750 · DeepSeek V4.1 Flash 714 · GLM-5.3-Flash 429 · Hy4 109 · MiMo-V2.6-Pro 94 | 94–750 tasks per month of cap |
 | **Non-confidential only** | GPT 6 Luna 188 · Muse Spark 1.3 130 | Offered only if you say the work isn't confidential — some of them train on prompts |
-| **Premium** — escalation only | Kimi K3 18 · GLM-5.3 13 · Qwen3.8 Max 12 · Kimi K3.1 Pro 12 · Grok 4.7 5 | 5–18 tasks per month of cap; never in a routed pair, only as `#2` after a stated shortfall |
+| **Premium** — escalation only | Kimi K3 16 · GLM-5.3 16 · Kimi K3.1 Pro 13 · Qwen3.8 Max 12 · Qwen4 Max 10 · Grok 4.7 4 | 4–16 tasks per month of cap; never in a routed pair, only as `#2` after a stated shortfall |
 | **Gemini (GM1)** — overlay | Gemini 4 Argon | Go's plain `gemini-4-argon` (Not used / 0 days), open to confidential work; `#1` only at `D = 3` / `R = 3` on five rows, USD 30 cap — not a default pair |
 | **Unrated** — never selected | Qwen3.8 Flash | Every row under that name is "Qwen3.8-Flash-Next", a different open-weights model; `n/p` |
 | **Dominated** | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 · Gemini 3.8 Flash | Rated and tracked; no row ever emits them |
@@ -410,7 +410,7 @@ Raw numbers live in [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.m
 
 ## ✅ Validation
 
-`evals/routing/evals.json` is a deterministic regression set — **45 prompts** — graded by a pure-regex grader (no LLM in the loop). It checks the Claude model and effort, **both OpenCode picks** (model, effort, order), which side holds the badge, a non-trivial `Evidence:` line, and required / forbidden text for the confidentiality default.
+`evals/routing/evals.json` is a deterministic regression set — **46 prompts** — graded by a pure-regex grader (no LLM in the loop). It checks the Claude model and effort, **both OpenCode picks** (model, effort, order), which side holds the badge, a non-trivial `Evidence:` line, and required / forbidden text for the confidentiality default.
 
 ```bash
 python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # goldens vs grader
@@ -422,7 +422,7 @@ python scripts/check_readme_facts.py     # counts, pool size, iteration and tier
 
 These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
 
-**Where it stands (13 Nov 2026, iteration-31):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **45/45**. The badge table is read at the rung each line actually runs. A cold run of the nine prompts this change touches (fresh agents reading only `skill/SKILL.md`) passed **9/9** after two prompts were sharpened and one golden followed the reading both agents gave. Iteration-30's calibration record is [here](evals/routing/results/iteration-30/calibration.md). `i1` was skipped and the trigger eval is still a proxy. Details in [`evals/README.md`](evals/README.md).
+**Where it stands (17 Nov 2026, iteration-32):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **46/46**. The coding rows are now Hy4 · MiMo-V2.6-Pro and the `D = 2` badge cell is read at the rung the line runs. A full cold run of all 46 prompts (fresh agents reading only `skill/SKILL.md`, session default model class — no Sonnet was available to them) passed **46/46** after four one-shot re-runs. Details in [`evals/README.md`](evals/README.md).
 
 ### Known limits, stated plainly
 

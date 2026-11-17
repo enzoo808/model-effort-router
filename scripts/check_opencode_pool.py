@@ -85,7 +85,7 @@ def main() -> int:
     errors: list[str] = []
 
     # 1 -- roster -----------------------------------------------------------------
-    roster = table_after(skill, "**OpenCode pool — the 19 rated models**")
+    roster = table_after(skill, "**OpenCode pool — the 21 rated models**")
     roster_caps = {}
     for r in roster:
         if len(r) < 10 or not r[0].isdigit():
@@ -107,8 +107,8 @@ def main() -> int:
     for m, cap in roster_caps.items():
         if m in pool and pool[m]["cap_usd"] != cap:
             errors.append("roster cap for %s is USD %d, policy says USD %d" % (m, cap, pool[m]["cap_usd"]))
-    if len(roster_caps) != 19:
-        errors.append("roster must hold exactly 19 models, found %d" % len(roster_caps))
+    if len(roster_caps) != len(names):
+        errors.append("roster must hold exactly %d models, found %d" % (len(names), len(roster_caps)))
 
     # 1b -- tasks/month recomputed from the Arena snapshot; tier membership is BY NAME (Rule
     # BUD1), with a sanity bound that the named premium models stay at or below 35 tasks/month.

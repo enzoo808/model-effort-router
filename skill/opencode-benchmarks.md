@@ -1,4 +1,4 @@
-# OpenCode Go evidence — iteration-23 (updated through iteration-28; §15 is the 11 November 2026 update)
+# OpenCode Go evidence — iteration-23 (updated through iteration-32; §17–§18 are the 17 November 2026 update)
 
 > **Cleanup note.** This file still names `skill/benchmarks.json`, `skill/benchmark_frontiers.json` and the compile / validate / test / ablate scripts of the Codex-era benchmark pipeline. They were removed from the tree after iteration-25 (last present at commit `7c24c81`, e.g. `git show 7c24c81:skill/benchmarks.json`). The router never read them.
 
@@ -838,3 +838,212 @@ E7 is two rungs for DeepSeek V4.1 Flash: `D ≤ 1` `low`, `D ≥ 2` `max`; `high
 **Open items.** (1) The Vals chart's revision. (2) Per-rung data for GLM-5.3-Flash. (3) GLM-5.3 `high` vs `max` on Vals (A1-OC unchanged). (4) AutomationBench-AA `high` ≥ `max` has no interval.
 
 **Sources (read 2026-11-11/12).** artificialanalysis.ai/models/{deepseek-v4-1-flash-1017, -1017-high, -1017-non-reasoning, glm-5-3, glm-5-3-low, glm-5-3-flash} (embedded model data and summaries) · vals.ai/benchmarks/terminal-bench-4 (table updated 11/9/2026; Reasoning Effort chart, graphDate 2026-11-09) · arena.ai/leaderboard/agent (Nov 10, 2026) · benchlm.ai/benchmarks/mercordeepswe11 (mirror, 10 Nov capture).
+
+
+---
+
+## 17. Iteration-32 — the 17 November 2026 OpenCode-side refresh (Qwen4 Max, Hy4, the Arena column, the free lane)
+
+Go page, Go's `/inference/go/v1/models` catalogue, the models.dev `opencode-go` entries, the Console/Zen
+models page and the live `opencode.ai/inference/v1/models` endpoint were all re-read **2026-11-17**. The
+30 Nov 2026 time-boxed facts (Argon half price and cap, DeepSeek's ZDR renewal, Opus 4.8 `/fast`) were
+deliberately **not** processed — that refresh is for 1 Dec.
+
+### 17.1 Go catalogue changes since 11 Nov
+
+| Item | Before (11 Nov) | After (17 Nov) | Source |
+|---|---|---|---|
+| Qwen4 Max | — | **on Go** (`qwen4-max`, `alibaba/qwen4-max`, released 2026-11-16) | Go page + `/v1/models` + models.dev |
+| Hy4 flash Free | — | **on Go** (`hy4-flash-free`, `tencent/hy4-flash`, released 2026-11-16), unlimited | Go page + `/v1/models` |
+| Grok 4.6, Kimi K2.6, MiniMax M2.7, Big Pickle, LL Alpha Free, Exo Free, Jev 1.13, Nemotron 3 Ultra / 3.5 Lightning / 3.5 Super VL Free | on the never-selected record | **left Go** (Grok 4.6 / Kimi K2.6 / MiniMax M2.7 / Jev 1.13 / the Nemotron trio remain on Console/Zen) | Go page + `/v1/models` |
+| MiniMax M3 pricing | 0.30/1.20 flat | context-tiered: > 512K doubles (0.60/2.40) | Go page |
+| Qwen3.7 Plus context | ≤ 256k (read as the tier boundary) | Go catalogue limit is 1M; 256k is only the price-tier boundary | `/v1/models` |
+| Qwen3.8 Max context | 984k (AA figure) | Go catalogue says 1M (AA listing still 984k) | `/v1/models`, models.dev |
+| MiMo-V2.5 / MiMo-V2.5-Pro | on Go | **left Go**: absent from the Console Go model table, the `/v1/models` catalogue and the Go privacy table; `mimo-v2.5-free` is absent from Zen's free list and live endpoint too | Console Go table + `/v1/models` + Go privacy table, Zen page + `/inference/v1/models` (all read 17 Nov) |
+| Plans | Go USD 10/month, Go Plus USD 40 | unchanged; **new Go Teams** USD 20/member/month (per-model limits USD 5 above Go). Routed plan stays Go; 5-hour 20% / weekly 50% / monthly 100% unchanged | Go page |
+| DeepSeek peak hours | 01:00–04:00 and 06:00–10:00 UTC Mon–Fri | unchanged | Go page |
+
+All 19 pool models keep their cap, price, context, effort variants, image input, retention/training status
+and peak rules (the Go privacy table, read 17 Nov, agrees with 11 Nov: Grok 4.7 / GPT 6 Luna / Haiku 5.5 =
+30 days; Muse Spark = trains; DeepSeek 0 days with the monthly ZDR agreement through 30 Nov 2026; everyone
+else 0 days, Argon included — the `/v1/models` `zdr` flag for Argon reads `false`, but Go's privacy table
+says Not used / 0 days and the router follows the privacy table).
+
+### 17.2 The two new models (rows at the rung the router would emit)
+
+Both launched 2026-11-16 on Go; single revision each; rated on independent rows (the Qwen3.8 Flash
+precedent says a model with no independent row for the served revision stays unrated — the converse
+applies here).
+
+**Qwen4 Max** (`low`/`high`/`xhigh` + toggle + token budget; emit `xhigh` — AA's 16 Nov changelog entry ("Intelligence Index: 43") names **no rung**, so the rung is `n/p` by the Hy4 precedent; the Arena row is the "(xHigh)" one). Go: cap USD 15, 1.50/4.50, cached read 0.075,
+1M context (AA lists 984k), output 262144, text+image+video, not trained on, 0-day.
+
+| Row | Value | Source |
+|---|---|---|
+| AA Intelligence Index v5.0.1 | 43 (USD 3.27/task) | artificialanalysis.ai comparison `qwen4-max-vs-tencent-hy4`, read 17 Nov |
+| AA-Briefcase v1.1 | 1686 | same page |
+| AutomationBench-AA | 72.6 | same page |
+| Terminal-Bench 4.0 | 48.5 | same page |
+| FrontierCode-AA 2.0 | 26.5 | same page |
+| AA-Omniscience v1.1 | 28 | same page |
+| GDP.pdf | 26.2 | same page |
+| HLE-Diamond | 44.9 | same page |
+| CritPt v2 (hard) | 43.0 | same page |
+| Terminal-Bench-Science 0.1 | 23.3 | same page |
+| Vals TB 4.0 | 48.48 | vals.ai/benchmarks/terminal-bench-4, read 17 Nov |
+| Arena Agent (13 Nov snapshot) | 7.46 ±1.34 at USD 1.46 p50, "(xHigh)" row, **Preliminary** | arena.ai/leaderboard/agent |
+
+AA's 16 Nov changelog entry states only the II 43 headline; nothing beyond the comparison page's values is
+transcribed. Qwen4 Max **dominates Qwen3.8 Max** (43 vs 34 on the v5 Index at 3.27 vs 10.02; TB 4.0
+48.5 vs 39.0; Briefcase 1686 vs 1621).
+
+**Hy4** (`none`/`high`; emit `high`, its only reasoning rung). Go: `hy4`, Tencent proprietary (closed),
+cap USD 60, 0.834/2.501, 1M context (input 983010 / output 65536), text+image, not trained on, 0-day.
+
+| Row | Value | Source |
+|---|---|---|
+| AA Intelligence Index v5.0.1 | 35 (USD 1.03/task), **rung n/p** (AA labels none) | artificialanalysis.ai/models/tencent-hy4, read 17 Nov |
+| AA-Briefcase v1.1 | 1446 | comparison page |
+| AutomationBench-AA | 65.6 | comparison page |
+| Terminal-Bench 4.0 | 37.4 | comparison page |
+| FrontierCode-AA 2.0 | 31.4 | comparison page |
+| AA-Omniscience v1.1 | 5 | comparison page |
+| GDP.pdf | 21.6 | comparison page |
+| HLE-Diamond | 32.7 | comparison page |
+| CritPt v2 (hard) | 39.0 | comparison page |
+| Terminal-Bench-Science 0.1 | 12.9 | comparison page |
+| Vals TB 4.0 | 39.39 (rung n/p) | vals.ai, read 17 Nov |
+| Arena Agent (13 Nov snapshot) | 5.67 ±1.25 at USD 0.55 p50, **Preliminary** | arena.ai |
+
+Because Hy4's AA/Vals/Arena rows carry **no rung label**, they are `n/p` at the rung the line writes for
+the **badge** table (the GLM-5.3-Flash workflow-cell precedent) but they do feed the Step 4-OC consensus
+(as GLM-5.3-Flash's unlabelled rows do). AA tested Hy4 with reasoning on (its page marks it a reasoning
+model and lists no separate non-reasoning row), which is consistent with the `high` row but is not
+published as such — hence `n/p`, not a guess.
+
+### 17.3 Rating, tiers and the derive output
+
+- Both models are **rated** (independent rows at the served revision). Qwen4 Max is premium-class by cap
+  pressure (USD 1.46 p50 ÷ USD 15 cap ≈ 9.7% per task — the BUD1 premium band) and Hy4 budget-class
+  (USD 0.55 ÷ USD 60 ≈ 0.9% — the budget band), so Qwen4 Max joins tier **P** and Hy4 tier **B**.
+- `derive_opencode_rows.py` with Hy4 in `ROUTABLE`: **agentic-code** and **terminal-tool** — Hy4 1.00
+  (n=3: AA TB 4.0 1.00, Arena 1.00, Vals TB 4.0 1.00), MiMo-V2.6-Pro 0.63, DeepSeek 0.53, GLM-5.3-Flash
+  0.49. Hy4 is top-2 of the budget tier on three independent evaluators, so the new-model rule puts it in
+  those two pairs: **Hy4 · MiMo-V2.6-Pro** (both columns; GM1 overlays Argon at `D = 3` / `R = 3` and the
+  row's former `#1` (Hy4) becomes `#2`). No other row moved: deep-reasoning, science, doc-data stay
+  MiMo-V2.6-Pro · DeepSeek; knowledge-work stays DeepSeek · MiMo-V2.6-Pro; workflow-automation stays
+  GLM-5.3-Flash · DeepSeek; long-context, research-synthesis and the `D ≤ 1` row unchanged.
+- Qwen4 Max is rated but **not emitted**: it is not a BUD1 budget name and A1-OC does not name it. Its
+  natural A1-OC slot is `knowledge-work` (Briefcase 1686 > Qwen3.8 Max 1621 > DeepSeek 1570) — that swap
+  and the possible demotion of Qwen3.8 Max to dominated are **judgement calls**, listed in the PR.
+
+### 17.4 Badge consequence of the pair change
+
+With Hy4 as OpenCode `#1` on `agentic-code` / `terminal-tool`, the `D = 2` badge cell loses its
+rung-matched OpenCode row (Hy4's rows are `n/p` at the rung the line writes), so the cell falls to
+efficiency (Hy4 USD 1.03 per AA task vs Sonnet 5.5 `high` 1.64) and **gains the dagger** (the same shape
+as the workflow-automation cell). Side stays OpenCode (SM1); `D = 3` / `R = 3` cells unchanged. The
+dagger flips four goldens to `low-confidence` (`b1`, `b2`, `o2`, and the new `ter1`). The GM1 overlay
+changes `#2` in `c2`, `c3`, `d1`, `v1` to Hy4 and `#1` in `p1` to Hy4.
+
+### 17.5 Arena refresh — one snapshot, 13 Nov 2026
+
+Whole column refreshed (values, ± ci, p50 costs) from the Agent Arena page headed "Nov 13, 2026"
+(read 17 Nov). Cost/task P50 → tasks/month = round(cap ÷ cost): MiMo-V2.6-Pro 0.16 → 94 · GLM-5.3 0.95 → 16 ·
+Kimi K3 0.91 → 16 · Grok 4.7 3.35 → 4 · Muse Spark 1.3 0.46 → 130 · GLM-5.3-Flash 0.14 → 429 · MiMo-V2.6-Flash 0.08 → 750 ·
+DeepSeek 1017 0.14 → 714 · GPT 6 Luna 0.08 → 188 · Qwen3.8 Max 1.22 → 12 · MiniMax M3 0.35 → 171 · Qwen3.7 Plus 0.18 → 333 ·
+Claude Haiku 5.5 0.09 → 167 · Gemini 4 Argon 0.68 → 44 (≈ 20 at list prices) · Kimi K3.1 Pro 1.12 → 13 · Hy4 0.55 → 109 ·
+Qwen4 Max 1.46 → 10. Net improvement moved too (Opus 5.5 18.19, Sonnet 5.5 15.29, Argon 10.00, Hy4 5.67,
+Qwen4 Max 7.46, MiMo-V2.6-Pro 1.50, DeepSeek 1.13, GLM-5.3-Flash 3.70, …); the 10 Nov rows are gone from the
+anchor and are never compared with these.
+
+### 17.6 AA rows and product claims re-checked
+
+- **Gemini 4 Argon (Medium): II 48** (AA changelog 2026-11-13). E11's "medium has no independent figure"
+  is stale; the router keeps writing `high` (every GM1 and badge figure is a `high`-rung one — the
+  evidence rung). Whether `medium` (Google's default, 48 vs high 50, no published interval) should become
+  the emitted rung is a judgement call, listed in the PR.
+- **DeepSeek V4 Pro 0813 (High): II 21** (AA changelog 2026-11-13) — the Max row (36) still dominates it;
+  E6 unchanged.
+- **MECH1 premise verified**: opencode.ai/docs/agents (read 17 Nov) — subagents (`primary`/`subagent`/
+  `all`), per-agent models with `#variant`, built-ins `build`/`plan`/`general`/`explore`; v2.3.0
+  (2026-11-13) made subagents run in the background by default. **No workflow runtime** (no scripted
+  many-agent workflow like Claude Code's `ultracode`); the only later release is process-daemon v0.6.0
+  (16 Nov, not the agent). `variant_cycle` and the effort-variant lists are unchanged (Go `/v1/models`
+  re-read 17 Nov).
+
+### 17.7 Free lane (17 Nov)
+
+- **Go adds Hy4 flash Free** (`tencent/hy4-flash`): unlimited, zero retention, no training, 1M context
+  (983040 / 65536), `none`/`high`, image input — unmeasured, never selected (FR1).
+- **Console/Zen adds** Inkling 2 Small Free (retains and may train; no EU/IS/LI/NO/CU/IR/KP/RU/UA/VE) and
+  Flint 40B Free (may improve the model, 30-day retention); **Crouton Alpha Free deprecated 9 Nov** and
+  Pulse Alpha Free 6 Nov (gone).
+- **The free twins' context windows are no longer `n/p`**: the live models endpoint
+  (`opencode.ai/inference/v1/models`, read 17 Nov) gives `glm-5.3-flash-free` and
+  `deepseek-v4.1-flash-free` 200k context / 32k output (the paid Flash is 1M);
+  `minimax-m3.1-flash-free` is absent from that endpoint (`n/p`).
+- **LongCat 2.5 Free** carries a 100 requests/day limit (zero retention, hosted in China; the 11 Nov
+  read already had it — not new).
+- MiniMax M3.1 Flash Free is **in Zen's deprecation table dated 17 Nov 2026** and absent from the live
+  `/v1/models` endpoint — it is no longer a live twin (FR1's twin list drops it). Its paid Go listing
+  (USD 20 cap) is unchanged and stays never selected.
+- MiMo-V2.6-Flash Free: Zen's free list says the free time is "to collect feedback", and the page's
+  privacy exceptions no longer name it as retaining or training — the old "trains on prompts" clause
+  in FR1 is stale (page change, 17 Nov read); it stays unmeasured and never selected.
+
+**Sources (read 2026-11-17).** opencode.ai/docs/go and /console/models · opencode.ai/inference/go/v1/models
+and /inference/v1/models · models.dev/providers/opencode-go · opencode.ai/docs/agents ·
+github.com/anomalyco/opencode releases + CHANGELOG (v2.3.0, 13 Nov) ·
+artificialanalysis.ai/models/comparisons/qwen4-max-vs-tencent-hy4, /models/tencent-hy4, /models/qwen4-max,
+/changelog · vals.ai/benchmarks/terminal-bench-4 · arena.ai/leaderboard/agent (header "Nov 13, 2026").
+
+---
+
+## 18. Iteration-32 record for iteration-33 — the cap model, GLM-5.3's cap, the 30 Nov items
+
+Three facts checked on 17 Nov and recorded here **without changing any rule text** (the rewrite is
+iteration-33's; CONTRIBUTING §2 scope).
+
+### 18.1 The paid allowance is shared, not per model (verified fact, 17 Nov)
+
+The Go page's Usage limits section, verbatim: "The paid models you use on Go **share one allowance**. On Go
+Teams, each member has their own allowance across models." · "The **5-hour limit** is 20% of your monthly
+allowance… The **weekly limit** is 50% of your monthly allowance. It resets on Monday at 00:00 UTC." ·
+"**Switching models draws from the same allowance.** If you reach a limit, you can use a free model or turn
+on Extra Usage…" · "Each model's monthly limit shows how much usage your plan covers **if you use only that
+model over the month**. For example, $1.50 of usage on a model with a $15 limit uses 10% of your monthly
+allowance." (opencode.ai/docs/go, read 2026-11-17; corroborated by `go.monthly_usage` in the
+`/inference/go/v1/models` catalogue, same date.)
+
+So a model's "cap" is a **weight** on one shared monthly allowance; the 5-hour and weekly windows sit on the
+shared allowance too. The skill's per-model reading is dated to the 6 Oct page state (benchmarks §1,
+"per model, not shared", read 6 Oct) — a documented page change. Rule text this invalidates (listed, **not
+rewritten** until iteration-33): **CAP1**'s paid-exhaustion chain (when the shared allowance is out, every
+paid model is out at once; only the Zen free twins, Rule FR1, or Extra Usage continue); the **SKILL.md intro
+line** "each Go model's **own** dollar cap … 5-hour window = 20% of a model's cap, weekly 50%"; **GM1**'s
+"its Go cap is USD 30 … it buys about 44 real agent tasks a month" framing (the USD 30 behaves as a
+30-weight of the shared allowance, not a private purse). BUD1's tier membership is unaffected. The README/README.tr tier paragraph restates the intro line ("each
+Go model has its *own* monthly dollar cap") and gets the same rewrite in iteration-33.
+
+### 18.2 GLM-5.3's monthly limit: the two Go sources disagree (recorded, pool keeps USD 15)
+
+- `opencode.ai/inference/go/v1/models` (read 2026-11-17): `go.monthly_usage` for `glm-5.3` = **100**
+  (go-plus 200, go-teams 105) — the same shape as DeepSeek's 30 Oct raise.
+- `opencode.ai/console/go` limits table (read 2026-11-17): GLM-5.3 monthly limit "Go: **$15**; Go Plus:
+  $120" — and GLM-5.3 is the only model where the table disagrees with the catalogue (every other pool
+  model matches, e.g. DeepSeek 1017 $100/$200, Hy4 $60/$240, Argon $30/$120).
+
+Conflict → per the standing rule, the pool table keeps **cap USD 15** (read 10–11 Oct/Nov) and the tasks/mo
+16 stays (15 ÷ 0.95). The catalogue's 100 is recorded here for iteration-33, which should re-read both
+sources before changing the pool table; A1-OC's "about 3–8% of its monthly cap" band and the "~13% of its
+cap per AA task" note are computed off 15 and stay.
+
+### 18.3 The 30 Nov time-boxed items — nothing new on the page (17 Nov)
+
+- Gemini 4 Argon: the Go page prints only "The 50% discount applies through November 30, 2026" — the cap
+  after 30 Nov is still not stated. The catalogue carries `gemini-4-argon` at `monthly_usage.go = 30` with a
+  price multiplier `date >= 2026-12-01, factor 2` (list prices 2/10/0.1), consistent with SKILL.md. No text
+  change; Argon's cap-after-30-Nov stays `n/p` for 1 Dec.
+- DeepSeek: "ZDR agreement is renewed monthly. The current agreement is valid through November 30, 2026" —
+  unchanged wording.

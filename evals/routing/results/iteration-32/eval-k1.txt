@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Fable 5.2 · effort: high
+OpenCode: use Claude — unverified for biology-adjacent R&D.
+Evidence: Biology-adjacent R&D is a deciding gate: somatic variant calling routes to Fable 5.2 (separate weekly limit) and no pool model is verified, so OpenCode declines.
+Fable 5.2: its biology classifiers may block research tasks — on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused.
+⚡ Claude /fast available (2.5x faster, 2× price).

@@ -1,0 +1,1 @@
+Clarify: what counts as inactive — the is_active flag set false, or no login for N days — and should rows be hard-DELETEd or soft-deleted/backed up first?
