@@ -1,0 +1,5 @@
+Claude: ✅ RECOMMENDED AI · Fable 5.2 · effort: high
+OpenCode: unverified — use Claude
+Evidence: Biology-adjacent R&D is a deciding gate: Fable 5.2 at high matches Opus 5.5 at max on FrontierCode 2.0 (vendor-reported), and no pool model's biology safeguards are verified.
+Fable 5.2: its biology classifiers may block research tasks — on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused.
+⚡ Claude /fast available (2.5x faster, 2× price).

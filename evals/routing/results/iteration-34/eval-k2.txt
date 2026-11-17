@@ -1,0 +1,3 @@
+Claude: ✅ RECOMMENDED AI · Mythos 5.2 · effort: high
+OpenCode: unverified — use Claude
+Evidence: Biology-adjacent R&D is a deciding gate, and the stated Life Sciences Verification Program access makes Mythos 5.2 (Fable 5.2 without the biology safeguards) the candidate; no pool model's safeguards are verified.

@@ -4,6 +4,19 @@ Routing-policy iterations (the OpenCode Go era and the Codex era), newest first.
 
 ---
 
+## iteration-34 (17 Nov 2026): the `c2` ambiguity, the Turkish mirror, stale cap wording
+
+No new routing facts. A bounded cleanup.
+
+- **`c2` diagnosed.** The eval had missed on a different limb in each of three runs. Three fresh Sonnet 5.5 agents answered it alone (skill file and prompt only): one correct, two put the badge on OpenCode through the "`D = 3` analysis on a flagship tag" paragraph, because the text never said whether a bisect-and-judge diagnosis *drives the artefact* (Opus 5.5 line, table row, Claude) or is *analysis* (Sonnet 5.5 line, OpenCode †). MECH1 was **not** the cause (all six agents said ultracode comes from UC1's width limb, not from `O = high`), nor the prompt wording or the O1 phase count.
+- **Fix, three phrases.** D3DIAG gains one sentence: diagnosis that bisects, reproduces or runs the system drives the artefact and stays on the flagship list; only diagnosis read from code, logs or a write-up alone is analysis. The Step 4 flagship note says "(a bisect or a reproduction run drives it)", and the badge paragraph reads "auditing without running anything". Mirrored in `routing_policy.json` (D3DIAG block, plus a negative assertion for the old badge-paragraph opening). `SKILL.md` +247 bytes (+0.32%). After the fix three fresh agents all gave the Opus 5.5 line and the Claude badge (before: 1 of 3). The OpenCode `#2` still splits (Hy4 in one agent, MiMo-V2.6-Pro in two; it was MiMo-V2.6-Pro in all three baseline agents): the two-tag pair rule, left open.
+- **Turkish mirror.** `claude-ai/instructions.tr.md` brought up to the rules of iteration-33 plus the clarification above (it had stopped at iteration-31 with a partial iteration-33 pass; iteration-32's Hy4, Qwen4 Max and 13 Nov Arena rows were missing). The footer lists the deliberate omissions.
+- **Stale wording.** "USD 60 caps" in `README.md`, `README.tr.md` and `docs/social-preview.html` now reads "USD 60–100 caps" (the labelling example's two Flash models); the social preview PNG was re-rendered.
+- **Two re-reads, 17 Nov (`opencode-benchmarks.md` section 20).** Arena still lists Hy4 as Preliminary (5.67% ±1.25%, USD 0.55, page headed 13 Nov); AA's SciCode page still says "under review". No rule or row changed.
+- **Evals: 48, unchanged.** Cold run (`results/iteration-34/`, six fresh Claude Sonnet 5.5 agents reading only `SKILL.md`, eight prompts each): first pass **47/48**, `c2` passes. `a5` (200-review tone batch, expected `Sonnet 5.5 · medium`) missed with `high`, and a fresh re-run missed the same way: **open finding**, not touched by this iteration's edit (it passed in iteration-33).
+
+---
+
 ## iteration-33 (17 Nov 2026): one shared Go allowance in the rules, GLM-5.3 at USD 100, PO1 in code
 
 Sources read 17 Nov 2026 (public, no login): opencode.ai/console/go (limits table read twice, 14:11 and 14:22 UTC, collapsed and expanded), `/inference/go/v1/models` (14:13 UTC), arena.ai/leaderboard/agent (14:26 UTC). Details: `skill/opencode-benchmarks.md` §19, `opencode-evidence.json` `iteration_33`.

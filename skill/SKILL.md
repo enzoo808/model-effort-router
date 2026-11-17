@@ -11,7 +11,7 @@ description: >-
 
 # Claude & OpenCode model / effort router
 
-<!-- routing-policy-version: iteration-33 -->
+<!-- routing-policy-version: iteration-34 -->
 
 Route the user's prompt — **do not run it**. Say which model + effort to use on
 **Claude** and on **OpenCode** (**two** models, `#1` / `#2`, each with its own

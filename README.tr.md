@@ -9,7 +9,7 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-kurulum)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-kurulum)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-kurulum)
-[![Policy](https://img.shields.io/badge/politika-iteration--33-8b949e?style=flat-square)](CHANGELOG.md)
+[![Policy](https://img.shields.io/badge/politika-iteration--34-8b949e?style=flat-square)](CHANGELOG.md)
 [![Regression evals](https://img.shields.io/badge/regresyon_eval-48-8b949e?style=flat-square)](#-doğrulama)
 
 **[Hızlı başlangıç](#-hızlı-başlangıç)** · **[Kurulum](#-kurulum)** · **[Cevabı oku](#-cevabı-okumak)** · **[Nasıl karar verir](#-nasıl-karar-verir)** · **[Örnekler](#-kullanım-örnekleri)** · **[Kanıt](#-hisle-değil-kanıtla)** · **[Değişiklik günlüğü](CHANGELOG.md)** · **[🇬🇧 English](README.md)**
@@ -332,7 +332,7 @@ Her kapı ve kural dahil adım adım ayrıntı: **[docs/how-it-works.md](docs/ho
 
 | Görev | Claude | OpenCode `#1` · `#2` | Önerilen |
 |---|---|---|---|
-| 200 yorumu olumlu/olumsuz etiketle | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` toplu iş; USD 60 limitli Flash katmanı Claude kotasını korur |
+| 200 yorumu olumlu/olumsuz etiketle | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` toplu iş; USD 60–100 limitli Flash katmanı Claude kotasını korur |
 | Ödeme modülünü 40 dosyada yeniden düzenle | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **OpenCode** — `D=2`; Sonnet 5.5 `high` önde ama AA görevi başına USD 1.64 vs 0.26 |
 | Staging'i sıfırdan kur (Terraform, 12 servis, seed, smoke) | `Sonnet 5.5 · high · ultracode` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — derleme, seed ve dağıtılmış ortamda smoke koşusu birbirini besler; OpenCode'da workflow çalışma zamanı yok |
 | Prod'da ara sıra patlayan race condition'ı bul | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, uyumlu iki AA satırı |
@@ -404,7 +404,7 @@ python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, 
 
 Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
 
-**Durum (17 Kasım 2026, iteration-33):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **48/48**. Go'nun ücretli modelleri tek bir kotayı paylaşıyor ve kota kuralları artık bunu söylüyor (CAP1); çift sırası (PO1) kodda türetiliyor. 48 promptun tamamının soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze Claude Sonnet 5.5 ajanları, ajan başına sekiz prompt) ilk geçişte **46/48** geçti. `e1` iki etiketli sıradaki bir boşluğu gösterdi; boşluk PO1'de kapatıldı ve `e1` artık geçiyor. `c2` açık bulgu olarak kalıyor: üç koşuda her seferinde farklı bir yerde kaldı. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
+**Durum (17 Kasım 2026, iteration-34):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **48/48**. 48 promptun tamamının soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze Claude Sonnet 5.5 ajanları, ajan başına sekiz prompt) ilk geçişte **47/48** geçti. Önceki üç koşuda her seferinde farklı bir yerde kalan `c2` artık geçiyor: iteration-34'ün tek cümlelik D3DIAG açıklaması, commit bisect eden veya sistemi çalıştıran bir teşhisin artefaktı sürdüğünü söylüyor (`#2` OpenCode modeli ajanlar arasında hâlâ ayrışıyor). Açık bulgu `a5`: 200 yorumluk ton etiketleme `Sonnet 5.5 · medium` yerine iki kez `high` çıktı. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
 
 ### Bilinen sınırlar
 

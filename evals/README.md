@@ -1,5 +1,12 @@
 # model-secici eval set
 
+> **iteration-34 (17 Nov 2026): the `c2` ambiguity, the Turkish mirror, stale cap wording.**
+>
+> - **Rule.** D3DIAG gains one sentence (diagnosis that bisects, reproduces or runs the system drives the artefact and stays on the flagship list; diagnosis read from code, logs or a write-up alone is analysis), mirrored in `routing_policy.json` with a negative assertion; Step 4's flagship note and the badge paragraph carry a short matching phrase. `SKILL.md` +247 bytes. The `c2` baseline (three fresh agents, before) gave the Claude badge once in three; after, three in three. The OpenCode `#2` of `c2` still splits (the two-tag pair rule), left open.
+> - **Evals: 48**, none added or changed. `--selftest` 48/48; the five CI commands are green.
+> - **Cold-agent run** (`results/iteration-34/`, six fresh Claude Sonnet 5.5 agents reading only `skill/SKILL.md`, eight prompts each): first pass **47/48**, `c2` passes. `a5` (the 200-review tone batch; expected `Sonnet 5.5 · medium`) wrote `high`; a fresh re-run missed the same way, so it is an open finding. The iteration-34 edit does not touch its rules.
+> - **Re-reads, no change:** Hy4's Arena row is still Preliminary; AA's SciCode is still under review (`opencode-benchmarks.md` section 20).
+
 > **iteration-33 (17 Nov 2026): one shared Go allowance in the rules, GLM-5.3 at USD 100, PO1 in code.**
 >
 > - **Rule.** CAP1 now describes one allowance shared by every paid Go model. A model's limit is a weight, and switching models never gets past a limit. When a limit is reached or near, the pair stays and `Evidence:` names a Zen free twin, Extra Usage or the Claude line. PO1's cap-efficiency tie-break is implemented in `scripts/derive_opencode_rows.py`: a BD1 direction read head-to-head, else `tasks/mo` (a proxy). `check_opencode_pool.py` enforces the derived order. GLM-5.3's Go limit is USD 100 (two console readings plus the catalogue).

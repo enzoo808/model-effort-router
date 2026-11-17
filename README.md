@@ -9,7 +9,7 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-install)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-install)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-install)
-[![Policy](https://img.shields.io/badge/policy-iteration--33-8b949e?style=flat-square)](CHANGELOG.md)
+[![Policy](https://img.shields.io/badge/policy-iteration--34-8b949e?style=flat-square)](CHANGELOG.md)
 [![Regression evals](https://img.shields.io/badge/regression_evals-48-8b949e?style=flat-square)](#-validation)
 
 **[Quick start](#-quick-start)** · **[Install](#-install)** · **[Read the answer](#-reading-the-answer)** · **[How it works](#-how-it-decides)** · **[Examples](#-examples)** · **[Evidence](#-built-on-evidence-not-vibes)** · **[Changelog](CHANGELOG.md)** · **[🇹🇷 Türkçe](README.tr.md)**
@@ -330,7 +330,7 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 
 | Task | Claude | OpenCode `#1` · `#2` | Recommended |
 |---|---|---|---|
-| Label 200 reviews positive/negative | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` bulk work; Flash tier on USD 60 caps keeps Claude's quota |
+| Label 200 reviews positive/negative | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` bulk work; Flash tier on USD 60–100 caps keeps Claude's quota |
 | Refactor the payment module across 40 files | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **OpenCode** — `D=2`; Sonnet 5.5 `high` leads, but USD 1.64 vs 0.26 per AA task |
 | Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · high · ultracode` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — build, seed and a smoke run on the deployed env feed each other; OpenCode has no workflow runtime |
 | Find the race condition that flakes in prod | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, two agreeing AA rows |
@@ -422,7 +422,7 @@ python scripts/check_readme_facts.py     # counts, pool size, iteration and tier
 
 These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
 
-**Where it stands (17 Nov 2026, iteration-33):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **48/48**. Go's paid models share one allowance, and the cap rules now say so (CAP1); the pair order (PO1) is derived in code. A full cold run of all 48 prompts (fresh Claude Sonnet 5.5 agents reading only `skill/SKILL.md`, eight prompts each) passed **46/48** on the first pass. `e1` exposed a two-tag ordering gap, now closed in PO1 and passing; `c2` stays an open finding (it missed on a different limb in each of three runs). Details in [`evals/README.md`](evals/README.md).
+**Where it stands (17 Nov 2026, iteration-34):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **48/48**. A full cold run of all 48 prompts (fresh Claude Sonnet 5.5 agents reading only `skill/SKILL.md`, eight prompts each) passed **47/48** on the first pass. `c2`, the eval that had missed on a different limb in three earlier runs, now passes: iteration-34's one-sentence D3DIAG clarification says a diagnosis that bisects or runs the system drives the artefact (its `#2` OpenCode model still splits across agents). `a5` is the open finding: the 200-review tone batch came out `Sonnet 5.5 · high` instead of `medium` twice. Details in [`evals/README.md`](evals/README.md).
 
 ### Known limits, stated plainly
 

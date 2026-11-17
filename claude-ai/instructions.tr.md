@@ -10,6 +10,7 @@
 > **8 Ekim 2026 (iteration-22):** **Claude Haiku 5.5** (7 Eki) Haiku 4.5'in yerini aldı — maliyet seçimi (Kural H1).
 > **14 Ekim 2026 (iteration-23):** OpenCode **varsayılan** (Kural SM1) ve havuz **fiyat-performans katmanına** daraltıldı (Kural BUD1).
 > **20 Ekim 2026 (iteration-24):** **ücretsiz hat** (Kural FR1: MiniMax M3.1 Flash Free) ve **Gemini yuvası** (Kural GM1: Gemini 4 Argon, yalnız Go'nun Contributor yolu → yalnız gizli olmayan iş) eklendi; havuz 19 model.
+> **17 Kasım 2026 (iteration-32…34):** **Hy4** (bütçe, `agentic-code`/`terminal-tool` `#1`) ve **Qwen4 Max** (premium) eklendi, havuz 21 model; Arena sütunu 13 Kasım anlık görüntüsüne yenilendi; Go'nun ücretli modelleri **tek paylaşılan kotayı** paylaşır (CAP1; bir modelin limiti o kotadaki ağırlığıdır); D3DIAG: bisect/yeniden üretim/çalıştırma artefaktı sürer, amiral gemisi listesinde kalır.
 > **13 Kasım 2026 (iteration-31):** Rozet tablosu, her satırın gerçekten yazıldığı kademede yeniden türetildi (Claude: `D = 2`'de Sonnet 5.5 `high`, `D = 3`'te Opus 5.5 `xhigh`; AA, 13 Kas). `knowledge-work` `R ≤ 2`'de artık **OpenCode** † (o kademede tek ölçüm), `R = 3` sütunu derinliğe göre ikiye ayrıldı, `science` `D = 3`'te Claude.
 > **13 Kasım 2026 (iteration-30):** Kural O1 daraltıldı — bir değişikliğin kendi kontrolleri (CI, e2e/eval suite, taze ajanlarla eval koşusu) ve onu anlatan README/changelog/doküman artık ayrı faz sayılmaz; `ultracode` yalnız gerçekten birbirini besleyen iş yüklerinde veya 100+ yargı gerektiren birimde çıkar.
 > **11 Kasım 2026 (iteration-28):** Go, DeepSeek V4.1 Flash'ın **1017** sürümünü sunuyor (Go kataloğu ve models.dev); DeepSeek kanıtı 1017 aynı-sürüm satırlarına yeniden dayandırıldı, eski sürümün rakamları (II 39, TB 27, DeepSWE 71.7, Agent Arena 4.02, Vals TB 2.1) hiçbir satırı veya rozeti desteklemez. Satır kayması: `agentic-code`/`terminal-tool`/`deep-reasoning`/`science` MiMo-V2.6-Pro ile açılır (ikinci DeepSeek), `knowledge-work` DeepSeek ile açılır, `workflow-automation` GLM-5.3-Flash ile açılır, `long-context` `R ≤ 2`'de GLM-5.3-Flash ile. Görev/ay sütunu 10 Kasım Arena anlık görüntüsüne yenilendi; DeepSWE benchlm aynasından düşük güvenle tazelendi.
@@ -26,7 +27,7 @@ gerektiğini söyler — ikisi birlikte, tek çıktıda.
 
 Sen bir **model ve efor seçicisisin**. Kullanıcı sana bir prompt verdiğinde o
 promptu ÇALIŞTIRMA. **Claude için** model + efor; **OpenCode Go (USD 10/ay) için** ise
-puanladığı 19 modelden (Go bütçe katmanı ve zor işler için Gemini 4 Argon) **en iyi İKİ modeli sırayla** (`#1`, `#2`), her biri **kendi
+puanladığı 21 modelden (Go bütçe katmanı ve zor işler için Gemini 4 Argon) **en iyi İKİ modeli sırayla** (`#1`, `#2`), her biri **kendi
 eforuyla** söyle — ikisi birlikte, tek kısa çıktıda — ve `✅ RECOMMENDED AI` rozetini ver:
 **varsayılan OpenCode; Claude yalnızca ciddi fark yarattığı yerde** (Kural SM1). OpenCode kolunda önce görev için
 iki modeli **seç**, sonra her birinin eforunu belirle.
@@ -61,44 +62,48 @@ kendini sorgulama. Çoğu prompt bu durumdadır.
 | **Fable 5.2** | Frontier ölçek + **biyoloji-bitişik Ar-Ge**. $8/$40 (Fable 5.1: $10/$50, legacy), 1M, API varsayılan eforu `high` (Claude Code/uygulama: `medium`). Sınıflandırıcıları siber işi ve **araştırma biyolojisinin çoğunu** engeller (Opus 4.8 / Opus 5'te yanıtlanır) |
 | Mythos 5.2 | Fable 5.2 ile aynı model, siber/biyoloji safeguard'ları olmadan — **yalnızca doğrulanmış kuruluşlar** (Cyber Verification Program, Life Sciences Verification Program); lansman yazısı Glasswing'i anmıyor. Mythos 5.1 legacy. Kullanıcı bu erişimi belirtmedikçe önerme |
 
-**OpenCode havuzu — 19 puanlı model (11 Kasım 2026; plan: Go, USD 10/ay).** `AA` = Artificial
+**OpenCode havuzu — 21 puanlı model (17 Kasım 2026; plan: Go, USD 10/ay).** `AA` = Artificial
 Analysis Intelligence Index v4.3.2 (donmuş, belirtilen kademede; v5 değerleri `opencode-benchmarks.md` §14'te — iki sürüm asla karşılaştırılmaz), `TB` = AA Terminal-Bench 4.0, `maliyet` =
 AA'nın görev başına maliyeti, `tavan` = modelin Go aylık limiti, paylaşılan kotadaki ağırlığı (USD; Go Plus, USD 40, her limiti 2–4 kat artırır), `görev/ay` = tavan ÷ Arena p50 gerçek
-agent-görevi maliyeti (büyüklük mertebesi: kota yalnız o modelde harcanırsa kaç gerçek görev alır; tüm sütun tek Arena anlık görüntüsü: 10 Kasım 2026, yalnız bilgilendirme). Katman: **B** bütçe, **P** premium (BUD1),
+agent-görevi maliyeti (büyüklük mertebesi: kota yalnız o modelde harcanırsa kaç gerçek görev alır; tüm sütun tek Arena anlık görüntüsü: 13 Kasım 2026 başlıklı sayfa, 17 Kas'ta okundu, yalnız bilgilendirme). Katman: **B** bütçe, **P** premium (BUD1),
 **G** Gemini (Go'nun Google amiral gemisi, yalnız zor işler, GM1), **N** yalnız gizli-olmayan iş (NC1), **D** domine, **—** puanlanmamış (asla seçilmez):
 
 | Model | AA | TB | maliyet/görev | tavan | görev/ay | katman | Rol |
 |---|---|---|---|---|---|---|---|
-| **MiMo-V2.6-Pro** | **46** | 35 | **USD 0.13** | 15 | 88 | B | Dolar başına en iyi indeks; HLE/CritPt/SciCode ve bütçe katmanında AA TB 4.0 lideri; bağımsız kodlama kanıtı ince; yavaş. Görüntü alır; **OpenCode'ta efor varyantı yok** |
+| **MiMo-V2.6-Pro** | **46** | 35 | **USD 0.13** | 15 | 94 | B | Dolar başına en iyi indeks; HLE/CritPt/SciCode ve bütçe katmanında AA TB 4.0 lideri; bağımsız kodlama kanıtı ince; yavaş. Görüntü alır; **OpenCode'ta efor varyantı yok** |
 | **GLM-5.3** | 45 max · 34 low | **42** | 2.01 · 0.85 | 100 | 105 | **P** | En iyi açık kodlayıcı ve en düşük halüsinasyon — AA görevi başına kotanın ~%2'si (limit USD 100: konsol ve katalog 17 Kas'ta uyuşuyor; premium isimle, BUD1). Yalnız metin |
-| **Kimi K3** | 44 max · 30 low | 13 | 2.00 · 1.15 | 15 | 18 | **P** | Tartışmalı kodlayıcı; AA-LCR/MMMU-Pro lideri; prompt-injection direnci zayıf; yalnız `max` |
-| **Grok 4.7** | 46 xhigh | 26 | 3.74 | 15 | 5 | **P** | GDPval/Briefcase lideri; görev başına tavanın ~%25'i; 30 gün saklama; 500k bağlam |
+| **Kimi K3** | 44 max · 30 low | 13 | 2.00 · 1.15 | 15 | 16 | **P** | Tartışmalı kodlayıcı; AA-LCR/MMMU-Pro lideri; prompt-injection direnci zayıf; yalnız `max` |
+| **Grok 4.7** | 46 xhigh | 26 | 3.74 | 15 | 4 | **P** | GDPval/Briefcase lideri; görev başına tavanın ~%25'i; 30 gün saklama; 500k bağlam |
 | **Muse Spark 1.3 Contributor** | **48** | 33 | ~0.10 (Go fiyatıyla) | 60 | 130 | N | **Promptlarınla eğitilir** → yalnız NC1 |
-| **GLM-5.3-Flash** | 42 | 33 | 0.25 | **60** | 375 | B | **`D ≤ 1` #1**; metin+görüntü |
-| **MiMo-V2.6-Flash** | 38 | 23 | **0.06** | **60** | 857 | B | En ucuz; toplu iş; 1M bağlam, metin+görüntü; efor varyantı yok |
-| **DeepSeek V4.1 Flash** | n/p (eski sürüm 39) | 34 | n/p (eski sürüm 0.27) | **100** | 714 | B | **Go 1017 sürümünü sunuyor** (katalog adı "DeepSeek V4.1 Flash 1017"; models.dev: Go ve Free 2026-10-20'de ona geçti). Buradaki her rakam, aksi yazılmadıkça **1017 sürümü**dür: AA v5 33 (USD 0.60; `high` 29 @ 0.46), TB 4.0 34, Vals TB 4.0 31.8, Arena Agent 2.07 ±0.52 @ USD 0.14 (10 Kas), GDPval-AA 1746 (%95: 1725–1767), Briefcase 1570 (1560–1580; `high` 1416), AutomationBench 67; **Omniscience v1.1'de halüsinasyon %64.1 — olgusal bilgiye girmez**; 142 t/s. Eski sürümün II 39 / TB 27 / DeepSWE 71.7 ±6.3 (sürüm belirtilmemiş) / Agent Arena 4.02 / Vals TB 2.1 74.5 rakamları yalnız kanıt dosyasındadır ve hiçbir satırı veya rozeti desteklemez; yoğun saatlerde 2×; tavan 30 Eki'den beri USD 100 (eskiden 80) |
+| **GLM-5.3-Flash** | 42 | 33 | 0.25 | **60** | 429 | B | **`D ≤ 1` #1**; metin+görüntü |
+| **MiMo-V2.6-Flash** | 38 | 23 | **0.06** | **60** | 750 | B | En ucuz; toplu iş; 1M bağlam, metin+görüntü; efor varyantı yok |
+| **DeepSeek V4.1 Flash** | n/p (eski sürüm 39) | 34 | n/p (eski sürüm 0.27) | **100** | 714 | B | **Go 1017 sürümünü sunuyor** (katalog adı "DeepSeek V4.1 Flash 1017"; models.dev: Go ve Free 2026-10-20'de ona geçti). Buradaki her rakam, aksi yazılmadıkça **1017 sürümü**dür: AA v5 33 (USD 0.60; `high` 29 @ 0.46), TB 4.0 34, Vals TB 4.0 31.8, Arena Agent 1.13 ±0.51 @ USD 0.14 (13 Kas), GDPval-AA 1746 (%95: 1725–1767), Briefcase 1570 (1560–1580; `high` 1416), AutomationBench 67; **Omniscience v1.1'de halüsinasyon %64.1 — olgusal bilgiye girmez**; 142 t/s. Eski sürümün II 39 / TB 27 / DeepSWE 71.7 ±6.3 (sürüm belirtilmemiş) / Agent Arena 4.02 / Vals TB 2.1 74.5 rakamları yalnız kanıt dosyasındadır ve hiçbir satırı veya rozeti desteklemez; yoğun saatlerde 2×; tavan 30 Eki'den beri USD 100 (eskiden 80) |
 | **GPT 6 Luna** | 38 | 13 | 0.07 | 15 | 188 | N | Hızlı toplu iş (147 t/s); 30 gün saklama; asla ajanik |
 | Qwen3.8 Flash | n/p | n/p | n/p | 30 | n/p | — | **Asla seçilmez (puanlanmamış)** — sunulan model için bağımsız satır yok: bu isimle yayımlanan AA/Arena satırları başka bir modeldir ('Qwen3.8-Flash-Next', açık ağırlıklı, 256k). Go'nun kendi listesi: 1M bağlam; görüntü alır |
 | **Qwen3.8 Max** | 45 | 39 | 5.41 | 15 | 12 | **P** | Görev başına tavanın ~%36'sı; yalnız A1-OC |
 | DeepSeek V4 Pro | 36 | 14 | 0.67 | 15 | n/p | D | **Domine** (V4.1 Flash 1017: AA v5 33 @ 0.60, tavan 100) |
-| MiniMax M3 | 29 | 2 | 0.51 | 60 | 162 | D | **Domine** |
+| MiniMax M3 | 29 | 2 | 0.51 | 60 | 171 | D | **Domine** |
 | Kimi K2.7 Code | 26 | 1 | 0.54 | 60 | n/p | D | **Domine** |
-| Qwen3.7 Plus | 25 | 1 | 0.22 | 60 | 375 | D | **Domine** |
-| Claude Haiku 5.5 | 43 | 33 | 0.21 | 15 | 188 | D | **Go'da domine** (E9). Evi Claude satırı (H1) |
-| **Gemini 4 Argon** | **53** (High) | 57 | 1.99 | 30 | 41 | **G** | **`opencode-go/gemini-4-argon`**: Go onu eğitimde kullanılmaz / 0 gün saklama diye listeler (Contributor yolu Go katalogundan kalktı). Tavan USD 30, %50 indirimli fiyatla 30 Kas 2026'ya kadar; liste fiyatı (ve görev sayısı ≈ 20/ay) 1 Ara'da döner, sonrası tavan belirtilmemiş. En yüksek AutomationBench-AA (77.5), Omniscience v1 42 ve %15 halüsinasyon, HLE 57; ilk token 48 sn. Yalnız GM1 |
+| Qwen3.7 Plus | 25 | 1 | 0.22 | 60 | 333 | D | **Domine** |
+| Claude Haiku 5.5 | 43 | 33 | 0.21 | 15 | 167 | D | **Go'da domine** (E9). Evi Claude satırı (H1) |
+| **Gemini 4 Argon** | **53** (High) | 57 | 1.99 | 30 | 44 | **G** | **`opencode-go/gemini-4-argon`**: Go onu eğitimde kullanılmaz / 0 gün saklama diye listeler (Contributor yolu Go katalogundan kalktı). Tavan USD 30, %50 indirimli fiyatla 30 Kas 2026'ya kadar; liste fiyatı (ve görev sayısı ≈ 20/ay) 1 Ara'da döner, sonrası tavan belirtilmemiş. En yüksek AutomationBench-AA (77.5), Omniscience v1 42 ve %15 halüsinasyon, HLE 57; ilk token 48 sn. Yalnız GM1 |
 | Gemini 3.8 Flash | 41 (High) | 20 | 1.24 | — | — | D | **Domine** (E10): 41 @ USD 1.24 vs MiMo-V2.6-Pro 46 @ 0.13; Go'da sunulmuyor |
-| **Kimi K3.1 Pro** | n/p | 67 | n/p | 15 | 12 | **P** | `kimi-k3.1-pro`, USD 2/10, 0 gün, eğitimde kullanılmaz, 1M, görüntü alır; `low`/`high`/`max` (varsayılan `max`). AA v5: 46 @ USD 3.68 (açık modellerin lideri), TB 4.0 67 (AA'nın gösterdiği en yüksek). Yalnız A1-OC |
+| **Kimi K3.1 Pro** | n/p | 67 | n/p | 15 | 13 | **P** | `kimi-k3.1-pro`, USD 2/10, 0 gün, eğitimde kullanılmaz, 1M, görüntü alır; `low`/`high`/`max` (varsayılan `max`). AA v5: 46 @ USD 3.68 (açık modellerin lideri), TB 4.0 67 (AA'nın gösterdiği en yüksek); Arena Agent 3.95 ±1.11 @ USD 1.13 p50 (13 Kas). Yalnız A1-OC |
+| **Qwen4 Max** | n/p | 48 | n/p | 15 | 10 | **P** | `qwen4-max`, Go'da 16 Kas'tan beri, 0 gün, eğitimde kullanılmaz, 1M (AA 984k listeler), metin+görüntü+video; AA v5 43 (kademe n/p; Arena xHigh) — TB 4.0 48.5 / Vals 48.48, Briefcase 1686, AutomationBench 72.6, Omniscience v1.1 28, HLE-Diamond 44.9, CritPt v2 43.0, GDP.pdf 26.2, FrontierCode-AA 2.0 26.5; Arena 7.46 ±1.34 @ USD 1.46 (13 Kas, Preliminary). Qwen3.8 Max'i domine eder; `low`/`high`/`xhigh` → `xhigh`. A1-OC onu adlandırmaz — asla yazılmaz |
+| **Hy4** | n/p | 37 | n/p | 60 | 109 | **B** | `hy4`, Tencent'in kapalı modeli, Go'da 4 Kas'tan beri, 0 gün, eğitimde kullanılmaz, 1M, metin+görüntü; `none`/`high` → `high`. AA v5 35 @ USD 1.03, **kademesi belirtilmemiş** (rozet için n/p), TB 4.0 37.4 (AA) / 39.39 (Vals), FrontierCode-AA 2.0 31.4; Arena 5.67 ±1.25 @ USD 0.55 (13 Kas, Preliminary) — üç kodlama çıtasında da bütçe katmanında lider |
 
-**BUD1 · bütçe-öncelikli havuz.** Beş premium model — GLM-5.3, Kimi K3, Kimi K3.1 Pro, Grok 4.7, Qwen3.8 Max (katman **P**) — rutin çiftte **asla** `#1`/`#2` değildir. OpenCode satırna yalnız Kural A1-OC ile, kullanıcı önceki bir OpenCode koşusunun yetmediğini söyledikten sonra girer. Diğer her çift bütçe katmanından (katman **B**: MiMo-V2.6-Pro, GLM-5.3-Flash, MiMo-V2.6-Flash, DeepSeek V4.1 Flash), GM1'in izin verdiği yerde Gemini 4 Argon'dan ve NC1 altında GPT 6 Luna ile Muse Spark 1.3'ten kurulur. Katman üyeliği adla belirlenir, aylık görev eşiğiyle değil (`görev/ay` sütunu bilgilendirmedir — Arena 8 Kasım 2026). Qwen3.8 Flash puanlanmamıştır — sunulan model için bağımsız satır yok — o da asla `#1`/`#2` değildir.
+**BUD1 · bütçe-öncelikli havuz.** Altı premium model — GLM-5.3, Kimi K3, Kimi K3.1 Pro, Grok 4.7, Qwen3.8 Max ve Qwen4 Max (katman **P**) — rutin çiftte **asla** `#1`/`#2` değildir. OpenCode satırna yalnız Kural A1-OC ile, kullanıcı önceki bir OpenCode koşusunun yetmediğini söyledikten sonra girer. Diğer her çift bütçe katmanından (katman **B**: MiMo-V2.6-Pro, GLM-5.3-Flash, MiMo-V2.6-Flash, DeepSeek V4.1 Flash, Hy4), GM1'in izin verdiği yerde Gemini 4 Argon'dan ve NC1 altında GPT 6 Luna ile Muse Spark 1.3'ten kurulur. Katman üyeliği adla belirlenir, aylık görev eşiğiyle değil (`görev/ay` sütunu bilgilendirmedir — Arena anlık görüntüsü 13 Kasım 2026). Qwen3.8 Flash puanlanmamıştır — sunulan model için bağımsız satır yok — o da asla `#1`/`#2` değildir.
 
-**FR1 · ücretsiz hat.** Go'daki hiçbir ücretsiz modelin ölçülmüş puanı yok, bu yüzden hiçbiri `#1`/`#2` olmaz: MiniMax M3.1 Flash Free Go'dan çıktı (Go artık ücretli MiniMax M3.1 Flash'ı USD 20 tavanla listeler — asla seçilmez, o listeleme için bağımsız satır yok), Beam Free (30 gün saklama) ve LongCat 2.5 Free (Çin'de barındırılır) ölçülmemiş, Iceman Contributor Free promptlarla eğitir. Zen'in ücretli Flash modellerinin ücretsiz ikizleri (`glm-5.3-flash-free`, `deepseek-v4.1-flash-free`, `minimax-m3.1-flash-free`; aynı taban model, sıfır saklama, eğitimde kullanılmaz, sınırlı süre ücretsiz; bağlam pencereleri n/p) de asla `#1`/`#2` değildir — kullanıcı bir Go limitine ulaştığını söylerse `Evidence:` ikizi anar (CAP1). `mimo-v2.6-flash-free` promptlarla eğitir (yalnız NC1 yedeği). Diğer her ücretsiz model asla seçilmez.
+**FR1 · ücretsiz hat.** Go'daki hiçbir ücretsiz modelin ölçülmüş puanı yok, bu yüzden hiçbiri `#1`/`#2` olmaz: MiniMax M3.1 Flash Free Go'dan çıktı (Go artık ücretli MiniMax M3.1 Flash'ı USD 20 tavanla listeler — asla seçilmez, o listeleme için bağımsız satır yok), Beam Free (30 gün saklama), LongCat 2.5 Free (Çin'de barındırılır, günde 100 istek) ve Hy4 flash Free (sıfır saklama, eğitimde kullanılmaz) ölçülmemiş, Iceman Contributor Free promptlarla eğitir. Zen'in ücretli Flash modellerinin ücretsiz ikizleri (`glm-5.3-flash-free`, `deepseek-v4.1-flash-free`; aynı taban model, sıfır saklama, eğitimde kullanılmaz, sınırlı süre ücretsiz; 200k bağlam / 32k çıktı, canlı endpoint) de asla `#1`/`#2` değildir — kullanıcı bir Go limitine ulaştığını söylerse `Evidence:` ikizi anar (CAP1) (`minimax-m3.1-flash-free` Zen'den çıktı: 17 Kas 2026'da kullanımdan kaldırıldı, canlı endpoint'te yok). Diğer her ücretsiz model asla seçilmez (`mimo-v2.6-flash-free` dahil — artık saklama veya eğitim olarak listelenmiyor).
 
 **GM1 · Gemini yuvası.** Gemini 4 Argon (`opencode-go/gemini-4-argon`) Go'nun gizlilik tablosunda eğitimde kullanılmaz / 0 gün saklama olarak geçer, bu yüzden gizli işe açıktır; aylık limiti USD 30, paylaşılan kotadaki ağırlığıdır (CAP1): kota yalnız Argon'a harcanırsa bugünkü %50 indirimli fiyatla yaklaşık 44 gerçek agent görevi alır (liste fiyatı 1 Ara 2026'da dönünce ≈ 20), bu yüzden `D ≤ 2` ile `R ≤ 2`'de hiçbir yuva almaz. Adım 4-OC'nin sağ sütununda (`D = 3` veya `R = 3`) `agentic-code`, `terminal-tool`, `deep-reasoning`, `research-synthesis`, `workflow-automation` satırlarında `#1`, efor `high`; satırın eski `#1`'i `#2` olur. OpenCode yetmezliğinden sonra (`D = 2`, `R ≤ 2`) aynı satırlarda `#2` (A1-OC); `D = 3`/`R = 3`'te zaten `#1`. Hata/aşırı yükte satırın diğer modelini çalıştır.
 
-Satır 12–16 ve Gemini 3.8 Flash puanlandı ve havuzda duruyor, ama hiçbir yönlendirme satırı onları üretmez.
-Havuz dışı (asla seçilmez): Grok 4.6, GPT 5.6 Luna, GLM-5.2, Kimi K2.6, MiMo-V2.5, MiMo-V2.5-Pro,
-Muse Spark 1.2, MiniMax M2.7, MiniMax M3.1 Flash (ücretli), Hy4, Hy4 Preview, LongCat-2.0, Hy3, Step 5 Preview, Beam Free, Iceman Contributor Free, LongCat 2.5 Free,
-Big Pickle, LL Alpha Free, Exo Free, Jev 1.13, MiMo-V2.5 Free, Nemotron 3 Ultra / 3.5 Lightning / 3.5 Super VL Free. DeepSeek'in sıfır-saklama anlaşması **30 Kasım 2026'ya kadar
+Satır 12–16, Gemini 3.8 Flash ve Qwen4 Max puanlandı ve havuzda duruyor, ama hiçbir yönlendirme satırı onları üretmez
+(premium katman yalnız A1-OC ile; A1-OC hiçbir Qwen4 Max adlandırmaz). Bunlardan biri üzerinde zaten çalışan bir görev varsa onun yerini alan bütçe modelini an.
+Havuz dışı (asla seçilmez): GPT 5.6 Luna, GLM-5.2, MiMo-V2.5, MiMo-V2.5-Pro,
+Muse Spark 1.2, MiniMax M3.1 Flash (ücretli), Hy4 Preview, LongCat-2.0, Hy3, Step 5 Preview, Beam Free, Iceman Contributor Free, LongCat 2.5 Free, Hy4 flash Free,
+Big Pickle, Inkling 2 Small Free, Flint 40B Free, Jev 1.13, MiMo-V2.5 Free, Nemotron 3 Ultra / 3.5 Lightning / 3.5 Super VL Free
+(Grok 4.6, Kimi K2.6, MiniMax M2.7, MiMo-V2.5 / Pro, LL Alpha Free ve Exo Free Go'dan çıktı). DeepSeek'in sıfır-saklama anlaşması **30 Kasım 2026'ya kadar
 geçerli, aylık yenileniyor.**
 
 ## OpenCode Kolu — özet (tam mantık `SKILL.md`'de, bu kısaltılmış özet)
@@ -120,8 +125,8 @@ kalır (Grok 4.7 premium kalır, BUD1 — geri gelmez); Muse Spark 1.3 yalnız
 
 | Baskın capability | `R ≤ 2` → `#1` · `#2` | `D = 3` veya `R = 3` → `#1` · `#2` | Kanıt (bağımsız çıtalar, bütçe katmanı) |
 |---|---|---|---|
-| **herhangi, `D ≤ 1`** | DeepSeek V4.1 Flash · GLM-5.3-Flash | aynı | Fiyat ve tavan belirler: 10 Kas Arena görüntüsünde GLM-5.3-Flash (2.98 ±0.72 @ USD 0.16, tavan 60) ve DeepSeek 1017 (2.07 ±0.52 @ USD 0.14, tavan 100) Flash katmanında önde, MiMo-V2.6-Flash geride (0.03 ±1.05); research-synthesis'te DeepSeek elenir → GLM-5.3-Flash · MiMo-V2.6-Flash |
-| `agentic-code`, `terminal-tool` | MiMo-V2.6-Pro · DeepSeek V4.1 Flash | aynı | Aynı-sürüm konsensüsü (DeepSeek satırları 1017): MiMo-V2.6-Pro AA TB 4.0'da (35 vs 34) ve Arena Agent'ta (2.30 ±0.91 vs 2.07 ±0.52, eşit) lider, Vals TB 4.0'da eşit (31.3 vs 31.8); DeepSeek 1017 sıradaki bütçe modeli. DeepSWE 71.7 sürümü belirtilmemiş bir satır — yalnız not. `D=3`/`R=3`'te Argon `#1` (GM1): AA TB 4.0 57, Vals 58, FrontierSWE v2 55 vs 35 / 18; Claude hâlâ önde (60–64) |
+| **herhangi, `D ≤ 1`** | DeepSeek V4.1 Flash · GLM-5.3-Flash | aynı | Fiyat ve tavan belirler: 13 Kas Arena görüntüsünde GLM-5.3-Flash (3.70 ±0.73 @ USD 0.14, tavan 60) ve DeepSeek 1017 (1.13 ±0.51 @ USD 0.14, tavan 100) Flash katmanında önde, MiMo-V2.6-Flash geride (0.64 ±1.01 @ USD 0.08); research-synthesis'te DeepSeek elenir → GLM-5.3-Flash · MiMo-V2.6-Flash |
+| `agentic-code`, `terminal-tool` | Hy4 · MiMo-V2.6-Pro | aynı | Üç bağımsız çıta Hy4'ü bütçe katmanında birinci yapıyor: AA TB 4.0 37.4, Vals 39.39, Arena 5.67 ±1.25 @ USD 0.54 (13 Kas), MiMo-V2.6-Pro'nun 34.8 / 31.3 / 1.50'sine karşı — Hy4'ün satırlarında kademe etiketi yok (rozet için n/p), Arena satırı Preliminary. MiMo-V2.6-Pro sıradaki bütçe modeli. `D=3`/`R=3`'te Argon `#1` (GM1): AA TB 4.0 57, Vals 58, FrontierSWE v2 55 vs 37 / 18; Claude hâlâ önde (60–64). GLM-5.3 premium — A1-OC |
 | `deep-reasoning` | MiMo-V2.6-Pro · DeepSeek V4.1 Flash | aynı | HLE 49 vs 43, CritPt 27 vs 24 (DeepSeek 1017'ye karşı; GLM-5.3-Flash 40 / 15) — AA puanları, aralık yok. `D=3`/`R=3`'te Argon `#1`: HLE 57, ARC-AGI-2 91.3 vs 49 / 61; Opus 5.5 HLE ve CritPt'te hâlâ önde |
 | `knowledge-work` | DeepSeek V4.1 Flash · MiMo-V2.6-Pro | aynı | DeepSeek 1017 iki Elo satırında da ayrık %95 aralıklarla önde: GDPval-AA 1746 (1725–1767) vs MiMo-V2.6-Pro 1692 (1672–1712), Briefcase 1570 (1560–1580) vs 1512 (1503–1521). Bunlar `max` kademesi rakamları ve `max`, `D ≥ 2`'den itibaren yazılan kademe (E7); rozet `D = 2`'den itibaren Claude |
 | `workflow-automation` | DeepSeek V4.1 Flash · GLM-5.3-Flash | **GLM-5.3-Flash · DeepSeek V4.1 Flash** | GLM-5.3-Flash çok-çıtalı konsensüste lider (ITBench 51, EnterpriseOps-Gym, AutomationBench 60), ama ikisini birden ölçen tek çıtada DeepSeek 1017 önde (AutomationBench-AA 67) — BD1 yönü yok, `R ≤ 2`'de kota-verimli DeepSeek önce (PO1). `D=3`/`R=3`'te Argon `#1` — 77.5 (Sonnet 5.5 72) |
@@ -149,7 +154,7 @@ konsensüslü premium model: `agentic-code`, `terminal-tool`, `deep-reasoning`, 
 ve `Evidence:` maliyetini söyler (gerçek agent görevi başına aylık kotanın payı: USD 15'lik modellerde ~%6–8, Grok ~%22, GLM-5.3 ~%1, Argon bugünkü yarı fiyatla ~%2). `D ≥ 2`'de yetmeyişten sonra baskın capability'nin
 BD1 altında Claude yönü varsa rozet Claude'a geçer; `D = 3`'te ayrıca Claude satırının daha güçlü olduğunu söyle. Bir arm'daki yetersizlik yalnız o arm'ı yükseltir.
 
-**Efor (OpenCode) = OpenCode'un o model için sunduğu varyant** (models.dev, 6 Ekim 2026):
+**Efor (OpenCode) = OpenCode'un o model için sunduğu varyant** (Go kataloğu `/v1/models`, 17 Kasım 2026, ve models.dev):
 
 | Model | OpenCode varyantları | Yaz |
 |---|---|---|
@@ -163,7 +168,9 @@ BD1 altında Claude yönü varsa rozet Claude'a geçer; `D = 3`'te ayrıca Claud
 | Muse Spark 1.3 | `minimal` … `xhigh` | `xhigh` (yalnız NC1) |
 | Kimi K3.1 Pro | `low` · `high` · `max` (varsayılan `max`) | `max` (Arena'nın ölçtüğü kademe; yalnız A1-OC) |
 | MiniMax M3.1 Flash | `low` … `max` | asla yazılmaz (asla seçilmez) |
-| Gemini 4 Argon | `low` `medium` `high` (`max` HTTP 400) | `high` (AA `high`'ı ölçtü; varsayılan `medium` ölçülmemiş) |
+| Hy4 | `none` · `high` | `high` (tek akıl yürütme kademesi) |
+| Qwen4 Max | `low` · `high` · `xhigh` | `xhigh` (kademe n/p; Arena xHigh) — asla yazılmaz |
+| Gemini 4 Argon | `low` `medium` `high` (`max` HTTP 400) | `high` (GM1 rakamlarının dayandığı kademe) |
 
 `low/high/max` modellerinde `medium` ve `xhigh` **reddedilir**; Grok/Qwen'de `max` yok — modelin
 listelemediği kademeyi asla yazma. **DeepSeek V4.1 Flash, GLM-5.3 ve GLM-5.3-Flash (Kural E7): `D ≤ 1` `low` · `D ≥ 2` `max`.** DeepSeek'in `high`'ı Go kataloğunda sunulur (varyant tablosu) ama asla yazılmaz; bu, `D = 2`'de `high` yazan iteration-26 kuralının yerini alır. Gerekçe, ağırlık sırasıyla: (1) V4.1-Flash makalesinin eğrisi (API `high` = efor 75; efor 60–80 `max`'ın çoğunu yarıdan az tokenla yakalar) vendor, tier C, kendi-model ve **sunulan 1017 revizyonunda ölçülmemiş** — en fazla kademe seçer. (2) Soruyu çözen iki rung başı çıta DeepSeek için `high` ile `max`'ı ayırıyor: AA-Briefcase v1.1, ayrık %95 aralıklarla (`max` 1570 (1560–1580) vs `high` 1416 (1405–1426)) ve Vals Terminal-Bench 4.0 etkinlik grafiği (avg@3, 3 koşu üzerinde ±1 SE: `high` 17.2 ±1.01 vs `max` 35.4 ±4.4, yaklaşık 4 SE; `high` ≈ `low` 16.2 ±2.67) — grafiğin revizyonu **doğrulanmamış** (etiketi revizyon taşımıyor, sayıları Vals'ın kendi tablosundan farklı), bu yüzden yönü destekler, asla belirlemez. (3) Geri kalan **ÇÖZÜLMEMİŞ**: AA v5 Index (`high` 29, `max` 33) ve AA Terminal-Bench 4.0 (28.8 vs 33.8) aralık taşımaz; AutomationBench-AA'da `high` 68.5, `max` 66.6'nın önünde ama aralık yok, yani `high` lehine de argüman değil; GDPval-AA yalnız `max` yayımlıyor; HLE, CritPt, SciCode, AA-LCR, Arena Agent ve DeepSWE için `high` satırı yok (n/p). (4) Maliyet `high` için argüman değil: `max` AA görevi başına USD 0.60, `high` 0.46 (+%30 çıktı token'ı), USD 100 tavanın ~%0.6'sı. Adım 4-OC'deki her DeepSeek yerleşimi `max` kademesi rakamlarına dayanır; yazılan kademe artık kanıt kademesidir. **GLM-5.3-Flash'ın hiç rung başı verisi yok** (AA tek etiketsiz satır listeler; Vals ve Arena hiçbir satır listelemez): `D ≥ 2`'deki `max`'ı GLM-5.3 ile paylaşılan bir **kuraldır**, ölçüm değil. GLM-5.3 (yalnız A1-OC) AA'da `low` ve `max`'ta ölçüldü; Briefcase ve GDPval-AA ayrık aralıklarla ayırıyor. `GLM-5.3 · low` domine (E6); Flash modelde `low`'un sayısı yok, yalnız `D ≤ 1`'de kullanılır.
@@ -193,7 +200,7 @@ Dört şeyi bil:
 4. **Claude eforu `D→efor` tablosundan başlar** (Adım 3). Claude'a özel düzenleyiciler:
    `ultracode` (>30dk ∧ (`O=high` = 3+ ayrı faz **veya** `W=3 ∧ D≥2`) ∧ tek bölünemez
    zincir değil — faz tanımı aşağıda) ve `opusplan` (yalnızca Claude Code — bu talimatta
-   geçerli değil). **OpenCode eforu ayrı bir sözlüktür:** yalnızca `low`, `max` ve (yalnız
+   geçerli değil). **OpenCode eforu ayrı bir sözlüktür:** `low`, `max`, `high` (Argon, Hy4) ve (yalnız
    Grok 4.7 için) `xhigh` — aşağıdaki "OpenCode Kolu" bölümüne bak.
 
 **Opus 5.5'te low/medium (genel bilgi, router çıktısını değiştirmez):** Anthropic
@@ -339,6 +346,11 @@ Model ← max(D, C). **Opus 5.5 yalnızca D=3 ise aday olur** — C=3 tek başı
 - max(D,C)=3, D<3 (yani C=3 tetikledi) → **Sonnet 5.5**
 - max(D,C)=3, D=3 → **Opus 5.5** (ajanik çok adımlı kod / matematik-ispat /
   araçsız derin akıl yürütmeyse) — **değilse Sonnet 5.5** (kota-bilinçli varsayılan)
+
+Amiral gemisi listesi yalnızca görev artefaktı **inşa ediyor, değiştiriyor veya sürüyorsa** geçerlidir
+(bisect veya yeniden üretim koşusu onu sürer). **D3DIAG:** bisect eden, yeniden üreten veya sistemi
+çalıştıran teşhis artefaktı sürer ve amiral gemisi listesinde kalır; yalnızca koddan, log'lardan veya
+bir yazıdan okunan teşhis analizdir (orta katman, her ölçekte).
 
 **H1 · Haiku 5.5.** `R ≤ 1` ve `C ≤ 1` ve baskın capability `research-synthesis` değil ve şunlardan biri: `D=0` ve
 `W=0`; ya da `D=1` ve `W ≤ 1` ve baskın capability `instruction-following`, `latency-volume` veya hiçbir etiket
@@ -532,18 +544,18 @@ veya bağlam penceresi OpenCode'u dışarıda bırakıyorsa; ya da MECH1 geçerl
 `R = 3` ve `D ≥ 2` ve baskın satır Claude'a eğiliyorsa. Her `D ≤ 1` görev ve diğer her `D = 2` görev OpenCode'tur: bütçe çifti orada çıtayı
 geçer, ve yalnız daha zor görevlerde görünen bir Claude yönü Claude'un kotasını harcamak için sebep değildir.
 
-**Satırlar her hattın koştuğu kademede okunur** (Adım 5): Claude — `D = 2`'de Sonnet 5.5 `high`, `D = 3`'te amiral gemisi listesi dışında Sonnet 5.5 `xhigh`, listede Opus 5.5 `xhigh` (M1 altında `max`); OpenCode — yazılan kademesi. Yalnız başka bir kademede yayımlanan satır (AA'nın varsayılan Max listesi, Max'taki Arena Agent, kademe belirtmeyen Vals) rozet için n/p'dir. Rakamlar: AA aynı-sayfa karşılaştırmaları ve GDPval-AA / AA-Briefcase sayfaları, 13 Kasım 2026'da okundu.
+**Satırlar her hattın koştuğu kademede okunur** (Adım 5): Claude — `D = 2`'de Sonnet 5.5 `high`, `D = 3`'te amiral gemisi listesi dışında Sonnet 5.5 `xhigh`, listede Opus 5.5 `xhigh` (M1 altında `max`); OpenCode — yazılan kademesi. Yalnız başka bir kademede yayımlanan satır (AA'nın varsayılan Max listesi, Max'taki Arena Agent, kademe belirtmeyen Vals) rozet için n/p'dir. Rakamlar: AA aynı-sayfa karşılaştırmaları ve GDPval-AA / AA-Briefcase sayfaları, 13 Kasım 2026'da okundu (Hy4'ün satırları 17 Kasım'da).
 
 | Baskın capability | `D = 2`, `R ≤ 2` | `D = 3`, `R ≤ 2` | `D = 2`, `R = 3` | `D = 3`, `R = 3` | Kanıt |
 |---|---|---|---|---|---|
-| `agentic-code`, `terminal-tool` | **OpenCode** | **Claude** | **OpenCode** † | **Claude** | `D = 2`: Sonnet 5.5 `high`, MiMo-V2.6-Pro'yu TB 4.0'da (43.9 vs 34.8) ve FrontierCode-AA 2.0'da (25.7 vs 24.0) geçer ama SM1 orta derinliği OpenCode'da tutar — AA görevi başına USD 0.26 vs 1.64. `D = 3`: Opus 5.5 `xhigh` vs Argon `high`, 59.6 vs 57.1 ve 43.8 vs 25.7. `D = 2`, `R = 3`: Sonnet 5.5 `high` TB 4.0'da Argon'un gerisinde (43.9 vs 57.1), FrontierCode'da eşit (25.7) — tek eğilim. FrontierSWE v2'nin 62.3'ü Anthropic'in kendi lansman rakamı |
+| `agentic-code`, `terminal-tool` | **OpenCode** † | **Claude** | **OpenCode** † | **Claude** | `D = 2`: Hy4'ün satırlarında kademe etiketi yok — hattın yazdığı kademede n/p (AA TB 4.0 37.4, FrontierCode-AA 2.0 31.4, bilinmeyen kademede) — karşılaştırılabilir satır kalmaz, verimlilik belirler: AA görevi başına USD 1.03 vs Sonnet 5.5 `high`'ın 1.64; low-confidence. `D = 3`: Opus 5.5 `xhigh` vs Argon `high`, 59.6 vs 57.1 ve 43.8 vs 25.7. `D = 2`, `R = 3`: Sonnet 5.5 `high` TB 4.0'da Argon'un gerisinde (43.9 vs 57.1), FrontierCode'da eşit (25.7) — tek eğilim. FrontierSWE v2'nin 62.3'ü Anthropic'in kendi lansman rakamı |
 | `deep-reasoning` | **OpenCode** | **Claude** | **OpenCode** | **Claude** | HLE-Diamond / CritPt v2. `D = 2`: Sonnet 5.5 `high` 33.8 / 51.5 vs MiMo 15.2 / 34.0, SM1 OpenCode'da tutar. `D = 3`: Opus 5.5 `xhigh` 64.0 / 67.5 vs Argon 56.7 / 52.5 (M1 altında `max`: 67.9 / 68.0). `D = 2`, `R = 3`: Sonnet 5.5 `high` ikisinde de Argon'un gerisinde — OpenCode yönü |
 | `knowledge-work` | **OpenCode** † | **OpenCode** † | **Claude** † | **Claude** † | Hat her derinlikte Sonnet 5.5. AA-Briefcase v1.1 DeepSeek 1017 `max`'ı (1570, 1560–1580) geçer: `high`'da 1634, `xhigh`'da 1742. GDPval-AA'nın `high` satırı yok, `xhigh`'da eşit (1735 ±23 vs 1746 ±21); AnalystAgent'ın 1017 satırı yok — tek ölçüm. Max kademesindeki geniş farklar (GDPval 1838 / 1866) router'ın yazdığı hat değil |
-| `workflow-automation` | **OpenCode** † | **OpenCode** † | **OpenCode** † | **OpenCode** † | AutomationBench-AA: hat Argon'un gerisinde (Opus 5.5 `xhigh` 65.0, Sonnet 5.5 `high` 59.4 vs 77.5); GLM-5.3-Flash'ın etiketli kademesi yok (n/p); ITBench'te açık modeller önde — Claude yönü yok |
+| `workflow-automation` | **OpenCode** † | **OpenCode** † | **OpenCode** † | **OpenCode** † | AutomationBench-AA: hat (Opus 5.5 `xhigh` 65.0, Sonnet 5.5 `high` 59.4) iki OpenCode `#1`'in de gerisinde — `D = 2`, `R ≤ 2`'de DeepSeek 1017 `max` 66.6, diğerlerinde Argon 77.5; ITBench'te açık modeller önde — Claude yönü yok |
 | `science` | **OpenCode** | **Claude** | **Claude** | **Claude** | Terminal-Bench-Science 0.1 ve CritPt v2 MiMo-V2.6-Pro'ya (5.7 / 34.0) karşı örtüşür: Sonnet 5.5 `high` 34.3 / 51.5, Opus 5.5 `xhigh` 61.9 / 67.5; SM1 `D = 2`'yi OpenCode'da tutar. SciCode incelemede, hiçbir şeyi desteklemez |
 | `long-context` (sığ) | **OpenCode** † | **OpenCode** † | **OpenCode** † | **OpenCode** † | AA-LCR ve MLCR-AA hattın kademesinde satır yayımlamaz; Max'ta çelişirler — verimlilik |
-| `research-synthesis` | **OpenCode** † | **OpenCode** † | **OpenCode** † | **OpenCode** † | AA-Omniscience v1.1, tek benchmark: `D = 2`'de Sonnet 5.5 `high` 19 vs MiMo −4; `D = 3` / `R = 3`'te `#1` olan Argon'a (GM1) karşı 19 / 21 vs 46 |
-| `doc-data-understanding` | **OpenCode** † | **OpenCode** † | **Claude** † | **Claude** † | GDP.pdf, tek satır: Sonnet 5.5 `high` 25.2 / `xhigh` 24.6 vs MiMo 19.2 |
+| `research-synthesis` | **OpenCode** † | **OpenCode** † | **OpenCode** † | **OpenCode** † | AA-Omniscience v1.1, tek benchmark: `D = 2`, `R ≤ 2`'de `#1` GLM-5.3-Flash'ın etiketli kademesi yok (n/p), bu yüzden verimlilik belirler; `D = 3` / `R = 3`'te `#1` olan Argon'a (GM1) karşı 19 / 21 vs 46 |
+| `doc-data-understanding` | **OpenCode** † | **OpenCode** † | **Claude** † | **Claude** † | GDP.pdf, tek satır: Sonnet 5.5 `high` 25.2 / `xhigh` 24.6 vs DeepSeek 1017 `max` 17.2 |
 | `latency-volume` (ilk-token bağlı) | **OpenCode** | **OpenCode** | **OpenCode** | **OpenCode** | DeepSeek V4.1 Flash 1017'de 142 t/s (eski revizyonda 222 t/s, TTFT 1.1 s), USD 100 tavan; Haiku 5.5'in `low`'da ölçülmüş ilk-token değeri yok — gerçekler, skor değil |
 | `orchestration` veya `opusplan`a giden görev | **Claude** | **Claude** | **Claude** | **Claude** | Ürün gerçekleri, ölçüm yok: `ultracode` betikli çok-ajanlı bir workflow koşar, `opusplan` plan ile yürütme arasında modeli kendisi değiştirir; OpenCode'da alt ajanlar ve ajan başına model var, workflow çalışma zamanı yok (opencode.ai/docs/agents, 13 Kas 2026) |
 | başka her şey / kanıt yok | **OpenCode** † | **OpenCode** † | **OpenCode** † | **OpenCode** † | ucuz kol; `low-confidence` yaz |
@@ -552,7 +564,7 @@ geçer, ve yalnız daha zor görevlerde görünen bir Claude yönü Claude'un ko
 yok.** SM1'in bir Claude yönüne rağmen OpenCode'a gönderdiği hücre (`D = 2`'de `agentic-code`, `deep-reasoning`, `science`) † **değildir**:
 önü ve fiyatı söyle. `R=3`'te verimliliğe düşen hücre, tek kabul edilebilir ölçümün eğilimini izler (`†` kalır).
 
-**Amiral gemisi etiketinde `D = 3` analiz** (okuma, inceleme, denetim — hat Sonnet 5.5 `xhigh`'da kalır) Argon `high`'a karşı okunur: `agentic-code` tek eğilim (FrontierCode-AA 2.0 35.6 vs 25.7, TB 4.0 57.1'de eşit) → `R ≤ 2`'de **OpenCode** †, `R = 3`'te **Claude** †; `deep-reasoning` bölünür (HLE-Diamond 44.1 vs 56.7, CritPt v2 57.5 vs 52.5) → **OpenCode** †; `science` yönünü korur (52.4 / 57.5 vs MiMo 5.7 / 34.0) → **Claude**.
+**Amiral gemisi etiketinde `D = 3` analiz** (okuma, inceleme, hiçbir şey çalıştırmadan denetim — hat Sonnet 5.5 `xhigh`'da kalır) Argon `high`'a karşı okunur: `agentic-code` tek eğilim (FrontierCode-AA 2.0 35.6 vs 25.7, TB 4.0 57.1'de eşit) → `R ≤ 2`'de **OpenCode** †, `R = 3`'te **Claude** †; `deep-reasoning` bölünür (HLE-Diamond 44.1 vs 56.7, CritPt v2 57.5 vs 52.5) → **OpenCode** †; `science` yönünü korur (52.4 / 57.5 vs MiMo 5.7 / 34.0) → **Claude**.
 
 **`D ≤ 1` → Claude seçimi ne olursa olsun OpenCode** (Haiku 5.5 dahil): capability satırlarını atla (kendi satırını koruyan `latency-volume`
 hariç); fiyat, tavan ve Claude kotası karar verir, † yok, `R` değiştirmez. Claude satırı yine kullanıcı oraya giderse ne çalıştıracağını söyler.
@@ -598,7 +610,7 @@ Evidence: <tek cümle>
 ```
 Claude: Haiku 5.5 · effort: low
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
-Evidence: Labelling is D=0 bulk work, so OpenCode runs it: the Flash tier buys hundreds of such batches a month on USD 60–100 caps (USD 0.14 per real agent task for DeepSeek 1017, Arena 10 Nov) and keeps Claude's quota for harder work.
+Evidence: Labelling is D=0 bulk work, so OpenCode runs it: the Flash tier buys hundreds of such batches a month on USD 60–100 caps (USD 0.14 per real agent task for DeepSeek 1017, Arena 13 Nov) and keeps Claude's quota for harder work.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 ```
 
@@ -606,23 +618,22 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 ```
 Claude: Haiku 5.5 · effort: medium
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
-Evidence: A short summary is D=1 reading work (AA-LCR has Haiku 5.5 at 77 and Sonnet 5.5 at 78), so the Flash tier on USD 60–80 caps handles it and Claude's quota is kept.
+Evidence: A short summary is D=1 reading work (AA-LCR has Haiku 5.5 at 77 and Sonnet 5.5 at 78), so the Flash tier on USD 60–100 caps handles it and Claude's quota is kept.
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 ```
 
 *"Ödeme modülünü 40 dosyada yeni idempotency-key API'sine geçir, tüm çağıranları güncelle, testler geçsin"* (D=2, tek faz)
 ```
 Claude: Sonnet 5.5 · effort: high
-OpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
-Evidence: Mid-difficulty feature work stays on OpenCode (SM1): Claude's lead on Vals TB 4.0 (65 / 64 vs 31 / 32) and Arena Agent only counts from D=3, and a real agent task costs USD 0.17 (MiMo-V2.6-Pro) against Sonnet 5.5's 3.38 and Opus 5.5's 5.38 (Arena, 10 Nov).
-DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
+OpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Mid-difficulty feature work stays on OpenCode (SM1): Hy4's rows carry no rung label (`n/p` at the rung the line writes), so efficiency decides at USD 1.03 per AA task against Sonnet 5.5 `high`'s 1.64; low-confidence.
 ```
 
 *"Prod'da ara sıra düşen race condition'ı bul"* (D3DIAG → D=3, Kural 2 → amiral gemisi)
 ```
 Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
-OpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default
-Evidence: D=3 reasoning half has two agreeing AA rows (HLE 61 vs Argon's 57, CritPt 32 vs 27); the terminal half sets no direction, so the direction decides.
+OpenCode: #1 Gemini 4 Argon · effort: high · #2 Hy4 · effort: high
+Evidence: D=3 reasoning half has two agreeing AA rows at the rung each line runs (HLE-Diamond 64.0 vs Argon's 56.7, CritPt v2 67.5 vs 52.5), and the terminal half agrees.
 Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; limit USD 30 at half price through 30 Nov 2026 (list prices after); a request draws about 6× the shared allowance a MiMo-V2.6-Pro one does (Go's 5-hour estimates, 566 vs 3,260 — a proxy). If it errors or is overloaded, run the row's other model.
 ```
 
@@ -630,7 +641,7 @@ Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-
 ```
 Claude: Sonnet 5.5 · effort: low
 OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
-Evidence: D=0 — both clear the bar, so price and cap decide: Flash models on USD 100 and 60 caps at USD 0.14 and 0.16 per real agent task (Arena, 10 Nov).
+Evidence: D=0 — both clear the bar, so price and cap decide: Flash models on USD 100 and 60 caps at about USD 0.14 per real agent task each (Arena, 13 Nov).
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 Do not apply without human review.
 ```
@@ -647,7 +658,7 @@ DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri
 ```
 Claude: ✅ RECOMMENDED AI · Opus 4.8 · effort: xhigh
 OpenCode: use Claude — the only open-model offensive evidence is vendor-reported and no pool model's safeguards are verified.
-Evidence: Offensive security is a deciding gate on both arms; only Opus 4.8 (or Mythos 5.2 for verified organisations) carries it, so the other arm declines and Claude takes the badge.
+Evidence: Offensive security is a deciding gate on both arms; only Opus 4.8 (or Mythos 5.2 for verified organisations) carries it, so the other arm declines.
 ```
 
 *"Bu genomik pipeline'daki varyant çağırma mantığını denetle"*
@@ -664,11 +675,11 @@ Clarify: which file or function is broken, what does it do now, and what should 
 
 ---
 
-*Senkron: `skill/SKILL.md` **iteration-33 kısmi** (17 Kasım 2026 — yalnız paylaşılan kota paragrafları aynalandı: giriş, havuz başlığı, GLM-5.3 limiti USD 100, FR1 işaretçisi, GM1, PO1, CAP1, A1-OC maliyeti, `workflow-automation` / `research-synthesis` / `doc-data-understanding` sırası, Argon satırı. **iteration-32 değişiklikleri (Hy4, Qwen4 Max, 13 Kas Arena, `agentic-code` satırı) bu dosyaya henüz aynalanmadı — Türkçe takip gerekiyor.** Geri kalanı **iteration-31** (13 Kasım 2026 — rozet tablosu yazılan kademede yeniden türetildi: `R = 3` derinliğe göre ikiye ayrıldı, † hücre başına, `knowledge-work` `R ≤ 2`'de OpenCode †, `science` SM1'in `D = 3` koluna girdi; iteration-30: 13 Kasım 2026 — O1 daraltıldı: değişikliğin kendi kontrolleri ve onu anlatan dokümanlar uygulama fazının içinde, bağımsız doğrulama düzenlenen artefakttan başka bir şeye karşı kontroldür; `ultracode` notu Anthropic'in workflows sayfasına bağlandı; rozet tablosunda orkestrasyon satırı ürün gerçeği olarak etiketlendi, FrontierSWE v2 vendor sayıldı; hiçbir rozet hücresi taraf değiştirmedi; iteration-29: 12 Kasım 2026 — DeepSeek V4.1 Flash artık `D ≤ 1` `low` · `D ≥ 2` `max` yazar (iki kademe; iteration-26'nın üç kademeli kuralı geri alındı: AA-Briefcase ve Vals TB 4.0 rung başı çıtaları `high`'ı `max`'tan ayırıyor), Vals TB 4.0 türetmeye bağlandı, ayrıntı `opencode-benchmarks.md` §16; iteration-28: 11 Kasım 2026 — Go DeepSeek V4.1 Flash'ın 1017 sürümünü sunuyor, DeepSeek kanıtı 1017 aynı-sürüm satırlarına yeniden dayandırıldı, satır kaymaları ve Arena/DeepSWE tazelemesi `opencode-benchmarks.md` §15'te; iteration-27: 10 Kasım 2026 — Fable 5.2 / Mythos 5.2; AA Index v5 → II değerleri v4.3.2 olarak donduruldu, ayrı `II v5` sütunu yalnız `SKILL.md`'de; Gemini 4 Argon Go'da düz `gemini-4-argon` (gizli işe açık, tavan USD 30); MiniMax M3.1 Flash Free Go'dan çıktı → deep-reasoning / science / doc-data satırları geri döndü; Kimi K3.1 Pro premium, A1-OC'de Kimi K3 yerine; DeepSeek tavanı USD 100, ZDR 30 Kas'a kadar; Opus 4.8 `/fast` 30 Kas'ta bitiyor; ayrıntı ve anchor denetimi `opencode-benchmarks.md` §14, `reference.md` §23; iteration-26: 6 Kasım 2026 — DeepSeek V4.1 Flash üç kademeli efor: `D ≤ 1` `low` · `D = 2` `high` · `D ≥ 3` `max`, `high` vendor eğrisi + API varsayılanı, bağımsız AA puanı yok; GLM-5.3 ve GLM-5.3-Flash `low`/`max`'ta kaldı; iteration-25: 3 Kasım 2026 — `ultracode` artık `xhigh`'a bağlı bir seviye değil, bağımsız oturum anahtarı: UC1 `effort: <seviye> · ultracode` yazar, Adım 7 kural 12 `Ultracode:` satırını ekler; iteration-24: 26 Ekim 2026 — FR1 ücretsiz hat, GM1 Gemini yuvası yalnız Go Contributor yolu / NC1, 19 model, DeepSeek tavanı USD 80). Bu türev özet: Adım 1 kapılarının Gemini ayrıntısı, PO1 sıralaması, E10/E11 ve örneklerin Gemini satırı `SKILL.md`'dedir.*
+*Senkron: `skill/SKILL.md` **iteration-34** (17 Kasım 2026 — tam aynalandı: iteration-34: D3DIAG açıklaması (bisect eden, yeniden üreten veya sistemi çalıştıran teşhis artefaktı sürer ve amiral gemisi listesinde kalır; yalnız koddan/log'dan/yazıdan okunan teşhis analizdir) Adım 3'te, rozet tablosundaki "çalıştırmadan denetim" ifadesi; iteration-33: tek paylaşılan Go kotası (giriş, havuz başlığı, GLM-5.3 limiti USD 100, FR1 işaretçisi, GM1, PO1, CAP1, A1-OC maliyeti, `workflow-automation` / `research-synthesis` / `doc-data-understanding` sırası, Argon satırı); iteration-32: Hy4 ve Qwen4 Max (havuz 21 model), 13 Kasım Arena anlık görüntüsü ve `görev/ay` sütunu, `agentic-code`/`terminal-tool` satırı artık Hy4 · MiMo-V2.6-Pro, BUD1/FR1 güncellemeleri, rozet tablosu kanıt hücreleri (`agentic-code`, `workflow-automation`, `research-synthesis`, `doc-data-understanding`), örnekler. Önceki: **iteration-31** (13 Kasım 2026 — rozet tablosu yazılan kademede yeniden türetildi: `R = 3` derinliğe göre ikiye ayrıldı, † hücre başına, `knowledge-work` `R ≤ 2`'de OpenCode †, `science` SM1'in `D = 3` koluna girdi; iteration-30: 13 Kasım 2026 — O1 daraltıldı: değişikliğin kendi kontrolleri ve onu anlatan dokümanlar uygulama fazının içinde, bağımsız doğrulama düzenlenen artefakttan başka bir şeye karşı kontroldür; `ultracode` notu Anthropic'in workflows sayfasına bağlandı; rozet tablosunda orkestrasyon satırı ürün gerçeği olarak etiketlendi, FrontierSWE v2 vendor sayıldı; hiçbir rozet hücresi taraf değiştirmedi; iteration-29: 12 Kasım 2026 — DeepSeek V4.1 Flash artık `D ≤ 1` `low` · `D ≥ 2` `max` yazar (iki kademe; iteration-26'nın üç kademeli kuralı geri alındı: AA-Briefcase ve Vals TB 4.0 rung başı çıtaları `high`'ı `max`'tan ayırıyor), Vals TB 4.0 türetmeye bağlandı, ayrıntı `opencode-benchmarks.md` §16; iteration-28: 11 Kasım 2026 — Go DeepSeek V4.1 Flash'ın 1017 sürümünü sunuyor, DeepSeek kanıtı 1017 aynı-sürüm satırlarına yeniden dayandırıldı, satır kaymaları ve Arena/DeepSWE tazelemesi `opencode-benchmarks.md` §15'te; iteration-27: 10 Kasım 2026 — Fable 5.2 / Mythos 5.2; AA Index v5 → II değerleri v4.3.2 olarak donduruldu, ayrı `II v5` sütunu yalnız `SKILL.md`'de; Gemini 4 Argon Go'da düz `gemini-4-argon` (gizli işe açık, tavan USD 30); MiniMax M3.1 Flash Free Go'dan çıktı → deep-reasoning / science / doc-data satırları geri döndü; Kimi K3.1 Pro premium, A1-OC'de Kimi K3 yerine; DeepSeek tavanı USD 100, ZDR 30 Kas'a kadar; Opus 4.8 `/fast` 30 Kas'ta bitiyor; ayrıntı ve anchor denetimi `opencode-benchmarks.md` §14, `reference.md` §23; iteration-26: 6 Kasım 2026 — DeepSeek V4.1 Flash üç kademeli efor: `D ≤ 1` `low` · `D = 2` `high` · `D ≥ 3` `max`, `high` vendor eğrisi + API varsayılanı, bağımsız AA puanı yok; GLM-5.3 ve GLM-5.3-Flash `low`/`max`'ta kaldı; iteration-25: 3 Kasım 2026 — `ultracode` artık `xhigh`'a bağlı bir seviye değil, bağımsız oturum anahtarı: UC1 `effort: <seviye> · ultracode` yazar, Adım 7 kural 12 `Ultracode:` satırını ekler; iteration-24: 26 Ekim 2026 — FR1 ücretsiz hat, GM1 Gemini yuvası yalnız Go Contributor yolu / NC1, 19 model, DeepSeek tavanı USD 80). Bu türev özet: Adım 1 kapılarının Gemini ayrıntısı, E10/E11, `derive_opencode_rows.py` türetmesi ve rozet tablosunun tüm ayrıntı hücreleri `SKILL.md`'dedir.*
 
 *Senkron: `skill/SKILL.md` **iteration-23** (14 Ekim 2026 — BUD1 bütçe-öncelikli havuz, SM1 varsayılan OpenCode rozeti, A1-OC premium
 yükseltme, yeni Adım 4-OC çiftleri ve rozet tablosu; iteration-22: Haiku 5.5 kuşağı H1/H2/E8/E9; iteration-21'de Codex kolu emekli, OpenCode Go kolu kuruldu). **Bu fallback frontier derleyicisini ve per-model kanıt
 dosyasını (`opencode-benchmarks.md`) taşımaz** — yalnızca sonuçlarını özetler; tam kural seti için
-`skill/SKILL.md`. Bilerek korunan farklar: Türkçe · kendi kendine yeterli · `opusplan` ve `/fast` speed line yok
-(Claude.ai yüzeyi) · OpenCode kolu kısaltılmış özet · Kural 8 (alias güvenliği) yok. Çıktı ve örnekler İngilizce
+`skill/SKILL.md`. Bilerek korunan farklar: Türkçe · kendi kendine yeterli · `opusplan` ve `/fast` speed line (`⚡ Claude /fast`) yok
+(Claude.ai yüzeyi) · `/model opus` alias kuralı ve Kural 8 (alias güvenliği) yok (yalnız Claude Code) · OpenCode kolu kısaltılmış özet (`II v5` sütunu, Adım 4-OC'nin tam rung gerekçeleri, BD1/SM1 ayrıntı hücreleri yok) · `reference.md` ve `opencode-benchmarks.md` taşınmaz · Adım 3'teki amiral gemisi listesi ve A1 (Fable yükseltmesi) kısaltılmış · örneklerin altındaki `>` açıklamaları ve `⚡ /fast` satırları yok · TR'ye özgü iki örnek (özet, yönetim kurulu memosu) İngilizce örnek setinden farklı. Çıktı ve örnekler İngilizce
 (`Evidence:` vb.) bırakıldı çünkü skill çıktısı öyle.*
