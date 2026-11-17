@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Flash · effort: default
+Evidence: The Haiku shortfall moves only the Claude line to Sonnet 5.5 at its D=2 rung (H2); the 200-item bulk gate keeps OpenCode on the Flash pair, and SM1 gives D=2 to OpenCode; low-confidence.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).

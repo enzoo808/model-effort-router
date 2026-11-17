@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: low
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: D=0 factual lookup: price and cap decide and the recall gate drops DeepSeek, so GLM-5.3-Flash (USD 0.14 per real agent task, Arena 13 Nov) and MiMo-V2.6-Flash take it, sparing Claude's quota.

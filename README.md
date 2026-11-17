@@ -9,8 +9,8 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-install)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-install)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-install)
-[![Policy](https://img.shields.io/badge/policy-iteration--33-8b949e?style=flat-square)](CHANGELOG.md)
-[![Regression evals](https://img.shields.io/badge/regression_evals-48-8b949e?style=flat-square)](#-validation)
+[![Policy](https://img.shields.io/badge/policy-iteration--34-8b949e?style=flat-square)](CHANGELOG.md)
+[![Regression evals](https://img.shields.io/badge/regression_evals-49-8b949e?style=flat-square)](#-validation)
 
 **[Quick start](#-quick-start)** · **[Install](#-install)** · **[Read the answer](#-reading-the-answer)** · **[How it works](#-how-it-decides)** · **[Examples](#-examples)** · **[Evidence](#-built-on-evidence-not-vibes)** · **[Changelog](CHANGELOG.md)** · **[🇹🇷 Türkçe](README.tr.md)**
 
@@ -104,7 +104,7 @@ Models that log or train on prompts are out unless *you* say the work is non-con
 <td valign="top">
 
 ### ✅ Verifiable
-48 deterministic regression prompts, a regex grader and consistency checks that run in CI — see [Validation](#-validation).
+49 deterministic regression prompts, a regex grader and consistency checks that run in CI — see [Validation](#-validation).
 
 </td>
 </tr>
@@ -330,7 +330,7 @@ Step-by-step detail, with every gate and rule: **[docs/how-it-works.md](docs/how
 
 | Task | Claude | OpenCode `#1` · `#2` | Recommended |
 |---|---|---|---|
-| Label 200 reviews positive/negative | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` bulk work; Flash tier on USD 60 caps keeps Claude's quota |
+| Label 200 reviews positive/negative | `Haiku 5.5 · low` | DeepSeek V4.1 Flash `low` · MiMo-V2.6-Flash `default` | **OpenCode** — `D=0` bulk work; Flash tier on USD 60–100 caps keeps Claude's quota |
 | Refactor the payment module across 40 files | `Sonnet 5.5 · high` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **OpenCode** — `D=2`; Sonnet 5.5 `high` leads, but USD 1.64 vs 0.26 per AA task |
 | Stand up staging from scratch (Terraform, 12 services, seed, smoke) | `Sonnet 5.5 · high · ultracode` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — build, seed and a smoke run on the deployed env feed each other; OpenCode has no workflow runtime |
 | Find the race condition that flakes in prod | `Opus 5.5 · xhigh` | MiMo-V2.6-Pro `default` · DeepSeek V4.1 Flash `max` | **Claude** — `D=3`, two agreeing AA rows |
@@ -410,7 +410,7 @@ Raw numbers live in [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.m
 
 ## ✅ Validation
 
-`evals/routing/evals.json` is a deterministic regression set — **48 prompts** — graded by a pure-regex grader (no LLM in the loop). It checks the Claude model and effort, **both OpenCode picks** (model, effort, order), which side holds the badge, a non-trivial `Evidence:` line, and required / forbidden text for the confidentiality default.
+`evals/routing/evals.json` is a deterministic regression set — **49 prompts** — graded by a pure-regex grader (no LLM in the loop). It checks the Claude model and effort, **both OpenCode picks** (model, effort, order), which side holds the badge, a non-trivial `Evidence:` line, and required / forbidden text for the confidentiality default.
 
 ```bash
 python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # goldens vs grader
@@ -422,7 +422,7 @@ python scripts/check_readme_facts.py     # counts, pool size, iteration and tier
 
 These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
 
-**Where it stands (17 Nov 2026, iteration-33):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **48/48**. Go's paid models share one allowance, and the cap rules now say so (CAP1); the pair order (PO1) is derived in code. A full cold run of all 48 prompts (fresh Claude Sonnet 5.5 agents reading only `skill/SKILL.md`, eight prompts each) passed **46/48** on the first pass. `e1` exposed a two-tag ordering gap, now closed in PO1 and passing; `c2` stays an open finding (it missed on a different limb in each of three runs). Details in [`evals/README.md`](evals/README.md).
+**Where it stands (17 Nov 2026, iteration-34):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **49/49**. A full cold run of the 49 prompts (fresh Claude Sonnet 5.5 agents reading only `skill/SKILL.md`, eight prompts each; the new `dg1` run on its own agent) passed **48/49** on the first pass. `c2`, the eval that had missed on a different limb in three earlier runs, now passes: iteration-34's one-sentence D3DIAG clarification says a diagnosis that bisects or runs the system drives the artefact (its `#2` OpenCode model still splits across agents). `dg1` is the new counter-eval (a read-only D=3 diagnosis stays Sonnet 5.5 `xhigh`, OpenCode †). `a5` is the open finding: the 200-review tone batch came out `Sonnet 5.5 · high` instead of `medium` in two cold-run agents, but 6 of 6 agents in an A/B (3 on the `cbfe614` files, 3 on this iteration's) gave `medium`, so it is an intermittent D=1/2 reading, not a regression. Details in [`evals/README.md`](evals/README.md).
 
 ### Known limits, stated plainly
 

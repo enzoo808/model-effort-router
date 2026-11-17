@@ -1151,3 +1151,15 @@ consensus score, so the script's own partner would be Hy4, not MiMo-V2.6-Pro.
 
 `arena.ai/leaderboard/agent`, all 65 models: the page is still headed **Nov 13, 2026**, and Hy4 still reads
 "Tencent · Proprietary · **Preliminary**", 5.67% ±1.25% at USD 0.55 p50 (23,160 sessions). No change.
+
+## 20. Iteration-34 — two re-reads, no change (17 November 2026)
+
+Public pages, no login, read once each on 17 Nov 2026 (browser clock 19:13 UTC; the §19.5 Arena read was at 14:26 UTC).
+
+- **Hy4, Arena Agent** (`arena.ai/leaderboard/agent`, "View all 65 models"): the page is still headed **Nov 13, 2026**;
+  Hy4 still reads "Tencent · Proprietary · **Preliminary**", 5.67% ±1.25% at USD 0.55 p50, 23,160 sessions.
+  Still Preliminary. No change to SKILL.md or the evidence JSON.
+- **SciCode** (`artificialanalysis.ai/evaluations/scicode`): the page still carries the **Under review** tag (and
+  **Legacy**): "SciCode is under review following an independent audit of the dataset"; AA is reviewing SciCode-Verified's
+  findings and "will re-run all relevant models" if it adopts a corrected dataset. Still under review. No change; the
+  `science` row keeps SciCode out (`derive_opencode_rows.py` not re-run, no row moves).

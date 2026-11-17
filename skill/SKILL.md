@@ -11,7 +11,7 @@ description: >-
 
 # Claude & OpenCode model / effort router
 
-<!-- routing-policy-version: iteration-33 -->
+<!-- routing-policy-version: iteration-34 -->
 
 Route the user's prompt — **do not run it**. Say which model + effort to use on
 **Claude** and on **OpenCode** (**two** models, `#1` / `#2`, each with its own
@@ -341,7 +341,7 @@ being made between?*
 > - **Mechanical enumeration = D=1**, not D=3.
 
 <!-- rule:D3DIAG -->
-**D3DIAG · diagnosis.** The coding column is written for building, so debugging scores on its own test: bounded diagnosis is `D=2`, and adversarial diagnosis is `D=3` when at least two of these hold — the root cause is non-local or depends on timing or ordering; reproduction is intermittent or environment-dependent; several plausible causes must be ruled out by constructing competing hypotheses; a local-looking fix could mask a deeper invariant violation.
+**D3DIAG · diagnosis.** The coding column is written for building, so debugging scores on its own test: bounded diagnosis is `D=2`, and adversarial diagnosis is `D=3` when at least two of these hold — the root cause is non-local or depends on timing or ordering; reproduction is intermittent or environment-dependent; several plausible causes must be ruled out by constructing competing hypotheses; a local-looking fix could mask a deeper invariant violation. Diagnosis that bisects, reproduces or runs the system drives the artefact and stays on the flagship list; only diagnosis read from code, logs or a write-up alone is analysis.
 <!-- /rule:D3DIAG -->
 
 > **`D=2` — bounded diagnosis.** The symptom is local, the failure is loud and
@@ -419,7 +419,7 @@ risk does not raise the model, it raises human oversight.
 
 > **The flagship list** (`D=3` only): `agentic-code` · `terminal-tool` ·
 > `deep-reasoning` · `science` · `computer-use` · `workflow-automation` — **and
-> only where the task builds, changes or drives the artefact.**
+> only where the task builds, changes or drives the artefact** (a bisect or a reproduction run drives it)**.**
 >
 > **Reading, reviewing, auditing or answering-from-code is analysis and stays
 > mid-tier, at any scale.** A 180-service defensive audit and a single-file JWT
@@ -682,7 +682,7 @@ OpenCode against a Claude direction (`agentic-code`, `deep-reasoning`, `science`
 is **not** †: name the lead and the price instead. At `R = 3` a cell that fell to efficiency
 follows its single measurement's lean and keeps its †.
 
-**`D = 3` analysis on a flagship tag** (reading, reviewing, auditing — the line stays Sonnet 5.5
+**`D = 3` analysis on a flagship tag** (reading, reviewing, auditing without running anything — the line stays Sonnet 5.5
 `xhigh`, Step 4) is read against Argon `high`: `agentic-code` has one lean (FrontierCode-AA 2.0
 35.6 vs 25.7, TB 4.0 a tie at 57.1) → **OpenCode** † at `R ≤ 2`, **Claude** † at `R = 3`;
 `deep-reasoning` splits (HLE-Diamond 44.1 vs 56.7, CritPt v2 57.5 vs 52.5) → **OpenCode** †;

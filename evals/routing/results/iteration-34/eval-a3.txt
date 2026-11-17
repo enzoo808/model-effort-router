@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: medium
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
+Evidence: D=1 memo draft goes to OpenCode by SM1; the Flash tier on USD 60–100 caps costs about USD 0.14 per real agent task (Arena, 13 Nov) and spares Claude's quota.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).

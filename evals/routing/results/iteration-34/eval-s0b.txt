@@ -1,0 +1,1 @@
+Clarify: what counts as an inactive user — an is_active flag set to false, or no login for N days (and what is N) — and should the rows be hard-deleted or soft-deleted?
