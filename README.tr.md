@@ -10,7 +10,7 @@
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-kurulum)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-kurulum)
 [![Policy](https://img.shields.io/badge/politika-iteration--34-8b949e?style=flat-square)](CHANGELOG.md)
-[![Regression evals](https://img.shields.io/badge/regresyon_eval-48-8b949e?style=flat-square)](#-doğrulama)
+[![Regression evals](https://img.shields.io/badge/regresyon_eval-49-8b949e?style=flat-square)](#-doğrulama)
 
 **[Hızlı başlangıç](#-hızlı-başlangıç)** · **[Kurulum](#-kurulum)** · **[Cevabı oku](#-cevabı-okumak)** · **[Nasıl karar verir](#-nasıl-karar-verir)** · **[Örnekler](#-kullanım-örnekleri)** · **[Kanıt](#-hisle-değil-kanıtla)** · **[Değişiklik günlüğü](CHANGELOG.md)** · **[🇬🇧 English](README.md)**
 
@@ -104,7 +104,7 @@ Bir benchmark yalnızca görevin ihtiyacını ölçüyorsa sayılır ve bir yön
 <td valign="top">
 
 ### ✅ Doğrulanabilir
-48 deterministik regresyon promptu, regex tabanlı bir not verici ve CI'da koşan tutarlılık kontrolleri — bkz. [Doğrulama](#-doğrulama).
+49 deterministik regresyon promptu, regex tabanlı bir not verici ve CI'da koşan tutarlılık kontrolleri — bkz. [Doğrulama](#-doğrulama).
 
 </td>
 </tr>
@@ -392,7 +392,7 @@ Ham sayılar [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.md) ve [
 
 ## ✅ Doğrulama
 
-`evals/routing/evals.json`, saf regex ile (döngüde LLM yok) notlanan deterministik bir regresyon setidir — **48 prompt**. Claude modelini ve eforunu, **her iki OpenCode seçimini** (model, efor, sıra), rozetin hangi tarafta olduğunu, anlamlı bir `Evidence:` satırını ve gizlilik varsayılanı için zorunlu / yasak metni denetler.
+`evals/routing/evals.json`, saf regex ile (döngüde LLM yok) notlanan deterministik bir regresyon setidir — **49 prompt**. Claude modelini ve eforunu, **her iki OpenCode seçimini** (model, efor, sıra), rozetin hangi tarafta olduğunu, anlamlı bir `Evidence:` satırını ve gizlilik varsayılanı için zorunlu / yasak metni denetler.
 
 ```bash
 python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # altın çıktılar vs not verici
@@ -404,7 +404,7 @@ python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, 
 
 Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
 
-**Durum (17 Kasım 2026, iteration-34):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **48/48**. 48 promptun tamamının soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze Claude Sonnet 5.5 ajanları, ajan başına sekiz prompt) ilk geçişte **47/48** geçti. Önceki üç koşuda her seferinde farklı bir yerde kalan `c2` artık geçiyor: iteration-34'ün tek cümlelik D3DIAG açıklaması, commit bisect eden veya sistemi çalıştıran bir teşhisin artefaktı sürdüğünü söylüyor (`#2` OpenCode modeli ajanlar arasında hâlâ ayrışıyor). Açık bulgu `a5`: 200 yorumluk ton etiketleme `Sonnet 5.5 · medium` yerine iki kez `high` çıktı. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
+**Durum (17 Kasım 2026, iteration-34):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **49/49**. 49 promptun soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze Claude Sonnet 5.5 ajanları, ajan başına sekiz prompt; yeni `dg1` kendi ajanında) ilk geçişte **48/49** geçti. Önceki üç koşuda her seferinde farklı bir yerde kalan `c2` artık geçiyor: iteration-34'ün tek cümlelik D3DIAG açıklaması, commit bisect eden veya sistemi çalıştıran bir teşhisin artefaktı sürdüğünü söylüyor (`#2` OpenCode modeli ajanlar arasında hâlâ ayrışıyor). `dg1` yeni karşı-eval: yalnızca okuyan D=3 teşhis Sonnet 5.5 `xhigh` ve OpenCode † kalır. Açık bulgu `a5`: 200 yorumluk ton etiketleme iki soğuk-koşu ajanında `Sonnet 5.5 · medium` yerine `high` çıktı, ama A/B'de (3 ajan `cbfe614` dosyalarıyla, 3 ajan bu iterasyonun dosyalarıyla) 6/6 `medium` verdi: gerileme değil, aralıklı bir D=1/2 okuması. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
 
 ### Bilinen sınırlar
 

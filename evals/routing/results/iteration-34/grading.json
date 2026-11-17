@@ -211,6 +211,12 @@
       "evidence": "Claude: Sonnet 5.5 correct, effort=xhigh; OpenCode: #1 Gemini 4 Argon high, #2 MiMo-V2.6-Pro default; recommended=opencode (correct); evidence ok; notes ok (opencode-go/gemini-4-argon)"
     },
     {
+      "id": "dg1",
+      "eval_name": "Read-only D=3 diagnosis (iteration-34 counter-eval to c2): reasoning from code and log alone is analysis, so the line stays Sonnet 5.5 xhigh and the badge is the OpenCode dagger",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=xhigh; OpenCode: #1 Gemini 4 Argon high, #2 MiMo-V2.6-Pro default; recommended=opencode (correct); evidence ok; notes ok (opencode-go/gemini-4-argon)"
+    },
+    {
       "id": "kw1",
       "eval_name": "Knowledge-work at D=2, R=3 (iteration-31): a single rung-matched lean keeps Claude, with a dagger",
       "passed": true,
@@ -290,9 +296,9 @@
     }
   ],
   "summary": {
-    "passed": 47,
+    "passed": 48,
     "failed": 1,
     "skipped": 0,
-    "total": 48
+    "total": 49
   }
 }

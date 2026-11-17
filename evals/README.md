@@ -3,8 +3,8 @@
 > **iteration-34 (17 Nov 2026): the `c2` ambiguity, the Turkish mirror, stale cap wording.**
 >
 > - **Rule.** D3DIAG gains one sentence (diagnosis that bisects, reproduces or runs the system drives the artefact and stays on the flagship list; diagnosis read from code, logs or a write-up alone is analysis), mirrored in `routing_policy.json` with a negative assertion; Step 4's flagship note and the badge paragraph carry a short matching phrase. `SKILL.md` +247 bytes. The `c2` baseline (three fresh agents, before) gave the Claude badge once in three; after, three in three. The OpenCode `#2` of `c2` still splits (the two-tag pair rule), left open.
-> - **Evals: 48**, none added or changed. `--selftest` 48/48; the five CI commands are green.
-> - **Cold-agent run** (`results/iteration-34/`, six fresh Claude Sonnet 5.5 agents reading only `skill/SKILL.md`, eight prompts each): first pass **47/48**, `c2` passes. `a5` (the 200-review tone batch; expected `Sonnet 5.5 · medium`) wrote `high`; a fresh re-run missed the same way, so it is an open finding. The iteration-34 edit does not touch its rules.
+> - **Evals: 49.** New `dg1` (counter-eval to `c2`: a read-only D=3 diagnosis stays Sonnet 5.5 `xhigh`, OpenCode †; **expectation derived from the rules, flagged for review**). `--selftest` 49/49; the five CI commands are green.
+> - **Cold-agent run** (`results/iteration-34/`, six fresh Claude Sonnet 5.5 agents reading only `skill/SKILL.md`, eight prompts each): first pass **47/48**, `c2` passes; `dg1`, added afterwards, passed on its own fresh agent (48/49 overall). `a5` (the 200-review tone batch; expected `Sonnet 5.5 · medium`) wrote `high`; a fresh re-run missed the same way, so it is an open finding. An A/B on `a5` alone (3 agents on the `cbfe614` files, 3 on iteration-34's, with an explicit D line requested) gave `medium` 6 of 6: no regression shown, an intermittent D=1/2 reading.
 > - **Re-reads, no change:** Hy4's Arena row is still Preliminary; AA's SciCode is still under review (`opencode-benchmarks.md` section 20).
 
 > **iteration-33 (17 Nov 2026): one shared Go allowance in the rules, GLM-5.3 at USD 100, PO1 in code.**
