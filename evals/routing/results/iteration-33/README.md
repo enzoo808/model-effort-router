@@ -19,4 +19,18 @@ This is the full regression set, 48 prompts, graded by `evals/routing/grade_rout
   changed in iteration-33.
 - Every eval that iteration-33 added or moved passed on the first pass: `al1`, `ar1`, `m1`, `x1`, `r1`, `w4`, `j1`.
 
-The prompts and goldens were **not** changed during the run.
+## Two-tag fix and its re-run (`two-tag/`)
+
+The `e1` finding led to a PO1 clause: with two dominant tags whose badge cells both fall to efficiency, the more
+cap-efficient of the two rows' `#1`s goes first (DeepSeek 714 vs GLM-5.3-Flash 429 tasks/mo). One fresh Claude Sonnet 5.5
+agent then routed `e1`, the other two-tag evals (`c2`, `d1`) and the reordered rows (`m1`, `x1`, `r1`) once
+(`two-tag/grading.json`): **5/6**.
+
+- `e1`, `d1`, `m1`, `x1` and `r1` pass.
+- `c2` **failed** on the badge: Claude line Opus 5.5 `xhigh` · ultracode and the Argon · Hy4 pair are correct, but the
+  badge sits on OpenCode, although its own Evidence says Opus 5.5 leads Argon (TB 4.0 59.6 vs 57.1, HLE-Diamond 64.0
+  vs 56.7). The new clause orders the pair only and never moves the badge. Not re-run (no third agent). `c2` is now an
+  open finding: it missed in iteration-32's first pass (Claude model), in this first pass (D=2) and here (badge), each
+  time on a different limb, and passed once in between.
+
+The prompts and goldens were **not** changed during the runs.

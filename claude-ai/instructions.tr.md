@@ -133,9 +133,9 @@ kalır (Grok 4.7 premium kalır, BUD1 — geri gelmez); Muse Spark 1.3 yalnız
 | `orchestration` | altta yatan etikete göre | | `ultracode` Claude satırında |
 | başka her şey | MiMo-V2.6-Pro · GLM-5.3-Flash | aynı | kanıt yok |
 
-**PO1 (çift sırası).** `D = 3` veya `R = 3`'te konsensüs lideri önce (sağ sütun). `D ≤ 2` ve `R ≤ 2`'de lider yalnız ikisini birden ölçen çıtalarda BD1 yönü varsa önde kalır; yoksa ikisi eşittir ve daha kota-verimli olan (`görev/ay`, bir vekil ölçü) önce gelir — `derive_opencode_rows.py` her sırayı türetir. Yalnız çifti sıralar, rozet SM1'e göre.
+**PO1 (çift sırası).** `D = 3` veya `R = 3`'te konsensüs lideri önce (sağ sütun). `D ≤ 2` ve `R ≤ 2`'de lider yalnız ikisini birden ölçen çıtalarda BD1 yönü varsa önde kalır; yoksa ikisi eşittir ve daha kota-verimli olan (`görev/ay`, bir vekil ölçü) önce gelir — `derive_opencode_rows.py` her sırayı türetir. İki baskın etiketin rozet hücreleri de verimliliğe düşerse iki satırın `#1`'lerinden kota-verimli olan önce gelir. Yalnız çifti sıralar, rozet SM1'e göre.
 
-İki baskın etiket varsa: `#1` rozeti belirleyen etiketin satırından (yoksa ilk adlandırılandan),
+İki baskın etiket varsa: `#1` rozeti belirleyen etiketin satırından (iki hücre de verimliliğe düştüyse PO1),
 `#2` diğer satırın `#1`'i (aynı modelse o satırın `#2`'si).
 
 **CAP1 · paylaşılan kota.** Go'nun ücretli modelleri 5 saatlik, haftalık ve aylık pencerelerle sayılan tek bir kotayı paylaşır; bir modelin aylık

@@ -404,7 +404,7 @@ python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, 
 
 Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
 
-**Durum (17 Kasım 2026, iteration-33):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **48/48**. Go'nun ücretli modelleri tek bir kotayı paylaşıyor ve kota kuralları artık bunu söylüyor (CAP1); çift sırası (PO1) kodda türetiliyor. 48 promptun tamamının soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze Claude Sonnet 5.5 ajanları, ajan başına sekiz prompt) ilk geçişte **46/48** geçti. Tek atımlık yeniden koşularda `c2` geçti, `e1` yine kaldı: iki etiketli sırası açık bir bulgu. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
+**Durum (17 Kasım 2026, iteration-33):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **48/48**. Go'nun ücretli modelleri tek bir kotayı paylaşıyor ve kota kuralları artık bunu söylüyor (CAP1); çift sırası (PO1) kodda türetiliyor. 48 promptun tamamının soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze Claude Sonnet 5.5 ajanları, ajan başına sekiz prompt) ilk geçişte **46/48** geçti. `e1` iki etiketli sıradaki bir boşluğu gösterdi; boşluk PO1'de kapatıldı ve `e1` artık geçiyor. `c2` açık bulgu olarak kalıyor: üç koşuda her seferinde farklı bir yerde kaldı. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
 
 ### Bilinen sınırlar
 
