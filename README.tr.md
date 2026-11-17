@@ -9,8 +9,8 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-kurulum)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-kurulum)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-kurulum)
-[![Policy](https://img.shields.io/badge/politika-iteration--31-8b949e?style=flat-square)](CHANGELOG.md)
-[![Regression evals](https://img.shields.io/badge/regresyon_eval-45-8b949e?style=flat-square)](#-doğrulama)
+[![Policy](https://img.shields.io/badge/politika-iteration--32-8b949e?style=flat-square)](CHANGELOG.md)
+[![Regression evals](https://img.shields.io/badge/regresyon_eval-46-8b949e?style=flat-square)](#-doğrulama)
 
 **[Hızlı başlangıç](#-hızlı-başlangıç)** · **[Kurulum](#-kurulum)** · **[Cevabı oku](#-cevabı-okumak)** · **[Nasıl karar verir](#-nasıl-karar-verir)** · **[Örnekler](#-kullanım-örnekleri)** · **[Kanıt](#-hisle-değil-kanıtla)** · **[Değişiklik günlüğü](CHANGELOG.md)** · **[🇬🇧 English](README.md)**
 
@@ -104,7 +104,7 @@ Bir benchmark yalnızca görevin ihtiyacını ölçüyorsa sayılır ve bir yön
 <td valign="top">
 
 ### ✅ Doğrulanabilir
-45 deterministik regresyon promptu, regex tabanlı bir not verici ve CI'da koşan tutarlılık kontrolleri — bkz. [Doğrulama](#-doğrulama).
+46 deterministik regresyon promptu, regex tabanlı bir not verici ve CI'da koşan tutarlılık kontrolleri — bkz. [Doğrulama](#-doğrulama).
 
 </td>
 </tr>
@@ -358,13 +358,13 @@ Daha fazla örnek (20 satırlık tam tablo) için [İngilizce README](README.md#
 | **Fable 5.2** | Devasa ölçek (1000+ dosya) ve biyolojiye komşu Ar-Ge (USD 8/40; `/fast` var) |
 | **Mythos 5.2** | Gevşek korumalı Fable 5.2 — yalnızca Life Sciences Verification Program |
 
-**OpenCode Go kolu** — **puanlanan 19 model**, katmanlara ayrılmış. Her Go modelinin *kendi* aylık dolar limiti vardır; önemli olan o limitin bir ayda kaç *gerçek* ajan görevi aldığıdır. Katman üyeliği **isimle** belirlenir (Kural BUD1); aşağıdaki görev sayıları 10 Kasım 2026 tarihli, her satırı aynı sayfadan alınmış tek bir Arena anlık görüntüsüdür ve yalnızca bilgi amaçlıdır:
+**OpenCode Go kolu** — **puanlanan 21 model**, katmanlara ayrılmış. Her Go modelinin *kendi* aylık dolar limiti vardır; önemli olan o limitin bir ayda kaç *gerçek* ajan görevi aldığıdır. Katman üyeliği **isimle** belirlenir (Kural BUD1); aşağıdaki görev sayıları 13 Kasım 2026 tarihli, her satırı aynı sayfadan alınmış tek bir Arena anlık görüntüsüdür ve yalnızca bilgi amaçlıdır:
 
 | Katman | Modeller | Rol |
 |---|---|---|
-| **Bütçe** — varsayılan çiftler | MiMo-V2.6-Flash 857 · DeepSeek V4.1 Flash 714 · GLM-5.3-Flash 375 · MiMo-V2.6-Pro 88 | Limit başına ayda 88–857 görev |
-| **Yalnızca gizli olmayan iş** | GPT 6 Luna 188 · Muse Spark 1.3 128 | İşin gizli olmadığını söylersen sunulur — bazıları istemlerle eğitilir |
-| **Premium** — yalnızca yükseltme | Kimi K3 18 · GLM-5.3 13 · Qwen3.8 Max 12 · Kimi K3.1 Pro 12 · Grok 4.7 5 | Limit başına ayda 5–18 görev; yönlendirilen çiftte asla yok, yalnızca bildirilen bir yetersizlikten sonra `#2` |
+| **Bütçe** — varsayılan çiftler | MiMo-V2.6-Flash 750 · DeepSeek V4.1 Flash 714 · GLM-5.3-Flash 429 · Hy4 109 · MiMo-V2.6-Pro 94 | Limit başına ayda 94–750 görev |
+| **Yalnızca gizli olmayan iş** | GPT 6 Luna 188 · Muse Spark 1.3 130 | İşin gizli olmadığını söylersen sunulur — bazıları istemlerle eğitilir |
+| **Premium** — yalnızca yükseltme | Kimi K3 16 · GLM-5.3 16 · Kimi K3.1 Pro 13 · Qwen3.8 Max 12 · Qwen4 Max 10 · Grok 4.7 4 | Limit başına ayda 4–16 görev; yönlendirilen çiftte asla yok, yalnızca bildirilen bir yetersizlikten sonra `#2` |
 | **Gemini (GM1)** — kaplama | Gemini 4 Argon | Go'nun düz `gemini-4-argon`u (Not used / 0 gün), gizli işe açık; yalnızca beş satırda `D = 3` / `R = 3` için `#1`, USD 30 limit — varsayılan çift değil |
 | **Puanlanmamış** — asla seçilmez | Qwen3.8 Flash | Bu ad altındaki her satır "Qwen3.8-Flash-Next", farklı bir açık ağırlıklı model; `n/p` |
 | **Baskın olunan** | DeepSeek V4 Pro · MiniMax M3 · Kimi K2.7 Code · Qwen3.7 Plus · Claude Haiku 5.5 · Gemini 3.8 Flash | Puanlanır ve izlenir; hiçbir satır bunları üretmez |
@@ -392,7 +392,7 @@ Ham sayılar [`skill/opencode-benchmarks.md`](skill/opencode-benchmarks.md) ve [
 
 ## ✅ Doğrulama
 
-`evals/routing/evals.json`, saf regex ile (döngüde LLM yok) notlanan deterministik bir regresyon setidir — **45 prompt**. Claude modelini ve eforunu, **her iki OpenCode seçimini** (model, efor, sıra), rozetin hangi tarafta olduğunu, anlamlı bir `Evidence:` satırını ve gizlilik varsayılanı için zorunlu / yasak metni denetler.
+`evals/routing/evals.json`, saf regex ile (döngüde LLM yok) notlanan deterministik bir regresyon setidir — **46 prompt**. Claude modelini ve eforunu, **her iki OpenCode seçimini** (model, efor, sıra), rozetin hangi tarafta olduğunu, anlamlı bir `Evidence:` satırını ve gizlilik varsayılanı için zorunlu / yasak metni denetler.
 
 ```bash
 python evals/routing/grade_routing.py --selftest --results-dir /tmp/x   # altın çıktılar vs not verici
@@ -404,7 +404,7 @@ python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, 
 
 Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
 
-**Durum (13 Kasım 2026, iteration-31):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **45/45**. Rozet tablosu artık her hattın gerçekten koştuğu kademede okunuyor. Değişikliğin dokunduğu dokuz promptun soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze ajanlar) iki prompt netleştirildikten ve bir altın çıktı iki ajanın okumasına göre güncellendikten sonra **9/9**. Iteration-30 kalibrasyon kaydı [burada](evals/routing/results/iteration-30/calibration.md). `i1` atlandı, tetikleme eval'i hâlâ bir vekil. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
+**Durum (17 Kasım 2026, iteration-32):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **46/46**. Rozet tablosu artık her hattın gerçekten koştuğu kademede okunuyor. Değişikliğin dokunduğu dokuz promptun soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze ajanlar) iki prompt netleştirildikten ve bir altın çıktı iki ajanın okumasına göre güncellendikten sonra **9/9**. Iteration-30 kalibrasyon kaydı [burada](evals/routing/results/iteration-30/calibration.md). `i1` atlandı, tetikleme eval'i hâlâ bir vekil. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
 
 ### Bilinen sınırlar
 

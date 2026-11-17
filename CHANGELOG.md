@@ -4,6 +4,20 @@ Routing-policy iterations (the OpenCode Go era and the Codex era), newest first.
 
 ---
 
+## iteration-32 (17 Nov 2026): the OpenCode Go refresh — Qwen4 Max, Hy4, the 13 Nov Arena snapshot
+
+Sources read 17 Nov 2026: opencode.ai/docs/go + /console/go, the `/inference/go/v1/models` and `/inference/v1/models` endpoints, models.dev `opencode-go`, opencode.ai/docs/agents, the AA comparison/model pages and `/changelog`, vals.ai Terminal-Bench 4.0 (updated 11 Nov) and the Agent Arena page headed "Nov 13, 2026". Recorded in `skill/opencode-evidence.json` → `iteration_32`, and in `skill/opencode-benchmarks.md` §17–§18.
+
+- **Two new rated models.** Qwen4 Max (Go `qwen4-max`, 16 Nov; AA v5 **43** at USD 3.27/task, TB 4.0 48.5, Briefcase 1686, AutomationBench 72.6; Arena 7.46 ±1.34 at USD 1.46, "(xHigh)", Preliminary; AA's 16 Nov changelog entry names **no rung**, so the rung is `n/p` — the emit rung `xhigh` follows Arena's xHigh row) joins tier **P**; Hy4 (Go `hy4`, 4 Nov; AA v5 **35** at USD 1.03 at an unstated rung, TB 4.0 37.4, Vals 39.39; Arena 5.67 ±1.25 at USD 0.55, Preliminary) joins tier **B**. Qwen4 Max dominates Qwen3.8 Max (43 vs 34 at less than a third of the cost).
+- **Row moved: `agentic-code` / `terminal-tool` → Hy4 · MiMo-V2.6-Pro.** Hy4 tops the budget tier on three independent evaluators (AA TB 4.0, Vals TB 4.0, Arena). Its rows carry no rung label, so the `D = 2` badge cell falls to efficiency and gains the dagger (the `workflow-automation` shape). No other Step 4-OC row moved.
+- **Arena whole-column refresh** to the 13 Nov snapshot (one page for every row); tasks/mo recomputed (`round(cap ÷ p50)`): MiMo-V2.6-Pro 94, GLM-5.3-Flash 429, DeepSeek 714, Argon **44**, Hy4 **109**, MiniMax M3 **171**, Qwen3.8 Max 12, Kimi K3 16, Kimi K3.1 Pro 13, Grok 4.7 4, GPT 6 Luna 188, Haiku 167, Muse Spark 130, Qwen4 Max 10.
+- **Catalogue changes.** Qwen4 Max and Hy4 flash Free on Go (16 Nov); Grok 4.6, Kimi K2.6, MiniMax M2.7, Big Pickle, LL Alpha Free, Exo Free, Jev 1.13 and the Nemotron trio left Go; MiMo-V2.5 / Pro left Go (absent from the Console table, the catalogue and the privacy table); MiniMax M3 gained context-tiered pricing; the free twins are 200k/32k per the live endpoint; Zen deprecates `minimax-m3.1-flash-free` (17 Nov) and adds Inkling 2 Small Free and Flint 40B Free; FR1's twin list and the stale `mimo-v2.6-flash-free` "trains on prompts" clause are corrected.
+- **Facts recorded, rules untouched (iteration-33's scope):** the Go page now says paid models **share one allowance** (a model's cap is a weight; CAP1's paid chain, the intro's per-model-cap line and GM1's cap framing are listed as invalidated, not rewritten); **GLM-5.3's cap is in conflict** (Console table USD 15 vs catalogue 100 — the pool keeps 15); Argon's 50%-off window still ends 30 Nov with no cap stated after it.
+- **Evals: 46 prompts.** New: `ter1` (terminal-tool `D = 2`, the Hy4 pair and the dagger cell). Moved goldens: `b1`, `b2`, `o2`, `o3`, `c1`, `p1` (Hy4 pair; `p1` becomes `Hy4 · Argon` after the shortfall), `c2`, `c3`, `d1`, `v1` (`#2` Hy4 under GM1).
+- **Checks.** Self-test 46/46; the five CI commands green. Cold run (`results/iteration-32/`): see the results README. SKILL.md growth is within the 2% budget against iteration-31.
+
+---
+
 ## iteration-31 (13 Nov 2026): the badge table at the rung the router writes
 
 Rows read on 13 Nov 2026: Artificial Analysis same-page comparisons (v5 components for Sonnet 5.5 `medium` / `high` / `xhigh` / `max`, Opus 5.5 `xhigh` / `max`, Gemini 4 Argon `high`, MiMo-V2.6-Pro, DeepSeek V4.1 Flash 1017 `max`, GLM-5.3-Flash), `evaluations/gdpval-aa`, `evaluations/aa-briefcase`, and Vals' Terminal-Bench 4.0 page (updated 11 Nov). Recorded in `skill/opencode-evidence.json` → `iteration_31`.

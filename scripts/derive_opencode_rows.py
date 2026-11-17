@@ -55,10 +55,15 @@ TAGS = {
 # iteration-27 Stage 2 (D2+D5): Qwen3.8 Flash is unrated -- AA and Arena publish no row for Go's served
 # qwen3.8-flash (1M context); every row under that name is 'Qwen3.8-Flash-Next', a different open-weights
 # 256k model, so its benchmark cells are n/p and it never leads or joins a pair.
-ROUTABLE = ["MiMo-V2.6-Pro", "GLM-5.3-Flash", "MiMo-V2.6-Flash", "DeepSeek V4.1 Flash"]
+# iteration-32: Hy4 enters the budget tier (USD 60 cap, 0.54 Arena p50 = 0.9% of cap per task -- budget-class
+# cap pressure) and Qwen4 Max the premium reference (USD 15 cap, 1.47 p50 = 9.8% of cap -- premium-class).
+# Hy4's rows carry no rung label, so they are n/p for the badge table but feed this consensus (as
+# GLM-5.3-Flash's unlabelled rows do). Qwen4 Max is rated but never emitted: it is not in BUD1's budget
+# names and A1-OC does not name it yet (its knowledge-work slot swap is a pending judgement call).
+ROUTABLE = ["MiMo-V2.6-Pro", "GLM-5.3-Flash", "MiMo-V2.6-Flash", "DeepSeek V4.1 Flash", "Hy4"]
 GEMINI = ["Gemini 4 Argon", "Gemini 3.8 Flash"]
 NC1_ONLY = ["Muse Spark 1.3", "GPT 6 Luna"]
-PREMIUM = ["GLM-5.3", "Kimi K3", "Kimi K3.1 Pro", "Grok 4.7", "Qwen3.8 Max"]   # A1-OC only; reported, never led with
+PREMIUM = ["GLM-5.3", "Kimi K3", "Kimi K3.1 Pro", "Grok 4.7", "Qwen3.8 Max", "Qwen4 Max"]   # A1-OC only; reported, never led with
 DOMINATED = ["DeepSeek V4 Pro", "MiniMax M3", "Claude Haiku 5.5"]
 UNRATED = ["MiniMax M3.1 Flash",   # AA entity of the Free listing; the paid Go listing is never selected
            "Qwen3.8 Flash"]        # no row for the served model ('Qwen3.8-Flash-Next' rows are n/p for it)

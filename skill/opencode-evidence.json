@@ -20,7 +20,9 @@
     "MiniMax M3.1 Flash",
     "Gemini 4 Argon",
     "Gemini 3.8 Flash",
-    "Kimi K3.1 Pro"
+    "Kimi K3.1 Pro",
+    "Qwen4 Max",
+    "Hy4"
   ],
   "anchors": {
     "AA Terminal-Bench 4.0": {
@@ -52,7 +54,9 @@
         "Claude Sonnet 5.5": 63.6,
         "Claude Haiku 5.5": 32.8,
         "Kimi K3.1 Pro": 67.2,
-        "DeepSeek V4.1 Flash": 33.8
+        "DeepSeek V4.1 Flash": 33.8,
+        "Qwen4 Max": 48.5,
+        "Hy4": 37.4
       },
       "iteration_27_note": {
         "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
@@ -62,7 +66,9 @@
         "DeepSeek V4.1 Flash": 26.8
       },
       "revision_notes": {
-        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)"
+        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)",
+        "Qwen4 Max": "same-page comparison qwen4-max-vs-tencent-hy4, read 2026-11-17 (xhigh rung, per AA's 2026-11-16 post)",
+        "Hy4": "same comparison page, read 2026-11-17; rung n/p (AA labels none; Hy4 offers none/high)"
       }
     },
     "DeepSWE v1.1 (Mercor/Datacurve)": {
@@ -121,71 +127,77 @@
       "indep": true,
       "ci": null,
       "values": {
-        "Claude Opus 5.5": 19.53,
-        "Claude Sonnet 5.5": 16.1,
-        "Gemini 4 Argon": 10.7,
-        "Kimi K3.1 Pro": 4.99,
-        "Grok 4.7": 2.55,
-        "MiMo-V2.6-Pro": 2.3,
-        "Muse Spark 1.3": 2.2,
-        "DeepSeek V4.1 Flash": 2.07,
-        "GPT 6 Luna": 1.55,
-        "GLM-5.3": 1.04,
-        "Kimi K3": 0.59,
-        "Claude Haiku 5.5": 0.51,
-        "Qwen3.8 Max": 0.13,
-        "MiMo-V2.6-Flash": 0.03,
-        "GLM-5.3-Flash": 2.98,
-        "Gemini 3.8 Flash": 2.36,
-        "MiniMax M3": 10.37
+        "Claude Opus 5.5": 18.19,
+        "Claude Sonnet 5.5": 15.29,
+        "Gemini 4 Argon": 10.0,
+        "MiniMax M3": 11.18,
+        "Qwen4 Max": 7.46,
+        "Hy4": 5.67,
+        "Kimi K3.1 Pro": 3.95,
+        "GLM-5.3-Flash": 3.7,
+        "Grok 4.7": 1.78,
+        "MiMo-V2.6-Pro": 1.5,
+        "Gemini 3.8 Flash": 1.44,
+        "Muse Spark 1.3": 1.2,
+        "DeepSeek V4.1 Flash": 1.13,
+        "Qwen3.8 Max": 0.87,
+        "GPT 6 Luna": 0.79,
+        "MiMo-V2.6-Flash": 0.64,
+        "Claude Haiku 5.5": 0.37,
+        "Kimi K3": 0.24,
+        "GLM-5.3": 0.03
       },
       "cost_per_task_p50_usd": {
-        "Claude Opus 5.5": 5.38,
-        "Claude Sonnet 5.5": 3.38,
-        "Gemini 4 Argon": 0.73,
-        "Kimi K3.1 Pro": 1.24,
-        "DeepSeek V4.1 Flash": 0.14,
-        "MiMo-V2.6-Pro": 0.17,
-        "GLM-5.3": 1.12,
-        "Kimi K3": 0.82,
-        "Grok 4.7": 2.79,
-        "Gemini 3.8 Flash": 0.63,
+        "Claude Opus 5.5": 5.89,
+        "Claude Sonnet 5.5": 3.45,
+        "Gemini 4 Argon": 0.68,
+        "MiniMax M3": 0.35,
+        "Qwen4 Max": 1.46,
+        "Hy4": 0.55,
+        "Kimi K3.1 Pro": 1.12,
+        "GLM-5.3-Flash": 0.14,
+        "Grok 4.7": 3.35,
+        "MiMo-V2.6-Pro": 0.16,
+        "Gemini 3.8 Flash": 0.72,
         "Muse Spark 1.3": 0.46,
-        "MiMo-V2.6-Flash": 0.07,
-        "GLM-5.3-Flash": 0.16,
-        "GPT 6 Luna": 0.08,
+        "DeepSeek V4.1 Flash": 0.14,
         "Qwen3.8 Max": 1.22,
-        "MiniMax M3": 0.37,
-        "Qwen3.7 Plus": 0.16,
-        "Claude Haiku 5.5": 0.08
+        "GPT 6 Luna": 0.08,
+        "MiMo-V2.6-Flash": 0.08,
+        "Claude Haiku 5.5": 0.09,
+        "Kimi K3": 0.91,
+        "GLM-5.3": 0.95,
+        "Qwen3.7 Plus": 0.18
       },
-      "note": "ONE single-date snapshot for every row (iteration-28): the Agent Arena page header 'Nov 10, 2026', read 2026-11-11 (arena.ai/leaderboard/agent; the page updates live, so costs moved by a cent between two reads that day - this is the second read). Net improvement is relative to the day's average model, so the 6 Oct and 8 Nov rows are gone from this anchor and are never compared with these. Rows with no page row on that date are absent (n/p): DeepSeek V4 Pro, Kimi K2.7 Code, Qwen3.8 Flash (the only Qwen3.8 Flash-class row is 'Qwen3.8-Flash-Next', a different model). MiniMax M3 reads 10.37 +-1.19 (44,417 sessions). Headline rung per model.",
+      "note": "ONE single-date snapshot for every row (iteration-32): the Agent Arena page header 'Nov 13, 2026', read 2026-11-17 (arena.ai/leaderboard/agent; the page updates live). Net improvement is relative to the day's average model, so the 6 Oct, 8 Nov and 10 Nov rows are gone from this anchor and are never compared with these. Rows with no page row are absent (n/p): DeepSeek V4 Pro, Kimi K2.7 Code, Qwen3.8 Flash (the only Qwen3.8 Flash-class row is 'Qwen3.8-Flash-Next', a different model). MiniMax M3 reads 11.18 +-1.19 (44,375 sessions). Headline rung per model: Qwen4 Max is the '(xHigh)' row; Hy4 is unlabelled (rung n/p); both rows are marked Preliminary.",
       "previous_revision": {
         "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
         "DeepSeek V4.1 Flash": 4.02,
         "_note": "Oct snapshot 4.02; Arena's revision for that row not stated"
       },
       "ci_pm": {
-        "Claude Opus 5.5": 2.04,
-        "Claude Sonnet 5.5": 2.82,
+        "Claude Opus 5.5": 2.03,
+        "Claude Sonnet 5.5": 2.89,
         "Gemini 4 Argon": 0.89,
+        "MiniMax M3": 1.19,
+        "Qwen4 Max": 1.34,
+        "Hy4": 1.25,
         "Kimi K3.1 Pro": 1.11,
-        "Grok 4.7": 1.49,
+        "GLM-5.3-Flash": 0.73,
+        "Grok 4.7": 1.5,
         "MiMo-V2.6-Pro": 0.91,
-        "Muse Spark 1.3": 0.86,
-        "DeepSeek V4.1 Flash": 0.52,
-        "GPT 6 Luna": 0.46,
-        "GLM-5.3": 0.83,
-        "Kimi K3": 0.61,
-        "Claude Haiku 5.5": 1.03,
-        "Qwen3.8 Max": 0.68,
-        "MiMo-V2.6-Flash": 1.05,
-        "GLM-5.3-Flash": 0.72,
         "Gemini 3.8 Flash": 0.86,
-        "MiniMax M3": 1.19
+        "Muse Spark 1.3": 0.87,
+        "DeepSeek V4.1 Flash": 0.51,
+        "Qwen3.8 Max": 0.69,
+        "GPT 6 Luna": 0.46,
+        "MiMo-V2.6-Flash": 1.01,
+        "Claude Haiku 5.5": 1.01,
+        "Kimi K3": 0.62,
+        "GLM-5.3": 0.85
       },
       "revision_notes": {
-        "DeepSeek V4.1 Flash": "Arena row 'DeepSeek-V4.1-Flash-20261017 (Max)' = the 1017 build, 84,249 sessions",
+        "DeepSeek V4.1 Flash": "Arena row 'DeepSeek-V4.1-Flash-20261017 (Max)' = the 1017 build, 89,101 sessions",
         "Claude Haiku 5.5": "High rung (the row Arena lists)",
         "GPT 6 Luna": "Max rung ($0.08); Medium / Low are separate rows"
       }
@@ -458,7 +470,9 @@
         "Claude Opus 5.5": 1807,
         "Claude Sonnet 5.5": 1823,
         "Claude Haiku 5.5": 1578,
-        "DeepSeek V4.1 Flash": 1570.42
+        "DeepSeek V4.1 Flash": 1570.42,
+        "Qwen4 Max": 1686,
+        "Hy4": 1446
       },
       "previous_revision": {
         "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
@@ -466,7 +480,9 @@
       },
       "revision_notes": {
         "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)",
-        "_dates": "1017 and MiMo-V2.6-Pro re-read 2026-11-11 (MiMo 1511.68 against the stored 1516); other rows are earlier reads; Elo drifts a few points as models are added"
+        "_dates": "1017 and MiMo-V2.6-Pro re-read 2026-11-11 (MiMo 1511.68 against the stored 1516); other rows are earlier reads; Elo drifts a few points as models are added",
+        "Qwen4 Max": "same-page comparison qwen4-max-vs-tencent-hy4, read 2026-11-17 (xhigh rung, per AA's 2026-11-16 post)",
+        "Hy4": "same comparison page, read 2026-11-17; rung n/p (AA labels none; Hy4 offers none/high)"
       },
       "ci_95": {
         "DeepSeek V4.1 Flash": [
@@ -554,7 +570,9 @@
         "Claude Sonnet 5.5": 71.8,
         "Claude Haiku 5.5": 35.4,
         "Kimi K3.1 Pro": 73.3,
-        "DeepSeek V4.1 Flash": 66.6
+        "DeepSeek V4.1 Flash": 66.6,
+        "Qwen4 Max": 72.6,
+        "Hy4": 65.6
       },
       "iteration_27_note": {
         "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
@@ -564,7 +582,9 @@
         "DeepSeek V4.1 Flash": 68.9
       },
       "revision_notes": {
-        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)"
+        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)",
+        "Qwen4 Max": "same-page comparison qwen4-max-vs-tencent-hy4, read 2026-11-17 (xhigh rung, per AA's 2026-11-16 post)",
+        "Hy4": "same comparison page, read 2026-11-17; rung n/p (AA labels none; Hy4 offers none/high)"
       }
     },
     "AA Tau3 Banking": {
@@ -811,7 +831,9 @@
         "Claude Sonnet 5.5": 25.8,
         "Claude Haiku 5.5": 20.8,
         "Kimi K3.1 Pro": 31.4,
-        "DeepSeek V4.1 Flash": 17.2
+        "DeepSeek V4.1 Flash": 17.2,
+        "Qwen4 Max": 26.2,
+        "Hy4": 21.6
       },
       "iteration_27_note": {
         "Kimi K3.1 Pro": "AA live data 2026-11-10, same benchmark version as the other rows"
@@ -821,7 +843,9 @@
         "DeepSeek V4.1 Flash": 12.8
       },
       "revision_notes": {
-        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)"
+        "DeepSeek V4.1 Flash": "1017 revision, AA live data 2026-11-11 (Max rung)",
+        "Qwen4 Max": "same-page comparison qwen4-max-vs-tencent-hy4, read 2026-11-17 (xhigh rung, per AA's 2026-11-16 post)",
+        "Hy4": "same comparison page, read 2026-11-17; rung n/p (AA labels none; Hy4 offers none/high)"
       }
     },
     "AA-MMMU-Pro (multimodal)": {
@@ -873,7 +897,7 @@
       "evaluator": "Vals AI (Mini-SWE-agent)",
       "indep": true,
       "ci": null,
-      "snapshot": "vals.ai/benchmarks/terminal-bench-4, 'UPDATED 11/9/2026', read 2026-11-11",
+      "snapshot": "vals.ai/benchmarks/terminal-bench-4, page header 'Updated 11/11/2026', read 2026-11-17 (the table carries the 16 Nov Qwen4 Max row, so the header is stale)",
       "values": {
         "Claude Opus 5.5": 65.15,
         "Claude Sonnet 5.5": 64.14,
@@ -890,7 +914,9 @@
         "Kimi K3": 17.17,
         "GPT 6 Luna": 13.64,
         "DeepSeek V4 Pro": 14.14,
-        "MiniMax M3.1 Flash": 25.25
+        "MiniMax M3.1 Flash": 25.25,
+        "Qwen4 Max": 48.48,
+        "Hy4": 39.39
       },
       "previous_revision": {
         "_label": "DeepSeek V4.1 Flash, PREVIOUS REVISION (pre-1017 build; measured Sep-Oct 2026). Go has served the 1017 build since 2026-10-20, so these figures never back a routing row or a badge cell.",
@@ -898,7 +924,9 @@
       },
       "revision_notes": {
         "DeepSeek V4.1 Flash": "Vals row 'DeepSeek V4.1 Flash 1017'",
-        "Qwen3.8 Max": "row 'Qwen 3.8 Max'; the separate '0902' row reads 38.89"
+        "Qwen3.8 Max": "row 'Qwen 3.8 Max'; the separate '0902' row reads 38.89",
+        "Qwen4 Max": "row 'Qwen 4 Max' (48.48); single revision, launched 2026-11-16",
+        "Hy4": "row 'Hy4' (39.39); rung n/p (Vals states no rung); single revision"
       },
       "note": "Same benchmark as AA Terminal-Bench 4.0 but a different harness (Mini-SWE-agent) - kept as its own anchor. Wired into derive_opencode_rows.py TAGS['agentic-code'] since iteration-29; in iteration-28 it sat in this file but was NOT read by the derivation (the iteration-28 wording 'Vals TB 4.0 31.8' was evidence-cell text, not a derivation input). Adding it moved no band or pair (agentic-code: MiMo-V2.6-Pro 0.77, DeepSeek 0.65, GLM-5.3-Flash 0.57)."
     }
@@ -1010,7 +1038,11 @@
     "artificialanalysis.ai same-page comparisons (earlier pass; see opencode-benchmarks.md)",
     "anthropic.com/claude-haiku-5-5 and platform.claude.com/docs/en/models/haiku-5-5/overview (2026-10-08)",
     "artificialanalysis.ai/models/comparisons/claude-haiku-5-5-vs-{claude-sonnet-5-5,deepseek-v4-1-flash,gpt-6-luna}, ...-high-vs-... (2026-10-08)",
-    "opencode.ai/docs/go (31 models incl. Claude Haiku 5.5, 2026-10-08)"
+    "opencode.ai/docs/go (31 models incl. Claude Haiku 5.5, 2026-10-08)",
+    "opencode.ai/docs/go + opencode.ai/console/go (usage limits, plans, privacy table; shared allowance verbatim; GLM-5.3 cap conflict, 2026-11-17)",
+    "opencode.ai/inference/go/v1/models + opencode.ai/inference/v1/models + models.dev/providers/opencode-go (caps, prices, contexts, variants, release dates, multipliers, 2026-11-17)",
+    "artificialanalysis.ai/models/comparisons/qwen4-max-vs-tencent-hy4, /models/{tencent-hy4,qwen4-max}, /changelog (Qwen4 Max II 43 no rung, Hy4 II 35 no rung, Argon Medium 48, DeepSeek V4 Pro 0813 High 21, 2026-11-17)",
+    "vals.ai/benchmarks/terminal-bench-4 (updated 11/11/2026) + arena.ai/leaderboard/agent (header \"Nov 13, 2026\", read 2026-11-17) + opencode.ai/docs/agents (MECH1 premise, 2026-11-17)"
   ],
   "haiku_5_5": {
     "released": "2026-10-07",
@@ -2547,5 +2579,84 @@
     },
     "anchor_mapping": "Badge rows follow AA v5's own component grouping where AA replaced a benchmark: agentic-code / terminal-tool = Terminal-Bench 4.0 + FrontierCode-AA 2.0; deep-reasoning = HLE-Diamond + CritPt v2; science = Terminal-Bench-Science 0.1 + CritPt v2 (SciCode under review); research-synthesis = AA-Omniscience v1.1. Step 4-OC pair rows still order the open models on the frozen rows.",
     "derivation": "BD1 / SM1 unchanged except SM1's D=3 limb now lists science. Moved cells: knowledge-work R<=2 claude -> opencode dagger; knowledge-work R=3 claude -> claude dagger; agentic-code / terminal-tool D=2 R=3 claude -> opencode dagger; deep-reasoning D=2 R=3 claude -> opencode; science D=2 R<=2 opencode dagger -> opencode, D=3 R<=2 opencode dagger -> claude, R=3 claude dagger -> claude."
+  },
+  "iteration_32": {
+    "date": "2026-11-17",
+    "scope": "OpenCode-side refresh: Go catalogue and models.dev opencode-go re-read 2026-11-17; two new models on Go (Qwen4 Max, Hy4 flash Free); Qwen4 Max and Hy4 rated from independent rows at the served revision; Arena whole-column refresh to the 13 Nov snapshot; Argon Medium and DeepSeek V4 Pro High AA rows noted. 30 Nov 2026 time-boxed facts (Argon half price and cap, DeepSeek ZDR renewal, Opus 4.8 /fast) untouched - that refresh is for 1 Dec.",
+    "new_models_2026_11_16": {
+      "Qwen4 Max": {
+        "served": "opencode-go/qwen4-max, canonical alibaba/qwen4-max, release 2026-11-16; Go /v1/models and models.dev agree; single revision",
+        "go_facts": "cap USD 15 (go:15/60/20); 1.50/4.50, cached read 0.075, cached write 5m 1.875/1h 3; context 1M (Go/models.dev; AA lists 984k), output 262144; text+image+video in, text out; not trained on, 0-day (Go privacy table); efforts low/high/xhigh + toggle + token budget (max 262144)",
+        "vals_tb40": "48.48 (vals.ai row 'Qwen 4 Max', read 2026-11-17; avg@3 Mini-SWE-agent)",
+        "arena_2026_11_13": "7.46 +-1.34 net improvement at USD 1.46 p50, '(xHigh)' row, Preliminary (14,727 sessions)",
+        "note": "AA's X-post deltas vs Qwen3.8 Max (xhigh, 34) are not transcribed as absolutes - only values AA states outright are recorded",
+        "aa_v5_2026_11_17": {
+          "source": "artificialanalysis.ai/models/comparisons/qwen4-max-vs-tencent-hy4, read 2026-11-17 (v5.0.1 same-page); AA changelog 2026-11-16 entry states only \"Intelligence Index: 43\" and names no rung -> rung n/p (the Hy4 precedent); the Arena row is \"(xHigh)\"",
+          "rows": {
+            "Intelligence Index": 43,
+            "AA-Briefcase v1.1": 1686,
+            "AutomationBench-AA": 72.6,
+            "Terminal-Bench 4.0": 48.5,
+            "FrontierCode-AA 2.0": 26.5,
+            "AA-Omniscience v1.1": 28,
+            "GDP.pdf": 26.2,
+            "HLE-Diamond": 44.9,
+            "CritPt v2 (Hard Subset)": 43.0,
+            "Terminal-Bench-Science 0.1": 23.3
+          },
+          "cost_per_task_usd": 3.27,
+          "ttft_s": 5.42,
+          "ttfa_s": 179.79,
+          "tok_s": 54,
+          "note": "AA's 16 Nov entry states only the headline II 43; nothing beyond the comparison page's values is transcribed. The emit rung xhigh is anchored on Arena's xHigh row, not on AA"
+        }
+      },
+      "Hy4": {
+        "served": "opencode-go/hy4, canonical tencent/hy4, release 2026-11-04 (AA FAQ says Nov 3); open_weights false (proprietary); single revision",
+        "go_facts": "cap USD 60 (go:60/240/65); 0.834/2.501, cached read 0.042; context 1M (input 983010, output 65536); text+image in; not trained on, 0-day; efforts none/high",
+        "aa_v5_2026_11_17": {
+          "source": "artificialanalysis.ai/models/tencent-hy4 and the qwen4-max-vs-tencent-hy4 comparison, read 2026-11-17; rung n/p (AA labels none; Hy4 offers none/high)",
+          "rows": {
+            "Intelligence Index": 35,
+            "AA-Briefcase v1.1": 1446,
+            "AutomationBench-AA": 65.6,
+            "Terminal-Bench 4.0": 37.4,
+            "FrontierCode-AA 2.0": 31.4,
+            "AA-Omniscience v1.1": 5,
+            "GDP.pdf": 21.6,
+            "HLE-Diamond": 32.7,
+            "CritPt v2 (Hard Subset)": 39.0,
+            "Terminal-Bench-Science 0.1": 12.9
+          },
+          "cost_per_task_usd": 1.03,
+          "ttft_s": 2.89,
+          "ttfa_s": 113.95,
+          "tok_s": 96
+        },
+        "vals_tb40": "39.39 (vals.ai row 'Hy4', read 2026-11-17)",
+        "arena_2026_11_13": "5.67 +-1.25 net improvement at USD 0.55 p50, unlabelled rung, Preliminary (23,160 sessions)",
+        "rating": "rated: independent rows at the served revision from three evaluators (AA, Vals, Arena); its AA/Vals rows carry no rung label, so they are n/p for the badge table"
+      }
+    },
+    "aa_new_rows_other": {
+      "Gemini 4 Argon (Medium)": "Intelligence Index 48 (AA changelog 2026-11-13) - E11's 'medium has no independent figure' is stale; the router keeps writing high (the GM1 and badge figures are high-rung ones)",
+      "DeepSeek V4 Pro 0813 (High)": "Intelligence Index 21 (AA changelog 2026-11-13) - the Max row (36) still dominates it; E6 unchanged"
+    },
+    "arena_snapshot_2026_11_13": "whole column refreshed (values, +-ci, p50 costs) - see the Arena anchor; tasks/mo recomputed by scripts/check_opencode_pool.py",
+    "go_catalogue_changes": "Removed from Go since 11 Nov: Grok 4.6, Kimi K2.6, MiniMax M2.7, Big Pickle, LL Alpha Free, Exo Free, Jev 1.13, Nemotron 3 Ultra / 3.5 Lightning / 3.5 Super VL Free (the Nemotron, Big Pickle and Jev entries live on Console/Zen, not Go; Grok 4.6, Kimi K2.6, MiniMax M2.7 remain on Console). MiniMax M3 gains context-tiered pricing (>512K doubles). Qwen3.7 Plus context is 1M per the Go catalogue (the 256k figure is the price-tier boundary). MiMo-V2.5 / MiMo-V2.5-Pro left Go: absent from the Console Go model table, the catalogue and the Go privacy table (mimo-v2.5-free is absent from Zen's free list and live endpoint too). New: Go Teams plan (USD 20/member/month, +USD 5 per model vs Go) - the routed plan stays Go, USD 10/month, 5-hour 20%, weekly 50% (unchanged).",
+    "free_lane_2026_11_17": "Go adds Hy4 flash Free (tencent/hy4-flash, 2026-11-16, unlimited, zero retention, no training, 1M context 983040/65536, efforts none/high). Console/Zen adds Inkling 2 Small Free (retains and may train; no EU/IS/LI/NO/CU/IR/KP/RU/UA/VE) and Flint 40B Free (may improve the model, 30-day retention); Crouton Alpha Free deprecated 2026-11-09, Pulse Alpha Free 2026-11-06. Live models endpoint (opencode.ai/inference/v1/models, read 2026-11-17): glm-5.3-flash-free and deepseek-v4.1-flash-free are 200k context / 32k output (the paid Flash is 1M) - the twins' context windows are no longer n/p; minimax-m3.1-flash-free is absent from that endpoint AND sits in Zen's deprecation table dated 2026-11-17 - it is no longer a live twin. LongCat 2.5 Free carries a 100 requests/day limit and zero retention (the 11 Nov read already had it). MiMo-V2.6-Flash Free: Zen's free list says the free time is \"to collect feedback\" and the privacy exceptions no longer name it as retaining or training - the old FR1 \"trains on prompts\" clause is stale (page change, 17 Nov read).",
+    "product_claims_2026_11_17": "opencode.ai/docs/agents read 2026-11-17: subagents (primary/subagent/all), per-agent models with #variant, built-ins build/plan/general/explore - and v2.3.0 (2026-11-13) made subagents run in the background by default. No workflow runtime (no scripted many-agent workflow like Claude Code's ultracode); MECH1's premise holds. No OpenCode release after v2.3.0 (13 Nov) except process-daemon v0.6.0 (16 Nov, not the agent). Effort variants and variant_cycle unchanged (Go /v1/models re-read 17 Nov).",
+    "cap_model_2026_11_17": {
+      "shared_allowance": "VERIFIED FACT (opencode.ai/docs/go Usage limits, read 2026-11-17, verbatim): \"The paid models you use on Go share one allowance.\" / \"The 5-hour limit is 20% of your monthly allowance. The window starts when you first use your allowance and lasts five hours.\" / \"The weekly limit is 50% of your monthly allowance. It resets on Monday at 00:00 UTC.\" / \"Switching models draws from the same allowance.\" / \"Each model's monthly limit shows how much usage your plan covers if you use only that model over the month. For example, $1.50 of usage on a model with a $15 limit uses 10% of your monthly allowance.\" Corroborated by go.monthly_usage in /inference/go/v1/models (same date). A model's \"cap\" is a weight on ONE shared monthly allowance; the 5-hour and weekly windows sit on it too.",
+      "invalidated_rule_text_recorded_not_rewritten": [
+        "CAP1 (SKILL.md): the paid-exhaustion chain cannot work as written - when the shared allowance is out, every paid model is out at once; only the Zen free twins (FR1) or Extra Usage continue",
+        "SKILL.md intro line: \"each Go model's own dollar cap ... 5-hour window = 20% of a model's cap, weekly 50%\"",
+        "GM1: \"its Go cap is USD 30 ... buys about 44 real agent tasks a month\" - the USD 30 is a weight on the shared allowance, not a private purse"
+      ],
+      "skipped_to_iteration_33": "the CAP1/GM1/BUD1 rewrite (per iteration-32 instructions)",
+      "dated_previous_reading": "benchmarks section 1 \"per model, not shared\", read 2026-10-06 - a documented page change, not a misreading"
+    },
+    "glm_5_3_cap_conflict_2026_11_17": "/inference/go/v1/models go.monthly_usage for glm-5.3 = 100 (go-plus 200, go-teams 105) vs opencode.ai/console/go limits table \"GLM-5.3 ... Go: $15; Go Plus: $120\" (read 2026-11-17; every other pool model matches between the two sources). CONFLICT -> pool table keeps cap USD 15 (read 2026-10-10/11) and tasks/mo 16; recorded for iteration-33 to re-read both sources before changing the pool table.",
+    "argon_2026_11_30_note": "Go page still prints only \"The 50% discount applies through November 30, 2026\" (read 2026-11-17); the cap after 30 Nov is not stated. Catalogue: gemini-4-argon monthly_usage.go = 30 with price multiplier date >= 2026-12-01 factor 2 (list prices 2/10/0.1). No text change; nothing new."
   }
 }

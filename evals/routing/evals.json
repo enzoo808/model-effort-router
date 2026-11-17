@@ -111,14 +111,12 @@
       "eval_name": "Refactor across 40 files (agentic-code, D=2, R=1): Claude's lead sits at D=3 -> OpenCode",
       "prompt": "Refactor the payment module across these 40 files to use the new idempotency-key API, update every caller, and make the test suite pass.",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max",
+      "expected_opencode": "#1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "opencode",
-      "expected_low_confidence": false,
-      "tests_rule": "SM1: agentic-code at D=2 is OpenCode (the Claude lead lives on the D=3 anchors; same-revision rows favour Claude but SM1 counts them only from D=3); no dagger; budget pair (BUD1): MiMo-V2.6-Pro first, DeepSeek second (iteration-28: DeepSeek evidence re-based onto the 1017 rows leaves MiMo-V2.6-Pro alone in the leading band); DeepSeek max at D>=2 (E7, two rungs since iteration-29); one phase -> no ultracode",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max\nEvidence: Mid-difficulty feature work stays on OpenCode (SM1): Sonnet 5.5 `high` leads on TB 4.0 (43.9 vs 34.8) and FrontierCode-AA 2.0 (25.7 vs 24.0), but at USD 1.64 per AA task against MiMo-V2.6-Pro's 0.26 (AA, 13 Nov).\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).",
-      "expected_notes": [
-        "peak hours cost 2×"
-      ],
+      "expected_low_confidence": true,
+      "tests_rule": "SM1: agentic-code at D=2 is OpenCode (the Claude lead lives on the D=3 anchors; same-revision rows favour Claude but SM1 counts them only from D=3); no dagger; budget pair (BUD1): MiMo-V2.6-Pro first, DeepSeek second (iteration-28: DeepSeek evidence re-based onto the 1017 rows leaves MiMo-V2.6-Pro alone in the leading band); DeepSeek max at D>=2 (E7, two rungs since iteration-29); one phase -> no ultracode | iteration-32: the agentic-code / terminal-tool row is Hy4 · MiMo-V2.6-Pro (Hy4 tops the consensus on AA TB 4.0, Vals TB 4.0 and Arena with three independent evaluators); Hy4's rows carry no rung label, so the D=2 badge cell falls to efficiency and gains the dagger (low-confidence). The example's DeepSeek auto-line is gone with DeepSeek leaving the pair.",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Mid-difficulty feature work stays on OpenCode (SM1): Hy4's rows carry no rung label (`n/p` at the rung the line writes), so efficiency decides at USD 1.03 per AA task against Sonnet 5.5 `high`'s 1.64; low-confidence.",
+      "expected_notes": [],
       "forbidden": [
         "GLM-5.3 ·",
         "Kimi K3"
@@ -129,14 +127,12 @@
       "eval_name": "Mid-difficulty feature build (agentic-code, D=2): DeepSeek V4.1 Flash at max",
       "prompt": "Add a per-tenant rate limiter to the API gateway: choose between a token bucket and a sliding window based on the existing Redis setup, implement it as middleware, update the three endpoints that need the new limit, and make the test suite pass.",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max",
+      "expected_opencode": "#1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "opencode",
-      "expected_low_confidence": false,
-      "tests_rule": "D=2 (two independent design decisions: algorithm choice and middleware shape) -> DeepSeek V4.1 Flash at max (E7: low at D<=1, max at D>=2); agentic-code row -> MiMo-V2.6-Pro first, DeepSeek second (iteration-28: re-based onto the 1017 rows); SM1 keeps D=2 coding on OpenCode; no dagger",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max\nEvidence: Mid-difficulty feature work stays on OpenCode (SM1): the Claude lead on Vals TB 4.0 and Arena Agent only counts from D=3, and a real agent task costs USD 0.17 (MiMo-V2.6-Pro) against Sonnet 5.5's 3.38 and Opus 5.5's 5.38 (Arena, 10 Nov); DeepSeek writes `max` from D=2 (E7).\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).",
-      "expected_notes": [
-        "peak hours cost 2×"
-      ],
+      "expected_low_confidence": true,
+      "tests_rule": "D=2 (two independent design decisions: algorithm choice and middleware shape) -> DeepSeek V4.1 Flash at max (E7: low at D<=1, max at D>=2); agentic-code row -> MiMo-V2.6-Pro first, DeepSeek second (iteration-28: re-based onto the 1017 rows); SM1 keeps D=2 coding on OpenCode; no dagger | iteration-32: the agentic-code / terminal-tool row is Hy4 · MiMo-V2.6-Pro (Hy4 tops the consensus on AA TB 4.0, Vals TB 4.0 and Arena with three independent evaluators); Hy4's rows carry no rung label, so the D=2 badge cell falls to efficiency and gains the dagger (low-confidence).",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Mid-difficulty feature work stays on OpenCode (SM1): Hy4's rows carry no rung label (`n/p` at the rung the line writes), so efficiency decides at USD 1.03 per AA task against Sonnet 5.5 `high`'s 1.64; low-confidence.",
+      "expected_notes": [],
       "forbidden": [
         "GLM-5.3 ·",
         "Kimi K3"
@@ -147,13 +143,12 @@
       "eval_name": "Three-phase environment build (orchestration mechanism)",
       "prompt": "Stand up the new staging environment from scratch: Terraform it, deploy the 12 services, seed the data, run the smoke suite, and fix whatever does not come up.",
       "expected_claude": "Sonnet 5.5 · effort: high · ultracode",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max",
+      "expected_opencode": "#1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "O1 three phases -> UC1 ultracode as a flag after the effort (v2.1.284: ultracode no longer forces xhigh; D=2 -> high); MECH1 beats SM1's OpenCode default; Step 7 rule 12 adds the Ultracode line; budget coding pair with DeepSeek max at D>=2 (E7) | iteration-30 (O1 narrowed): still three phases - implementation (Terraform, deploy, fix), data seeding (migration) and the smoke suite against the deployed environment (independent verification: a check against something other than the code just edited) - so this is the O-limb guard that must keep ultracode and the MECH1 badge.",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high · ultracode\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max\nEvidence: Implementation, a data-seeding phase and a smoke run against a deployed environment are three distinct phases feeding each other, which ultracode runs as a workflow and OpenCode has no workflow runtime for.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).\nUltracode: start the prompt with \"ultracode:\" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.",
+      "tests_rule": "O1 three phases -> UC1 ultracode as a flag after the effort (v2.1.284: ultracode no longer forces xhigh; D=2 -> high); MECH1 beats SM1's OpenCode default; Step 7 rule 12 adds the Ultracode line; budget coding pair with DeepSeek max at D>=2 (E7) | iteration-30 (O1 narrowed): still three phases - implementation (Terraform, deploy, fix), data seeding (migration) and the smoke suite against the deployed environment (independent verification: a check against something other than the code just edited) - so this is the O-limb guard that must keep ultracode and the MECH1 badge. | iteration-32: the agentic-code / terminal-tool row is Hy4 · MiMo-V2.6-Pro (Hy4 tops the consensus on AA TB 4.0, Vals TB 4.0 and Arena with three independent evaluators); Hy4's rows carry no rung label, so the D=2 badge cell falls to efficiency and gains the dagger (low-confidence). MECH1 still carries no dagger; no DeepSeek on the line, so no DeepSeek auto-line.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high · ultracode\nOpenCode: #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Implementation, a data-seeding phase and a smoke run against a deployed environment are three distinct phases feeding each other, which ultracode runs as a workflow and OpenCode has no workflow runtime for.\nUltracode: start the prompt with \"ultracode:\" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.",
       "expected_notes": [
-        "peak hours cost 2×",
         "start the prompt with \"ultracode:\""
       ],
       "forbidden": [
@@ -165,11 +160,11 @@
       "eval_name": "Hours-long diagnosis across 180 services (ultracode at the xhigh ceiling)",
       "prompt": "Our p99 latency regressed across the platform last week. There are 180 services. For each one, bisect the commits, work out whether the regression is real or a measurement artefact, judge whether reverting is safe, and write up the likely cause. I expect this to run for hours.",
       "expected_claude": "Opus 5.5 · effort: xhigh · ultracode",
-      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default",
+      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 Hy4 · effort: high",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "iteration-25 UC1: D3DIAG D=3 x W=3 over 30 min, divisible -> ultracode rides on the xhigh ceiling (never max, never a level of its own); Step 7 rule 12 Ultracode line; Opus 5.5 keeps the /fast line. Expectation derived from a cold-agent run and reviewed against the rules, not an independent golden.",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh · ultracode\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Adversarial D=3 diagnosis across 180 services: HLE 61 vs Argon's 57 and Terminal-Bench 4.0 60 vs 57 agree on Claude; hours-long width of 180 units adds ultracode.\nGemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.\nUltracode: start the prompt with \"ultracode:\" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.\n⚡ Claude /fast available (2.5x faster, 2× price).",
+      "tests_rule": "iteration-25 UC1: D3DIAG D=3 x W=3 over 30 min, divisible -> ultracode rides on the xhigh ceiling (never max, never a level of its own); Step 7 rule 12 Ultracode line; Opus 5.5 keeps the /fast line. Expectation derived from a cold-agent run and reviewed against the rules, not an independent golden. | iteration-32: the agentic-code / terminal-tool row is Hy4 · MiMo-V2.6-Pro (Hy4 tops the consensus on AA TB 4.0, Vals TB 4.0 and Arena with three independent evaluators); Hy4's rows carry no rung label, so the D=2 badge cell falls to efficiency and gains the dagger (low-confidence). Two dominant tags: the deep-reasoning row decided the badge, so #2 comes from the other (terminal-tool) row's former #1, now Hy4.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh · ultracode\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 Hy4 · effort: high\nEvidence: Adversarial D=3 diagnosis across 180 services: HLE 61 vs Argon's 57 and Terminal-Bench 4.0 60 vs 57 agree on Claude; hours-long width of 180 units adds ultracode.\nGemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.\nUltracode: start the prompt with \"ultracode:\" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.\n⚡ Claude /fast available (2.5x faster, 2× price).",
       "expected_notes": [
         "opencode-go/gemini-4-argon",
         "start the prompt with \"ultracode:\"",
@@ -186,12 +181,12 @@
       "eval_name": "150-service crypto-library migration before a deadline (W=3 x D=2 keeps ultracode; at R=3 the rung-matched row leans to Argon)",
       "prompt": "Move 150 production services off the old crypto library before tonight's certificate rotation — after the rotation the old CA is destroyed, so there is no rollback: a wrong cutover order or key handover breaks the payment signatures these services co-sign with a shared key. The replacement is a drop-in library with a documented rolling-cutover recipe; the work is multi-step migration with one bounded design decision (the cutover order and the key handover), not new architecture. For each service: migrate it, replay yesterday's staging traffic against it, then update the runbook.",
       "expected_claude": "Sonnet 5.5 · effort: high · ultracode",
-      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default",
+      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 Hy4 · effort: high",
       "expected_recommended": "opencode",
       "expected_low_confidence": true,
       "expected_shared_note": "Do not apply without human review.",
-      "tests_rule": "iteration-30: under the narrowed O1 the per-service runbook update is inside the implementation phase, so O=high is no longer needed here - 150 services that each need a cutover judgement are W=3 at D=2 over 30 minutes (UC1 width limb, the fit Anthropic's workflows page names: the same step across many items), ultracode at the Effort<-D rung (high); the badge is Claude by the R=3 agentic-code cell (MECH1 also applies if an agent counts the key handover as a migration phase - same output). R=3 review note last. Prompt sharpened in iteration-27 Stage 2 (D4): settled drop-in recipe with one bounded design decision (D=2) and the rotation destroys the CA behind live payment signatures (R=3). Golden lines unchanged; the R=3 cell itself is an open judgement call (CHANGELOG iteration-30: at the emitted rung Sonnet 5.5 high trails Argon high on AA TB 4.0). | iteration-31: badge cells are read at the rung each line runs (AA, 13 Nov 2026): agentic-code D=2, R=3 compares Sonnet 5.5 high with Argon high -> TB 4.0 57.1 vs 43.9 for Argon, FrontierCode-AA 2.0 25.7 = 25.7, a single lean -> OpenCode dagger; the Claude line keeps its ultracode flag (width limb) and the review note stays.",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high · ultracode\nOpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: 150 services that each need their own cutover judgement are W=3 at D=2 over 30 minutes, so ultracode applies, but at R=3 the one rung-matched row leans to Argon (Terminal-Bench 4.0 57.1 vs Sonnet 5.5 high's 43.9, FrontierCode-AA 2.0 a tie) — low-confidence.\nGemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.\nUltracode: start the prompt with \"ultracode:\" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.\nDo not apply without human review.",
+      "tests_rule": "iteration-30: under the narrowed O1 the per-service runbook update is inside the implementation phase, so O=high is no longer needed here - 150 services that each need a cutover judgement are W=3 at D=2 over 30 minutes (UC1 width limb, the fit Anthropic's workflows page names: the same step across many items), ultracode at the Effort<-D rung (high); the badge is Claude by the R=3 agentic-code cell (MECH1 also applies if an agent counts the key handover as a migration phase - same output). R=3 review note last. Prompt sharpened in iteration-27 Stage 2 (D4): settled drop-in recipe with one bounded design decision (D=2) and the rotation destroys the CA behind live payment signatures (R=3). Golden lines unchanged; the R=3 cell itself is an open judgement call (CHANGELOG iteration-30: at the emitted rung Sonnet 5.5 high trails Argon high on AA TB 4.0). | iteration-31: badge cells are read at the rung each line runs (AA, 13 Nov 2026): agentic-code D=2, R=3 compares Sonnet 5.5 high with Argon high -> TB 4.0 57.1 vs 43.9 for Argon, FrontierCode-AA 2.0 25.7 = 25.7, a single lean -> OpenCode dagger; the Claude line keeps its ultracode flag (width limb) and the review note stays. | iteration-32: the agentic-code / terminal-tool row is Hy4 · MiMo-V2.6-Pro (Hy4 tops the consensus on AA TB 4.0, Vals TB 4.0 and Arena with three independent evaluators); Hy4's rows carry no rung label, so the D=2 badge cell falls to efficiency and gains the dagger (low-confidence). GM1 keeps Argon #1 at R=3; the row's former #1 is now Hy4, so #2 is Hy4 at high.",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high · ultracode\nOpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 Hy4 · effort: high\nEvidence: 150 services that each need their own cutover judgement are W=3 at D=2 over 30 minutes, so ultracode applies, but at R=3 the one rung-matched row leans to Argon (Terminal-Bench 4.0 57.1 vs Sonnet 5.5 high's 43.9, FrontierCode-AA 2.0 a tie) — low-confidence.\nGemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.\nUltracode: start the prompt with \"ultracode:\" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.\nDo not apply without human review.",
       "expected_notes": [
         "opencode-go/gemini-4-argon",
         "start the prompt with \"ultracode:\""
@@ -206,14 +201,12 @@
       "eval_name": "One implementation loop with CI and docs at the end (O1 does not count them): no ultracode, OpenCode badge",
       "prompt": "Port the reporting module's 25 files from moment.js to date-fns — where the two libraries parse or round dates differently, keep the behaviour our existing tests expect — then run the CI checks, update the README's dependency section and add a CHANGELOG entry. It will take most of the afternoon.",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max",
+      "expected_opencode": "#1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "opencode",
-      "expected_low_confidence": false,
-      "tests_rule": "iteration-30 O1: the CI run on the change and the README / CHANGELOG write-up are inside the one implementation phase (code.claude.com/docs/en/workflows, read 2026-11-13: ultracode splits every task into understand / change / verify), so O=low; W=2 (25 files) so the width limb does not fire either -> no ultracode even though the job runs over 30 minutes; agentic-code at D=2 (behaviour choices where the libraries differ) -> SM1 OpenCode, no dagger; budget coding pair, DeepSeek max at D>=2 (E7); DeepSeek auto-line. Before iteration-30 cold agents counted CI as independent verification and the docs as documentation (3 phases) and gave Sonnet 5.5 high ultracode with the Claude badge (calibration cal27).",
-      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max\nEvidence: The port, its CI run and the README / CHANGELOG write-up are one implementation phase (O1), so no ultracode; mid-difficulty feature work stays on OpenCode (SM1) at USD 0.17 per real agent task (MiMo-V2.6-Pro) against Sonnet 5.5's 3.38 (Arena, 10 Nov).\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).",
-      "expected_notes": [
-        "peak hours cost 2×"
-      ],
+      "expected_low_confidence": true,
+      "tests_rule": "iteration-30 O1: the CI run on the change and the README / CHANGELOG write-up are inside the one implementation phase (code.claude.com/docs/en/workflows, read 2026-11-13: ultracode splits every task into understand / change / verify), so O=low; W=2 (25 files) so the width limb does not fire either -> no ultracode even though the job runs over 30 minutes; agentic-code at D=2 (behaviour choices where the libraries differ) -> SM1 OpenCode, no dagger; budget coding pair, DeepSeek max at D>=2 (E7); DeepSeek auto-line. Before iteration-30 cold agents counted CI as independent verification and the docs as documentation (3 phases) and gave Sonnet 5.5 high ultracode with the Claude badge (calibration cal27). | iteration-32: the agentic-code / terminal-tool row is Hy4 · MiMo-V2.6-Pro (Hy4 tops the consensus on AA TB 4.0, Vals TB 4.0 and Arena with three independent evaluators); Hy4's rows carry no rung label, so the D=2 badge cell falls to efficiency and gains the dagger (low-confidence).",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: The port, its CI run and the README / CHANGELOG write-up are one implementation phase (O1), so no ultracode; mid-difficulty work stays on OpenCode (SM1) — Hy4's rows are rung-n/p, so efficiency decides at USD 1.03 per AA task against Sonnet 5.5 `high`'s 1.64; low-confidence.",
+      "expected_notes": [],
       "forbidden": [
         "Ultracode:"
       ]
@@ -223,13 +216,12 @@
       "eval_name": "Three workloads that feed each other (implementation, backfill, checksum check on migrated data): ultracode and the MECH1 badge stay",
       "prompt": "Move user uploads from local disk to S3: write the storage adapter, backfill the 200k existing files, switch reads over behind a flag, verify checksums on a sample of the migrated files, and write the cutover runbook. The local files stay in place until we cut over, so every step can be undone.",
       "expected_claude": "Sonnet 5.5 · effort: high · ultracode",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max",
+      "expected_opencode": "#1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "iteration-30 guard against over-correcting O1: implementation (adapter, read switch), data migration (the 200k-file backfill) and independent verification against something other than the code just edited (checksums on the migrated files) are three phases that feed each other -> O=high over 30 minutes -> UC1 ultracode at the D=2 rung (high), MECH1 gives Claude the badge; the closing runbook is inside the implementation phase (nothing later works from it); R=2 (reversible: the local copies stay until cutover) keeps the left column, so the budget coding pair, DeepSeek max (E7); DeepSeek and Ultracode auto-lines.",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high · ultracode\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max\nEvidence: Implementation, a 200k-file backfill and a checksum check on the migrated data are three phases that feed each other, which ultracode runs as a workflow and OpenCode has no workflow runtime for (MECH1).\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).\nUltracode: start the prompt with \"ultracode:\" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.",
+      "tests_rule": "iteration-30 guard against over-correcting O1: implementation (adapter, read switch), data migration (the 200k-file backfill) and independent verification against something other than the code just edited (checksums on the migrated files) are three phases that feed each other -> O=high over 30 minutes -> UC1 ultracode at the D=2 rung (high), MECH1 gives Claude the badge; the closing runbook is inside the implementation phase (nothing later works from it); R=2 (reversible: the local copies stay until cutover) keeps the left column, so the budget coding pair, DeepSeek max (E7); DeepSeek and Ultracode auto-lines. | iteration-32: the agentic-code / terminal-tool row is Hy4 · MiMo-V2.6-Pro (Hy4 tops the consensus on AA TB 4.0, Vals TB 4.0 and Arena with three independent evaluators); Hy4's rows carry no rung label, so the D=2 badge cell falls to efficiency and gains the dagger (low-confidence). MECH1 badge unchanged; no DeepSeek on the line, so no DeepSeek auto-line.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high · ultracode\nOpenCode: #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Implementation, a 200k-file backfill and a checksum check on the migrated data are three phases that feed each other, which ultracode runs as a workflow and OpenCode has no workflow runtime for (MECH1).\nUltracode: start the prompt with \"ultracode:\" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.",
       "expected_notes": [
-        "peak hours cost 2×",
         "start the prompt with \"ultracode:\""
       ],
       "forbidden": [
@@ -242,11 +234,11 @@
       "eval_name": "Adversarial debugging (D3DIAG; deep-reasoning direction beats terminal efficiency row)",
       "prompt": "Find the race condition that flakes in prod sometimes",
       "expected_claude": "Opus 5.5 · effort: xhigh",
-      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default",
+      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 Hy4 · effort: high",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "two dominant tags; SM1 D=3 deep-reasoning -> Claude; GM1 (open to confidential work since iteration-27): Argon #1 on both rows, each row's former #1 MiMo-V2.6-Pro #2; Gemini line then speed line",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: D=3 reasoning half has two agreeing AA rows at the rung each line runs (HLE-Diamond 64.0 vs Argon's 56.7, CritPt v2 67.5 vs 52.5), and the terminal half agrees.\nGemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.\n⚡ Claude /fast available (2.5x faster, 2× price).",
+      "tests_rule": "two dominant tags; SM1 D=3 deep-reasoning -> Claude; GM1 (open to confidential work since iteration-27): Argon #1 on both rows, each row's former #1 MiMo-V2.6-Pro #2; Gemini line then speed line | iteration-32: the agentic-code / terminal-tool row is Hy4 · MiMo-V2.6-Pro (Hy4 tops the consensus on AA TB 4.0, Vals TB 4.0 and Arena with three independent evaluators); Hy4's rows carry no rung label, so the D=2 badge cell falls to efficiency and gains the dagger (low-confidence). Two dominant tags: deep-reasoning decided the badge; #2 = the terminal row's former #1 (Hy4).",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 Hy4 · effort: high\nEvidence: D=3 reasoning half has two agreeing AA rows at the rung each line runs (HLE-Diamond 64.0 vs Argon's 56.7, CritPt v2 67.5 vs 52.5), and the terminal half agrees.\nGemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.\n⚡ Claude /fast available (2.5x faster, 2× price).",
       "expected_notes": [
         "/fast available",
         "opencode-go/gemini-4-argon"
@@ -446,11 +438,11 @@
       "eval_name": "Escalation after an OpenCode shortfall (A1-OC: Gemini 4 Argon #2, badge to Claude)",
       "prompt": "The first OpenCode attempt at migrating these 30 files from the logging API v1 to v2 fell short — redo it and make the test suite pass",
       "expected_claude": "Sonnet 5.5 · effort: high",
-      "expected_opencode": "#1 MiMo-V2.6-Pro · effort: default · #2 Gemini 4 Argon · effort: high",
+      "expected_opencode": "#1 Hy4 · effort: high · #2 Gemini 4 Argon · effort: high",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "A1-OC: agentic-code at D=2 after a shortfall -> #2 = Gemini 4 Argon (GM1 row, no NC1 needed since iteration-27); #1 is MiMo-V2.6-Pro (iteration-28), so no DeepSeek on the line and no DeepSeek auto-line; the badge goes to Claude because agentic-code has a BD1 direction; a shortfall on OpenCode does not escalate the Claude line",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Gemini 4 Argon · effort: high\nEvidence: The earlier OpenCode run fell short, so #2 becomes Gemini 4 Argon (about 2% of its USD 30 cap per agent task at half price) and Claude takes the badge, since it leads the coding rows (TB 4.0 64 vs 57, FrontierSWE v2 62 vs 55).\nGemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.",
+      "tests_rule": "A1-OC: agentic-code at D=2 after a shortfall -> #2 = Gemini 4 Argon (GM1 row, no NC1 needed since iteration-27); #1 is MiMo-V2.6-Pro (iteration-28), so no DeepSeek on the line and no DeepSeek auto-line; the badge goes to Claude because agentic-code has a BD1 direction; a shortfall on OpenCode does not escalate the Claude line | iteration-32: the agentic-code / terminal-tool row is Hy4 · MiMo-V2.6-Pro (Hy4 tops the consensus on AA TB 4.0, Vals TB 4.0 and Arena with three independent evaluators); Hy4's rows carry no rung label, so the D=2 badge cell falls to efficiency and gains the dagger (low-confidence). After the shortfall #1 is the row's new leader Hy4 and #2 is Gemini 4 Argon (GM1 row).",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: #1 Hy4 · effort: high · #2 Gemini 4 Argon · effort: high\nEvidence: The earlier OpenCode run fell short, so #2 becomes Gemini 4 Argon (about 2% of its USD 30 cap per agent task at half price) and Claude takes the badge, since it leads the coding rows (TB 4.0 64 vs 57, FrontierSWE v2 62 vs 55).\nGemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.",
       "expected_notes": [
         "opencode-go/gemini-4-argon"
       ],
@@ -610,14 +602,14 @@
     },
     {
       "id": "v1",
-      "eval_name": "Env-dependent build failure at depth (terminal-tool, D=3, R<=2): Claude, MiMo-V2.6-Pro first (PO1)",
+      "eval_name": "Env-dependent build failure at depth (terminal-tool, D=3, R<=2): Claude, Argon first (GM1), Hy4 second",
       "prompt": "The nightly build passes locally but fails only on the CI runner — reproduce it inside the container and fix it",
       "expected_claude": "Opus 5.5 · effort: xhigh",
-      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default",
+      "expected_opencode": "#1 Gemini 4 Argon · effort: high · #2 Hy4 · effort: high",
       "expected_recommended": "claude",
       "expected_low_confidence": false,
-      "tests_rule": "PO1/GM1: at D=3 Argon leads the hardest anchors of the OpenCode pool (TB 4.0 57, FrontierSWE v2 55) and goes first, MiMo-V2.6-Pro second; SM1 D=3 terminal-tool -> Claude; Gemini line before the speed line",
-      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Claude leads the hardest coding anchors against Argon, the OpenCode leader at depth (TB 4.0 60 vs 57, FrontierSWE v2 62 vs 55).\nGemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.\n⚡ Claude /fast available (2.5x faster, 2× price).",
+      "tests_rule": "PO1/GM1: at D=3 Argon leads the hardest anchors of the OpenCode pool (TB 4.0 57, FrontierSWE v2 55) and goes first, MiMo-V2.6-Pro second; SM1 D=3 terminal-tool -> Claude; Gemini line before the speed line | iteration-32: the agentic-code / terminal-tool row is Hy4 · MiMo-V2.6-Pro (Hy4 tops the consensus on AA TB 4.0, Vals TB 4.0 and Arena with three independent evaluators); Hy4's rows carry no rung label, so the D=2 badge cell falls to efficiency and gains the dagger (low-confidence). GM1: Argon is #1 at D=3 and the row's former #1 (Hy4) becomes #2.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh\nOpenCode: #1 Gemini 4 Argon · effort: high · #2 Hy4 · effort: high\nEvidence: Claude leads the hardest coding anchors against Argon, the OpenCode leader at depth (TB 4.0 60 vs 57, FrontierSWE v2 62 vs 55).\nGemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; cap USD 30 at half price through 30 Nov 2026 (list prices after). If it errors or is overloaded, run the row's other model.\n⚡ Claude /fast available (2.5x faster, 2× price).",
       "expected_notes": [
         "/fast available",
         "opencode-go/gemini-4-argon"
@@ -757,6 +749,23 @@
         "opencode-go/gemini-4-argon"
       ],
       "allow_gemini": true
+    },
+    {
+      "id": "ter1",
+      "eval_name": "Bounded CI diagnosis (terminal-tool, D=2): the iteration-32 pair and the dagger cell",
+      "prompt": "Our integration suite needs a hermetic harness: choose between docker-compose and testcontainers based on the existing CI setup, decide how a fixture signals ready (a health-check gate or a retry loop), wire it into `make test`, and get the six packages' suites passing against it.",
+      "expected_claude": "Sonnet 5.5 · effort: high",
+      "expected_opencode": "#1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default",
+      "expected_recommended": "opencode",
+      "expected_low_confidence": true,
+      "tests_rule": "D=2: two independent design decisions (harness choice and the fixture-ready protocol) in a multi-step, well-documented feature; terminal-tool dominant (build & test loops) -> the iteration-32 row (Hy4 first on three independent anchors, MiMo-V2.6-Pro second); SM1 keeps D=2 on OpenCode; Hy4's rows are rung-n/p, so the D=2 badge cell falls to efficiency and is daggered (low-confidence); no DeepSeek on the line. | iteration-32 cold run: the first prompt named the cause (D=1, Flash pair) and one agent read it so; prompt sharpened to a two-decision feature, rule and golden unchanged.",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Bounded diagnosis stays on OpenCode (SM1): Hy4's rows carry no rung label (`n/p` at the rung the line writes), so efficiency decides at USD 1.03 per AA task against Sonnet 5.5 `high`'s 1.64; low-confidence.",
+      "expected_notes": [],
+      "forbidden": [
+        "Grok",
+        "Kimi K3",
+        "GLM-5.3 ·"
+      ]
     }
   ]
 }
