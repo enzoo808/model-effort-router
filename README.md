@@ -9,7 +9,7 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-install)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-install)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-install)
-[![Policy](https://img.shields.io/badge/policy-iteration--34-8b949e?style=flat-square)](CHANGELOG.md)
+[![Policy](https://img.shields.io/badge/policy-iteration--35-8b949e?style=flat-square)](CHANGELOG.md)
 [![Regression evals](https://img.shields.io/badge/regression_evals-49-8b949e?style=flat-square)](#-validation)
 
 **[Quick start](#-quick-start)** · **[Install](#-install)** · **[Read the answer](#-reading-the-answer)** · **[How it works](#-how-it-decides)** · **[Examples](#-examples)** · **[Evidence](#-built-on-evidence-not-vibes)** · **[Changelog](CHANGELOG.md)** · **[🇹🇷 Türkçe](README.tr.md)**
@@ -422,7 +422,7 @@ python scripts/check_readme_facts.py     # counts, pool size, iteration and tier
 
 These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
 
-**Where it stands (17 Nov 2026, iteration-34):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **49/49**. A full cold run of the 49 prompts (fresh Claude Sonnet 5.5 agents reading only `skill/SKILL.md`, eight prompts each; the new `dg1` run on its own agent) passed **48/49** on the first pass. `c2`, the eval that had missed on a different limb in three earlier runs, now passes: iteration-34's one-sentence D3DIAG clarification says a diagnosis that bisects or runs the system drives the artefact (its `#2` OpenCode model still splits across agents). `dg1` is the new counter-eval (a read-only D=3 diagnosis stays Sonnet 5.5 `xhigh`, OpenCode †). `a5` is the open finding: the 200-review tone batch came out `Sonnet 5.5 · high` instead of `medium` in two cold-run agents, but 6 of 6 agents in an A/B (3 on the `cbfe614` files, 3 on this iteration's) gave `medium`, so it is an intermittent D=1/2 reading, not a regression. Details in [`evals/README.md`](evals/README.md).
+**Where it stands (17 Nov 2026, iteration-35):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **49/49**. A full cold run of the 49 prompts (fresh Claude Sonnet 5.5 agents reading only `skill/SKILL.md`, seven prompts each) passed **49/49** on the first pass, `c2` and `a5` included. iteration-35 is one sentence in PO1: with two dominant tags and Argon at `#1` (Rule GM1), `#2` is the more cap-efficient of the two rows' former `#1`s, whichever row decided the badge. Three fresh agents on `c2` alone answered Argon · Hy4 both before and after the sentence (the `#2` split seen in iteration-34 did not reproduce that day), but all three named the collision between the old two-tag line and GM1 before it, and all three cited the new sentence after it. `a5` kept its wording: no concrete ambiguity to name. Details in [`evals/README.md`](evals/README.md).
 
 ### Known limits, stated plainly
 

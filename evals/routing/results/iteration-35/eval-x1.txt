@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Multi-source research-synthesis at D=2: AA-Omniscience v1.1 is one benchmark and GLM-5.3-Flash has no labelled rung (n/p), so efficiency decides; low-confidence.

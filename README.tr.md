@@ -9,7 +9,7 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-kurulum)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-kurulum)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-kurulum)
-[![Policy](https://img.shields.io/badge/politika-iteration--34-8b949e?style=flat-square)](CHANGELOG.md)
+[![Policy](https://img.shields.io/badge/politika-iteration--35-8b949e?style=flat-square)](CHANGELOG.md)
 [![Regression evals](https://img.shields.io/badge/regresyon_eval-49-8b949e?style=flat-square)](#-doğrulama)
 
 **[Hızlı başlangıç](#-hızlı-başlangıç)** · **[Kurulum](#-kurulum)** · **[Cevabı oku](#-cevabı-okumak)** · **[Nasıl karar verir](#-nasıl-karar-verir)** · **[Örnekler](#-kullanım-örnekleri)** · **[Kanıt](#-hisle-değil-kanıtla)** · **[Değişiklik günlüğü](CHANGELOG.md)** · **[🇬🇧 English](README.md)**
@@ -404,7 +404,7 @@ python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, 
 
 Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
 
-**Durum (17 Kasım 2026, iteration-34):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **49/49**. 49 promptun soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze Claude Sonnet 5.5 ajanları, ajan başına sekiz prompt; yeni `dg1` kendi ajanında) ilk geçişte **48/49** geçti. Önceki üç koşuda her seferinde farklı bir yerde kalan `c2` artık geçiyor: iteration-34'ün tek cümlelik D3DIAG açıklaması, commit bisect eden veya sistemi çalıştıran bir teşhisin artefaktı sürdüğünü söylüyor (`#2` OpenCode modeli ajanlar arasında hâlâ ayrışıyor). `dg1` yeni karşı-eval: yalnızca okuyan D=3 teşhis Sonnet 5.5 `xhigh` ve OpenCode † kalır. Açık bulgu `a5`: 200 yorumluk ton etiketleme iki soğuk-koşu ajanında `Sonnet 5.5 · medium` yerine `high` çıktı, ama A/B'de (3 ajan `cbfe614` dosyalarıyla, 3 ajan bu iterasyonun dosyalarıyla) 6/6 `medium` verdi: gerileme değil, aralıklı bir D=1/2 okuması. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
+**Durum (17 Kasım 2026, iteration-35):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **49/49**. 49 promptun soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze Claude Sonnet 5.5 ajanları, ajan başına yedi prompt) ilk geçişte **49/49** geçti; `c2` ve `a5` dahil. iteration-35, PO1'de tek cümle: iki baskın etiket varsa ve Argon `#1`'deyse (Kural GM1), `#2` iki satırın önceki `#1`'lerinden kota-verimli olandır; rozeti hangi satırın belirlediği fark etmez. Yalnız `c2`'yi yanıtlayan üç taze ajan cümleden önce de sonra da Argon · Hy4 verdi (iteration-34'te görülen `#2` ayrışması o gün yinelenmedi), ama üçü de öncesinde eski iki-etiket satırı ile GM1 arasındaki çatışmayı adlandırdı, sonrasında üçü de yeni cümleyi gösterdi. `a5`'in metni değişmedi: adı konabilir somut bir belirsizlik yok. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
 
 ### Bilinen sınırlar
 

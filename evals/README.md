@@ -1,5 +1,13 @@
 # model-secici eval set
 
+> **iteration-35 (17 Nov 2026): the `c2` pair slot, one sentence.**
+>
+> - **Rule.** PO1 gains one sentence: with two dominant tags and Argon at `#1` (GM1), `#2` is the more cap-efficient of the two rows' former `#1`s (`tasks/mo`: Hy4 109, MiMo-V2.6-Pro 94), whichever row decided the badge. The Step 4-OC two-tag line points to it ("with Argon at `#1` (GM1), PO1 picks `#2`"); the old wording is a negative assertion in `routing_policy.json`; the Turkish mirror's PO1 paragraph and two-tag line carry the same sentence. `SKILL.md` +183 bytes (+0.24%).
+> - **Diagnosis.** Three fresh agents on `c2` alone, before and after: Argon · Hy4 in 6 of 6 (`results/iteration-35/README.md`). The iteration-34 split (MiMo-V2.6-Pro in 5 of 6) did not reproduce, so the improvement is not shown by counts; the cause is confirmed only as a latent collision, which every "before" agent named and every "after" agent resolved by citing the new sentence.
+> - **`a5`: no change.** No concrete ambiguity in its prompt to name; it passed in this run.
+> - **Evals: 49** (none added). `--selftest` 49/49; the five CI commands are green.
+> - **Cold-agent run** (`results/iteration-35/`, seven fresh Claude Sonnet 5.5 agents reading only `skill/SKILL.md`, seven prompts each): first pass **49/49**, no re-runs needed. The seven agents ended on an API rate-limit error after writing their files, so they returned no final report.
+
 > **iteration-34 (17 Nov 2026): the `c2` ambiguity, the Turkish mirror, stale cap wording.**
 >
 > - **Rule.** D3DIAG gains one sentence (diagnosis that bisects, reproduces or runs the system drives the artefact and stays on the flagship list; diagnosis read from code, logs or a write-up alone is analysis), mirrored in `routing_policy.json` with a negative assertion; Step 4's flagship note and the badge paragraph carry a short matching phrase. `SKILL.md` +247 bytes. The `c2` baseline (three fresh agents, before) gave the Claude badge once in three; after, three in three. The OpenCode `#2` of `c2` still splits (the two-tag pair rule), left open.
