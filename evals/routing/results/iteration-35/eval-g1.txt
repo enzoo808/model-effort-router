@@ -1,0 +1,6 @@
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: max
+OpenCode: #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: D=3, R=3 deep-reasoning: Opus 5.5 at max (M1) leads Argon high on HLE-Diamond (67.9 vs 56.7) and CritPt v2 (68.0 vs 52.5).
+Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; limit USD 30 at half price through 30 Nov 2026 (list prices after); a request draws about 6× the shared allowance a MiMo-V2.6-Pro one does (Go's 5-hour estimates, 566 vs 3,260 — a proxy). If it errors or is overloaded, run the row's other model.
+⚡ Claude /fast available (2.5x faster, 2× price).
+Do not apply without human review.

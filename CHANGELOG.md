@@ -4,6 +4,17 @@ Routing-policy iterations (the OpenCode Go era and the Codex era), newest first.
 
 ---
 
+## iteration-35 (17 Nov 2026): the `c2` pair slot
+
+No new routing facts. One sentence.
+
+- **Cause.** Two recipes for OpenCode `#2` collided at `D = 3` with two dominant tags: GM1 ("the row's former `#1` becomes `#2`") and the Step 4-OC two-tag line ("the other row's `#1`, or its `#2` if that is the same model"), with no stated answer to which row decided the badge when both cells say Claude. For `c2` that is MiMo-V2.6-Pro (deep-reasoning row) against Hy4 (agentic-code / terminal-tool row). Confirmed from the agents' own reasons; the split itself did not reproduce on the day (3 of 3 agents gave Hy4 before the fix, 3 of 3 after).
+- **Fix.** PO1 gains: with two dominant tags and Argon at `#1` (GM1), `#2` is the more cap-efficient of the two rows' former `#1`s, whichever row decided the badge. The Step 4-OC line defers to it. `routing_policy.json` mirrors PO1 verbatim and carries the old line as a negative assertion; the Turkish mirror's PO1 paragraph and two-tag line follow. `SKILL.md` 76,378 -> 76,561 bytes (+0.24%).
+- **`a5`:** wording unchanged (no nameable ambiguity). It passed in the cold run.
+- **Evals: 49**, none added. Cold run (`results/iteration-35/`, seven fresh Sonnet 5.5 agents): **49/49** first pass.
+
+---
+
 ## iteration-34 (17 Nov 2026): the `c2` ambiguity, the Turkish mirror, stale cap wording
 
 No new routing facts. A bounded cleanup.

@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Porting, CI checks and the README and CHANGELOG are one implementation phase, so no ultracode; Hy4's rows carry no rung label (n/p), so efficiency decides at USD 1.03 per AA task; low-confidence.

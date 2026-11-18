@@ -11,7 +11,7 @@ description: >-
 
 # Claude & OpenCode model / effort router
 
-<!-- routing-policy-version: iteration-34 -->
+<!-- routing-policy-version: iteration-35 -->
 
 Route the user's prompt — **do not run it**. Say which model + effort to use on
 **Claude** and on **OpenCode** (**two** models, `#1` / `#2`, each with its own
@@ -549,10 +549,10 @@ among the budget tier** (mean rank across ≥ 2 evaluators;
 | anything else | MiMo-V2.6-Pro · GLM-5.3-Flash | same | no row → best index per dollar |
 
 **Two dominant tags:** `#1` from the row whose tag decided the badge (if both cells fell
-to efficiency, PO1); `#2` = the other row's `#1`, or its `#2` if that is the same model.
+to efficiency, PO1); `#2` = the other row's `#1` (its `#2` if that is the same model); with Argon at `#1` (GM1), PO1 picks `#2`.
 
 <!-- rule:PO1 -->
-**PO1 · pair order.** At `D = 3` or `R = 3` the consensus leader goes first (the right-hand column). At `D ≤ 2` and `R ≤ 2` it stays first only on a BD1 direction over the other model, read on the anchors that rate both; otherwise the two are tied and the more cap-efficient goes first — `tasks/mo`, a proxy (`derive_opencode_rows.py` derives every order). With two dominant tags whose badge cells both fall to efficiency, the more cap-efficient of the two rows' `#1`s goes first. This orders the pair only — the badge still follows SM1.
+**PO1 · pair order.** At `D = 3` or `R = 3` the consensus leader goes first (the right-hand column). At `D ≤ 2` and `R ≤ 2` it stays first only on a BD1 direction over the other model, read on the anchors that rate both; otherwise the two are tied and the more cap-efficient goes first — `tasks/mo`, a proxy (`derive_opencode_rows.py` derives every order). With two dominant tags whose badge cells both fall to efficiency, the more cap-efficient of the two rows' `#1`s goes first. With two dominant tags and Argon at `#1` (GM1), `#2` is the more cap-efficient of the two rows' former `#1`s, whichever row decided the badge. This orders the pair only — the badge still follows SM1.
 <!-- /rule:PO1 -->
 
 <!-- rule:CAP1 -->
