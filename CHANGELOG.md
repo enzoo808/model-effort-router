@@ -13,7 +13,7 @@ No new routing facts.
 - **`dg1`.** Golden Evidence shortened to 29 words. The `agentic-code` / `terminal-tool` `D = 3`, `R ≤ 2` evidence cell points read-only analysis at the "`D = 3` analysis on a flagship tag" paragraph (+63 bytes; the side stays Claude); `routing_policy.json` notes it.
 - **Typo.** The Hy4 Arena cost in the Step 4-OC cell: USD 0.55 (was 0.54).
 - **Numbers verified** against `opencode-evidence.json`: HLE-Diamond 44.1 vs 56.7, CritPt v2 57.5 vs 52.5. The mirror's "22 points" is TB 4.0 63.6 vs 41.9; its "leader of the open models" for Kimi K3.1 Pro is now worded as AA's open-weights listing, weights not yet released.
-- **Evals: 49**, none added. Mirror-as-router run (`results/iteration-36/tr-router/`): 14 prompts on two fresh Sonnet 5.5 agents reading only the Turkish file; `c3` failed in Turkish only and passes after the mirror fix; `w3` fails again (README there). English re-run of `c2`, `dg1`, `v1`, `d1`: 4/4.
+- **Evals: 49**, none added. Mirror-as-router run (`results/iteration-36/tr-router/`): 14 prompts on two fresh Sonnet 5.5 agents reading only the Turkish file; `c3` failed in Turkish only and passes after the mirror fix; `w3` failed twice until the mirror gained the two worked examples `SKILL.md` has (the EU-pages example is `w3`'s prompt, so the pass is partly a copy; the English agents had that example too). English re-run of `c2`, `dg1`, `v1`, `d1`: 4/4.
 
 ---
 

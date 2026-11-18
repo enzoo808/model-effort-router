@@ -700,6 +700,23 @@ Evidence: D=3 reasoning half has two agreeing AA rows at the rung each line runs
 Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; limit USD 30 at half price through 30 Nov 2026 (list prices after); a request draws about 6× the shared allowance a MiMo-V2.6-Pro one does (Go's 5-hour estimates, 566 vs 3,260 — a proxy). If it errors or is overloaded, run the row's other model.
 ```
 
+*"Bu üç herkese açık AB düzenleyici sayfasını oku ve her birinin ambalaj etiketlerindeki evde-kompostlanabilir iddiaları hakkında ne dediğini söyle — etiketleri bu gece baskıya gönderiyoruz, yeniden basamayız"* (çok kaynaklı okuma = `D=2`, geri basılamaz = `R=3`, `research-synthesis`)
+```
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Gemini 4 Argon · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Printing cannot be undone (R=3), and Argon beats Sonnet 5.5 on both AA-Omniscience v1 measures (index 42 vs 32, hallucination 15% vs 47%), so OpenCode takes the badge; low-confidence — one benchmark.
+Gemini 4 Argon: opencode-go/gemini-4-argon — Go lists it as not trained on, 0-day retention; limit USD 30 at half price through 30 Nov 2026 (list prices after); a request draws about 6× the shared allowance a MiMo-V2.6-Pro one does (Go's 5-hour estimates, 566 vs 3,260 — a proxy). If it errors or is overloaded, run the row's other model.
+Do not apply without human review.
+```
+
+*"Bir konferans için gizli olmayan bir rakip-fiyatlandırma sunumu hazırlıyorum — araştır, yapılandır ve 12 slaytı yaz"* (`knowledge-work`, `D=2`)
+```
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
+Evidence: A finished deck is knowledge-work, where only AA-Briefcase is published at the rung the line runs (Sonnet 5.5 high 1634 vs DeepSeek 1017's 1570) — one measurement, so efficiency decides; low-confidence.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
+```
+
 *"Prod config'inde MAX_RETRIES'ı 3'ten 5'e çek"* (R=3 sistem-geneli, D=0)
 ```
 Claude: Sonnet 5.5 · effort: low
