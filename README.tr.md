@@ -9,7 +9,7 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-kurulum)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-kurulum)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-kurulum)
-[![Policy](https://img.shields.io/badge/politika-iteration--35-8b949e?style=flat-square)](CHANGELOG.md)
+[![Policy](https://img.shields.io/badge/politika-iteration--36-8b949e?style=flat-square)](CHANGELOG.md)
 [![Regression evals](https://img.shields.io/badge/regresyon_eval-49-8b949e?style=flat-square)](#-doğrulama)
 
 **[Hızlı başlangıç](#-hızlı-başlangıç)** · **[Kurulum](#-kurulum)** · **[Cevabı oku](#-cevabı-okumak)** · **[Nasıl karar verir](#-nasıl-karar-verir)** · **[Örnekler](#-kullanım-örnekleri)** · **[Kanıt](#-hisle-değil-kanıtla)** · **[Değişiklik günlüğü](CHANGELOG.md)** · **[🇬🇧 English](README.md)**
@@ -400,11 +400,12 @@ python scripts/check_policy_sync.py      # SKILL.md kural blokları == evals/pol
 python scripts/check_opencode_pool.py    # havuz, Adım 4-OC satırları, rozet tablosu, model başına varyantlar, PO1 sırası
 python scripts/check_examples.py         # her çalışılmış örnek kendi altın çıktısıyla uyuşur
 python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, iterasyon ve katman tabloları veriyle uyuşur
+python scripts/check_mirror_rules.py     # SKILL.md'deki her kural kimliği Türkçe aynada (claude-ai/) taşınır ya da bildirilir
 ```
 
 Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
 
-**Durum (17 Kasım 2026, iteration-35):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` dahil geçiyor; `--selftest` **49/49**. 49 promptun soğuk koşusu (yalnızca `skill/SKILL.md` okuyan taze Claude Sonnet 5.5 ajanları, ajan başına yedi prompt) ilk geçişte **49/49** geçti; `c2` ve `a5` dahil. iteration-35, PO1'de tek cümle: iki baskın etiket varsa ve Argon `#1`'deyse (Kural GM1), `#2` iki satırın önceki `#1`'lerinden kota-verimli olandır; rozeti hangi satırın belirlediği fark etmez. Yalnız `c2`'yi yanıtlayan üç taze ajan cümleden önce de sonra da Argon · Hy4 verdi (iteration-34'te görülen `#2` ayrışması o gün yinelenmedi), ama üçü de öncesinde eski iki-etiket satırı ile GM1 arasındaki çatışmayı adlandırdı, sonrasında üçü de yeni cümleyi gösterdi. `a5`'in metni değişmedi: adı konabilir somut bir belirsizlik yok. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
+**Durum (18 Kasım 2026, iteration-36):** yukarıdaki kontrollerin hepsi `check_readme_facts.py` ve yeni `check_mirror_rules.py` dahil geçiyor; `--selftest` **49/49**. iteration-36 hiçbir yönlendirme olgusunu değiştirmez: Türkçe yedek `claude-ai/instructions.tr.md`'yi `SKILL.md` ile yeniden hizalar (30 inceleme bulgusu; kural işareti defteri artık bir kural sessizce düşerse CI'ı kırar), `dg1` altın Evidence'ını 30 kelime sınırına indirir ve `agentic-code` / `terminal-tool` `D = 3` rozet hücresine tek bir işaretçi cümle ekler. Yalnız Türkçe dosyayı okuyan taze ajanlar 14 prompt yönlendirdi (13 eval ve bir şema-migrasyonu yoklaması): ilk geçişte iki ayna boşluğu bulundu (`c3`, `w3`); düzeltmeden sonra `c3` geçti; `w3`, `SKILL.md`'de olup aynada bulunmayan iki çalışılmış örnek aynaya eklenene kadar iki kez düştü (örneklerden biri `w3`'ün promptudur, yani geçişi kısmen kopyadır; bkz. `evals/routing/results/iteration-36/README.md`); `D = 3` `agentic-code` / `terminal-tool` dört eval `SKILL.md` üzerinde yeniden geçti. Önceki tam soğuk koşu (yalnızca `skill/SKILL.md` okuyan taze Claude Sonnet 5.5 ajanları, ajan başına yedi prompt) ilk geçişte **49/49** geçti; `c2` ve `a5` dahil. iteration-35, PO1'de tek cümle: iki baskın etiket varsa ve Argon `#1`'deyse (Kural GM1), `#2` iki satırın önceki `#1`'lerinden kota-verimli olandır; rozeti hangi satırın belirlediği fark etmez. Yalnız `c2`'yi yanıtlayan üç taze ajan cümleden önce de sonra da Argon · Hy4 verdi (iteration-34'te görülen `#2` ayrışması o gün yinelenmedi), ama üçü de öncesinde eski iki-etiket satırı ile GM1 arasındaki çatışmayı adlandırdı, sonrasında üçü de yeni cümleyi gösterdi. `a5`'in metni değişmedi: adı konabilir somut bir belirsizlik yok. Ayrıntılar [`evals/README.md`](evals/README.md)'de.
 
 ### Bilinen sınırlar
 

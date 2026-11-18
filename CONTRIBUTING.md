@@ -92,7 +92,9 @@ procedure.
 7. Mirror the change into `claude-ai/instructions.tr.md` (the no-code-execution
    fallback), except the Claude Code-only parts (`opusplan`, the `⚡ Claude /fast`
    speed line, the `/model opus` alias rule) — that file has a footer listing its
-   deliberate differences.
+   deliberate differences. `python scripts/check_mirror_rules.py` fails CI when a rule id
+   marked in `SKILL.md` is neither carried in the mirror (same `<!-- rule:ID -->` marker next
+   to the translated rule) nor listed in the mirror's one `<!-- mirror-omits: ... -->` line.
 8. Re-run `.\build-claude-ai-zip.ps1` at release time — `dist/` is git-ignored; the zip is never committed.
 9. If `docs/social-preview.html` changed, re-render the PNG in the same commit:
    `.\scripts\render-social-preview.ps1`. A stale PNG is a wrong screenshot of the

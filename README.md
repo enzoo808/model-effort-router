@@ -9,7 +9,7 @@
 [![Claude Code skill](https://img.shields.io/badge/Claude_Code-skill-d2a8ff?style=flat-square)](#-install)
 [![claude.ai](https://img.shields.io/badge/claude.ai-custom_skill-58a6ff?style=flat-square)](#-install)
 [![OpenCode Go](https://img.shields.io/badge/OpenCode-Go-3fb950?style=flat-square)](#-install)
-[![Policy](https://img.shields.io/badge/policy-iteration--35-8b949e?style=flat-square)](CHANGELOG.md)
+[![Policy](https://img.shields.io/badge/policy-iteration--36-8b949e?style=flat-square)](CHANGELOG.md)
 [![Regression evals](https://img.shields.io/badge/regression_evals-49-8b949e?style=flat-square)](#-validation)
 
 **[Quick start](#-quick-start)** · **[Install](#-install)** · **[Read the answer](#-reading-the-answer)** · **[How it works](#-how-it-decides)** · **[Examples](#-examples)** · **[Evidence](#-built-on-evidence-not-vibes)** · **[Changelog](CHANGELOG.md)** · **[🇹🇷 Türkçe](README.tr.md)**
@@ -418,11 +418,12 @@ python scripts/check_policy_sync.py      # SKILL.md rule blocks == evals/policy/
 python scripts/check_opencode_pool.py    # pool, Step 4-OC rows, badge table, per-model variants, consensus top-4, PO1 order
 python scripts/check_examples.py         # every worked example agrees with its golden
 python scripts/check_readme_facts.py     # counts, pool size, iteration and tier tables in the docs match the data
+python scripts/check_mirror_rules.py     # every SKILL.md rule id is carried or declared in the Turkish mirror (claude-ai/)
 ```
 
 These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.
 
-**Where it stands (17 Nov 2026, iteration-35):** all of the checks above pass, including `check_readme_facts.py`; `--selftest` is **49/49**. A full cold run of the 49 prompts (fresh Claude Sonnet 5.5 agents reading only `skill/SKILL.md`, seven prompts each) passed **49/49** on the first pass, `c2` and `a5` included. iteration-35 is one sentence in PO1: with two dominant tags and Argon at `#1` (Rule GM1), `#2` is the more cap-efficient of the two rows' former `#1`s, whichever row decided the badge. Three fresh agents on `c2` alone answered Argon · Hy4 both before and after the sentence (the `#2` split seen in iteration-34 did not reproduce that day), but all three named the collision between the old two-tag line and GM1 before it, and all three cited the new sentence after it. `a5` kept its wording: no concrete ambiguity to name. Details in [`evals/README.md`](evals/README.md).
+**Where it stands (18 Nov 2026, iteration-36):** all of the checks above pass, including `check_readme_facts.py` and the new `check_mirror_rules.py`; `--selftest` is **49/49**. iteration-36 changes no routing fact: it brings the Turkish fallback `claude-ai/instructions.tr.md` back in line with `SKILL.md` (30 review findings; a rule-marker ledger now fails CI when a rule is dropped from it silently), shortens `dg1`'s golden Evidence to the 30-word limit and adds one pointer clause to the `agentic-code` / `terminal-tool` `D = 3` badge cell. Fresh agents reading only the Turkish file routed 14 prompts (13 evals plus one schema-migration probe): the first pass found two mirror gaps (`c3`, `w3`); after the fix `c3` passed; `w3` failed twice until the mirror gained the two worked examples `SKILL.md` has and it lacked (one of them is `w3`'s prompt, so its pass is partly a copy; see `evals/routing/results/iteration-36/README.md`); the four `D = 3` `agentic-code` / `terminal-tool` evals pass again on `SKILL.md`. The previous full cold run of the 49 prompts (fresh Claude Sonnet 5.5 agents reading only `skill/SKILL.md`, seven prompts each) passed **49/49** on the first pass, `c2` and `a5` included. iteration-35 is one sentence in PO1: with two dominant tags and Argon at `#1` (Rule GM1), `#2` is the more cap-efficient of the two rows' former `#1`s, whichever row decided the badge. Three fresh agents on `c2` alone answered Argon · Hy4 both before and after the sentence (the `#2` split seen in iteration-34 did not reproduce that day), but all three named the collision between the old two-tag line and GM1 before it, and all three cited the new sentence after it. `a5` kept its wording: no concrete ambiguity to name. Details in [`evals/README.md`](evals/README.md).
 
 ### Known limits, stated plainly
 

@@ -1,0 +1,4 @@
+Claude: Sonnet 5.5 · effort: medium
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: Reading three pages and reporting what each says is D=1 work, so price and cap decide on the Flash tier (GLM-5.3-Flash 3.70 ±0.73 @ USD 0.14, cap 60; MiMo-V2.6-Flash USD 0.08, cap 60, Arena 13 Nov); DeepSeek is excluded because factual lookup is a hallucination risk (64.1%).
+Do not apply without human review.

@@ -27,3 +27,5 @@ jobs:
         run: python scripts/check_examples.py
       - name: README facts match the data (counts, pool, iteration, tiers)
         run: python scripts/check_readme_facts.py
+      - name: Turkish mirror carries or declares every rule
+        run: python scripts/check_mirror_rules.py
