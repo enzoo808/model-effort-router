@@ -15,7 +15,7 @@
 - [ ] Rule change: eval added/updated and mirrored in `evals/policy/routing_policy.json`
 - [ ] `README.md` and `README.tr.md` (and `claude-ai/instructions.tr.md`) in sync, or the lag is flagged below
 - [ ] CI commands pass locally:
-  `python evals/routing/grade_routing.py --selftest`, `python scripts/check_policy_sync.py`, `python scripts/check_opencode_pool.py`, `python scripts/check_examples.py`, `python scripts/check_readme_facts.py`
+  `python evals/routing/grade_routing.py --selftest`, `python scripts/check_policy_sync.py`, `python scripts/check_opencode_pool.py`, `python scripts/check_examples.py`, `python scripts/check_readme_facts.py`, `python scripts/check_mirror_rules.py`
 
 ## Notes
 

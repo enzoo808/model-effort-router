@@ -418,6 +418,7 @@ python scripts/check_policy_sync.py      # SKILL.md rule blocks == evals/policy/
 python scripts/check_opencode_pool.py    # pool, Step 4-OC rows, badge table, per-model variants, consensus top-4, PO1 order
 python scripts/check_examples.py         # every worked example agrees with its golden
 python scripts/check_readme_facts.py     # counts, pool size, iteration and tier tables in the docs match the data
+python scripts/check_mirror_rules.py     # every SKILL.md rule id is carried or declared in the Turkish mirror (claude-ai/)
 ```
 
 These are exactly what [`checks.yml`](.github/workflows/checks.yml) runs on every push and pull request. To print the independent-evidence consensus per capability: `python scripts/derive_opencode_rows.py`.

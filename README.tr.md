@@ -400,6 +400,7 @@ python scripts/check_policy_sync.py      # SKILL.md kural blokları == evals/pol
 python scripts/check_opencode_pool.py    # havuz, Adım 4-OC satırları, rozet tablosu, model başına varyantlar, PO1 sırası
 python scripts/check_examples.py         # her çalışılmış örnek kendi altın çıktısıyla uyuşur
 python scripts/check_readme_facts.py     # dokümandaki sayılar, havuz boyutu, iterasyon ve katman tabloları veriyle uyuşur
+python scripts/check_mirror_rules.py     # SKILL.md'deki her kural kimliği Türkçe aynada (claude-ai/) taşınır ya da bildirilir
 ```
 
 Bunlar, [`checks.yml`](.github/workflows/checks.yml)'nin her push ve pull request'te çalıştırdığı kontrollerin aynısıdır. Yetenek başına bağımsız kanıt uzlaşısını yazdırmak için: `python scripts/derive_opencode_rows.py`.
