@@ -1,0 +1,5 @@
+Claude: Sonnet 5.5 · effort: medium
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 Muse Spark 1.3 Contributor · effort: xhigh
+Evidence: Reading three public pages for what each says is D=1 research-synthesis work, so the Flash tier on a USD 60 cap handles it (DeepSeek is out for factual lookup) and Muse Spark joins as #2 only because you said nothing here is confidential.
+Data: Muse Spark 1.3 Contributor trains on your prompts.
+Do not apply without human review.

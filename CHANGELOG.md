@@ -4,6 +4,19 @@ Routing-policy iterations (the OpenCode Go era and the Codex era), newest first.
 
 ---
 
+## iteration-36 (18 Nov 2026): the Turkish mirror, a rule ledger, `dg1`
+
+No new routing facts.
+
+- **Mirror.** `claude-ai/instructions.tr.md` is brought back in line with `SKILL.md`: A1-OC's badge sentence (any Claude cell in the badge table, not only under BD1) and its GLM / Kimi lists; D3DIAG's scoring half; a schema / DB migration is `R=2`; the `knowledge-work` badge evidence (OpenCode † at `R ≤ 2`); the flagship list and its "builds, changes or drives the artefact" condition; A1; Step 7 rule 13 and the auto-line order; M1's `max` condition; the W definition; `high` is the API default only; NC1's right-hand-column exception; the 1000+ file gate's effort rule; the Grok 4.7 500k gate; current anchor names. After the first cold run it also gained the non-coding D examples and the Step 4-OC procedure. The declared-omissions note lists exactly what is left out (`opusplan`, the `/fast` line, rule 8, the `II v5` column, the full 4-OC rung rationale, E10/E11, the `>` example notes, the two Turkish-only examples).
+- **Guard.** `scripts/check_mirror_rules.py`, the sixth CI command: every `<!-- rule:ID -->` block of `SKILL.md` must be carried in the mirror (same marker) or named in its single `<!-- mirror-omits: ... -->` line.
+- **`dg1`.** Golden Evidence shortened to 29 words. The `agentic-code` / `terminal-tool` `D = 3`, `R ≤ 2` evidence cell points read-only analysis at the "`D = 3` analysis on a flagship tag" paragraph (+63 bytes; the side stays Claude); `routing_policy.json` notes it.
+- **Typo.** The Hy4 Arena cost in the Step 4-OC cell: USD 0.55 (was 0.54).
+- **Numbers verified** against `opencode-evidence.json`: HLE-Diamond 44.1 vs 56.7, CritPt v2 57.5 vs 52.5. The mirror's "22 points" is TB 4.0 63.6 vs 41.9; its "leader of the open models" for Kimi K3.1 Pro is now worded as AA's open-weights listing, weights not yet released.
+- **Evals: 49**, none added. Mirror-as-router run (`results/iteration-36/tr-router/`): 14 prompts on two fresh Sonnet 5.5 agents reading only the Turkish file; `c3` failed in Turkish only and passes after the mirror fix; `w3` fails again (README there). English re-run of `c2`, `dg1`, `v1`, `d1`: 4/4.
+
+---
+
 ## iteration-35 (17 Nov 2026): the `c2` pair slot
 
 No new routing facts. One sentence.

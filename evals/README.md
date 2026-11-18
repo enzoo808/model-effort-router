@@ -1,5 +1,13 @@
 # model-secici eval set
 
+> **iteration-36 (18 Nov 2026): the Turkish mirror, a rule ledger, `dg1`.**
+>
+> - **Mirror.** `claude-ai/instructions.tr.md` had drifted from `SKILL.md` (a read-only review found 30 points: 10 wrong, 10 missing, 4 unclear, 6 style). All are applied except one harmless Turkish-only note; two further gaps the review missed (the non-coding D examples and the Step 4-OC procedure) were found by the cold run below.
+> - **Guard.** `scripts/check_mirror_rules.py` (sixth CI command): every `<!-- rule:ID -->` block of `SKILL.md` must appear in the mirror with the same marker or in its single `<!-- mirror-omits: ... -->` line (empty today: all 19 rules are carried).
+> - **`dg1`.** Golden Evidence 36 -> 29 words (the grader checks only that the line is at least 20 characters, so the 30-word limit is not enforced; 32 other goldens are longer than 30 words). The `agentic-code` / `terminal-tool` `D = 3` badge cell now points read-only analysis at the "`D = 3` analysis on a flagship tag" paragraph (+63 bytes in `SKILL.md`; the side stays Claude).
+> - **Number check.** HLE-Diamond 44.1 vs 56.7 and CritPt v2 57.5 vs 52.5 agree with `opencode-evidence.json` (`iteration_31`, AA same-page comparisons read 13 Nov 2026). The Hy4 Arena cost in the Step 4-OC cell read USD 0.54 and now reads 0.55 as the evidence says.
+> - **Runs** (`results/iteration-36/`): Turkish-mirror-as-router, 14 prompts on two fresh Sonnet 5.5 agents; English re-run of `c2`, `dg1`, `v1`, `d1`: 4/4. Details in that folder's README. Evals: 49 (none added); `--selftest` 49/49.
+
 > **iteration-35 (17 Nov 2026): the `c2` pair slot, one sentence.**
 >
 > - **Rule.** PO1 gains one sentence: with two dominant tags and Argon at `#1` (GM1), `#2` is the more cap-efficient of the two rows' former `#1`s (`tasks/mo`: Hy4 109, MiMo-V2.6-Pro 94), whichever row decided the badge. The Step 4-OC two-tag line points to it ("with Argon at `#1` (GM1), PO1 picks `#2`"); the old wording is a negative assertion in `routing_policy.json`; the Turkish mirror's PO1 paragraph and two-tag line carry the same sentence. `SKILL.md` +183 bytes (+0.24%).

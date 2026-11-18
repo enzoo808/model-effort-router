@@ -126,7 +126,7 @@ efor `low`.
 kalır (Grok 4.7 premium kalır, BUD1 — geri gelmez); Muse Spark 1.3 yalnız
 `research-synthesis` satırlarında `#2` olur — sağ sütun (`D = 3` veya `R = 3`) hariç: orada GM1 Gemini 4 Argon'u zaten `#1` yapar ve satırın eski `#1`'i `#2` kalır. Tondan gizlilik-yokluğu çıkarma.
 
-**Adım 4-OC — iki modeli seç** (gizli varsayım; `D ≤ 1` ise ilk satır; çiftler yalnız **bütçe katmanından**, BUD1):
+**Adım 4-OC — iki modeli seç.** **1.** Adım 1 OpenCode kapıları. **2.** `D ≤ 1` → ilk satır. **3.** Aksi hâlde baskın etiketin satırı: `D ≤ 2 ∧ R ≤ 2` için sol sütun, `D = 3` **veya** `R = 3` için sağ sütun (PO1). **4.** Kural CAP1, FR1, **GM1**. **5.** Her biri için efor (aşağıda). Her çift **bütçe katmanından** gelir (BUD1); GM1 Gemini 4 Argon'u sağ sütunun **en üstüne** koyar — premium beşli bu tabloda yoktur (gizli varsayım):
 
 | Baskın capability | `R ≤ 2` → `#1` · `#2` | `D = 3` veya `R = 3` → `#1` · `#2` | Kanıt (bağımsız çıtalar, bütçe katmanı) |
 |---|---|---|---|
@@ -350,7 +350,11 @@ satırları karşılaştırılmaz.
   adımlı planlama, gerçek bir seçim var · 3 karmaşık algoritma, eşzamanlılık,
   ispat, **adversarial güvenlik-zafiyeti avı** (ince mantık hatası bulma — açık
   uçlu "güvenlik için incele" bu; büyük savunma denetimi de derinlikte D=3).
-  Şüphede kalınca bir alt seviyede kal.
+  Şüphede kalınca bir alt seviyede kal. Seviye başına örnekler (kodlama · yazı/analiz · araştırma · veri):
+  `0` kalıp eşleme, bilinen sabit, tam belirtilmiş additive şema değişikliği · tek cümlelik cevap **veya** saf biçim/ton değişikliği · tek kaynaklı bakış · tek sayı okuma;
+  `1` standart kalıp (CRUD, bilinen hata biçimi), seçim içeren şema değişikliği · basit özet/taslak · tek kaynaklı özet · basit filtre/toplama;
+  `2` çok adımlı ama iyi belgelenmiş özellik · **çok kaynaklı sentez raporu** · **çok kaynaklı sentez** · istatistiksel çıkarım;
+  `3` sıfırdan tasarım, eşzamanlılık, algoritmik karmaşıklık, çelişen kısıtlar, adversarial güvenlik-zafiyeti avı · özgün argüman, çelişen kaynakları uzlaştırma · yeni hipotez/çerçeve · modelleme, nedensel çıkarım.
   <!-- rule:D3DIAG -->
   **D3DIAG · teşhis.** Kodlama sütunu inşa için yazılmıştır; hata ayıklama kendi testiyle puanlanır: **sınırlı teşhis `D=2`**
   (belirti yerel, hata gürültülü ve istek üzerine yeniden üretilebilir, aday neden uzayı küçük, sıradan izleme veya bisect
