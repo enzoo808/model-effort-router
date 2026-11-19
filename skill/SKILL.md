@@ -11,7 +11,7 @@ description: >-
 
 # Claude & OpenCode model / effort router
 
-<!-- routing-policy-version: iteration-36 -->
+<!-- routing-policy-version: iteration-37 -->
 
 Route the user's prompt — **do not run it**. Say which model + effort to use on
 **Claude** and on **OpenCode** (**two** models, `#1` / `#2`, each with its own
@@ -84,7 +84,7 @@ cases only, Rule GM1), **N** non-confidential only (NC1), **D** dominated, **—
 <!-- /rule:BUD1 -->
 
 <!-- rule:FR1 -->
-**FR1 · free lane.** No free model on Go has a measured score, so none is ever `#1` or `#2`: MiniMax M3.1 Flash Free left Go (Go now lists the paid MiniMax M3.1 Flash at a USD 20 cap — never selected, no independent row for that listing), Beam Free (30-day retention), LongCat 2.5 Free (hosted in China, 100 requests/day) and Hy4 flash Free (zero retention, no training) are unmeasured, and Iceman Contributor Free trains on prompts. Zen's free twins of paid Flash models (`glm-5.3-flash-free`, `deepseek-v4.1-flash-free`: same base models, zero retention, no training, free for a limited time; 200k context / 32k output, live endpoint) are never `#1` or `#2` either — when the user says a Go limit is reached, `Evidence:` names the twin (CAP1) (`minimax-m3.1-flash-free` left Zen: deprecated 17 Nov 2026, absent from the live endpoint). Every other free model is never selected (`mimo-v2.6-flash-free` included — no longer listed as retaining or training).
+**FR1 · free lane.** No free model on Go has a measured score, so none is ever `#1` or `#2`: MiniMax M3.1 Flash Free left Go (Go now lists the paid MiniMax M3.1 Flash at a USD 20 cap — never selected, no independent row for that listing), Beam Free (30-day retention), LongCat 2.5 Free (hosted in China, 100 requests/day) and Hy4 flash Free (zero retention, no training) are unmeasured, and Iceman Contributor Free trains on prompts. Zen's free twin of paid Flash models (`deepseek-v4.1-flash-free`: same base model, zero retention, no training, free for a limited time; 200k context / 32k output, live endpoint) is never `#1` or `#2` either — when the user says a Go limit is reached, `Evidence:` names the twin (CAP1) (`glm-5.3-flash-free` left Zen: deprecated 18 Nov 2026, absent from the live endpoint; `minimax-m3.1-flash-free` left Zen: deprecated 17 Nov 2026, absent from the live endpoint). Every other free model is never selected (`mimo-v2.6-flash-free` included — no longer listed as retaining or training).
 <!-- /rule:FR1 -->
 
 <!-- rule:GM1 -->

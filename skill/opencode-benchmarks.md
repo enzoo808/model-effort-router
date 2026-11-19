@@ -1163,3 +1163,51 @@ Public pages, no login, read once each on 17 Nov 2026 (browser clock 19:13 UTC; 
   **Legacy**): "SciCode is under review following an independent audit of the dataset"; AA is reviewing SciCode-Verified's
   findings and "will re-run all relevant models" if it adopts a corrected dataset. Still under review. No change; the
   `science` row keeps SciCode out (`derive_opencode_rows.py` not re-run, no row moves).
+
+---
+
+## 21. Iteration-37 — the GLM re-check (19 November 2026)
+
+Lead: a post said OpenCode changed something about GLM on Go; verified on OpenCode's public pages only
+(no X/Twitter read). All reads 19 Nov 2026 (UTC times in the evidence JSON `iteration_37`); each page
+fetched once, the console twice. Two facts found; the pool table, tiers, Step 4-OC rows and `tasks/mo`
+are unchanged.
+
+### 21.1 GLM-5.3's higher-limits window — time-boxed, pool unchanged
+
+The console table (read 05:19 and again 05:29 UTC, ≥10 minutes apart — all GLM rows stayed),
+`/inference/go/v1/models` and docs/go agree: GLM-5.3's monthly limit is now **Go USD 500 / Go Plus
+1000** (go-teams 505; was 100/200/105 on 17 Nov, §19.2) and `Est. requests / 5 hr` is **6,600 / 13,200**
+(was 1,320 / 2,640) — a ×5 window; 6,600/1,320 = 500/100, so the request estimate moved with the weight.
+docs/go, verbatim: "Higher usage limits apply through November 22, 2026." The pool keeps **USD 100 / 105
+tasks/mo** — the standing value both sources settled on 17 Nov — and A1-OC carries the dated one-liner
+(about 0.2% of the allowance per real agent task through 22 Nov, about 1% after), the Argon
+half-price precedent's shape. The 1 Dec refresh re-reads console + catalogue for the revert value
+(100 expected; if 15 or anything else, a pool-table change for that iteration). Prices, privacy,
+variants and modalities are unchanged.
+
+### 21.2 The GLM free twin is gone — FR1's twin list corrected
+
+`glm-5.3-flash-free` is **deprecated**: docs/zen's deprecation table carries the row
+"GLM-5.3-Flash Free | November 18, 2026", the free-models list no longer names it, and the live
+`/inference/v1/models` endpoint (89 models, read 05:21 UTC) no longer lists it — while
+`deepseek-v4.1-flash-free` is still there, free. The MiniMax M3.1 Flash Free precedent's shape
+(deprecated 17 Nov, §17.7). models.dev's `opencode` provider still lists the twin — a stale snapshot
+(it also lists deprecated glm-4.6 / 4.7 / 5). FR1 now names the one live Zen twin and carries the
+deprecation parenthetical; `routing_policy.json` (`rule_blocks.blocks.FR1` verbatim,
+`free_lane.twins` entry removed, `twins_note` extended) and the TR mirror follow. No eval changes:
+no golden names `glm-5.3-flash-free` (the CAP1/FR1 eval names `deepseek-v4.1-flash-free`, still
+live), and CAP1's "a Zen free twin (FR1)" stays true.
+
+### 21.3 Recorded, not acted on (19 Nov)
+
+- GLM-5.3-Flash's catalogue modalities list **video input** today (catalogue, live endpoint,
+  models.dev) where the pool note says "text + image"; whether video was listed on 17 Nov is not
+  recorded, so whether-changed is UNVERIFIED. No router rule names video input, so the effect is nil
+  either way; re-check at the next full refresh.
+- **Out of GLM scope, single source:** docs/go's privacy table now says "Gemini 4 Argon — 55 days"
+  ("retained for up to 55 days for abuse monitoring"); the 17 Nov record (§17.1) says the privacy
+  table had 0 days, Argon included. GM1-relevant if confirmed — its own iteration, not this one.
+- New on the Go table, none a GLM or a pool model: Beam Free, Iceman Contributor Free, LongCat-2.0,
+  Hy3, Step 5 Preview, GPT-5.6 Luna (never-selected / unmeasured lane). OpenCode's changelog 18 Nov
+  (v2.3.2 / v2.3.1) has no GLM or Go-limits entry; opencode.ai/blog does not exist (404).
