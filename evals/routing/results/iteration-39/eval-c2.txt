@@ -1,0 +1,6 @@
+MODEL: claude-sonnet-5-5
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh · ultracode
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Hy4 · effort: high
+Evidence: D=3 real-versus-artefact diagnosis has two agreeing AA rows at the rung each line runs (HLE-Diamond 64.0 vs MiMo-V2.6-Pro's 15.2, CritPt v2 67.5 vs 34.0).
+Ultracode: start the prompt with "ultracode:" to run only this task as a workflow — /effort ultracode (v2.1.284+) stays on for the whole session and spends your limits faster. Set the effort above separately; ultracode no longer changes it.
+⚡ Claude /fast available (2.5x faster, 2× price).

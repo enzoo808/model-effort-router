@@ -1,0 +1,4 @@
+MODEL: claude-sonnet-5-5
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 Hy4 · effort: high
+Evidence: D=3 reasoning half has two agreeing AA rows at the rung each line runs (HLE-Diamond 64.0 vs MiMo-V2.6-Pro's 15.2, CritPt v2 67.5 vs 34.0).

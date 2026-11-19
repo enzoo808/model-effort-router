@@ -1,0 +1,7 @@
+MODEL: claude-sonnet-5-5
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: max
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
+Evidence: One indivisible, irreversible design decision (D=3, R=3): Opus 5.5 max leads MiMo-V2.6-Pro on HLE-Diamond (67.9 vs 15.2) and CritPt v2 (68.0 vs 34.0), two agreeing AA rows.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
+⚡ Claude /fast available (2.5x faster, 2× price).
+Do not apply without human review.

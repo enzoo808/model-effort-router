@@ -1,0 +1,2 @@
+MODEL: claude-sonnet-5-5
+Clarify: what counts as inactive: an is_active flag set to false, or no login for N days (and what is N)?

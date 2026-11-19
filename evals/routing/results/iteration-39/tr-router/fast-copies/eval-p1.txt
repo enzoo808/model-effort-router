@@ -1,0 +1,4 @@
+MODEL: claude-sonnet-5-5
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+OpenCode: #1 Hy4 · effort: high · #2 GLM-5.3 · effort: max
+Evidence: The first OpenCode run fell short on D=2 agentic-code work, so #2 upgrades to GLM-5.3 (AA Terminal-Bench 4.0 42, about 1% of the monthly Go allowance per real agent task) and the badge moves to Claude.

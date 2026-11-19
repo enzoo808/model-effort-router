@@ -1,0 +1,5 @@
+MODEL: claude-sonnet-5-5
+Claude: Opus 5.5 · effort: xhigh
+OpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: D=3 reproduce-and-fix on terminal work: Hy4's rows carry no rung label (n/p), so efficiency decides at USD 1.03 per AA task against Opus 5.5 xhigh's 3.46; low-confidence.
+⚡ Claude /fast available (2.5x faster, 2× price).

@@ -1,0 +1,6 @@
+MODEL: claude-sonnet-5-5
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+OpenCode: #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
+Evidence: A finished filing is knowledge-work at R=3: AA-Briefcase has Sonnet 5.5 high 1634 ahead of DeepSeek 1570, a lean to Claude from one measurement; low-confidence.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
+Do not apply without human review.

@@ -1,0 +1,5 @@
+MODEL: claude-sonnet-5-5
+Claude: ✅ RECOMMENDED AI · Fable 5.2 · effort: high
+OpenCode: unverified — use Claude
+Evidence: Biology-adjacent R&D is a deciding gate on both arms; Fable 5.2 carries it, though its biology classifiers can block research tasks (Mythos 5.2 for verified organisations), and no pool model has a verified result there.
+Fable 5.2: its biology classifiers may block research tasks — on the first flagged request Claude Code moves the session to Opus 5, and later biology-flagged requests are refused.

@@ -1,0 +1,4 @@
+MODEL: claude-sonnet-5-5
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+OpenCode: use Claude — cold runs on fresh Sonnet 5.5 subagents through the Agent tool exist only on Claude; Go serves only Haiku 5.5.
+Evidence: TG1 closes the OpenCode arm because the job's own tool is Claude-only, so the Claude line, a bounded D=2 batch-and-grade run across 49 units, takes the badge.

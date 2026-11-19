@@ -1,0 +1,4 @@
+MODEL: claude-sonnet-5-5
+Claude: ✅ RECOMMENDED AI · Mythos 5.2 · effort: high
+OpenCode: unverified — use Claude
+Evidence: Biology-adjacent R&D is a deciding gate on both arms; the stated Life Sciences Verification Program membership makes Mythos 5.2 the result, and no pool model has a verified result there.

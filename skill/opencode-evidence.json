@@ -3017,5 +3017,17 @@
       "opencode.ai/docs/agents",
       "opencode.ai/docs/providers"
     ]
+  },
+  "iteration_39": {
+    "scope": "Clarity round (19 Nov 2026): no new model, price, limit or privacy fact, and no routing result changed. Records which AA-Omniscience version each router comparison reads, and two findings left for the 1 Dec refresh. Pool table, tiers, Step 4-OC rows and tasks/mo unchanged.",
+    "omniscience_version_map": {
+      "pair_order_step_4_oc": "v1 (frozen rows): MiMo-V2.6-Pro 8.4 vs GLM-5.3-Flash 7.5; hallucination MiMo-V2.6-Pro 40.6%, GLM-5.3-Flash n/p",
+      "badge_vs_budget_number_one": "v1.1: Sonnet 5.5 19 / 21 vs MiMo-V2.6-Pro -4.47 / 60.2% (the Sonnet figures appear only in opencode-benchmarks.md section 22.3 and 22.4 prose, not as a row in this file)",
+      "badge_vs_argon_nc1_r3": "v1: Argon 42.4 / 15.1% vs Sonnet 5.5 32.3 / 47.0% (Argon has no v1.1 row)"
+    },
+    "open_findings": [
+      "v1.1 would reverse the MiMo-V2.6-Pro / GLM-5.3-Flash order (MiMo -4.47 / 60.2% vs GLM-5.3-Flash 0.67 / 38.3%), i.e. the R=3 research-synthesis pair order. Not applied: it would change the routing result. Decide at the 1 Dec refresh.",
+      "Sonnet 5.5's v1.1 '19 / 21' has no row in this file; verify against the AA page at the refresh."
+    ]
   }
 }

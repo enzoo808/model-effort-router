@@ -1,0 +1,4 @@
+MODEL: claude-sonnet-5-5
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Mid-difficulty feature work stays on OpenCode (SM1): Hy4's rows carry no rung label (`n/p` at the rung the line writes), so efficiency decides at USD 1.03 per AA task against Sonnet 5.5 `high`'s 1.64; low-confidence.
