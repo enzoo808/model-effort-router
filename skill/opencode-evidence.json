@@ -2969,6 +2969,14 @@
       "GLM-5.3-Flash video input: catalogue + live endpoint + models.dev list video modalities (mp4/matroska/quicktime) today; the pool note says 'text + image'; whether video was listed on 17 Nov is not recorded - whether-changed UNVERIFIED; no router rule names video, no effect either way",
       "Out of GLM scope, single source: docs/go privacy table now says 'Gemini 4 Argon | 55 days' (17 Nov record: 0 days, Argon included, benchmarks 17.1); GM1-relevant if confirmed - flag for its own iteration"
     ],
-    "out_of_scope_page_changes": "Go table adds Beam Free, Iceman Contributor Free, LongCat-2.0, Hy3, Step 5 Preview, GPT-5.6 Luna (never-selected/unmeasured lane); changelog 18 Nov (v2.3.2/v2.3.1) has no GLM or Go-limits entry; opencode.ai/blog does not exist (404)"
+    "out_of_scope_page_changes": "Go table adds Beam Free, Iceman Contributor Free, LongCat-2.0, Hy3, Step 5 Preview, GPT-5.6 Luna (never-selected/unmeasured lane); changelog 18 Nov (v2.3.2/v2.3.1) has no GLM or Go-limits entry; opencode.ai/blog does not exist (404)",
+    "router_effect_glm_note": "ITEM 4 correction (same day): the dated x5 note stays in benchmarks 21 + this record only, out of the rules; the A1-OC one-liner first added was removed. GLM-5.3 limits window otherwise unchanged.",
+    "gemini_4_argon_retention_55d": {
+      "old": "0 days (Go privacy table, read 2026-11-17, benchmarks 14.2/17.1: Not used / 0 days)",
+      "new": "55 days, not trained on (Go route opencode-go/gemini-4-argon; no Contributor route exists)",
+      "sources": "opencode.ai/docs/go privacy table, verbatim row + footnote (read 2026-11-19T05:46Z): \"Gemini 4 Argon | 55 days\" / \"Requests are retained for up to 55 days for abuse monitoring in accordance with Google's Gemini API Terms.\"; opencode.ai/docs/zen Privacy section (read 2026-11-19T05:49Z): \"Google APIs: Requests are retained for up to 55 days for abuse monitoring in accordance with Google's Gemini API Terms.\" (Argon Zen endpoint = /inference/google/v1beta/models/gemini-4-argon); machine confirmation: /inference/go/v1/models go block (05:47:36Z) reads training:false, zdr:false; models.dev has no retention field",
+      "training": false,
+      "policy_change": "iteration-37 continued: confidential default eliminates Argon like the 30-day models; only Rule NC1 returns it (GM1, NC1, A1-OC, Step 1 gate, Step 7 rules 9/11, pool row 17, badge cells, 15 goldens re-derived). benchmarks 22."
+    }
   }
 }

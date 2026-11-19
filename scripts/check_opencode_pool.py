@@ -17,9 +17,9 @@ Checks (all mechanical, all fail loudly):
      effort that OpenCode actually offers for that model (policy `opencode_variants`), never `GLM-5.3 · low` / `Kimi K3 · low`, and never a
      USD 15-cap model at `low` (only the latency row's GPT 6 Luna is exempt).
   5. No model outside the 19 appears in a Step 4-OC row or an example.
-  6. Rule GM1: Gemini 4 Argon is an overlay open to confidential work -- it appears in no Step 4-OC
-     table cell, the rule text names every policy `gm1_rows` row and says it is open to confidential
-     work; an example that names it carries the auto-added Gemini line (Step 7 rule 11).
+  6. Rule GM1: Gemini 4 Argon is an overlay the confidential default eliminates -- it appears in no Step 4-OC
+     table cell, the rule text names every policy `gm1_rows` row and says only Rule NC1 returns it to the pool
+     (55-day retention, Go privacy table 19 Nov 2026); an example that names it carries the auto-added Gemini line (Step 7 rule 11).
 
     python scripts/check_opencode_pool.py
 """
@@ -213,8 +213,9 @@ def main() -> int:
         for t in gm1:
             if "`%s`" % t not in gm1_text.group(1):
                 errors.append("GM1: the rule text does not name policy row %r" % t)
-        if "open to confidential work" not in gm1_text.group(1):
-            errors.append("GM1: the rule text must say Gemini 4 Argon is open to confidential work (Go: Not used / 0 days)")
+        if "only Rule NC1 returns it to the pool" not in gm1_text.group(1):
+            errors.append("GM1: the rule text must say the confidential default eliminates Gemini 4 Argon and "
+                          "only Rule NC1 returns it to the pool (Go privacy table 19 Nov 2026: 55-day retention)")
         if "Contributor" in gm1_text.group(1) and "gemini-4-argon-contributor" in gm1_text.group(1):
             errors.append("GM1: the rule text still names the retired Contributor route id")
 

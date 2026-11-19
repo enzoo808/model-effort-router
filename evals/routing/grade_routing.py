@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Grade model-secici routing outputs against evals.json (iteration-27: Claude + OpenCode, budget-first, Gemini slot open to confidential work, ultracode as a flag).
+"""Grade model-secici routing outputs against evals.json (iteration-37: Claude + OpenCode, budget-first, the Gemini slot returns only under NC1, ultracode as a flag).
 
 Usage:
     python grade_routing.py --results-dir results/iteration-21
@@ -64,8 +64,9 @@ DECLINE_MARKERS = ("unverified", "use claude")
 # Rule BUD1 (iteration-23; six premium models since iteration-32): the premium models appear on an OpenCode line only through
 # A1-OC, i.e. in evals that set "allow_premium": true.
 PREMIUM_PATTERNS = (r"GLM-5\.3(?!-Flash)", r"Kimi K3", r"Grok 4\.7", r"Qwen3\.8 Max", r"Qwen4 Max")
-# Rule GM1: Gemini 4 Argon is metered (USD 30 cap); it may be #1 at D=3 / R=3 on a GM1 row (or #2 after a
-# shortfall at D=2) only in an eval that sets "allow_gemini": true. Everywhere else it is a regression.
+# Rule GM1 (iteration-37): Gemini 4 Argon is metered (USD 30 cap) and the confidential default eliminates it;
+# it may be #1 at D=3 / R=3 on a GM1 row (or #2 after a shortfall at D=2) only in an eval that sets
+# "allow_gemini": true -- the NC1 evals, whose prompts state the work is non-confidential. Everywhere else it is a regression.
 GEMINI_PATTERN = r"Gemini"
 # Rule FR1: no free model (Go or Zen) is ever #1 or #2; the paid MiniMax M3.1 Flash and Hy4 Preview are never selected.
 NEVER_ON_LINE = (r"-free\b", r"Free", r"Beam", r"Big Pickle", r"Nemotron", r"Iceman", r"MiniMax M3\.1", r"Hy4 Preview", r"LongCat 2\.5")
