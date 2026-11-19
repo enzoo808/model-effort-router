@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Port, CI checks, README and CHANGELOG are one implementation phase (O1), so no `ultracode`; D=2 agentic-code stays on OpenCode, Hy4 has no rung-labelled row, efficiency decides; low-confidence.

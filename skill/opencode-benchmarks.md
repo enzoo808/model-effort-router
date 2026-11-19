@@ -1163,3 +1163,130 @@ Public pages, no login, read once each on 17 Nov 2026 (browser clock 19:13 UTC; 
   **Legacy**): "SciCode is under review following an independent audit of the dataset"; AA is reviewing SciCode-Verified's
   findings and "will re-run all relevant models" if it adopts a corrected dataset. Still under review. No change; the
   `science` row keeps SciCode out (`derive_opencode_rows.py` not re-run, no row moves).
+
+---
+
+## 21. Iteration-37 — the GLM re-check (19 November 2026)
+
+Lead: a post said OpenCode changed something about GLM on Go; verified on OpenCode's public pages only
+(no X/Twitter read). All reads 19 Nov 2026 (UTC times in the evidence JSON `iteration_37`); each page
+fetched once, the console twice. Two facts found; the pool table, tiers, Step 4-OC rows and `tasks/mo`
+are unchanged.
+
+### 21.1 GLM-5.3's higher-limits window — time-boxed, pool unchanged
+
+The console table (read 05:19 and again 05:29 UTC, ≥10 minutes apart — all GLM rows stayed),
+`/inference/go/v1/models` and docs/go agree: GLM-5.3's monthly limit is now **Go USD 500 / Go Plus
+1000** (go-teams 505; was 100/200/105 on 17 Nov, §19.2) and `Est. requests / 5 hr` is **6,600 / 13,200**
+(was 1,320 / 2,640) — a ×5 window; 6,600/1,320 = 500/100, so the request estimate moved with the weight.
+docs/go, verbatim: "Higher usage limits apply through November 22, 2026." The pool keeps **USD 100 / 105
+tasks/mo** — the standing value both sources settled on 17 Nov — and the dated note stays here and in the
+evidence JSON `iteration_37` only: the coordinator's call for this iteration is that a dated limit window
+does not go into the rules, so the A1-OC one-liner first added with this section was removed again the same
+day (ITEM 4). The 1 Dec refresh re-reads console + catalogue for the revert value
+(100 expected; if 15 or anything else, a pool-table change for that iteration). Prices, privacy,
+variants and modalities are unchanged.
+
+### 21.2 The GLM free twin is gone — FR1's twin list corrected
+
+`glm-5.3-flash-free` is **deprecated**: docs/zen's deprecation table carries the row
+"GLM-5.3-Flash Free | November 18, 2026", the free-models list no longer names it, and the live
+`/inference/v1/models` endpoint (89 models, read 05:21 UTC) no longer lists it — while
+`deepseek-v4.1-flash-free` is still there, free. The MiniMax M3.1 Flash Free precedent's shape
+(deprecated 17 Nov, §17.7). models.dev's `opencode` provider still lists the twin — a stale snapshot
+(it also lists deprecated glm-4.6 / 4.7 / 5). FR1 now names the one live Zen twin and carries the
+deprecation parenthetical; `routing_policy.json` (`rule_blocks.blocks.FR1` verbatim,
+`free_lane.twins` entry removed, `twins_note` extended) and the TR mirror follow. No eval changes:
+no golden names `glm-5.3-flash-free` (the CAP1/FR1 eval names `deepseek-v4.1-flash-free`, still
+live), and CAP1's "a Zen free twin (FR1)" stays true.
+
+### 21.3 Recorded, not acted on (19 Nov)
+
+- GLM-5.3-Flash's catalogue modalities list **video input** today (catalogue, live endpoint,
+  models.dev) where the pool note says "text + image"; whether video was listed on 17 Nov is not
+  recorded, so whether-changed is UNVERIFIED. No router rule names video input, so the effect is nil
+  either way; re-check at the next full refresh.
+- **Gemini 4 Argon's retention, confirmed and acted on (§22):** docs/go's privacy table says "Gemini 4 Argon — 55 days"
+  ("retained for up to 55 days for abuse monitoring"), and docs/zen's Privacy section agrees ("Google APIs: Requests are
+  retained for up to 55 days...") — two sources, so the 17 Nov record (§17.1: 0 days) is superseded and the
+  confidential default now eliminates Argon (GM1 opens only under NC1). Was flagged here as single-source at read time;
+  confirmed the same day and implemented in §22.
+- New on the Go table, none a GLM or a pool model: Beam Free, Iceman Contributor Free, LongCat-2.0,
+  Hy3, Step 5 Preview, GPT-5.6 Luna (never-selected / unmeasured lane). OpenCode's changelog 18 Nov
+  (v2.3.2 / v2.3.1) has no GLM or Go-limits entry; opencode.ai/blog does not exist (404).
+
+---
+
+## 22. Iteration-37 (continued) — Gemini 4 Argon's 55-day retention (19 November 2026)
+
+Reads (each fetched once, 19 Nov 2026): docs/go's privacy table (≈05:46 UTC), the Go catalogue
+`/inference/go/v1/models` (05:47:36), `console/go` (≈05:48), models.dev `opencode-go` (05:47), docs/zen
+(≈05:49). Times in the evidence JSON `iteration_37`.
+
+### 22.1 The two sources
+
+- **docs/go privacy table, verbatim row:** `Gemini 4 Argon | 55 days`, footnote: "Requests are retained for up to 55
+  days for abuse monitoring in accordance with Google's Gemini API Terms." The row sits in the Go privacy table, on
+  the Go route (`opencode-go/gemini-4-argon`; the console table and the catalogue list no other Argon route — no
+  Contributor row exists).
+- **docs/zen Privacy section, verbatim:** "Google APIs: Requests are retained for up to 55 days for abuse monitoring
+  in accordance with Google's Gemini API Terms." — Argon's Zen endpoint is
+  `opencode.ai/inference/google/v1beta/models/gemini-4-argon`, i.e. a Google API, so the 55-day figure is the same one
+  the Go row prints.
+- **Machine confirmation:** the Go catalogue's own `go` block for `gemini-4-argon` reads `"training": false,
+  "zdr": false` — not zero-retention on the Go route. models.dev carries no retention field (no view either way).
+
+Training: no — the Go route trains nothing (`training: false`; the Go page's Enable-restricted-models list does not
+name Argon; the docs footnote is about retention only). The 17 Nov record (§17.1: "Not used / 0 days") is
+superseded; two sources against it, none for it.
+
+### 22.2 What the policy change is (the coordinator's intended design)
+
+Work is confidential by default for this user, so a model with retention above 0 days is eliminated on the OpenCode
+arm unless Rule NC1's non-confidential statement is given — exactly as Grok 4.7 and GPT 6 Luna already are. Edits:
+Step 1's confidential gate removes Argon with the 30-day models ("Gemini 4 Argon 55 days"); GM1's first sentence no
+longer says "open to confidential work" — the slot opens only under NC1, and when Argon is eliminated the
+right-hand column's `#1` is the row's former `#1` with `#2` following Step 4-OC/PO1 as if Argon did not exist; NC1
+returns Argon to the pool; A1-OC's "Argon takes `#2` on the GM1 rows at `D = 2`" clause applies only under NC1;
+Step 7 rule 9 carries Argon (55 days) and rule 11 names the retention instead of "0-day"; pool row 17's note, the
+principle paragraph, the tier legend and the description follow. `policy_version` stays `iteration-37`.
+
+### 22.3 Badge cells re-derived for the confidential case (no Argon on the line)
+
+Existing rules only (B1, BD1, SM1, the rung rule; `n/p` is an answer; no number invented):
+
+- **`agentic-code` / `terminal-tool`, `D = 3` at both R columns: Claude → OpenCode †.** The rival was Argon `high`
+  (59.6 vs 57.1, 43.8 vs 25.7; R=3 lean TB 43.9 vs 57.1); the budget `#1` is Hy4, whose rows carry no rung label
+  (n/p) — no comparable row survives, efficiency decides (USD 1.03 per AA task vs Sonnet `high` 1.64 / Opus `xhigh`
+  3.46, both published).
+- **`deep-reasoning`, `D = 2, R = 3`: OpenCode → Claude** (no dagger — a BD1 direction). The rival was Argon (Sonnet
+  trailed 33.8/51.5 vs 56.7/52.5); vs MiMo-V2.6-Pro Sonnet leads both rows (33.8/51.5 vs 15.2/34.0). `D = 3, R ≤ 2`
+  stays Claude: Opus 5.5 `xhigh` 64.0/67.5 vs MiMo-V2.6-Pro 15.2/34.0 — the direction widens, the side does not move.
+- **`research-synthesis`, both `R = 3` cells: OpenCode † → Claude †.** The rival was Argon (19/21 vs 46, Argon led);
+  vs MiMo-V2.6-Pro Sonnet leads both measures (19/21 vs −4.5/60.2% on v1.1) — one benchmark, a lean to Claude at
+  `R = 3`; the cell keeps its †. `D ≤ 2/R ≤ 2` and `D = 3, R ≤ 2` stay OpenCode † (no direction; no Sonnet `xhigh`
+  Omniscience row — efficiency).
+- **`workflow-automation`: sides unchanged (all OpenCode †).** Evidence re-derived: at `D = 3`/`R = 3` the `#1` is
+  GLM-5.3-Flash, whose AutomationBench-AA row carries no labelled rung (n/p) — efficiency decides.
+- The read-only `D = 3` analysis paragraph: `agentic-code` → OpenCode † at both R columns (no comparable row);
+  `deep-reasoning` → Claude (44.1 vs 15.2, 57.5 vs 34.0: the split becomes a direction);
+  `science` keeps Claude.
+- Claude's own cells are not widened or narrowed beyond what these re-derivations force.
+
+### 22.4 Goldens (before → after, mechanical)
+
+15 goldens re-derived from the new rule text, 2 kept with the auto-line text only (`w2`, `w3` keep Argon — NC1 is
+stated in their prompts; the rule-11 line now reads "55-day retention"). Pair/badge moves: `c2`, `d1` (Argon·Hy4 →
+MiMo-V2.6-Pro·Hy4), `c3`, `v1` (Argon·Hy4 → Hy4·MiMo-V2.6-Pro; `v1`'s badge also moves Claude → OpenCode †),
+`g1`, `j1`, `t1`, `fa1` (Argon·MiMo → MiMo-V2.6-Pro·DeepSeek `max`), `p1` (#2 Argon → GLM-5.3 `max`), `dr1`, `da1`,
+`dg1`, `z1` (badge OpenCode → Claude; `z1`'s pair → MiMo-V2.6-Pro·GLM-5.3-Flash `max`), `w1`, `ar1` (Argon·GLM-Flash
+→ GLM-Flash·DeepSeek). Evidence lines cite the budget rivals' published rows (HLE-Diamond 64.0/15.2, CritPt v2
+67.5/34.0, Omniscience v1.1 19/21 vs −4.5/60.2%) or the efficiency fallbacks. The Gemini auto-line drops from every
+confidential golden; the DeepSeek auto-line appears where DeepSeek joins the line. Grader self-test 49/49 after the
+re-derivation; `p1` gains `allow_premium` (A1-OC's premium `#2` needs the stated shortfall its prompt carries).
+
+### 22.5 Sources (19 Nov 2026)
+
+opencode.ai/docs/go (privacy table, half-price callout, GLM limits callout) · opencode.ai/docs/zen (Privacy section,
+free models, deprecation table) · opencode.ai/console/go (model table) · opencode.ai/inference/go/v1/models ·
+models.dev/api.json `opencode-go`. Recorded in `skill/opencode-evidence.json` → `iteration_37`.

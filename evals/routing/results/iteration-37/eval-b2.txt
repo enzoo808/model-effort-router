@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: One implementation phase of D=2 feature work stays on OpenCode (SM1): Hy4's rows carry no rung label (n/p), so efficiency decides, USD 1.03 per AA task against Sonnet 5.5 `high`'s 1.64; low-confidence.

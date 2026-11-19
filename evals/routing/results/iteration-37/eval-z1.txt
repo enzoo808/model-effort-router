@@ -1,0 +1,4 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 GLM-5.3-Flash · effort: max
+Evidence: Printing cannot be undone (R=3), and Sonnet 5.5 beats MiMo-V2.6-Pro on both AA-Omniscience v1.1 measures (index 19 vs −4.5, hallucination 21% vs 60%), so Claude takes the badge; low-confidence — one benchmark.
+Do not apply without human review.

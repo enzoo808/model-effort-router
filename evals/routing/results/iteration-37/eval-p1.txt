@@ -1,0 +1,3 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+OpenCode: #1 Hy4 · effort: high · #2 GLM-5.3 · effort: max
+Evidence: The earlier OpenCode run fell short at D=2, so the badge goes to Claude (A1-OC); #2 is now GLM-5.3, about 1% of the shared allowance per real agent task.

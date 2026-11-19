@@ -1,0 +1,1 @@
+Clarify: what makes a user "inactive" — the `is_active` flag, or no login for N days (and if so, how many) — and which table or tables should the delete hit?

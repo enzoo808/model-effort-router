@@ -1,0 +1,3 @@
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: medium
+OpenCode: use Claude — computer-use (GUI driving) is unverified for every pool model: no independent OSWorld row exists (Haiku 5.5's 72.4 is Anthropic's own, on Claude's harness).
+Evidence: Browser click-through is computer-use, a deciding gate on the OpenCode arm, so Claude takes the badge; the routine is documented and fixed (D=1), so Sonnet 5.5 at medium suffices.

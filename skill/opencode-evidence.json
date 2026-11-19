@@ -1042,7 +1042,8 @@
     "opencode.ai/docs/go + opencode.ai/console/go (usage limits, plans, privacy table; shared allowance verbatim; GLM-5.3 cap conflict, 2026-11-17)",
     "opencode.ai/inference/go/v1/models + opencode.ai/inference/v1/models + models.dev/providers/opencode-go (caps, prices, contexts, variants, release dates, multipliers, 2026-11-17)",
     "artificialanalysis.ai/models/comparisons/qwen4-max-vs-tencent-hy4, /models/{tencent-hy4,qwen4-max}, /changelog (Qwen4 Max II 43 no rung, Hy4 II 35 no rung, Argon Medium 48, DeepSeek V4 Pro 0813 High 21, 2026-11-17)",
-    "vals.ai/benchmarks/terminal-bench-4 (updated 11/11/2026) + arena.ai/leaderboard/agent (header \"Nov 13, 2026\", read 2026-11-17) + opencode.ai/docs/agents (MECH1 premise, 2026-11-17)"
+    "vals.ai/benchmarks/terminal-bench-4 (updated 11/11/2026) + arena.ai/leaderboard/agent (header \"Nov 13, 2026\", read 2026-11-17) + opencode.ai/docs/agents (MECH1 premise, 2026-11-17)",
+    "opencode.ai/console/go + /docs/go + /inference/go/v1/models + /inference/v1/models + /docs/zen (GLM-5.3 higher limits USD 500/1000 through 22 Nov 2026; glm-5.3-flash-free deprecated 18 Nov 2026; read 2026-11-19)"
   ],
   "haiku_5_5": {
     "released": "2026-10-07",
@@ -2925,5 +2926,57 @@
       ]
     },
     "arena_check_2026_11_17": "arena.ai/leaderboard/agent 14:26 UTC: still headed Nov 13, 2026; Hy4 still 'Preliminary' (5.67% +-1.25% at USD 0.55, 23,160 sessions) - no change"
+  },
+  "iteration_37": {
+    "scope": "GLM re-check (19 Nov 2026; Phase A report ~/model-secici-glm-check/report.md, verdict V2): the glm-5.3-flash-free deprecation (FR1 twin list) and GLM-5.3's higher-limits window. Pool table, tiers, Step 4-OC rows and tasks/mo unchanged.",
+    "glm_5_3_limits_window": {
+      "old": {
+        "monthly_usd": [
+          100,
+          200
+        ],
+        "est_requests_5h": [
+          1320,
+          2640
+        ],
+        "recorded": "2026-11-17, console + catalogue agree four readings (iteration_33)"
+      },
+      "new": {
+        "monthly_usd": [
+          500,
+          1000,
+          505
+        ],
+        "est_requests_5h": [
+          6600,
+          13200
+        ],
+        "sources": "opencode.ai/console/go (read 2026-11-19T05:19:30Z and again 05:29:30Z - all GLM rows stayed) + /inference/go/v1/models go.monthly_usage (05:20:09Z) + opencode.ai/docs/go callout"
+      },
+      "duration": "docs/go, verbatim: 'Higher usage limits apply through November 22, 2026.'",
+      "expiry": "2026-11-22",
+      "router_effect": "none while it lasts and none at expiry if the revert is to 100 (the settled value); pool keeps USD 100 and 105 tasks/mo; A1-OC carries the dated one-liner shaped like the Argon half-price precedent",
+      "action_1_dec": "re-read console + catalogue; confirm the revert value (100 expected; if 15 or other, a pool-table change for that iteration)"
+    },
+    "glm_5_3_flash_free_deprecated": {
+      "old": "live twin on /inference/v1/models, 200k/32k, 'free for a limited time' (17 Nov, benchmarks 17.7)",
+      "new": "deprecated 2026-11-18; absent from the live endpoint (89 models, read 05:21:16Z; deepseek-v4.1-flash-free still present) and from docs/zen's free list; docs/zen deprecation table row 'GLM-5.3-Flash Free | November 18, 2026'",
+      "dissent": "models.dev opencode provider still lists it - stale snapshot (also lists deprecated glm-4.6/4.7/5)",
+      "edits": "FR1 twin list (SKILL.md + policy rule_blocks + TR mirror); policy free_lane.twins entry removed, twins_note extended"
+    },
+    "unchanged_2026_11_19": "GLM-5.3-Flash paid row (6,320/18,900; USD 60/180), GLM-5.2 (792; USD 60/180, efforts high/max), variants low/high/max, prices (1.40/4.40/0.26 and 0.15/0.50/0.03), 0-day privacy, text-only GLM-5.3; no new or removed GLM on Go (console, catalogue, models.dev); deepseek-v4.1-flash-free still free and listed",
+    "unverified": [
+      "GLM-5.3-Flash video input: catalogue + live endpoint + models.dev list video modalities (mp4/matroska/quicktime) today; the pool note says 'text + image'; whether video was listed on 17 Nov is not recorded - whether-changed UNVERIFIED; no router rule names video, no effect either way",
+      "Out of GLM scope, single source: docs/go privacy table now says 'Gemini 4 Argon | 55 days' (17 Nov record: 0 days, Argon included, benchmarks 17.1); GM1-relevant if confirmed - flag for its own iteration"
+    ],
+    "out_of_scope_page_changes": "Go table adds Beam Free, Iceman Contributor Free, LongCat-2.0, Hy3, Step 5 Preview, GPT-5.6 Luna (never-selected/unmeasured lane); changelog 18 Nov (v2.3.2/v2.3.1) has no GLM or Go-limits entry; opencode.ai/blog does not exist (404)",
+    "router_effect_glm_note": "ITEM 4 correction (same day): the dated x5 note stays in benchmarks 21 + this record only, out of the rules; the A1-OC one-liner first added was removed. GLM-5.3 limits window otherwise unchanged.",
+    "gemini_4_argon_retention_55d": {
+      "old": "0 days (Go privacy table, read 2026-11-17, benchmarks 14.2/17.1: Not used / 0 days)",
+      "new": "55 days, not trained on (Go route opencode-go/gemini-4-argon; no Contributor route exists)",
+      "sources": "opencode.ai/docs/go privacy table, verbatim row + footnote (read 2026-11-19T05:46Z): \"Gemini 4 Argon | 55 days\" / \"Requests are retained for up to 55 days for abuse monitoring in accordance with Google's Gemini API Terms.\"; opencode.ai/docs/zen Privacy section (read 2026-11-19T05:49Z): \"Google APIs: Requests are retained for up to 55 days for abuse monitoring in accordance with Google's Gemini API Terms.\" (Argon Zen endpoint = /inference/google/v1beta/models/gemini-4-argon); machine confirmation: /inference/go/v1/models go block (05:47:36Z) reads training:false, zdr:false; models.dev has no retention field",
+      "training": false,
+      "policy_change": "iteration-37 continued: confidential default eliminates Argon like the 30-day models; only Rule NC1 returns it (GM1, NC1, A1-OC, Step 1 gate, Step 7 rules 9/11, pool row 17, badge cells, 15 goldens re-derived). benchmarks 22."
+    }
   }
 }

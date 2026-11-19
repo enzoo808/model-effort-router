@@ -1,0 +1,4 @@
+Claude: Opus 5.5 · effort: xhigh
+OpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Environment-dependent reproduce-and-fix is D=3, but Hy4 has no rung-labelled row to compare, so efficiency decides (USD 1.03 vs Opus 5.5 xhigh's 3.46 per AA task); low-confidence.
+⚡ Claude /fast available (2.5x faster, 2× price).
