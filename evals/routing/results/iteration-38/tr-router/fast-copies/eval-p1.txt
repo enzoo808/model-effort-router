@@ -1,0 +1,4 @@
+MODEL: claude-sonnet-5-5
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 GLM-5.3 · effort: max
+Evidence: After the failed OpenCode attempt GLM-5.3 takes #2 (A1-OC, about 1% of the monthly allowance per real agent task), and the badge stays on OpenCode because agentic-code has no Claude cell: Hy4's rows carry no rung label, so efficiency decides at USD 1.03 per AA task vs Sonnet 5.5 high's 1.64; low-confidence.

@@ -1,0 +1,4 @@
+MODEL: claude-sonnet-5-5
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: medium
+OpenCode: use Claude — the run needs fresh Claude Sonnet 5.5 subagents through the Agent tool, and Go serves only Haiku 5.5.
+Evidence: The Claude-only tool gate (TG1) decides: the work itself runs on Sonnet 5.5 subagents that Go does not offer, so no open model can stand in.

@@ -1,0 +1,4 @@
+MODEL: claude-sonnet-5-5
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+OpenCode: use Claude — Go serves Claude Haiku 5.5 only, so no Sonnet 5.5 subagent can start.
+Evidence: The work needs Claude-only means (TG1): OpenCode declines, Claude takes the badge.

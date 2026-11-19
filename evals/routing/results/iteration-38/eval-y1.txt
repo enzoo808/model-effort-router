@@ -1,0 +1,4 @@
+MODEL: claude-sonnet-5-5
+Claude: Sonnet 5.5 · effort: low
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: low · #2 MiMo-V2.6-Flash · effort: default
+Evidence: A single-source lookup is D=0, so OpenCode runs it; factual recall drops DeepSeek (64.1% hallucination), leaving GLM-5.3-Flash (38.3%) and MiMo-V2.6-Flash on USD 60 caps.

@@ -1,0 +1,4 @@
+MODEL: claude-sonnet-5-5
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Port, tests, CI, README and CHANGELOG are one implementation phase (no ultracode); mid-difficulty feature work stays on OpenCode (SM1), Hy4's rows carry no rung label so efficiency decides; low-confidence.

@@ -1,0 +1,4 @@
+MODEL: claude-sonnet-5-5
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Go's allowance is shared, so switching models won't help: use the Zen free twin deepseek-v4.1-flash-free, Extra Usage or the Claude line; Hy4 has no labelled rung (n/p), so efficiency decides; low-confidence.
