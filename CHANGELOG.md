@@ -4,6 +4,19 @@ Routing-policy iterations (the OpenCode Go era and the Codex era), newest first.
 
 ---
 
+## iteration-39 (19 Nov 2026): a clarity round
+
+No behaviour, model, price, limit or privacy fact changes; no rule id added, removed or renamed; no golden changed.
+
+- **`w3` (NC1 + research-synthesis, `R = 3`).** Four of four iteration-38 English runs put the badge on Claude. The pair was right every time; the `research-synthesis` badge cell named only MiMo-V2.6-Pro on AA-Omniscience v1.1, while Step 6 compares Claude with OpenCode `#1`, which under NC1 at `R = 3` is Gemini 4 Argon — v1 rows only. The cell now says so (39 words): the rival is Argon, Sonnet 5.5 32 / 47% trails Argon 42 / 15%, the cell reads OpenCode †, v1 and v1.1 never mix. The iteration-38 proposal (v1 figures appended to a v1.1 cell) was not applied as written.
+- **`p1` (A1-OC).** The rule justified its list with "a Claude cell anywhere in the badge table", which `agentic-code` and `terminal-tool` do not have (all four columns read OpenCode †). The list is now an explicit override of the table, and `Evidence:` carries no `low-confidence`. `p1` is the only eval with an OpenCode shortfall prompt; its golden stands.
+- **`c2` mirror parity.** The Turkish `agentic-code` row carried "repo gezinme", a signal SKILL.md's row lacks; removed. The Turkish `/fast` line and `opusplan` stay declared omissions. `c2` still fails in Turkish on both runs (class A, wording recorded in the results README, rule not edited).
+- **Omniscience, one version per comparison.** Step 4-OC orders `research-synthesis` on the frozen v1 rows (8.4 vs 7.5; GLM-5.3-Flash hallucination `n/p`); the badge reads v1.1 against a budget `#1`; NC1 at `R = 3` compares inside v1. Recorded, not acted on (evidence `iteration_39`, benchmarks §24): v1.1 would reverse the MiMo-V2.6-Pro / GLM-5.3-Flash order, and Sonnet 5.5's v1.1 "19 / 21" has no row in the evidence file.
+- **Diet.** SKILL.md 78,146 → 77,431 bytes (−715; iteration-37 was 76,788): duplicate sentences in the Principle, GM1, NC1, FR1, the D3DIAG note, Step 6's intro, the read-only `D = 3` paragraph, two Step 2 notes and the pointer list. Rule ids, output format, tables, examples and model figures stay.
+- **Checks.** Self-test 53/53; the six CI commands green. Cold run (fresh Sonnet 5.5 agents, `results/iteration-39/`): English 52/53 first pass, 53/53 after one re-run (`da1`: N); Turkish 22/24 with the declared `/fast` lines (open: `c2`, `j1`).
+
+---
+
 ## iteration-38 (19 Nov 2026): the Claude-only tool gate (TG1)
 
 One new Deciding gate; the pool table, tiers, Step 4-OC rows and `tasks/mo` are unchanged.

@@ -1,0 +1,7 @@
+MODEL: claude-sonnet-5-5
+Claude: ✅ RECOMMENDED AI · Opus 5.5 · effort: xhigh
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
+Evidence: A new algorithm from scratch is D=3 deep-reasoning with two agreeing AA rows at the rung each line runs (HLE-Diamond 64.0 vs MiMo-V2.6-Pro's 15.2, CritPt v2 67.5 vs 34.0).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
+
+⚡ Claude /fast available (2.5x faster, 2× price).

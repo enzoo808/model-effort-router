@@ -1,0 +1,6 @@
+MODEL: claude-sonnet-5-5
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: xhigh
+OpenCode: #1 MiMo-V2.6-Pro · effort: default · #2 DeepSeek V4.1 Flash · effort: max
+Evidence: A proof check is D=3 deep-reasoning read as analysis on Sonnet 5.5 xhigh, which leads on two agreeing AA rows (HLE-Diamond 44.1 vs MiMo-V2.6-Pro's 15.2, CritPt v2 57.5 vs 34.0), and publication cannot be retracted (R=3).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
+Do not apply without human review.

@@ -1,0 +1,4 @@
+MODEL: claude-sonnet-5-5
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Go's allowance is shared, so switching paid models will not get past the limit: top up with Extra Usage or run the Claude line; Hy4's rows carry no rung label (n/p), efficiency decides; low-confidence.

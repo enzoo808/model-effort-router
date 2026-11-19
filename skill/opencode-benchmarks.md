@@ -1322,3 +1322,16 @@ nothing is claimed about another provider in the same install.
 opencode.ai/inference/go/v1/models · opencode.ai/docs/go (privacy table) · models.dev/api.json
 `opencode-go` · opencode.ai/docs/agents · opencode.ai/docs/providers. Recorded in
 `skill/opencode-evidence.json` → `iteration_38`.
+
+## 24. Iteration-39 — which AA-Omniscience version each comparison reads (19 November 2026)
+
+No new fact: a clarity round. Each router comparison now names one version. Step 4-OC orders the
+pair on the frozen **v1** rows (MiMo-V2.6-Pro 8.4 vs GLM-5.3-Flash 7.5); the badge reads **v1.1**
+against a budget `#1` (Sonnet 5.5 19 / 21 vs MiMo-V2.6-Pro −4.5 / 60.2%); with NC1 at `R = 3` the
+rival is Argon, which has v1 rows only, so that comparison stays inside v1 (Sonnet 5.5 32 / 47%
+vs Argon 42 / 15%) and the cell reads OpenCode †.
+
+Recorded, not acted on: v1.1 would reverse the MiMo-V2.6-Pro / GLM-5.3-Flash order (−4.5 / 60.2%
+vs 0.7 / 38.3%), which moves the `R = 3` research-synthesis pair; and Sonnet 5.5's v1.1 "19 / 21"
+has no row in `opencode-evidence.json`. Both wait for the 1 Dec refresh. Recorded in
+`skill/opencode-evidence.json` → `iteration_39`.
