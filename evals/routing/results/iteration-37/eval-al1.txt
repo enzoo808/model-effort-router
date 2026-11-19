@@ -1,0 +1,3 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Go's paid models share one allowance, so swapping models won't clear the limit; Extra Usage or the Claude line helps; agentic-code at D=2 is low-confidence.

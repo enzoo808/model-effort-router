@@ -1,0 +1,3 @@
+Claude: ✅ RECOMMENDED AI · Mythos 5.2 · effort: high
+OpenCode: unverified — use Claude
+Evidence: Somatic-variant calling is biology-adjacent R&D, a deciding gate on both arms; with Life Sciences Verification Program access Mythos 5.2 replaces Fable 5.2, and no pool model is verified.

@@ -1,0 +1,5 @@
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: max · #2 DeepSeek V4.1 Flash · effort: max
+Evidence: Workflow wiring at D=2, R=3 is a workflow-automation cell where AutomationBench-AA has Sonnet 5.5 `high` at 59.4, but GLM-5.3-Flash (#1 here) has no rung-labelled row (n/p) and ITBench favours open models, so efficiency decides and the budget pair keeps the badge; low-confidence.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
+Do not apply without human review.

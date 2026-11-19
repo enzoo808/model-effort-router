@@ -1,0 +1,3 @@
+Claude: ✅ RECOMMENDED AI · Haiku 5.5 · effort: low
+OpenCode: unverified — use Claude
+Evidence: Driving a browser GUI is a deciding computer-use gate on OpenCode (no independent OSWorld row for any pool model); the documented click-through is D=0, so Haiku 5.5 low suffices.
