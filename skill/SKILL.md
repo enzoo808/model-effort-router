@@ -11,7 +11,7 @@ description: >-
 
 # Claude & OpenCode model / effort router
 
-<!-- routing-policy-version: iteration-37 -->
+<!-- routing-policy-version: iteration-38 -->
 
 Route the user's prompt — **do not run it**. Say which model + effort to use on
 **Claude** and on **OpenCode** (**two** models, `#1` / `#2`, each with its own
@@ -216,11 +216,16 @@ availability do not trade against efficiency.
 | **Offensive security** (same definitions) | Deciding | **"use Claude"** — the only open-model offensive evidence is vendor-reported (Z.ai's GLM-5.3 ExploitBench 54.4 vs Kimi K3 32.2, no independent row) and no pool model's safeguards are verified. No OpenCode models on the line |
 | **Biology-adjacent R&D** | Deciding | **"unverified — use Claude"**, no model |
 | **Computer-use (GUI driving)** | Deciding | **"unverified — use Claude"** — no independent OSWorld row exists for any pool model (Haiku 5.5's 72.4 is Anthropic's own, on Claude's harness) |
+| **Claude-only tool gate** (TG1) | Deciding | **"use Claude"** — Claude-only means; no models even after a shortfall |
 | Context > 500k tokens | Eliminating | **Grok 4.7 removed** |
 | Task needs **image input** | Eliminating | **GLM-5.3 removed** (text-only; only reachable through A1-OC) |
 | Task is **factual recall / research-synthesis** | Eliminating | **DeepSeek V4.1 Flash removed** — a conservative gate that stays. Same-version evidence (AA-Omniscience v1.1, 11 Nov 2026, no interval published): the served 1017 revision hallucinates 64.1% at `max` (61.2% at `high`) against MiMo-V2.6-Pro 60.2% and GLM-5.3-Flash 38.3% — high in absolute terms, a few points from the `#1`, far above the `#2`. The earlier revision's 96.5% (v1) is not this model |
 | Work is **confidential** — the default for this user (company code, data, plans) | Eliminating | **Muse Spark 1.3 Contributor removed** (trains on prompts); **Grok 4.7, GPT 6 Luna and Gemini 4 Argon removed** (30-day retention for the first two, as is Claude Haiku 5.5's; Gemini 4 Argon 55 days — docs/go, 19 Nov 2026; every other Go model is 0-day). Lifted only by Rule NC1 (Grok 4.7 stays premium — BUD1) |
 | Sub-second latency / high-volume bulk (one labelling or parsing job applied to hundreds of items — redoing such a batch included) | Deciding | **DeepSeek V4.1 Flash #1 · MiMo-V2.6-Flash #2** (NC1: **GPT 6 Luna** #2), effort `low` |
+
+<!-- rule:TG1 -->
+**TG1 · Claude-only tool gate.** Fires when the work itself must run on Claude-only means, not merely be about Claude: (a) launching, testing or comparing **on** a Claude model Go does not serve — Sonnet 5.5, Opus 5.5, Opus 4.8, Fable 5.2, Mythos 5.2 (Go serves Claude Haiku 5.5 only, 19 Nov) — e.g. fresh Claude subagents through the Agent tool or a cold eval run on them; or (b) a Claude Code-only mechanism the user names as the tool (Agent-tool fan-out, `ultracode` runs, `/ultrareview`). Writing or debugging a file *about* Claude (a SKILL.md, a prompt, an SDK integration that runs elsewhere), asking which model, or Claude as topic do **not** fire it. Then: `OpenCode: use Claude — <reason, ≤ 25 words>`, no models even after a shortfall (A1-OC); the Claude line scores normally and takes the badge.
+<!-- /rule:TG1 -->
 
 <!-- rule:NC1 -->
 **NC1 · non-confidential unlock.** Only when the user says the work is non-confidential or personal: Gemini 4 Argon returns to the pool (55-day retention is accepted), GPT 6 Luna stays in the pool (30-day retention is accepted; Grok 4.7 stays premium under BUD1 and does not return), and Muse Spark 1.3 Contributor takes `#2` on `research-synthesis` rows only (AA-Omniscience 25 vs MiMo-V2.6-Pro 8, USD 60 cap against USD 15) — except in the right-hand column, where Rule GM1 already puts Gemini 4 Argon at `#1` and the row's former `#1` stays `#2`. Never infer non-confidentiality from the prompt's tone.
@@ -767,6 +772,13 @@ Evidence: Labelling is D=0 bulk work, so OpenCode runs it: the Flash tier buys h
 DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).
 ```
 > Errand work goes to OpenCode even when Haiku 5.5 would do it.
+
+*"Cold-run our 49 router evals in batches on fresh Claude Sonnet 5.5 subagents through the Agent tool, then grade the results"*
+```
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high
+OpenCode: use Claude — Go serves Claude Haiku 5.5 only, so no Sonnet 5.5 subagent can start.
+Evidence: The work needs Claude-only means (TG1): OpenCode declines, Claude takes the badge.
+```
 
 *"Fix this code"*
 ```

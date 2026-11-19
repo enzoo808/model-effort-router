@@ -1043,7 +1043,10 @@
     "opencode.ai/inference/go/v1/models + opencode.ai/inference/v1/models + models.dev/providers/opencode-go (caps, prices, contexts, variants, release dates, multipliers, 2026-11-17)",
     "artificialanalysis.ai/models/comparisons/qwen4-max-vs-tencent-hy4, /models/{tencent-hy4,qwen4-max}, /changelog (Qwen4 Max II 43 no rung, Hy4 II 35 no rung, Argon Medium 48, DeepSeek V4 Pro 0813 High 21, 2026-11-17)",
     "vals.ai/benchmarks/terminal-bench-4 (updated 11/11/2026) + arena.ai/leaderboard/agent (header \"Nov 13, 2026\", read 2026-11-17) + opencode.ai/docs/agents (MECH1 premise, 2026-11-17)",
-    "opencode.ai/console/go + /docs/go + /inference/go/v1/models + /inference/v1/models + /docs/zen (GLM-5.3 higher limits USD 500/1000 through 22 Nov 2026; glm-5.3-flash-free deprecated 18 Nov 2026; read 2026-11-19)"
+    "opencode.ai/console/go + /docs/go + /inference/go/v1/models + /inference/v1/models + /docs/zen (GLM-5.3 higher limits USD 500/1000 through 22 Nov 2026; glm-5.3-flash-free deprecated 18 Nov 2026; read 2026-11-19)",
+    "opencode.ai/inference/go/v1/models (32 ids, read 2026-11-19)",
+    "opencode.ai/docs/agents (per-agent models, read 2026-11-19)",
+    "opencode.ai/docs/providers (model availability, read 2026-11-19)"
   ],
   "haiku_5_5": {
     "released": "2026-10-07",
@@ -2978,5 +2981,41 @@
       "training": false,
       "policy_change": "iteration-37 continued: confidential default eliminates Argon like the 30-day models; only Rule NC1 returns it (GM1, NC1, A1-OC, Step 1 gate, Step 7 rules 9/11, pool row 17, badge cells, 15 goldens re-derived). benchmarks 22."
     }
+  },
+  "iteration_38": {
+    "scope": "Tool gate fact-check (19 Nov 2026): which Claude models OpenCode Go serves, and how an OpenCode subagent gets its model. Backs rule TG1. Pool table, tiers, Step 4-OC rows and tasks/mo unchanged.",
+    "go_claude_models": {
+      "served": [
+        "claude-haiku-5-5"
+      ],
+      "not_served": [
+        "claude-sonnet-5-5",
+        "claude-opus-5-5",
+        "claude-opus-4-8",
+        "claude-fable-5-2",
+        "claude-mythos-5-2"
+      ],
+      "source_endpoint": "https://opencode.ai/inference/go/v1/models (HTTP 200, 32 model ids, read 2026-11-19)",
+      "source_docs_go": "opencode.ai/docs/go privacy table - one Claude row: 'Claude Haiku 5.5 | 30 days' (read 2026-11-19)",
+      "source_models_dev": "models.dev/api.json provider 'opencode-go' (42 models) - one claude-like key: claude-haiku-5-5 (read 2026-11-19)",
+      "note": "models.dev/providers/opencode-go.json serves SPA HTML, not JSON; api.json used instead",
+      "router_effect": "TG1 case (a): a task that must run ON a Claude model Go does not serve cannot execute on the Go arm, so the arm declines. 'fresh Claude Haiku 5.5 subagents' is NOT a gate case."
+    },
+    "subagent_model": {
+      "claim": "OpenCode addresses models as provider/model; a subagent uses its configured model or inherits the parent session's model, so it can only run on a model a configured provider serves.",
+      "quote_agents": "opencode.ai/docs/agents: 'A subagent uses its configured model, or inherits the parent session's model when none is configured.' (example: model: anthropic/claude-sonnet-5-5#high)",
+      "quote_providers": "opencode.ai/docs/providers troubleshooting: 'Model unavailable: provider/model - The provider is inactive, the model ID is absent or disabled'",
+      "scope": "Claimed for the OpenCode Go pool only; nothing asserted about another provider configured alongside Go."
+    },
+    "unverified": [
+      "Whether an install holding a Go key can reach another provider in the same session (not needed: TG1 is scoped to the Go pool)."
+    ],
+    "sources_read_2026_11_20": [
+      "opencode.ai/inference/go/v1/models",
+      "opencode.ai/docs/go",
+      "models.dev/api.json (provider opencode-go)",
+      "opencode.ai/docs/agents",
+      "opencode.ai/docs/providers"
+    ]
   }
 }

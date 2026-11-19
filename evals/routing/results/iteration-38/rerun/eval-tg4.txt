@@ -1,0 +1,5 @@
+MODEL: claude-sonnet-5-5
+Claude: Sonnet 5.5 · effort: medium
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
+Evidence: The script only calls the Anthropic API and runs on your machine later, so TG1 does not fire; D=1 standard retry pattern, so price and cap decide on the Flash tier (about USD 0.14 per real agent task, Arena 13 Nov).
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).

@@ -819,6 +819,64 @@
         "GLM-5.3 ·"
       ],
       "golden_output": "Claude: Opus 5.5 · effort: xhigh\nOpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: max · #2 DeepSeek V4.1 Flash · effort: max\nEvidence: Designing and wiring a two-system sync with conflicting counts is workflow-automation at D=3; GLM-5.3-Flash carries no labelled rung (n/p), so efficiency decides; low-confidence.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).\n⚡ Claude /fast available (2.5x faster, 2× price)."
+    },
+    {
+      "id": "tg1",
+      "eval_name": "Claude-only tool gate: a cold eval run on fresh Claude Sonnet 5.5 subagents",
+      "prompt": "Cold-run our 49 router evals in batches on fresh Claude Sonnet 5.5 subagents through the Agent tool, then grade the results",
+      "expected_claude": "Sonnet 5.5 · effort: high",
+      "expected_opencode": "use Claude",
+      "expected_recommended": "claude",
+      "expected_low_confidence": false,
+      "tests_rule": "TG1 (iteration-38), case (a): the work itself must run on fresh Claude Sonnet 5.5 subagents through the Agent tool, a model Go does not serve (the Go models endpoint returns only claude-haiku-5-5; docs/go's privacy table and models.dev agree), so the OpenCode arm declines with no models even after a shortfall (A1-OC); the Claude line is scored normally (D=2, one graded batch job) and takes the badge under Step 6 order 1.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: use Claude — Go serves Claude Haiku 5.5 only, so no Sonnet 5.5 subagent can start.\nEvidence: The work needs Claude-only means (TG1): OpenCode declines, Claude takes the badge.",
+      "expected_notes": []
+    },
+    {
+      "id": "tg2",
+      "eval_name": "Claude-only tool gate, Turkish prompt: the same cold run on fresh Sonnet 5.5 subagents",
+      "prompt": "49 router evalimizi taze Claude Sonnet 5.5 alt ajanlarında Agent aracıyla parti parti soğuk çalıştır, sonra sonuçları puanla",
+      "expected_claude": "Sonnet 5.5 · effort: high",
+      "expected_opencode": "use Claude",
+      "expected_recommended": "claude",
+      "expected_low_confidence": false,
+      "tests_rule": "TG1 (iteration-38), Turkish wording of tg1: fresh Claude Sonnet 5.5 subagents through the Agent tool are the means, not the topic; Go serves no Sonnet 5.5, so the OpenCode arm declines (no models, even after a shortfall, A1-OC) and Claude takes the badge.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: use Claude — Go serves Claude Haiku 5.5 only, so no Sonnet 5.5 subagent can start.\nEvidence: The work needs Claude-only means (TG1): OpenCode declines, Claude takes the badge.",
+      "expected_notes": []
+    },
+    {
+      "id": "tg3",
+      "eval_name": "TG1 counter-case: writing a SKILL.md about Claude is a topic, not Claude-only means",
+      "prompt": "Write the SKILL.md for a Claude Code skill that audits pull requests — I only need the file, nothing has to run on Claude",
+      "expected_claude": "Sonnet 5.5 · effort: medium",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low",
+      "expected_recommended": "opencode",
+      "expected_low_confidence": false,
+      "tests_rule": "TG1 counter-case (iteration-38): writing a file about Claude never fires the gate — the means are a text editor, so both arms score; one skill file is a simple draft (Step 3 D=1: no multi-source synthesis, and when in doubt round down), knowledge-work, so H1 rules Haiku 5.5 out and Sonnet 5.5 runs at `medium`; at D=1 price and cap decide → DeepSeek V4.1 Flash #1 and GLM-5.3-Flash #2 at `low`, the badge stays on OpenCode; DeepSeek auto-line. Golden corrected after the iteration-38 cold run (it had been derived at D=2).",
+      "golden_output": "Claude: Sonnet 5.5 · effort: medium\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low\nEvidence: A finished skill file is knowledge-work, so Haiku 5.5 is out; at D=1 price and cap decide, and Sonnet 5.5 (USD 2/USD 10) loses to the Flash tier on USD 60–100 caps at USD 0.14 and 0.16 per real agent task (Arena, 10 Nov); the file is about Claude but nothing runs on it, so TG1 stays quiet.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).",
+      "expected_notes": [
+        "peak hours cost 2×"
+      ],
+      "forbidden": [
+        "use Claude"
+      ]
+    },
+    {
+      "id": "tg4",
+      "eval_name": "TG1 counter-case: an Anthropic SDK script that runs elsewhere is a topic, not Claude-only means",
+      "prompt": "Build a Python script that calls the Anthropic API with a Claude model and retries on 429 — I'll run it on my own machine later",
+      "expected_claude": "Sonnet 5.5 · effort: medium",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low",
+      "expected_recommended": "opencode",
+      "expected_low_confidence": false,
+      "tests_rule": "TG1 counter-case (iteration-38): the SDK integration runs on the user's machine, so Claude is only what the code talks to; a single-file script with a retry on 429 is one standard pattern with one reasonable approach — agentic-code at D=1 (Step 3 note: one reasonable approach is D=1), so H1 rules Haiku 5.5 out for the agentic-code tag and Sonnet 5.5 runs at `medium`; at D=1 price and cap decide → DeepSeek V4.1 Flash #1 and GLM-5.3-Flash #2 at `low`, the badge stays on OpenCode; DeepSeek auto-line. Golden corrected after the iteration-38 cold run (it had been derived at D=2).",
+      "golden_output": "Claude: Sonnet 5.5 · effort: medium\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low\nEvidence: A single-file retry script is one standard pattern at D=1, so price and cap decide on the Flash tier (USD 0.14 per real agent task, Arena 13 Nov); the Anthropic call runs on your own machine, so TG1 stays quiet.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).",
+      "expected_notes": [
+        "peak hours cost 2×"
+      ],
+      "forbidden": [
+        "use Claude"
+      ]
     }
   ]
 }

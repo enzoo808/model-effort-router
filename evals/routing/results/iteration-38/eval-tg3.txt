@@ -1,0 +1,5 @@
+MODEL: claude-sonnet-5-5
+Claude: Sonnet 5.5 · effort: medium
+OpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: low · #2 GLM-5.3-Flash · effort: low
+Evidence: D=1 drafting: price and cap decide, so the Flash tier takes it; the file is about Claude but nothing must run on Claude, so TG1 stays quiet.
+DeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).

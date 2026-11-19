@@ -1,0 +1,4 @@
+MODEL: claude-sonnet-5-5
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: medium
+OpenCode: unverified — use Claude
+Evidence: Driving a browser GUI is computer-use, a deciding gate where no pool model has a published OSWorld row, so OpenCode declines and Sonnet 5.5 takes the routine D=1 flow (Haiku 5.5 sits well below it on OSWorld).

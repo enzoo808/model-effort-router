@@ -1,0 +1,4 @@
+MODEL: claude-sonnet-5-5
+Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: medium
+OpenCode: unverified — use Claude
+Evidence: Driving a browser GUI is a deciding gate on the OpenCode arm — no independent OSWorld row exists for any pool model — so Claude takes the badge at its D=1 rung.

@@ -1,0 +1,328 @@
+{
+  "results": [
+    {
+      "id": "a1",
+      "eval_name": "Bulk classification (errand work: OpenCode by default even though Haiku 5.5 would do it)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-a1.txt"
+    },
+    {
+      "id": "s0a",
+      "eval_name": "Blocked: vague bug report",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-s0a.txt"
+    },
+    {
+      "id": "a2",
+      "eval_name": "Short summary (D=1 reading work): Haiku 5.5 at medium on Claude, OpenCode by default",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-a2.txt"
+    },
+    {
+      "id": "a3",
+      "eval_name": "Short status memo (D=1 knowledge-work): H1 excludes Haiku, Sonnet 5.5 at medium; D<=1 -> OpenCode",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-a3.txt"
+    },
+    {
+      "id": "a4",
+      "eval_name": "First-token-bound reply (latency-volume): OpenCode keeps the badge",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-a4.txt"
+    },
+    {
+      "id": "a5",
+      "eval_name": "Escalation after a Haiku shortfall (H2): Sonnet 5.5, OpenCode unchanged",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-a5.txt"
+    },
+    {
+      "id": "s0b",
+      "eval_name": "Blocked: ambiguous delete rule",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-s0b.txt"
+    },
+    {
+      "id": "b1",
+      "eval_name": "Refactor across 40 files (agentic-code, D=2, R=1): Claude's lead sits at D=3 -> OpenCode",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-b1.txt"
+    },
+    {
+      "id": "b2",
+      "eval_name": "Mid-difficulty feature build (agentic-code, D=2): DeepSeek V4.1 Flash at max",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-b2.txt"
+    },
+    {
+      "id": "c1",
+      "eval_name": "Three-phase environment build (orchestration mechanism)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-c1.txt"
+    },
+    {
+      "id": "c2",
+      "eval_name": "Hours-long diagnosis across 180 services (ultracode at the xhigh ceiling)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-c2.txt"
+    },
+    {
+      "id": "c3",
+      "eval_name": "150-service crypto-library migration before a deadline (W=3 x D=2 keeps ultracode; at R=3 the rung-matched row leans to Argon)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-c3.txt"
+    },
+    {
+      "id": "o2",
+      "eval_name": "One implementation loop with CI and docs at the end (O1 does not count them): no ultracode, OpenCode badge",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=high; OpenCode: #1 Hy4 high, #2 MiMo-V2.6-Pro default; recommended=opencode (correct); evidence ok"
+    },
+    {
+      "id": "o3",
+      "eval_name": "Three workloads that feed each other (implementation, backfill, checksum check on migrated data): ultracode and the MECH1 badge stay",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-o3.txt"
+    },
+    {
+      "id": "d1",
+      "eval_name": "Adversarial debugging (D3DIAG; deep-reasoning direction beats terminal efficiency row)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-d1.txt"
+    },
+    {
+      "id": "e1",
+      "eval_name": "400 pages into one memo (knowledge-work at D=2 falls to efficiency: OpenCode dagger)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-e1.txt"
+    },
+    {
+      "id": "f1",
+      "eval_name": "Non-confidential deck (NC1 does NOT unlock Grok 4.7: premium, BUD1)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-f1.txt"
+    },
+    {
+      "id": "g1",
+      "eval_name": "Irreversible central boundary (M1, R=3)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-g1.txt"
+    },
+    {
+      "id": "h1",
+      "eval_name": "One-line prod config (R=3 by blast radius, D=0)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-h1.txt"
+    },
+    {
+      "id": "i1",
+      "eval_name": "Offensive security gate",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-i1.txt"
+    },
+    {
+      "id": "j1",
+      "eval_name": "Front-loaded architecture (opusplan)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-j1.txt"
+    },
+    {
+      "id": "k1",
+      "eval_name": "Biology-adjacent gate",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-k1.txt"
+    },
+    {
+      "id": "k2",
+      "eval_name": "Biology-adjacent gate with stated access (Life Sciences Verification Program): Mythos 5.2",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-k2.txt"
+    },
+    {
+      "id": "l1",
+      "eval_name": "GUI driving (computer-use gate)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-l1.txt"
+    },
+    {
+      "id": "m1",
+      "eval_name": "Workflow wiring (workflow-automation row, Flash pair, dagger)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-m1.txt"
+    },
+    {
+      "id": "n1",
+      "eval_name": "Domain audit (science row, no dagger since iteration-31)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-n1.txt"
+    },
+    {
+      "id": "o1",
+      "eval_name": "Shallow long-context list (D=1, C=3)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-o1.txt"
+    },
+    {
+      "id": "p1",
+      "eval_name": "Escalation after an OpenCode shortfall (A1-OC: Gemini 4 Argon #2, badge to Claude)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-p1.txt"
+    },
+    {
+      "id": "q1",
+      "eval_name": "Bulk classification, stated non-confidential (NC1 unlocks Luna; OpenCode badge)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-q1.txt"
+    },
+    {
+      "id": "r1",
+      "eval_name": "Scanned receipts (image input, doc-data-understanding)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-r1.txt"
+    },
+    {
+      "id": "t1",
+      "eval_name": "New algorithm from scratch (deep-reasoning, D=3, R<=2)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-t1.txt"
+    },
+    {
+      "id": "u1",
+      "eval_name": "Confidential memo (default confidentiality removes Grok/Luna/Muse)",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-u1.txt"
+    },
+    {
+      "id": "sc1",
+      "eval_name": "Science at D=3 (SM1 D=3 limb gains science, iteration-31): Opus 5.5, Claude badge, no Gemini",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-sc1.txt"
+    },
+    {
+      "id": "dr1",
+      "eval_name": "D=3 analysis at R=3 (iteration-31): a proof check stays Sonnet 5.5 xhigh, the rows split against Argon -> OpenCode dagger",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-dr1.txt"
+    },
+    {
+      "id": "da1",
+      "eval_name": "D=3 analysis on a flagship tag (iteration-31): the line stays Sonnet 5.5 xhigh, and against Argon the rows split -> OpenCode dagger",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-da1.txt"
+    },
+    {
+      "id": "dg1",
+      "eval_name": "Read-only D=3 diagnosis (iteration-34 counter-eval to c2): reasoning from code and log alone is analysis, so the line stays Sonnet 5.5 xhigh and the badge is the OpenCode dagger",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-dg1.txt"
+    },
+    {
+      "id": "kw1",
+      "eval_name": "Knowledge-work at D=2, R=3 (iteration-31): a single rung-matched lean keeps Claude, with a dagger",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-kw1.txt"
+    },
+    {
+      "id": "v1",
+      "eval_name": "Env-dependent build failure at depth (terminal-tool, D=3, R<=2): Claude, Argon first (GM1), Hy4 second",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-v1.txt"
+    },
+    {
+      "id": "x1",
+      "eval_name": "Research reconciliation (research-synthesis, D=2): DeepSeek gated out",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-x1.txt"
+    },
+    {
+      "id": "y1",
+      "eval_name": "Single-fact lookup (D=0 research-synthesis): H1 excludes it from Haiku; DeepSeek gated out of the Flash pair",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-y1.txt"
+    },
+    {
+      "id": "z1",
+      "eval_name": "Irreversible regulatory read (research-synthesis, D=2, R=3): Argon #1, badge OpenCode",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-z1.txt"
+    },
+    {
+      "id": "w1",
+      "eval_name": "Workflow wiring at R=3 (workflow-automation, D=2, R=3): confidential default, OpenCode badge with dagger",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-w1.txt"
+    },
+    {
+      "id": "w2",
+      "eval_name": "Non-confidential new algorithm (GM1): Gemini 4 Argon #1 - the non-confidential statement returns it",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-w2.txt"
+    },
+    {
+      "id": "w3",
+      "eval_name": "Non-confidential research at R=3 (research-synthesis): differs from confidential z1 (the NC1 statement returns Argon)",
+      "passed": false,
+      "evidence": "badge is on 'claude', expected 'opencode'"
+    },
+    {
+      "id": "w4",
+      "eval_name": "Go allowance used up (CAP1 + FR1): switching paid models does not help; the Zen free twin is named in Evidence, never as a pick",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-w4.txt"
+    },
+    {
+      "id": "fa1",
+      "eval_name": "Frontier rung after a stated Opus 5.5 shortfall (A1): Fable 5.2, with the Fable /fast line",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-fa1.txt"
+    },
+    {
+      "id": "ter1",
+      "eval_name": "Bounded CI diagnosis (terminal-tool, D=2): the iteration-32 pair and the dagger cell",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-ter1.txt"
+    },
+    {
+      "id": "al1",
+      "eval_name": "Go allowance nearly used up (CAP1): the pair stays, Evidence says the allowance is shared and names what helps",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-al1.txt"
+    },
+    {
+      "id": "ar1",
+      "eval_name": "Workflow design from scratch at D=3 (GM1 + PO1 right column): Argon #1, GLM-5.3-Flash #2, Argon spend line",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-ar1.txt"
+    },
+    {
+      "id": "tg1",
+      "eval_name": "Claude-only tool gate: a cold eval run on fresh Claude Sonnet 5.5 subagents",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-tg1.txt"
+    },
+    {
+      "id": "tg2",
+      "eval_name": "Claude-only tool gate, Turkish prompt: the same cold run on fresh Sonnet 5.5 subagents",
+      "passed": null,
+      "evidence": "output file not found: evals\\routing\\results\\iteration-38\\rerun\\eval-tg2.txt"
+    },
+    {
+      "id": "tg3",
+      "eval_name": "TG1 counter-case: writing a SKILL.md about Claude is a topic, not Claude-only means",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=medium; OpenCode: #1 DeepSeek V4.1 Flash low, #2 GLM-5.3-Flash low; recommended=opencode (correct); evidence ok; notes ok (peak hours cost 2×)"
+    },
+    {
+      "id": "tg4",
+      "eval_name": "TG1 counter-case: an Anthropic SDK script that runs elsewhere is a topic, not Claude-only means",
+      "passed": true,
+      "evidence": "Claude: Sonnet 5.5 correct, effort=medium; OpenCode: #1 DeepSeek V4.1 Flash low, #2 GLM-5.3-Flash low; recommended=opencode (correct); evidence ok; notes ok (peak hours cost 2×)"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 1,
+    "skipped": 49,
+    "total": 53
+  }
+}

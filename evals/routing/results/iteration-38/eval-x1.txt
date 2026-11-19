@@ -1,0 +1,4 @@
+MODEL: claude-sonnet-5-5
+Claude: Sonnet 5.5 · effort: high
+OpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default
+Evidence: Multi-source synthesis is D=2 research-synthesis; GLM-5.3-Flash has no labelled AA-Omniscience rung (n/p), so efficiency decides and SM1 keeps it on OpenCode; low-confidence.

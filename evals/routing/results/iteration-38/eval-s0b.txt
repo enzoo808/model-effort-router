@@ -1,0 +1,2 @@
+MODEL: claude-sonnet-5-5
+Clarify: what counts as inactive — an is_active flag, or no login for how many days — and should the users be hard-deleted or soft-deleted?
