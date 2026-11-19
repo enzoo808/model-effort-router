@@ -819,6 +819,62 @@
         "GLM-5.3 ·"
       ],
       "golden_output": "Claude: Opus 5.5 · effort: xhigh\nOpenCode: ✅ RECOMMENDED AI · #1 GLM-5.3-Flash · effort: max · #2 DeepSeek V4.1 Flash · effort: max\nEvidence: Designing and wiring a two-system sync with conflicting counts is workflow-automation at D=3; GLM-5.3-Flash carries no labelled rung (n/p), so efficiency decides; low-confidence.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).\n⚡ Claude /fast available (2.5x faster, 2× price)."
+    },
+    {
+      "id": "tg1",
+      "eval_name": "Claude-only tool gate: a cold eval run on fresh Claude Sonnet 5.5 subagents",
+      "prompt": "Cold-run our 49 router evals in batches on fresh Claude Sonnet 5.5 subagents through the Agent tool, then grade the results",
+      "expected_claude": "Sonnet 5.5 · effort: high",
+      "expected_opencode": "use Claude",
+      "expected_recommended": "claude",
+      "expected_low_confidence": false,
+      "tests_rule": "TG1 (iteration-38), case (a): the work itself must run on fresh Claude Sonnet 5.5 subagents through the Agent tool, a model Go does not serve (the Go models endpoint returns only claude-haiku-5-5; docs/go's privacy table and models.dev agree), so the OpenCode arm declines with no models even after a shortfall (A1-OC); the Claude line is scored normally (D=2, one graded batch job) and takes the badge under Step 6 order 1.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: use Claude — Go serves Claude Haiku 5.5 only, so no Sonnet 5.5 subagent can start.\nEvidence: The work needs Claude-only means (TG1): OpenCode declines, Claude takes the badge.",
+      "expected_notes": []
+    },
+    {
+      "id": "tg2",
+      "eval_name": "Claude-only tool gate, Turkish prompt: the same cold run on fresh Sonnet 5.5 subagents",
+      "prompt": "49 router evalimizi taze Claude Sonnet 5.5 alt ajanlarında Agent aracıyla parti parti soğuk çalıştır, sonra sonuçları puanla",
+      "expected_claude": "Sonnet 5.5 · effort: high",
+      "expected_opencode": "use Claude",
+      "expected_recommended": "claude",
+      "expected_low_confidence": false,
+      "tests_rule": "TG1 (iteration-38), Turkish wording of tg1: fresh Claude Sonnet 5.5 subagents through the Agent tool are the means, not the topic; Go serves no Sonnet 5.5, so the OpenCode arm declines (no models, even after a shortfall, A1-OC) and Claude takes the badge.",
+      "golden_output": "Claude: ✅ RECOMMENDED AI · Sonnet 5.5 · effort: high\nOpenCode: use Claude — Go serves Claude Haiku 5.5 only, so no Sonnet 5.5 subagent can start.\nEvidence: The work needs Claude-only means (TG1): OpenCode declines, Claude takes the badge.",
+      "expected_notes": []
+    },
+    {
+      "id": "tg3",
+      "eval_name": "TG1 counter-case: writing a SKILL.md about Claude is a topic, not Claude-only means",
+      "prompt": "Write the SKILL.md for a Claude Code skill that audits pull requests — I only need the file, nothing has to run on Claude",
+      "expected_claude": "Sonnet 5.5 · effort: high",
+      "expected_opencode": "#1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default",
+      "expected_recommended": "opencode",
+      "expected_low_confidence": true,
+      "tests_rule": "TG1 counter-case (iteration-38): writing a file about Claude never fires the gate — the means are a text editor, so both arms score; a finished skill file is knowledge-work at D=2, R≤2 → the row's DeepSeek V4.1 Flash #1 at `max` (E7) and MiMo-V2.6-Pro #2, and SM1 keeps the badge on OpenCode with a dagger (low-confidence); DeepSeek auto-line.",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 DeepSeek V4.1 Flash · effort: max · #2 MiMo-V2.6-Pro · effort: default\nEvidence: Writing the file is knowledge-work, where only AA-Briefcase is published at the rung the line runs (Sonnet 5.5 high 1634 vs DeepSeek 1017's 1570); GDPval-AA has no high row — one measurement, so efficiency decides; low-confidence.\nDeepSeek V4.1 Flash: peak hours cost 2× (04–07 and 09–13 TR time, Mon–Fri); zero-retention agreement is renewed monthly (valid through 30 Nov 2026).",
+      "expected_notes": [
+        "peak hours cost 2×"
+      ],
+      "forbidden": [
+        "use Claude"
+      ]
+    },
+    {
+      "id": "tg4",
+      "eval_name": "TG1 counter-case: an Anthropic SDK script that runs elsewhere is a topic, not Claude-only means",
+      "prompt": "Build a Python script that calls the Anthropic API with a Claude model and retries on 429 — I'll run it on my own machine later",
+      "expected_claude": "Sonnet 5.5 · effort: high",
+      "expected_opencode": "#1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default",
+      "expected_recommended": "opencode",
+      "expected_low_confidence": true,
+      "tests_rule": "TG1 counter-case (iteration-38): the SDK integration runs on the user's machine, so Claude is only what the code talks to; a self-contained script with retry logic is agentic-code at D=2 → Hy4 #1 at `high` and MiMo-V2.6-Pro #2, and SM1 keeps the badge on OpenCode; Hy4's rows are rung-n/p, so the badge cell falls to efficiency (dagger, low-confidence).",
+      "golden_output": "Claude: Sonnet 5.5 · effort: high\nOpenCode: ✅ RECOMMENDED AI · #1 Hy4 · effort: high · #2 MiMo-V2.6-Pro · effort: default\nEvidence: The script is mid-difficulty code that stays on OpenCode (SM1): Hy4's rows carry no rung label (`n/p` at the rung the line writes), so efficiency decides at USD 1.03 per AA task against Sonnet 5.5 `high`'s 1.64; low-confidence.",
+      "expected_notes": [],
+      "forbidden": [
+        "use Claude"
+      ]
     }
   ]
 }
