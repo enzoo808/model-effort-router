@@ -1293,9 +1293,9 @@ models.dev/api.json `opencode-go`. Recorded in `skill/opencode-evidence.json` �
 
 ---
 
-## 23. Iteration-38 — the tool gate: the Claude models Go serves (20 November 2026)
+## 23. Iteration-38 — the tool gate: the Claude models Go serves (19 November 2026)
 
-Read once each, 20 Nov 2026: the Go models endpoint, opencode.ai/docs/go, models.dev/api.json,
+Read once each, 19 Nov 2026: the Go models endpoint, opencode.ai/docs/go, models.dev/api.json,
 opencode.ai/docs/agents, opencode.ai/docs/providers. Two facts, both for the new TG1 gate.
 
 ### 23.1 Go serves one Claude model: Claude Haiku 5.5
@@ -1317,7 +1317,7 @@ disabled". A model is reachable only through a provider that serves it, so on th
 no subagent starts on a Claude model Go does not serve. Recorded for **the Go pool only** —
 nothing is claimed about another provider in the same install.
 
-### 23.3 Sources (20 Nov 2026)
+### 23.3 Sources (19 Nov 2026)
 
 opencode.ai/inference/go/v1/models · opencode.ai/docs/go (privacy table) · models.dev/api.json
 `opencode-go` · opencode.ai/docs/agents · opencode.ai/docs/providers. Recorded in

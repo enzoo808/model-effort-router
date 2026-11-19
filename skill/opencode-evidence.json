@@ -1044,9 +1044,9 @@
     "artificialanalysis.ai/models/comparisons/qwen4-max-vs-tencent-hy4, /models/{tencent-hy4,qwen4-max}, /changelog (Qwen4 Max II 43 no rung, Hy4 II 35 no rung, Argon Medium 48, DeepSeek V4 Pro 0813 High 21, 2026-11-17)",
     "vals.ai/benchmarks/terminal-bench-4 (updated 11/11/2026) + arena.ai/leaderboard/agent (header \"Nov 13, 2026\", read 2026-11-17) + opencode.ai/docs/agents (MECH1 premise, 2026-11-17)",
     "opencode.ai/console/go + /docs/go + /inference/go/v1/models + /inference/v1/models + /docs/zen (GLM-5.3 higher limits USD 500/1000 through 22 Nov 2026; glm-5.3-flash-free deprecated 18 Nov 2026; read 2026-11-19)",
-    "opencode.ai/inference/go/v1/models (32 ids, read 2026-11-20)",
-    "opencode.ai/docs/agents (per-agent models, read 2026-11-20)",
-    "opencode.ai/docs/providers (model availability, read 2026-11-20)"
+    "opencode.ai/inference/go/v1/models (32 ids, read 2026-11-19)",
+    "opencode.ai/docs/agents (per-agent models, read 2026-11-19)",
+    "opencode.ai/docs/providers (model availability, read 2026-11-19)"
   ],
   "haiku_5_5": {
     "released": "2026-10-07",
@@ -2983,7 +2983,7 @@
     }
   },
   "iteration_38": {
-    "scope": "Tool gate fact-check (20 Nov 2026): which Claude models OpenCode Go serves, and how an OpenCode subagent gets its model. Backs rule TG1. Pool table, tiers, Step 4-OC rows and tasks/mo unchanged.",
+    "scope": "Tool gate fact-check (19 Nov 2026): which Claude models OpenCode Go serves, and how an OpenCode subagent gets its model. Backs rule TG1. Pool table, tiers, Step 4-OC rows and tasks/mo unchanged.",
     "go_claude_models": {
       "served": [
         "claude-haiku-5-5"
@@ -2995,9 +2995,9 @@
         "claude-fable-5-2",
         "claude-mythos-5-2"
       ],
-      "source_endpoint": "https://opencode.ai/inference/go/v1/models (HTTP 200, 32 model ids, read 2026-11-20)",
-      "source_docs_go": "opencode.ai/docs/go privacy table - one Claude row: 'Claude Haiku 5.5 | 30 days' (read 2026-11-20)",
-      "source_models_dev": "models.dev/api.json provider 'opencode-go' (42 models) - one claude-like key: claude-haiku-5-5 (read 2026-11-20)",
+      "source_endpoint": "https://opencode.ai/inference/go/v1/models (HTTP 200, 32 model ids, read 2026-11-19)",
+      "source_docs_go": "opencode.ai/docs/go privacy table - one Claude row: 'Claude Haiku 5.5 | 30 days' (read 2026-11-19)",
+      "source_models_dev": "models.dev/api.json provider 'opencode-go' (42 models) - one claude-like key: claude-haiku-5-5 (read 2026-11-19)",
       "note": "models.dev/providers/opencode-go.json serves SPA HTML, not JSON; api.json used instead",
       "router_effect": "TG1 case (a): a task that must run ON a Claude model Go does not serve cannot execute on the Go arm, so the arm declines. 'fresh Claude Haiku 5.5 subagents' is NOT a gate case."
     },

@@ -1,4 +1,4 @@
-# iteration-38 cold run (20 Nov 2026)
+# iteration-38 cold run (19 Nov 2026)
 
 Full 53-eval regression set after the iteration-38 change (TG1, the Claude-only tool gate; four new evals `tg1`-`tg4`),
 plus the 24-id Turkish mirror pass. Graded by `evals/routing/grade_routing.py` (regex, no LLM). Branch `iteration-38-tool-gate`
