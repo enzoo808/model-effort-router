@@ -4,6 +4,18 @@ Routing-policy iterations (the OpenCode Go era and the Codex era), newest first.
 
 ---
 
+## iteration-38 (20 Nov 2026): the Claude-only tool gate (TG1)
+
+One new Deciding gate; the pool table, tiers, Step 4-OC rows and `tasks/mo` are unchanged.
+
+- **TG1, the Claude-only tool gate.** The router scored reasoning difficulty only, so a task whose work itself must run on a Claude model Go does not serve could get an OpenCode recommendation that cannot be executed. TG1 fires when the *means* of the work, not its topic, is Claude-only: (a) launching, testing or comparing **on** Sonnet 5.5, Opus 5.5, Opus 4.8, Fable 5.2 or Mythos 5.2 — fresh Claude subagents through the Agent tool, a cold eval run on them; or (b) a Claude Code-only mechanism the user names as the tool (Agent-tool fan-out, `ultracode` runs, `/ultrareview`). Writing or debugging a file *about* Claude (a SKILL.md, a prompt, an SDK integration that runs elsewhere), asking which model, and Claude as topic do not fire it; "fresh Claude Haiku 5.5 subagents" does not either, because Go serves it. Effect: one Deciding row in Step 1's OpenCode table next to offensive security and computer-use — `OpenCode: use Claude — <reason, ≤ 25 words>`, no models even after a shortfall (A1-OC); the Claude line scores normally and takes the badge (Step 6 order 1). Scoped to the OpenCode Go pool; nothing claimed about other providers. One worked example (the cold-run case) added; `routing_policy.json` (rule block, Deciding row) and `claude-ai/instructions.tr.md` follow.
+- **Facts (benchmarks §23, evidence `iteration_38`).** `/inference/go/v1/models` (32 ids), docs/go's privacy table and models.dev's `opencode-go` (42 models) agree: Go serves exactly one Claude model, `claude-haiku-5-5`. docs/agents ("A subagent uses its configured model, or inherits the parent session's model when none is configured"; the `model` field is `provider/model`) and docs/providers' troubleshooting ("Model unavailable: provider/model — the provider is inactive, the model ID is absent or disabled") agree: a subagent can run only on a model a configured provider serves. UNVERIFIED, kept out of the rule: whether one install holding a Go key can also reach another provider's models in the same session.
+- **Evals.** Four added: `tg1`/`tg2` (EN/TR positives, the cold-run case), `tg3` (writing a SKILL.md *about* Claude — the normal pair, DeepSeek V4.1 Flash #1 · MiMo-V2.6-Pro #2), `tg4` (an Anthropic SDK script that runs elsewhere — Hy4 #1 · MiMo-V2.6-Pro #2). False-positive sweep over all 49 existing prompts: no golden flips (`a5`'s Haiku 5.5 is served by Go; `fa1` names Opus 5.5 as history, not as the means; `ultracode` appears in goldens only where O1 recommends it). The suite is now 53.
+- **Sources.** opencode.ai/inference/go/v1/models, opencode.ai/docs/go, models.dev/api.json (`opencode-go`), opencode.ai/docs/agents, opencode.ai/docs/providers; read 20 Nov 2026. Recorded in `skill/opencode-evidence.json` → `iteration_38` and `skill/opencode-benchmarks.md` §23.
+- **Checks.** Self-test 53/53; the six CI commands green. Cold run: **not run** — the environment offers no Claude Sonnet 5.5 subagent class (the models search returns only `opencode-go/claude-haiku-5-5`), the iteration's brief requires fresh Sonnet 5.5 agents and forbids substituting another class; the owed run is the full 53-eval suite plus the Turkish pass on a session that can start Sonnet 5.5 subagents (`~/model-secici-iter38/cold-run-todo.md`).
+
+---
+
 ## iteration-37 (19 Nov 2026): the GLM twin leaves, Argon's 55-day retention, GLM-5.3's limits window
 
 Two routing facts changed; the pool table, tiers, Step 4-OC rows and `tasks/mo` are unchanged.
